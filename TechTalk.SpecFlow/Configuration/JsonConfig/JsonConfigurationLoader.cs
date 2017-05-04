@@ -70,6 +70,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             {
                 allowDebugGeneratedFiles = specFlowElement.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = specFlowElement.Generator.AllowRowTests;
+                markFeaturesParallelizable = specFlowElement.Generator.MarkFeaturesParallelizable;
+                skipParallelizableMarkerForTags = specFlowElement.Generator.SkipParallelizableMarkerForTags.ToArray();
             }
 
             if (specFlowElement.Trace != null)
