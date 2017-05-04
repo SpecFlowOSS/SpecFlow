@@ -83,9 +83,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         private static IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
         {
             var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
-            var generatorConfiguration = container.Resolve<GeneratorConfiguration>();
-            generatorConfiguration.MarkFeaturesParallelizable = parallelCode;
-            generatorConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
+            var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
+            specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
+            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
                                                                       Enumerable.Empty<string>().ToArray();
             container.RegisterInstanceAs(CreateTestGeneratorProvider());
 

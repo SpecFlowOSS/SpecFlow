@@ -97,10 +97,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
             FeatureLanguage = GetFeatureLanguage();
-            var runtimeConfiguration = new RuntimeConfiguration
-            {
-                BindingCulture = GetBindingCulture()
-            };
+            var runtimeConfiguration = ConfigurationLoader.GetDefault();
+            runtimeConfiguration.BindingCulture = GetBindingCulture();
 
             var testThreadContainer = new ObjectContainer();
             testThreadContainer.RegisterInstanceAs(runtimeConfiguration);

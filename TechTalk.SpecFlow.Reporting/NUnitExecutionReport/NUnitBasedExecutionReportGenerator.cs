@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
 
         public void GenerateAndTransformReport()
         {
-            var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ReportParameters.ProjectFile, new NullListener());            
+            var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ReportParameters.ProjectFile);            
 
             var report = GenerateReport(specFlowProject);
             TransformReport(report, specFlowProject);

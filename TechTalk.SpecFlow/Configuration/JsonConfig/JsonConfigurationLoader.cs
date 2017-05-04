@@ -32,7 +32,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
-
+            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
+            string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
 
             var specFlowElement = jsonConfig.SpecFlow;
             if (specFlowElement.Language != null)
@@ -111,7 +112,9 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             additionalStepAssemblies,
                                             pluginDescriptors,
                                             allowDebugGeneratedFiles,
-                                            allowRowTests);
+                                            allowRowTests,
+                                            markFeaturesParallelizable,
+                                            skipParallelizableMarkerForTags);
         }
     }
 }

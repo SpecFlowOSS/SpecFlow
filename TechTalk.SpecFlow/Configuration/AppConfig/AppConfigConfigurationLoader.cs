@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Plugins;
@@ -33,6 +34,9 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
 
+            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
+            string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
+
 
             if (IsSpecified(configSection.Language))
             {
@@ -59,6 +63,12 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             {
                 allowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = configSection.Generator.AllowRowTests;
+                markFeaturesParallelizable = configSection.Generator.MarkFeaturesParallelizable;
+
+                if (IsSpecified(configSection.Generator.SkipParallelizableMarkerForTags))
+                {
+                    skipParallelizableMarkerForTags = configSection.Generator.SkipParallelizableMarkerForTags.Select(i => i.Value).ToArray();
+                }
 
                 if (IsSpecified(configSection.Generator.Dependencies))
                 {
@@ -105,7 +115,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 pluginDescriptors.Add(plugin.ToPluginDescriptor());
             }
 
-            return new Configuration.SpecFlowConfiguration(ConfigSource.AppConfig, 
+            return new SpecFlowConfiguration(ConfigSource.AppConfig, 
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
@@ -120,7 +130,9 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             additionalStepAssemblies,
                                             pluginDescriptors,
                                             allowDebugGeneratedFiles,
-                                            allowRowTests
+                                            allowRowTests,
+                                            markFeaturesParallelizable,
+                                            skipParallelizableMarkerForTags
                                             );
         }
 

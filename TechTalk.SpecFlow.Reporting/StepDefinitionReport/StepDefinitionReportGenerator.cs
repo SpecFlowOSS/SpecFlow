@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         {
             ReportParameters = reportParameters;
 
-            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile, new NullListener());
+            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);
             parsedSpecFlowDocuments = ParserHelper.GetParsedFeatures(specFlowProject);
 
             var basePath = Path.Combine(specFlowProject.ProjectSettings.ProjectFolder, reportParameters.BinFolder);

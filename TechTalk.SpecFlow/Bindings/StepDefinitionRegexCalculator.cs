@@ -112,6 +112,7 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
+        private SpecFlowConfiguration specFlowConfiguration;
 
         private string CalculateWordRegex(string methodNamePart)
         {

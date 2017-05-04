@@ -160,6 +160,8 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="Configuration\AppConfig\GeneratorConfigElement.TagCollection.cs" />
+    <Compile Include="Configuration\AppConfig\GeneratorConfigElement.TagElement.cs" />
     <Compile Include="Configuration\JsonConfig\BindingCultureElement.cs" />
     <Compile Include="Configuration\JsonConfig\GeneratorElement.cs" />
     <Compile Include="Configuration\JsonConfig\JsonConfig.cs" />

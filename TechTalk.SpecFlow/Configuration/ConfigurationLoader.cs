@@ -60,6 +60,8 @@ namespace TechTalk.SpecFlow.Configuration
         private static bool DefaultAllowRowTests => ConfigDefaults.AllowRowTests;
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
 
+        public static bool DefaultMarkFeaturesParallelizable => ConfigDefaults.MarkFeaturesParallelizable;
+        public static string[] DefaultSkipParallelizableMarkerForTags => ConfigDefaults.SkipParallelizableMarkerForTags;
 
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
@@ -142,7 +144,10 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAdditionalStepAssemblies, 
                 DefaultPluginDescriptors,
                 DefaultAllowDebugGeneratedFiles, 
-                DefaultAllowRowTests);
+                DefaultAllowRowTests,
+                DefaultMarkFeaturesParallelizable,
+                DefaultSkipParallelizableMarkerForTags
+                );
         }
 
 
