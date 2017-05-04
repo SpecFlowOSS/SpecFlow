@@ -18,6 +18,8 @@ For issues/bugs please use the [issue tracker on GitHub](https://github.com/tech
 ## Build status
 Continious integration: [![Build status](https://ci.appveyor.com/api/projects/status/h9nb6vii9xj8vbtl?svg=true)](https://ci.appveyor.com/project/SpecFlow/specflow-kx1o3)
 
+CI NuGet Package feed: https://ci.appveyor.com/nuget/specflow-ci
+
 ## Contributing
 
 Developer Gitter chat:

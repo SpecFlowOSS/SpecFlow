@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SpecFlow" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
+      <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
+    </None>
+
+    <None Include="..\..\LinkedFeature.feature" Link="LinkedFeature.feature" />
+
+    <None Include="..\ExampleFeatures\Features\**\*.feature">
+      <Link>Features\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CustomToolNamespace>$(RootNamespace)</CustomToolNamespace>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,16 @@
 2.2.0-* - *
 
+Core changes:
++ Projects are now read by XML and not with MSBuild. The general functionality is working. If something is missing, please file an issue and look at https://github.com/techtalk/SpecFlow/blob/master/TechTalk.SpecFlow.Generator/Project/MsBuildProjectReader.cs
++ Before/After- Feature Hooks can get the FeatureContext by parameter See https://github.com/techtalk/SpecFlow/pull/779
+
 Fixes:
 + Removed obsolete marked StepScopeAttribute - use the ScopeAttribute for it
 + Fixed: Projection<T>.Equals() returns false unnecessarily if table headers differ from property name by casing
 + Fixed regex-less step definition support, see StepDefinitionsWithoutRegex.feature for details (Issues #715, #301)
 
+New Features:
++ MsTest: Support for [DeploymentItem] attribute with @MsTest:DeploymentItem tag (Issue 803)
 
 2.2.0-preview20161020 - 2016-10-20
 

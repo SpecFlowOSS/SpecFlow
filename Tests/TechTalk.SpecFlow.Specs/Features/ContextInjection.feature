@@ -1,4 +1,4 @@
-﻿Feature: Injecting context into step specifications
+﻿Feature: Injecting context into binding classes
 	As a developer
 	I would like to have the system automatically inject an instance of any class as defined in the constructor of a step file
 	So that I don't have to rely on the global shared state and can define the contexts required for each scenario.
