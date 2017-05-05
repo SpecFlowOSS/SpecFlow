@@ -16,7 +16,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             get { return compilationFolder; }
         }
 
-        public SpecFlowConfigurationDriver ConfigurationDriver { get; private set; }
+        public AppConfigConfigurationDriver AppConfigConfigurationDriver { get; private set; }
+        public SpecFlowJsonConfigurationDriver SpecFlowJsonConfigurationDriver { get; private set; }
+
 
         public string ProjectName { get; set; }
         public string Language { get; set; }
@@ -85,9 +87,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             }
         }
 
-        public InputProjectDriver(SpecFlowConfigurationDriver configurationDriver)
+        public InputProjectDriver(AppConfigConfigurationDriver appConfigConfigurationDriver, SpecFlowJsonConfigurationDriver specFlowJsonConfigurationDriver)
         {
-            ConfigurationDriver = configurationDriver;
+            SpecFlowJsonConfigurationDriver = specFlowJsonConfigurationDriver;
+            AppConfigConfigurationDriver = appConfigConfigurationDriver;
             ProjectName = "SpecFlow.TestProject";
             Language = "C#";
 

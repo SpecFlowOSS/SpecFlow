@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Specs.Drivers.Templates;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
 {
-    public class SpecFlowConfigurationDriver
+    public class AppConfigConfigurationDriver
     {
         private const string DefaultProviderName = "NUnit";
         private readonly XDocument parsedConfiguration;
@@ -18,7 +18,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             get { return parsedConfiguration.XPathSelectElement("/configuration/specFlow"); }
         }
 
-        public SpecFlowConfigurationDriver(TemplateManager templateManager)
+        public bool IsUsed { get; set; }
+
+        public AppConfigConfigurationDriver(TemplateManager templateManager)
         {
             UnitTestProviderName = DefaultProviderName;
             parsedConfiguration = templateManager.LoadXmlTemplate("App.config");

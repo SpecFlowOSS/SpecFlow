@@ -16,17 +16,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
     [TestFixture]
     public class StepDefinitionRegexCalculatorTests
     {
-        private RuntimeConfiguration runtimeConfiguration;
+        private SpecFlowConfiguration specFlowConfiguration;
 
         [SetUp]
         public void Setup()
         {
-            runtimeConfiguration = new RuntimeConfiguration();
+            specFlowConfiguration = ConfigurationLoader.GetDefault();
         }
 
         private StepDefinitionRegexCalculator CreateSut()
         {
-            return new StepDefinitionRegexCalculator(runtimeConfiguration);
+            return new StepDefinitionRegexCalculator(specFlowConfiguration);
         }
 
         private IBindingMethod CreateBindingMethod(string name, params string[] parameters)
@@ -247,7 +247,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [TestCase("Given_ich_Knopf_drücke")]
         public void LocalizedKeywordCanBeUsedIfFeatureLanguageIsConfigured(string methodName)
         {
-            runtimeConfiguration.FeatureLanguage = new CultureInfo("de-AT");
+            specFlowConfiguration.FeatureLanguage = new CultureInfo("de-AT");
             var sut = CreateSut();
 
             var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given,
@@ -261,7 +261,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [TestCase("Given_я_не_авторизован")]
         public void Issue715(string methodName)
         {
-            runtimeConfiguration.FeatureLanguage = new CultureInfo("ru");
+            specFlowConfiguration.FeatureLanguage = new CultureInfo("ru");
             var sut = CreateSut();
 
             var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given,

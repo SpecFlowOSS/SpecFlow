@@ -56,10 +56,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SpecFlow.2.1.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
@@ -190,6 +186,10 @@
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj">
+      <Project>{413ee28c-4f89-4c6f-ba1e-2cdee4cd43b4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj">
       <Project>{ADED3F39-1742-42E2-A55A-3043AC84BDAD}</Project>

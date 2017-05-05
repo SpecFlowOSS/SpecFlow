@@ -1,4 +1,5 @@
 ﻿using System;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {

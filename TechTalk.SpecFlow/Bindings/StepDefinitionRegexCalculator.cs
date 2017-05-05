@@ -27,11 +27,10 @@ namespace TechTalk.SpecFlow.Bindings
 
         private const string WordConnectorRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
 
-        private readonly RuntimeConfiguration runtimeConfiguration;
 
-        public StepDefinitionRegexCalculator(RuntimeConfiguration runtimeConfiguration)
+        public StepDefinitionRegexCalculator(Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
         }
 
         static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
@@ -87,7 +86,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             yield return stepDefinitionType.ToString();
 
-            var cultureToSearch = runtimeConfiguration.FeatureLanguage;
+            var cultureToSearch = specFlowConfiguration.BindingCulture ?? specFlowConfiguration.FeatureLanguage;
 
             foreach (var keyword in LanguageHelper.GetKeywords(cultureToSearch, stepDefinitionType))
             {
@@ -113,6 +112,7 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
+        private SpecFlowConfiguration specFlowConfiguration;
 
         private string CalculateWordRegex(string methodNamePart)
         {

@@ -18,12 +18,12 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class BindingInvoker : IBindingInvoker
     {
-        protected readonly RuntimeConfiguration runtimeConfiguration;
+        protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
         protected readonly IErrorProvider errorProvider;
 
-        public BindingInvoker(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider)
+        public BindingInvoker(Configuration.SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider)
         {
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
             this.errorProvider = errorProvider;
         }
 
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.Bindings
                     stopwatch.Stop();
                 }
 
-                if (runtimeConfiguration.TraceTimings && stopwatch.Elapsed >= runtimeConfiguration.MinTracedDuration)
+                if (specFlowConfiguration.TraceTimings && stopwatch.Elapsed >= specFlowConfiguration.MinTracedDuration)
                 {
                     testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }

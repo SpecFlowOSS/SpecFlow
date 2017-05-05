@@ -157,6 +157,7 @@
     <Compile Include="BindingSkeletons\StepTextAnalyzerTests.cs" />
     <Compile Include="BindingSkeletons\StringHelpers.cs" />
     <Compile Include="Bindings\BindingRegistryTests.cs" />
+    <Compile Include="Configuration\JsonConfigTests.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculatorTests.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchServiceTest.cs" />
     <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
@@ -181,7 +182,7 @@
     <Compile Include="StepExecutionTestsWithConversionsInNonEnglishCulture.cs" />
     <Compile Include="StepTransformationTests.cs" />
     <Compile Include="StepArgumentTypeConverterTest.cs" />
-    <Compile Include="ConfigurationTest.cs" />
+    <Compile Include="Configuration\AppConfigTests.cs" />
     <Compile Include="NUnitTestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunnerManagerStaticApiTest.cs" />

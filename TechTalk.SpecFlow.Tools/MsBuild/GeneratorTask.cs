@@ -30,9 +30,10 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 
         protected override void DoExecute()
         {
+            ITraceListener traceListener = VerboseOutput ? (ITraceListener)new TextWriterTraceListener(GetMessageWriter(MessageImportance.High), "SpecFlow: ") : new NullListener();
+
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ProjectPath);
 
-            ITraceListener traceListener = VerboseOutput ? (ITraceListener)new TextWriterTraceListener(GetMessageWriter(MessageImportance.High), "SpecFlow: ") : new NullListener();
             BatchGenerator batchGenerator = new MsBuildBatchGenerator(traceListener, new TestGeneratorFactory(), this);
             batchGenerator.OnError +=
                 delegate(FeatureFileInput featureFileInput, TestGeneratorResult result)

@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
@@ -76,16 +78,37 @@ namespace TechTalk.SpecFlow.Generator.Project
         private SpecFlowProject LoadAppConfig(SpecFlowProject specFlowProject, XDocument xDocument, string projectFolder, bool newProjectSystem)
         {
             var appConfigFile = GetAppConfigFile(xDocument, newProjectSystem, projectFolder);
+
+            SpecFlowConfigurationHolder configurationHolder = null;
             if (!string.IsNullOrWhiteSpace(appConfigFile))
             {
                 var configFilePath = Path.Combine(projectFolder, appConfigFile);
                 var configFileContent = File.ReadAllText(configFilePath);
-                var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
+                configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
+            }
+
+
+
+            var jsonConfigFile = GetJsonConfigFile(xDocument, newProjectSystem, projectFolder);
+            if (!string.IsNullOrWhiteSpace(jsonConfigFile))
+            {
+                var configFilePath = Path.Combine(projectFolder, jsonConfigFile);
+                var configFileContent = File.ReadAllText(configFilePath);
+                configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.Json, configFileContent);
+            }
+
+            if (configurationHolder != null)
+            {
                 specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
                 specFlowProject.Configuration = _configurationLoader.LoadConfiguration(configurationHolder);
             }
 
             return specFlowProject;
+        }
+
+        private string GetJsonConfigFile(XDocument xDocument, bool newProjectSystem, string projectFolder)
+        {
+            return FindFile(xDocument, newProjectSystem, projectFolder, "specflow.json");
         }
 
         private SpecFlowProject LoadFeatureFiles(SpecFlowProject specFlowProject, XDocument xDocument, string projectFolder, bool newProjectSystem)
@@ -105,10 +128,15 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
         {
-            return new MsBuildProjectReader(new GeneratorConfigurationProvider(), new MSBuildRelativePathParser()).ReadSpecFlowProject(projectFilePath);
+            return new MsBuildProjectReader(new GeneratorConfigurationProvider(new ConfigurationLoader()), new MSBuildRelativePathParser()).ReadSpecFlowProject(projectFilePath);
         }
 
         private string GetAppConfigFile(XDocument xDocument, bool newProjectSystem, string projectFolder)
+        {
+            return FindFile(xDocument, newProjectSystem, projectFolder, "app.config");
+        }
+
+        private string FindFile(XDocument xDocument, bool newProjectSystem, string projectFolder, string fileName)
         {
             var nodesWhereFeatureFilesCouldBe = GetNotCompileableNodes(xDocument, newProjectSystem);
 
@@ -120,7 +148,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                     continue;
                 }
 
-                if (Path.GetFileName(include).Equals("app.config", StringComparison.InvariantCultureIgnoreCase))
+                if (Path.GetFileName(include).Equals(fileName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return include;
                 }
@@ -128,7 +156,7 @@ namespace TechTalk.SpecFlow.Generator.Project
 
             if (newProjectSystem)
             {
-                var appConfigFilePath = Path.Combine(projectFolder, "app.config");
+                var appConfigFilePath = Path.Combine(projectFolder, fileName);
 
                 if (File.Exists(appConfigFilePath))
                 {

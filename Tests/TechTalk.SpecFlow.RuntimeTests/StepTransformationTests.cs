@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
-            var invoker = new BindingInvoker(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
             TimeSpan duration;
             var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);

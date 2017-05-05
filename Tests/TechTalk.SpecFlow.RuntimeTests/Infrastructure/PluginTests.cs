@@ -31,13 +31,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
             }
 
-            public void RegisterCustomizations(ObjectContainer container, RuntimeConfiguration runtimeConfiguration)
+            public void RegisterCustomizations(ObjectContainer container, SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration)
             {
-                if (runtimeConfiguration.StopAtFirstError)
+                if (specFlowConfiguration.StopAtFirstError)
                     container.RegisterTypeAs<CustomTestRunnerFactory, ITestRunnerFactory>();
             }
 
-            public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
+            public void RegisterConfigurationDefaults(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration)
             {
             }
 
@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
                 runtimePluginEvents.CustomizeGlobalDependencies += (sender, args) =>
                                                                    {
-                                                                       if (args.RuntimeConfiguration.StopAtFirstError)
+                                                                       if (args.SpecFlowConfiguration.StopAtFirstError)
                                                                            args.ObjectContainer.RegisterTypeAs<CustomTestRunnerFactory, ITestRunnerFactory>();
                                                                    };
             }
@@ -53,16 +53,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         public class PluginWithCustomConfiguration : IRuntimePlugin
         {
-            private readonly Action<RuntimeConfiguration> specifyDefaults;
+            private readonly Action<SpecFlow.Configuration.SpecFlowConfiguration> specifyDefaults;
 
-            public PluginWithCustomConfiguration(Action<RuntimeConfiguration> specifyDefaults)
+            public PluginWithCustomConfiguration(Action<SpecFlow.Configuration.SpecFlowConfiguration> specifyDefaults)
             {
                 this.specifyDefaults = specifyDefaults;
             }
 
             public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
             {
-                runtimePluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.RuntimeConfiguration); };
+                runtimePluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.SpecFlowConfiguration); };
             }
         }
 
@@ -202,7 +202,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.StopAtFirstError = true));
             var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
-            var runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
+            var runtimeConfiguration = container.Resolve<SpecFlowConfiguration>();
             runtimeConfiguration.StopAtFirstError.Should().BeTrue();
         }
 

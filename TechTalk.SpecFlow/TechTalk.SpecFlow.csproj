@@ -36,6 +36,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -156,6 +160,18 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="Configuration\AppConfig\GeneratorConfigElement.TagCollection.cs" />
+    <Compile Include="Configuration\AppConfig\GeneratorConfigElement.TagElement.cs" />
+    <Compile Include="Configuration\JsonConfig\BindingCultureElement.cs" />
+    <Compile Include="Configuration\JsonConfig\GeneratorElement.cs" />
+    <Compile Include="Configuration\JsonConfig\JsonConfig.cs" />
+    <Compile Include="Configuration\JsonConfig\LanguageElement.cs" />
+    <Compile Include="Configuration\JsonConfig\PluginElement.cs" />
+    <Compile Include="Configuration\JsonConfig\RuntimeElement.cs" />
+    <Compile Include="Configuration\JsonConfig\StepAssemblyElement.cs" />
+    <Compile Include="Configuration\JsonConfig\TraceElement.cs" />
+    <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
+    <Compile Include="Configuration\SpecFlowConfigurationHolder.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="HookAttributes.cs" />
     <Compile Include="Infrastructure\TestObjectResolver.cs" />
@@ -170,6 +186,20 @@
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IDefaultDependencyProvider.cs" />
+    <Compile Include="Configuration\AppConfig\AppConfigConfigurationLoader.cs" />
+    <Compile Include="Configuration\AppConfig\BindingCultureConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\GeneratorConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\LanguageConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\PluginCollection.cs" />
+    <Compile Include="Configuration\AppConfig\PluginConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\RuntimeConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\StepAssemblyCollection.cs" />
+    <Compile Include="Configuration\AppConfig\StepAssemblyConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\TraceConfigElement.cs" />
+    <Compile Include="Configuration\AppConfig\UnitTestProviderConfigElement.cs" />
+    <Compile Include="Configuration\JsonConfig\JsonConfigurationLoader.cs" />
+    <Compile Include="Configuration\JsonConfig\SpecFlowElement.cs" />
+    <Compile Include="Configuration\ConfigurationLoader.cs" />
     <Compile Include="Plugins\IRuntimePlugin.cs" />
     <Compile Include="Plugins\IRuntimePluginLoader.cs" />
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
@@ -185,7 +215,7 @@
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
     <Compile Include="PlatformCompatibility\ExceptionHelper.cs" />
     <Compile Include="PlatformCompatibility\MonoHelper.cs" />
-    <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
+    <Compile Include="Configuration\ConfigDefaults.cs" />
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
@@ -204,8 +234,8 @@
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingRegistry.cs" />
     <Compile Include="Bindings\StepDefinitionType.cs" />
-    <Compile Include="PlatformSpecific\ConfigurationSectionHandler.cs" />
-    <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
+    <Compile Include="Configuration\AppConfig\ConfigurationSectionHandler.cs" />
+    <Compile Include="Configuration\SpecFlowConfiguration.cs" />
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />
     <Compile Include="ErrorHandling\PendingStepException.cs" />
     <Compile Include="ErrorHandling\SpecFlowException.cs" />
@@ -216,6 +246,7 @@
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Infrastructure\ContainerBuilder.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />

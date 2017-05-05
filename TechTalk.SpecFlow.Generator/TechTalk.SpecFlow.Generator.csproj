@@ -60,8 +60,6 @@
     </Compile>
     <Compile Include="BatchGenerator.cs" />
     <Compile Include="Configuration\GeneratorInfo.cs" />
-    <Compile Include="Configuration\GeneratorConfiguration.cs" />
-    <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
     <Compile Include="Configuration\IGeneratorInfoProvider.cs" />
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
     <Compile Include="DefaultDependencyProvider.cs" />
@@ -73,7 +71,6 @@
     <Compile Include="Plugins\IGeneratorPluginLoader.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
-    <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\InProcGeneratorInfoProvider.cs" />
     <Compile Include="Project\MSBuildRelativePathParser.cs" />
     <Compile Include="RemotableGeneratorClass.cs" />
@@ -94,7 +91,6 @@
     <Compile Include="Interfaces\ITestGeneratorFactory.cs" />
     <Compile Include="Interfaces\ProjectPlatformSettings.cs" />
     <Compile Include="Interfaces\ProjectSettings.cs" />
-    <Compile Include="Interfaces\SpecFlowConfigurationHolder.cs" />
     <Compile Include="Interfaces\TestGenerationError.cs" />
     <Compile Include="Interfaces\TestGeneratorFactoryAttribute.cs" />
     <Compile Include="Interfaces\TestGeneratorResult.cs" />
