@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.Reporting
@@ -26,7 +27,7 @@ namespace TechTalk.SpecFlow.Reporting
             }
         }
 
-        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, GeneratorConfiguration generatorConfiguration, string xsltFile)
+        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, Configuration.SpecFlowConfiguration generatorSpecFlowConfiguration, string xsltFile)
         {
             var xmlOutputWriter = new StringWriter();
             serializer.Serialize(xmlOutputWriter, report);
@@ -45,8 +46,7 @@ namespace TechTalk.SpecFlow.Reporting
             var xmlOutputReader = new XmlTextReader(new StringReader(xmlOutputWriter.ToString()));
 
             XsltArgumentList argumentList = new XsltArgumentList();
-            argumentList.AddParam("feature-language", "", generatorConfiguration.FeatureLanguage.Name);
-            argumentList.AddParam("tool-language", "", generatorConfiguration.ToolLanguage.Name);
+            argumentList.AddParam("feature-language", "", generatorSpecFlowConfiguration.FeatureLanguage.Name);
             
             using (var xmlTextWriter = new XmlTextWriter(outputFilePath, Encoding.UTF8))
             {

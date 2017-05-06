@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     public class TestExecutionEngineTests
     {
         private ScenarioContext scenarioContext;
-        private RuntimeConfiguration runtimeConfiguration;
+        private SpecFlowConfiguration specFlowConfiguration;
         private Mock<IBindingRegistry> bindingRegistryStub;
         private Mock<IErrorProvider> errorProviderStub;
         private Mock<IContextManager> contextManagerStub;
@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SetUp]
         public void Setup()
         {
-            runtimeConfiguration = new RuntimeConfiguration();
+            specFlowConfiguration = ConfigurationLoader.GetDefault();
 
             testThreadContainer = new ObjectContainer();
             featureContainer = new ObjectContainer();
@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContainer.RegisterInstanceAs(scenarioContext);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
-            var featureContext = new FeatureContext(featureContainer, featureInfo, runtimeConfiguration);
+            var featureContext = new FeatureContext(featureContainer, featureInfo, specFlowConfiguration);
             featureContainer.RegisterInstanceAs(featureContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(featureContext);
             contextManagerStub.Setup(cm => cm.StepContext).Returns(new ScenarioStepContext(new StepInfo(StepDefinitionType.Given, "step_title", null, null)));
@@ -99,6 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenario)).Returns(beforeScenarioEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenario)).Returns(afterScenarioEvents);
 
+            specFlowConfiguration = ConfigurationLoader.GetDefault();
             errorProviderStub = new Mock<IErrorProvider>();
             testTracerStub = new Mock<ITestTracer>();
             stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();
@@ -114,7 +115,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 testTracerStub.Object, 
                 errorProviderStub.Object, 
                 new Mock<IStepArgumentTypeConverter>().Object, 
-                runtimeConfiguration, 
+                specFlowConfiguration, 
                 bindingRegistryStub.Object,
                 new Mock<IUnitTestRuntimeProvider>().Object,
                 stepDefinitionSkeletonProviderMock.Object, 

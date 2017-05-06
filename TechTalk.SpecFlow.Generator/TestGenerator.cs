@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -16,22 +17,22 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class TestGenerator : ErrorHandlingTestGenerator, ITestGenerator
     {
-        protected readonly GeneratorConfiguration generatorConfiguration;
+        protected readonly SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration;
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
         private readonly IFeatureGeneratorRegistry featureGeneratorRegistry;
         protected readonly CodeDomHelper codeDomHelper;
 
-        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper)
+        public TestGenerator(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper)
         {
-            if (generatorConfiguration == null) throw new ArgumentNullException("generatorConfiguration");
+            if (specFlowConfiguration == null) throw new ArgumentNullException("specFlowConfiguration");
             if (projectSettings == null) throw new ArgumentNullException("projectSettings");
             if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
             if (testUpToDateChecker == null) throw new ArgumentNullException("testUpToDateChecker");
             if (featureGeneratorRegistry == null) throw new ArgumentNullException("featureGeneratorRegistry");
 
-            this.generatorConfiguration = generatorConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
             this.testUpToDateChecker = testUpToDateChecker;
             this.featureGeneratorRegistry = featureGeneratorRegistry;
             this.codeDomHelper = codeDomHelper;
@@ -102,7 +103,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
 
-            var parser = new SpecFlowGherkinParser(generatorConfiguration.FeatureLanguage);
+            var parser = new SpecFlowGherkinParser(specFlowConfiguration.FeatureLanguage);
             SpecFlowDocument specFlowDocument;
             using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
             {

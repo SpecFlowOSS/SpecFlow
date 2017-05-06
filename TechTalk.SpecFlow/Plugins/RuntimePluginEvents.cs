@@ -17,14 +17,14 @@ namespace TechTalk.SpecFlow.Plugins
             RegisterGlobalDependencies?.Invoke(this, new RegisterGlobalDependenciesEventArgs(objectContainer));
         }
 
-        public void RaiseConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
+        public void RaiseConfigurationDefaults(Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
-            ConfigurationDefaults?.Invoke(this, new ConfigurationDefaultsEventArgs(runtimeConfiguration));
+            ConfigurationDefaults?.Invoke(this, new ConfigurationDefaultsEventArgs(specFlowConfiguration));
         }
 
-        public void RaiseCustomizeGlobalDependencies(ObjectContainer container, RuntimeConfiguration runtimeConfiguration)
+        public void RaiseCustomizeGlobalDependencies(ObjectContainer container, Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
-            CustomizeGlobalDependencies?.Invoke(this, new CustomizeGlobalDependenciesEventArgs(container, runtimeConfiguration));
+            CustomizeGlobalDependencies?.Invoke(this, new CustomizeGlobalDependenciesEventArgs(container, specFlowConfiguration));
         }
 
         public void RaiseCustomizeTestThreadDependencies(ObjectContainer testThreadContainer)

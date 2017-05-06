@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow
     {
         protected readonly IObjectContainer globalContainer;
         protected readonly IContainerBuilder containerBuilder;
-        protected readonly RuntimeConfiguration runtimeConfiguration;
+        protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
         protected readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
         private Assembly testAssembly;
@@ -32,11 +32,11 @@ namespace TechTalk.SpecFlow
 
         public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
 
-        public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, RuntimeConfiguration runtimeConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
+        public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, Configuration.SpecFlowConfiguration specFlowConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.globalContainer = globalContainer;
             this.containerBuilder = containerBuilder;
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
             this.bindingRegistryBuilder = bindingRegistryBuilder;
         }
 
@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow
 
             var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
-                runtimeConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
+                specFlowConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
             return bindingAssemblies;
         }
 

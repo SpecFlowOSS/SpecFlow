@@ -5,6 +5,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -35,10 +36,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature").Should().NotBeNull();
             
 
-            specflowProjectfile.Configuration.GeneratorConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
-            specflowProjectfile.Configuration.GeneratorConfiguration.AllowRowTests.Should().BeTrue();
-            specflowProjectfile.Configuration.GeneratorConfiguration.GeneratorUnitTestProvider.Should().Be("MSTest");
-            specflowProjectfile.Configuration.GeneratorConfiguration.FeatureLanguage.Name.Should().Be("en-US");
+            specflowProjectfile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
+            specflowProjectfile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();
+            specflowProjectfile.Configuration.SpecFlowConfiguration.UnitTestProvider.Should().Be("MSTest");
+            specflowProjectfile.Configuration.SpecFlowConfiguration.FeatureLanguage.Name.Should().Be("en-US");
         }
 
         [Test]

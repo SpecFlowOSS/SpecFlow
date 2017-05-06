@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.Reporting
         {
             yield return specFlowProject.ProjectSettings.AssemblyName;
 
-            foreach (var stepAssembly in specFlowProject.Configuration.RuntimeConfiguration.AdditionalStepAssemblies)
+            foreach (var stepAssembly in specFlowProject.Configuration.SpecFlowConfiguration.AdditionalStepAssemblies)
             {
                 yield return stepAssembly;
             }

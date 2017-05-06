@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow
 {
     public class FeatureContext : SpecFlowContext
     {
-        internal FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo, RuntimeConfiguration runtimeConfiguration)
+        internal FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo, SpecFlowConfiguration specFlowConfiguration)
         {
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow
             FeatureInfo = featureInfo;
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
-            BindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
+            BindingCulture = specFlowConfiguration.BindingCulture ?? featureInfo.Language;
         }
 
         #region Singleton

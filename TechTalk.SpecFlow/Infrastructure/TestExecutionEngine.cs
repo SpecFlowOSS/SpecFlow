@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public class TestExecutionEngine : ITestExecutionEngine
     {
-        private readonly RuntimeConfiguration runtimeConfiguration;
+        private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
         private readonly IErrorProvider errorProvider;
         private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private CultureInfo defaultBindingCulture = CultureInfo.CurrentCulture;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
-            RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
+            Configuration.SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
             IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
             this.bindingRegistry = bindingRegistry;
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
             this.testTracer = testTracer;
             this.stepFormatter = stepFormatter;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 
             FireEvents(HookType.AfterFeature);
 
-            if (runtimeConfiguration.TraceTimings)
+            if (specFlowConfiguration.TraceTimings)
             {
                 FeatureContext.Stopwatch.Stop();
                 var duration = FeatureContext.Stopwatch.Elapsed;
@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             HandleBlockSwitch(ScenarioBlock.None);
 
-            if (runtimeConfiguration.TraceTimings)
+            if (specFlowConfiguration.TraceTimings)
             {
                 contextManager.ScenarioContext.Stopwatch.Stop();
                 var duration = contextManager.ScenarioContext.Stopwatch.Elapsed;
@@ -154,7 +154,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 string skeleton = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                     defaultTargetLanguage, 
-                    contextManager.ScenarioContext.MissingSteps.ToArray(), "MyNamespace", "StepDefinitions", runtimeConfiguration.StepDefinitionSkeletonStyle, defaultBindingCulture);
+                    contextManager.ScenarioContext.MissingSteps.ToArray(), "MyNamespace", "StepDefinitions", specFlowConfiguration.StepDefinitionSkeletonStyle, defaultBindingCulture);
 
                 errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
@@ -304,7 +304,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     onStepStartExecuted = true;
                     OnStepStart();
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
-                    if (runtimeConfiguration.TraceSuccessfulSteps)
+                    if (specFlowConfiguration.TraceSuccessfulSteps)
                         testTracer.TraceStepDone(match, arguments, duration);
                 }
             }
@@ -343,7 +343,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     contextManager.ScenarioContext.TestStatus = TestStatus.TestError;
                     contextManager.ScenarioContext.TestError = ex;
                 }
-                if (runtimeConfiguration.StopAtFirstError)
+                if (specFlowConfiguration.StopAtFirstError)
                     throw;
             }
             finally
