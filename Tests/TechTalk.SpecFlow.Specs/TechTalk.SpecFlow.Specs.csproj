@@ -78,7 +78,7 @@
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
 
 
-  <Target Name="BeforeBuild">
+  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
     <CallTarget Targets="GenerateCodeBehind" />
   </Target>
   
