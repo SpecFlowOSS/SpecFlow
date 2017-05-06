@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
 EndProject
@@ -72,6 +72,7 @@ Global
 		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU

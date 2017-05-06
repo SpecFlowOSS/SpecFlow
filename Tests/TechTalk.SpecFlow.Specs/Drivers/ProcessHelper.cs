@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         public int RunProcess(string executablePath, string argumentsFormat, params object[] arguments)
         {
             string commandArguments = string.Format(argumentsFormat, arguments);
-            ProcessStartInfo psi = new ProcessStartInfo(executablePath, parameters);
+            ProcessStartInfo psi = new ProcessStartInfo(executablePath, commandArguments);
 
-            Console.WriteLine($"starting process {executablePath} {parameters}");
+            Console.WriteLine($"starting process {executablePath} {commandArguments}");
 
 
             Console.WriteLine("\"{0}\" {1}", executablePath, commandArguments);

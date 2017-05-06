@@ -19,8 +19,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove=".\Drivers\Templates\App.config;.\Drivers\Templates\BindingClass.cs;.\Drivers\Templates\BindingClass.fs;.\Drivers\Templates\Bindings.cs;.\Drivers\Templates\Bindings.fs;.\Drivers\Templates\TestProjectFile.csproj;.\Drivers\Templates\TestProjectFile.fsproj" />
-    <EmbeddedResource Include=".\Drivers\Templates\App.config;.\Drivers\Templates\BindingClass.cs;.\Drivers\Templates\BindingClass.fs;.\Drivers\Templates\Bindings.cs;.\Drivers\Templates\Bindings.fs;.\Drivers\Templates\TestProjectFile.csproj;.\Drivers\Templates\TestProjectFile.fsproj" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <Compile Remove=".\Drivers\Templates\**\*" />
+    <EmbeddedResource Include=".\Drivers\Templates\**\*" />
+    <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
+    <Compile Include=".\Drivers\Templates\TemplateManager.cs" />
+    <Compile Include="Drivers\Templates\TemplateManager.cs" />
     <None Include="App.config" />
   </ItemGroup>
 
@@ -28,6 +31,7 @@
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj" />
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,4 +69,17 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <VerboseOutput>true</VerboseOutput>
+    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\debug\net45\specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
+
+  
+  
+  <Target Name="AfterUpdateFeatureFilesInProject">
+    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
+  </Target>
+  
 </Project>

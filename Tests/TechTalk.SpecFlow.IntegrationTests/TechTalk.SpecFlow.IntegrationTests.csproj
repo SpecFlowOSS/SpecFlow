@@ -59,7 +59,12 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
+  <PropertyGroup>
+    <VerboseOutput>true</VerboseOutput>
+    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\debug\net45\specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
   
   <Target Name="AfterUpdateFeatureFilesInProject">
     <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />
