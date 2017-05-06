@@ -71,7 +71,7 @@
 
   <PropertyGroup>
     <VerboseOutput>true</VerboseOutput>
-    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\debug\net45\specflow.exe</SpecFlowTasksPath>
+    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
 
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
