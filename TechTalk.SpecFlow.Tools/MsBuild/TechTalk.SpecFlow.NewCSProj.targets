@@ -30,7 +30,7 @@
     
   </Target>
 
-  <Target Name="GenerateCodeBehind" BeforeTargets="Build">
+  <Target Name="GenerateCodeBehind">
     <CallTarget Targets="BeforeUpdateFeatureFilesInProject" />
     <CallTarget Targets="UpdateFeatureFilesInProject" />
     <CallTarget Targets="AfterUpdateFeatureFilesInProject" />

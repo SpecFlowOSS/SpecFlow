@@ -56,6 +56,8 @@
     <Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />
   </Target>
 
+ 
+
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
@@ -75,7 +77,10 @@
 
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
 
-  
+
+  <Target Name="BeforeBuild">
+    <CallTarget Targets="GenerateCodeBehind" />
+  </Target>
   
   <Target Name="AfterUpdateFeatureFilesInProject">
     <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
