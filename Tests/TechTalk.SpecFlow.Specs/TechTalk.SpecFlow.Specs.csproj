@@ -22,7 +22,6 @@
     <Compile Remove=".\Drivers\Templates\**\*" />
     <EmbeddedResource Include=".\Drivers\Templates\**\*" />
     <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
-    <Compile Include=".\Drivers\Templates\TemplateManager.cs" />
     <Compile Include="Drivers\Templates\TemplateManager.cs" />
     <None Include="App.config" />
   </ItemGroup>
