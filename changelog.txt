@@ -1,4 +1,4 @@
-2.2.0-* - *
+2.2.0-preview20170510 - 2017-05-10
 
 Core changes:
 + Projects are now read by XML and not with MSBuild. The general functionality is working. If something is missing, please file an issue and look at https://github.com/techtalk/SpecFlow/blob/master/TechTalk.SpecFlow.Generator/Project/MsBuildProjectReader.cs
@@ -11,6 +11,9 @@ Fixes:
 
 New Features:
 + MsTest: Support for [DeploymentItem] attribute with @MsTest:DeploymentItem tag (Issue 803)
++ Json Configuration support: you can put your SpecFlow configuration into a specflow.json also (https://github.com/techtalk/SpecFlow/pull/690)
+  Examples: https://github.com/techtalk/SpecFlow/blob/master/Tests/TechTalk.SpecFlow.RuntimeTests/Configuration/JsonConfigTests.cs
+
 
 2.2.0-preview20161020 - 2016-10-20
 
