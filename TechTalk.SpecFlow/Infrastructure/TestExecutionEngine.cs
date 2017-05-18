@@ -208,17 +208,22 @@ namespace TechTalk.SpecFlow.Infrastructure
             FireEvents(bindingEvent);
         }
 
-        private void FireEvents(HookType bindingEvent)
+        private void FireEvents(HookType hookType)
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (IHookBinding eventBinding in GetOrderedHooks(bindingEvent))
-            {
-                int scopeMatches;
-                if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
-                    continue;
+            int scopeMatches;
+            var matchingHooks = GetOrderedHooks(hookType)
+                .Where(hookBinding => !hookBinding.IsScoped ||
+                                       hookBinding.BindingScope.Match(stepContext, out scopeMatches));
 
-                InvokeHook(bindingInvoker, eventBinding, bindingEvent);
+            //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
+            // if multiple scopes mathching for the same method, we take the first one. 
+            // The InvokeHook uses only the Method anyway...
+            var uniqueMatchingHooks = matchingHooks.GroupBy(hookBinding => hookBinding.Method).Select(g => g.First());
+            foreach (var hookBinding in uniqueMatchingHooks)
+            {
+                InvokeHook(bindingInvoker, hookBinding, hookType);
             }
         }
 
