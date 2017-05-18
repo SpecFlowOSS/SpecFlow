@@ -162,6 +162,7 @@
     <Compile Include="BoDi\BoDi.cs" />
     <Compile Include="Configuration\AppConfig\GeneratorConfigElement.TagCollection.cs" />
     <Compile Include="Configuration\AppConfig\GeneratorConfigElement.TagElement.cs" />
+    <Compile Include="Configuration\ISpecFlowConfigurationHolder.cs" />
     <Compile Include="Configuration\JsonConfig\BindingCultureElement.cs" />
     <Compile Include="Configuration\JsonConfig\GeneratorElement.cs" />
     <Compile Include="Configuration\JsonConfig\JsonConfig.cs" />
@@ -171,7 +172,6 @@
     <Compile Include="Configuration\JsonConfig\StepAssemblyElement.cs" />
     <Compile Include="Configuration\JsonConfig\TraceElement.cs" />
     <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
-    <Compile Include="Configuration\SpecFlowConfigurationHolder.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="HookAttributes.cs" />
     <Compile Include="Infrastructure\TestObjectResolver.cs" />

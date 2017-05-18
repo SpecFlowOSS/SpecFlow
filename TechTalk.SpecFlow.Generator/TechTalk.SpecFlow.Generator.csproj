@@ -63,6 +63,7 @@
     <Compile Include="Configuration\IGeneratorInfoProvider.cs" />
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
     <Compile Include="DefaultDependencyProvider.cs" />
+    <Compile Include="Interfaces\SpecFlowConfigurationHolder.cs" />
     <Compile Include="ITestUpToDateChecker.cs" />
     <Compile Include="Plugins\GeneratorPluginEventArgs.cs" />
     <Compile Include="Plugins\GeneratorPluginEvents.cs" />
