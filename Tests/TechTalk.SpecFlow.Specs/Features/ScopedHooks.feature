@@ -134,3 +134,59 @@ Scenario: Two hooks for the same event with same name but in different classes a
 	Then the hook 'Hook1' is executed once
 	And the hook 'Hook2' is executed once
 	
+
+Scenario: One hook scoped on HookAttribute with two tags are executed once
+	Given there is a feature file in the project as
+         """
+			Feature: Simple Feature
+
+			@mytag @mySecondTag
+			Scenario: Simple Scenario
+			When I do something
+         """
+	And all steps are bound and pass
+	And the following binding class
+		"""
+		[Binding]
+		public class Hooks
+		{
+			[BeforeScenario("mytag", "mySecondTag")]
+			public void BeforeScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook1");
+			}
+		}
+
+		"""
+	When I execute the tests
+	Then the hook 'Hook1' is executed once
+	
+
+Scenario: One hook with two tags and [Scope] scoping are executed once
+	Given there is a feature file in the project as
+         """
+			Feature: Simple Feature
+
+			@mytag @mySecondTag
+			Scenario: Simple Scenario
+			When I do something
+         """
+	And all steps are bound and pass
+	And the following binding class
+		"""
+		[Binding]
+		public class Hooks
+		{
+			[BeforeScenario()]
+			[Scope(Tag="mytag")]
+			[Scope(Tag="mySecondTag")]
+			public void BeforeScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook1");
+			}
+		}
+
+		"""
+	When I execute the tests
+	Then the hook 'Hook1' is executed once
+	
