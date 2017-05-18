@@ -213,15 +213,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             var stepContext = contextManager.GetStepContext();
 
             int scopeMatches;
-            var matchingHooks = GetOrderedHooks(hookType)
+            var matchingHooks = bindingRegistry.GetHooks(hookType)
                 .Where(hookBinding => !hookBinding.IsScoped ||
                                        hookBinding.BindingScope.Match(stepContext, out scopeMatches));
 
             //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
             // if multiple scopes mathching for the same method, we take the first one. 
             // The InvokeHook uses only the Method anyway...
+            // The only problem could be if the same method is decorated with hook attributes using different order, 
+            // but in this case it is anyway impossible to tell the right ordering.
             var uniqueMatchingHooks = matchingHooks.GroupBy(hookBinding => hookBinding.Method).Select(g => g.First());
-            foreach (var hookBinding in uniqueMatchingHooks)
+            foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
             {
                 InvokeHook(bindingInvoker, hookBinding, hookType);
             }
@@ -275,11 +277,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                 throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
 
             return testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
-        }
-
-        private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)
-        {
-            return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
         private void ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
