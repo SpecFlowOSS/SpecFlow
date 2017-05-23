@@ -1,3 +1,12 @@
+2.2.0-preview20170523 - 2017-05-23
+
+Fixes:
++ Fix in executing the code behind generation https://github.com/techtalk/SpecFlow/pull/855
++ Fix, that hook with multiple tags is executed more than once https://github.com/techtalk/SpecFlow/pull/848
+
+New Features:
++ Order sensitive overload for compare to set https://github.com/techtalk/SpecFlow/pull/778
+
 2.2.0-preview20170510 - 2017-05-10
 
 Core changes:
