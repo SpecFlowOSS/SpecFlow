@@ -1,12 +1,13 @@
+using Microsoft.Build.Framework;
 using System;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Tools.MsBuild
 {
+    [LoadInSeparateAppDomain]
     public abstract class GeneratorTaskBase : TaskBase
     {
         public bool BuildServerMode { get; set; }

@@ -1,6 +1,5 @@
 using System;
 using System.CodeDom.Compiler;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +9,7 @@ using Microsoft.Build.Utilities;
 
 namespace TechTalk.SpecFlow.Tools.MsBuild
 {
+    [LoadInSeparateAppDomain]
     public abstract class TaskBase : AppDomainIsolatedTask
     {
         public bool ShowTrace { get; set;}
