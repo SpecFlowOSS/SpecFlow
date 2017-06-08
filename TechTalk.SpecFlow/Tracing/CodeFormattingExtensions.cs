@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public static string ToIdentifier(this string text)
         {
+            System.Diagnostics.Debug.WriteLine("ToIdentifier");
             string identifier = ToIdentifierPart(text);
             if (identifier.Length > 0 && char.IsDigit(identifier[0]))
                 identifier = "_" + identifier;
@@ -198,6 +199,13 @@ namespace TechTalk.SpecFlow.Tracing
                     return result;
                 return match.Value;
             });
+        }
+
+        static private readonly Regex singleAndDoubleQuotes = new Regex(@"['""]");
+
+        public static string RemoveQuotationCharacters(string text)
+        {
+            return singleAndDoubleQuotes.Replace(text, String.Empty);
         }
 
         static private readonly Regex singleAndDoubleQuotes = new Regex(@"['""]");

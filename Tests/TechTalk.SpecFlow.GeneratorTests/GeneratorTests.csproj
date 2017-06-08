@@ -80,6 +80,7 @@
     <Compile Include="MSBuildRelativePathParserTests.cs" />
     <Compile Include="TestGeneratorTest.cs" />
     <Compile Include="CodeDomExtensions.cs" />
+    <Compile Include="TestNameGeneratorProviderTest.cs" />
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
     <Compile Include="DecoratorRegistryTests.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
