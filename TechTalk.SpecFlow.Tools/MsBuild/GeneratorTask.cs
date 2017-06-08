@@ -1,18 +1,14 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Generator;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Tools.MsBuild
 {
+    [LoadInSeparateAppDomain]
     public class GenerateAll : GeneratorTaskBase
     {
         public bool VerboseOutput { get; set; }
