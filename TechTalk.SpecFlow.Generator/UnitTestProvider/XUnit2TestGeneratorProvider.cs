@@ -77,12 +77,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
 
-            base.SetTestConstructor(generationContext, ctorMethod);
-
             ctorMethod.Statements.Add(
                 new CodeAssignStatement(
-                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME), 
+                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
+
+            base.SetTestConstructor(generationContext, ctorMethod);
         }
 
         public override void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
@@ -111,13 +111,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     );
             }
         }
-        
+
         public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
         }
 
-        public override void FinalizeTestClass(TestClassGenerationContext generationContext) 
+        public override void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
             base.FinalizeTestClass(generationContext);
 
