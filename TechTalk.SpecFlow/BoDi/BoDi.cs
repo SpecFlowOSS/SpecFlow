@@ -15,6 +15,12 @@
  * 
  * Change history
  * 
+ * v1.3
+ *   - Fix: When an object resolved without registration using the concrete type it cannot be resolved from sub context
+ *   - Added IsRegistered methods to check if an interface or type is already registered (#6)
+ *   - Expose the ObjectContainer.RegisterFactoryAs in the IObjectContainer interface (by slawomir-brzezinski-at-interxion)
+ *   - eliminate internal TypeHelper class
+ *
  * v1.2
  *   - support for mapping of generic type definitions (by ibrahimbensalah)
  *   - object should be created in the parent container, if the registration was applied there
@@ -118,6 +124,14 @@ namespace BoDi
         void RegisterInstanceAs(object instance, Type interfaceType, string name = null, bool dispose = false);
 
         /// <summary>
+        /// Registers an instance produced by <paramref name="factoryDelegate"/>. The delegate will be called only once and the instance it returned will be returned in each resolution.
+        /// </summary>
+        /// <typeparam name="TInterface">Interface to register as.</typeparam>
+        /// <param name="factoryDelegate">The function to run to obtain the instance.</param>
+        /// <param name="name">A name to resolve named instance, otherwise null.</param>
+        void RegisterFactoryAs<TInterface>(Func<IObjectContainer, TInterface> factoryDelegate, string name = null);
+
+        /// <summary>
         /// Resolves an implementation object for an interface or type.
         /// </summary>
         /// <typeparam name="T">The interface or type.</typeparam>
@@ -155,6 +169,21 @@ namespace BoDi
         /// <typeparam name="T">The interface or type.</typeparam>
         /// <returns>An object implementing <typeparamref name="T"/>.</returns>
         IEnumerable<T> ResolveAll<T>() where T : class;
+
+        /// <summary>
+        /// Determines whether the interface or type is registered.
+        /// </summary>
+        /// <typeparam name="T">The interface or type.</typeparam>
+        /// <returns><c>true</c> if the interface or type is registered; otherwise <c>false</c>.</returns>
+        bool IsRegistered<T>();
+
+        /// <summary>
+        /// Determines whether the interface or type is registered with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The interface or type.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns><c>true</c> if the interface or type is registered; otherwise <c>false</c>.</returns>
+        bool IsRegistered<T>(string name);
     }
 
     public interface IContainedInstance
@@ -567,12 +596,25 @@ namespace BoDi
             AddRegistration(registrationKey, new FactoryRegistration(factoryDelegate));
         }
 
+        public bool IsRegistered<T>()
+        {
+            return this.IsRegistered<T>(null);
+        }
+
+        public bool IsRegistered<T>(string name)
+        {
+            Type typeToResolve = typeof(T);
+
+            var keyToResolve = new RegistrationKey(typeToResolve, name);
+
+            return registrations.ContainsKey(keyToResolve);
+        }
 
         // ReSharper disable once UnusedParameter.Local
         private void AssertNotResolved(RegistrationKey interfaceType)
         {
             if (resolvedObjects.ContainsKey(interfaceType))
-                throw new ObjectContainerException("An object have been resolved for this interface already.", null);
+                throw new ObjectContainerException("An object has been resolved for this interface already.", null);
         }
 
         private void ClearRegistrations(RegistrationKey registrationKey)
@@ -724,12 +766,17 @@ namespace BoDi
             if (keyToResolve.Type.IsPrimitive || keyToResolve.Type == typeof(string) || keyToResolve.Type.IsValueType)
                 throw new ObjectContainerException("Primitive types or structs cannot be resolved: " + keyToResolve.Type.FullName, resolutionPath.ToTypeList());
 
-            var registrationResult = GetRegistrationResult(keyToResolve) ?? 
+            var registrationResult = GetRegistrationResult(keyToResolve);
+            var isImplicitTypeRegistration = registrationResult == null;
+            var registrationToUse = registrationResult ??
                 new KeyValuePair<ObjectContainer, IRegistration>(this, new TypeRegistration(keyToResolve.Type));
 
-            var resolutionPathForResolve = registrationResult.Key == this ? 
+            var resolutionPathForResolve = registrationToUse.Key == this ? 
                 resolutionPath : new ResolutionList();
-            return registrationResult.Value.Resolve(registrationResult.Key, keyToResolve, resolutionPathForResolve);
+            var result = registrationToUse.Value.Resolve(registrationToUse.Key, keyToResolve, resolutionPathForResolve);
+            if (isImplicitTypeRegistration) // upon successful implicit registration, we register the rule, so that sub context can also get the same resolved value
+                AddRegistration(keyToResolve, registrationToUse.Value);
+            return result;
         }
 
         private object CreateObject(Type type, ResolutionList resolutionPath, RegistrationKey keyToResolve)
