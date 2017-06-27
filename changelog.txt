@@ -1,3 +1,8 @@
+2.2.0 - ???
+
+New Features:
++ TestThreadContext can be used for test thread related data sharing
+
 2.2.0-preview20170523 - 2017-05-23
 
 Fixes:
