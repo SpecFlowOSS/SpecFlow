@@ -22,8 +22,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected MockRepository MockRepository;
         protected CultureInfo FeatureLanguage;
         protected IStepArgumentTypeConverter StepArgumentTypeConverterStub;
+        protected ObjectContainer TestThreadContainer;
 
         protected IContextManager ContextManagerStub;
+        protected IContainerBuilder ContainerBuilderStub;
 
         #region dummy test tracer
         public class DummyTestTracer : ITestTracer
@@ -100,10 +102,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var runtimeConfiguration = ConfigurationLoader.GetDefault();
             runtimeConfiguration.BindingCulture = GetBindingCulture();
 
-            var testThreadContainer = new ObjectContainer();
-            testThreadContainer.RegisterInstanceAs(runtimeConfiguration);
-            testThreadContainer.RegisterInstanceAs(new Mock<ITestRunner>().Object);
-            testThreadContainer.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
+            TestThreadContainer = new ObjectContainer();
+            TestThreadContainer.RegisterInstanceAs(runtimeConfiguration);
+            TestThreadContainer.RegisterInstanceAs(new Mock<ITestRunner>().Object);
+            TestThreadContainer.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
             var containerBuilderMock = new Mock<IContainerBuilder>();
             containerBuilderMock.Setup(m => m.CreateScenarioContainer(It.IsAny<IObjectContainer>(), It.IsAny<ScenarioInfo>()))
                 .Returns((IObjectContainer fc, ScenarioInfo si) =>
@@ -119,7 +121,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
                     featureContainer.RegisterInstanceAs(fi);
                     return featureContainer;
                 });
-            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), testThreadContainer, containerBuilderMock.Object);
+            ContainerBuilderStub = containerBuilderMock.Object;
+            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), TestThreadContainer, ContainerBuilderStub);
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null));
             ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"));
 
