@@ -8,7 +8,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
     public interface IContextManager
     {
-        TestThreadContext TestThreadContext { get; }
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
         ScenarioStepContext StepContext { get; }

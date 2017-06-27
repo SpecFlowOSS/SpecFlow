@@ -61,10 +61,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             testThreadContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
             testThreadContainer.RegisterTypeAs<TestTracer, ITestTracer>();
-
-            // this registration is needed, otherwise the nested scenario container will create another instance
-            // is this a BoDi bug?
-            testThreadContainer.RegisterTypeAs<TestThreadContext, TestThreadContext>();
         }
     }
 }

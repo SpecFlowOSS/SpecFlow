@@ -135,8 +135,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepContextManager = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
             this.testThreadContainer = testThreadContainer;
             this.containerBuilder = containerBuilder;
-
-            InitializeTestThreadContext();
         }
 
         public FeatureContext FeatureContext
@@ -152,17 +150,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         public ScenarioStepContext StepContext 
         {
             get{return stepContextManager.Instance;} 
-        }
-
-        public TestThreadContext TestThreadContext { get; private set; }
-
-        private void InitializeTestThreadContext()
-        {
-            // Since both TestThreadContext and ContextManager are in the same container (test thread container)
-            // their lifetime is the same, so we do not need the swop infrastructure like for the other contexts.
-            // We just neet to initliaze it during contstructuion time.
-            var testThreadContext = testThreadContainer.Resolve<TestThreadContext>();
-            this.TestThreadContext = testThreadContext;
         }
 
         public void InitializeFeatureContext(FeatureInfo featureInfo)

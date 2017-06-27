@@ -42,15 +42,6 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        public TestThreadContext TestThreadContext
-        {
-            get
-            {
-                AssertInitialized();
-                return objectContainer.Resolve<TestThreadContext>();
-            }
-        }
-
         public ScenarioStepContext StepContext
         {
             get
