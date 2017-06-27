@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [SetUp]
         public void Setup()
         {
-            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
         }
 
         private FeatureGeneratorRegistry CreateFeatureGeneratorRegistry()
@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_FeatureGeneratorRegistry_be_registered_as_IFeatureGeneratorRegistry_by_default()
         {
-            var testContainer = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            var testContainer = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
 
             var registry = testContainer.Resolve<IFeatureGeneratorRegistry>();
 
