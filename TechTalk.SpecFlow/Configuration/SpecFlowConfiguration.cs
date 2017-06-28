@@ -12,9 +12,9 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public enum ConfigSource
     {
-        Default,
         AppConfig,
-        Json
+        Json,
+        Default
     }
 
     public class SpecFlowConfiguration

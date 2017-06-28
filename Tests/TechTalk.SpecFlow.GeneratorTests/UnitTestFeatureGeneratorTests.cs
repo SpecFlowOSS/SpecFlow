@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         protected virtual void SetupInternal()
         {
-            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
             unitTestGeneratorProviderMock = new Mock<IUnitTestGeneratorProvider>();
             container.RegisterInstanceAs(unitTestGeneratorProviderMock.Object);
         }
