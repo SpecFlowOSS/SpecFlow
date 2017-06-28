@@ -1,7 +1,14 @@
-2.2.0 - ???
+2.2.0 - 2017-06-28
 
 New Features:
-+ TestThreadContext can be used for test thread related data sharing
++ TestThreadContext can be used for test thread related data sharing (https://github.com/techtalk/SpecFlow/pull/875)
++ Support for xUnit2 ITestOutputHelper (https://github.com/techtalk/SpecFlow/pull/874)
+
+Core changes:
++ Upgrade to BoDi 1.3 (https://github.com/techtalk/SpecFlow/pull/876)
+
+Fixes:
++ Fix code behind generation if it is tiggered through Save in Visual Studio (https://github.com/techtalk/SpecFlow/pull/877)
 
 2.2.0-preview20170523 - 2017-05-23
 
