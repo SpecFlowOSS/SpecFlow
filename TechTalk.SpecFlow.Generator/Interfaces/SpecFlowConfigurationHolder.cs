@@ -4,31 +4,35 @@ using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
+    /// IMPORTANT
+    /// This class is used for interop with the Visual Studio Extension
+    /// DO NOT REMOVE OR RENAME FIELDS!
+    /// This breaks binary serialization accross appdomains
     [Serializable]
     public class SpecFlowConfigurationHolder : ISpecFlowConfigurationHolder
     {
-        private readonly string _content;
+        private readonly string xmlString;
 
         public ConfigSource ConfigSource { get; private set; }
 
-        public string Content => _content;
+        public string Content => xmlString;
 
-        public bool HasConfiguration => !string.IsNullOrEmpty(_content);
+        public bool HasConfiguration => !string.IsNullOrEmpty(xmlString);
 
         public SpecFlowConfigurationHolder()
         {
-            _content = null;
+            xmlString = null;
         }
 
         public SpecFlowConfigurationHolder(ConfigSource configSource, string content)
         {
             ConfigSource = configSource;
-            _content = content;
+            xmlString = content;
         }
 
         public SpecFlowConfigurationHolder(XmlNode configXmlNode)
         {
-            _content = configXmlNode?.OuterXml;
+            xmlString = configXmlNode?.OuterXml;
             ConfigSource = ConfigSource.AppConfig;
         }
     }

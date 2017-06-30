@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator.Project;
@@ -13,7 +14,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [SetUp]
         public void Setup()
         {
-            _directoryName = Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), "Data");
+            _directoryName = Path.Combine(Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath), "Data");
         }
 
         [Test]

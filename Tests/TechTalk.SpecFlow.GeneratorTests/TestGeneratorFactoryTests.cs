@@ -29,6 +29,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_be_able_to_create_generator_with_default_config()
         {
+            net35CSProjectSettings.ConfigurationHolder = new SpecFlowConfigurationHolder(ConfigSource.Default, null);
             factory.CreateGenerator(net35CSProjectSettings).Should().NotBeNull();
         }
 
