@@ -40,6 +40,26 @@ Scenario: Should handle scenario outlines
 		| Succeeded |
 		| 2         |
 
+Scenario: Should be able to access TestContext in Steps
+Given there is a SpecFlow project
+And the project is configured to use the MsTest provider
+And a scenario 'Simple Scenario' as
+		"""
+		When I do something
+		"""	
+And the following step definition
+         """
+         [When(@"I do something")]
+		 public void WhenIDoSomething()
+		 {
+			System.Console.WriteLine(ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
+		 }
+         """
+		 When I execute the tests with MsTest
+	Then the execution summary should contain
+		| Succeeded |
+		| 1         |
+
 @config
 Scenario: Should be able to specify MsTest provider in the configuration
 	Given there is a SpecFlow project

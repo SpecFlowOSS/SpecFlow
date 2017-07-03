@@ -22,6 +22,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
 
+        protected const string TESTCONTEXT_PROPERTY_NAME = "TestContext";
+
         protected CodeDomHelper CodeDomHelper { get; set; }
 
         public virtual UnitTestGeneratorTraits GetTraits()
@@ -44,11 +46,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
+
+            // Add a TestContext property
+            var testContextProperty = new CodeMemberField(TESTCONTEXT_TYPE, TESTCONTEXT_PROPERTY_NAME)
+            {
+                Attributes = MemberAttributes.Public
+            };
+            testContextProperty.Name += " { get; set; }//"; //Added '//' to escape out the ; in the generated code
+            generationContext.TestClass.Members.Add(testContextProperty);
         }
 
         public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            //MsTest does not support caregories... :(
+            //MsTest does not support categories... :(
         }
 
         public void SetTestClassIgnore(TestClassGenerationContext generationContext)
@@ -58,7 +68,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            // by default, doing nothing to the final generated code
+            // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<TestContext>(TestContext);
+            generationContext.ScenarioInitializeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeMethodReferenceExpression(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
+                                "ScenarioContext"),
+                            "ScenarioContainer"),
+                        "RegisterInstanceAs",
+                        new CodeTypeReference(TESTCONTEXT_TYPE)),
+                    new CodeVariableReferenceExpression(TESTCONTEXT_PROPERTY_NAME)));
         }
 
         public void SetTestClassParallelize(TestClassGenerationContext generationContext)
