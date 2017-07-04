@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
 
+        protected const string TESTCONTEXT_FIELD_NAME = "_testContext";
         protected const string TESTCONTEXT_PROPERTY_NAME = "TestContext";
 
         protected CodeDomHelper CodeDomHelper { get; set; }
@@ -47,12 +48,25 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
 
+            // Add a TestContext field
+            generationContext.TestClass.Members.Add(new CodeMemberField(TESTCONTEXT_TYPE, TESTCONTEXT_FIELD_NAME));
+
             // Add a TestContext property
-            var testContextProperty = new CodeMemberField(TESTCONTEXT_TYPE, TESTCONTEXT_PROPERTY_NAME)
+            var testContextProperty = new CodeMemberProperty
             {
-                Attributes = MemberAttributes.Public
+                Attributes = MemberAttributes.Public,
+                Name = TESTCONTEXT_PROPERTY_NAME,
+                HasGet = true,
+                HasSet = true,
+                Type = new CodeTypeReference(TESTCONTEXT_TYPE)
             };
-            testContextProperty.Name += " { get; set; }//"; //Added '//' to escape out the ; in the generated code
+            testContextProperty.GetStatements.Add(new CodeMethodReturnStatement(
+                new CodeFieldReferenceExpression(
+                new CodeThisReferenceExpression(), TESTCONTEXT_FIELD_NAME)));
+            testContextProperty.SetStatements.Add(new CodeAssignStatement(
+                new CodeFieldReferenceExpression(
+                new CodeThisReferenceExpression(), TESTCONTEXT_FIELD_NAME), new CodePropertySetValueReferenceExpression()));
+
             generationContext.TestClass.Members.Add(testContextProperty);
         }
 
