@@ -147,7 +147,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public ContentFileInput AddContentFile(string fileName, string fileContent)
         {
-            var contentFileInput = new ContentFileInput(fileName, fileContent);
+            var file = Path.GetFileName(fileName);
+            var directory = Path.GetDirectoryName(fileName);
+
+            var contentFileInput = string.IsNullOrEmpty(directory) || directory == "." ? new ContentFileInput(file, fileContent) : new ContentFileInput(file, fileContent, directory);
             ContentFiles.Add(contentFileInput);
             return contentFileInput;
         }

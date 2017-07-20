@@ -109,3 +109,54 @@ Scenario: Should be able to deploy files
 	Then the execution summary should contain
          | Succeeded |
          | 1         |
+
+@config
+Scenario: Should be able to deploy files to specific folder
+    Given there is a SpecFlow project
+	And the following binding class
+        """
+		using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+		[Binding]
+		public class DeploymentItemSteps
+		{
+			[Then(@"the file '(.*)' exists")]
+			public void ThenTheFileExists(string fileName)
+			{
+			    Assert.IsTrue(File.Exists(fileName));
+			}
+		}
+        """
+	And there is a feature file in the project as
+         """
+		 @MsTest:DeploymentItem:TestXmls\:TestXmls
+		 Feature: Deployment Item Feature
+	
+		 Scenario: Deployment Item Scenario
+			Then the file 'TestXmls\DeploymentItemTestFile.txt' exists
+         """
+	And there is a content file 'TestXmls\DeploymentItemTestFile.txt' in the project as
+		"""
+		This is a deployment item file
+		"""
+	And the specflow configuration is
+		"""
+		<specFlow>
+			<unitTestProvider name="MsTest"/>
+		</specFlow>
+		"""
+	And there is a test settings file 'Local.testsettings'
+		"""
+		<?xml version="1.0" encoding="UTF-8"?>
+		<TestSettings
+		  id="b8f2810b-cd53-4519-8b18-d0e599219d54"
+		  name="Local"
+		  enableDefaultDataCollectors="false"
+		  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+		  <Deployment enabled="true" />
+		</TestSettings>
+		"""
+	When I execute the tests with MsTest
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |
