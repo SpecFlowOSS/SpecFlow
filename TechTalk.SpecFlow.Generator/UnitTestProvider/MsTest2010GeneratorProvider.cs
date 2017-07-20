@@ -86,13 +86,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 foreach (string deploymentItem in deploymentItems)
                 {
                     var outputDirProvided = deploymentItem.Split(':').Any();
-                    if (!outputDirProvided)
+                    if (outputDirProvided)
                     {
-                        CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem);
+                        CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem.Split(':'));
                     }
                     else
                     {
-                        CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem.Split(':'));
+                        CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem);
                     }
                 }
             }

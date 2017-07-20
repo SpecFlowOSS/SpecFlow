@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             foreach (var contentFileInput in inputProjectDriver.ContentFiles)
             {
                 string outputPath = Path.Combine(inputProjectDriver.CompilationFolder, contentFileInput.ProjectRelativePath);
-                new FileInfo(outputPath).Directory?.Create();
+                Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
                 File.WriteAllText(outputPath, contentFileInput.Content, Encoding.UTF8);
                 project.AddItem("Content", contentFileInput.ProjectRelativePath, new[]
                                                                                   {

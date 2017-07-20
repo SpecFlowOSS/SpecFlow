@@ -129,13 +129,13 @@ Scenario: Should be able to deploy files to specific folder
         """
 	And there is a feature file in the project as
          """
-		 @MsTest:DeploymentItem:TestXmls\:TestXmls
+		 @MsTest:DeploymentItem:Resources\DeploymentItemTestFile.txt:Data
 		 Feature: Deployment Item Feature
 	
 		 Scenario: Deployment Item Scenario
-			Then the file 'TestXmls\DeploymentItemTestFile.txt' exists
+			Then the file 'Data\DeploymentItemTestFile.txt' exists
          """
-	And there is a content file 'TestXmls\DeploymentItemTestFile.txt' in the project as
+	And there is a content file 'Resources\DeploymentItemTestFile.txt' in the project as
 		"""
 		This is a deployment item file
 		"""
