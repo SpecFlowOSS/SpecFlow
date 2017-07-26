@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Generator.Project
         {
             var projectFolder = Path.GetDirectoryName(projectFilePath);
 
-            using (var filestream = new FileStream(projectFilePath, FileMode.Open))
+            using (var filestream = new FileStream(projectFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 var xDocument = XDocument.Load(filestream);
 
