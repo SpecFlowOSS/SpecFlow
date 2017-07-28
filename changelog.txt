@@ -1,5 +1,11 @@
 2.2.1 - 2017-??-??
-+ Fix build error; unable to access readonly csproj file  https://github.com/techtalk/SpecFlow/pull/906
+
+New Features:
++ Access MSTest's TestContext property via ScenarioContext https://github.com/techtalk/SpecFlow/pull/882
++ @MsBuild [DeploymentItem] - added option to provide output directory https://github.com/techtalk/SpecFlow/pull/901
+
+Fixes:
++ unable to access readonly csproj file  https://github.com/techtalk/SpecFlow/pull/906
 
 2.2.0 - 2017-06-28
 
