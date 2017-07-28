@@ -85,7 +85,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 IEnumerable<string> deploymentItems = generationContext.CustomData[DEPLOYMENTITEM_TAG] as IEnumerable<string>;
                 foreach (string deploymentItem in deploymentItems)
                 {
-                    CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem);
+                    var outputDirProvided = deploymentItem.Split(':').Any();
+                    if (outputDirProvided)
+                    {
+                        CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem.Split(':'));
+                    }
+                    else
+                    {
+                        CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem);
+                    }
                 }
             }
         }
