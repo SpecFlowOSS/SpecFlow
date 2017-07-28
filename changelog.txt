@@ -1,4 +1,4 @@
-2.2.0 - 2017-07-26
+2.2.1 - 2017-??-??
 + Fix build error; unable to access readonly csproj file  https://github.com/techtalk/SpecFlow/pull/906
 
 2.2.0 - 2017-06-28
