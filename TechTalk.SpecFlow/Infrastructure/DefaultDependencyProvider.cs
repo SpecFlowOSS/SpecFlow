@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
-            container.RegisterTypeAs<BindingInstanceResolver, IBindingInstanceResolver>();
+            container.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
 
             container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider>();
             container.RegisterTypeAs<DefaultSkeletonTemplateProvider, ISkeletonTemplateProvider>();
@@ -43,6 +43,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
+
+            container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
             RegisterUnitTestProviders(container);
         }

@@ -29,6 +29,7 @@ Scenario Outline: Steps with parameters
 		 """
 	When I execute the tests
 	Then the binding method 'When_WHO_does_something' is executed
+	And the scenario should pass
 
 Examples: 
 	| case        | parameter |
@@ -39,7 +40,7 @@ Examples:
 Scenario: Steps with parameters referred by index
 	Given a scenario 'Simple Scenario' as
          """
-			When Joe does something with:
+			When Joe does something with
          """
 	And the following step definitions
 		 """
@@ -52,22 +53,21 @@ Scenario: Steps with parameters referred by index
 	Then the binding method 'When_P0_does_P1_with' is executed
 
 
-Scenario: Steps with multiple parameters and punctuation
+Scenario: Supports punctuation
 	Given a scenario 'Simple Scenario' as
          """
-			When Joe does - something with:
+			When Joe, the man does something with:
 				| table |
          """
 	And the following step definitions
 		 """
 			[When]
-			public void When_WHO_does_WHAT_with(string who, string what, Table table)
+			public void When_WHO_the_man_does_something_with(string who, Table table)
 			{
-				if (what != "something") throw new Exception("invalid parameter: " + what);
 			}
 		 """
 	When I execute the tests
-	Then the binding method 'When_WHO_does_WHAT_with' is executed
+	Then the binding method 'When_WHO_the_man_does_something_with' is executed
 
 
 Scenario: Keyword prefix can be omitted
@@ -122,22 +122,6 @@ Examples:
 	| case                  | method                             |
 	| embedded param        | WhenIDoSomethingHOWMUCHImportant   |
 	| param with underscore | WhenIDoSomething_HOWMUCH_Important |
-	| mixed underscores     | WhenI_Do_SomethingHOWMUCHImportant |
-
-Scenario: Underscore in parameter name
-	Given a scenario 'Simple Scenario' as
-         """
-			When Joe does something
-         """
-	And the following step definitions
-		 """
-			[When]
-			public void When_W_H_O_does_something(string w_h_o)
-			{
-			}
-		 """
-	When I execute the tests
-	Then the binding method 'When_W_H_O_does_something' is executed
 
 @fsharp
 Scenario Outline: F# method name can be used as a regex
@@ -185,14 +169,13 @@ Scenario Outline: Non-English keywords
 			{}
 		 """
 	And the specflow configuration is
-         """
-		<specFlow>
-			<!-- the localized prefixes are detected if the 
-				 feature language or the binding culture is set in the config -->
-			<language feature="de-DE" /> 
-			<!--<bindingCulture name="de-DE" />-->
-		</specFlow>
-         """
+        """
+        <specFlow>
+            <!-- the localized prefixes are detected if the feature language 
+                 is set in the config -->
+            <language feature="de-DE" /> 
+        </specFlow>
+        """
 	When I execute the tests
 	Then the binding method '<method prefix>ich_Knopf_drücke' is executed
 
@@ -203,36 +186,3 @@ Examples:
 	| Single word licalized prefix   | Angenommen  | Angenommen_   |
 	| Multiple word licalized prefix | Gegeben sei | Gegeben_sei_  |
 	| Mixed keyword variants         | Gegeben sei | Angenommen_   |
-
-
-Scenario: Steps with parameters with negative values
-	Given a scenario 'Simple Scenario' as
-         """
-			Given MinimumAmount is -0.01
-         """
-	And the following step definitions
-		 """
-			[Given]
-			public void Given_MinimumAmount_is_P0(decimal p0)
-			{
-			    if (p0 != Convert.ToDecimal(-0.01)) throw new Exception("the parameter passed was not negative");
-			}
-		 """
-	When I execute the tests
-	Then the binding method 'Given_MinimumAmount_is_P0' is executed
-
-Scenario: Steps with currency amounts
-	Given a scenario 'Simple Scenario' as
-         """
-			Given I pay £0.01
-         """
-	And the following step definitions
-		 """
-			[Given]
-			public void Given_I_pay_P0(decimal p0)
-			{
-			    if (p0 != Convert.ToDecimal(0.01)) throw new Exception("the parameter passed was not a number");
-			}
-		 """
-	When I execute the tests
-	Then the binding method 'Given_I_pay_P0' is executed

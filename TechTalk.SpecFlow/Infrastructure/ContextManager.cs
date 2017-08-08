@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             private readonly ITestTracer testTracer;
             private TContext instance;
+            private IObjectContainer objectContainer;
 
             public InternalContextManager(ITestTracer testTracer)
             {
@@ -25,7 +26,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 get { return instance; }
             }
 
-            public void Init(TContext newInstance)
+            public void Init(TContext newInstance, IObjectContainer newObjectContainer)
             {
                 if (instance != null)
                 {
@@ -33,6 +34,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     DisposeInstance();
                 }
                 instance = newInstance;
+                objectContainer = newObjectContainer;
             }
 
             public void Cleanup()
@@ -47,8 +49,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             private void DisposeInstance()
             {
-                ((IDisposable) instance).Dispose();
+                objectContainer.Dispose();
                 instance = null;
+                objectContainer = null;
             }
 
             public void Dispose()
@@ -132,6 +135,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepContextManager = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
             this.testThreadContainer = testThreadContainer;
             this.containerBuilder = containerBuilder;
+
+            InitializeTestThreadContext();
         }
 
         public FeatureContext FeatureContext
@@ -149,10 +154,22 @@ namespace TechTalk.SpecFlow.Infrastructure
             get{return stepContextManager.Instance;} 
         }
 
-        public void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
+        public TestThreadContext TestThreadContext { get; private set; }
+
+        private void InitializeTestThreadContext()
         {
-            var newContext = new FeatureContext(featureInfo, bindingCulture);
-            featureContextManager.Init(newContext);
+            // Since both TestThreadContext and ContextManager are in the same container (test thread container)
+            // their lifetime is the same, so we do not need the swop infrastructure like for the other contexts.
+            // We just neet to initliaze it during contstructuion time.
+            var testThreadContext = testThreadContainer.Resolve<TestThreadContext>();
+            this.TestThreadContext = testThreadContext;
+        }
+
+        public void InitializeFeatureContext(FeatureInfo featureInfo)
+        {
+            var featureContainer = containerBuilder.CreateFeatureContainer(testThreadContainer, featureInfo);
+            var newContext = featureContainer.Resolve<FeatureContext>();
+            featureContextManager.Init(newContext, featureContainer);
             FeatureContext.Current = newContext;
         }
 
@@ -163,9 +180,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var scenarioContainer = containerBuilder.CreateScenarioContainer(testThreadContainer, scenarioInfo);
+            var scenarioContainer = containerBuilder.CreateScenarioContainer(FeatureContext.FeatureContainer, scenarioInfo);
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
-            scenarioContextManager.Init(newContext);
+            scenarioContextManager.Init(newContext, scenarioContainer);
             ScenarioContext.Current = newContext;
 
             ResetCurrentStepStack();
@@ -201,18 +218,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void Dispose()
         {
-            if (featureContextManager != null)
-            {
-                featureContextManager.Dispose();
-            }
-            if (scenarioContextManager != null)
-            {
-                scenarioContextManager.Dispose();
-            }
-            if (stepContextManager != null)
-            {
-                stepContextManager.Dispose();
-            }
+            featureContextManager?.Dispose();
+            scenarioContextManager?.Dispose();
+            stepContextManager?.Dispose();
         }
     }
 }

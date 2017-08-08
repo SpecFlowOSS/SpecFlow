@@ -33,8 +33,9 @@ namespace TechTalk.SpecFlow.Tools
             if (requestDebuggerToAttach)
                 Debugger.Launch();
 
-            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectFile));
             ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
+
+            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectFile));
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
 
             batchGenerator.OnError += batchGenerator_OnError;

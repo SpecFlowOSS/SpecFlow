@@ -7,6 +7,7 @@ using BoDi;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -44,10 +45,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var configurationHolder = GetConfigWithPlugin();
 
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.RuntimeConfiguration.StopAtFirstError = true));
+            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.SpecFlowConfiguration.StopAtFirstError = true));
             var container = CreateDefaultContainer(configurationHolder);
             var runtimeConfiguration = container.Resolve<SpecFlowProjectConfiguration>();
-            runtimeConfiguration.RuntimeConfiguration.StopAtFirstError.Should().BeTrue();
+            runtimeConfiguration.SpecFlowConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             testHeaderWriter.Should().BeOfType<TestHeaderWriter>();
 
             // with StopAtFirstError == true, we should get a custom factory
-            var specialConfiguratuion = new SpecFlowConfigurationHolder(string.Format(@"<specFlow>
+            var specialConfiguratuion = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
                   <plugins>
                     <add name=""MyCompany.MyPlugin"" />
                   </plugins>
@@ -77,7 +78,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_be_able_to_specify_a_plugin_with_parameters()
         {
-            var configurationHolder = new SpecFlowConfigurationHolder(string.Format(@"<specFlow>
+            var configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
                   <plugins>
                     <add name=""MyCompany.MyPlugin"" parameters=""foo, bar"" />
                   </plugins>
@@ -91,7 +92,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private SpecFlowConfigurationHolder GetConfigWithPlugin()
         {
-            return new SpecFlowConfigurationHolder(string.Format(@"<specFlow>
+            return new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
                   <plugins>
                     <add name=""MyCompany.MyPlugin"" />
                   </plugins>
@@ -154,7 +155,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             {
                 generatorPluginEvents.CustomizeDependencies += (sender, args) =>
                 {
-                    if (args.SpecFlowProjectConfiguration.RuntimeConfiguration.StopAtFirstError)
+                    if (args.SpecFlowProjectConfiguration.SpecFlowConfiguration.StopAtFirstError)
                         args.ObjectContainer.RegisterTypeAs<CustomHeaderWriter, ITestHeaderWriter>();
                 };
             }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist
 {
     public class TableDifferenceResults<TT>
     {
-        public TableDifferenceResults(Table table, IEnumerable<int> indexesOfTableRowsThatWereNotMatched, IEnumerable<TT> itemsInTheDataThatWereNotFoundInTheTable)
+        public TableDifferenceResults(Table table, IEnumerable<int> indexesOfTableRowsThatWereNotMatched, IEnumerable<TableDifferenceItem<TT>> itemsInTheDataThatWereNotFoundInTheTable)
         {
             this.Table = table;
             this.IndexesOfTableRowsThatWereNotMatched = indexesOfTableRowsThatWereNotMatched;
@@ -15,6 +16,6 @@ namespace TechTalk.SpecFlow.Assist
 
         public IEnumerable<int> IndexesOfTableRowsThatWereNotMatched { get; }
 
-        public IEnumerable<TT> ItemsInTheDataThatWereNotFoundInTheTable { get; }
+        public IEnumerable<TableDifferenceItem<TT>> ItemsInTheDataThatWereNotFoundInTheTable { get; }
     }
 }

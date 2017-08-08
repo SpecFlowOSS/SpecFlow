@@ -4,6 +4,7 @@ using BoDi;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -13,6 +14,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null);
         IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer);
         IObjectContainer CreateScenarioContainer(IObjectContainer testThreadContainer, ScenarioInfo scenarioInfo);
+        IObjectContainer CreateFeatureContainer(IObjectContainer testThreadContainer, FeatureInfo featureInfo);
     }
 
     public class ContainerBuilder : IContainerBuilder
@@ -40,30 +42,32 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<RuntimePluginEvents, RuntimePluginEvents>(); //NOTE: we need this unnecessary registration, due to a bug in BoDi (does not inherit non-registered objects)
             var runtimePluginEvents = container.Resolve<RuntimePluginEvents>();
-            LoadPlugins(configurationProvider, container, runtimePluginEvents);
+
+            SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
+            specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
+
+            LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration);
+
+            runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
-            RuntimeConfiguration runtimeConfiguration = new RuntimeConfiguration();
+            if (specFlowConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
 
-            runtimePluginEvents.RaiseConfigurationDefaults(runtimeConfiguration);
+            container.RegisterInstanceAs(specFlowConfiguration);
 
-            configurationProvider.LoadConfiguration(runtimeConfiguration);
+            if (specFlowConfiguration.UnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(specFlowConfiguration.UnitTestProvider));
 
-#if !BODI_LIMITEDRUNTIME
-            if (runtimeConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(runtimeConfiguration.CustomDependencies);
-#endif
+            runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, specFlowConfiguration);
 
-            container.RegisterInstanceAs(runtimeConfiguration);
-
-            if (runtimeConfiguration.RuntimeUnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
-
-            runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, runtimeConfiguration);
+            container.Resolve<IConfigurationLoader>().TraceConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration);
 
             return container;
         }
+
+       
 
         public virtual IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
         {
@@ -73,7 +77,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var runtimePluginEvents = globalContainer.Resolve<RuntimePluginEvents>();
             runtimePluginEvents.RaiseCustomizeTestThreadDependencies(testThreadContainer);
-            testThreadContainer.Resolve<IBindingInstanceResolver>();
+            testThreadContainer.Resolve<ITestObjectResolver>();
             return testThreadContainer;
         }
 
@@ -84,12 +88,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var scenarioContainer = new ObjectContainer(testThreadContainer);
             scenarioContainer.RegisterInstanceAs(scenarioInfo);
-
-            var contextManager = testThreadContainer.Resolve<IContextManager>();
-
-            var featureContext = contextManager.FeatureContext;
-            if (featureContext != null)
-                scenarioContainer.RegisterInstanceAs(featureContext);
 
             scenarioContainer.ObjectCreated += obj =>
             {
@@ -104,7 +102,18 @@ namespace TechTalk.SpecFlow.Infrastructure
             return scenarioContainer;
         }
 
-        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents)
+        public IObjectContainer CreateFeatureContainer(IObjectContainer testThreadContainer, FeatureInfo featureInfo)
+        {
+            if (testThreadContainer == null)
+                throw new ArgumentNullException(nameof(testThreadContainer));
+
+            var featureContainer = new ObjectContainer(testThreadContainer);
+            featureContainer.RegisterInstanceAs(featureInfo);
+
+            return featureContainer;
+        }
+
+        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents, SpecFlowConfiguration specFlowConfiguration)
         {
             // initialize plugins that were registered from code
             foreach (var runtimePlugin in container.Resolve<IDictionary<string, IRuntimePlugin>>().Values)
@@ -115,7 +124,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             // load & initalize parameters from configuration
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            foreach (var pluginDescriptor in configurationProvider.GetPlugins().Where(pd => (pd.Type & PluginType.Runtime) != 0))
+            foreach (var pluginDescriptor in configurationProvider.GetPlugins(specFlowConfiguration).Where(pd => (pd.Type & PluginType.Runtime) != 0))
             {
                 LoadPlugin(pluginDescriptor, pluginLoader, runtimePluginEvents);
             }
@@ -127,7 +136,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             var runtimePluginParameters = new RuntimePluginParameters
             {
                 Parameters = pluginDescriptor.Parameters
-            }; 
+            };
             plugin.Initialize(runtimePluginEvents, runtimePluginParameters);
         }
 

@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             // ScenarioContext is needed, because the [Binding]-instances live there
-            var scenarioContext = new ScenarioContext(new ObjectContainer(), null, new BindingInstanceResolver());
+            var scenarioContext = new ScenarioContext(new ObjectContainer(), null, new TestObjectResolver());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
 
             bindingRegistryStub.Setup(br => br.GetStepTransformations()).Returns(stepTransformations);
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
-            var invoker = new BindingInvoker(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
             TimeSpan duration;
             var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);

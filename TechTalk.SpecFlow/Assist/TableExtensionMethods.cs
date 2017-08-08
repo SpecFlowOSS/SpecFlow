@@ -55,5 +55,21 @@ namespace TechTalk.SpecFlow.Assist
 
             return list;
         }
+
+        public static IEnumerable<T> CreateSet<T>(this Table table, Func<TableRow, T> methodToCreateEachInstance)
+        {
+            var list = new List<T>();
+
+            var pivotTable = new PivotTable(table);
+            for (var index = 0; index < table.Rows.Count(); index++)
+            {
+                var row = table.Rows[index];
+                var instance = methodToCreateEachInstance(row);
+                pivotTable.GetInstanceTable(index).FillInstance(instance);
+                list.Add(instance);
+            }
+
+            return list;
+        }
     }
 }

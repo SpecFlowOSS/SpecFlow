@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 {
@@ -136,9 +137,11 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 var specflowStep = (SpecFlowStep) scenarioStep;
 
                 var stepArgument = specflowStep.Argument;
-                if (specflowStep.Argument is DataTable)
+                var dataTable = specflowStep.Argument as DataTable;
+
+                if (dataTable != null)
                 {
-                    stepArgument = Clone((DataTable)specflowStep.Argument, (c) => GetReplacedText(c.Value, paramSubst));
+                    stepArgument = Clone(dataTable, (c) => GetReplacedText(c.Value, paramSubst));
                 }
 
                 var newStep = Clone(specflowStep, stepArgument);                
@@ -222,7 +225,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.Configuration.GeneratorConfiguration, ReportParameters.XsltFile);
+                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.Configuration.SpecFlowConfiguration, ReportParameters.XsltFile);
             }
         }
 
@@ -324,15 +327,37 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         {
             ReportStep newStep = null;
             if (currentBlock == "When")
-                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.When);
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, ConvertArgument(step.Argument), step.StepKeyword, Parser.ScenarioBlock.When);
             else if (currentBlock == "Then")
-                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Then);
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, ConvertArgument(step.Argument), step.StepKeyword, Parser.ScenarioBlock.Then);
             else // Given or empty
-                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Given);
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, ConvertArgument(step.Argument), step.StepKeyword, Parser.ScenarioBlock.Given);
 
             Debug.Assert(newStep != null);
             
             return newStep;
+        }
+
+        private ReportStepArgument ConvertArgument(StepArgument argument)
+        {
+            if (argument == null)
+                return null;
+
+            if (argument is DocString)
+            {
+                DocString arg = (DocString) argument;
+
+                return new DocStringArgument(arg.ContentType, arg.Content);
+            }
+
+            if (argument is DataTable)
+            {
+                DataTable arg = (DataTable) argument;
+                
+                return new TableArgument(arg.Rows.Select(r => new ReportTableRow(r.Cells.Select(c => new ReportTableCell(c.Value)).ToList())).ToList());
+            }
+
+            return null;
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,22 +14,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly InputProjectDriver inputProjectDriver;
         private readonly ProjectSteps projectSteps;
         private readonly ExecutionSteps executionSteps;
-        private readonly SpecFlowConfigurationDriver specFlowConfigurationDriver;
+        private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
         private readonly ReportInfo reportInfo;
 
-        public ReportingSteps(InputProjectDriver inputProjectDriver, ProjectSteps projectSteps, SpecFlowConfigurationDriver specFlowConfigurationDriver, ExecutionSteps executionSteps, ReportInfo reportInfo)
+        public ReportingSteps(InputProjectDriver inputProjectDriver, ProjectSteps projectSteps, AppConfigConfigurationDriver _appConfigConfigurationDriver, ExecutionSteps executionSteps, ReportInfo reportInfo)
         {
             this.inputProjectDriver = inputProjectDriver;
             this.reportInfo = reportInfo;
             this.executionSteps = executionSteps;
             this.projectSteps = projectSteps;
-            this.specFlowConfigurationDriver = specFlowConfigurationDriver;
+            this._appConfigConfigurationDriver = _appConfigConfigurationDriver;
         }
 
         [Given(@"there are (.*) test execution results for the project")]
         public void GivenThereAreNUnitTestExecutionResultsForTheProject(string unitTestProvider)
         {
-            specFlowConfigurationDriver.SetUnitTestProvider(unitTestProvider);
+            _appConfigConfigurationDriver.SetUnitTestProvider(unitTestProvider);
             projectSteps.EnsureCompiled();
 
             executionSteps.WhenIExecuteTheTestsWith(unitTestProvider);
@@ -74,7 +75,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             processHelper.RunProcess(
                 Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
-                "StepDefinitionReport \"{0}\" \"/out:{1}\"", inputProjectDriver.ProjectFilePath, reportInfo.FilePath);
+                "StepDefinitionReport \"{0}\" \"/out:{1}\" {2}", inputProjectDriver.ProjectFilePath, reportInfo.FilePath, Debugger.IsAttached ? "/debug" : "");
 
             //StepDefinitionReportParameters reportParameters =
             //    new StepDefinitionReportParameters(inputProjectDriver.ProjectFilePath, reportInfo.FilePath, "", "bin\\Debug", true);

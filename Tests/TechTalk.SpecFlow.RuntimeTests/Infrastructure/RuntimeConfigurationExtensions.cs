@@ -6,9 +6,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
     internal static class RuntimeConfigurationExtensions
     {
-        public static void AddAdditionalStepAssembly(this RuntimeConfiguration runtimeConfiguration, Assembly assembly)
+        public static void AddAdditionalStepAssembly(this SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration, Assembly assembly)
         {
-            runtimeConfiguration.AdditionalStepAssemblies.Add(assembly.FullName);
+            specFlowConfiguration.AdditionalStepAssemblies.Add(assembly.FullName);
         }
     }
 }

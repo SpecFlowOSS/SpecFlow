@@ -26,6 +26,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return UnitTestGeneratorTraits.RowTests;
         }
 
+        public bool GenerateParallelCodeForFeature { get; set; }
+
         public NUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
@@ -50,6 +52,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
             // by default, doing nothing to the final generated code
+        }
+
+        public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        {
+            // not supported
         }
 
 
