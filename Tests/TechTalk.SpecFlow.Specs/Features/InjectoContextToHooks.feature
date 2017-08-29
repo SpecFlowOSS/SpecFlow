@@ -8,28 +8,47 @@ Background:
          """
 	And all steps are bound and pass
 
-Scenario: Inject FeatureContext into a BeforeFeature hook
+
+
+Scenario Outline: Inject FeatureContext into a Feature hook
 	Given the following hook
         """
-		[BeforeFeature]
-		public static void BeforeFeatureHook(FeatureContext featureContext)
+		[<Hook>]
+		public static void <Hook>Hook(FeatureContext featureContext)
 		{
 			if (featureContext == null)
 				throw new ArgumentNullException("featureContext");
+
+			Console.WriteLine("<Hook>Hook");
 		}
         """
 	When I execute the tests
 	Then all tests should pass
+	And the execution log should contain text '<Hook>Hook'
 
-Scenario: Inject ScenarioContext into a BeforeScenario hook
+Examples: 
+	| Hook          |
+	| BeforeFeature |
+	| AfterFeature  |
+
+
+Scenario Outline: Inject ScenarioContext into a Scenario hook
 	Given the following hook
         """
-		[BeforeScenario]
-		public void BeforeScenarioHook(ScenarioContext scenarioContext)
+		[<Hook>]
+		public void <Hook>Hook(ScenarioContext scenarioContext)
 		{
 			if (scenarioContext == null)
 				throw new ArgumentNullException("scenarioContext");
+
+			Console.WriteLine("<Hook>Hook");
 		}
         """
 	When I execute the tests
 	Then all tests should pass
+	And the execution log should contain text '<Hook>Hook'
+
+Examples: 
+	| Hook           |
+	| BeforeScenario |
+	| AfterScenario  |
