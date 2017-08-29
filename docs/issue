@@ -1,0 +1,39 @@
+PLEASE DELETE THE OPTIONS THAT DO NOT APPLY
+
+SpecFlow Version:
+•	2.2
+•	2.1
+•	2.0
+•	1.9
+ 
+Used Test Runner (PLEASE INCLUDE THE VERSION NUMBER):
+•	MSTest 
+•	NUnit
+•	Xunit
+ 
+Visual Studio Version
+•	VS 2017
+•	VS 2015
+•	VS 2013
+
+Are the latest updates of Visual Studio installed?
+•	Yes
+•	No
+ 
+.NET Framework:
+•	>= .NET 4
+•	before .NET 4
+
+Test Execution Method
+•	Visual Studio Test Explorer
+•	TFS/VSTS – Task – PLEASE SPECIFY THE NAME OF THE TASK
+•	Command line – PLEASE SPECIFY THE FULL COMMAND LINE
+ 
+<SpecFlow> Section in app.config
+PLEASE COPY THE ENTRIE <SpecFlow> SECTION IN YOUR .config FILE AND PASTE IT HERE
+
+Repro Project
+PLEASE INCLUDE A LINK TO A PROJECT THAT DEMONSTRATES THE ISSUE YOU ARE REPORTING, IF POSSIBLE
+
+Issue Description
+PLEASE PROVIDE AS MUCH INFORMATION AS POSSIBLE ON THE ISSUE
