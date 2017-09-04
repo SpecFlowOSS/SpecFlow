@@ -6,8 +6,8 @@ branches:
   - master
 
 environment:
-  SpecFlowBaseVersion: 2.2.0
-  SpecFlowPackageVersion: "2.2.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  SpecFlowBaseVersion: 3.0.0
+  SpecFlowPackageVersion: "3.0.0-ci$(APPVEYOR_BUILD_NUMBER)"
   
 cache:
   - packages -> **\packages.config
@@ -40,14 +40,6 @@ test_script:
 - vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.Specs\bin\Debug\net452\TechTalk.SpecFlow.Specs.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\nunit3testadapter\3.8.0
 - vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.IntegrationTests\bin\Debug\net452\TechTalk.SpecFlow.IntegrationTests.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\nunit3testadapter\3.8.0
 
-#test:
-#  assemblies:
-#  - TechTalk.SpecFlow.GeneratorTests.dll
-#  - TechTalk.SpecFlow.RuntimeTests.dll
-#  - TechTalk.SpecFlow.IntegrationTests.dll
-#  - TechTalk.SpecFlow.Specs.dll
 
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
-- path: Installer\SpecFlowBinPackage\bin\SpecFlowBinPackage.zip
-- path: Installer\SpecFlowBinPackage\bin\SpecFlowSymbolPackage.zip

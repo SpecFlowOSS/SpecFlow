@@ -19,7 +19,7 @@
   </UsingTask>
 
   <PropertyGroup>
-    <SpecFlowBaseVersion Condition="'$(SpecFlowBaseVersion)' == ''">2.2.0</SpecFlowBaseVersion>
+    <SpecFlowBaseVersion Condition="'$(SpecFlowBaseVersion)' == ''">3.0.0</SpecFlowBaseVersion>
   </PropertyGroup>
   
   
