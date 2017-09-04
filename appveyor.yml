@@ -23,7 +23,7 @@ nuget:
   project_feed: true
   disable_publish_on_pr: true
 
-configuration: Release
+configuration: Debug
 
 before_build:
 - cmd: dotnet restore
