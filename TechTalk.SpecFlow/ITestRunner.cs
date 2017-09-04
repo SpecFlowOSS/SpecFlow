@@ -1,4 +1,5 @@
 using System;
+using BoDi;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
@@ -16,7 +17,7 @@ namespace TechTalk.SpecFlow
 
         void OnFeatureStart(FeatureInfo featureInfo);
         void OnFeatureEnd();
-        void OnScenarioStart(ScenarioInfo scenarioInfo);
+        void OnScenarioStart(ScenarioInfo scenarioInfo, Action<IObjectContainer> additionalScenarioContextRegistrations = null);
         void CollectScenarioErrors();
         void OnScenarioEnd();
 

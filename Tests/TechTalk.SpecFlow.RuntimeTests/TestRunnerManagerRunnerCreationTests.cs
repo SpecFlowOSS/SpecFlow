@@ -92,12 +92,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             {
                 var testRunner1 = TestRunnerManager.GetTestRunner(anAssembly, 0);
                 testRunner1.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
-                testRunner1.OnScenarioStart(new ScenarioInfo("foo"));
+                testRunner1.OnScenarioStart(new ScenarioInfo("foo"), null);
                 var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
                 var testRunner2 = TestRunnerManager.GetTestRunner(anAssembly, 1);
                 testRunner2.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
-                testRunner2.OnScenarioStart(new ScenarioInfo("foo"));
+                testRunner2.OnScenarioStart(new ScenarioInfo("foo"), null);
                 var tracer2 = testRunner2.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
                 tracer1.Should().NotBeSameAs(tracer2);

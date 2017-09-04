@@ -120,9 +120,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             contextManager.CleanupFeatureContext();
         }
 
-        public void OnScenarioStart(ScenarioInfo scenarioInfo)
+        public void OnScenarioStart(ScenarioInfo scenarioInfo, Action<IObjectContainer> additionalScenarioContextRegistrations)
         {
-            contextManager.InitializeScenarioContext(scenarioInfo);
+            contextManager.InitializeScenarioContext(scenarioInfo, additionalScenarioContextRegistrations);
             FireScenarioEvents(HookType.BeforeScenario);
         }
 

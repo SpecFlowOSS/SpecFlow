@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -46,9 +47,9 @@ namespace TechTalk.SpecFlow
             executionEngine.OnFeatureEnd();
         }
 
-        public void OnScenarioStart(ScenarioInfo scenarioInfo)
+        public void OnScenarioStart(ScenarioInfo scenarioInfo, Action<IObjectContainer> additionalScenarioContextRegistrations = null)
         {
-            executionEngine.OnScenarioStart(scenarioInfo);
+            executionEngine.OnScenarioStart(scenarioInfo, additionalScenarioContextRegistrations);
         }
 
         public void CollectScenarioErrors()

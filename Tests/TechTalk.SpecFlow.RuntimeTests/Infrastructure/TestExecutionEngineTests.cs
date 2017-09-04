@@ -459,7 +459,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeHook = CreateParametrizedHookMock(beforeScenarioEvents, typeof(DummyClass));
             var afterHook = CreateParametrizedHookMock(afterScenarioEvents, typeof(DummyClass));
 
-            testExecutionEngine.OnScenarioStart(scenarioInfo);
+            testExecutionEngine.OnScenarioStart(scenarioInfo, null);
             testExecutionEngine.OnScenarioEnd();
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
