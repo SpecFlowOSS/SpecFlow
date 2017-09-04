@@ -1,4 +1,5 @@
-﻿Feature: Using custom XSLT template for reports
+﻿@ignore
+Feature: Using custom XSLT template for reports
 	In order to customize the look of the specflow reports
 	As a test manager
 	I want to be able to specify a custom XSLT template for the report generation

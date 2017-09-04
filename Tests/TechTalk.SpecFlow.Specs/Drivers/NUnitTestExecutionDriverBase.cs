@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
     {
         protected InputProjectDriver InputProjectDriver { get; }
 
-        private readonly TestExecutionResult testExecutionResult;
+        protected readonly TestExecutionResult testExecutionResult;
 
         protected NUnitTestExecutionDriverBase(InputProjectDriver inputProjectDriver, TestExecutionResult testExecutionResult)
         {
@@ -22,20 +22,17 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public abstract TestRunSummary Execute();
 
-        protected TestRunSummary ProcessNUnitResult(string logFilePath, string resultFilePath)
+        protected virtual TestRunSummary ProcessNUnitResult(string logFilePath, string resultFilePath)
         {
             XDocument resultFileXml = XDocument.Load(resultFilePath);
 
             TestRunSummary summary = new TestRunSummary();
 
             summary.Total = resultFileXml.XPathSelectElements("//test-case").Count();
-            summary.Succeeded = resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='True']").Count();
-            summary.Failed =
-                resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and failure]").Count();
-            summary.Pending =
-                resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and not(failure)]").Count
-                    ();
-            summary.Ignored = resultFileXml.XPathSelectElements("//test-case[@executed = 'False']").Count();
+            summary.Succeeded = resultFileXml.XPathSelectElements("//test-case[@runstate = 'Runnable' and @result='Passed']").Count();
+            summary.Failed = resultFileXml.XPathSelectElements("//test-case[@runstate = 'Runnable' and @result='Failed']").Count();
+            summary.Pending = resultFileXml.XPathSelectElements("//test-case[@runstate = 'Runnable' and @result='Inconclusive']").Count();
+            summary.Ignored = resultFileXml.XPathSelectElements("//test-case[@runstate = 'Ignored']").Count();
 
             this.testExecutionResult.LastExecutionSummary = summary;
             this.testExecutionResult.ExecutionLog = File.ReadAllText(logFilePath);

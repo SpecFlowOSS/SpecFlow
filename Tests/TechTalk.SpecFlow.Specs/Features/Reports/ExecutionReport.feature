@@ -4,7 +4,7 @@ Background:
 	Given there is a feature 'Feature with successful scenarios' with 2 passing 0 failing 0 pending and 0 ignored scenarios
 	And there is a feature 'Feature with failing scenarios' with 0 passing 1 failing 1 pending and 1 ignored scenarios
 
-
+@ignore
 Scenario: Summary is included in the HTML result (NUnit)
 	Given there are NUnit test execution results for the project
 	When I generate SpecFlow NUnit execution report
@@ -26,6 +26,7 @@ Scenario: Summary is included in the HTML result (MsTest)
 		2 features	50%				4			2			1		1			0 
 	"""
 
+@ignore
 Scenario: Feature summary is included in the HTML result (NUnit)
 	Given there are NUnit test execution results for the project
 	When I generate SpecFlow NUnit execution report

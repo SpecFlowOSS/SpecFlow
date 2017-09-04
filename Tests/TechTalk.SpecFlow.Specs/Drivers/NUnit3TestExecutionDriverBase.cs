@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             var args = new List<string>
                            {
                                this.InputProjectDriver.CompiledAssemblyPath,
-                               "--result=" + resultFilePath + ";format=nunit2",
+                               "--result=" + resultFilePath,
                                "--labels=All",
                                "--output=" + logFilePath
                            };
