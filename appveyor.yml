@@ -35,9 +35,8 @@ build:
 
 
 test_script:
-- dir * /S
 - nunit3-console "Tests\TechTalk.SpecFlow.RuntimeTests\bin\Debug\net452\TechTalk.SpecFlow.RuntimeTests.dll" --result=runtimetests.xml;format=AppVeyor
-- nunit3-console "Tests\TechTalk.SpecFlow.GeneratorTests\bin\Debug\net452\TechTalk.SpecFlow.GeneratorTests.dll  --result=generatortests.xml;format=AppVeyor
+- nunit3-console "Tests\TechTalk.SpecFlow.GeneratorTests\bin\Debug\net452\TechTalk.SpecFlow.GeneratorTests.dll"  --result=generatortests.xml;format=AppVeyor
 
 #test:
 #  assemblies:
