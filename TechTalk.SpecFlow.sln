@@ -53,7 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Tools", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestFrameworks", "TestFrameworks", "{2031BB6A-E00A-44DB-B500-05752C8BAE94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Xunit", "TestFrameworks\TechTalk.SpecFlow.Xunit\TechTalk.SpecFlow.Xunit.csproj", "{2C84E581-A7B2-408D-8AC5-0C8B244DD8FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Xunit", "TestFrameworks\TechTalk.SpecFlow.Xunit\TechTalk.SpecFlow.Xunit.csproj", "{2C84E581-A7B2-408D-8AC5-0C8B244DD8FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Tests.Bindings", "Tests\TechTalk.SpecFlow.Tests.Bindings\TechTalk.SpecFlow.Tests.Bindings.csproj", "{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +147,12 @@ Global
 		{2C84E581-A7B2-408D-8AC5-0C8B244DD8FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C84E581-A7B2-408D-8AC5-0C8B244DD8FF}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C84E581-A7B2-408D-8AC5-0C8B244DD8FF}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +167,7 @@ Global
 		{48E0CB65-33D4-49CD-9E22-1AD49D8684B0} = {0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}
 		{7E637287-6E34-4BEC-8226-B052062AEA1F} = {0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}
 		{2C84E581-A7B2-408D-8AC5-0C8B244DD8FF} = {2031BB6A-E00A-44DB-B500-05752C8BAE94}
+		{25A8E3BF-ECB8-4D6A-82C5-DEBA6C04BEDF} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}

@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Gherkin.Ast;
-using SpecFlow.xUnitAdapter.SpecFlowPlugin.Runners;
+using TechTalk.SpecFlow.Xunit.Runners;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace SpecFlow.xUnitAdapter.SpecFlowPlugin.TestArtifacts
+namespace TechTalk.SpecFlow.Xunit.TestArtifacts
 {
     public class ScenarioTestCase : LongLivedMarshalByRefObject, ITestMethod, IXunitTestCase, IReflectionMethodInfo
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -8,12 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Gherkin.Ast;
-using SpecFlow.xUnitAdapter.SpecFlowPlugin.TestArtifacts;
-using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Xunit.TestArtifacts;
 using Xunit.Sdk;
 
-namespace SpecFlow.xUnitAdapter.SpecFlowPlugin.Runners
+namespace TechTalk.SpecFlow.Xunit.Runners
 {
     public class ScenarioTestCaseRunner : TestCaseRunner<ScenarioTestCase>
     {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Parser;
 
-namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
+namespace TechTalk.SpecFlow.Xunit
 {
     public static class SpecFlowParserHelper
     {
@@ -53,7 +53,7 @@ namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
             }
         }
 
-        public static string GetExampleRowId(ScenarioOutline scenarioOutline, TableRow exampleRow)
+        public static string GetExampleRowId(ScenarioOutline scenarioOutline, Gherkin.Ast.TableRow exampleRow)
         {
             int exampleRowId = 0;
             foreach (var row in scenarioOutline.Examples.SelectMany(example => example.TableBody))
@@ -65,7 +65,7 @@ namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
             throw new InvalidOperationException("Unable to find example row");
         }
 
-        public static bool GetExampleRowById(ScenarioOutline scenarioOutline, string exampleRowId, out Examples example, out TableRow exampleRow)
+        public static bool GetExampleRowById(ScenarioOutline scenarioOutline, string exampleRowId, out Examples example, out Gherkin.Ast.TableRow exampleRow)
         {
             int id = 0;
             foreach (var ex in scenarioOutline.Examples)
@@ -101,14 +101,14 @@ namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
             return null;
         }
 
-        public static Dictionary<string, string> GetScenarioOutlineParameters(Examples example, TableRow exampleRow)
+        public static Dictionary<string, string> GetScenarioOutlineParameters(Examples example, Gherkin.Ast.TableRow exampleRow)
         {
             return example.TableHeader.Cells
                 .Zip(exampleRow.Cells, (keyCell, valueCell) => new { Key = keyCell.Value, valueCell.Value })
                 .ToDictionary(arg => arg.Key, arg => arg.Value);
         }
 
-        public static Scenario CreateScenario(ScenarioOutline scenarioOutline, Examples example, TableRow exampleRow)
+        public static Scenario CreateScenario(ScenarioOutline scenarioOutline, Examples example, Gherkin.Ast.TableRow exampleRow)
         {
             var parameters = GetScenarioOutlineParameters(example, exampleRow);
             var steps = new List<Step>();
@@ -137,7 +137,7 @@ namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
             {
                 DataTable t = (DataTable)argument;
                 var rows = t.Rows;
-                var newRows = new List<TableRow>(rows.Count());
+                var newRows = new List<Gherkin.Ast.TableRow>(rows.Count());
                 foreach (var row in rows)
                 {
                     var cells = row.Cells;
@@ -146,7 +146,7 @@ namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
                     {
                         newCells.Add(new TableCell(cell.Location, Interpolate(cell.Value, parameters)));
                     }
-                    newRows.Add(new TableRow(row.Location, newCells.ToArray()));
+                    newRows.Add(new Gherkin.Ast.TableRow(row.Location, newCells.ToArray()));
                 }
                 return new DataTable(newRows.ToArray());
             }

@@ -1,8 +1,7 @@
-﻿using SpecFlow.xUnitAdapter.SpecFlowPlugin.Framework;
-using Xunit.Abstractions;
+﻿using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace SpecFlow.xUnitAdapter.SpecFlowPlugin
+namespace TechTalk.SpecFlow.Xunit.Framework
 {
     public class SpecFlowTestFramework : XunitTestFramework
     {

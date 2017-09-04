@@ -7,7 +7,7 @@ using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace SpecFlow.xUnitAdapter.SpecFlowPlugin.TestArtifacts
+namespace TechTalk.SpecFlow.Xunit.TestArtifacts
 {
     [Serializable]
     public class SpecFlowProjectAssemblyInfo : LongLivedMarshalByRefObject, IAssemblyInfo, IXunitSerializable

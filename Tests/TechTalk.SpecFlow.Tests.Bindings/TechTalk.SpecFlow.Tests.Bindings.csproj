@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj" />
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj" />
+    <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove=".\Drivers\Templates\**\*" />
+    <EmbeddedResource Include=".\Drivers\Templates\**\*" />
+
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include=".\Drivers\Templates\TemplateManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
+    <PackageReference Include="Moq" Version="4.7.99" />
+    <PackageReference Include="RhinoMocks" Version="3.6.1" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="NUnit" Version="3.8.1" />
+    <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.6.0" />
+    <PackageReference Include="NUnit.Extension.VSProjectLoader" Version="3.6.0" />
+    <PackageReference Include="NUnit.Runners" Version="3.7.0" />
+    <PackageReference Include="SpecFlow.NUnit3.ConsoleRunner" Version="1.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+</Project>
