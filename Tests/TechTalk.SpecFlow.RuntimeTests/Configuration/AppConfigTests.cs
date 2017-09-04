@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using BoDi;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Configuration.AppConfig;
@@ -12,10 +12,10 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 {
-    [TestFixture]
+    
     public class AppConfigTests
     {
-        [Test]
+        [Fact]
         public void CanLoadConfigFromConfigFile()
         {
             var runtimeConfiguration = ConfigurationLoader.GetDefault();
@@ -24,8 +24,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfiguration = configurationLoader.Load(runtimeConfiguration);
         }
 
-        [Test]
-        [TestCase(@"<specFlow>
+        [Theory]
+        [InlineData(@"<specFlow>
     <language feature=""en"" tool=""en"" /> 
 
     <unitTestProvider name=""NUnit"" 
@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             configurationLoader.LoadAppConfig(runtimeConfig, configurationSectionHandler);
         }
 
-        [Test]
+        [Fact]
         public void CheckFeatureLanguage()
         {
             string config = @"<specflow><language feature=""de"" /></specflow>";
@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         }
         
 
-        [Test]
+        [Fact]
         public void CheckBindingCulture()
         {
             string config = @"<specflow><bindingCulture name=""de"" /></specflow>";
@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.BindingCulture.TwoLetterISOLanguageName.Should().Be("de");
         }
 
-        [Test]
+        [Fact]
         public void CheckUnitTestProvider()
         {
             string config = @"<specflow><unitTestProvider name=""XUnit"" /></specflow>";
@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         }
 
 
-        [Test]
+        [Fact]
         public void Check_Runtime_stopAtFirstError_as_true()
         {
             string config = @"<specflow><runtime stopAtFirstError=""true"" /></specflow>";
@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.StopAtFirstError.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Check_Runtime_stopAtFirstError_as_false()
         {
             string config = @"<specflow><runtime stopAtFirstError=""false"" /></specflow>";
@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.StopAtFirstError.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Pending()
         {
             string config = @"<specflow><runtime missingOrPendingStepsOutcome=""Pending"" /></specflow>";
@@ -129,7 +129,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Pending);
         }
 
-        [Test]
+        [Fact]
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Error()
         {
             string config = @"<specflow><runtime missingOrPendingStepsOutcome=""Error"" /></specflow>";
@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Error);
         }
 
-        [Test]
+        [Fact]
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Ignore()
         {
             string config = @"<specflow><runtime missingOrPendingStepsOutcome=""Ignore"" /></specflow>";
@@ -153,7 +153,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Ignore);
         }
 
-        [Test]
+        [Fact]
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Inconclusive()
         {
             string config = @"<specflow><runtime missingOrPendingStepsOutcome=""Inconclusive"" /></specflow>";
@@ -165,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Inconclusive);
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_traceSuccessfulSteps_as_True()
         {
             string config = @"<specflow><trace traceSuccessfulSteps=""true"" /></specflow>";
@@ -177,7 +177,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.TraceSuccessfulSteps.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_traceSuccessfulSteps_as_False()
         {
             string config = @"<specflow><trace traceSuccessfulSteps=""false"" /></specflow>";
@@ -189,7 +189,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.TraceSuccessfulSteps.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_traceTimings_as_True()
         {
             string config = @"<specflow><trace traceTimings=""true"" /></specflow>";
@@ -201,7 +201,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.TraceTimings.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_traceTimings_as_False()
         {
             string config = @"<specflow><trace traceTimings=""false"" /></specflow>";
@@ -213,7 +213,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.TraceTimings.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_minTracedDuration()
         {
             string config = @"<specflow><trace minTracedDuration=""0:0:1.0"" /></specflow>";
@@ -225,7 +225,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.MinTracedDuration.Should().Be(TimeSpan.FromSeconds(1));
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_Listener()
         {
             string config = @"<specflow><trace listener=""TraceListener"" /></specflow>";
@@ -242,7 +242,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             }
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_StepDefinitionSkeletonStyle_RegexAttribute()
         {
             string config = @"<specflow><trace stepDefinitionSkeletonStyle=""RegexAttribute"" /></specflow>";
@@ -254,7 +254,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.RegexAttribute);
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_StepDefinitionSkeletonStyle_MethodNamePascalCase()
         {
             string config = @"<specflow><trace stepDefinitionSkeletonStyle=""MethodNamePascalCase"" /></specflow>";
@@ -266,7 +266,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.MethodNamePascalCase);
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_StepDefinitionSkeletonStyle_MethodNameRegex()
         {
             string config = @"<specflow><trace stepDefinitionSkeletonStyle=""MethodNameRegex"" /></specflow>";
@@ -278,7 +278,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.MethodNameRegex);
         }
 
-        [Test]
+        [Fact]
         public void Check_Trace_StepDefinitionSkeletonStyle_MethodNameUnderscores()
         {
             string config = @"<specflow><trace stepDefinitionSkeletonStyle=""MethodNameUnderscores"" /></specflow>";
@@ -290,7 +290,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.MethodNameUnderscores);
         }
 
-        [Test]
+        [Fact]
         public void Check_StepAssemblies_IsEmpty()
         {
             string config = @"<specflow><stepAssemblies /></specflow>";
@@ -302,7 +302,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Check_StepAssemblies_NotInConfigFile()
         {
             string config = @"<specflow></specflow>";
@@ -314,7 +314,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Check_StepAssemblies_OneEntry()
         {
             string config = @"<specflow><stepAssemblies><stepAssembly assembly=""testEntry""/></stepAssemblies></specflow>";
@@ -327,7 +327,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies.First().Should().Be("testEntry");
         }
 
-        [Test]
+        [Fact]
         public void Check_StepAssemblies_TwoEntry()
         {
             string config = @"<specflow><stepAssemblies>
@@ -344,7 +344,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies[1].Should().Be("testEntry2");
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_IsEmpty()
         {
             string config = @"<specflow><plugins /></specflow>";
@@ -356,7 +356,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_NotInConfigFile()
         {
             string config = @"<specflow></specflow>";
@@ -368,7 +368,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_OneEntry()
         {
             string config = @"<specflow><plugins><add name=""testEntry""/></plugins></specflow>";
@@ -381,7 +381,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.First().Name.Should().Be("testEntry");
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_PluginPath()
         {
             string config = @"<specflow><plugins><add name=""testEntry"" path=""path_to_assembly""/></plugins></specflow>";
@@ -394,7 +394,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.First().Path.Should().Be("path_to_assembly");
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_Parameters()
         {
             string config = @"<specflow><plugins><add name=""testEntry"" parameters=""pluginParameter""/></plugins></specflow>";
@@ -407,7 +407,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.First().Parameters.Should().Be("pluginParameter");
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_PluginType_Runtime()
         {
             string config = @"<specflow><plugins><add name=""testEntry"" type=""Runtime""/></plugins></specflow>";
@@ -420,7 +420,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.First().Type.Should().Be(PluginType.Runtime);
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_PluginType_Generator()
         {
             string config = @"<specflow><plugins><add name=""testEntry"" type=""Generator""/></plugins></specflow>";
@@ -433,7 +433,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.First().Type.Should().Be(PluginType.Generator);
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_PluginType_GeneratorAndRuntime()
         {
             string config = @"<specflow><plugins><add name=""testEntry"" type=""GeneratorAndRuntime""/></plugins></specflow>";
@@ -446,7 +446,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.First().Type.Should().Be(PluginType.GeneratorAndRuntime);
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_TwoEntry()
         {
             string config = @"<specflow><plugins>

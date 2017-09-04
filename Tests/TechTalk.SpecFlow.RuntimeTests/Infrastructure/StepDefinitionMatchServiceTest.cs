@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
@@ -12,7 +12,7 @@ using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
-    [TestFixture]
+    
     public class StepDefinitionMatchServiceTest
     {
         private Mock<IBindingRegistry> bindingRegistryMock;
@@ -20,8 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private readonly CultureInfo bindingCulture = new CultureInfo("en-US");
         private List<IStepDefinitionBinding> whenStepDefinitions;
             
-        [SetUp]
-        public void Setup()
+        public StepDefinitionMatchServiceTest()
         {
             whenStepDefinitions = new List<IStepDefinitionBinding>();
             bindingRegistryMock = new Mock<IBindingRegistry>();
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return result;
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod(), null));
@@ -67,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             result.Success.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_and_non_matching_scopes()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("m1"), null));
@@ -82,7 +81,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             result.Success.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_with_parameters()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStrignParam(), null));
@@ -96,7 +95,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             result.Success.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_fail_when_scope_errors_with_single_match()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod(), new BindingScope("non-matching-tag", null, null)));
@@ -111,7 +110,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousScopes);
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_fail_when_scope_errors_with_multiple_matches()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy1"), new BindingScope("non-matching-tag", null, null)));
@@ -127,7 +126,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousScopes);
         }
 
-        [Test] // in case of single parameter error, we pretend success - the error will be displayed runtime
+        [Fact] // in case of single parameter error, we pretend success - the error will be displayed runtime
         public void Should_GetBestMatch_succeed_when_paramter_errors_with_single_match()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethod(), null));
@@ -141,7 +140,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             result.Success.Should().BeTrue(); 
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_fail_when_parameter_errors_with_multiple_matches()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethod("dummy1"), null));
@@ -157,7 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.ParameterErrors);
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_fail_when_multiple_matches()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy1"), null));
@@ -173,7 +172,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousSteps);
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_succeed_when_multiple_matches_are_on_the_same_method()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy"), null));
@@ -188,7 +187,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             result.Success.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_GetBestMatch_succeed_when_no_matching_step_definitions()
         {
             whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "non-maching-regex", CreateBindingMethod(), null));

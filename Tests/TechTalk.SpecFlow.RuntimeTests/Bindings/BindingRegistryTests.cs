@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 {
-    [TestFixture]
+    
     public class BindingRegistryTests
     {
-        [Test]
+        [Fact]
         public void GetStepDefinitions_should_return_all_step_definitions()
         {
             var sut = new BindingRegistry();
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             result.Should().BeEquivalentTo(stepDefinitionBinding1, stepDefinitionBinding2);
         }
 
-        [Test]
+        [Fact]
         public void GetHooks_should_return_all_hooks()
         {
             var sut = new BindingRegistry();

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.IO;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -17,31 +18,31 @@ namespace TechTalk.SpecFlow.GeneratorTests
     /// <summary>
     /// A test for testing cusomterized test generator provider
     /// </summary>
-    [TestFixture]
+    
     public class CustomTestGeneratorProviderTest
     {
         private const string SampleFeatureFile = @"
             Feature: Sample feature file for a custom generator provider
             
             Scenario: Simple scenario
-				Given there is something
-				When I do something
-				Then something should happen
+                Given there is something
+                When I do something
+                Then something should happen
 
             @mytag
-			Scenario Outline: Simple Scenario Outline
-				Given there is something
+            Scenario Outline: Simple Scenario Outline
+                Given there is something
                     """"""
                       long string
                     """"""
-				When I do <what>
+                When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-				Then something should happen
-			Examples: 
-				| what           |
-				| something      |
-				| something else |
+                Then something should happen
+            Examples: 
+                | what           |
+                | something      |
+                | something else |
 ";
 
         public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
@@ -57,24 +58,25 @@ namespace TechTalk.SpecFlow.GeneratorTests
         /// <summary>
         /// Generates the scenario example tests.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateScenarioExampleTests()
         {
             var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                var feature = parser.Parse(reader, null);                    
-                Assert.IsNotNull(feature);
-
+                var feature = parser.Parse(reader, null);
+                feature.Should().NotBeNull();
+                
                 var sampleTestGeneratorProvider = new SimpleTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
                 CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
-                Assert.IsNotNull(code);
-                  
+                code.Should().NotBeNull();
+                
+                
                 // make sure name space is changed
-                Assert.AreEqual(code.Name, SimpleTestGeneratorProvider.DefaultNameSpace);
-
+                code.Name.Should().Be(SimpleTestGeneratorProvider.DefaultNameSpace);
+                
                 // make sure all method titles are changed correctly
                 List<string> methodTitles = new List<string>();
                 for (int i = 0; i < code.Types[0].Members.Count; i++)
@@ -84,7 +86,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                 foreach (var title in sampleTestGeneratorProvider.newTitles)
                 {
-                    Assert.IsTrue(methodTitles.Contains(title));
+                    methodTitles.Contains(title).Should().BeTrue();
                 }
             }
         }

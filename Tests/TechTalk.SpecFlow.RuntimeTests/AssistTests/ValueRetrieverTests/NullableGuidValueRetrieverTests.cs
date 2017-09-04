@@ -1,14 +1,14 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class NullableGuidValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_the_value_from_the_guid_retriever()
         {
             Func<string, Guid> func = v =>
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("y").Should().Be(new Guid("{08C91240-68EB-4B11-AFCC-95ED7D44EC67}"));
         }
 
-        [Test]
+        [Fact]
         public void Returns_null_when_passed_null()
         {
             var retriever = new NullableGuidValueRetriever(v => new Guid("{E9BC63B9-508F-44D6-BD56-B10989B9CCDC}"));
@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue(null).Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Returns_null_when_passed_empty()
         {
             var retriever = new NullableGuidValueRetriever(v => new Guid("{E9BC63B9-508F-44D6-BD56-B10989B9CCDC}"));

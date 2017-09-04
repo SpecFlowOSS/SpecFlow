@@ -1,4 +1,5 @@
-﻿Feature: Generating HTML report from NUnit/MsTest execution result
+﻿@ignore
+Feature: Generating HTML report from NUnit/MsTest execution result
 
 Background: 
 	Given there is a feature 'Feature with successful scenarios' with 2 passing 0 failing 0 pending and 0 ignored scenarios
@@ -16,6 +17,7 @@ Scenario: Summary is included in the HTML result (NUnit)
 	"""
 
 @mstest
+@ignore
 Scenario: Summary is included in the HTML result (MsTest)
 	Given there are MsTest test execution results for the project
 	When I generate SpecFlow MsTest execution report
@@ -39,6 +41,7 @@ Scenario: Feature summary is included in the HTML result (NUnit)
 	"""
 
 @mstest
+@ignore
 Scenario: Feature summary is included in the HTML result (MsTest)
 	Given there are MsTest test execution results for the project
 	When I generate SpecFlow MsTest execution report
@@ -50,6 +53,7 @@ Scenario: Feature summary is included in the HTML result (MsTest)
 		Feature with successful scenarios	100%			2			2			0		0			0
 	"""
 
+@ignore
 Scenario Outline: Successful test output is included in the HTML result
 	Given there are <unittest> test execution results for the project
 	When I generate SpecFlow <unittest> execution report
@@ -66,6 +70,7 @@ Examples: MsTest
 	| unittest	|
 	| MsTest	|
 
+@ignore
 Scenario Outline: Pending test output is included in the HTML result
 	Given there are <unittest> test execution results for the project
 	When I generate SpecFlow <unittest> execution report
@@ -92,6 +97,7 @@ Examples: MsTest
 	| unittest	|
 	| MsTest	|
 
+@ignore
 Scenario Outline: Failing test output is included in the HTML result
 	Given there are <unittest> test execution results for the project
 	When I generate SpecFlow <unittest> execution report
@@ -112,6 +118,7 @@ Examples: MsTest
 	| unittest	|
 	| MsTest	|
 
+@ignore
 Scenario Outline: Failing test exception is included in the HTML result
 	Given there are <unittest> test execution results for the project
 	When I generate SpecFlow <unittest> execution report

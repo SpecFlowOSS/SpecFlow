@@ -1,6 +1,8 @@
-﻿Feature: StepDefinitionReport
+﻿@ignore
+Feature: StepDefinitionReport
 	
 
+@ignore
 Scenario: All steps are bound with one step
 
 Given there is a SpecFlow project
@@ -37,6 +39,7 @@ Then the generated report contains
 	Thens Step Definition Instances something should happen [copy] 1 [show] Instances: something should happen [copy] Simple Feature / Simple Scenario
 	"""
 
+@ignore
 Scenario: One step with two bindings
 
 Given there is a SpecFlow project
@@ -72,6 +75,7 @@ Then the generated report contains
 	"""
 
 
+@ignore
 Scenario: Multiple usage of same step
 
 Given there is a SpecFlow project
@@ -103,6 +107,7 @@ Then the generated report contains
 	Thens Step Definition Instances
 	"""
 
+@ignore
 Scenario: Report can handle scenario outlines
 
 Given there is a SpecFlow project
@@ -137,6 +142,7 @@ Then the generated report contains
 	Thens Step Definition Instances
 	"""
 
+@ignore
 Scenario: Report can handle data tables
 
 Given there is a SpecFlow project
@@ -169,6 +175,7 @@ Then the generated report contains
 	Thens Step Definition Instances
 	"""
 
+@ignore
 Scenario: Report can handle doc strings
 
 Given there is a SpecFlow project

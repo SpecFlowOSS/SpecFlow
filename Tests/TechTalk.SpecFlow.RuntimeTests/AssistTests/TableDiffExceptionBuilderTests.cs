@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class TableDiffExceptionBuilderTests
     {
-        [Test]
+        [Fact]
         public void Adds_a_two_character_prefix_to_the_table()
         {
             var table = new Table("One", "Two", "Three");
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ".AgnosticLineBreak());
         }
 
-        [Test]
+        [Fact]
         public void Prepends_a_dash_next_to_any_table_rows_that_were_missing()
         {
             var table = new Table("One", "Two", "Three");
@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return items.Select(i => new TableDifferenceItem<TestObject>(i)).ToArray();
         }
 
-        [Test]
+        [Fact]
         public void Appends_remaining_items_to_the_bottom_of_the_table_with_plus_prefix()
         {
             var table = new Table("One", "Two", "Three");
@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ".AgnosticLineBreak());
         }
 
-        [Test]
+        [Fact]
         public void Can_append_lines_that_contain_nulls()
         {
             var table = new Table("One", "Two", "Three");
@@ -101,7 +101,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ".AgnosticLineBreak());
         }
 
-        [Test]
+        [Fact]
         public void Uses_smart_matching_on_column_names()
         {
             var table = new Table("one", "TWO", "The fourth property");
@@ -122,7 +122,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ".AgnosticLineBreak());
         }
 
-        [Test]
+        [Fact]
         public void It_should_report_the_enumerables_as_lists()
         {
             var table = new Table("Doubles");
@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             message.Should().Contain("1,2,3");
         }
 
-        [Test]
+        [Fact]
         public void It_should_treat_nulls_as_empty_spots()
         {
             var table = new Table("Objects");

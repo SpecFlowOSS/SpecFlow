@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
-    [TestFixture]
+    
     public class BoolValueComparerTests
     {
-        [Test]
+        [Fact]
         public void Can_compare_if_the_value_is_a_bool()
         {
             var valueComparer = new BoolValueComparer();
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Cannot_compare_if_the_value_is_null()
         {
             new BoolValueComparer()
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Cannot_compare_if_the_value_is_not_a_bool()
         {
             var valueComparer = new BoolValueComparer();
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
             valueComparer.CanCompare(1.34).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Returns_true_if_the_value_and_string_match()
         {
             var comparer = new BoolValueComparer();
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
             comparer.Compare("False", false).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Returns_false_if_the_value_and_string_do_not_match()
         {
             var comparer = new BoolValueComparer();
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
             comparer.Compare("False", true).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Ignores_casing_of_the_expected_value_when_matching()
         {
             var comparer = new BoolValueComparer();

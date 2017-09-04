@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using BoDi;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
@@ -14,7 +14,7 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
-    [TestFixture]
+    
     public class PluginTests
     {
         public class PluginWithCustomDependency : IRuntimePlugin
@@ -158,7 +158,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
               </configuration>"));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_specify_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
@@ -166,7 +166,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_specify_a_plugin_with_parameters()
         {
             StringConfigProvider configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -184,7 +184,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             pluginMock.Verify(p => p.Initialize(It.IsAny<RuntimePluginEvents>(), It.Is<RuntimePluginParameters>(pp => pp.Parameters == "foo, bar")));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_register_dependencies_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
@@ -195,7 +195,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_change_default_configuration_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
@@ -206,7 +206,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             runtimeConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_register_further_dependencies_based_on_the_configuration()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
@@ -233,7 +233,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             customTestRunnerFactory.Should().BeOfType<CustomTestRunnerFactory>();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_register_test_runner_dependencies_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
@@ -244,17 +244,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
-        [Test]
+        [Fact]
         public void Test_runner_dependencies_from_a_plugin_are_not_in_the_global_container()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
             ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomTestThreadDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
             var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
 
-            Assert.Throws<ObjectContainerException>(() => container.Resolve<ICustomDependency>(), "Interface cannot be resolved");
+            Action resolveAction = () => container.Resolve<ICustomDependency>();
+
+            resolveAction.ShouldThrow<ObjectContainerException>();            
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_override_test_runner_registration_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
@@ -265,7 +267,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             traceListener.Should().BeOfType(typeof(CustomTraceListener));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_register_scenario_dependencies_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();

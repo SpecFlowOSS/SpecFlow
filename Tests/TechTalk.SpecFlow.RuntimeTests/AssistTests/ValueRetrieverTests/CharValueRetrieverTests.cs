@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class CharValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_a_character_when_passed_a_character_value()
         {
             var retriever = new CharValueRetriever();
@@ -18,21 +18,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue(" ").Should().Be(' ');
         }
 
-        [Test]
+        [Fact]
         public void Returns_char0_when_passed_empty()
         {
             var retriever = new CharValueRetriever();
             retriever.GetValue("").Should().Be('\0');
         }
 
-        [Test]
+        [Fact]
         public void Returns_char0_when_passed_null()
         {
             var retriever = new CharValueRetriever();
             retriever.GetValue(null).Should().Be('\0');
         }
 
-        [Test]
+        [Fact]
         public void Returns_char0_when_passed_multiple_characters()
         {
             var retriever = new CharValueRetriever();

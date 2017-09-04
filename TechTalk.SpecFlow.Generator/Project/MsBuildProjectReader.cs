@@ -193,16 +193,32 @@ namespace TechTalk.SpecFlow.Generator.Project
                     {
                         var files = _msBuildRelativePathParser.GetFiles(projectFolder, fileName);
 
-                        result.AddRange(files.Select(file => CreateFeatureFileInput(file, customNamespace)));
+                        var featureFileInputs = files.Select(file => CreateFeatureFileInput(file, customNamespace));
+
+                        foreach (var featureFileInput in featureFileInputs)
+                        {
+                            if (result.Any(i => Path.GetFullPath( featureFileInput.ProjectRelativePath) == Path.GetFullPath(i.ProjectRelativePath)))
+                            {
+                                continue;
+                            }
+
+                            result.Add(featureFileInput);
+                        }
+                        
                     }
                     else
                     {
+                        if (result.Any(i => fileName.EndsWith(i.ProjectRelativePath)))
+                        {
+                            continue;
+                        }
+
                         result.Add(CreateFeatureFileInput(fileName, customNamespace));
                     }
                 }
             }
 
-            if (newProjectSystem)
+            if (newProjectSystem && result.Any() == false)
             {
                 var allFilesInProjectFolder = Directory.EnumerateFiles(projectFolder, "*", SearchOption.AllDirectories);
 

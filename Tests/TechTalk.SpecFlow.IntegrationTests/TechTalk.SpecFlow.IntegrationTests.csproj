@@ -18,8 +18,9 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
-   <ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include=".\TestFiles\*.feature;.\TestFiles\*.xml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <None Include=".\Features\*.feature" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +42,8 @@
     <PackageReference Include="Gherkin" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.extensions" Version="1.9.2" />
+    <PackageReference Include="xunit.runner.console" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
 
   <Target Name="PostcompileScript" AfterTargets="Build">
@@ -65,7 +68,11 @@
   </PropertyGroup>
 
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
-  
+
+  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
+    <CallTarget Targets="GenerateCodeBehind" />
+  </Target>
+
   <Target Name="AfterUpdateFeatureFilesInProject">
     <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />
   </Target>

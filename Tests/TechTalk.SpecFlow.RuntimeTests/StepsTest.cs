@@ -1,12 +1,12 @@
 using BoDi;
-using NUnit.Framework;
+using Xunit;
 
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class StepsTest
     {
         private ITestRunner mockTestRunner;
@@ -16,8 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private const string MultilineTextArg = "multilineTextArg";
         private readonly Table table = new Table("sausages");
 
-        [SetUp]
-        public void SetUp()
+        public StepsTest()
         {
             mockTestRunner = MockRepository.GenerateMock<ITestRunner>();
             var container = new ObjectContainer();
@@ -26,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ((IContainerDependentObject)steps).SetObjectContainer(container);
         }
 
-        [Test]
+        [Fact]
         public void GivenIsDelegatedToObjectContainerCurrentTestRunner()
         {
             steps.Given(Text, MultilineTextArg, table);
@@ -34,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTestRunner.AssertWasCalled(m => m.Given(Text, MultilineTextArg, table, null));
         }
 
-        [Test]
+        [Fact]
         public void WhenIsDelegatedToObjectContainerCurrentTestRunner()
         {
             steps.When(Text, MultilineTextArg, table);
@@ -42,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTestRunner.AssertWasCalled(m => m.When(Text, MultilineTextArg, table, null));
         }
 
-        [Test]
+        [Fact]
         public void ThenIsDelegatedToObjectContainerCurrentTestRunner()
         {
             steps.Then(Text, MultilineTextArg, table);
@@ -50,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTestRunner.AssertWasCalled(m => m.Then(Text, MultilineTextArg, table, null));
         }
 
-        [Test]
+        [Fact]
         public void ButIsDelegatedToObjectContainerCurrentTestRunner()
         {
             steps.But(Text, MultilineTextArg, table);
@@ -58,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTestRunner.AssertWasCalled(m => m.But(Text, MultilineTextArg, table, null));
         }
 
-        [Test]
+        [Fact]
         public void AndIsDelegatedToObjectContainerCurrentTestRunner()
         {
             steps.And(Text, MultilineTextArg, table);

@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class ByteValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_a_byte_when_passed_a_byte_value()
         {
             var retriever = new ByteValueRetriever();
@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("30").Should().Be(30);
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_zero_when_passed_an_invalid_byte()
         {
             var retriever = new ByteValueRetriever();

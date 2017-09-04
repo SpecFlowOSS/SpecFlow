@@ -1,14 +1,14 @@
 ﻿using Moq;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class FormattingTableDiffExceptionBuilderTests
     {
-        [Test]
+        [Fact]
         public void Returns_null_if_parent_passes_null()
         {
             var tableDifferenceResults = GetATestDiffResult();
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Returns_empty_if_parent_returns_empty()
         {
             var tableDifferenceResults = GetATestDiffResult();
@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be("");
         }
 
-        [Test]
+        [Fact]
         public void Makes_width_of_columns_match_and_adds_space_for_preceding_characters()
         {
             var tableDifferenceResults = GetATestDiffResult();

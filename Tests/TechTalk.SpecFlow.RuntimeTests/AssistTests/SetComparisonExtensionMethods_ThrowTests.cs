@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
@@ -10,13 +10,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     public abstract class SetComparisonExtensionMethods_ThrowTests
     {
-        [SetUp]
-        public void SetUp()
+        public SetComparisonExtensionMethods_ThrowTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
 
-        [Test]
+        [Fact]
         public void Throws_exception_when_the_table_is_empty_and_the_set_has_one_item()
         {
             var table = new Table("StringProperty");
@@ -28,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_an_exception_when_the_table_is_empty_and_the_set_is_empty()
         {
             var table = new Table("StringProperty");
@@ -40,7 +39,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_an_exception_when_there_is_one_row_but_the_set_is_empty()
         {
             var table = new Table("StringProperty");
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_an_exception_when_there_is_one_row_and_one_matching_item_in_the_set()
         {
             var table = new Table("StringProperty");
@@ -66,7 +65,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_an_exception_when_the_table_has_one_item_and_the_set_has_one_item_that_does_not_match()
         {
             var table = new Table("StringProperty");
@@ -79,7 +78,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_an_exception_when_the_first_property_matches_but_the_second_does_not()
         {
             var table = new Table("StringProperty", "IntProperty");
@@ -92,7 +91,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_an_exception_when_there_are_two_matching_properties_of_varying_types()
         {
             var table = new Table("StringProperty", "IntProperty");
@@ -112,7 +111,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_an_exception_when_the_first_two_properties_match_but_the_third_does_not()
         {
             var table = new Table("StringProperty", "IntProperty", "DateTimeProperty");
@@ -133,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_an_exception_if_all_three_properties_match()
         {
             var table = new Table("StringProperty", "IntProperty", "DateTimeProperty");
@@ -154,7 +153,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_exception_if_property_in_table_does_not_exist_on_item()
         {
             var table = new Table("IDoNotExist");
@@ -167,7 +166,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_an_exception_if_the_property_being_checked_for_has_extra_spaces_in_the_name()
         {
             var table = new Table("String Property");
@@ -180,7 +179,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_an_exception_if_the_property_being_checked_for_has_different_casing()
         {
             var table = new Table("stringproperty");
@@ -193,7 +192,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_exception_if_string_is_empty_in_table_and_null_on_item()
         {
             var table = new Table("StringProperty");
@@ -207,7 +206,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         }
 
-        [Test]
+        [Fact]
         public void Throws_exception_if_string_is_empty_in_table_and_not_null_on_item()
         {
             var table = new Table("StringProperty");
@@ -220,7 +219,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_exception_if_string_is_not_empty_in_table_and_null_on_item()
         {
             var table = new Table("StringProperty");
@@ -233,7 +232,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throw_exception_if_first_item_in_sets_match_but_second_item_does_not()
         {
             var table = new Table("StringProperty");
@@ -251,7 +250,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_throw_exception_if_two_items_in_both_sets_match()
         {
             var table = new Table("StringProperty");
@@ -269,7 +268,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_an_exception_if_items_do_not_match_the_correct_number_of_times()
         {
             var table = new Table("StringProperty");
@@ -289,7 +288,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Throws_an_exception_if_the_result_set_has_extra_items_that_are_not_in_the_expected_results()
         {
             var table = new Table("StringProperty");
@@ -308,7 +307,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        [Test]
+        [Fact]
         public void Can_compare_guids_properly()
         {
             var table = new Table("GuidProperty");
@@ -342,10 +341,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         protected abstract void CallComparison(Table table, SetComparisonTestObject[] items);
     }
 
-    [TestFixture]
+    
     public class SetComparisonExtensionMethods_OrderInsensitive_ThrowTests : SetComparisonExtensionMethods_ThrowTests
     {
-        [Test]
+        [Fact]
         public void Does_not_throw_exception_if_all_items_match_but_not_in_the_same_order()
         {
             var table = new Table("StringProperty");
@@ -371,10 +370,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
     }
 
-    [TestFixture]
+    
     public class SetComparisonExtensionMethods_OrderSensitive_ThrowTests : SetComparisonExtensionMethods_ThrowTests
     {
-        [Test]
+        [Fact]
         public void Throws_an_exception_if_all_items_match_but_not_in_the_same_order()
         {
             var table = new Table("StringProperty");

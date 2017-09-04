@@ -1,22 +1,28 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture, SetCulture("en-US")]
     public class NullableDoubleValueRetrieverTests
     {
-        [Test]
+        public NullableDoubleValueRetrieverTests()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
+        [Fact]
         public void Returns_null_when_passed_null()
         {
             var retriever = new NullableDoubleValueRetriever(v => 3.01);
             retriever.GetValue(null).Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Returns_value_from_Double_value_retriever_when_not_empty()
         {
             var mock = new Mock<DoubleValueRetriever>();
@@ -34,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("value 2").Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Returns_null_when_passed_empty_string()
         {
             var retriever = new NullableDoubleValueRetriever(v => 99);

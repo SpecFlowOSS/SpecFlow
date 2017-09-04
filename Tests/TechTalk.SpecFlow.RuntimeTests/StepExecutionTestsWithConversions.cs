@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using NUnit.Framework;
+using Xunit;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -61,10 +61,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
     }
 
-    [TestFixture]
+    
     public class StepExecutionTestsWithConversions : StepExecutionTestsBase
     {
-        [Test]
+        [Fact]
         public void ShouldCallBindingWithSimpleConvertParam()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -76,11 +76,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: 1.23");
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.Equal(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldRaiseErrorIfSimpleConvertParamFails()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -90,11 +90,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: not-a-double");
 
-            Assert.AreEqual(TestStatus.TestError, GetLastTestStatus());
+            Assert.Equal(TestStatus.TestError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallTheOnlyThatCanConvert()
         {
             StepExecutionTestsBindingsForArgumentConvert bindingInstance;
@@ -112,11 +112,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert: argument");
 
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.Equal(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldRaiseAmbiguousIfMultipleCanConvert()
         {
             StepExecutionTestsBindingsForArgumentConvert bindingInstance;
@@ -132,11 +132,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert: argument");
 
 
-            Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
+            Assert.Equal(TestStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallTheOnlyThatCanConvertWithTable()
         {
             StepExecutionTestsBindingsForArgumentConvert bindingInstance;
@@ -156,11 +156,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert with table: argument", null, table);
 
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.Equal(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldRaiseParamErrorIfNoneCanConvert()
         {
             StepExecutionTestsBindingsForArgumentConvert bindingInstance;
@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert: argument");
 
-            Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
+            Assert.Equal(TestStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
     }

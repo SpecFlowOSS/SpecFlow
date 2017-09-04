@@ -2,18 +2,17 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    
     public class CreateSetWithNullableValuesTests
     {
-        [SetUp]
-        public void SetUp()
+        public CreateSetWithNullableValuesTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
@@ -23,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
         }
 
-        [Test]
+        [Fact]
         public void Can_set_a_nullable_datetime()
         {
             var table = CreatePersonTableHeaders();
@@ -34,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_datetime_to_null_when_the_value_is_empty()
         {
             var table = CreatePersonTableHeaders();
@@ -45,7 +44,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().BirthDate.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_a_nullable_bool()
         {
             var table = CreatePersonTableHeaders();
@@ -56,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().IsRational.Value.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_bool_to_null_when_the_value_is_empty()
         {
             var table = CreatePersonTableHeaders();
@@ -67,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().IsRational.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_double_to_null_when_the_value_is_empty()
         {
             var table = new Table("NullableDouble");
@@ -78,7 +77,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableDouble.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_guid_to_null_when_the_value_is_empty()
         {
             var table = new Table("NullableGuid");
@@ -89,7 +88,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableGuid.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_char_to_null_when_the_value_is_empty()
         {
             var table = new Table("NullableChar");
@@ -100,7 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableChar.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_a_nullable_int()
         {
             var table = CreatePersonTableHeaders();
@@ -111,7 +110,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NumberOfIdeas.Should().Be(3);
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_int_to_null_when_the_value_is_empty()
         {
             var table = CreatePersonTableHeaders();
@@ -122,7 +121,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NumberOfIdeas.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_a_nullable_uint()
         {
             var table = new Table("NullableUnsignedInt");
@@ -133,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableUnsignedInt.Should().Be((uint?)3);
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_uint_to_null_when_the_value_is_empty()
         {
             var table = new Table("NullableUnsignedInt");
@@ -144,7 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableUnsignedInt.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_a_nullable_decimal()
         {
             var table = CreatePersonTableHeaders();
@@ -155,7 +154,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().Salary.Value.Should().Be(4.01M);
         }
         
-        [Test]
+        [Fact]
         public void Sets_a_nullable_decimal_to_null_when_the_value_is_empty()
         {
             var table = CreatePersonTableHeaders();
@@ -166,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().Salary.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Sets_a_nullable_float_to_null_when_the_value_is_empty()
         {
             var table = new Table("NullableFloat");

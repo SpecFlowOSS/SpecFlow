@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests
 {
-    [TestFixture]
+    
     public class NullableEnumTests
     {
         public enum TestEnum
@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests
             public TestEnum? TestProperty { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void The_value_should_be_set_if_it_is_in_the_table()
         {
             var table = new Table("Field", "Value");

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -23,8 +23,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         protected Mock<ITestHeaderWriter> TestHeaderWriterStub;
         protected Mock<ITestUpToDateChecker> TestUpToDateCheckerStub;
 
-        [SetUp]
-        public virtual void Setup()
+        public TestGeneratorTestsBase()
         {
             net35CSSettings = new ProjectPlatformSettings
                                   {

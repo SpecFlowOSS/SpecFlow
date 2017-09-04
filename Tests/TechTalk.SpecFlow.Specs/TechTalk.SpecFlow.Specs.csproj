@@ -49,8 +49,9 @@
     <PackageReference Include="Gherkin" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.extensions" Version="1.9.2" />
-    <PackageReference Include="xunit.runner.console" Version="2.0.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.2.0" />
     <PackageReference Include="SpecFlow.NUnit3.ConsoleRunner" Version="1.0.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
 
   <Target Name="PostcompileScript" AfterTargets="Build">

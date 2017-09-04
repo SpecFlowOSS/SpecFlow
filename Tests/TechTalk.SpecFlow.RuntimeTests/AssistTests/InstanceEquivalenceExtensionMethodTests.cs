@@ -2,22 +2,21 @@
 using System.Globalization;
 using System.Threading;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class InstanceEquivalenceExtensionMethodTests
     {
-        [SetUp]
-        public void Setup()
+        public InstanceEquivalenceExtensionMethodTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
 
-        [Test]
+        [Fact]
         public void throws_exception_with_descriptive_message_when_instance_is_null()
         {
             var table = new Table("Field", "Value");
@@ -27,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exception.Message.Should().Be("The item to compare was null.");
         }
 
-        [Test]
+        [Fact]
         public void returns_true_if_instance_matches_horizontal_table()
         {
             var table = new Table("IntProperty", "BoolProperty", "StringProperty", "DateTimeProperty");
@@ -46,7 +45,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be(true);
         }
 
-        [Test]
+        [Fact]
         public void returns_true_if_instance_matches_vertical_table()
         {
             var table = new Table("Field", "Value");
@@ -68,7 +67,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be(true);
         }
 
-        [Test]
+        [Fact]
         public void returns_false_if_instance_values_do_not_match()
         {
             var table = new Table("IntProperty", "BoolProperty", "StringProperty", "DateTimeProperty");
@@ -87,7 +86,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be(false);
         }
 
-        [Test]
+        [Fact]
         public void returns_false_if_instance_does_not_have_property()
         {
             var table = new Table("IntProperty", "BoolProperty", "StringProperty", "DateTimeProperty", "SomeMissingProperty");

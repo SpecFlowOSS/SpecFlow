@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FluentAssertions;
 using Gherkin;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Compatibility;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -30,7 +31,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             try
             {
                 ParsedDocument = parser.Parse(contentReader, "sample.feature");
-                Assert.IsNotNull(ParsedDocument);
+                ParsedDocument.Should().NotBeNull();                
             }
             catch (ParserException ex)
             {
@@ -51,14 +52,15 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             string expected = parsedFeatureXml.Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
             string got = SerializeDocument(ParsedDocument).Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
 
-            Assert.AreEqual(expected, got);
+            got.Should().Be(expected);
         }
 
         public void AssertErrors(List<ExpectedError> expectedErrors)
         {
-            Assert.Greater(expectedErrors.Count, 0, "please specify expected errors");
-
-            CollectionAssert.IsNotEmpty(ParsingErrors, "The parsing was successful");
+            expectedErrors.Should().NotBeEmpty("please specify expected errors");
+            
+            ParsingErrors.Should().NotBeEmpty("The parsing was successful");
+            
 
             foreach (var expectedError in expectedErrors)
             {
@@ -68,7 +70,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
                     ParsingErrors.FirstOrDefault(ed => ed.Location != null && ed.Location.Line == expectedError.Line &&
                         ed.Message.ToLower().Contains(message));
 
-                Assert.IsNotNull(errorDetail, "no such error: {0}", message);
+                errorDetail.Should().NotBeNull("no such error: {0}", message);
             }
         }
 
@@ -82,7 +84,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
         public void SaveSerializedFeatureTo(string fileName)
         {
-            Assert.IsNotNull(ParsedDocument, "The parsing was not successful");
+            ParsedDocument.Should().NotBeNull("The parsing was not successful");
             SerializeDocument(ParsedDocument, fileName);
         }
 

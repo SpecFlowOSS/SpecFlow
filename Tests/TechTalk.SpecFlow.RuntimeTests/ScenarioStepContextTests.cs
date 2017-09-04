@@ -3,17 +3,17 @@ using System.Globalization;
 using BoDi;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class ScenarioStepContextTests
     {
-        [Test]
+        [Fact]
         public void CleanupStepContext_WhenNotInitialized_ShouldTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return container;
         }
 
-        [Test]
+        [Fact]
         public void InitializeStepContext_WhenInitializedTwice_ShouldNotTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new StepInfo(stepDefinitionType, text, null, string.Empty);
         }
 
-        [Test]
+        [Fact]
         public void CleanupStepContext_WhenInitializedAsOftenAsCleanedUp_ShouldNotTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTracer.Verify(x => x.TraceWarning(It.IsAny<string>()), Times.Never());
         }
 
-        [Test]
+        [Fact]
         public void CleanupStepContext_WhenCleanedUpMoreOftenThanInitialized_ShouldTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."), Times.Once());
         }
 
-        [Test]
+        [Fact]
         public void StepContext_WhenInitializedOnce_ShouldReportStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -115,10 +115,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
 
-            Assert.AreEqual(firstStepInfo, actualStepInfo);
+            Assert.Equal(firstStepInfo, actualStepInfo);
         }
 
-        [Test]
+        [Fact]
         public void StepContext_WhenInitializedTwice_ShouldReportSecondStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -130,10 +130,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
 
-            Assert.AreEqual(secondStepInfo, actualStepInfo);
+            Assert.Equal(secondStepInfo, actualStepInfo);
         }
 
-        [Test]
+        [Fact]
         public void StepContext_WhenInitializedTwiceAndCleanedUpOnce_ShouldReportFirstStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -146,10 +146,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
 
-            Assert.AreEqual(firstStepInfo, actualStepInfo);
+            Assert.Equal(firstStepInfo, actualStepInfo);
         }
 
-        [Test]
+        [Fact]
         public void StepContext_WhenInitializedTwiceAndCleanedUpTwice_ShouldReportNoStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -160,19 +160,19 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
 
-            Assert.AreEqual(null, contextManager.StepContext);
+            Assert.Equal(null, contextManager.StepContext);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_WithoutInitialization_ShouldReportNull()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            Assert.IsNull(contextManager.CurrentTopLevelStepDefinitionType);
+            Assert.Null(contextManager.CurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_WhenInitialized_ShouldReportCorrectStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -182,10 +182,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_WhenInitializedTwice_ShouldReportFirstStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -196,10 +196,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_WhenInitializedTwiceAndCleanedUpOnce_ShouldReportFirstStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -211,10 +211,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_WhenInitializedTwiceAndCleanedUpTwice_ShouldReportFirstStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -227,10 +227,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_AfterInitializationAndCleanupAndNewInitialization_ShouldReportSecondStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -242,10 +242,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.When, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.When, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_AfterInitializationAndCleanupAndNewInitializationAndCleanup_ShouldReportSecondStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -258,10 +258,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.When, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.When, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_AfterInitializingSubStepThatHasASubStepItselfAndCompletingDeepestLevelOfSteps_ShouldReportOriginalStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -274,10 +274,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+            Assert.Equal(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void CurrentTopLevelStepDefinitionType_AfterInitializingNewScenarioContext_ShouldReportNull()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -290,10 +290,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.IsNull(actualCurrentTopLevelStepDefinitionType);
+            Assert.Null(actualCurrentTopLevelStepDefinitionType);
         }
 
-        [Test]
+        [Fact]
         public void Dispose_InInconsistentState_ShouldNotThrowException()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -302,10 +302,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
             //// do not call CleanupStepContext to simulate inconsistent state
 
-            Assert.DoesNotThrow(() => ((IDisposable)contextManager).Dispose());
+            Action disposeAction = () => ((IDisposable) contextManager).Dispose();
+
+            disposeAction.ShouldNotThrow();
         }
 
-        [Test]
+        [Fact]
         public void Dispose_InConsistentState_ShouldNotThrowException()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -314,10 +316,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
             contextManager.CleanupStepContext();
 
-            Assert.DoesNotThrow(() => ((IDisposable)contextManager).Dispose());
+
+            Action disposeAction = () => ((IDisposable)contextManager).Dispose();
+
+            disposeAction.ShouldNotThrow();
         }
 
-        [Test]
+        [Fact]
         public void StepInfoConstructor_WithValidValues_ShouldReportThoseValuesCorrectly()
         {
             var table = new Table("header1","header2");

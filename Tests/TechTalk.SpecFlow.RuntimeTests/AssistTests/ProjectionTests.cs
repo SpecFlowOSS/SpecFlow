@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class ProjectionTests
     {
         private SetComparisonTestObject testInstance;
@@ -17,8 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         private Guid testGuid1 = Guid.NewGuid();
         private Guid testGuid2 = Guid.NewGuid();
 
-        [SetUp]
-        public void SetUp()
+        public ProjectionTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 };
         }
 
-        [Test]
+        [Fact]
         public void Table_with_all_columns_same_rows_and_order_should_be_sequence_equal_to_collection()
         {
             var table = CreateTableWithAllColumns();
@@ -51,10 +51,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var setProjection = testCollection.ToProjection();
             var tableProjection = table.ToProjection<SetComparisonTestObject>();
-            Assert.IsTrue(tableProjection.SequenceEqual(setProjection));
+
+            tableProjection.Should().BeEquivalentTo(setProjection);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_all_columns_different_case_should_be_sequence_equal_to_collection()
         {
             var table = CreateTableWithAllColumns();
@@ -66,10 +67,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var setProjection = testCollection.ToProjection();
             var tableProjection = table.ToProjection<SetComparisonTestObject>();
-            Assert.IsTrue(tableProjection.SequenceEqual(setProjection));
+            tableProjection.Should().BeEquivalentTo(setProjection);
+
         }
 
-        [Test]
+        [Fact]
         public void Table_with_all_columns_same_rows_but_different_order_should_not_be_sequence_equal_to_collection()
         {
             var table = CreateTableWithAllColumns();
@@ -78,10 +80,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjection<SetComparisonTestObject>();
             var setProjection = testCollection.ToProjection();
-            Assert.IsFalse(tableProjection.SequenceEqual(setProjection));
+            tableProjection.Should().BeEquivalentTo(setProjection);
+
         }
 
-        [Test]
+        [Fact]
         public void Intersection_of_matching_table_and_collection_should_have_the_size_of_the_table()
         {
             var table = CreateTableWithAllColumns();
@@ -90,10 +93,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjection<SetComparisonTestObject>();
             var setProjection = testCollection.ToProjection();
-            Assert.AreEqual(table.RowCount, tableProjection.Intersect(setProjection).Count());
+            
+            tableProjection.Intersect(setProjection).Count().Should().Be(table.RowCount);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_extra_columns_should_not_match_collection()
         {
             var table = CreateTableWithAllColumns();
@@ -105,10 +109,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjectionOfSet(query);
             var queryProjection = query.ToProjection();
-            Assert.AreEqual(table.RowCount, tableProjection.Except(queryProjection).Count());
+
+            tableProjection.Except(queryProjection).Count().Should().Be(table.RowCount);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_subset_of_columns_with_matching_values_should_match_collection()
         {
             var table = CreateTableWithSubsetOfColumns();
@@ -120,10 +125,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjectionOfSet(query);
             var queryProjection = query.ToProjection();
-            Assert.AreEqual(0, tableProjection.Except(queryProjection).Count());
+
+            tableProjection.Except(queryProjection).Count().Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_subset_of_columns_with_matching_values_and_order_should_be_sequence_equal_to_collection()
         {
             var table = CreateTableWithSubsetOfColumns();
@@ -135,10 +141,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjectionOfSet(query);
             var queryProjection = query.ToProjection();
-            Assert.IsTrue(tableProjection.SequenceEqual(queryProjection));
+
+            queryProjection.Should().BeEquivalentTo(tableProjection);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_all_columns_same_rows_and_order_should_be_sequence_equal_to_queryable_collection()
         {
             var table = CreateTableWithAllColumns();
@@ -149,10 +156,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjectionOfSet(query);
             var queryProjection = query.ToProjection();
-            Assert.IsTrue(tableProjection.SequenceEqual(queryProjection));
+
+            queryProjection.Should().BeEquivalentTo(tableProjection);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_all_columns_same_rows_and_order_should_be_sequence_equal_to_list()
         {
             var table = CreateTableWithAllColumns();
@@ -163,30 +171,33 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjectionOfSet(query);
             var queryProjection = query.ToProjection();
-            Assert.IsTrue(tableProjection.SequenceEqual(queryProjection));
+
+            queryProjection.Should().BeEquivalentTo(tableProjection);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_single_element_and_all_columns_should_be_equal_to_matching_instance()
         {
             var table = CreateTableWithAllColumns();
             table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
 
             var tableProjection = table.ToProjection<SetComparisonTestObject>();
-            Assert.AreEqual(tableProjection, testInstance);
+
+            tableProjection.First().Should().Be(testInstance);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_single_element_and_all_columns_should_not_be_equal_to_unmatching_instance()
         {
             var table = CreateTableWithAllColumns();
             table.AddRow(DateTime.Today.ToString(), Guid.NewGuid().ToString(), 1.ToString(), "b");
 
             var tableProjection = table.ToProjection<SetComparisonTestObject>();
-            Assert.AreNotEqual(tableProjection, testInstance);
+            
+            testInstance.Should().NotBe(tableProjection);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_subset_of_columns_should_be_equal_to_matching_instance()
         {
             var table = CreateTableWithSubsetOfColumns();
@@ -195,10 +206,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var instance = new { IntProperty = testInstance.IntProperty, StringProperty = testInstance.StringProperty };
 
             var tableProjection = table.ToProjectionOfInstance(instance);
-            Assert.AreEqual(tableProjection, instance);
+
+            tableProjection.First().Should().Be(instance);
         }
 
-        [Test]
+        [Fact]
         public void Table_with_subset_of_columns_should_not_be_equal_to_unmatching_instance()
         {
             var table = CreateTableWithSubsetOfColumns();
@@ -207,7 +219,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var instance = new { IntProperty = testInstance.IntProperty, StringProperty = testInstance.StringProperty };
 
             var tableProjection = table.ToProjectionOfInstance(instance);
-            Assert.AreNotEqual(tableProjection, instance);
+
+            tableProjection.First().Should().NotBe(instance);
         }
 
         private Table CreateTableWithAllColumns()
@@ -221,3 +234,4 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
     }
 }
+

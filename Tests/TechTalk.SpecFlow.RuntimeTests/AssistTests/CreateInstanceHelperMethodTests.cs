@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
+
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class CreateInstanceHelperMethodTests
     {
-        [SetUp]
-        public void TestSetup()
+        public CreateInstanceHelperMethodTests()
         {
             // this is required, because the tests depend on parsing decimals with the en-US culture
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
         }
 
-        [Test]
+        [Fact]
         public void Create_instance_will_return_an_instance_of_T()
         {
             var table = new Table("Field", "Value");
@@ -26,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Create_instance_will_set_values_with_a_vertical_table_when_there_is_one_row_and_one_column()
         {
             var table = new Table("FirstName");
@@ -36,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.FirstName.Should().Be("Howard");
         }
 
-        [Test]
+        [Fact]
         public void When_one_row_exists_with_two_headers_and_the_first_row_value_is_not_a_property_then_treat_as_horizontal_table()
         {
             var table = new Table("AnotherValue", "YetAnotherValue");
@@ -47,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.YetAnotherValue.Should().Be("y");
         }
 
-        [Test]
+        [Fact]
         public void When_one_row_exists_with_two_headers_and_the_first_row_value_is_a_property_then_treat_as_a_vertical_table()
         {
             var table = new Table("AnotherValue", "YetAnotherValue");
@@ -58,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.YetAnotherValue.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void When_one_row_exists_with_two_headers_and_the_first_row_value_is_a_property_without_perfect_name_match_then_treat_as_a_vertical_table()
         {
             var table = new Table("AnotherValue", "YetAnotherValue");
@@ -69,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.YetAnotherValue.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void When_one_row_exists_with_three_headers_then_treat_as_horizontal_table()
         {
             var table = new Table("Field", "Value", "AnotherValue");
@@ -89,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             public string YetAnotherValue { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void Sets_string_values()
         {
             var table = new Table("Field", "Value");
@@ -102,7 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.LastName.Should().Be("Galt");
         }
 
-        [Test]
+        [Fact]
         public void Sets_int_values()
         {
             var table = new Table("Field", "Value");
@@ -113,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NumberOfIdeas.Should().Be(3);
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_int_values()
         {
             var table = new Table("Field", "Value");
@@ -124,7 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableInt.Should().Be(9);
         }
 
-        [Test]
+        [Fact]
         public void Sets_uint_values()
         {
             var table = new Table("Field", "Value");
@@ -135,7 +136,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.UnsignedInt.Should().Be(3);
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_uint_values()
         {
             var table = new Table("Field", "Value");
@@ -146,7 +147,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableUnsignedInt.Should().Be((uint?)9);
         }
 
-        [Test]
+        [Fact]
         public void Sets_decimal_values()
         {
             var table = new Table("Field", "Value");
@@ -157,7 +158,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.Salary.Should().Be(9.78M);
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_decimal_values()
         {
             var table = new Table("Field", "Value");
@@ -168,7 +169,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableDecimal.Should().Be(19.78M);
         }
 
-        [Test]
+        [Fact]
         public void Sets_bool_values()
         {
             var table = new Table("Field", "Value");
@@ -179,7 +180,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.IsRational.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_bool_values()
         {
             var table = new Table("Field", "Value");
@@ -190,7 +191,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableBool.Should().Be(true);
         }
 
-        [Test]
+        [Fact]
         public void Sets_datetime_values()
         {
             var table = new Table("Field", "Value");
@@ -201,7 +202,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.BirthDate.Should().Be(new DateTime(2010, 12, 31));
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_datetime_values()
         {
             var table = new Table("Field", "Value");
@@ -212,7 +213,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableDateTime.Should().Be(new DateTime(2010, 11, 30));
         }
 
-        [Test]
+        [Fact]
         public void Sets_double_values()
         {
             var table = new Table("Field", "Value");
@@ -223,7 +224,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.Double.Should().Be(4.235);
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_double_values()
         {
             var table = new Table("Field", "Value");
@@ -234,7 +235,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableDouble.Should().Be(7.218);
         }
 
-        [Test]
+        [Fact]
         public void Sets_Guid_values()
         {
             var table = new Table("Field", "Value");
@@ -245,7 +246,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.GuidId.Should().Be(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_guid_values()
         {
             var table = new Table("Field", "Value");
@@ -256,7 +257,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableGuidId.Should().Be(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
         }
 
-        [Test]
+        [Fact]
         public void Sets_float_values()
         {
             var table = new Table("Field", "Value");
@@ -267,7 +268,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.Float.Should().Be(98.22F);
         }
 
-        [Test]
+        [Fact]
         public void Sets_nullable_float_values()
         {
             var table = new Table("Field", "Value");
@@ -278,7 +279,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableFloat.Should().Be(55.66F);
         }
 
-        [Test]
+        [Fact]
         public void Ignores_spaces_when_matching_enum_property_name()
         {
             var table = new Table("Field", "Value");
@@ -289,7 +290,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.ThisIsAStyle.Should().Be(Style.Soft);
         }
 
-        [Test]
+        [Fact]
         public void Ignores_casing_when_matching_enum_property_name()
         {
             var table = new Table("Field", "Value");
@@ -305,7 +306,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             public Style ThisIsAStyle { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void Replaces_special_characters_when_matching_property_names()
         {
             var table = new Table("Field", "Value");
@@ -318,7 +319,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.Prop2.Should().Be("world");
         }
 
-        [Test]
+        [Fact]
         public void Works_with_snake_case()
         {
             var table = new Table("Field", "Value");

@@ -1,14 +1,14 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class PropertyExtensionMethodsTests
     {
-        [Test]
+        [Fact]
         public void Can_get_the_property_of_an_object_through_GetPropertyValue()
         {
             const string expectedValue = "John Galt";
@@ -16,10 +16,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = new Person { FullName = expectedValue };
             var value = person.GetPropertyValue("FullName");
 
-            Assert.AreEqual(expectedValue, value);
+            Assert.Equal(expectedValue, value);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_the_property_of_an_object_even_if_the_name_has_extra_spaces()
         {
             var person = new Person {FullName = "Howard Roark"};
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .Should().Be("Howard Roark");
         }
 
-        [Test]
+        [Fact]
         public void Can_get_the_property_of_an_object_even_if_the_casing_is_wrong()
         {
             var person = new Person { FullName = "Howard Roark" };
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .Should().Be("Howard Roark");
         }
 
-        [Test]
+        [Fact]
         public void Can_set_the_value_on_the_property_through_SetPropertyValue()
         {
             const string expectedValue = "John Galt";
@@ -45,10 +45,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = new Person { FullName = "Howard Roark" };
             person.SetPropertyValue("FullName", expectedValue);
 
-            Assert.AreEqual(expectedValue, person.FullName);
+            Assert.Equal(expectedValue, person.FullName);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_the_value_on_the_property_regardless_of_spaces()
         {
             var person = new Person { FullName = "Howard Roark" };
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.FullName.Should().Be("John Galt");
         }
 
-        [Test]
+        [Fact]
         public void Can_set_the_value_on_the_property_regardless_of_casing()
         {
             var person = new Person { FullName = "Howard Roark" };

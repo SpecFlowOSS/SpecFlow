@@ -1,4 +1,4 @@
-using NUnit.Framework;
+using Xunit;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -31,10 +31,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
     }
 
-    [TestFixture]
+    
     public class StepExecutionTestsWithConversionsForTables : StepExecutionTestsBase
     {
-        [Test]
+        [Fact]
         public void ShouldCallTheUserConverterToConvertTableWithTable()
         {
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
@@ -53,11 +53,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with table", null, table);
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.Equal(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallTheUserConverterToConvertTableWithTableAndMultilineArg()
         {
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
@@ -77,11 +77,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with multiline argument and table", multiLineArg, table);
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.Equal(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallTheUserConverterToConvertTableWithTableAndMultilineArgAndParameter()
         {
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with parameter, multiline argument and table: argument", multiLineArg, table);
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.Equal(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
     }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.IO;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -17,7 +18,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     /// <summary>
     /// A test for testing cusomterized test generator provider
     /// </summary>
-    [TestFixture]
+    
     public class TestGeneratorTest
     {
         private const string SampleFeatureFile = @"
@@ -57,25 +58,25 @@ namespace TechTalk.SpecFlow.GeneratorTests
         /// <summary>
         /// Generates the scenario example tests.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateScenarioExampleTests()
         {
             var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
                 var feature = parser.Parse(reader, null);
-                Assert.IsNotNull(feature);
+                feature.Should().NotBeNull();
 
                 var sampleTestGeneratorProvider = new SimpleTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
                 CodeNamespace code = converter.GenerateUnitTestFixture(feature, null, null);
 
-                Assert.IsNotNull(code);
-
+                code.Should().NotBeNull();
+                
                 // make sure name space is changed
-                Assert.AreEqual(code.Name, SimpleTestGeneratorProvider.DefaultNameSpace);
+                Assert.Equal(code.Name, SimpleTestGeneratorProvider.DefaultNameSpace);
 
-                Assert.AreEqual(code.Types[0].Name, "SampleFeatureFileThatsGotWeirdNamesFeature");
+                Assert.Equal(code.Types[0].Name, "SampleFeatureFileThatsGotWeirdNamesFeature");
             }
         }
 
