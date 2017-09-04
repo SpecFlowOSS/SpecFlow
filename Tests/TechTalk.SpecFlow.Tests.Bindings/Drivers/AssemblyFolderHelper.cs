@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public static class AssemblyFolderHelper
     {

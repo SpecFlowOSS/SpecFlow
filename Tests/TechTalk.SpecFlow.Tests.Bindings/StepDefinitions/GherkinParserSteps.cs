@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using TechTalk.SpecFlow.Assist;
 using System.Linq;
 using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers.Parser;
+using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers.Parser;
 
-namespace TechTalk.SpecFlow.Specs.StepDefinitions
+namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
 {
     [Binding]
     public class GherkinParserSteps

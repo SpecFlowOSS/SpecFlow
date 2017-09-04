@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public abstract class NUnitTestExecutionDriverBase
     {

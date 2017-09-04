@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers;
 
-using TechTalk.SpecFlow.Specs.Drivers;
-
-namespace TechTalk.SpecFlow.Specs.StepDefinitions
+namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
 {
     [Binding]
     public sealed class BeforeScenarioHooks

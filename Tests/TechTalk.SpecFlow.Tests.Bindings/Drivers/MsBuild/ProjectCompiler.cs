@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
 using Xunit.Abstractions;
 
-namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
 {
     public class ProjectCompiler
     {

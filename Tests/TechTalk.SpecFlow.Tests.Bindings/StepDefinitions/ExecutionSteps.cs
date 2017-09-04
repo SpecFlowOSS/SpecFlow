@@ -1,8 +1,8 @@
 ﻿using System;
 using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers;
 
-namespace TechTalk.SpecFlow.Specs.StepDefinitions
+namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
 {
     [Binding]
     public class ExecutionSteps

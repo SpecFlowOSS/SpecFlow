@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
+    <AssemblyOriginatorKeyFile>../../specflow.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+
   </PropertyGroup>
 
   <ItemGroup>

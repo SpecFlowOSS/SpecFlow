@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.Specs.Drivers
+﻿namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public class FeatureFileInput : FileInput
     {

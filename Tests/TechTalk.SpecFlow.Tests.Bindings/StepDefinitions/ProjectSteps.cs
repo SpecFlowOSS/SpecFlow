@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild;
 
-namespace TechTalk.SpecFlow.Specs.StepDefinitions
+namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
 {
     [Binding]
     public class ProjectSteps

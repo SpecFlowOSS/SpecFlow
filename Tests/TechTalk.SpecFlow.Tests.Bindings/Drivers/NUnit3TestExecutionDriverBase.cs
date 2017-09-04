@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public abstract class NUnit3TestExecutionDriverBase : NUnitTestExecutionDriverBase
     {

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Newtonsoft.Json;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Configuration.JsonConfig;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public class SpecFlowJsonConfigurationDriver
     {

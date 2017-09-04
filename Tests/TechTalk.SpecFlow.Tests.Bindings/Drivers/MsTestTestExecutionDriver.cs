@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public class MsTestTestExecutionDriver
     {

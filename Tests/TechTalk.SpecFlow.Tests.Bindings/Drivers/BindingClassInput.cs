@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public class BindingClassInput : FileInput
     {

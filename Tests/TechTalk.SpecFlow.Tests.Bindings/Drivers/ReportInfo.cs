@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using FluentAssertions;
-using Xunit;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public class ReportInfo
     {

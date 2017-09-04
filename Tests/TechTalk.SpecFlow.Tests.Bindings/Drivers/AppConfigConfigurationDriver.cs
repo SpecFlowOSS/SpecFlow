@@ -2,10 +2,9 @@
 using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.Templates;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers.Templates;
 
-namespace TechTalk.SpecFlow.Specs.Drivers
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers
 {
     public class AppConfigConfigurationDriver
     {

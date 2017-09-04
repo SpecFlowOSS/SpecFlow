@@ -1,12 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using TechTalk.SpecFlow.Reporting.StepDefinitionReport;
-using TechTalk.SpecFlow.Specs.Drivers;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers;
 
-namespace TechTalk.SpecFlow.Specs.StepDefinitions
+namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
 {
     [Binding]
     public class ReportingSteps 

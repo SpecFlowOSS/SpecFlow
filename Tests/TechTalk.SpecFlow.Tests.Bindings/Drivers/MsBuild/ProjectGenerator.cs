@@ -5,10 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.Build.Evaluation;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.Templates;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers.Templates;
 
-namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
 {
     public class ProjectGenerator
     {

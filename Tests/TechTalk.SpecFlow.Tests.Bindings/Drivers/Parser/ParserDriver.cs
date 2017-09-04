@@ -7,12 +7,11 @@ using System.Text;
 using System.Xml.Serialization;
 using FluentAssertions;
 using Gherkin;
-using Xunit;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Compatibility;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
-namespace TechTalk.SpecFlow.Specs.Drivers.Parser
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.Parser
 {
     public class ParserDriver
     {

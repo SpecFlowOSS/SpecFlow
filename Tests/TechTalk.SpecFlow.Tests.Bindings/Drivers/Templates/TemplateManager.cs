@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace TechTalk.SpecFlow.Specs.Drivers.Templates
+namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.Templates
 {
     public class TemplateManager
     {
