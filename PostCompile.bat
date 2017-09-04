@@ -56,7 +56,7 @@ xcopy "%USERPROFILE%\.nuget\packages\NUnit.ConsoleRunner\3.7.0\*" "%copyTargetDi
 xcopy "%USERPROFILE%\.nuget\packages\NUnit\3.8.1\*" "%copyTargetDir%\NUnit3\" /s /y
 
 
-echo nunit-v2-result-writer.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
+echo nunit-v2-result-writer.dll > "%copyTargetDir%\NUnit3-Runner\tools\.addins"
 echo vs-project-loader.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
 echo nunit.v2.driver.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
 echo nunit-project-loader.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
