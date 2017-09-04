@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public interface IConfigurationLoader
     {
-        SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder);
+        SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, ISpecFlowConfigurationHolder specFlowConfigurationHolder);
 
         SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration);
 
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Configuration
             }
         }
 
-        public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder)
+        public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, ISpecFlowConfigurationHolder specFlowConfigurationHolder)
         {
             switch (specFlowConfigurationHolder.ConfigSource)
             {

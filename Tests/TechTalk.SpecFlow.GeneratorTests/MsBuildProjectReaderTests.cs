@@ -9,13 +9,12 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    //If this tests are failing in R# TestRunner, disable shadow copy of assemblies
     [TestFixture]
     public class MsBuildProjectReaderTests
     {
         private void Should_parse_csproj_file_correctly(string csprojPath, string language, string assemblyName, string rootNamespace, string projectName)
         {
-            var directoryName = Path.GetDirectoryName(GetType().Assembly.Location);
+            var directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath);
             var projectFilePath = Path.Combine(directoryName, csprojPath);
             var specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath);
 

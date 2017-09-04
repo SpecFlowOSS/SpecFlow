@@ -13,6 +13,8 @@ namespace TechTalk.SpecFlow
 {
     public interface ITestRunnerManager : IDisposable
     {
+        Assembly TestAssembly { get; }
+        Assembly[] BindingAssemblies { get; }
         bool IsMultiThreaded { get; }
         ITestRunner GetTestRunner(int threadId);
         void Initialize(Assembly testAssembly);
@@ -25,10 +27,12 @@ namespace TechTalk.SpecFlow
         protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
         protected readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
-        private Assembly testAssembly;
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
         private readonly object syncRoot = new object();
         private bool isTestRunInitialized;
+
+        public Assembly TestAssembly { get; private set; }
+        public Assembly[] BindingAssemblies { get; private set; }
 
         public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
 
@@ -59,8 +63,8 @@ namespace TechTalk.SpecFlow
 
         protected virtual void InitializeBindingRegistry(ITestRunner testRunner)
         {
-            var bindingAssemblies = GetBindingAssemblies();
-            BuildBindingRegistry(bindingAssemblies);
+            BindingAssemblies = GetBindingAssemblies();
+            BuildBindingRegistry(BindingAssemblies);
 
             testRunner.OnTestRunStart();
 
@@ -71,14 +75,14 @@ namespace TechTalk.SpecFlow
 #endif
         }
 
-        protected virtual List<Assembly> GetBindingAssemblies()
+        protected virtual Assembly[] GetBindingAssemblies()
         {
-            var bindingAssemblies = new List<Assembly> {testAssembly};
+            var bindingAssemblies = new List<Assembly> { TestAssembly };
 
             var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
                 specFlowConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
-            return bindingAssemblies;
+            return bindingAssemblies.ToArray();
         }
 
         protected virtual void BuildBindingRegistry(IEnumerable<Assembly> bindingAssemblies)
@@ -109,7 +113,7 @@ namespace TechTalk.SpecFlow
 
         public void Initialize(Assembly assignedTestAssembly)
         {
-            testAssembly = assignedTestAssembly;
+            TestAssembly = assignedTestAssembly;
         }
 
         public virtual ITestRunner GetTestRunner(int threadId)
@@ -221,8 +225,8 @@ namespace TechTalk.SpecFlow
         {
             lock (testRunnerManagerRegistrySyncRoot)
             {
-                if (testRunnerManagerRegistry.ContainsKey(testRunnerManager.testAssembly))
-                    testRunnerManagerRegistry.Remove(testRunnerManager.testAssembly);
+                if (testRunnerManagerRegistry.ContainsKey(testRunnerManager.TestAssembly))
+                    testRunnerManagerRegistry.Remove(testRunnerManager.TestAssembly);
             }
         }
 

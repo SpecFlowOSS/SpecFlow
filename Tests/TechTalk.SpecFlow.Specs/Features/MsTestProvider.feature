@@ -40,6 +40,26 @@ Scenario: Should handle scenario outlines
 		| Succeeded |
 		| 2         |
 
+Scenario: Should be able to access TestContext in Steps
+Given there is a SpecFlow project
+And the project is configured to use the MsTest provider
+And a scenario 'Simple Scenario' as
+		"""
+		When I do something
+		"""	
+And the following step definition
+         """
+         [When(@"I do something")]
+		 public void WhenIDoSomething()
+		 {
+			System.Console.WriteLine(ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
+		 }
+         """
+		 When I execute the tests with MsTest
+	Then the execution summary should contain
+		| Succeeded |
+		| 1         |
+
 @config
 Scenario: Should be able to specify MsTest provider in the configuration
 	Given there is a SpecFlow project
@@ -85,6 +105,57 @@ Scenario: Should be able to deploy files
 			Then the file 'DeploymentItemTestFile.txt' exists
          """
 	And there is a content file 'DeploymentItemTestFile.txt' in the project as
+		"""
+		This is a deployment item file
+		"""
+	And the specflow configuration is
+		"""
+		<specFlow>
+			<unitTestProvider name="MsTest"/>
+		</specFlow>
+		"""
+	And there is a test settings file 'Local.testsettings'
+		"""
+		<?xml version="1.0" encoding="UTF-8"?>
+		<TestSettings
+		  id="b8f2810b-cd53-4519-8b18-d0e599219d54"
+		  name="Local"
+		  enableDefaultDataCollectors="false"
+		  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+		  <Deployment enabled="true" />
+		</TestSettings>
+		"""
+	When I execute the tests with MsTest
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |
+
+@config
+Scenario: Should be able to deploy files to specific folder
+    Given there is a SpecFlow project
+	And the following binding class
+        """
+		using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+		[Binding]
+		public class DeploymentItemSteps
+		{
+			[Then(@"the file '(.*)' exists")]
+			public void ThenTheFileExists(string fileName)
+			{
+			    Assert.IsTrue(File.Exists(fileName));
+			}
+		}
+        """
+	And there is a feature file in the project as
+         """
+		 @MsTest:DeploymentItem:Resources\DeploymentItemTestFile.txt:Data
+		 Feature: Deployment Item Feature
+	
+		 Scenario: Deployment Item Scenario
+			Then the file 'Data\DeploymentItemTestFile.txt' exists
+         """
+	And there is a content file 'Resources\DeploymentItemTestFile.txt' in the project as
 		"""
 		This is a deployment item file
 		"""

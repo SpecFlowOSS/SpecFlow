@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Configuration.AppConfig;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
@@ -34,6 +34,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         {
             configuration.SpecFlowConfiguration = _configurationLoader.Update(configuration.SpecFlowConfiguration, specFlowConfigSection);
         }
-        
+
     }
 }

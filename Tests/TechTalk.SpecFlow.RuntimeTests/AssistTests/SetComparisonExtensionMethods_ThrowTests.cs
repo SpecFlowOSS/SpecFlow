@@ -8,8 +8,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
-    public class SetComparisonExtensionMethods_ThrowTests
+    public abstract class SetComparisonExtensionMethods_ThrowTests
     {
         [SetUp]
         public void SetUp()
@@ -271,26 +270,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Does_not_throw_exception_if_all_items_match_but_not_in_the_same_order()
-        {
-            var table = new Table("StringProperty");
-            table.AddRow("relish");
-            table.AddRow("mustard");
-            table.AddRow("ketchup");
-
-            var items = new[]
-                            {
-                                new SetComparisonTestObject {StringProperty = "ketchup"},
-                                new SetComparisonTestObject {StringProperty = "relish"},
-                                new SetComparisonTestObject {StringProperty = "mustard"}
-                            };
-
-            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
-
-            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
-        }
-
-        [Test]
         public void Throws_an_exception_if_items_do_not_match_the_correct_number_of_times()
         {
             var table = new Table("StringProperty");
@@ -345,12 +324,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        private static ComparisonTestResult DetermineIfExceptionWasThrownByComparingThese(Table table, SetComparisonTestObject[] items)
+        protected ComparisonTestResult DetermineIfExceptionWasThrownByComparingThese(Table table, SetComparisonTestObject[] items)
         {
             var result = new ComparisonTestResult { ExceptionWasThrown = false };
             try
             {
-                table.CompareToSet(items);
+                CallComparison(table, items);
             }
             catch (ComparisonException ex)
             {
@@ -358,6 +337,66 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 result.ExceptionMessage = ex.Message;
             }
             return result;
+        }
+
+        protected abstract void CallComparison(Table table, SetComparisonTestObject[] items);
+    }
+
+    [TestFixture]
+    public class SetComparisonExtensionMethods_OrderInsensitive_ThrowTests : SetComparisonExtensionMethods_ThrowTests
+    {
+        [Test]
+        public void Does_not_throw_exception_if_all_items_match_but_not_in_the_same_order()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("relish");
+            table.AddRow("mustard");
+            table.AddRow("ketchup");
+
+            var items = new[]
+                            {
+                                new SetComparisonTestObject {StringProperty = "ketchup"},
+                                new SetComparisonTestObject {StringProperty = "relish"},
+                                new SetComparisonTestObject {StringProperty = "mustard"}
+                            };
+
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        {
+            table.CompareToSet(items);
+        }
+    }
+
+    [TestFixture]
+    public class SetComparisonExtensionMethods_OrderSensitive_ThrowTests : SetComparisonExtensionMethods_ThrowTests
+    {
+        [Test]
+        public void Throws_an_exception_if_all_items_match_but_not_in_the_same_order()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("relish");
+            table.AddRow("mustard");
+            table.AddRow("ketchup");
+
+            var items = new[]
+                            {
+                                new SetComparisonTestObject {StringProperty = "ketchup"},
+                                new SetComparisonTestObject {StringProperty = "relish"},
+                                new SetComparisonTestObject {StringProperty = "mustard"}
+                            };
+
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
+        }
+
+        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        {
+            table.CompareToSet(items, sequentialEquality: true);
         }
     }
 }

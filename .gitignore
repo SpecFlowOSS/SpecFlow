@@ -40,3 +40,4 @@ TechTalk.SpecFlow.sln.GhostDoc.xml
 .vs/*
 .vscode/*
 Features.Generated/
+GitExtensions.settings.backup
