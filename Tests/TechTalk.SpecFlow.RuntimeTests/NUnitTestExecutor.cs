@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public static void ExecuteNUnitTests(object test, Func<Exception, bool> onError)
         {
             // fixture setup
-            ExecuteWithAttribute(test, typeof(TestFixtureSetUpAttribute));
+            ExecuteWithAttribute(test, typeof(OneTimeSetUpAttribute));
 
             foreach (var testMethod in GetMethodsWithAttribute(test, typeof(TestAttribute)))
             {
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // fixture teardown
-            ExecuteWithAttribute(test, typeof(TestFixtureTearDownAttribute));
+            ExecuteWithAttribute(test, typeof(OneTimeTearDownAttribute));
         }
 
         private static void InvokeMethod(object test, MethodInfo testMethod)
