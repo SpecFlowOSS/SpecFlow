@@ -6,12 +6,21 @@
     <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>TechTalk.SpecFlow</PackageId>
+    <PackageId>SpecFlow</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <Authors>TechTalk</Authors>
+    <Company>TechTalk</Company>
+    <Product />
+    <PackageLicenseUrl>http://go.specflow.org/license</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>
+    <PackageIconUrl>http://go.specflow.org/specflow-nuget-icon</PackageIconUrl>
+    <RepositoryUrl>https://github.com/techtalk/SpecFlow</RepositoryUrl>
+    <PackageTags>specflow bdd gherkin cucumber</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

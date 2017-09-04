@@ -9,41 +9,11 @@
      <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
    </ItemGroup>
 
- 
-  <ItemGroup>
-    <None Include=".build\build.props" />
-    <None Include=".build\build.targets" />
-    <None Include="Properties\build.props" />
-    <None Include="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec.props" />
-    <None Include="SpecFlow.MsTest\SpecFlow.MsTest.nuspec.props" />
-    <None Include="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec.props" />
-    <None Include="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
-    <None Include="SpecFlow.NUnit\SpecFlow.NUnit.nuspec.props" />
-    <None Include="SpecFlow.xUnit\SpecFlow.xUnit.nuspec.props" />
-    <None Include="SpecFlow\App.config.transform" />
-    <None Include="SpecFlow.MsTest\App.config.transform" />
-    <None Include="SpecFlow.NUnit.Runners\Install.ps1" />
-    <None Include="SpecFlow.NUnit.Runners\Uninstall.ps1" />
-    <None Include="SpecFlow.NUnit\App.config.transform" />
-    <None Include="Properties\MSBNuget.props" />
-    <None Include="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SpecFlow.MsTest\SpecFlow.MsTest.nuspec" />
-    <None Include="SpecFlow.NUnit\SpecFlow.NUnit.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SpecFlow.xUnit\SpecFlow.xUnit.nuspec" />
-    <None Include="SpecFlow\SpecFlow.nuspec" />
-    <None Include="SpecFlow\SpecFlow.nuspec.props" />
-    <None Include="SpecFlow.xUnit\App.config.transform" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
-  </ItemGroup>
+   <ItemGroup>
+     <None Include=".build\build.props" />
+     <None Include=".build\build.targets" />
+   </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="MSBuild.MSBBuildConvention" Version="2.0.0" PrivateAssets="All" />
@@ -52,9 +22,6 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SpecFlowBinPackage\SpecFlowBinPackage.csproj" />
-  </ItemGroup>
   
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
