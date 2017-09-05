@@ -18,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="MSBuild.MSBBuildConvention" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="MSBuild.MSBNuget" Version="1.1.2-pre04" PrivateAssets="All" />
-    <PackageReference Include="NuGet.CommandLine" Version="2.8.3" PrivateAssets="All" />
+    <PackageReference Include="NuGet.CommandLine" Version="4.3.0" PrivateAssets="All" />
 
   </ItemGroup>
 

@@ -41,8 +41,8 @@ namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
         [Given(@"there is a (.+) SpecFlow project with a reference to the external library")]
         public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string language)
         {
-            var project = projectGenerator.GenerateProject(inputProjectDriver);
-            projectCompiler.Compile(project);
+            var projectFile = projectGenerator.GenerateProject(inputProjectDriver);
+            projectCompiler.Compile(projectFile);
 
             List<string> assembliesToReference = new List<string>();
 

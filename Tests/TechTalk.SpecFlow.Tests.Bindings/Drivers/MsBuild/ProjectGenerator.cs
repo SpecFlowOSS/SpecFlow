@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
             }
         }
 
-        public Project GenerateProject(InputProjectDriver inputProjectDriver)
+        public string GenerateProject(InputProjectDriver inputProjectDriver)
         {
             string projectFileName = string.Format("{0}_{1}.{2}", inputProjectDriver.ProjectName, Guid.NewGuid().ToString("N"), GetProjectFileExtension(inputProjectDriver.Language));
 
@@ -41,24 +41,26 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
 
             EnsureCompilationFolder(inputProjectDriver.CompilationFolder);
 
-            Project project = CreateProject(inputProjectDriver, projectFileName);
+            string projectPath = CreateProject(inputProjectDriver, projectFileName);
 
-            AddAppConfig(inputProjectDriver, project);
+            AddAppConfig(inputProjectDriver);
 
             foreach (var bindingClassInput in inputProjectDriver.BindingClasses)
-                AddBindingClass(inputProjectDriver, project, bindingClassInput);
+            {
+                AddBindingClass(inputProjectDriver, bindingClassInput);
+            }
 
             foreach (var featureFileInput in inputProjectDriver.FeatureFiles)
             {
                 string outputPath = Path.Combine(inputProjectDriver.CompilationFolder, featureFileInput.ProjectRelativePath);
                 File.WriteAllText(outputPath, featureFileInput.Content, Encoding.UTF8);
-                var generatedFile = featureFileInput.ProjectRelativePath + "." + inputProjectDriver.CodeFileExtension;
-                project.AddItem("None", featureFileInput.ProjectRelativePath, new[]
-                                                                                  {
-                                                                                      new KeyValuePair<string, string>("Generator", "SpecFlowSingleFileGenerator"),
-                                                                                      new KeyValuePair<string, string>("LastGenOutput", generatedFile),
-                                                                                  });
-                project.AddItem("Compile", generatedFile);
+                //var generatedFile = featureFileInput.ProjectRelativePath + "." + inputProjectDriver.CodeFileExtension;
+                //project.AddItem("None", featureFileInput.ProjectRelativePath, new[]
+                //                                                                  {
+                //                                                                      new KeyValuePair<string, string>("Generator", "SpecFlowSingleFileGenerator"),
+                //                                                                      new KeyValuePair<string, string>("LastGenOutput", generatedFile),
+                //                                                                  });
+                //project.AddItem("Compile", generatedFile);
             }
 
             foreach (var contentFileInput in inputProjectDriver.ContentFiles)
@@ -66,35 +68,34 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
                 string outputPath = Path.Combine(inputProjectDriver.CompilationFolder, contentFileInput.ProjectRelativePath);
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
                 File.WriteAllText(outputPath, contentFileInput.Content, Encoding.UTF8);
-                project.AddItem("Content", contentFileInput.ProjectRelativePath, new[]
-                                                                                  {
-                                                                                      new KeyValuePair<string, string>("CopyToOutputDirectory", "PreserveNewest"),
-                                                                                  });
+                //project.AddItem("Content", contentFileInput.ProjectRelativePath, new[]
+                //                                                                  {
+                //                                                                      new KeyValuePair<string, string>("CopyToOutputDirectory", "PreserveNewest"),
+                //                                                                  });
             }
 
-
-            AddReference(inputProjectDriver, project, "Newtonsoft.Json.dll");
+            
             foreach (var reference in inputProjectDriver.References.Concat(inputProjectDriver.AppConfigConfigurationDriver.GetAdditionalReferences()))
-                AddReference(inputProjectDriver, project, reference);
+            {
+                AddReference(inputProjectDriver, reference);
+            }
 
-            project.Save();
-
-            return project;
+            return projectPath;
         }
 
-        private void AddReference(InputProjectDriver inputProjectDriver, Project project, string reference)
+        private void AddReference(InputProjectDriver inputProjectDriver, string reference)
         {
             string referenceFullPath = Path.GetFullPath(Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), reference));
             string assemblyName = Path.GetFileNameWithoutExtension(referenceFullPath);
             Debug.Assert(assemblyName != null);
 
-            project.AddItem("Reference", assemblyName, new[]
-                                                           {
-                                                               new KeyValuePair<string, string>("HintPath", referenceFullPath),
-                                                           });
+            //project.AddItem("Reference", assemblyName, new[]
+            //                                               {
+            //                                                   new KeyValuePair<string, string>("HintPath", referenceFullPath),
+            //                                               });
         }
 
-        private void AddBindingClass(InputProjectDriver inputProjectDriver, Project project, BindingClassInput bindingClassInput)
+        private void AddBindingClass(InputProjectDriver inputProjectDriver, BindingClassInput bindingClassInput)
         {
             if (bindingClassInput.RawClass != null && bindingClassInput.RawClass.Contains("[assembly:"))
             {
@@ -117,7 +118,7 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
                                                                                         { "Bindings", GetBindingsCode(bindingClassInput, inputProjectDriver) },
                                                                                     });
             }
-            project.AddItem("Compile", bindingClassInput.ProjectRelativePath);
+            //project.AddItem("Compile", bindingClassInput.ProjectRelativePath);
         }
 
         private string GetBindingsCode(BindingClassInput bindingClassInput, InputProjectDriver inputProjectDriver)
@@ -163,20 +164,20 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
             return result.ToString();
         }
 
-        private void AddAppConfig(InputProjectDriver inputProjectDriver, Project project)
+        private void AddAppConfig(InputProjectDriver inputProjectDriver)
         {
             inputProjectDriver.AppConfigConfigurationDriver.SaveConfigurationTo(Path.Combine(inputProjectDriver.CompilationFolder, "App.config"));
-            project.AddItem("None", "App.config");
+            //project.AddItem("None", "App.config");
 
             if (inputProjectDriver.SpecFlowJsonConfigurationDriver.IsUsed)
             {
                 inputProjectDriver.SpecFlowJsonConfigurationDriver.Save(Path.Combine(inputProjectDriver.CompilationFolder, "specflow.json"));
-                IEnumerable<KeyValuePair<string, string>> metadata = new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("Link", "specflow.json"),
-                    new KeyValuePair<string, string>("CopyToOutputDirectory", "Always")
-                };
-                var projectItems = project.AddItem("None", "specflow.json", metadata );
+                //IEnumerable<KeyValuePair<string, string>> metadata = new List<KeyValuePair<string, string>>()
+                //{
+                //    new KeyValuePair<string, string>("Link", "specflow.json"),
+                //    new KeyValuePair<string, string>("CopyToOutputDirectory", "Always")
+                //};
+                //var projectItems = project.AddItem("None", "specflow.json", metadata );
                 
             }
         }
@@ -196,7 +197,7 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
             return outputPath;
         }
 
-        private Project CreateProject(InputProjectDriver inputProjectDriver, string outputFileName)
+        private string CreateProject(InputProjectDriver inputProjectDriver, string outputFileName)
         {
             // the MsBuild global collection caches the project file, so we need to generate a unique project file name.
 
@@ -210,8 +211,10 @@ namespace TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild
 
             inputProjectDriver.ProjectFilePath = projectFileName;
 
-            ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
-            return new Project(projectFileName);
+            //ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
+            //return new Project(projectFileName);
+
+            return Path.Combine(inputProjectDriver.CompilationFolder, projectFileName);
         }
 
         private void EnsureCompilationFolder(string compilationFolder)
