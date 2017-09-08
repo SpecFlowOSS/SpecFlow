@@ -23,7 +23,10 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="TechTalk.SpecFlow">
-      <HintPath>{SpecFlowRoot}\lib\TechTalk.SpecFlow.dll</HintPath>
+      <HintPath>{LibRoot}\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="TechTalk.SpecFlow.Xunit">
+      <HintPath>{LibRoot}\TechTalk.SpecFlow.Xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
 

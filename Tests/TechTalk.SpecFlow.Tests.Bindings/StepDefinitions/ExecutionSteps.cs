@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Tests.Bindings.StepDefinitions
             configurationDriver.UnitTestProviderName.Should().Be("NUnit");
 
             projectSteps.EnsureCompiled();
-            nUnit3TestExecutionDriver.Execute();
+            xUnitTestExecutionDriver.Execute();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
