@@ -431,7 +431,7 @@ namespace BoDi
                 var targetType = genericArguments[1];
                 var result = (IDictionary)Activator.CreateInstance(typeof (Dictionary<,>).MakeGenericType(genericArguments));
 
-                foreach (var namedRegistration in container.registrations.Where(r => r.Key.Name != null && r.Key.Type == targetType).Select(r => r.Key))
+                foreach (var namedRegistration in container.registrations.Where(r => r.Key.Name != null && r.Key.Type == targetType).Select(r => r.Key).ToList())
                 {
                     var convertedKey = ChangeType(namedRegistration.Name, keyType);
                     Debug.Assert(convertedKey != null);
