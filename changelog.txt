@@ -1,4 +1,8 @@
-2.2.1 - 2017-??-??
+2.2.2 - 2017-??-??
+New Features:
++ Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933
+
+2.2.1 - 2017-09-12
 
 New Features:
 + Access MSTest's TestContext property via ScenarioContext https://github.com/techtalk/SpecFlow/pull/882
