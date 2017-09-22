@@ -43,7 +43,9 @@ Version number:
 ```
 
 ### Repro Project
-<!-- PLEASE INCLUDE A LINK TO A PROJECT THAT DEMONSTRATES THE ISSUE YOU ARE REPORTING, IF POSSIBLE -->
+<!-- PLEASE INCLUDE A LINK TO A PROJECT THAT DEMONSTRATES THE ISSUE YOU ARE REPORTING, IF POSSIBLE 
+For information on how to include a useful repro, refer to https://stackoverflow.com/help/mcve
+-->
 
 ### Issue Description
 <!-- PLEASE PROVIDE AS MUCH INFORMATION AS POSSIBLE ON THE ISSUE -->
