@@ -255,8 +255,9 @@
   </xsl:template>
   
   <xsl:template name="html-copy-step-to-clipboard-script">
-    <script>
+    <xsl:text disable-output-escaping="yes">
       <![CDATA[
+        <script>
           function getInnerText(elm)
           {
             if (elm.textContent)
@@ -316,8 +317,10 @@
             }
             return tableSource;
           }
-          ]]>
-    </script>
+
+        </script>
+      ]]>
+    </xsl:text>
   </xsl:template>
 
   <xsl:template name="html-body-header">
