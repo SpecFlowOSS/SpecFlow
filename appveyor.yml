@@ -1,5 +1,7 @@
 version: build{build}
 
+image: Visual Studio 2017
+
 branches:
   only:
   - master

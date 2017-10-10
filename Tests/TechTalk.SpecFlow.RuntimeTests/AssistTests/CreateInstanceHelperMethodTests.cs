@@ -331,6 +331,34 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.this_is_so_long.Should().Be("world");
         }
 
+        [Test]
+        public void Works_with_tuples()
+        {
+            var table = new Table("PropertyOne", "PropertyTwo", "PropertyThree");
+            table.AddRow("Look at me", "hello", "999");
+
+            var test = table.CreateInstance<(string one, string two, int three)>();
+
+            test.one.Should().Be("Look at me");
+            test.two.Should().Be("hello");
+            test.three.Should().Be(999);
+        }
+
+        [Test]
+        public void Works_with_tuples_vertical_format()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("One", "hello");
+            table.AddRow("Two", "world");
+            table.AddRow("Three", "999");
+
+            var test = table.CreateInstance<(string one, string two, int three)>();
+
+            test.one.Should().Be("hello");
+            test.two.Should().Be("world");
+            test.three.Should().Be(999);
+        }
+
         private class Prop
         {
             public string Prop1 { get; set; }
