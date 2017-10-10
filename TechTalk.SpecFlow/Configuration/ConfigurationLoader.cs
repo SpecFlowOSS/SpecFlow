@@ -78,6 +78,9 @@ namespace TechTalk.SpecFlow.Configuration
 
         public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, ISpecFlowConfigurationHolder specFlowConfigurationHolder)
         {
+            if (!specFlowConfigurationHolder.HasConfiguration)
+                return GetDefault();
+
             switch (specFlowConfigurationHolder.ConfigSource)
             {
                 case ConfigSource.Default:
