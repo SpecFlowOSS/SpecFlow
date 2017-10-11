@@ -28,7 +28,7 @@ _UpgradeReport_Files/*
 Backup*/*
 
 UpgradeLog*
-
+.vs/*
 
 packages/*
 /_NCrunch_TechTalk.SpecFlow_VS2013/StoredText
