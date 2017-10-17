@@ -2,6 +2,9 @@
 New Features:
 + Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933
 
+Fixes:
++ "copy" feature in the step definition report is not working in modern browsers https://github.com/techtalk/SpecFlow/issues/957 https://github.com/techtalk/SpecFlow/issues/915
+
 2.2.1 - 2017-09-12
 
 New Features:
