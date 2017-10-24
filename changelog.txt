@@ -1,6 +1,7 @@
 2.2.2 - 2017-??-??
 New Features:
 + Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933
++ Allow tuples (with max 7 properties) in CreateSet/CreateInstance https://github.com/techtalk/SpecFlow/pull/951 (http://specflow.org/documentation/SpecFlow-Assist-Helpers/)
 
 Fixes:
 + "copy" feature in the step definition report is not working in modern browsers https://github.com/techtalk/SpecFlow/issues/957 https://github.com/techtalk/SpecFlow/issues/915
