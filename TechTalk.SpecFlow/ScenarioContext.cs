@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow
 
         public IObjectContainer ScenarioContainer { get; }
 
-        internal TestStatus TestStatus { get; set; }
+        public TestStatus TestStatus { get; internal set; }
         internal List<string> PendingSteps { get; }
         internal List<StepInstance> MissingSteps { get; }
         internal Stopwatch Stopwatch { get; }
