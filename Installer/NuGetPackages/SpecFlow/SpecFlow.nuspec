@@ -16,6 +16,7 @@
     <tags>specflow bdd gherkin cucumber</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="9.0.1" />
+      <dependency id="System.ValueTuple" version="4.0.1"/>
     </dependencies>
   </metadata>
 </package>
