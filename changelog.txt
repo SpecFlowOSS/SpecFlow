@@ -1,6 +1,6 @@
 2.3 - 2017-??-??
 New Features:
-+ Expose the result of scenario in ScenarioContext via ScenarioExecutionStatus property
++ Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property
 
 2.2.2 - 2017-??-??
 New Features:
