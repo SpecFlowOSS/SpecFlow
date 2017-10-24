@@ -345,6 +345,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Too_long_tuples_throw_exception()
+        {
+            var table = new Table("PropertyOne", "PropertyTwo", "PropertyThree", "PropertyFour", "PropertyFive", "PropertySix", "PropertySeven", "PropertyEight");
+            table.AddRow("Look at me", "hello", "999", "this", "should", "actually", "fail", "right?");
+
+           Assert.Throws<Exception>(() => table.CreateInstance<(string one, string two, int three, string four, string five, string six, string seven, string eight)>());
+        }
+
+        [Test]
         public void Works_with_tuples_vertical_format()
         {
             var table = new Table("Field", "Value");

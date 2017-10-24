@@ -110,23 +110,31 @@ namespace TechTalk.SpecFlow.Assist
 
             // tuple special case
             var fieldInfos = type.GetFields();
-            if (IsValueTupleType(type) && fieldInfos.Length == table.RowCount)
+            if (IsValueTupleType(type))
             {
-                for (var index = 0; index < table.Rows.Count; index++)
+                if (fieldInfos.Length > 7)
                 {
-                    var field = fieldInfos[index];
-                    var row = table.Rows[index];
+                    throw new Exception("You should just map to tuple with small objects, types with more than 7 properties are not currently supported");
+                }
 
-                    if (TheseTypesMatch(type, field.FieldType, row))
+                if (fieldInfos.Length == table.RowCount)
+                {
+                    for (var index = 0; index < table.Rows.Count; index++)
                     {
-                        memberHandlers.Add(new MemberHandler
+                        var field = fieldInfos[index];
+                        var row = table.Rows[index];
+
+                        if (TheseTypesMatch(type, field.FieldType, row))
                         {
-                            Type = type,
-                            Row = row,
-                            MemberName = field.Name,
-                            PropertyType = field.FieldType,
-                            Setter = (i, v) => field.SetValue(i, v)
-                        });
+                            memberHandlers.Add(new MemberHandler
+                            {
+                                Type = type,
+                                Row = row,
+                                MemberName = field.Name,
+                                PropertyType = field.FieldType,
+                                Setter = (i, v) => field.SetValue(i, v)
+                            });
+                        }
                     }
                 }
             }
