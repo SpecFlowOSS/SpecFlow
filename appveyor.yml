@@ -34,7 +34,7 @@ build:
   verbosity: normal
 
 test-script:
-  - cmd: nunit3-console TechTalk.SpecFlow.GeneratorTests.dll TechTalk.SpecFlow.RuntimeTests.dll TechTalk.SpecFlow.IntegrationTests.dll TechTalk.SpecFlow.Specs\bin\Release\TechTalk.SpecFlow.Specs.dll --agents=1 --result=TestResults.xml;format=AppVeyor
+- cmd: nunit3-console TechTalk.SpecFlow.GeneratorTests.dll TechTalk.SpecFlow.RuntimeTests.dll TechTalk.SpecFlow.IntegrationTests.dll TechTalk.SpecFlow.Specs\bin\Release\TechTalk.SpecFlow.Specs.dll --agents=1 --result=TestResults.xml;format=AppVeyor
 
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
