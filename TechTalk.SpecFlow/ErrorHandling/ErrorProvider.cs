@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
         Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance);
         MissingStepDefinitionException GetMissingStepDefinitionError();
         PendingStepException GetPendingStepDefinitionError();
-        void ThrowPendingError(TestStatus testStatus, string message);
+        void ThrowPendingError(ScenarioExecutionStatus testStatus, string message);
         Exception GetTooManyBindingParamError(int maxParam);
         Exception GetNonStaticEventError(IBindingMethod method);
     }
@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
             return new PendingStepException();
         }
 
-        public void ThrowPendingError(TestStatus testStatus, string message)
+        public void ThrowPendingError(ScenarioExecutionStatus testStatus, string message)
         {
             switch (specFlowConfiguration.MissingOrPendingStepsOutcome)
             {
@@ -111,7 +111,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
                     unitTestRuntimeProvider.TestIgnore(message);
                     break;
                 default:
-                    if (testStatus == TestStatus.MissingStepDefinition)
+                    if (testStatus == ScenarioExecutionStatus.UndefinedStep)
                         throw GetMissingStepDefinitionError();
                     throw GetPendingStepDefinitionError();
             }

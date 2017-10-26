@@ -5,7 +5,7 @@ using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
-using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
+using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: 1.23");
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: not-a-double");
 
-            Assert.AreEqual(TestStatus.TestError, GetLastTestStatus());
+            Assert.AreEqual(ScenarioExecutionStatus.TestError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -112,7 +112,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert: argument");
 
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -132,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert: argument");
 
 
-            Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
+            Assert.AreEqual(ScenarioExecutionStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert with table: argument", null, table);
 
 
-            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert: argument");
 
-            Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
+            Assert.AreEqual(ScenarioExecutionStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
     }

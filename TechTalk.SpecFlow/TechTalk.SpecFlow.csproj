@@ -253,7 +253,7 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
-    <Compile Include="Infrastructure\TestStatus.cs" />
+    <Compile Include="ScenarioExecutionStatus.cs" />
     <Compile Include="TestThreadContext.cs" />
     <Compile Include="Tracing\AsyncTraceListener.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />

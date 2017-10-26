@@ -1,3 +1,7 @@
+2.3 - 2017-??-??
+New Features:
++ Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property
+
 2.2.2 - 2017-??-??
 New Features:
 + Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933

@@ -13,7 +13,7 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 using MockRepository = Rhino.Mocks.MockRepository;
-using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
+using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -170,9 +170,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return GetTestRunnerFor(c => c.RegisterInstanceAs(StepArgumentTypeConverterStub), out bindingInstance);
         }
 
-        protected TestStatus GetLastTestStatus()
+        protected ScenarioExecutionStatus GetLastTestStatus()
         {
-            return ContextManagerStub.ScenarioContext.TestStatus;
+            return ContextManagerStub.ScenarioContext.ScenarioExecutionStatus;
         }
     }
 }
