@@ -71,7 +71,9 @@ Scenario: Scenario outline without examples
 			Given something
 	"""
 	When the file is parsed
-	Then no parsing error is reported
+	Then the following errors are provided
+        | line | error                                                                        |
+        | 3    | Scenario Outline 'Scenario outline without examples' has no examples defined |
 
 Scenario: Empty example set
 	Given there is a Gherkin file as

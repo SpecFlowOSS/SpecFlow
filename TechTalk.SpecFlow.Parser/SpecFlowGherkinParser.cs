@@ -158,6 +158,8 @@ namespace TechTalk.SpecFlow.Parser
 
             CheckForDuplicateExamples(specFlowDocument.SpecFlowFeature, errors);
 
+            CheckForMissingExamples(specFlowDocument.SpecFlowFeature, errors);
+
             // collect
             if (errors.Count == 1)
                 throw errors[0];
@@ -192,6 +194,23 @@ namespace TechTalk.SpecFlow.Parser
                     {
                         var message = string.Format("Scenario Outline '{0}' already contains an example with name '{1}'", scenarioOutline.Name, duplicateExample.Key);
                         var semanticParserException = new SemanticParserException(message, duplicateExample.ElementAt(1).Location);
+                        errors.Add(semanticParserException);
+                    }
+                }
+            }
+        }
+
+        private void CheckForMissingExamples(SpecFlowFeature feature, List<ParserException> errors)
+        {
+            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
+            {
+                var scenarioOutline = scenarioDefinition as ScenarioOutline;
+                if (scenarioOutline != null)
+                {
+                    if(!scenarioOutline.Examples.Any())
+                    {
+                        var message = string.Format("Scenario Outline '{0}' has no examples defined", scenarioOutline.Name);
+                        var semanticParserException = new SemanticParserException(message, scenarioDefinition.Location);
                         errors.Add(semanticParserException);
                     }
                 }
