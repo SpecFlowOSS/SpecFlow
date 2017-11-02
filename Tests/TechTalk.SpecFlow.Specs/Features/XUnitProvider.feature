@@ -40,6 +40,59 @@ Examples:
 		| Succeeded |
 		| 0         |
 
+Scenario: Should be able to ignore all Scenarios in a feature
+	Given there is a SpecFlow project
+	And the project is configured to use the xUnit.1 provider
+	And there is a feature file in the project as
+		"""
+            @ignore
+			Feature: Simple Feature
+			
+            Scenario: First
+                Given there is something
+                Then something should happen
+
+            Scenario: Second
+                Given there is something
+                Then something should happen
+		"""
+	And all steps are bound and pass
+	When I execute the tests with xUnit
+	Then the execution summary should contain
+		| Succeeded | Ignored |
+		| 0         | 2       |
+
+Scenario: Should be able to ignore all Scenarios and Scenario Outlines in a feature
+	Given there is a SpecFlow project
+	And the project is configured to use the xUnit.1 provider
+	And there is a feature file in the project as
+		"""
+            @ignore
+			Feature: Simple Feature
+			
+            Scenario: First
+                Given there is something
+                Then something should happen
+
+            Scenario Outline: First Outline
+				Given there is something
+				When I do <what>
+				Then something should happen
+			Examples: 
+				| what           |
+				| something      |
+				| something else |
+
+            Scenario: Last
+                Given there is something
+                Then something should happen
+		"""
+	And all steps are bound and pass
+	When I execute the tests with xUnit
+	Then the execution summary should contain
+		| Succeeded | Ignored |
+		| 0         | 3       |
+
 Scenario Outline: Should handle scenario outlines
 	Given there is a SpecFlow project
 	And the project is configured to use the xUnit.1 provider
