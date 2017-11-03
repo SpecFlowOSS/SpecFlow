@@ -209,6 +209,7 @@
   <PropertyGroup>
     <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.tasks" />
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)\Tests\PostBuild.bat "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
