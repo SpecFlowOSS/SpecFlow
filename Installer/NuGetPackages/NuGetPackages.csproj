@@ -72,6 +72,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="SpecFlow.xUnit\SpecFlow.xUnit.nuspec" />
+    <None Include="SpecFlow\build\SpecFlow.targets" />
     <None Include="SpecFlow\SpecFlow.nuspec" />
     <None Include="SpecFlow\SpecFlow.nuspec.props" />
     <None Include="SpecFlow.xUnit\App.config.transform" />
