@@ -207,7 +207,7 @@ namespace TechTalk.SpecFlow.Parser
                 var scenarioOutline = scenarioDefinition as ScenarioOutline;
                 if (scenarioOutline != null)
                 {
-                    if(!scenarioOutline.Examples.Any())
+                    if (DoesntHavePopulatedExamples(scenarioOutline))
                     {
                         var message = string.Format("Scenario Outline '{0}' has no examples defined", scenarioOutline.Name);
                         var semanticParserException = new SemanticParserException(message, scenarioDefinition.Location);
@@ -215,6 +215,11 @@ namespace TechTalk.SpecFlow.Parser
                     }
                 }
             }
+        }
+
+        private static bool DoesntHavePopulatedExamples(ScenarioOutline scenarioOutline)
+        {
+            return !scenarioOutline.Examples.Any() || scenarioOutline.Examples.Any(x => x.TableBody == null || !x.TableBody.Any());
         }
     }
 }
