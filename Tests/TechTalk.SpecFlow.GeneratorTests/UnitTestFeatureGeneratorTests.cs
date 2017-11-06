@@ -11,6 +11,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using FluentAssertions;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -28,7 +29,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         protected virtual void SetupInternal()
         {
-            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
             unitTestGeneratorProviderMock = new Mock<IUnitTestGeneratorProvider>();
             container.RegisterInstanceAs(unitTestGeneratorProviderMock.Object);
         }

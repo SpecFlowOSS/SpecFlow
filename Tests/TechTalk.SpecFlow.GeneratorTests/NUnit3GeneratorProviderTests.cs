@@ -6,7 +6,7 @@ using System.Linq;
 using FluentAssertions;
 
 using NUnit.Framework;
-
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -82,10 +82,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private static IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
-            var generatorConfiguration = container.Resolve<GeneratorConfiguration>();
-            generatorConfiguration.MarkFeaturesParallelizable = parallelCode;
-            generatorConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
+            specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
+            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
                                                                       Enumerable.Empty<string>().ToArray();
             container.RegisterInstanceAs(CreateTestGeneratorProvider());
 

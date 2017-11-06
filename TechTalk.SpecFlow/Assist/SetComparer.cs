@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         private const int MatchNotFound = -1;
         private readonly Table table;
-        private List<T> actualItems;
+        private List<TableDifferenceItem<T>> extraOrNonMatchingActualItems;
         private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
 
         public SetComparer(Table table)
@@ -25,19 +25,24 @@ namespace TechTalk.SpecFlow.Assist
             return makeSureTheFormattingWorkAboveDoesNotResultInABadException;
         }
 
-        public void CompareToSet(IEnumerable<T> set)
+        public void CompareToSet(IEnumerable<T> set, bool sequentialEquality)
         {
             AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType();
 
             if (ThereAreNoResultsAndNoExpectedResults(set))
                 return;
 
+            var getListOfExpectedItemsThatCouldNotBeFound = 
+                sequentialEquality ? 
+                new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderSensitive) :
+                new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderInsensitive);
+
             if (ThereAreResultsWhenThereShouldBeNone(set))
-                ThrowAnExpectedNoResultsError(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
+                ThrowAnExpectedNoResultsError(set, getListOfExpectedItemsThatCouldNotBeFound(set));
 
-            AssertThatTheItemsMatchTheExpectedResults(set);
+            AssertThatTheItemsMatchTheExpectedResults(set, getListOfExpectedItemsThatCouldNotBeFound);
 
-            AssertThatNoExtraRowsExist(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
+            AssertThatNoExtraRowsExist(set, getListOfExpectedItemsThatCouldNotBeFound(set));
         }
 
         private void AssertThatNoExtraRowsExist(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
@@ -62,17 +67,17 @@ namespace TechTalk.SpecFlow.Assist
             return !set.Any() && !table.Rows.Any();
         }
 
-        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set)
+        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set, Func<IEnumerable<T>, IEnumerable<int>> getListOfExpectedItemsThatCouldNotBeFound)
         {
-            var listOfMissingItems = GetListOfExpectedItemsThatCouldNotBeFound(set);
+            var listOfMissingItems = getListOfExpectedItemsThatCouldNotBeFound(set);
 
             if (ExpectedItemsCouldNotBeFound(listOfMissingItems))
                 ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
 
-        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFound(IEnumerable<T> set)
+        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFoundOrderInsensitive(IEnumerable<T> set)
         {
-            actualItems = GetTheActualItems(set);
+            var actualItems = GetTheActualItems(set);
 
             var listOfMissingItems = new List<int>();
 
@@ -89,12 +94,37 @@ namespace TechTalk.SpecFlow.Assist
                 else
                     RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
             }
+
+            extraOrNonMatchingActualItems = actualItems.Select(i => new TableDifferenceItem<T>(i)).ToList();
+            return listOfMissingItems;
+        }
+
+        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFoundOrderSensitive(IEnumerable<T> set)
+        {
+            var actualItems = GetTheActualItems(set);
+
+            var listOfMissingItems = new List<int>();
+
+            var pivotTable = new PivotTable(table);
+
+            for (var index = 0; index < Math.Min(actualItems.Count, table.Rows.Count()); index++)
+            {
+                var instanceTable = pivotTable.GetInstanceTable(index);
+                if (!ThisItemIsAMatch(instanceTable, actualItems[index]))
+                    listOfMissingItems.Add(index + 1);
+            }
+
+            extraOrNonMatchingActualItems = 
+                listOfMissingItems.Select(index => new TableDifferenceItem<T>(actualItems[index-1], index)).Concat(
+                actualItems.Skip(table.RowCount).Select(i => new TableDifferenceItem<T>(i)))
+                .ToList();
+
             return listOfMissingItems;
         }
 
         private void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
         {
-            var message = tableDiffExceptionBuilder.GetTheTableDiffExceptionMessage(new TableDifferenceResults<T>(table, listOfMissingItems, actualItems));
+            var message = tableDiffExceptionBuilder.GetTheTableDiffExceptionMessage(new TableDifferenceResults<T>(table, listOfMissingItems, extraOrNonMatchingActualItems));
             throw new ComparisonException("\r\n" + message);
         }
 

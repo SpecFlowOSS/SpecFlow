@@ -4,38 +4,29 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class SpecFlowProjectConfiguration
     {
-        public GeneratorConfiguration GeneratorConfiguration { get; set; }
-        public RuntimeConfiguration RuntimeConfiguration { get; set; }
+        public SpecFlowConfiguration SpecFlowConfiguration { get; set; }
 
         public SpecFlowProjectConfiguration()
         {
-            GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
-            RuntimeConfiguration = new RuntimeConfiguration(); // load defaults
+            SpecFlowConfiguration = ConfigurationLoader.GetDefault(); // load defaults
         }
 
-        #region Equality
-        public bool Equals(SpecFlowProjectConfiguration other)
+        protected bool Equals(SpecFlowProjectConfiguration other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.GeneratorConfiguration, GeneratorConfiguration) && Equals(other.RuntimeConfiguration, RuntimeConfiguration);
+            return Equals(SpecFlowConfiguration, other.SpecFlowConfiguration);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (SpecFlowProjectConfiguration)) return false;
+            if (obj.GetType() != this.GetType()) return false;
             return Equals((SpecFlowProjectConfiguration) obj);
         }
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return ((GeneratorConfiguration != null ? GeneratorConfiguration.GetHashCode() : 0)*397) ^ (RuntimeConfiguration != null ? RuntimeConfiguration.GetHashCode() : 0);
-            }
+            return (SpecFlowConfiguration != null ? SpecFlowConfiguration.GetHashCode() : 0);
         }
-        #endregion
     }
 }

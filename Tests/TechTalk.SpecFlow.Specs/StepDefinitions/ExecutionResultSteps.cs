@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [Then(@"all tests should pass")]
+        [Then(@"the scenario should pass")]
         public void ThenAllTestsShouldPass()
         {
             testExecutionResult.LastExecutionSummary.Should().NotBeNull();

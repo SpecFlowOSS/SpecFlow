@@ -45,46 +45,35 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
-        public ScenarioInfo ScenarioInfo { get; private set; }
+        public ScenarioInfo ScenarioInfo { get; }
         public ScenarioBlock CurrentScenarioBlock { get; internal set; }
         public Exception TestError { get; internal set; }
 
-        internal TestStatus TestStatus { get; set; }
-        internal List<string> PendingSteps { get; private set; }
-        internal List<StepInstance> MissingSteps { get; private set; }
-        internal Stopwatch Stopwatch { get; private set; }
+        public IObjectContainer ScenarioContainer { get; }
 
-        private readonly IObjectContainer scenarioContainer;
-        private readonly IBindingInstanceResolver bindingInstanceResolver;
+        public ScenarioExecutionStatus ScenarioExecutionStatus { get; internal set; }
+        internal List<string> PendingSteps { get; }
+        internal List<StepInstance> MissingSteps { get; }
+        internal Stopwatch Stopwatch { get; }
 
-        public IObjectContainer ScenarioContainer
+        private readonly ITestObjectResolver testObjectResolver;
+
+        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, ITestObjectResolver testObjectResolver)
         {
-            get { return scenarioContainer; }
-        }
-
-        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, IBindingInstanceResolver bindingInstanceResolver)
-        {
-            this.scenarioContainer = scenarioContainer;
-            this.bindingInstanceResolver = bindingInstanceResolver;
+            this.ScenarioContainer = scenarioContainer;
+            this.testObjectResolver = testObjectResolver;
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
 
             CurrentScenarioBlock = ScenarioBlock.None;
             ScenarioInfo = scenarioInfo;
-            TestStatus = TestStatus.OK;
+            ScenarioExecutionStatus = ScenarioExecutionStatus.OK;
             PendingSteps = new List<string>();
             MissingSteps = new List<StepInstance>();
         }
 
-        public ScenarioStepContext StepContext
-        {
-            get
-            {
-                var contextManager = ScenarioContainer.Resolve<IContextManager>();
-                return contextManager.StepContext;
-            }
-        }
+        public ScenarioStepContext StepContext => ScenarioContainer.Resolve<IContextManager>().StepContext;
 
         public void Pending()
         {
@@ -103,19 +92,7 @@ namespace TechTalk.SpecFlow
         /// </remarks>
         public object GetBindingInstance(Type bindingType)
         {
-            return bindingInstanceResolver.ResolveBindingInstance(bindingType, scenarioContainer);
-        }
-
-        private bool isDisposed = false;
-        protected override void Dispose()
-        {
-            if (isDisposed)
-                return;
-
-            isDisposed = true; //HACK: we need this flag, because the ScenarioContainer is disposed by the scenarioContextManager of the IContextManager and while we dispose the container itself, the it will call the dispose on us again...
-            base.Dispose();
-
-            scenarioContainer.Dispose();
+            return testObjectResolver.ResolveBindingInstance(bindingType, ScenarioContainer);
         }
     }
 }

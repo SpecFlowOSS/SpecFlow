@@ -13,7 +13,7 @@ using TechTalk.SpecFlow.Utils;
 namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
-    public class MSestGeneratorProviderTests
+    public class MsTestGeneratorProviderTests
     {
         private const string TestDescriptionAttributeName = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
         private const string SampleFeatureFile = @"

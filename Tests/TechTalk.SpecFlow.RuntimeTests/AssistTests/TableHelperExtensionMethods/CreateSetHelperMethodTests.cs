@@ -225,5 +225,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().MiddleInitial.Should().Be('O');
             people.First().NullableChar.Should().Be('K');
         }
+
+        [Test]
+        public void Works_with_valueTuples()
+        {
+            var table = new Table("Name", "Age", "HiScore", "ShoeSize");
+            table.AddRow("Rich", "48", "345467", "9.5");
+            table.AddRow("Sarah", "45", "12654", "4.0");
+
+            var people = table.CreateSet<(string Name, int Age, int HiScore, decimal ShoeSize)>();
+
+            people.First().Name.Should().Be("Rich");
+            people.First().Age.Should().Be(48);
+            people.First().HiScore.Should().Be(345467);
+            people.First().ShoeSize.Should().Be(9.5m);
+            people.Last().Name.Should().Be("Sarah");
+            people.Last().Age.Should().Be(45);
+            people.Last().HiScore.Should().Be(12654);
+            people.Last().ShoeSize.Should().Be(4.0m);
+        }
     }
 }

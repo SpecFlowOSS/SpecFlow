@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
 {
@@ -28,7 +29,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             else
             {
                 XsltHelper.TransformHtml(serializer, report, ReportType, 
-                                         ReportParameters.OutputFile, specFlowProject.Configuration.GeneratorConfiguration, 
+                                         ReportParameters.OutputFile, specFlowProject.Configuration.SpecFlowConfiguration, 
                                          ReportParameters.XsltFile);
             }
         }

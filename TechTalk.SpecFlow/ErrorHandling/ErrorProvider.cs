@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
         Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance);
         MissingStepDefinitionException GetMissingStepDefinitionError();
         PendingStepException GetPendingStepDefinitionError();
-        void ThrowPendingError(TestStatus testStatus, string message);
+        void ThrowPendingError(ScenarioExecutionStatus testStatus, string message);
         Exception GetTooManyBindingParamError(int maxParam);
         Exception GetNonStaticEventError(IBindingMethod method);
     }
@@ -30,13 +30,13 @@ namespace TechTalk.SpecFlow.ErrorHandling
     {
         private readonly IStepFormatter stepFormatter;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
-        private readonly RuntimeConfiguration runtimeConfiguration;
+        private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
 
-        public ErrorProvider(IStepFormatter stepFormatter, RuntimeConfiguration runtimeConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
+        public ErrorProvider(IStepFormatter stepFormatter, Configuration.SpecFlowConfiguration specFlowConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
         {
             this.stepFormatter = stepFormatter;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
         }
 
         public string GetMethodText(IBindingMethod method)
@@ -97,9 +97,9 @@ namespace TechTalk.SpecFlow.ErrorHandling
             return new PendingStepException();
         }
 
-        public void ThrowPendingError(TestStatus testStatus, string message)
+        public void ThrowPendingError(ScenarioExecutionStatus testStatus, string message)
         {
-            switch (runtimeConfiguration.MissingOrPendingStepsOutcome)
+            switch (specFlowConfiguration.MissingOrPendingStepsOutcome)
             {
                 case MissingOrPendingStepsOutcome.Pending:
                     unitTestRuntimeProvider.TestPending(message);
@@ -111,7 +111,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
                     unitTestRuntimeProvider.TestIgnore(message);
                     break;
                 default:
-                    if (testStatus == TestStatus.MissingStepDefinition)
+                    if (testStatus == ScenarioExecutionStatus.UndefinedStep)
                         throw GetMissingStepDefinitionError();
                     throw GetPendingStepDefinitionError();
             }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Gherkin.Ast;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
@@ -35,14 +36,14 @@ namespace TechTalk.SpecFlow.Generator
 
         private readonly IUnitTestGeneratorProvider testGeneratorProvider;
         private readonly CodeDomHelper codeDomHelper;
-        private readonly GeneratorConfiguration generatorConfiguration;
+        private readonly SpecFlow.Configuration.SpecFlowConfiguration _specFlowConfiguration;
         private readonly IDecoratorRegistry decoratorRegistry;
 
-        public UnitTestFeatureGenerator(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, GeneratorConfiguration generatorConfiguration, IDecoratorRegistry decoratorRegistry)
+        public UnitTestFeatureGenerator(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration, IDecoratorRegistry decoratorRegistry)
         {
             this.testGeneratorProvider = testGeneratorProvider;
             this.codeDomHelper = codeDomHelper;
-            this.generatorConfiguration = generatorConfiguration;
+            this._specFlowConfiguration = specFlowConfiguration;
             this.decoratorRegistry = decoratorRegistry;
         }
 
@@ -76,7 +77,7 @@ namespace TechTalk.SpecFlow.Generator
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 HasFeatureBackground(document.SpecFlowFeature) ? CreateMethod(testClass) : null,
-                generateRowTests: testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.RowTests) && generatorConfiguration.AllowRowTests);
+                generateRowTests: testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.RowTests) && _specFlowConfiguration.AllowRowTests);
         }
 
         private CodeNamespace CreateNamespace(string targetNamespace)
@@ -723,7 +724,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLinePragmaInitial(CodeTypeDeclaration testType, string sourceFile)
         {
-            if (generatorConfiguration.AllowDebugGeneratedFiles)
+            if (_specFlowConfiguration.AllowDebugGeneratedFiles)
                 return;
 
             codeDomHelper.BindTypeToSourceFile(testType, Path.GetFileName(sourceFile));
@@ -731,7 +732,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLineDirectiveHidden(CodeStatementCollection statements)
         {
-            if (generatorConfiguration.AllowDebugGeneratedFiles)
+            if (_specFlowConfiguration.AllowDebugGeneratedFiles)
                 return;
 
             codeDomHelper.AddDisableSourceLinePragmaStatement(statements);
@@ -754,7 +755,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLineDirective(CodeStatementCollection statements, Location location)
         {
-            if (location == null || generatorConfiguration.AllowDebugGeneratedFiles)
+            if (location == null || _specFlowConfiguration.AllowDebugGeneratedFiles)
                 return;
 
             codeDomHelper.AddSourceLinePragmaStatement(statements, location.Line, location.Column);

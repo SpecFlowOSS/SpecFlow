@@ -24,18 +24,27 @@ namespace TechTalk.SpecFlow.Assist
                 if (tableDifferenceResults.IndexesOfTableRowsThatWereNotMatched.Contains(index))
                     prefix = "- ";
                 realData.AppendLine(prefix + line);
+
+                var missingIndexedItem = tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable.FirstOrDefault(i => i.Index == index);
+                if (missingIndexedItem != null)
+                    AppendExtraLineText(tableDifferenceResults, missingIndexedItem, realData);
                 index++;
             }
 
-            foreach (var item in tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable)
+            foreach (var item in tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable.Where(i => !i.IsIndexSpecific))
             {
-                var line = "+ |";
-                foreach (var header in tableDifferenceResults.Table.Header)
-                    line += $" {GetTheValue(item, header)} |";
-                realData.AppendLine(line);
+                AppendExtraLineText(tableDifferenceResults, item, realData);
             }
 
             return realData.ToString();
+        }
+
+        private void AppendExtraLineText(TableDifferenceResults<T> tableDifferenceResults, TableDifferenceItem<T> item, StringBuilder realData)
+        {
+            var line = "+ |";
+            foreach (var header in tableDifferenceResults.Table.Header)
+                line += $" {GetTheValue(item.Item, header)} |";
+            realData.AppendLine(line);
         }
 
         private static object GetTheValue(T item, string header)

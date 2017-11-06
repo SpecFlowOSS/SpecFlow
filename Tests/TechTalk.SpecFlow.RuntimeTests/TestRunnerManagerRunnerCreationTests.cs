@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private readonly Mock<ITestRunner> testRunnerFake = new Mock<ITestRunner>();
         private readonly Mock<IObjectContainer> objectContainerStub = new Mock<IObjectContainer>();
         private readonly Mock<IObjectContainer> globalObjectContainerStub = new Mock<IObjectContainer>();
-        private readonly RuntimeConfiguration runtimeConfigurationStub = new RuntimeConfiguration();
+        private readonly SpecFlow.Configuration.SpecFlowConfiguration _specFlowConfigurationStub = ConfigurationLoader.GetDefault();
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
         private readonly Assembly anotherAssembly = typeof(TestRunnerManager).Assembly;
 
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var runtimeBindingRegistryBuilderMock = new Mock<IRuntimeBindingRegistryBuilder>();
 
-            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, runtimeConfigurationStub, runtimeBindingRegistryBuilderMock.Object);
+            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, _specFlowConfigurationStub, runtimeBindingRegistryBuilderMock.Object);
             testRunnerManager.Initialize(anAssembly);
             return testRunnerManager;
         }
@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void Should_initialize_test_runner_with_additional_step_assemblies()
         {
             var factory = CreateTestRunnerFactory();
-            runtimeConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
+            _specFlowConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
 
             factory.CreateTestRunner(0);
 
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void Should_initialize_test_runner_with_the_provided_assembly_even_if_there_are_additional_ones()
         {
             var factory = CreateTestRunnerFactory();
-            runtimeConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
+            _specFlowConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
 
             factory.CreateTestRunner(0);
 
