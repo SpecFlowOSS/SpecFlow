@@ -2,6 +2,9 @@
 New Features:
 + Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property
 
+Fixes:
++ Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
+
 2.2.2 - 2017-??-??
 New Features:
 + Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933
