@@ -8,13 +8,7 @@
     <UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
-    
-    <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
-    <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
-    <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
-  </PropertyGroup>
+  <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
