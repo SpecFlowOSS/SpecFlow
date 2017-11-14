@@ -40,6 +40,28 @@ Examples:
 		| Succeeded |
 		| 0         |
 
+Scenario: Should be able to ignore a scenario
+	Given there is a SpecFlow project
+	And the project is configured to use the xUnit provider
+	And there is a feature file in the project as
+		"""
+			Feature: Simple Feature
+			
+            Scenario: First
+                Given there is something
+                Then something should happen
+
+            @ignore
+            Scenario: Second
+                Given there is something
+                Then something should happen
+		"""
+	And all steps are bound and pass
+	When I execute the tests with xUnit
+	Then the execution summary should contain
+		| Succeeded | Ignored |
+		| 1         | 1       |
+
 Scenario: Should be able to ignore all Scenarios in a feature
 	Given there is a SpecFlow project
 	And the project is configured to use the xUnit provider
