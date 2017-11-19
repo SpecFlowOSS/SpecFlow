@@ -33,7 +33,8 @@ namespace TechTalk.SpecFlow.Reporting
             serializer.Serialize(xmlOutputWriter, report);
 
             XslCompiledTransform xslt = new XslCompiledTransform();
-            var xsltSettings = new XsltSettings(true, false);
+	    var allowXsltScripts = !string.IsNullOrEmpty(xsltFile);
+            var xsltSettings = new XsltSettings(true, allowXsltScripts);
             XmlResolver resourceResolver;
 
             var reportName = reportType.Name.Replace("Generator", "");

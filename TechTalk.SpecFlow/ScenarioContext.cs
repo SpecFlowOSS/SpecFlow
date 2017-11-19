@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow
 
         public IObjectContainer ScenarioContainer { get; }
 
-        internal TestStatus TestStatus { get; set; }
+        public ScenarioExecutionStatus ScenarioExecutionStatus { get; internal set; }
         internal List<string> PendingSteps { get; }
         internal List<StepInstance> MissingSteps { get; }
         internal Stopwatch Stopwatch { get; }
@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow
 
             CurrentScenarioBlock = ScenarioBlock.None;
             ScenarioInfo = scenarioInfo;
-            TestStatus = TestStatus.OK;
+            ScenarioExecutionStatus = ScenarioExecutionStatus.OK;
             PendingSteps = new List<string>();
             MissingSteps = new List<StepInstance>();
         }

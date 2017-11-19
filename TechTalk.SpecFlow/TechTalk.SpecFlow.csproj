@@ -25,11 +25,13 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml;.\BindingSkeletons\DefaultSkeletonTemplates.sftemplate" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BoDi.Embedded" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

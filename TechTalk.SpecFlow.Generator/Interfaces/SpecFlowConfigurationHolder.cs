@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     {
         private readonly string xmlString;
 
-        public ConfigSource ConfigSource { get; private set; }
+        public ConfigSource ConfigSource { get; }
 
         public string Content => xmlString;
 
@@ -21,6 +21,7 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
 
         public SpecFlowConfigurationHolder()
         {
+            ConfigSource = ConfigSource.Default;
             xmlString = null;
         }
 

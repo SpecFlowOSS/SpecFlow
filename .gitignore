@@ -28,7 +28,7 @@ _UpgradeReport_Files/*
 Backup*/*
 
 UpgradeLog*
-
+.vs/*
 
 packages/*
 /_NCrunch_TechTalk.SpecFlow_VS2013/StoredText
@@ -39,5 +39,12 @@ TechTalk.SpecFlow.sln.GhostDoc.xml
 *.lock.json
 .vs/*
 .vscode/*
+Features.Generated/
+GitExtensions.settings.backup
+
+!lib/**
+TechTalk.SpecFlow.Tools/app.config
+TechTalk.SpecFlow.Tools/plugincompability.config
+TechTalk.SpecFlow.sln.GhostDoc.xml
 Features.Generated/
 GitExtensions.settings.backup

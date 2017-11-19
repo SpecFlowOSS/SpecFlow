@@ -1,9 +1,10 @@
+using FluentAssertions;
 using Xunit;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
-using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
+using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -53,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with table", null, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -77,7 +78,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with multiline argument and table", multiLineArg, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -103,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with parameter, multiline argument and table: argument", multiLineArg, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
     }

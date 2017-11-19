@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Xunit;
 using Rhino.Mocks;
-using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
+using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -115,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step without param");
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -130,8 +131,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository.ReplayAll();
 
             testRunner.Given("sample step with single param");
-
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -147,7 +148,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with multiple param");
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -164,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with table param", null, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -181,7 +182,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with multi-line string param", mlString, null);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -199,7 +200,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with table and multi-line string param", mlString, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -217,7 +218,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with mixed params", mlString, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -231,7 +232,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step without param");
 
-            Assert.Equal(TestStatus.BindingError, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError);
             MockRepository.VerifyAll();
         }
 
@@ -247,7 +248,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Distinguish by table param");
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -264,7 +265,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Distinguish by table param", null, table);
 
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -278,7 +279,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with wrong param number");
 
-            Assert.Equal(TestStatus.BindingError, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError);
             MockRepository.VerifyAll();
         }
 
@@ -300,7 +301,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Returns a Task");
             Assert.True(taskFinished);
-            Assert.Equal(TestStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
@@ -323,7 +324,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Returns a Task");
             Assert.True(taskFinished);
-            Assert.Equal(TestStatus.TestError, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
             Assert.Equal("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
 
             MockRepository.VerifyAll();

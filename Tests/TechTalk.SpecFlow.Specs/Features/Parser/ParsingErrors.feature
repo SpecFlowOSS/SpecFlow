@@ -71,20 +71,46 @@ Scenario: Scenario outline without examples
 			Given something
 	"""
 	When the file is parsed
-	Then no parsing error is reported
+	Then the following errors are provided
+        | line | error                                                                        |
+        | 3    | Scenario Outline 'Scenario outline without examples' has no examples defined |
 
-Scenario: Empty example set
+Scenario: Scenario outline with empty Examples
 	Given there is a Gherkin file as
 	"""
-		Feature: Empty example set
+		Feature: Delayed semantic error
 
-		Scenario Outline: Scenario outline without examples
-			Given <something>
+		Scenario Outline: Scenario outline with empty examples
+			Given something
+        
+        Examples: 
 
-		Examples: 
+		Scenario: proper scenario
+			Given something
 	"""
 	When the file is parsed
-	Then no parsing error is reported
+	Then the following errors are provided
+        | line | error                                                                           |
+        | 3    | Scenario Outline 'Scenario outline with empty examples' has no examples defined |
+
+Scenario: Scenario outline with empty Examples with a header
+	Given there is a Gherkin file as
+	"""
+		Feature: Delayed semantic error
+
+		Scenario Outline: Scenario outline with empty defined examples
+			Given something
+        
+        Examples: 
+            | Column |
+
+		Scenario: proper scenario
+			Given something
+	"""
+	When the file is parsed
+	Then the following errors are provided
+        | line | error                                                                                   |
+        | 3    | Scenario Outline 'Scenario outline with empty defined examples' has no examples defined |
 
 Scenario: Language not supported
 	Given there is a Gherkin file as
