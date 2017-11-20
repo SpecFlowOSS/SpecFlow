@@ -7,8 +7,8 @@ using TechTalk.SpecFlow.IntegrationTests.TestFiles;
 using TechTalk.SpecFlow.Assist;
 using System.Linq;
 using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.Parser;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers.Parser;
 
 namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
 {

@@ -178,9 +178,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             featureContextManager.Cleanup();
         }
 
-        public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
+        public void InitializeScenarioContext(ScenarioInfo scenarioInfo, Action<IObjectContainer> additionalScenarioContextRegistrations)
         {
             var scenarioContainer = containerBuilder.CreateScenarioContainer(FeatureContext.FeatureContainer, scenarioInfo);
+            additionalScenarioContextRegistrations?.Invoke(scenarioContainer);
+
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContextManager.Init(newContext, scenarioContainer);
             ScenarioContext.Current = newContext;

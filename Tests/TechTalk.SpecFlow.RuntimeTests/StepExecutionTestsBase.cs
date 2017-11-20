@@ -123,7 +123,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ContainerBuilderStub = containerBuilderMock.Object;
             ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), TestThreadContainer, ContainerBuilderStub);
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null));
-            ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"));
+            ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"), null);
 
             StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
         }

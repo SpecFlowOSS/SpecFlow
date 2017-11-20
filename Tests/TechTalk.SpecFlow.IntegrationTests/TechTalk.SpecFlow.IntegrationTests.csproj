@@ -20,12 +20,15 @@
 
   <ItemGroup>
     <EmbeddedResource Include=".\TestFiles\*.feature;.\TestFiles\*.xml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-    <None Include=".\Features\*.feature" />
+    <None Include="Features\**\*.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
-    <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj" />
+    <ProjectReference Include="..\..\TestFrameworks\TechTalk.SpecFlow.Xunit\TechTalk.SpecFlow.Xunit.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Tests.Bindings\TechTalk.SpecFlow.Tests.Bindings.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +40,6 @@
     <PackageReference Include="NUnit.Runners" Version="3.7.0" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Moq" Version="4.7.99" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
     <PackageReference Include="Gherkin" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
@@ -62,18 +64,8 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <VerboseOutput>true</VerboseOutput>
-    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
-  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 
-  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
-
-  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
-    <CallTarget Targets="GenerateCodeBehind" />
-  </Target>
-
-  <Target Name="AfterUpdateFeatureFilesInProject">
-    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />
-  </Target>
 </Project>

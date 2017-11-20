@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers;
+using TechTalk.SpecFlow.Tests.Bindings.Drivers.MsBuild;
 
 namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
 {

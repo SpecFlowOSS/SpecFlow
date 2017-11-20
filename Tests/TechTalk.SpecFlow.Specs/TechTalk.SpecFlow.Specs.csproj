@@ -21,11 +21,11 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove=".\Drivers\Templates\**\*" />
-    <EmbeddedResource Include=".\Drivers\Templates\**\*" />
-    <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
-    <Compile Include="Drivers\Templates\TemplateManager.cs" />
     <None Include="App.config" />
+
+    <None Include="Features\**\*.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,18 +33,18 @@
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj" />
+    <ProjectReference Include="..\..\TestFrameworks\TechTalk.SpecFlow.Xunit\TechTalk.SpecFlow.Xunit.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Tests.Bindings\TechTalk.SpecFlow.Tests.Bindings.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="NUnit" Version="3.8.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
     <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.6.0" />
     <PackageReference Include="NUnit.Extension.VSProjectLoader" Version="3.6.0" />
     <PackageReference Include="NUnit.Runners" Version="3.7.0" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Moq" Version="4.7.99" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
     <PackageReference Include="Gherkin" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
@@ -72,20 +72,10 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <VerboseOutput>true</VerboseOutput>
-    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
-  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 
-  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
-
-
-  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
-    <CallTarget Targets="GenerateCodeBehind" />
-  </Target>
-  
-  <Target Name="AfterUpdateFeatureFilesInProject">
-    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
-  </Target>
+ 
   
 </Project>

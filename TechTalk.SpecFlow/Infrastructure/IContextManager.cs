@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text;
+using BoDi;
 using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -17,7 +19,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         void InitializeFeatureContext(FeatureInfo featureInfo);
         void CleanupFeatureContext();
 
-        void InitializeScenarioContext(ScenarioInfo scenarioInfo);
+        void InitializeScenarioContext(ScenarioInfo scenarioInfo, Action<IObjectContainer> additionalScenarioContextRegistrations);
         void CleanupScenarioContext();
 
         void InitializeStepContext(StepInfo stepInfo);
