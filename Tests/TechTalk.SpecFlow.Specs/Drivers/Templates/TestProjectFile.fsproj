@@ -52,6 +52,7 @@
   <PropertyGroup>
     <VerboseOutput>true</VerboseOutput>
   </PropertyGroup>
+  <Import Project="{SpecFlowRoot}\Tools\TechTalk.SpecFlow.tasks" />
   <Import Project="{SpecFlowRoot}\Tools\TechTalk.SpecFlow.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

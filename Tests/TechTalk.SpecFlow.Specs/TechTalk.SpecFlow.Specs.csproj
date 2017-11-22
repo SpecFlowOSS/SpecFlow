@@ -196,7 +196,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.vbproj" />
+    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.vbproj">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Drivers\Templates\BindingClass.vb" />
@@ -206,6 +208,7 @@
   <PropertyGroup>
     <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.tasks" />
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)\Tests\PostBuild.bat "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>

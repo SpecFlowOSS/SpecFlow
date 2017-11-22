@@ -67,5 +67,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="{SpecFlowRoot}\Tools\TechTalk.SpecFlow.tasks" />
   <Import Project="{SpecFlowRoot}\Tools\TechTalk.SpecFlow.targets" />
 </Project>

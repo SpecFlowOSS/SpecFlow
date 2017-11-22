@@ -104,6 +104,10 @@
     <None Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="MsBuild\TechTalk.SpecFlow.props">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="plugincompability.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
