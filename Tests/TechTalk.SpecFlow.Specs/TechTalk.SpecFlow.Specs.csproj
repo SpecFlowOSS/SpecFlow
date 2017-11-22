@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow.Specs</RootNamespace>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <TargetFrameworkProfile />
@@ -168,6 +168,10 @@
     <ProjectReference Include="..\..\Installer\SpecFlowBinPackage\SpecFlowBinPackage.csproj">
       <Project>{27B6695E-7049-4C1B-8820-812722128D9E}</Project>
       <Name>SpecFlowBinPackage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SpecFlow.TestGenerator\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator.csproj">
+      <Project>{fa04b445-d04c-4075-9eb0-4d0a70e47fc4}</Project>
+      <Name>SpecFlow.TestProjectGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj">
       <Project>{b4588e81-c589-434f-8f12-3d881433c3e4}</Project>
