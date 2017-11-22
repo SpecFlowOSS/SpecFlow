@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Assist.Attributes;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -94,13 +95,15 @@ namespace TechTalk.SpecFlow.Assist
             var properties = from property in type.GetProperties()
                              from row in table.Rows
                              where TheseTypesMatch(type, property.PropertyType, row)
-                                   && IsMemberMatchingToColumnName(property, row.Id())
+                                   && (IsMemberMatchingToColumnName(property, row.Id())
+                                   || IsMatchingAlias(property, row.Id()))
                              select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                          from row in table.Rows
                          where TheseTypesMatch(type, field.FieldType, row)
-                               && IsMemberMatchingToColumnName(field, row.Id())
+                               && (IsMemberMatchingToColumnName(field, row.Id()) ||
+                                IsMatchingAlias(field, row.Id()))
                          select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
@@ -140,6 +143,12 @@ namespace TechTalk.SpecFlow.Assist
             }
 
             return memberHandlers;
+        }
+
+        private static bool IsMatchingAlias(MemberInfo field, string id)
+        {
+            var aliases = field.GetCustomAttributes().OfType<TableAliasesAttribute>();
+            return aliases.Any(a => a.Aliases.Any(al => Regex.Match(id, al).Success));
         }
 
         private static bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)

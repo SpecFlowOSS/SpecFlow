@@ -1,6 +1,7 @@
 2.3 - 2017-??-??
 New Features:
 + Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property
++ Allow aliasing of properties or fields on objects mapped from tables via the CreateInstance or CreateSet extensionMethods by utilising the TableAliases attribute
 
 Fixes:
 + Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
