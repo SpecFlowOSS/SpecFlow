@@ -18,8 +18,8 @@ namespace TechTalk.SpecFlow.Generator.Project
 
             if (path.Contains("*"))
             {
-                var split = path.Split(new [] { "*"}, StringSplitOptions.RemoveEmptyEntries);
-                var realPath = split.Take(split.Length - 1).Aggregate((current, next) => current + next).Replace("\\\\", "\\");
+                var split = path.Split(new[] { "*" }, StringSplitOptions.RemoveEmptyEntries);
+                var realPath = split.Take(split.Length - 1).Aggregate((current, next) => current + next).Replace($"{Path.DirectorySeparatorChar}{Path.DirectorySeparatorChar}", $"{Path.DirectorySeparatorChar}");
                 var fileName = split.Last();
 
                 return Directory.GetFiles(Path.Combine(projectFolder, realPath), "*" + fileName, searchOption)
@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                     .ToList();
             }
 
-            return new List<string>() {path};
+            return new List<string>() { path };
         }
     }
 }
