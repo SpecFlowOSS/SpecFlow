@@ -5,7 +5,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Project;
-using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.Generator.Helpers;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -26,14 +26,14 @@ namespace TechTalk.SpecFlow.GeneratorTests
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be(language);
 
             specflowProjectfile.FeatureFiles.Count.Should().Be(6);
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\Login\SocialLogins.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowDefinition\CreateWorkflowDefinition.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowDefinition\CreateWorkflowDefinition.feature").CustomNamespace.Should().Be("CustomNameSpace");
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowInstance\WorkflowInstance.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\..\LinkedFeature.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature").Should().NotBeNull();
-            
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\Login\SocialLogins.feature")).Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowDefinition\CreateWorkflowDefinition.feature")).Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowDefinition\CreateWorkflowDefinition.feature")).CustomNamespace.Should().Be("CustomNameSpace");
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowInstance\WorkflowInstance.feature")).Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\..\LinkedFeature.feature")).Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature")).Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature")).Should().NotBeNull();
+
 
             specflowProjectfile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
             specflowProjectfile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();
@@ -44,49 +44,49 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_parse_CSProj_New_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_New\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "sampleCsProjectfile", "sampleCsProjectfile", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_New\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "sampleCsProjectfile", "sampleCsProjectfile", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_CSProj_NewComplex_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_NewComplex\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_NewComplex\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion12_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_12\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_ToolsVersion_12\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion12_vbproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_12\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\VBProj_ToolsVersion_12\sampleCsProjectfile.vbproj"), GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion14_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_14\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_ToolsVersion_14\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion14_vbproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_14\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\VBProj_ToolsVersion_14\sampleCsProjectfile.vbproj"), GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion4_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_4\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_ToolsVersion_4\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion4_vbproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_4\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\VBProj_ToolsVersion_4\sampleCsProjectfile.vbproj"), GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
     }
 }
