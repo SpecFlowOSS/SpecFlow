@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.DoubleValueRetriever = DoubleValueRetriever;
         }
 
-        public double? GetValue(string value)
+        public virtual double? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return DoubleValueRetriever(value);

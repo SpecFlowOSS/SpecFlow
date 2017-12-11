@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.dateTimeOffsetValueRetriever = dateTimeOffsetValueRetriever;
         }
 
-        public DateTimeOffset? GetValue(string value)
+        public virtual DateTimeOffset? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return dateTimeOffsetValueRetriever(value);
