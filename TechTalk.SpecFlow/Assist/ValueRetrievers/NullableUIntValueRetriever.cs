@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.uintValueRetriever = uintValueRetriever;
         }
 
-        public uint? GetValue(string value)
+        public virtual uint? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return uintValueRetriever(value);

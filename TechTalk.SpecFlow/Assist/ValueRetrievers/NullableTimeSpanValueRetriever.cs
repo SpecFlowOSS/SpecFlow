@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.dateTimeValueRetriever = dateTimeValueRetriever;
         }
 
-        public TimeSpan? GetValue(string value)
+        public virtual TimeSpan? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return dateTimeValueRetriever(value);

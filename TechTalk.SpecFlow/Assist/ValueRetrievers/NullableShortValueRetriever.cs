@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.shortValueRetriever = shortValueRetriever;
         }
 
-        public short? GetValue(string value)
+        public virtual short? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return shortValueRetriever(value);
