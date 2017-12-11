@@ -25,9 +25,14 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return propertyType.IsEnum;
         }
 
-        private static object ConvertTheStringToAnEnum(string value, Type enumType)
+        private object ConvertTheStringToAnEnum(string value, Type enumType)
         {
-            return StepArgumentTypeConverter.ConvertToAnEnum(GetTheEnumType(enumType), value);
+            return StepArgumentTypeConverter.ConvertToAnEnum(GetTheEnumType(enumType), PrepareValue(value));
+        }
+
+        protected virtual string PrepareValue(string value)
+        {
+            return value;
         }
 
         private static Type GetTheEnumType(Type enumType)
