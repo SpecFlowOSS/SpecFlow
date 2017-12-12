@@ -1,18 +1,17 @@
 2.3 - 2017-??-??
 New Features:
-+ Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property
-+ Allow aliasing of properties or fields on objects mapped from tables via the CreateInstance or CreateSet extensionMethods by utilising the TableAliases attribute
-
-Fixes:
-+ Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
-
-2.2.2 - 2017-??-??
-New Features:
++ Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property https://github.com/techtalk/SpecFlow/pull/963
++ Allow aliasing of properties or fields on objects mapped from tables via the CreateInstance or CreateSet extensionMethods by utilising the TableAliases attribute https://github.com/techtalk/SpecFlow/pull/969
 + Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933
 + Allow tuples (with max 7 properties) in CreateSet/CreateInstance https://github.com/techtalk/SpecFlow/pull/951 (http://specflow.org/documentation/SpecFlow-Assist-Helpers/)
 
 Fixes:
-+ "copy" feature in the step definition report is not working in modern browsers https://github.com/techtalk/SpecFlow/issues/957 https://github.com/techtalk/SpecFlow/issues/915
++ Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
++ "copy" feature in the step definition report is not working in modern browsers https://github.com/techtalk/SpecFlow/issues/958 https://github.com/techtalk/SpecFlow/issues/915
++ Xunit support @ignore on a feature level https://github.com/techtalk/SpecFlow/pull/968
+
+API Changes:
++ GetValue of ValueRetrievers are virtual https://github.com/techtalk/SpecFlow/pull/981
 
 2.2.1 - 2017-09-12
 
