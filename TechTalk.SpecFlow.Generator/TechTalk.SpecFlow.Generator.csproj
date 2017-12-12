@@ -67,6 +67,7 @@
     <Compile Include="ITestUpToDateChecker.cs" />
     <Compile Include="Plugins\GeneratorPluginEventArgs.cs" />
     <Compile Include="Plugins\GeneratorPluginEvents.cs" />
+    <Compile Include="Plugins\GeneratorPluginLoader.cs" />
     <Compile Include="Plugins\GeneratorPluginParameters.cs" />
     <Compile Include="Plugins\IGeneratorPlugin.cs" />
     <Compile Include="Plugins\IGeneratorPluginLoader.cs" />
