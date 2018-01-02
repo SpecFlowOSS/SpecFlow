@@ -134,7 +134,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //  <TestClass>.<TestClassInitialize>(null);
 
             var featureContextExpression = new CodePropertyReferenceExpression(
-                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name), 
+                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
                 "FeatureContext");
             generationContext.TestInitializeMethod.Statements.Add(
                 new CodeConditionStatement(
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         new CodeMethodInvokeExpression(
                             new CodeTypeReferenceExpression(
                                 new CodeTypeReference(
-                                    generationContext.Namespace.Name + "." + generationContext.TestClass.Name, 
+                                    generationContext.Namespace.Name + "." + generationContext.TestClass.Name,
                                     CodeTypeReferenceOptions.GlobalReference)),
                             generationContext.TestClassInitializeMethod.Name,
                             new CodePrimitiveExpression(null)))));
