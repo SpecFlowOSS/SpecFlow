@@ -587,6 +587,7 @@ namespace TechTalk.SpecFlow.Generator
 
             List<string> scenarioCategories;
             decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenarioDefinition.GetTags(), additionalTags), out scenarioCategories);
+
             if (scenarioCategories.Any())
                 testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, scenarioCategories);
         }
@@ -622,19 +623,19 @@ namespace TechTalk.SpecFlow.Generator
             List<string> arguments = new List<string>();
 
             formatText = paramRe.Replace(formatText, match =>
-            {
-                string param = match.Groups["param"].Value;
-                string id;
-                if (!paramToIdentifier.TryGetIdentifier(param, out id))
-                    return match.Value;
-                int argIndex = arguments.IndexOf(id);
-                if (argIndex < 0)
-                {
-                    argIndex = arguments.Count;
-                    arguments.Add(id);
-                }
-                return "{" + argIndex + "}";
-            });
+                                                     {
+                                                         string param = match.Groups["param"].Value;
+                                                         string id;
+                                                         if (!paramToIdentifier.TryGetIdentifier(param, out id))
+                                                             return match.Value;
+                                                         int argIndex = arguments.IndexOf(id);
+                                                         if (argIndex < 0)
+                                                         {
+                                                             argIndex = arguments.Count;
+                                                             arguments.Add(id);
+                                                         }
+                                                         return "{" + argIndex + "}";
+                                                     });
 
             if (arguments.Count == 0)
                 return new CodePrimitiveExpression(text);
