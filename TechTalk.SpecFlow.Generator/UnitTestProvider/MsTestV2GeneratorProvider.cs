@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override UnitTestGeneratorTraits GetTraits()
         {
-            return UnitTestGeneratorTraits.None | UnitTestGeneratorTraits.ParallelExecution;
+            return UnitTestGeneratorTraits.ParallelExecution;
         }
 
         public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
