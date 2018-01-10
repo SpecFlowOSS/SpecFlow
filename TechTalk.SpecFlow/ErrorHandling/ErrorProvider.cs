@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public string GetMethodText(IBindingMethod method)
         {
-            return string.Format("{0}.{1}({2})", method.Type.Name, method.Name,
+            return string.Format("{0}.{1}({2})", method.Type.FullName, method.Name,
                 string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray()));
         }
 

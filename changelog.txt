@@ -9,6 +9,7 @@ Fixes:
 + Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
 + "copy" feature in the step definition report is not working in modern browsers https://github.com/techtalk/SpecFlow/issues/958 https://github.com/techtalk/SpecFlow/issues/915
 + Xunit support @ignore on a feature level https://github.com/techtalk/SpecFlow/pull/968
++ Format error message to facilate identification of ambiguous steps https://github.com/techtalk/SpecFlow/issues/994
 
 API Changes:
 + GetValue of ValueRetrievers are virtual https://github.com/techtalk/SpecFlow/pull/981
