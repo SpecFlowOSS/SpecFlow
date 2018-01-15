@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new BindingMethod(
                 new BindingType(methodBindingTypeName, methodBindingTypeFullName),
                 methodName,
-                parametersTypes.Select(pn => new BindingParameter(new BindingType(pn, pn),string.Empty)),
+                parametersTypes.Select(pn => new BindingParameter(new BindingType(pn, pn), string.Empty)),
                 null);
         }
 
@@ -42,11 +42,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var errorProvider = CreateErrorProvider();
 
             var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type, parameter2Type);
-            
+
             var result = errorProvider.GetMethodText(bindingMethod);
 
             result.Should().NotBeNull();
-            result.Should().Be($"{methodBindingTypeFullName}.{ methodName}({ parameter1Type}, { parameter2Type})");
+            result.Should().Be($"{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})");
         }
 
         [Test]
@@ -88,38 +88,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var stepDefinitionStub = new Mock<IStepDefinitionBinding>();
             stepDefinitionStub.Setup(sd => sd.Method).Returns(bindingMethod);
-            var result = errorProvider.GetParameterCountError(new BindingMatch(stepDefinitionStub.Object, It.IsAny<int>(),null, null), 2);
+            var result = errorProvider.GetParameterCountError(new BindingMatch(stepDefinitionStub.Object, It.IsAny<int>(), null, null), 2);
 
             result.Should().NotBeNull();
             result.Should().BeOfType<BindingException>();
             result.Message.Should().Be($"Parameter count mismatch! The binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type})' should have 2 parameters");
         }
 
-        [Test]
-        public void GetAmbiguousMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
-        {
-            const string prefixMessage = "Ambiguous step definitions found for step";
-            GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(
-                (errorProvider,matches, stepInstance) => errorProvider.GetAmbiguousMatchError(matches, stepInstance), prefixMessage);
-        }
 
-        [Test]
-        public void GetAmbiguousBecauseParamCheckMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
-        {
-            const string prefixMessage = "Multiple step definitions found, but none of them have matching parameter count and type for step";
-            GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(
-                (errorProvider, matches, stepInstance) => errorProvider.GetAmbiguousBecauseParamCheckMatchError(matches, stepInstance), prefixMessage);
-        }
 
-        [Test]
-        public void GetNoMatchBecauseOfScopeFilterError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
-        {
-            const string prefixMessage = "Multiple step definitions found, but none of them have matching scope for step";
-            GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(
-                (errorProvider, matches, stepInstance) => errorProvider.GetNoMatchBecauseOfScopeFilterError(matches, stepInstance), prefixMessage);
-        }
-
-        private void GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(Func<ErrorProvider, List<BindingMatch>, StepInstance, Exception>GetMatchErrorFunc,string expectedPrefixMessage)
+        private void GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(Func<ErrorProvider, List<BindingMatch>, StepInstance, Exception> GetMatchErrorFunc, string expectedPrefixMessage)
         {
             const string methodName = "WhenIMultiply";
             const string methodBindingTypeName = "CalculatorSteps";
@@ -145,12 +123,46 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 new BindingMatch(stepDefinitionStub1.Object, It.IsAny<int>(), null, null),
                 new BindingMatch(stepDefinitionStub2.Object, It.IsAny<int>(), null, null)
             };
-            var result = GetMatchErrorFunc(errorProvider,bindingMatch, null);
+
+            var result = GetMatchErrorFunc(errorProvider, bindingMatch, null);
 
             result.Should().NotBeNull();
             result.Should().BeOfType<BindingException>();
             result.Message.Should().Be($"{expectedPrefixMessage} '{stepInstanceDescription}': {method1BindingTypeFullName}.{methodName}({parameter1Type}), {method2BindingTypeFullName}.{methodName}({parameter1Type})");
         }
 
+        [Test]
+        public void GetAmbiguousMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
+        {
+            const string prefixMessage = "Ambiguous step definitions found for step";
+            GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(
+                (errorProvider, matches, stepInstance) => errorProvider.GetAmbiguousMatchError(matches, stepInstance), prefixMessage);
+        }
+
+        [Test]
+        public void GetAmbiguousBecauseParamCheckMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
+        {
+            const string prefixMessage = "Multiple step definitions found, but none of them have matching parameter count and type for step";
+            GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(
+                (errorProvider, matches, stepInstance) => errorProvider.GetAmbiguousBecauseParamCheckMatchError(matches, stepInstance), prefixMessage);
+        }
+
+        [Test]
+        public void GetNoMatchBecauseOfScopeFilterError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
+        {
+            const string prefixMessage = "Multiple step definitions found, but none of them have matching scope for step";
+            GetMatchErrorMethod_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description(
+                (errorProvider, matches, stepInstance) => errorProvider.GetNoMatchBecauseOfScopeFilterError(matches, stepInstance), prefixMessage);
+        }
+
+        [Test]
+        public void GetMissingStepDefinitionError_Throws_MissingStepDefinitionException()
+        {
+            var errorProvider = CreateErrorProvider();
+
+            var result = errorProvider.GetMissingStepDefinitionError();
+
+            result.Should().NotBeNull();
+        }
     }
 }
