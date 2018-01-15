@@ -164,5 +164,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             result.Should().NotBeNull();
         }
+
+        [Test]
+        public void GetPendingStepDefinitionError_Throws_MissingStepDefinitionException()
+        {
+            var errorProvider = CreateErrorProvider();
+
+            var result = errorProvider.GetPendingStepDefinitionError();
+
+            result.Should().NotBeNull();
+        }
     }
 }
