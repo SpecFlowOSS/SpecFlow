@@ -9,6 +9,7 @@ using FluentAssertions;
 using Moq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -173,6 +174,100 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var result = errorProvider.GetPendingStepDefinitionError();
 
             result.Should().NotBeNull();
+        }
+
+        private static Mock<IUnitTestRuntimeProvider> ThrowPendingError(MissingOrPendingStepsOutcome missingOrPendingStepsOutcome, string expectedMessage, ScenarioExecutionStatus scenarioExecutionStatus = ScenarioExecutionStatus.UndefinedStep)
+        {
+            var specFlowConfiguration = ConfigurationLoader.GetDefault();
+            specFlowConfiguration.MissingOrPendingStepsOutcome = missingOrPendingStepsOutcome;
+            var testRuntimeProviderMock = new Mock<IUnitTestRuntimeProvider>();
+            var errorProvider = CreateErrorProvider(null, specFlowConfiguration, testRuntimeProviderMock.Object);
+
+            errorProvider.ThrowPendingError(scenarioExecutionStatus, expectedMessage);
+
+            return testRuntimeProviderMock;
+        }
+
+        [Test]
+        public void ThrowPendingError_Signals_TestPending_With_Message_To_Test_Provider_When_StepsOutcome_Is_Pending()
+        {
+            const string expectedMessage = "Expected message";
+            var missingOrPendingStepsOutcome = MissingOrPendingStepsOutcome.Pending;
+
+            var testRuntimeProviderMock = ThrowPendingError(missingOrPendingStepsOutcome, expectedMessage);
+            
+            testRuntimeProviderMock.Verify(p => p.TestPending(expectedMessage));
+        }
+
+        [Test]
+        public void ThrowPendingError_Signals_TestInconclusive_With_Message_To_Test_Provider_When_StepsOutcome_Is_Inconclusive()
+        {
+            const string expectedMessage = "Expected message";
+            var missingOrPendingStepsOutcome = MissingOrPendingStepsOutcome.Inconclusive;
+
+            var testRuntimeProviderMock = ThrowPendingError(missingOrPendingStepsOutcome, expectedMessage);
+
+            testRuntimeProviderMock.Verify(p => p.TestInconclusive(expectedMessage));
+        }
+
+        [Test]
+        public void ThrowPendingError_Signals_TestIgnore_With_Message_To_Test_Provider_When_StepsOutcome_Is_Ignore()
+        {
+            const string expectedMessage = "Expected message";
+            var missingOrPendingStepsOutcome = MissingOrPendingStepsOutcome.Ignore;
+
+            var testRuntimeProviderMock = ThrowPendingError(missingOrPendingStepsOutcome, expectedMessage);
+
+            testRuntimeProviderMock.Verify(p => p.TestIgnore(expectedMessage));
+        }
+
+        [Test]
+        public void ThrowPendingError_Throws_MissingStepDefinitionException_When_StepsOutcome_Is_Error_And_Test_Status_Is_UndefinedStep()
+        {
+            string unusedMessage = "";
+
+            var missingOrPendingStepsOutcome = MissingOrPendingStepsOutcome.Error;
+
+            Assert.Throws<MissingStepDefinitionException>(() => ThrowPendingError(missingOrPendingStepsOutcome, unusedMessage, ScenarioExecutionStatus.UndefinedStep));
+        }
+
+        [Test]
+        public void ThrowPendingError_Throws_PendingStepException_When_StepsOutcome_Is_Error_And_Test_Status_Is_Error()
+        {
+            string unusedMessage = "";
+
+            var missingOrPendingStepsOutcome = MissingOrPendingStepsOutcome.Error;
+
+            Assert.Throws<PendingStepException>(() => ThrowPendingError(missingOrPendingStepsOutcome, unusedMessage, ScenarioExecutionStatus.TestError));
+        }
+
+        [Test]
+        public void GetTooManyBindingParamError_Returns_BindingException_With_message_containing_Max_Number_Of_Bindings()
+        {
+            const int maxParam = 5;
+
+            var errorProvider = CreateErrorProvider();
+
+            var result = errorProvider.GetTooManyBindingParamError(maxParam);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<BindingException>();
+            result.Message.Should().Be($"Binding methods with more than {maxParam} parameters are not supported");
+        }
+
+        [Test]
+        public void GetNonStaticEventError_Throws_BindingException_with_message_containing_full_assembly_name_method_name_and_parameters_types()
+        {
+            const string methodName = "WhenIAdd";
+            const string methodBindingTypeName = "CalculatorSteps";
+            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string parameter1Type = "Int32";
+
+            var errorProvider = CreateErrorProvider();
+
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type);
+
+            Assert.Throws<BindingException>(() => errorProvider.GetNonStaticEventError(bindingMethod));
         }
     }
 }
