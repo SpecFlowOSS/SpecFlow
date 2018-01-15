@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
 using Moq;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -71,5 +72,34 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().BeOfType<BindingException>();
             result.Message.Should().Be($"Error calling binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})': {expectedExceptionMessage}");
         }
+
+        [Test]
+        public void GetParameterCountError_should_return_BindingException_containing_full_assembly_name__method_name_and_parameters_types_and_expected_parameter_count()
+        {
+            const string methodName = "WhenIMultiply";
+            const string methodBindingTypeName = "CalculatorSteps";
+            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string parameter1Type = "Int64";
+
+            const string expectedExceptionMessage = "Initialization failed";
+
+            var errorProvider = CreateErrorProvider();
+
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type);
+
+            var exceptionStub = new Mock<Exception>();
+            exceptionStub.Setup(e => e.Message).Returns(expectedExceptionMessage);
+
+            var stepDefinitionStub = new Mock<IStepDefinitionBinding>();
+            stepDefinitionStub.Setup(sd => sd.Method).Returns(bindingMethod);
+            var result = errorProvider.GetParameterCountError(new BindingMatch(stepDefinitionStub.Object, It.IsAny<int>(),null, null), 2);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<BindingException>();
+            result.Message.Should().Be($"Parameter count mismatch! The binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type})' should have 2 parameters");
+
+
+        }
+
     }
 }
