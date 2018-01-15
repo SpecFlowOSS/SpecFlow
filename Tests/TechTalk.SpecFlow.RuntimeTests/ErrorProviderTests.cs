@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -30,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void GetMethodText_should_return_string_containing_full_assembly_name__method_name_and_parameters_types()
+        public void GetMethodText_should_return_string_containing_full_assembly_name_method_name_and_parameters_types()
         {
             const string methodName = "WhenIAdd";
             const string methodBindingTypeName = "CalculatorSteps";
@@ -49,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void GetCallError_should_return_BindingException_containing_full_assembly_name__method_name_and_parameters_types_and_exception_message()
+        public void GetCallError_should_return_BindingException_containing_full_assembly_name_method_name_and_parameters_types_and_exception_message()
         {
             const string methodName = "WhenIMultiply";
             const string methodBindingTypeName = "CalculatorSteps";
@@ -74,21 +75,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void GetParameterCountError_should_return_BindingException_containing_full_assembly_name__method_name_and_parameters_types_and_expected_parameter_count()
+        public void GetParameterCountError_should_return_BindingException_containing_full_assembly_name_method_name_and_parameters_types_and_expected_parameter_count()
         {
             const string methodName = "WhenIMultiply";
             const string methodBindingTypeName = "CalculatorSteps";
             const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
             const string parameter1Type = "Int64";
 
-            const string expectedExceptionMessage = "Initialization failed";
-
             var errorProvider = CreateErrorProvider();
 
             var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type);
-
-            var exceptionStub = new Mock<Exception>();
-            exceptionStub.Setup(e => e.Message).Returns(expectedExceptionMessage);
 
             var stepDefinitionStub = new Mock<IStepDefinitionBinding>();
             stepDefinitionStub.Setup(sd => sd.Method).Returns(bindingMethod);
@@ -97,6 +93,40 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().NotBeNull();
             result.Should().BeOfType<BindingException>();
             result.Message.Should().Be($"Parameter count mismatch! The binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type})' should have 2 parameters");
+        }
+
+        [Test]
+        public void GetAmbiguousMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
+        {
+            const string methodName = "WhenIMultiply";
+            const string methodBindingTypeName = "CalculatorSteps";
+            const string method1BindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string method2BindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string parameter1Type = "Int64";
+
+            const string stepInstanceDescription = "'Given I multiply 10 and 5'";
+
+            var stepFormatterStub = new Mock<IStepFormatter>();
+            stepFormatterStub.Setup(f => f.GetStepDescription(It.IsAny<StepInstance>())).Returns(stepInstanceDescription);
+            var errorProvider = CreateErrorProvider(stepFormatterStub.Object);
+
+            var bindingMethod1 = CreateBindingMethod(methodName, methodBindingTypeName, method1BindingTypeFullName, parameter1Type);
+            var bindingMethod2 = CreateBindingMethod(methodName, methodBindingTypeName, method2BindingTypeFullName, parameter1Type);
+            
+            var stepDefinitionStub1 = new Mock<IStepDefinitionBinding>();
+            stepDefinitionStub1.Setup(sd => sd.Method).Returns(bindingMethod1);
+            var stepDefinitionStub2 = new Mock<IStepDefinitionBinding>();
+            stepDefinitionStub2.Setup(sd => sd.Method).Returns(bindingMethod2);
+            var bindingMatch = new List<BindingMatch>()
+            {
+                new BindingMatch(stepDefinitionStub1.Object, It.IsAny<int>(), null, null),
+                new BindingMatch(stepDefinitionStub2.Object, It.IsAny<int>(), null, null)
+            };
+            var result = errorProvider.GetAmbiguousBecauseParamCheckMatchError(bindingMatch, null);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<BindingException>();
+            result.Message.Should().Be($"Multiple step definitions found, but none of them have matching parameter count and type for step '{stepInstanceDescription}': {method1BindingTypeFullName}.{methodName}({parameter1Type}), {method2BindingTypeFullName}.{methodName}({parameter1Type})");
 
 
         }
