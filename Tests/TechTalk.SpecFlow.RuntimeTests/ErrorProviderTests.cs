@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -16,34 +18,58 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new ErrorProvider(stepFormatter, specFlowConfiguration, unitTestRuntimeProvider);
         }
 
+        private IBindingMethod CreateBindingMethod(string methodName, string methodBindingTypeName, string methodBindingTypeFullName, params string[] parametersTypes)
+        {
+            parametersTypes = parametersTypes ?? new string[0];
+            return new BindingMethod(
+                new BindingType(methodBindingTypeName, methodBindingTypeFullName),
+                methodName,
+                parametersTypes.Select(pn => new BindingParameter(new BindingType(pn, pn),string.Empty)),
+                null);
+        }
+
         [Test]
         public void GetMethodText_should_return_string_containing_full_assembly_name__method_name_and_parameters_types()
         {
+            const string methodName = "WhenIAdd";
+            const string methodBindingTypeName = "CalculatorSteps";
+            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string parameter1Type = "Int32";
+            const string parameter2Type = "String";
+
             var errorProvider = CreateErrorProvider();
 
-            var bindingMethodTypeStub = new Mock<IBindingType>();
-            bindingMethodTypeStub.Setup(t => t.FullName).Returns("StepsAssembly1.CalculatorSteps");
-
-            var bindingMethodStub = new Mock<IBindingMethod>();
-            bindingMethodStub.Setup(m => m.Type).Returns(bindingMethodTypeStub.Object);
-            bindingMethodStub.Setup(m => m.Name).Returns("WhenIAdd");
-
-            var bindingParameter1TypeStub = new Mock<IBindingType>();
-            bindingParameter1TypeStub.Setup(t => t.Name).Returns("Int32");
-            var bindingParameter1Stub = new Mock<IBindingParameter>();
-            bindingParameter1Stub.Setup(p => p.Type).Returns(bindingParameter1TypeStub.Object);
-
-            var bindingParameter2TypeStub = new Mock<IBindingType>();
-            bindingParameter2TypeStub.Setup(t => t.Name).Returns("String");
-            var bindingParameter2Stub = new Mock<IBindingParameter>();
-            bindingParameter2Stub.Setup(p => p.Type).Returns(bindingParameter2TypeStub.Object);
-
-
-            bindingMethodStub.Setup(m => m.Parameters).Returns(new[] { bindingParameter1Stub.Object, bindingParameter2Stub.Object });
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type, parameter2Type);
             
-            var result = errorProvider.GetMethodText(bindingMethodStub.Object);
+            var result = errorProvider.GetMethodText(bindingMethod);
+
             result.Should().NotBeNull();
-            result.Should().Be("StepsAssembly1.CalculatorSteps.WhenIAdd(Int32, String)");
+            result.Should().Be($"{methodBindingTypeFullName}.{ methodName}({ parameter1Type}, { parameter2Type})");
+        }
+
+        [Test]
+        public void GetCallError_should_return_BindingException_containing_full_assembly_name__method_name_and_parameters_types_and_exception_message()
+        {
+            const string methodName = "WhenIMultiply";
+            const string methodBindingTypeName = "CalculatorSteps";
+            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string parameter1Type = "String";
+            const string parameter2Type = "Int64";
+
+            const string expectedExceptionMessage = "Initialization failed";
+
+            var errorProvider = CreateErrorProvider();
+
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type, parameter2Type);
+
+            var exceptionStub = new Mock<Exception>();
+            exceptionStub.Setup(e => e.Message).Returns(expectedExceptionMessage);
+
+            var result = errorProvider.GetCallError(bindingMethod, exceptionStub.Object);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<BindingException>();
+            result.Message.Should().Be($"Error calling binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})': {expectedExceptionMessage}");
         }
     }
 }
