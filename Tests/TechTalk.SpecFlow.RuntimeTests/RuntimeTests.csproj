@@ -162,6 +162,7 @@
     <Compile Include="Bindings\BindingRegistryTests.cs" />
     <Compile Include="Configuration\JsonConfigTests.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculatorTests.cs" />
+    <Compile Include="ErrorProviderTests.cs" />
     <Compile Include="Infrastructure\TestThreadContextTests.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchServiceTest.cs" />
     <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
