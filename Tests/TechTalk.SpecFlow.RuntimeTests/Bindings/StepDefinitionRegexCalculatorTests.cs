@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         {
             parameters = parameters ?? new string[0];
             return new BindingMethod(
-                new BindingType("SomeSteps", "SomeSteps"), 
+                new BindingType("SomeAssembly", "SomeSteps", "SomeSteps"),
                 name, 
                 parameters.Select(pn => new BindingParameter(new RuntimeBindingType(typeof(string)), pn)), 
                 new RuntimeBindingType(typeof(void)));
