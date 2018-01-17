@@ -39,8 +39,8 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public string GetMethodText(IBindingMethod method)
         {
-            return string.Format("{0}.{1}({2})", method.Type.FullName, method.Name,
-                string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray()));
+            string parametersDisplayed = string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray());
+            return $"{method.Type.AssemblyName}:{method.Type.FullName}.{method.Name}({parametersDisplayed})";
         }
 
         public Exception GetCallError(IBindingMethod method, Exception ex)

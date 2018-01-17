@@ -38,12 +38,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         private static BindingMethod CreateBindingMethod(string name = "dummy")
         {
-            return new BindingMethod(new BindingType("dummy", "dummy"), name, new IBindingParameter[0], null);
+            return new BindingMethod(new BindingType("dummy", "dummy", "dummy"), name, new IBindingParameter[0], null);
         }
 
         private static BindingMethod CreateBindingMethodWithStrignParam(string name = "dummy")
         {
-            return new BindingMethod(new BindingType("dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(string)), "param1") }, null);
+            return new BindingMethod(new BindingType("dummy", "dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(string)), "param1") }, null);
         }
 
         private StepInstance CreateSimpleWhen(string text = "I do something")

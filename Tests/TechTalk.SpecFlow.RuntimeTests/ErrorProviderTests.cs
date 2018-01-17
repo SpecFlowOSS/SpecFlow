@@ -21,13 +21,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new ErrorProvider(stepFormatter, specFlowConfiguration, unitTestRuntimeProvider);
         }
 
-        private IBindingMethod CreateBindingMethod(string methodName, string methodBindingTypeName, string methodBindingTypeFullName, params string[] parametersTypes)
+        private IBindingMethod CreateBindingMethod(string methodName, string methodBindingTypeName, string methodBindingTypeFullName, string methodBindingAssemblyName, params string[] parametersTypes)
         {
             parametersTypes = parametersTypes ?? new string[0];
             return new BindingMethod(
-                new BindingType(methodBindingTypeName, methodBindingTypeFullName),
+                new BindingType(methodBindingTypeName, methodBindingTypeFullName, methodBindingAssemblyName),
                 methodName,
-                parametersTypes.Select(pn => new BindingParameter(new BindingType(pn, pn), string.Empty)),
+                parametersTypes.Select(pn => new BindingParameter(new BindingType(pn, pn, string.Empty), string.Empty)),
                 null);
         }
 
@@ -36,18 +36,19 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             const string methodName = "WhenIAdd";
             const string methodBindingTypeName = "CalculatorSteps";
-            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string methodBindingAssemblyName = "StepsAssembly1";
+            const string methodBindingTypeFullName = "StepsNamespace.CalculatorSteps";
             const string parameter1Type = "Int32";
             const string parameter2Type = "String";
 
             var errorProvider = CreateErrorProvider();
 
-            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type, parameter2Type);
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, methodBindingAssemblyName, parameter1Type, parameter2Type);
 
             var result = errorProvider.GetMethodText(bindingMethod);
 
             result.Should().NotBeNull();
-            result.Should().Be($"{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})");
+            result.Should().Be($"{methodBindingAssemblyName}:{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})");
         }
 
         [Test]
@@ -55,7 +56,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             const string methodName = "WhenIMultiply";
             const string methodBindingTypeName = "CalculatorSteps";
-            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string methodBindingAssemblyName = "StepsAssembly1";
+            const string methodBindingTypeFullName = "StepsNamespace.CalculatorSteps";
             const string parameter1Type = "String";
             const string parameter2Type = "Int64";
 
@@ -63,7 +65,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var errorProvider = CreateErrorProvider();
 
-            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type, parameter2Type);
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, methodBindingAssemblyName, parameter1Type, parameter2Type);
 
             var exceptionStub = new Mock<Exception>();
             exceptionStub.Setup(e => e.Message).Returns(expectedExceptionMessage);
@@ -72,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             result.Should().NotBeNull();
             result.Should().BeOfType<BindingException>();
-            result.Message.Should().Be($"Error calling binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})': {expectedExceptionMessage}");
+            result.Message.Should().Be($"Error calling binding method '{methodBindingAssemblyName}:{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})': {expectedExceptionMessage}");
         }
 
         [Test]
@@ -80,12 +82,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             const string methodName = "WhenIMultiply";
             const string methodBindingTypeName = "CalculatorSteps";
-            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string methodBindingAssemblyName = "StepsAssembly1";
+            const string methodBindingTypeFullName = "StepsNamespace.CalculatorSteps";
             const string parameter1Type = "Int64";
 
             var errorProvider = CreateErrorProvider();
 
-            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type);
+            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, methodBindingAssemblyName, parameter1Type);
 
             var stepDefinitionStub = new Mock<IStepDefinitionBinding>();
             stepDefinitionStub.Setup(sd => sd.Method).Returns(bindingMethod);
@@ -93,7 +96,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             result.Should().NotBeNull();
             result.Should().BeOfType<BindingException>();
-            result.Message.Should().Be($"Parameter count mismatch! The binding method '{methodBindingTypeFullName}.{methodName}({parameter1Type})' should have 2 parameters");
+            result.Message.Should().Be($"Parameter count mismatch! The binding method '{methodBindingAssemblyName}:{methodBindingTypeFullName}.{methodName}({parameter1Type})' should have 2 parameters");
         }
 
 
@@ -102,8 +105,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             const string methodName = "WhenIMultiply";
             const string methodBindingTypeName = "CalculatorSteps";
-            const string method1BindingTypeFullName = "StepsAssembly1.CalculatorSteps";
-            const string method2BindingTypeFullName = "StepsAssembly1.CalculatorSteps";
+            const string methodBindingAssemblyName = "StepsAssembly1";
+            const string method1BindingTypeFullName = "StepsNamespace.CalculatorSteps";
+            const string method2BindingTypeFullName = "StepsNamespace.CalculatorSteps";
             const string parameter1Type = "Int64";
 
             const string stepInstanceDescription = "'Given I multiply 10 and 5'";
@@ -112,8 +116,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             stepFormatterStub.Setup(f => f.GetStepDescription(It.IsAny<StepInstance>())).Returns(stepInstanceDescription);
             var errorProvider = CreateErrorProvider(stepFormatterStub.Object);
 
-            var bindingMethod1 = CreateBindingMethod(methodName, methodBindingTypeName, method1BindingTypeFullName, parameter1Type);
-            var bindingMethod2 = CreateBindingMethod(methodName, methodBindingTypeName, method2BindingTypeFullName, parameter1Type);
+            var bindingMethod1 = CreateBindingMethod(methodName, methodBindingTypeName, method1BindingTypeFullName, methodBindingAssemblyName, parameter1Type);
+            var bindingMethod2 = CreateBindingMethod(methodName, methodBindingTypeName, method2BindingTypeFullName, methodBindingAssemblyName, parameter1Type);
 
             var stepDefinitionStub1 = new Mock<IStepDefinitionBinding>();
             stepDefinitionStub1.Setup(sd => sd.Method).Returns(bindingMethod1);
@@ -129,7 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             result.Should().NotBeNull();
             result.Should().BeOfType<BindingException>();
-            result.Message.Should().Be($"{expectedPrefixMessage} '{stepInstanceDescription}': {method1BindingTypeFullName}.{methodName}({parameter1Type}), {method2BindingTypeFullName}.{methodName}({parameter1Type})");
+            result.Message.Should().Be($"{expectedPrefixMessage} '{stepInstanceDescription}': {methodBindingAssemblyName}:{method1BindingTypeFullName}.{methodName}({parameter1Type}), {methodBindingAssemblyName}:{method2BindingTypeFullName}.{methodName}({parameter1Type})");
         }
 
         [Test]
@@ -195,7 +199,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var missingOrPendingStepsOutcome = MissingOrPendingStepsOutcome.Pending;
 
             var testRuntimeProviderMock = ThrowPendingError(missingOrPendingStepsOutcome, expectedMessage);
-            
+
             testRuntimeProviderMock.Verify(p => p.TestPending(expectedMessage));
         }
 
