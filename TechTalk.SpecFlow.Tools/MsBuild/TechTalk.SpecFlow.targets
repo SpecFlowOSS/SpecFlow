@@ -35,7 +35,11 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject">
+  <ItemGroup>
+    <SpecFlowFeatureFiles Include="**\*.feature"/>
+  </ItemGroup>
+
+  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
     <GenerateAll
       ShowTrace="$(ShowTrace)"
 
