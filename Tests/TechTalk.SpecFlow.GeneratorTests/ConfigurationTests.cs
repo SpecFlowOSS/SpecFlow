@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -39,13 +40,20 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [TestCase(ConfigWithParallelCodeGenerationOptions, Description = "Config with Parallel Code Generation Options")]
         public void CanLoadConfigWithParallelCodeGenerationOptionsFromString(string configString)
         {
-            var generatorConfiguration = new GeneratorConfiguration();
-            generatorConfiguration.UpdateFromConfigFile(ConfigurationSectionHandler.CreateFromXml(configString));
+            var specFlowConfiguration = ConfigurationLoader.GetDefault();
 
-            Assert.IsTrue(generatorConfiguration.MarkFeaturesParallelizable);
-            Assert.IsNotEmpty(generatorConfiguration.SkipParallelizableMarkerForTags);
-            Assert.Contains("mySpecialTag1",generatorConfiguration.SkipParallelizableMarkerForTags);
-            Assert.Contains("mySpecialTag2", generatorConfiguration.SkipParallelizableMarkerForTags);
+            var configurationLoader = new AppConfigConfigurationLoader();
+
+
+            var configurationSectionHandler = ConfigurationSectionHandler.CreateFromXml(configString);
+            specFlowConfiguration = configurationLoader.LoadAppConfig(specFlowConfiguration, configurationSectionHandler);
+
+
+
+            Assert.IsTrue(specFlowConfiguration.MarkFeaturesParallelizable);
+            Assert.IsNotEmpty(specFlowConfiguration.SkipParallelizableMarkerForTags);
+            Assert.Contains("mySpecialTag1", specFlowConfiguration.SkipParallelizableMarkerForTags);
+            Assert.Contains("mySpecialTag2", specFlowConfiguration.SkipParallelizableMarkerForTags);
         }
     }
 }

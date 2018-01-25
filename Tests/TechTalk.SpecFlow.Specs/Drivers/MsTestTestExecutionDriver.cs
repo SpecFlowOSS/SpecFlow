@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SpecFlow.TestProjectGenerator;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
 {
@@ -11,24 +12,42 @@ namespace TechTalk.SpecFlow.Specs.Drivers
     {
         private readonly InputProjectDriver inputProjectDriver;
         private readonly TestExecutionResult testExecutionResult;
+        private readonly VisualStudioFinder _visualStudioFinder;
 
-        public MsTestTestExecutionDriver(InputProjectDriver inputProjectDriver, TestExecutionResult testExecutionResult)
+        public TestSettingsFileInput TestSettingsFile { get; set; }
+
+        public MsTestTestExecutionDriver(InputProjectDriver inputProjectDriver, TestExecutionResult testExecutionResult, VisualStudioFinder visualStudioFinder)
         {
             this.inputProjectDriver = inputProjectDriver;
             this.testExecutionResult = testExecutionResult;
+            _visualStudioFinder = visualStudioFinder;
         }
 
         public TestRunSummary Execute()
         {
-            string vsFolder = Environment.Is64BitProcess ? @"%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\IDE" : @"%ProgramFiles%\Microsoft Visual Studio 14.0\Common7\IDE";
-            var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(),
-                Environment.ExpandEnvironmentVariables(vsFolder + @"\MsTest.exe"));
+            string vsFolder = Path.Combine(_visualStudioFinder.Find(), "Common7", "IDE");
+            var msTestConsolePath = Path.Combine(vsFolder, "MsTest.exe");
 
             string resultsFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx");
 
-            var provessHelper = new ProcessHelper();
-            provessHelper.RunProcess(nunitConsolePath, "\"/testcontainer:{0}\" \"/resultsfile:{1}\"",
-                inputProjectDriver.CompiledAssemblyPath, resultsFilePath);
+            string testSettingsFilePath = null;
+
+            var processHelper = new ProcessHelper();
+
+            string argumentsFormat = "\"/testcontainer:{0}\" \"/resultsfile:{1}\" /usestderr";
+
+            if (this.TestSettingsFile != null)
+            {
+                testSettingsFilePath = Path.Combine(
+                    inputProjectDriver.CompilationFolder,
+                    this.TestSettingsFile.ProjectRelativePath);
+
+                File.WriteAllText(testSettingsFilePath, this.TestSettingsFile.Content, Encoding.UTF8);
+
+                argumentsFormat += " \"/testsettings:{2}\"";
+            }
+
+            processHelper.RunProcess(msTestConsolePath, argumentsFormat, inputProjectDriver.CompiledAssemblyPath, resultsFilePath, testSettingsFilePath);
 
             XDocument logFile = XDocument.Load(resultsFilePath);
 

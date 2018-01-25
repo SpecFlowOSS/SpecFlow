@@ -2,6 +2,7 @@
 using System.IO;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -84,14 +85,14 @@ Scenario: Add two numbers
 
         protected TestGenerator CreateTestGenerator(ProjectSettings projectSettings)
         {
-            GeneratorConfiguration generatorConfiguration = new GeneratorConfiguration();
+            Configuration.SpecFlowConfiguration generatorSpecFlowConfiguration = ConfigurationLoader.GetDefault();
             CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration, new DecoratorRegistryStub());
+            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorSpecFlowConfiguration, new DecoratorRegistryStub());
 
             var generatorRegistryStub = new Mock<IFeatureGeneratorRegistry>();
             generatorRegistryStub.Setup(r => r.CreateGenerator(It.IsAny<SpecFlowDocument>())).Returns(unitTestFeatureGenerator);
 
-            return new TestGenerator(generatorConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, generatorRegistryStub.Object, codeDomHelper);
+            return new TestGenerator(generatorSpecFlowConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, generatorRegistryStub.Object, codeDomHelper);
         }
     }
 }

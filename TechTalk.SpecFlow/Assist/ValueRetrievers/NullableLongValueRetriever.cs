@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.longValueRetriever = longValueRetriever;
         }
 
-        public long? GetValue(string value)
+        public virtual long? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return longValueRetriever(value);

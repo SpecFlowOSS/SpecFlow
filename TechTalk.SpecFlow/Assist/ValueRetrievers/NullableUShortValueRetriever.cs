@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.ushortValueRetriever = ushortValueRetriever;
         }
 
-        public ushort? GetValue(string value)
+        public virtual ushort? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return ushortValueRetriever(value);

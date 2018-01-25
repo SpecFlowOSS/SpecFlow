@@ -64,6 +64,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             foreach (var contentFileInput in inputProjectDriver.ContentFiles)
             {
                 string outputPath = Path.Combine(inputProjectDriver.CompilationFolder, contentFileInput.ProjectRelativePath);
+                Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
                 File.WriteAllText(outputPath, contentFileInput.Content, Encoding.UTF8);
                 project.AddItem("Content", contentFileInput.ProjectRelativePath, new[]
                                                                                   {
@@ -71,7 +72,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                                                                                   });
             }
 
-            foreach (var reference in inputProjectDriver.References.Concat(inputProjectDriver.ConfigurationDriver.GetAdditionalReferences()))
+
+            AddReference(inputProjectDriver, project, "Newtonsoft.Json.dll");
+            foreach (var reference in inputProjectDriver.References.Concat(inputProjectDriver.AppConfigConfigurationDriver.GetAdditionalReferences()))
                 AddReference(inputProjectDriver, project, reference);
 
             project.Save();
@@ -162,8 +165,20 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
         private void AddAppConfig(InputProjectDriver inputProjectDriver, Project project)
         {
-            inputProjectDriver.ConfigurationDriver.SaveConfigurationTo(Path.Combine(inputProjectDriver.CompilationFolder, "App.config"));
+            inputProjectDriver.AppConfigConfigurationDriver.SaveConfigurationTo(Path.Combine(inputProjectDriver.CompilationFolder, "App.config"));
             project.AddItem("None", "App.config");
+
+            if (inputProjectDriver.SpecFlowJsonConfigurationDriver.IsUsed)
+            {
+                inputProjectDriver.SpecFlowJsonConfigurationDriver.Save(Path.Combine(inputProjectDriver.CompilationFolder, "specflow.json"));
+                IEnumerable<KeyValuePair<string, string>> metadata = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Link", "specflow.json"),
+                    new KeyValuePair<string, string>("CopyToOutputDirectory", "Always")
+                };
+                var projectItems = project.AddItem("None", "specflow.json", metadata );
+                
+            }
         }
 
         private string SaveFileFromTemplate(string compilationFolder, string templateName, string outputFileName, Dictionary<string, string> replacements = null)

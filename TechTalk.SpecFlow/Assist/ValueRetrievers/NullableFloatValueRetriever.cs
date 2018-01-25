@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.FloatValueRetriever = FloatValueRetriever;
         }
 
-        public float? GetValue(string value)
+        public virtual float? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return FloatValueRetriever(value);

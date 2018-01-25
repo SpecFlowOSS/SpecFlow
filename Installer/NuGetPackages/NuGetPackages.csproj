@@ -48,6 +48,9 @@
     <None Include=".build\build.targets" />
     <None Include="Properties\build.props" />
     <None Include="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec.props" />
+    <None Include="SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
+    <None Include="SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+    <None Include="SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.nuspec" />
     <None Include="SpecFlow.MsTest\SpecFlow.MsTest.nuspec.props" />
     <None Include="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec.props" />
     <None Include="SpecFlow.NUnit\SpecFlow.NUnit.nuspec.props" />
@@ -72,6 +75,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="SpecFlow.xUnit\SpecFlow.xUnit.nuspec" />
+    <None Include="SpecFlow\build\SpecFlow.targets" />
     <None Include="SpecFlow\SpecFlow.nuspec" />
     <None Include="SpecFlow\SpecFlow.nuspec.props" />
     <None Include="SpecFlow.xUnit\App.config.transform" />

@@ -14,22 +14,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly InputProjectDriver inputProjectDriver;
         private readonly ProjectSteps projectSteps;
         private readonly ExecutionSteps executionSteps;
-        private readonly SpecFlowConfigurationDriver specFlowConfigurationDriver;
+        private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
         private readonly ReportInfo reportInfo;
 
-        public ReportingSteps(InputProjectDriver inputProjectDriver, ProjectSteps projectSteps, SpecFlowConfigurationDriver specFlowConfigurationDriver, ExecutionSteps executionSteps, ReportInfo reportInfo)
+        public ReportingSteps(InputProjectDriver inputProjectDriver, ProjectSteps projectSteps, AppConfigConfigurationDriver _appConfigConfigurationDriver, ExecutionSteps executionSteps, ReportInfo reportInfo)
         {
             this.inputProjectDriver = inputProjectDriver;
             this.reportInfo = reportInfo;
             this.executionSteps = executionSteps;
             this.projectSteps = projectSteps;
-            this.specFlowConfigurationDriver = specFlowConfigurationDriver;
+            this._appConfigConfigurationDriver = _appConfigConfigurationDriver;
         }
 
         [Given(@"there are (.*) test execution results for the project")]
         public void GivenThereAreNUnitTestExecutionResultsForTheProject(string unitTestProvider)
         {
-            specFlowConfigurationDriver.SetUnitTestProvider(unitTestProvider);
+            _appConfigConfigurationDriver.SetUnitTestProvider(unitTestProvider);
             projectSteps.EnsureCompiled();
 
             executionSteps.WhenIExecuteTheTestsWith(unitTestProvider);

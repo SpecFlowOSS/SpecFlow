@@ -19,11 +19,17 @@
     
     <Message Importance="High" Text="NugetVersion: $(NugetVersion)" />
     
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" DestinationFiles="$(TargetDir)SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" OverwriteReadOnlyFiles="true"  />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.props" DestinationFiles="$(TargetDir)SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" OverwriteReadOnlyFiles="true"  />
+    <XmlPoke XmlInputPath="$(TargetDir)SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;" Query="//ng:Import/@Project" Value="SpecFlow.Tools.MsBuild.Generation.props" />
+
+
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.MsTest\SpecFlow.MsTest.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.NUnit\SpecFlow.NUnit.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.xUnit\SpecFlow.xUnit.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow.NUnit']/@version" Value="[$(SpecFlowPackageVersion)]" />
+    <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
   </Target>
 
 </Project>

@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.charValueRetriever = charValueRetriever;
         }
 
-        public char? GetValue(string value)
+        public virtual char? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return null;

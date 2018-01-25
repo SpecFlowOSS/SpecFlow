@@ -8,12 +8,13 @@ namespace TechTalk.SpecFlow.Infrastructure
 
     public interface IContextManager
     {
+        TestThreadContext TestThreadContext { get; }
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
         ScenarioStepContext StepContext { get; }
         StepDefinitionType? CurrentTopLevelStepDefinitionType { get; }
 
-        void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
+        void InitializeFeatureContext(FeatureInfo featureInfo);
         void CleanupFeatureContext();
 
         void InitializeScenarioContext(ScenarioInfo scenarioInfo);

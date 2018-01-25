@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public readonly List<IHookBinding> HookBindings = new List<IHookBinding>();
         public readonly List<IStepArgumentTransformationBinding> StepArgumentTransformationBindings = new List<IStepArgumentTransformationBinding>();
 
-        public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(new RuntimeConfiguration())))
+        public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(ConfigurationLoader.GetDefault())))
         {
         }
 

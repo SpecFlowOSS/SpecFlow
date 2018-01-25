@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.boolValueRetriever = boolValueRetriever;
         }
 
-        public bool? GetValue(string thisValue)
+        public virtual bool? GetValue(string thisValue)
         {
             if (string.IsNullOrEmpty(thisValue)) return null;
             return boolValueRetriever(thisValue);

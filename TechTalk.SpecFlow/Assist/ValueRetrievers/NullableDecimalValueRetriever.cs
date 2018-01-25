@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.decimalValueRetriever = decimalValueRetriever;
         }
 
-        public decimal? GetValue(string value)
+        public virtual decimal? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return decimalValueRetriever(value);

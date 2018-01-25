@@ -6,15 +6,11 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     {
         public readonly Type Type;
 
-        public string Name
-        {
-            get { return Type.Name; }
-        }
+        public string Name => Type.Name;
 
-        public string FullName
-        {
-            get { return Type.FullName; }
-        }
+        public string FullName => Type.FullName;
+
+        public string AssemblyName => Type.Assembly.GetName().Name;
 
         public RuntimeBindingType(Type type)
         {
@@ -43,5 +39,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             return (Type != null ? Type.GetHashCode() : 0);
         }
+
+        public static readonly RuntimeBindingType Void = new RuntimeBindingType(typeof(void));
     }
 }

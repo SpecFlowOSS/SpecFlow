@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.ulongValueRetriever = ulongValueRetriever;
         }
 
-        public ulong? GetValue(string value)
+        public virtual ulong? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return ulongValueRetriever(value);

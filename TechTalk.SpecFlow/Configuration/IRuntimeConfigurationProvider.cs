@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow.Infrastructure;
+﻿using System.Collections.Generic;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Configuration
 {
     public interface IRuntimeConfigurationProvider
     {
-        void LoadConfiguration(RuntimeConfiguration defaultConfiguration);
-        IEnumerable<PluginDescriptor> GetPlugins();
+        SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration);
+        IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfiguration specFlowConfiguration);
     }
 }

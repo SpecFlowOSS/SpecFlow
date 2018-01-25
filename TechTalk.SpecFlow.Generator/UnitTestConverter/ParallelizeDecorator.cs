@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
@@ -12,7 +13,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         private readonly ITagFilterMatcher tagFilterMatcher;
         private readonly bool generateParallelCodeForFeatures;
 
-        public ParallelizeDecorator(ITagFilterMatcher tagFilterMatcher, GeneratorConfiguration generatorConfiguration)
+        public ParallelizeDecorator(ITagFilterMatcher tagFilterMatcher, SpecFlowConfiguration generatorConfiguration)
         {
             this.tagFilterMatcher = tagFilterMatcher;
             this.generateParallelCodeForFeatures = generatorConfiguration.MarkFeaturesParallelizable;
