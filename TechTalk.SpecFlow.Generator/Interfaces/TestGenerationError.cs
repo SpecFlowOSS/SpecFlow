@@ -37,10 +37,9 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         private static string GetMessage(Exception ex)
         {
             if (ex.InnerException == null)
-                return ex.Message;
+                return ex.ToString();
 
-            return ex.Message + " -> " + GetMessage(ex.InnerException);
+            return ex + " -> " + GetMessage(ex.InnerException);
         }
-
     }
 }
