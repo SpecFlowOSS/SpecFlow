@@ -36,7 +36,9 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
 
         private static string GetMessage(Exception ex)
         {
-            return ex.ToString();
+            return ex.Message + Environment.NewLine + 
+                   Environment.NewLine + 
+                   ex;
         }
     }
 }
