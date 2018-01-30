@@ -43,13 +43,10 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -130,6 +127,7 @@
     <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\NUnitTestGeneratorProvider.cs" />
+    <Compile Include="Helpers\PathHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">

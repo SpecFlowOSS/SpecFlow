@@ -5,7 +5,8 @@
        see: https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=423670&wa=wsignin1.0
   -->
   <PropertyGroup>
-    <UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+    <SpecFlow_UseHostCompilerIfAvailable Condition="'$(SpecFlow_UseHostCompilerIfAvailable)'==''">false</SpecFlow_UseHostCompilerIfAvailable>
+    <UseHostCompilerIfAvailable>$(SpecFlow_UseHostCompilerIfAvailable)</UseHostCompilerIfAvailable>
   </PropertyGroup>
 
   <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>

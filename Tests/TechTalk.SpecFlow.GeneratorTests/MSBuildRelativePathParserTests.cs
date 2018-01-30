@@ -2,6 +2,7 @@
 using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Generator.Helpers;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -24,10 +25,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var msBuildRelativePathParser = new MSBuildRelativePathParser();
 
             //ACT
-            var files = msBuildRelativePathParser.GetFiles(_directoryName, "ExampleFeatures\\Features\\Subfolder1\\ExternalFeature1.feature");
+            var files = msBuildRelativePathParser.GetFiles(_directoryName, PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
 
             //ASSERT
-            files.Should().Contain("ExampleFeatures\\Features\\Subfolder1\\ExternalFeature1.feature");
+            files.Should().Contain(PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
             files.Count.Should().Be(1);
         }
 
@@ -38,10 +39,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var msBuildRelativePathParser = new MSBuildRelativePathParser();
 
             //ACT
-            var files = msBuildRelativePathParser.GetFiles(_directoryName, "ExampleFeatures\\Features\\Subfolder1\\*.feature");
+            var files = msBuildRelativePathParser.GetFiles(_directoryName, PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\Subfolder1\*.feature"));
 
             //ASSERT
-            files.Should().Contain("ExampleFeatures\\Features\\Subfolder1\\ExternalFeature1.feature");
+            files.Should().Contain(PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
             files.Count.Should().Be(1);
         }
 
@@ -52,11 +53,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var msBuildRelativePathParser = new MSBuildRelativePathParser();
 
             //ACT
-            var files = msBuildRelativePathParser.GetFiles(_directoryName, "ExampleFeatures\\Features\\**\\*.feature");
+            var files = msBuildRelativePathParser.GetFiles(_directoryName, PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\**\*.feature"));
 
             //ASSERT
-            files.Should().Contain("ExampleFeatures\\Features\\Subfolder1\\ExternalFeature1.feature");
-            files.Should().Contain("ExampleFeatures\\Features\\Subfolder2\\ExternalFeature2.feature");
+            files.Should().Contain(PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
+            files.Should().Contain(PathHelper.SanitizeDirectorySeparatorChar(@"ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature"));
             files.Count.Should().Be(2);
         }
 
@@ -67,10 +68,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var msBuildRelativePathParser = new MSBuildRelativePathParser();
 
             //ACT
-            var files = msBuildRelativePathParser.GetFiles(_directoryName, "..\\Data\\ExampleFeatures\\Features\\Subfolder1\\*.feature");
+            var files = msBuildRelativePathParser.GetFiles(_directoryName, PathHelper.SanitizeDirectorySeparatorChar(@"..\Data\ExampleFeatures\Features\Subfolder1\*.feature"));
 
             //ASSERT
-            files.Should().Contain("..\\Data\\ExampleFeatures\\Features\\Subfolder1\\ExternalFeature1.feature");
+            files.Should().Contain(PathHelper.SanitizeDirectorySeparatorChar(@"..\Data\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
             files.Count.Should().Be(1);
         }
     }
