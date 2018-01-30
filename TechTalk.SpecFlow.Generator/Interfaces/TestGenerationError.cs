@@ -29,17 +29,14 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
             Message = message;
         }
 
-        public TestGenerationError(Exception exception) : 
+        public TestGenerationError(Exception exception) :
             this(0, 0, "Generation error: " + GetMessage(exception))
         {
         }
 
         private static string GetMessage(Exception ex)
         {
-            if (ex.InnerException == null)
-                return ex.ToString();
-
-            return ex + " -> " + GetMessage(ex.InnerException);
+            return ex.ToString();
         }
     }
 }
