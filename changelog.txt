@@ -13,6 +13,7 @@ Fixes:
 + Xunit support @ignore on a feature level https://github.com/techtalk/SpecFlow/pull/968
 + Format error message to facilate identification of ambiguous steps https://github.com/techtalk/SpecFlow/issues/994
 + set minimal version of Newtonsoft.Json to 6.0.1
++ more detailed output of generator errors is written in the code behind file https://github.com/techtalk/SpecFlow/pull/1013
 
 
 API Changes:
