@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         {
             var enums = new StringArrayValueRetriever()
                 .GetValue(value)
-                .Select(item => Enum.Parse(targetEnumType, item))
+                .Select(item => new EnumValueRetriever().GetValue(item, targetEnumType))
                 .ToArray(); 
 
             Array dest = Array.CreateInstance(targetEnumType, enums.Length);
