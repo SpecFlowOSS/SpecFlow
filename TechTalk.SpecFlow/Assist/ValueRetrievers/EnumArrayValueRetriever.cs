@@ -30,15 +30,5 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return propertyType.IsArray && propertyType.GetElementType().IsEnum;
         }
 
-        Array CastArray(Type target, string[] input)
-        {
-            Array dest = Array.CreateInstance(target, input.Length);
-
-            var enums = input.Select(value => Enum.Parse(target, value)).ToArray();
-
-            Array.Copy(enums, dest, enums.Length);
-
-            return dest;
-        }
     }
 }

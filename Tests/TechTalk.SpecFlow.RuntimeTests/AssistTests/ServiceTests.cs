@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var service = new Service();
 
             var results = service.ValueRetrievers;
-            Assert.AreEqual(39, results.Count());
+            Assert.AreEqual(40, results.Count());
 
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StringValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(ByteValueRetriever)).Count());
@@ -76,6 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StringArrayValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StringListValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(EnumArrayValueRetriever)).Count());
+            Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(EnumListValueRetriever)).Count());
         }
 
         [Test]

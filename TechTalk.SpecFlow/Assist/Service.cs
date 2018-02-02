@@ -106,7 +106,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new StringArrayValueRetriever());
             RegisterValueRetriever(new StringListValueRetriever());
             RegisterValueRetriever(new EnumArrayValueRetriever());
-
+            RegisterValueRetriever(new EnumListValueRetriever());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)

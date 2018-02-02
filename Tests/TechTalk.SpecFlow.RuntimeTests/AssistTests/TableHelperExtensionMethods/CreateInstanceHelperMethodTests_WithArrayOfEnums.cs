@@ -5,13 +5,8 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    class CreateInstanceHelperMethodTests_WithArrayOfEnums : CreateInstanceHelperMethodTestBase
+    class CreateInstanceHelperMethodTests_WithArrayOfEnums
     {
-        public CreateInstanceHelperMethodTests_WithArrayOfEnums()
-            : base(t => t.CreateInstance<Person>())
-        {
-        }
-
         [Test]
         public void Can_create_an_instance_with_enum_array_from_comma_separated_list_of_strings()
         {

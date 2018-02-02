@@ -5,13 +5,8 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    class CreateInstanceHelperMethodTests_WithListOfValues : CreateInstanceHelperMethodTestBase
+    class CreateInstanceHelperMethodTests_WithListOfValues
     {
-        public CreateInstanceHelperMethodTests_WithListOfValues()
-            : base(t => t.CreateInstance<Person>())
-        {
-        }
-
         [Test]
         public void Can_create_an_instance_with_list_of_strings_from_comma_separated_list_of_strings()
         {
