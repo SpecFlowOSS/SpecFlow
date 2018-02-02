@@ -39,6 +39,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 
         public string[] StringArray { get; set; }
         public List<string> StringList { get; set; }
-
+        public Language[] Languages { get; set; }
     }
 }

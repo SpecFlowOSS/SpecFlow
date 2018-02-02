@@ -95,6 +95,7 @@
     <Compile Include="AssistTests\SituationalTests\NullableEnumTests.cs" />
     <Compile Include="AssistTests\TableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithArrayOfEnums.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithListOfValues.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithArrayOfValues.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUShortValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\SByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ShortValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumArrayValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\StringListValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\StringArrayValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\UIntValueRetrieverTests.cs" />
