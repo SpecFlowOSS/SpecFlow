@@ -104,6 +104,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
 
             RegisterValueRetriever(new StringArrayValueRetriever());
+            RegisterValueRetriever(new StringListValueRetriever());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
