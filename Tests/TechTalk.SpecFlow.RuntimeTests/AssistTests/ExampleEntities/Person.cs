@@ -34,5 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public string With_Underscore { get; set; }
 
         public string WithUmlauteäöü { get; set; }
+
+        public string[] StringArray { get; set; } 
     }
 }

@@ -103,6 +103,7 @@
     <Compile Include="Assist\ValueRetrievers\FloatValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUIntValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ShortValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\StringArrayValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\UIntValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\EnumValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\GuidValueRetriever.cs" />

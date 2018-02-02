@@ -102,6 +102,8 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableLongValueRetriever());
             RegisterValueRetriever(new NullableTimeSpanValueRetriever());
             RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
+
+            RegisterValueRetriever(new StringArrayValueRetriever());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
