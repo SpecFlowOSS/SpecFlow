@@ -122,26 +122,18 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool Compare(T t1, T t2, IEnumerable<string> properties)
         {
-            foreach (var property in properties)
+            foreach (var propertyName in properties)
             {
-                if (t1.GetType().GetProperty(property) == null || t2.GetType().GetProperty(property) == null)
+                var property1 = t1.GetThePropertyOnThisObject(propertyName);
+                var property2 = t2.GetThePropertyOnThisObject(propertyName);
+                if (property1 == null || property2 == null)
                     return false;
 
-                var thisValue = t1.GetPropertyValue(property);
-                var otherValue = t2.GetPropertyValue(property);
-                if (thisValue != null)
-                {
-                    if (otherValue == null)
-                        return false;
+                var value1 = property1.GetValue(t1, null);
+                var value2 = property2.GetValue(t2, null);
 
-                    if (thisValue.ToString() != otherValue.ToString())
-                        return false;
-                }
-                else
-                {
-                    if (otherValue != null)
-                        return false;
-                }
+                if (!Equals(value1, value2))
+                    return false;
             }
             return true;
         }

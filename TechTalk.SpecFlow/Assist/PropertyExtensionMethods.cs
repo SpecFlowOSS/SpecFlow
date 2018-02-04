@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Assist
             property.SetValue(@object, value, null);
         }
 
-        private static PropertyInfo GetThePropertyOnThisObject(object @object, string propertyName)
+        public static PropertyInfo GetThePropertyOnThisObject(this object @object, string propertyName)
         {
             var type = @object.GetType();
             return type.GetProperties()
