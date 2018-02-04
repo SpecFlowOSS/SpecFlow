@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Should_register_runtime_configuration_with_default_config()
         {
             var container = TestObjectFactories.CreateDefaultGlobalContainer();
-            container.Resolve<RuntimeConfiguration>().Should().NotBeNull();
+            container.Resolve<SpecFlow.Configuration.SpecFlowConfiguration>().Should().NotBeNull();
         }
 
         private class DummyTestRunnerFactory : ITestRunnerFactory

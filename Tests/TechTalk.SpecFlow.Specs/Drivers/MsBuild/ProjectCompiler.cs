@@ -2,11 +2,13 @@
 using System.Diagnostics;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
+using SpecFlow.TestProjectGenerator;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 {
     public class ProjectCompiler
     {
+        private readonly VisualStudioFinder _visualStudioFinder;
         public string LastCompilationOutput { get; private set; }
 
         public void Compile(Project project, string target = null)
@@ -15,8 +17,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             //CompileInProc(project);
         }
 
+        public ProjectCompiler(VisualStudioFinder visualStudioFinder)
+        {
+            _visualStudioFinder = visualStudioFinder;
+        }
+
         private class ConsoleMsBuildLogger : ILogger
         {
+            
             public void Initialize(IEventSource eventSource)
             {
                 eventSource.AnyEventRaised += (o, args) =>
@@ -44,7 +52,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
         private void CompileOutProc(Project project, string target = null)
         {
-            string msBuildPath = Environment.ExpandEnvironmentVariables(string.Format(@"%WinDir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"));
+            string msBuildPath = _visualStudioFinder.FindMSBuild();
             Console.WriteLine("Invoke MsBuild from {0}", msBuildPath);
 
             ProcessHelper processHelper = new ProcessHelper();

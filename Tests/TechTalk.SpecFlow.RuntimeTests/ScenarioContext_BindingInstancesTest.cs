@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer testThreadContainer;
             testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerTestThreadMocks, registerGlobalMocks);
-            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]), testThreadContainer.Resolve<IBindingInstanceResolver>());
+            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]), testThreadContainer.Resolve<ITestObjectResolver>());
         }
 
         [Test]
@@ -76,16 +76,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void GetBindingInstance_should_return_instance_through_BindingInstanceResolver()
+        public void GetBindingInstance_should_return_instance_through_TestObjectResolver()
         {
             var expectedInstance = new SimpleClass();
 
             var scenarioContext = CreateScenarioContext(registerGlobalMocks: (globalContainer =>
             {
-                var bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
-                bindingInstanceResolverMock.Setup(m => m.ResolveBindingInstance(typeof(SimpleClass), It.IsAny<IObjectContainer>()))
+                var testObjectResolverMock = new Mock<ITestObjectResolver>();
+                testObjectResolverMock.Setup(m => m.ResolveBindingInstance(typeof(SimpleClass), It.IsAny<IObjectContainer>()))
                     .Returns(expectedInstance);
-                globalContainer.RegisterInstanceAs(bindingInstanceResolverMock.Object);
+                globalContainer.RegisterInstanceAs(testObjectResolverMock.Object);
             }));
 
             var result = scenarioContext.GetBindingInstance(typeof(SimpleClass));
@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var displosableInstance = (DisplosableClass)scenarioContext.GetBindingInstance(typeof(DisplosableClass));
 
-            ((IDisposable)scenarioContext).Dispose();
+            scenarioContext.ScenarioContainer.Dispose();
 
             displosableInstance.WasDisposed.Should().BeTrue();
         }

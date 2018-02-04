@@ -4,6 +4,7 @@ using BoDi;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -19,7 +20,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [SetUp]
         public void Setup()
         {
-            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
         }
 
         private FeatureGeneratorRegistry CreateFeatureGeneratorRegistry()
@@ -102,7 +103,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_FeatureGeneratorRegistry_be_registered_as_IFeatureGeneratorRegistry_by_default()
         {
-            var testContainer = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            var testContainer = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
 
             var registry = testContainer.Resolve<IFeatureGeneratorRegistry>();
 

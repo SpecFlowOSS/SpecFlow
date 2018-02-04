@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SpecFlow.Tools.MsBuild.Generation</id>
+    <version>1.0.0-alpha</version>
+    <title>SpecFlow.Tools.MsBuild.Generation</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <description>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</description>
+    <summary>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <licenseUrl>http://go.specflow.org/license</licenseUrl>
+    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>specflow msbuild</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
+    </dependencies>
+  </metadata>
+</package>

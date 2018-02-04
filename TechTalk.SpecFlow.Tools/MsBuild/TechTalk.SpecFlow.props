@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    
+    <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
+    <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
+    <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
+    <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
+
+    <_SpecFlowPropsImported Condition="'$(_SpecFlowPropsImported)'==''">true</_SpecFlowPropsImported>
+  </PropertyGroup>
+</Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
@@ -15,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var builder = new TableDiffExceptionBuilder<TestObject>();
 
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, new TestObject[] {});
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, GetEmptyMissingItemsList());
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.AgnosticLineBreak().Should().Be(@"  | One | Two | Three |
@@ -33,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var builder = new TableDiffExceptionBuilder<TestObject>();
 
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new[] {2, 3}, new TestObject[] {});
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new[] {2, 3}, GetEmptyMissingItemsList());
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.AgnosticLineBreak().Should().Be(@"  | One   | Two | Three |
@@ -42,6 +43,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 - | testc | 3   | Y     |
   | testd | 4   | Z     |
 ".AgnosticLineBreak());
+        }
+
+        private TableDifferenceItem<TestObject>[] GetEmptyMissingItemsList()
+        {
+            return new TableDifferenceItem<TestObject>[0];
+        }
+
+        private TableDifferenceItem<TestObject>[] GetMissingItemsList(TestObject[] items)
+        {
+            return items.Select(i => new TableDifferenceItem<TestObject>(i)).ToArray();
         }
 
         [Test]
@@ -57,7 +68,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                                          new TestObject {One = "A", Two = 1, Three = "Z"},
                                          new TestObject {One = "B1", Two = 1234567, Three = "ZYXW"}
                                      };
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, GetMissingItemsList(remainingItems));
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.AgnosticLineBreak().Should().Be(@"  | One   | Two | Three |
@@ -80,7 +91,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                                          new TestObject {One = "A", Two = 1, Three = "Z"},
                                          new TestObject {One = null, Two = null, Three = null}
                                      };
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, GetMissingItemsList(remainingItems));
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.AgnosticLineBreak().Should().Be(@"  | One   | Two | Three |
@@ -102,7 +113,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                                      {
                                          new TestObject {One = "A", Two = 1, TheFourthProperty = "Z"},
                                      };
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, GetMissingItemsList(remainingItems));
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.AgnosticLineBreak().Should().Be(@"  | one   | TWO | The fourth property |
@@ -123,7 +134,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                                      {
                                          new TestObject {Doubles = new [] {1D, 2D, 5D}},
                                      };
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, GetMissingItemsList(remainingItems));
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.Should().NotContain("System.Double[]");
@@ -142,7 +153,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                                      {
                                          new TestObject {Objects = new object[] {1,null,"2","d"}},
                                      };
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, GetMissingItemsList(remainingItems));
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.Should().NotContain("Object[]");

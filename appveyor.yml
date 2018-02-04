@@ -1,12 +1,14 @@
 version: build{build}
 
+image: Visual Studio 2017
+
 branches:
   only:
   - master
 
 environment:
-  SpecFlowBaseVersion: 2.2.0
-  SpecFlowPackageVersion: "2.2.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  SpecFlowBaseVersion: 2.3.0
+  SpecFlowPackageVersion: "2.3.0-ci$(APPVEYOR_BUILD_NUMBER)"
   
 cache:
   - packages -> **\packages.config
@@ -33,12 +35,10 @@ build:
   project: TechTalk.SpecFlow.sln
   verbosity: normal
 
-test:
-  assemblies:
-  - TechTalk.SpecFlow.GeneratorTests.dll
-  - TechTalk.SpecFlow.RuntimeTests.dll
-  - TechTalk.SpecFlow.IntegrationTests.dll
-  - TechTalk.SpecFlow.Specs\bin\Release\TechTalk.SpecFlow.Specs.dll
+test: off
+
+test_script:
+  - cmd: nunit3-console Tests\TechTalk.SpecFlow.GeneratorTests\bin\%configuration%\TechTalk.SpecFlow.GeneratorTests.dll Tests\TechTalk.SpecFlow.IntegrationTests\bin\%configuration%\TechTalk.SpecFlow.IntegrationTests.dll Tests\TechTalk.SpecFlow.RuntimeTests\bin\%configuration%\TechTalk.SpecFlow.RuntimeTests.dll Tests\TechTalk.SpecFlow.Specs\bin\%configuration%\TechTalk.SpecFlow.Specs.dll --agents=1 --result=TestResults.xml;format=AppVeyor
 
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'

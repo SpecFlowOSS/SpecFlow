@@ -10,7 +10,7 @@ using Microsoft.Build.Utilities;
 
 namespace TechTalk.SpecFlow.Tools.MsBuild
 {
-    public abstract class TaskBase : Task
+    public abstract class TaskBase : AppDomainIsolatedTask
     {
         public bool ShowTrace { get; set;}
 

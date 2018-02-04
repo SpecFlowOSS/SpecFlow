@@ -32,10 +32,15 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        if (line.StartsWith("***"))
+                        if (line.StartsWith("***"))//nunit2 separator
                         {
                             CloseCurrentTest(testLines, currentTest, report);
                             currentTest = line.Trim('*', ' ');
+                        }
+                        else if (line.StartsWith("=>"))//nunit3 separator
+                        {
+                            CloseCurrentTest(testLines, currentTest, report);
+                            currentTest = line.Replace("=>", "").Trim();
                         }
                         else
                         {

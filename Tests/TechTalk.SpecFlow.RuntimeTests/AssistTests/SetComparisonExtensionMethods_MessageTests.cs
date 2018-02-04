@@ -5,8 +5,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
-    public class SetComparisonExtensionMethods_MessageTests
+    public abstract class SetComparisonExtensionMethods_MessageTests
     {
         [Test]
         public void Returns_the_names_of_any_fields_that_do_not_exist()
@@ -99,31 +98,6 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
         }
 
         [Test]
-        public void Returns_both_1_and_two_as_the_missing_items_when_both_cannot_be_found()
-        {
-            var table = new Table("StringProperty");
-            table.AddRow("orange");
-            table.AddRow("apple");
-
-            var items = new[]
-                            {
-                                new SetComparisonTestObject {StringProperty = "rotten orange"},
-                                new SetComparisonTestObject {StringProperty = "rotten apple"}
-                            };
-
-            var exception = GetTheExceptionThrowByComparingThese(table, items);
-
-            exception.Message.AgnosticLineBreak().Should().Be(
-                @"
-  | StringProperty |
-- | orange         |
-- | apple          |
-+ | rotten orange  |
-+ | rotten apple   |
-".AgnosticLineBreak());
-        }
-
-        [Test]
         public void Returns_a_descriptive_error_when_three_results_exist_when_two_expected()
         {
             var table = new Table("StringProperty");
@@ -170,17 +144,87 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 ".AgnosticLineBreak());
         }
 
-        private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
+        protected ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
         {
             try
             {
-                table.CompareToSet(items);
+                CallComparison(table, items);
             }
             catch (ComparisonException ex)
             {
                 return ex;
             }
             return null;
+        }
+
+        protected abstract void CallComparison(Table table, SetComparisonTestObject[] items);
+    }
+
+    [TestFixture]
+    public class SetComparisonExtensionMethods_OrderInsensitive_MessageTests : SetComparisonExtensionMethods_MessageTests
+    {
+        [Test]
+        public void Returns_both_1_and_two_as_the_missing_items_when_both_cannot_be_found()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+            table.AddRow("apple");
+
+            var items = new[]
+                            {
+                                new SetComparisonTestObject {StringProperty = "rotten orange"},
+                                new SetComparisonTestObject {StringProperty = "rotten apple"}
+                            };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.AgnosticLineBreak().Should().Be(
+                @"
+  | StringProperty |
+- | orange         |
+- | apple          |
++ | rotten orange  |
++ | rotten apple   |
+".AgnosticLineBreak());
+        }
+
+        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        {
+            table.CompareToSet(items);
+        }
+    }
+
+    [TestFixture]
+    public class SetComparisonExtensionMethods_OrderSensitive_MessageTests : SetComparisonExtensionMethods_MessageTests
+    {
+        [Test]
+        public void Returns_both_1_and_two_as_the_missing_items_when_both_cannot_be_found()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+            table.AddRow("apple");
+
+            var items = new[]
+                            {
+                                new SetComparisonTestObject {StringProperty = "rotten orange"},
+                                new SetComparisonTestObject {StringProperty = "rotten apple"}
+                            };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.AgnosticLineBreak().Should().Be(
+                @"
+  | StringProperty |
+- | orange         |
++ | rotten orange  |
+- | apple          |
++ | rotten apple   |
+".AgnosticLineBreak());
+        }
+
+        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        {
+            table.CompareToSet(items, sequentialEquality: true);
         }
     }
 }

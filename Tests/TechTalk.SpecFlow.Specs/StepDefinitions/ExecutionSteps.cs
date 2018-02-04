@@ -8,14 +8,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class ExecutionSteps
     {
         private readonly ProjectSteps projectSteps;
-        private readonly SpecFlowConfigurationDriver configurationDriver;
+        private readonly AppConfigConfigurationDriver configurationDriver;
         private readonly NUnit3TestExecutionDriver nUnit3TestExecutionDriver;
         private readonly NUnit2TestExecutionDriver nUnit2TestExecutionDriver;
         private readonly XUnitTestExecutionDriver xUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
         public ExecutionSteps(NUnit3TestExecutionDriver nUnit3TestExecutionDriver, NUnit2TestExecutionDriver nUnit2TestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
-            SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
+            AppConfigConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
             ProjectSteps projectSteps)
         {
             this.nUnit3TestExecutionDriver = nUnit3TestExecutionDriver;
