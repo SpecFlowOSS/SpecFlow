@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             RegisterUnitTestProviders(container);
         }
 
-        public void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
+        public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
         {
             testThreadContainer.RegisterTypeAs<TestRunner, ITestRunner>();
             testThreadContainer.RegisterTypeAs<ContextManager, IContextManager>();
