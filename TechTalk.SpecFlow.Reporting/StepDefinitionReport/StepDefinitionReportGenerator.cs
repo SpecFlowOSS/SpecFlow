@@ -181,6 +181,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 case "Then":
                     stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "Then", sampleText, null, StepKeyword.Then, Parser.ScenarioBlock.Then);
                     break;
+                case "StepDefinition":
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "StepDefinition", sampleText, null, null, null);
+                    break;
                 default:
                     throw new InvalidOperationException();
             }
@@ -241,7 +244,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
                 foreach (var bindingInfo in bindings)
                 {
-                    if (bindingInfo.BindingType != currentBlock)
+                    if (bindingInfo.BindingType != currentBlock && bindingInfo.BindingType != "StepDefinition")
                         continue;
 
                     var match = bindingInfo.Regex.Match(scenarioStep.Text);
