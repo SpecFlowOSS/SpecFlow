@@ -21,6 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             @class.StringArray[0].Should().Be(first);
             @class.StringArray[1].Should().Be(second);
+            @class.StringArray.Length.Should().Be(2);
         }
     }
 }

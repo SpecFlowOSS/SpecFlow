@@ -18,6 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             @class.LanguageList[0].Should().Be(Language.Finnish);
             @class.LanguageList[1].Should().Be(Language.English);
             @class.LanguageList[2].Should().Be(Language.Swedish);
+            @class.LanguageList.Count.Should().Be(3);
         }
     }
 }

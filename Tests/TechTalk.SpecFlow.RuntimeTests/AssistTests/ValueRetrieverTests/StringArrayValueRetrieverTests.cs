@@ -36,6 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             result[0].Should().Be("A");
             result[1].Should().Be("B");
             result[2].Should().Be("C");
+            result.Length.Should().Be(3);
         }
 
         [Test]
@@ -48,6 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             result[0].Should().Be("A");
             result[1].Should().Be("B");
             result[2].Should().Be("C");
+            result.Length.Should().Be(3);
         }
     }
 }

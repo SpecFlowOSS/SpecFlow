@@ -60,6 +60,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             result[0].Should().Be(TestEnum.Bar);
             result[1].Should().Be(TestEnum.Foo);
             result[2].Should().Be(TestEnum.FooBar);
+            result.Count.Should().Be(3);
         }
 
     }
