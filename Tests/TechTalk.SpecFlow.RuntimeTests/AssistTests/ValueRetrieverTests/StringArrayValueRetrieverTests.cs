@@ -33,11 +33,31 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var result = retriever.GetValue("A,B,C");
 
-            result[0].Should().Be("A");
-            result[1].Should().Be("B");
-            result[2].Should().Be("C");
-            result.Length.Should().Be(3);
+            AssertTheArray(result);
         }
+
+
+
+        [Test]
+        public void Returns_array_from_semicolon_separated_list()
+        {
+            var retriever = new StringArrayValueRetriever();
+
+            var result = retriever.GetValue("A;B;C");
+
+            AssertTheArray(result);
+        }
+
+        [Test]
+        public void Returns_array_from_mixed_separator_list()
+        {
+            var retriever = new StringArrayValueRetriever();
+
+            var result = retriever.GetValue("A,B;C");
+
+            AssertTheArray(result);
+        }
+
 
         [Test]
         public void Trims_the_individual_values()
@@ -46,6 +66,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var result = retriever.GetValue("A , B, C ");
 
+            AssertTheArray(result);
+        }
+
+        static void AssertTheArray(string[] result)
+        {
             result[0].Should().Be("A");
             result[1].Should().Be("B");
             result[2].Should().Be("C");

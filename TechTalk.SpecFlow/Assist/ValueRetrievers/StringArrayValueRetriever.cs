@@ -6,11 +6,14 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class StringArrayValueRetriever : IValueRetriever
     {
+        const char ByCommaSeparator = ',';
+        const char BySemiColonsSeparator = ';';
+
+
         public virtual string[] GetValue(string value)
         {
-            const char byCommaSeparator = ',';
 
-            var stringArray = value.Split(byCommaSeparator).Select(p => p.Trim()).ToArray();
+            var stringArray = value.Split(ByCommaSeparator, BySemiColonsSeparator).Select(p => p.Trim()).ToArray();
 
             return stringArray;
         }
