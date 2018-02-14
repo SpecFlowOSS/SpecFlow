@@ -18,7 +18,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("384.234879").Should().Be(384.234879);
         }
 
-        [Test]
+		[Test, SetCulture("fr-FR")]
+		public void Returns_the_Double_value_when_passed_a_Double_string_If_Culture_Is_fr_Fr()
+		{
+			var retriever = new DoubleValueRetriever();
+			retriever.GetValue("0").Should().Be(0);
+			retriever.GetValue("1").Should().Be(1);
+			retriever.GetValue("2").Should().Be(2);
+			retriever.GetValue("2,23").Should().Be(2.23);
+			retriever.GetValue("384,234879").Should().Be(384.234879);
+		}
+
+		[Test]
         public void Returns_a_negative_Double_value_when_passed_one()
         {
             var retriever = new DoubleValueRetriever();

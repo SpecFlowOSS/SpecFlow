@@ -9,15 +9,9 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    [TestFixture, SetCulture("en-US")]
     public class CreateSetHelperMethodTests
     {
-        [SetUp]
-        public void SetUp()
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-        }
-
         private static Table CreatePersonTableHeaders()
         {
             return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
@@ -178,7 +172,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableDouble.Should().Be(7.28);
         }
 
-        [Test]
+	    [Test, SetCulture("fr-FR")]
+	    public void Sets_doubles_on_the_instance_when_type_is_double_and_culture_is_fr_FR()
+	    {
+		    var table = new Table("Double", "NullableDouble");
+		    table.AddRow("4,193", "7,28");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Double.Should().Be(4.193);
+		    people.First().NullableDouble.Should().Be(7.28);
+	    }
+
+		[Test]
         public void Sets_floats_on_the_instance_when_type_is_float()
         {
             var table = new Table("Float", "NullableFloat");
