@@ -184,6 +184,30 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableDouble.Should().Be(7.28);
 	    }
 
+	    [Test]
+	    public void Sets_bytes_on_the_instance_when_type_is_byte()
+	    {
+		    var table = new Table("Byte", "NullableByte");
+		    table.AddRow("4.0", "7.0");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Byte.Should().Be(4);
+		    people.First().NullableByte.Should().Be(7);
+	    }
+
+		[Test, SetCulture("fr-FR")]
+	    public void Sets_bytes_on_the_instance_when_type_is_byte_and_culture_is_fr_FR()
+	    {
+		    var table = new Table("Byte", "NullableByte");
+		    table.AddRow("4,000", "7,000");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Byte.Should().Be(4);
+		    people.First().NullableByte.Should().Be(7);
+	    }
+
 		[Test]
         public void Sets_floats_on_the_instance_when_type_is_float()
         {

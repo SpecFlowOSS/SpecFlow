@@ -27,7 +27,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public Guid GuidId { get; set; }
         public Guid? NullableGuidId { get; set; }
 
-        public float Float { get; set; }
+	    public byte Byte { get; set; }
+	    public byte? NullableByte { get; set; }
+
+		public float Float { get; set; }
         public float? NullableFloat { get; set; }
         public uint UnsignedInt { get; set; }
         public uint? NullableUnsignedInt { get; set; }
