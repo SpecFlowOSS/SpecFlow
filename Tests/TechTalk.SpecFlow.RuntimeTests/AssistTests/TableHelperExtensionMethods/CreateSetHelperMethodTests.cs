@@ -135,10 +135,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var people = table.CreateSet<Person>();
 
             people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
-        }
+		}
 
-        
-        [Test]
+	    [Test, SetCulture("fr-FR")]
+	    public void Sets_datetime_on_the_instance_when_type_is_datetime_and_culture_is_fr_FR()
+	    {
+		    var table = CreatePersonTableHeaders();
+		    table.AddRow("", "", "28/4/2009", "3", "", "");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
+	    }
+
+
+		[Test]
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {
             var table = CreatePersonTableHeaders();
