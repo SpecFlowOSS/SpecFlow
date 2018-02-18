@@ -80,9 +80,12 @@
     </None>
     <None Include="App.config" />
     <None Include="Features\ExecutionSmokeTests.feature" />
+    <None Include="Features\MbUnit3SmokeTestsParallel.feature" />
     <None Include="Features\MbUnit3SmokeTests.feature" />
     <None Include="Features\MbUnitSmokeTests.feature" />
+    <None Include="Features\NUnitSmokeTestsParallel.feature" />
     <None Include="Features\Tracing.feature" />
+    <None Include="Features\XUnit2SmokeTestsParallel.feature" />
     <None Include="Features\XUnit2SmokeTests.feature" />
     <None Include="Features\XUnitSmokeTests.feature" />
     <None Include="Features\MsTestSmokeTests.feature" />

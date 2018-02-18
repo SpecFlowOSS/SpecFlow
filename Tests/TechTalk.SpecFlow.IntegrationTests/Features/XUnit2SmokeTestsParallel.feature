@@ -1,9 +1,8 @@
-﻿@NotParallel
-Feature: MbUnit v3 Smoke Tests
+﻿Feature: xUnit v2 Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
-	And the project is configured to use the MbUnit.3 provider
+	And the project is configured to use the xUnit provider
 	And all test files are inluded in the project
 
 Scenario Outline: Test files can be generated

@@ -1,11 +1,11 @@
-﻿Feature: xUnit v2 Smoke Tests
+﻿@NotParallel
+Feature: xUnit v2 Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
 	And the project is configured to use the xUnit provider
 	And all test files are inluded in the project
 
-@NotParallel
 Scenario Outline: Test files can be generated
 	Given I have a '<Language>' test project
 	And row testing is <row test>
