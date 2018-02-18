@@ -5,6 +5,7 @@ Background:
 	And the project is configured to use the MbUnit.3 provider
 	And all test files are inluded in the project
 
+@NotParallel
 Scenario Outline: Test files can be generated
 	Given I have a '<Language>' test project
 	And row testing is <row test>
