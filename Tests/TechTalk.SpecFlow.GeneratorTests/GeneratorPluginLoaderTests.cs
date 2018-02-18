@@ -99,9 +99,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).First();
+            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
 
             // Assert
+            var seperator = $"{Environment.NewLine}\t";
+            path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
             path.Should().Be($@"C:\Projects\Project\packages\specflow.9.9.9{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
         }
 
@@ -123,9 +125,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).First();
+            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
 
             // Assert
+            var seperator = $"{Environment.NewLine}\t";
+            path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
             path.Should().Be($@"C:\Projects\Project\packages\samplegenerator.{packageSuffix}.1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
         }
 
@@ -147,9 +151,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).First();
+            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
 
             // Assert
+            var seperator = $"{Environment.NewLine}\t";
+            path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
             path.Should().Be($@"C:\Users\jdoe\.nuget\packages\samplegenerator.{packageSuffix}\1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
         }
 
@@ -174,9 +180,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", pluginPath, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).First();
+            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
 
             // Assert
+            var seperator = $"{Environment.NewLine}\t";
+            path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
             path.Should().Be(@"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\SampleGenerator.SpecFlowPlugin.dll");
         }
 
