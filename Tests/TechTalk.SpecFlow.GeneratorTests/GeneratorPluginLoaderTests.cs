@@ -16,24 +16,25 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             get
             {
-                yield return new TestCaseData(@"\tools", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools\SpecFlowPlugin.1-0-0", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools\SpecFlowPlugin.1-0-0", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools\SpecFlowPlugin.1-0", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools\SpecFlowPlugin.1-0", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools\SpecFlowPlugin", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools\SpecFlowPlugin", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\tools", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib\net45", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib\net45", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib\net40", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib\net40", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib\net35", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib\net35", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"\tools\lib", @"Generator.SpecFlowPlugin");
+                var version = typeof(GeneratorPluginLoader).Assembly.GetName().Version;
+                yield return new TestCaseData($@"\tools", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools\SpecFlowPlugin.{version.Major}-{version.Minor}-{version.Revision}", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools\SpecFlowPlugin.{version.Major}-{version.Minor}-{version.Revision}", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools\SpecFlowPlugin.{version.Major}-{version.Minor}", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools\SpecFlowPlugin.{version.Major}-{version.Minor}", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools\SpecFlowPlugin", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools\SpecFlowPlugin", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\tools", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib\net45", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib\net45", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib\net40", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib\net40", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib\net35", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib\net35", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib", @"SpecFlowPlugin");
+                yield return new TestCaseData($@"\tools\lib", @"Generator.SpecFlowPlugin");
             }
         }
 
@@ -41,43 +42,44 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             get
             {
-                yield return new TestCaseData(@"specflow", @"", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools\SpecFlowPlugin.1-0-0", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools\SpecFlowPlugin.1-0-0", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools\SpecFlowPlugin.1-0", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools\SpecFlowPlugin.1-0", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools\SpecFlowPlugin", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools\SpecFlowPlugin", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\tools", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib\net45", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib\net45", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib\net40", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib\net40", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib\net35", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib\net35", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflow", @"\lib", @"Generator.SpecFlowPlugin");
+                var version = typeof(GeneratorPluginLoader).Assembly.GetName().Version;
+                yield return new TestCaseData(@"specflow", $@"", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}-{version.Revision}", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}-{version.Revision}", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools\SpecFlowPlugin", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools\SpecFlowPlugin", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\tools", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib\net45", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib\net45", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib\net40", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib\net40", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib\net35", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib\net35", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflow", $@"\lib", @"Generator.SpecFlowPlugin");
 
-                yield return new TestCaseData(@"specflowplugin", @"", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools\SpecFlowPlugin.1-0-0", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools\SpecFlowPlugin.1-0-0", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools\SpecFlowPlugin.1-0", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools\SpecFlowPlugin.1-0", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools\SpecFlowPlugin", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools\SpecFlowPlugin", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\tools", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib\net45", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib\net45", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib\net40", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib\net40", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib\net35", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib\net35", @"Generator.SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib", @"SpecFlowPlugin");
-                yield return new TestCaseData(@"specflowplugin", @"\lib", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}-{version.Revision}", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}-{version.Revision}", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools\SpecFlowPlugin.{version.Major}-{version.Minor}", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools\SpecFlowPlugin", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools\SpecFlowPlugin", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\tools", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib\net45", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib\net45", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib\net40", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib\net40", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib\net35", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib\net35", @"Generator.SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib", @"SpecFlowPlugin");
+                yield return new TestCaseData(@"specflowplugin", $@"\lib", @"Generator.SpecFlowPlugin");
             }
         }
 
