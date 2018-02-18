@@ -6,6 +6,7 @@ using System.Reflection;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.Plugins
 {
@@ -32,11 +33,19 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
         private readonly string generatorFolder;
         private readonly ProjectSettings projectSettings;
+        private readonly IFileSystem fileSystem;
 
         public GeneratorPluginLoader(ProjectSettings projectSettings)
+            : this(projectSettings, null, new FileSystem())
+        {
+            this.generatorFolder = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+        }
+
+        internal GeneratorPluginLoader(ProjectSettings projectSettings, string generatorFolder, IFileSystem fileSystem)
         {
             this.projectSettings = projectSettings;
-            this.generatorFolder = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            this.generatorFolder = generatorFolder;
+            this.fileSystem = fileSystem;
         }
 
         public IGeneratorPlugin LoadPlugin(PluginDescriptor pluginDescriptor)
@@ -75,19 +84,32 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             return plugin;
         }
 
-        private IEnumerable<string> GetGeneratorPluginAssemblies(PluginDescriptor pluginDescriptor)
+        internal IEnumerable<string> GetGeneratorPluginAssemblies(PluginDescriptor pluginDescriptor)
         {
+            if (pluginDescriptor.Path != null)
+            {
+                var pluginGeneratorFolder = Environment.ExpandEnvironmentVariables(pluginDescriptor.Path);
+
+                string generatorSpecificAssembly = Path.GetFullPath(Path.Combine(pluginGeneratorFolder, string.Format("{0}.Generator.SpecFlowPlugin.dll", pluginDescriptor.Name)));
+                if (this.fileSystem.FileExists(generatorSpecificAssembly))
+                    yield return generatorSpecificAssembly;
+
+                string genericAssembly = Path.GetFullPath(Path.Combine(pluginGeneratorFolder, string.Format("{0}.SpecFlowPlugin.dll", pluginDescriptor.Name)));
+                if (this.fileSystem.FileExists(genericAssembly))
+                    yield return genericAssembly;
+            }
+
             foreach (var pluginGeneratorFolder in GetPluginGeneratorFolders(pluginDescriptor))
             {
                 string generatorSpecificAssembly = Path.GetFullPath(Path.Combine(pluginGeneratorFolder, string.Format("{0}.Generator.SpecFlowPlugin.dll", pluginDescriptor.Name)));
                 generatorSpecificAssembly = Environment.ExpandEnvironmentVariables(generatorSpecificAssembly);
 
-                if (File.Exists(generatorSpecificAssembly))
+                if (this.fileSystem.FileExists(generatorSpecificAssembly))
                     yield return generatorSpecificAssembly;
 
                 string genericAssembly = Path.GetFullPath(Path.Combine(pluginGeneratorFolder, string.Format("{0}.SpecFlowPlugin.dll", pluginDescriptor.Name)));
                 genericAssembly = Environment.ExpandEnvironmentVariables(genericAssembly);
-                if (File.Exists(genericAssembly))
+                if (this.fileSystem.FileExists(genericAssembly))
                     yield return genericAssembly;
             }
         }
@@ -127,9 +149,26 @@ namespace TechTalk.SpecFlow.Generator.Plugins
                 .Where(pluginFolder => pluginFolder != null);
         }
 
-        private static string GetLatestPackage(string nuGetPackagesFolder, string packageName)
+        private string GetLatestPackage(string nuGetPackagesFolder, string packageName)
         {
-            return Directory.GetDirectories(nuGetPackagesFolder, packageName + ".*").OrderByDescending(d => d).FirstOrDefault();
+            if (!this.fileSystem.DirectoryExists(nuGetPackagesFolder))
+            {
+                return null;
+            }
+
+            var directory = this.fileSystem.GetDirectories(nuGetPackagesFolder, packageName + ".*").OrderByDescending(d => d).FirstOrDefault();
+            if (directory != null)
+            {
+                return directory;
+            }
+
+            var path = Path.Combine(nuGetPackagesFolder, packageName);
+            if (!this.fileSystem.DirectoryExists(path))
+            {
+                return null;
+            }
+
+            return this.fileSystem.GetDirectories(path).OrderByDescending(d => d).FirstOrDefault();
         }
 
         private IEnumerable<string> GetSpecFlowVersionSpecifiers()
@@ -142,7 +181,20 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
         private string GetNuGetPackagesFolder()
         {
-            return Path.Combine(generatorFolder, @"..\.."); // assuming that SpecFlow was installed with nuget, generator is in the "tools" folder
+            var directory = new DirectoryInfo(this.generatorFolder);
+
+            do
+            {
+                if (directory.Name.Equals("packages", StringComparison.OrdinalIgnoreCase))
+                {
+                    return directory.FullName;
+                }
+
+                directory = directory.Parent;
+            }
+            while (directory?.Parent != null);
+
+            return Path.Combine(this.generatorFolder, "..", ".."); // assuming that SpecFlow was installed with nuget, generator is in the "tools" folder
         }
     }
 }

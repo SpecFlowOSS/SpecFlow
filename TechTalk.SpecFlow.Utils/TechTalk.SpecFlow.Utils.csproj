@@ -49,7 +49,9 @@
     </Compile>
     <Compile Include="CodeDomHelper.cs" />
     <Compile Include="CodeDomProviderLanguage.cs" />
+    <Compile Include="FileSystem.cs" />
     <Compile Include="FileSystemHelper.cs" />
+    <Compile Include="IFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TempFile.cs" />
   </ItemGroup>
