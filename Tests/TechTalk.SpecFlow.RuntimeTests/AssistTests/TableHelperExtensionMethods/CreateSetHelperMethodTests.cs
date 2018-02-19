@@ -253,6 +253,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableByte.Should().Be(7);
 	    }
 
+	    [Test]
+	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte()
+	    {
+		    var table = new Table("SByte");
+		    table.AddRow("4.0");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().SByte.Should().Be(4);
+	    }
+
+	    [Test, SetCulture("fr-FR")]
+	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte_and_culture_is_fr_FR()
+	    {
+		    var table = new Table("SByte");
+		    table.AddRow("4.0");
+
+			var people = table.CreateSet<Person>();
+
+		    people.First().SByte.Should().Be(4);
+	    }
+
 		[Test]
         public void Sets_floats_on_the_instance_when_type_is_float()
         {

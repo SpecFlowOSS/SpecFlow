@@ -14,9 +14,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("1").Should().Be(1);
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);
-        }
+		}
 
-        [Test]
+	    [Test, SetCulture("fr-FR")]
+	    public void Returns_a_signed_byte_when_passed_a_signed_byte_value_if_culture_is_fr_Fr()
+	    {
+		    var retriever = new SByteValueRetriever();
+		    retriever.GetValue("30,0").Should().Be(30);
+	    }
+
+		[Test]
         public void Returns_negative_numbers_when_passed_a_negative_value()
         {
             var retriever = new SByteValueRetriever();
