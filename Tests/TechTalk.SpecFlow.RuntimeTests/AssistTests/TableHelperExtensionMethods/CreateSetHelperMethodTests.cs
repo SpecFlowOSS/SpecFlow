@@ -104,11 +104,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_int_values_on_the_instance_when_type_is_int()
         {
             var table = CreatePersonTableHeaders();
-            table.AddRow("", "", "", "3", "", "");
+            table.AddRow("", "", "", "3,124", "", "");
 
             var people = table.CreateSet<Person>();
 
-            people.First().NumberOfIdeas.Should().Be(3);
+            people.First().NumberOfIdeas.Should().Be(3124);
         }
 
 
