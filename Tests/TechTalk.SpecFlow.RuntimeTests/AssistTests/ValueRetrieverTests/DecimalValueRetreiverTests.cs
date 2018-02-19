@@ -16,9 +16,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("2").Should().Be(2M);
             retriever.GetValue("2.23").Should().Be(2.23M);
             retriever.GetValue("384.234879").Should().Be(384.234879M);
-        }
+		}
 
-        [Test]
+	    [Test, SetCulture("fr-FR")]
+	    public void Returns_the_decimal_value_when_passed_a_decimal_string_if_culture_if_fr_FR()
+	    {
+		    var retriever = new DecimalValueRetriever();
+		    retriever.GetValue("0").Should().Be(0M);
+		    retriever.GetValue("1").Should().Be(1M);
+		    retriever.GetValue("2").Should().Be(2M);
+		    retriever.GetValue("2.23").Should().Be(2.23M);
+			retriever.GetValue("384,234879").Should().Be(384.234879M);
+	    }
+
+		[Test]
         public void Returns_a_negative_decimal_value_when_passed_one()
         {
             var retriever = new DecimalValueRetriever();

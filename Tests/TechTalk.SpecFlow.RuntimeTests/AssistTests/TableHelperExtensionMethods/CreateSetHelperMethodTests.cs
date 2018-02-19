@@ -171,7 +171,31 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().IsRational.Should().BeTrue();
         }
 
-        [Test]
+	    [Test]
+	    public void Sets_decimals_on_the_instance_when_type_is_decimal()
+	    {
+			var table = new Table("Salary", "NullableDecimal");
+		    table.AddRow("4.193", "7.28");
+
+			var people = table.CreateSet<Person>();
+
+		    people.First().Salary.Should().Be(4.193M);
+		    people.First().NullableDecimal.Should().Be(7.28M);
+	    }
+
+	    [Test, SetCulture("fr-FR")]
+	    public void Sets_decimals_on_the_instance_when_type_is_decimal_and_culture_is_fr_FR()
+	    {
+			var table = new Table("Salary", "NullableDecimal");
+		    table.AddRow("4,193", "7,28");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Salary.Should().Be(4.193M);
+		    people.First().NullableDecimal.Should().Be(7.28M);
+		}
+
+		[Test]
         public void Sets_doubles_on_the_instance_when_type_is_double()
         {
             var table = new Table("Double", "NullableDouble");
