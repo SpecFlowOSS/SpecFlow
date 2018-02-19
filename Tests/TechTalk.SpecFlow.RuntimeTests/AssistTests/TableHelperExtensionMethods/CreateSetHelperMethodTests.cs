@@ -193,6 +193,30 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableDecimal.Should().Be(7.28M);
 		}
 
+	    [Test]
+	    public void Sets_short_on_the_instance_when_type_is_short()
+	    {
+		    var table = new Table("Short", "NullableShort");
+		    table.AddRow("1234", "1,234");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Short.Should().Be(1234);
+		    people.First().NullableShort.Should().Be(1234);
+	    }
+
+	    [Test]
+	    public void Sets_ushort_on_the_instance_when_type_is_ushort()
+	    {
+		    var table = new Table("UShort", "NullableUShort");
+		    table.AddRow("1234", "1,234");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().UShort.Should().Be(1234);
+		    people.First().NullableUShort.Value.Should().Be(1234);
+	    }
+
 		[Test]
 	    public void Sets_longs_on_the_instance_when_type_is_long()
 	    {
@@ -268,24 +292,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 	    [Test]
 	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte()
 	    {
-		    var table = new Table("SByte");
-		    table.AddRow("4.0");
+		    var table = new Table("SByte", "NullableSByte");
+		    table.AddRow("4.0", "5.0");
 
 		    var people = table.CreateSet<Person>();
 
 		    people.First().SByte.Should().Be(4);
-	    }
+		    people.First().NullableSByte.Value.Should().Be(5);
+		}
 
 	    [Test, SetCulture("fr-FR")]
 	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte_and_culture_is_fr_FR()
 	    {
-		    var table = new Table("SByte");
-		    table.AddRow("4.0");
+		    var table = new Table("SByte", "NullableSByte");
+		    table.AddRow("4,0", "5,0");
 
 			var people = table.CreateSet<Person>();
 
 		    people.First().SByte.Should().Be(4);
-	    }
+		    people.First().NullableSByte.Value.Should().Be(5);
+		}
 
 		[Test]
         public void Sets_floats_on_the_instance_when_type_is_float()
