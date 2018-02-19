@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
@@ -255,7 +253,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableFloat.Should().Be(8.954F);
         }
 
-        [Test]
+	    [Test, SetCulture("fr-FR")]
+	    public void Sets_floats_on_the_instance_when_type_is_float_and_culture_is_fr_FR()
+	    {
+		    var table = new Table("Float", "NullableFloat");
+		    table.AddRow("2,698", "8,954");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Float.Should().Be(2.698F);
+		    people.First().NullableFloat.Should().Be(8.954F);
+	    }
+
+		[Test]
         public void Sets_guids_on_the_instance_when_the_type_is_guid()
         {
             var table = new Table("GuidId", "NullableGuidId");

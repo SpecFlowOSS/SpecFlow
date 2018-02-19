@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 		    retriever.GetValue("0").Should().Be(0M);
 		    retriever.GetValue("1").Should().Be(1M);
 		    retriever.GetValue("2").Should().Be(2M);
-		    retriever.GetValue("2.23").Should().Be(2.23M);
+		    retriever.GetValue("2,23").Should().Be(2.23M);
 			retriever.GetValue("384,234879").Should().Be(384.234879M);
 	    }
 
