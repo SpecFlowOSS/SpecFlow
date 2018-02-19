@@ -193,6 +193,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableDecimal.Should().Be(7.28M);
 		}
 
+	    [Test]
+	    public void Sets_longs_on_the_instance_when_type_is_long()
+	    {
+		    var table = new Table("Long", "NullableLong");
+		    table.AddRow("1234567890123456789", "1,234,567,890,123,456,789");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().Long.Should().Be(1234567890123456789L);
+		    people.First().NullableLong.Should().Be(1234567890123456789L);
+	    }
+
 		[Test]
         public void Sets_doubles_on_the_instance_when_type_is_double()
         {

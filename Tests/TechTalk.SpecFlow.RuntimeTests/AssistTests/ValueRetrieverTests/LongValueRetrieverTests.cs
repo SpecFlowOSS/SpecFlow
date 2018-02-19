@@ -7,17 +7,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     [TestFixture]
     public class LongValueRetrieverTests
     {
-        [Test]
+        [Test, SetCulture("en-US")]
         public void Returns_a_long_when_passed_a_long_value()
         {
             var retriever = new LongValueRetriever();
             retriever.GetValue("1").Should().Be(1);
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);
-            retriever.GetValue("1234567890123456789").Should().Be(1234567890123456789L);
+	        retriever.GetValue("1234567890123456789").Should().Be(1234567890123456789L);
+			retriever.GetValue("1,234,567,890,123,456,789").Should().Be(1234567890123456789L);
         }
-
-        [Test]
+		
+		[Test]
         public void Returns_negative_numbers_when_passed_a_negative_value()
         {
             var retriever = new LongValueRetriever();
@@ -33,5 +34,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("").Should().Be(0);
             retriever.GetValue("every good boy does fine").Should().Be(0);
         }
-    }
+
+	    [Test, SetCulture("fr-FR")]
+	    public void Returns_a_zero_when_passed_an_invalid_long_and_culture_is_fr_FR()
+	    {
+		    var retriever = new LongValueRetriever();
+		    retriever.GetValue("1,234,567,890,123,456,789").Should().Be(0);
+		}
+	}
 }

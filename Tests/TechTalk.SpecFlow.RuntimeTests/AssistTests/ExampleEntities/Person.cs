@@ -21,7 +21,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public decimal? NullableDecimal { get; set; }
         public int? NullableInt { get; set; }
 
-        public double Double { get; set; }
+	    public long Long { get; set; }
+	    public long? NullableLong { get; set; }
+
+		public double Double { get; set; }
         public double? NullableDouble { get; set; }
 
         public Guid GuidId { get; set; }

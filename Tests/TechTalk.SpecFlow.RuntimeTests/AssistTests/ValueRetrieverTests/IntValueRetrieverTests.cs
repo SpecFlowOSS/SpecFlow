@@ -14,7 +14,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("1").Should().Be(1);
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);
-            retriever.GetValue("1,234,567,890").Should().Be(1234567890);
+	        retriever.GetValue("1234567890").Should().Be(1234567890);
+			retriever.GetValue("1,234,567,890").Should().Be(1234567890);
         }
 
 	    [Test, SetCulture("fr-FR")]
