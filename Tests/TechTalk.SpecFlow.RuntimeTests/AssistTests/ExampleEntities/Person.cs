@@ -34,7 +34,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 	    public byte? NullableByte { get; set; }
 
 	    public sbyte SByte { get; set; }
-	    public sbyte? NullableSByte { get; set; }
 
 		public float Float { get; set; }
         public float? NullableFloat { get; set; }
