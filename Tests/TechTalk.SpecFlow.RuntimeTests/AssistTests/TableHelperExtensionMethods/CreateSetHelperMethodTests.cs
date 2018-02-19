@@ -193,7 +193,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableDecimal.Should().Be(7.28M);
 		}
 
-	    [Test]
+		[Test]
 	    public void Sets_longs_on_the_instance_when_type_is_long()
 	    {
 		    var table = new Table("Long", "NullableLong");
@@ -315,12 +315,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_uints_on_the_instance_when_the_type_is_uint()
         {
             var table = new Table("UnsignedInt", "NullableUnsignedInt");
-            table.AddRow("1", "2");
+            table.AddRow("1,234", "2452");
 
             var people = table.CreateSet<Person>();
 
-            people.First().UnsignedInt.Should().Be(1);
-            people.First().NullableUnsignedInt.Should().Be((uint?)2);
+            people.First().UnsignedInt.Should().Be(1234);
+            people.First().NullableUnsignedInt.Should().Be((uint?)2452);
         }
 
         [Test]
