@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     [TestFixture]
     public class ULongValueRetrieverTests
     {
-        [Test]
+        [Test, SetCulture("en-US")]
         public void Returns_an_unsigned_long_when_passed_an_unsigned_long_value()
         {
             var retriever = new ULongValueRetriever();
@@ -15,7 +15,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);
             retriever.GetValue("12345678901234567890").Should().Be(12345678901234567890);
-        }
+	        retriever.GetValue("12,345,678,901,234,567,890").Should().Be(12345678901234567890);
+		}
 
         [Test]
         public void Returns_a_zero_when_passed_an_invalid_unsigned_long()

@@ -24,6 +24,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 	    public long Long { get; set; }
 	    public long? NullableLong { get; set; }
 
+	    public ulong ULong { get; set; }
+	    public ulong? NullableULong { get; set; }
+
 		public double Double { get; set; }
         public double? NullableDouble { get; set; }
 

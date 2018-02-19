@@ -205,6 +205,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableLong.Should().Be(1234567890123456789L);
 	    }
 
+	    [Test]
+	    public void Sets_ulongs_on_the_instance_when_type_is_ulong()
+	    {
+		    var table = new Table("ULong", "NullableULong");
+		    table.AddRow("1234567890123456789", "1,234,567,890,123,456,789");
+
+		    var people = table.CreateSet<Person>();
+
+		    people.First().ULong.Should().Be(1234567890123456789UL);
+		    people.First().NullableULong.Should().Be(1234567890123456789UL);
+	    }
+
 		[Test]
         public void Sets_doubles_on_the_instance_when_type_is_double()
         {
