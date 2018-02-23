@@ -15,6 +15,7 @@ Fixes:
 + Format error message to facilate identification of ambiguous steps https://github.com/techtalk/SpecFlow/issues/994
 + Adds fix for .feature files path parsing on macOS / Unix https://github.com/techtalk/SpecFlow/pull/1012
 + more detailed output of generator errors is written in the code behind file https://github.com/techtalk/SpecFlow/pull/1013
++ Fixes stepdefinitionreport to include bindings that use [StepDefinition] https://github.com/techtalk/SpecFlow/pull/1024
 
 API Changes:
 + GetValue of ValueRetrievers are virtual https://github.com/techtalk/SpecFlow/pull/981
