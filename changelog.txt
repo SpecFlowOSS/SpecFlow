@@ -1,7 +1,7 @@
 2.3.1 - 2018-0?-??
 Fixes:
 + Fixes stepdefinitionreport to include bindings that use [StepDefinition] https://github.com/techtalk/SpecFlow/pull/1024
-
++ Fix code-behind generation for SpecFlow+Excel Excel files https://github.com/techtalk/SpecFlow/pull/1048
 
 2.3 - 2018-02-16
 New Features:
