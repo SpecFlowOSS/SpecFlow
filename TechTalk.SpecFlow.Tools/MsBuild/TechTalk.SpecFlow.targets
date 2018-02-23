@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <SpecFlowFeatureFiles Include="**\*.feature"/>
+    <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
   </ItemGroup>
 
   <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
