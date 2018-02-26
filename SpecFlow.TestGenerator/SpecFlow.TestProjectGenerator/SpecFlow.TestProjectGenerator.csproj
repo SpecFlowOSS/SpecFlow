@@ -21,12 +21,12 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
-    <PackageReference Include="FSharp.Core" Version="4.2.3" />
+    <PackageReference Include="FSharp.Core" Version="4.3.4" />
     <PackageReference Include="GitVersionTask" Version="3.6.5" />
     <PackageReference Include="Microsoft.Build" Version="15.3.409" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.3.409" />
-    <PackageReference Include="NuGet.CommandLine" Version="4.1.0" />
-    <PackageReference Include="vswhere" Version="2.2.7" />
+    <PackageReference Include="NuGet.CommandLine" Version="4.5.1" />
+    <PackageReference Include="vswhere" Version="2.3.2" />
   </ItemGroup>
 
   <ItemGroup>
