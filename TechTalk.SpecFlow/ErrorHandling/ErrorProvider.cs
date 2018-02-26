@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -21,7 +19,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
         Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance);
         MissingStepDefinitionException GetMissingStepDefinitionError();
         PendingStepException GetPendingStepDefinitionError();
-        void ThrowPendingError(TestStatus testStatus, string message);
+        void ThrowPendingError(ScenarioExecutionStatus testStatus, string message);
         Exception GetTooManyBindingParamError(int maxParam);
         Exception GetNonStaticEventError(IBindingMethod method);
     }
@@ -41,8 +39,8 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public string GetMethodText(IBindingMethod method)
         {
-            return string.Format("{0}.{1}({2})", method.Type.Name, method.Name,
-                string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray()));
+            string parametersDisplayed = string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray());
+            return $"{method.Type.AssemblyName}:{method.Type.FullName}.{method.Name}({parametersDisplayed})";
         }
 
         public Exception GetCallError(IBindingMethod method, Exception ex)
@@ -97,7 +95,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
             return new PendingStepException();
         }
 
-        public void ThrowPendingError(TestStatus testStatus, string message)
+        public void ThrowPendingError(ScenarioExecutionStatus testStatus, string message)
         {
             switch (specFlowConfiguration.MissingOrPendingStepsOutcome)
             {
@@ -111,7 +109,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
                     unitTestRuntimeProvider.TestIgnore(message);
                     break;
                 default:
-                    if (testStatus == TestStatus.MissingStepDefinition)
+                    if (testStatus == ScenarioExecutionStatus.UndefinedStep)
                         throw GetMissingStepDefinitionError();
                     throw GetPendingStepDefinitionError();
             }

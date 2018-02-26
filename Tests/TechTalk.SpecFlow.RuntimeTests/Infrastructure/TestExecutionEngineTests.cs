@@ -14,7 +14,7 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
-using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
+using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -175,7 +175,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IHookBinding> CreateParametrizedHookMock(List<IHookBinding> hookList, params Type[] paramTypes)
         {
             var hookMock = CreateHookMock(hookList);
-            var bindingMethod = new BindingMethod(new BindingType("BT", "Test.BT"), "X", 
+            var bindingMethod = new BindingMethod(new BindingType("AssemblyBT", "BT", "Test.BT"), "X",
                 paramTypes.Select((paramType, i) => new BindingParameter(new RuntimeBindingType(paramType), "p" + i)), 
                 RuntimeBindingType.Void);
             hookMock.Setup(h => h.Method).Returns(bindingMethod);
@@ -216,7 +216,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             var stepDefMock = RegisterStepDefinition();
 
-            scenarioContext.TestStatus = TestStatus.TestError;
+            scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
@@ -230,7 +230,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
-            scenarioContext.TestStatus = TestStatus.TestError;
+            scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
 
             var beforeStepMock = CreateHookMock(beforeStepEvents);
             var afterStepMock = CreateHookMock(afterStepEvents);
@@ -302,7 +302,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            scenarioContext.TestStatus.Should().Be(TestStatus.OK);
+            scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.OK);
         }
 
         [Test]
@@ -316,7 +316,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            scenarioContext.TestStatus.Should().Be(TestStatus.TestError);
+            scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.TestError);
         }
 
         [Test]

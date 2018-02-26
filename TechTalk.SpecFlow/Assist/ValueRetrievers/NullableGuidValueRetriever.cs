@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.guidValueRetriever = guidValueRetriever;
         }
 
-        public Guid? GetValue(string value)
+        public virtual Guid? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return guidValueRetriever(value);

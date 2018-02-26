@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.intValueRetriever = intValueRetriever;
         }
 
-        public int? GetValue(string value)
+        public virtual int? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return intValueRetriever(value);

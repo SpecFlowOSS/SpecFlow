@@ -137,26 +137,26 @@ namespace TechTalk.SpecFlow.Infrastructure
                 testTracer.TraceDuration(duration, "Scenario: " + contextManager.ScenarioContext.ScenarioInfo.Title);
             }
 
-            if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
+            if (contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
                 return;
 
-            if (contextManager.ScenarioContext.TestStatus == TestStatus.StepDefinitionPending)
+            if (contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
             {
                 var pendingSteps = contextManager.ScenarioContext.PendingSteps.Distinct().OrderBy(s => s);
-                errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}  {1}",
+                errorProvider.ThrowPendingError(contextManager.ScenarioContext.ScenarioExecutionStatus, string.Format("{0}{2}  {1}",
                     errorProvider.GetPendingStepDefinitionError().Message,
                     string.Join(Environment.NewLine + "  ", pendingSteps.ToArray()),
                     Environment.NewLine));
                 return;
             }
 
-            if (contextManager.ScenarioContext.TestStatus == TestStatus.MissingStepDefinition)
+            if (contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.UndefinedStep)
             {
                 string skeleton = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                     defaultTargetLanguage, 
                     contextManager.ScenarioContext.MissingSteps.ToArray(), "MyNamespace", "StepDefinitions", specFlowConfiguration.StepDefinitionSkeletonStyle, defaultBindingCulture);
 
-                errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
+                errorProvider.ThrowPendingError(contextManager.ScenarioContext.ScenarioExecutionStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
                     skeleton,
                     Environment.NewLine));
@@ -285,7 +285,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             testTracer.TraceStep(stepInstance, true);
 
-            bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
+            bool isStepSkipped = contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.OK;
             bool onStepStartExecuted = false;
 
             BindingMatch match = null;
@@ -319,20 +319,20 @@ namespace TechTalk.SpecFlow.Infrastructure
                 contextManager.ScenarioContext.PendingSteps.Add(
                     stepFormatter.GetMatchText(match, arguments));
 
-                if (contextManager.ScenarioContext.TestStatus < TestStatus.StepDefinitionPending)
-                    contextManager.ScenarioContext.TestStatus = TestStatus.StepDefinitionPending;
+                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.StepDefinitionPending)
+                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.StepDefinitionPending;
             }
             catch(MissingStepDefinitionException)
             {
-                if (contextManager.ScenarioContext.TestStatus < TestStatus.MissingStepDefinition)
-                    contextManager.ScenarioContext.TestStatus = TestStatus.MissingStepDefinition;
+                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.UndefinedStep)
+                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.UndefinedStep;
             }
             catch(BindingException ex)
             {
                 testTracer.TraceBindingError(ex);
-                if (contextManager.ScenarioContext.TestStatus < TestStatus.BindingError)
+                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.BindingError)
                 {
-                    contextManager.ScenarioContext.TestStatus = TestStatus.BindingError;
+                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.BindingError;
                     contextManager.ScenarioContext.TestError = ex;
                 }
             }
@@ -340,9 +340,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 testTracer.TraceError(ex);
 
-                if (contextManager.ScenarioContext.TestStatus < TestStatus.TestError)
+                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.TestError)
                 {
-                    contextManager.ScenarioContext.TestStatus = TestStatus.TestError;
+                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
                     contextManager.ScenarioContext.TestError = ex;
                 }
                 if (specFlowConfiguration.StopAtFirstError)
@@ -409,12 +409,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             if (contextManager.ScenarioContext.CurrentScenarioBlock != block)
             {
-                if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
+                if (contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
                     OnBlockEnd(contextManager.ScenarioContext.CurrentScenarioBlock);
 
                 contextManager.ScenarioContext.CurrentScenarioBlock = block;
 
-                if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
+                if (contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
                     OnBlockStart(contextManager.ScenarioContext.CurrentScenarioBlock);
             }
         }

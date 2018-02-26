@@ -4,6 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Assist.Attributes;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -331,6 +332,121 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             test.this_is_so_long.Should().Be("world");
         }
 
+        [Test]
+        public void Works_with_tuples()
+        {
+            var table = new Table("PropertyOne", "PropertyTwo", "PropertyThree");
+            table.AddRow("Look at me", "hello", "999");
+
+            var test = table.CreateInstance<(string one, string two, int three)>();
+
+            test.one.Should().Be("Look at me");
+            test.two.Should().Be("hello");
+            test.three.Should().Be(999);
+        }
+
+        [Test]
+        public void Too_long_tuples_throw_exception()
+        {
+            var table = new Table("PropertyOne", "PropertyTwo", "PropertyThree", "PropertyFour", "PropertyFive", "PropertySix", "PropertySeven", "PropertyEight");
+            table.AddRow("Look at me", "hello", "999", "this", "should", "actually", "fail", "right?");
+
+           Assert.Throws<Exception>(() => table.CreateInstance<(string one, string two, int three, string four, string five, string six, string seven, string eight)>());
+        }
+
+        [Test]
+        public void Works_with_tuples_vertical_format()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("One", "hello");
+            table.AddRow("Two", "world");
+            table.AddRow("Three", "999");
+
+            var test = table.CreateInstance<(string one, string two, int three)>();
+
+            test.one.Should().Be("hello");
+            test.two.Should().Be("world");
+            test.three.Should().Be(999);
+        }
+
+        [Test]
+        public void Uses_property_aliases()
+        {
+            var table = new Table("AliasOne", "AliasTwo", "AliasThree");
+            table.AddRow("PropertyOne", "PropertyTwo", "PropertyThree");
+
+            var test = table.CreateInstance<AliasedClass>();
+            test.PropertyOne.Should().Be("PropertyOne");
+            test.PropertyTwo.Should().Be("PropertyTwo");
+            test.PropertyThree.Should().Be("PropertyThree");
+        }
+
+        [Test]
+        public void Uses_field_aliases()
+        {
+            var table = new Table("FieldAliasOne", "FieldAliasTwo", "FieldAliasThree");
+            table.AddRow("FieldOne", "FieldTwo", "FieldThree");
+
+            var test = table.CreateInstance<AliasedClass>();
+            test.FieldOne.Should().Be("FieldOne");
+            test.FieldTwo.Should().Be("FieldTwo");
+            test.FieldThree.Should().Be("FieldThree");
+        }
+
+        [Test]
+        public void Property_aliases_allow_multiple_property_population()
+        {
+            var table = new Table("AliasOne", "AliasTwo", "AliasThree");
+            table.AddRow("PropertyOne", "PropertyTwo", "PropertyThree");
+
+            var test = table.CreateInstance<AliasedClass>();
+            test.PropertyOne.Should().Be("PropertyOne");
+            test.AnotherPropertyWithSameAlias.Should().Be("PropertyOne");
+        }
+
+        [Test]
+        public void Property_aliases_do_not_allow_type_mismatch_property_population()
+        {
+            var table = new Table("AliasOne", "AliasTwo", "AliasThree");
+            table.AddRow("PropertyOne", "PropertyTwo", "PropertyThree");
+
+            var test = table.CreateInstance<AliasedClass>();
+            test.PropertyOne.Should().Be("PropertyOne");
+            test.AliasedButTypeMismatch.Should().Be(0);
+        }
+
+        [Test]
+        public void Property_aliases_work_for_vertical_format()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Alias One", "Hello");
+            table.AddRow("AliasTwo", "World");
+            table.AddRow("AliasThree", "From Rich");
+
+            var test = table.CreateInstance<AliasedClass>();
+            test.PropertyOne.Should().Be("Hello");
+            test.PropertyTwo.Should().Be("World");
+            test.PropertyThree.Should().Be("From Rich");
+        }
+
+        [Test]
+        [TestCase("FirstName", "MiddleName", "Surname")]
+        [TestCase("FirstName", "MiddleName", "Lastname")]
+        [TestCase("First Name", "Middle Name", "Last name")]
+        [TestCase("Known As", "Never Known As", "Dad's Last Name")]
+        public void Property_can_have_many_aliases_and_uses_regex_to_match_business_jargon(string firstNameAlias, string middleNameAlias, string lastNameAlias)
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow(firstNameAlias, "Richard");
+            table.AddRow(middleNameAlias, "David");
+            table.AddRow(lastNameAlias, "Linnell");
+
+            var test = table.CreateInstance<AliasedClass>();
+            test.PropertyOne.Should().Be("Richard");
+            test.PropertyTwo.Should().Be("David");
+            test.PropertyThree.Should().Be("Linnell");
+        }
+
         private class Prop
         {
             public string Prop1 { get; set; }
@@ -343,5 +459,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             public string this_is_so_long { get; set; }
         }
 
+        private class AliasedClass
+        {
+            [TableAliases("Alias[ ]*One", "First[ ]?Name", "^Known As$")]
+            public string PropertyOne { get; set; }
+
+            [TableAliases("Alias[ ]*Two", "Middle[ ]?Name", "^Never Known As$")]
+            public string PropertyTwo { get; set; }
+
+            [TableAliases("AliasThree")]
+            [TableAliases("Surname")]
+            [TableAliases("Last[ ]?name")]
+            [TableAliases("Dad's Last Name")]
+            public string PropertyThree { get; set; }
+
+            [TableAliases("FieldAliasOne")]
+            public string FieldOne;
+            [TableAliases("FieldAliasTwo")]
+            public string FieldTwo;
+            [TableAliases("FieldAliasThree")]
+            public string FieldThree;
+
+            [TableAliases("AliasOne")]
+            public string AnotherPropertyWithSameAlias { get; set; }
+
+            [TableAliases("AliasOne")]
+            public long AliasedButTypeMismatch { get; set; }
+        }
     }
 }

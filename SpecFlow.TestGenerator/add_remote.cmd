@@ -1,0 +1,1 @@
+git remote add -f SpecFlow.TestGenerator https://github.com/techtalk/SpecFlow.TestProjectGenerator.git

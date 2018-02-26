@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         {
         }
 
-        public ReportStep(Location location, string keyword, string text, ReportStepArgument argument, StepKeyword stepKeyword, Parser.ScenarioBlock scenarioBlock)
+        public ReportStep(Location location, string keyword, string text, ReportStepArgument argument, StepKeyword? stepKeyword, Parser.ScenarioBlock? scenarioBlock)
         {
             //Location = location;
             Keyword = keyword;
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         public string Text { get; set; }
 
         public ReportStepArgument Argument { get; set; }
-        public TechTalk.SpecFlow.Parser.ScenarioBlock ScenarioBlock { get; set; }
-        public Parser.StepKeyword StepKeyword { get; set; }
+        public TechTalk.SpecFlow.Parser.ScenarioBlock? ScenarioBlock { get; set; }
+        public Parser.StepKeyword? StepKeyword { get; set; }
     }
 }

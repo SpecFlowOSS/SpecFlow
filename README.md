@@ -6,9 +6,9 @@ SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification
 - Documentation: [http://www.specflow.org/documentation/](http://www.specflow.org/documentation/)
 - Discussion group: [http://groups.google.com/group/SpecFlow](http://groups.google.com/group/SpecFlow) 
 
-For questions please send them to the Discussion group.
+For questions please send them to the [Discussion group](http://groups.google.com/group/SpecFlow).
 
-For issues/bugs please use the [issue tracker on GitHub](https://github.com/techtalk/SpecFlow/issues)
+For issues/bugs please use the [issue tracker on GitHub](https://github.com/techtalk/SpecFlow/issues).
 
 ## Stats
 
@@ -16,7 +16,8 @@ For issues/bugs please use the [issue tracker on GitHub](https://github.com/tech
 ![Issues closed](http://issuestats.com/github/techtalk/specflow/badge/issue?style=flat-square)
 
 ## Build status
-Continuous integration: [![Build status](https://ci.appveyor.com/api/projects/status/h9nb6vii9xj8vbtl?svg=true)](https://ci.appveyor.com/project/SpecFlow/specflow-kx1o3)
+Continuous integration: [![Build status](https://ci.appveyor.com/api/projects/status/h9nb6vii9xj8vbtl?svg=true)](https://ci.appveyor.com/project/SpecFlow/specflow-kx1o3)  
+VSTS Continuous integration: ![Build status](https://techtalk.visualstudio.com/_apis/public/build/definitions/60fc9bca-ddde-41a2-a370-76fa936f5850/26/badge)
 
 CI NuGet Package feed: https://ci.appveyor.com/nuget/specflow-ci
 

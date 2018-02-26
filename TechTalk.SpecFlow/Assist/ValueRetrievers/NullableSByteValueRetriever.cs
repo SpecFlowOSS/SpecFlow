@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.sbyteValueRetriever = sbyteValueRetriever;
         }
 
-        public sbyte? GetValue(string value)
+        public virtual sbyte? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return sbyteValueRetriever(value);

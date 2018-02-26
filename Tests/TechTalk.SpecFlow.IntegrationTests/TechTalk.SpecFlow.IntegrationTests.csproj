@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <AssemblyName>TechTalk.SpecFlow.IntegrationTests</AssemblyName>
     <AssemblyOriginatorKeyFile>../../specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Gherkin" Version="5.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="NUnit" Version="3.8.1" />
     <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.6.0" />
@@ -38,16 +39,14 @@
     <PackageReference Include="Moq" Version="4.7.99" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
-    <PackageReference Include="Gherkin" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.extensions" Version="1.9.2" />
   </ItemGroup>
 
   <Target Name="PostcompileScript" AfterTargets="Build">
     <Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />
   </Target>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Build" />
@@ -59,14 +58,20 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-  <PropertyGroup>
+   <PropertyGroup>
     <VerboseOutput>true</VerboseOutput>
     <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
 
-  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
+  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
+    <Exec Command="$(SpecFlowTasksPath) generateAll $(MSBuildProjectFullPath)"/>
+    <CallTarget Targets="AfterUpdateFeatureFilesInProject" />
+  </Target>
   
   <Target Name="AfterUpdateFeatureFilesInProject">
-    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />
+    <ItemGroup>
+      <SpecFlowGeneratedFiles Include="**/*.feature.cs" />
+    </ItemGroup>
+    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
   </Target>
 </Project>

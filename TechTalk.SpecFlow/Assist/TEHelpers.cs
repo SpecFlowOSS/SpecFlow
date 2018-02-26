@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Assist.Attributes;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -29,8 +30,8 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var parameterName = constructorParameters[parameterIndex].Name;
                 var member = (from m in membersThatNeedToBeSet
-                                where m.MemberName == parameterName
-                                select m).FirstOrDefault();
+                              where string.Equals(m.MemberName, parameterName, StringComparison.OrdinalIgnoreCase)
+                              select m).FirstOrDefault();
                 if (member != null)
                     parameterValues[parameterIndex] = member.GetValue();
             }
@@ -86,7 +87,7 @@ namespace TechTalk.SpecFlow.Assist
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
             membersThatNeedToBeSet.ToList()
-                .ForEach(x => x.Setter(instance, x.GetValue()));
+                                  .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
@@ -94,21 +95,60 @@ namespace TechTalk.SpecFlow.Assist
             var properties = from property in type.GetProperties()
                              from row in table.Rows
                              where TheseTypesMatch(type, property.PropertyType, row)
-                                   && IsMemberMatchingToColumnName(property, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
+                                   && (IsMemberMatchingToColumnName(property, row.Id())
+                                   || IsMatchingAlias(property, row.Id()))
+                             select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
-                             from row in table.Rows
-                             where TheseTypesMatch(type, field.FieldType, row)
-                                   && IsMemberMatchingToColumnName(field, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
+                         from row in table.Rows
+                         where TheseTypesMatch(type, field.FieldType, row)
+                               && (IsMemberMatchingToColumnName(field, row.Id()) ||
+                                IsMatchingAlias(field, row.Id()))
+                         select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
             memberHandlers.AddRange(properties);
             memberHandlers.AddRange(fields);
 
+            // tuple special case
+            var fieldInfos = type.GetFields();
+            if (IsValueTupleType(type))
+            {
+                if (fieldInfos.Length > 7)
+                {
+                    throw new Exception("You should just map to tuple with small objects, types with more than 7 properties are not currently supported");
+                }
+
+                if (fieldInfos.Length == table.RowCount)
+                {
+                    for (var index = 0; index < table.Rows.Count; index++)
+                    {
+                        var field = fieldInfos[index];
+                        var row = table.Rows[index];
+
+                        if (TheseTypesMatch(type, field.FieldType, row))
+                        {
+                            memberHandlers.Add(new MemberHandler
+                            {
+                                Type = type,
+                                Row = row,
+                                MemberName = field.Name,
+                                PropertyType = field.FieldType,
+                                Setter = (i, v) => field.SetValue(i, v)
+                            });
+                        }
+                    }
+                }
+            }
+
             return memberHandlers;
+        }
+
+        private static bool IsMatchingAlias(MemberInfo field, string id)
+        {
+            var aliases = field.GetCustomAttributes().OfType<TableAliasesAttribute>();
+            return aliases.Any(a => a.Aliases.Any(al => Regex.Match(id, al).Success));
         }
 
         private static bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
@@ -134,8 +174,8 @@ namespace TechTalk.SpecFlow.Assist
         internal static Table GetTheProperInstanceTable(Table table, Type type)
         {
             return ThisIsAVerticalTable(table, type)
-                       ? table
-                       : FlipThisHorizontalTableToAVerticalTable(table);
+                ? table
+                : FlipThisHorizontalTableToAVerticalTable(table);
         }
 
         private static Table FlipThisHorizontalTableToAVerticalTable(Table table)
@@ -159,7 +199,44 @@ namespace TechTalk.SpecFlow.Assist
         {
             var firstRowValue = table.Rows[0][table.Header.First()];
             return type.GetProperties()
-                .Any(property => IsMemberMatchingToColumnName(property, firstRowValue));
+                       .Any(property => IsMemberMatchingToColumnName(property, firstRowValue));
+        }
+
+        public static bool IsValueTupleType(Type type, bool checkBaseTypes = false)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            if (type == typeof(Tuple))
+                return true;
+
+            while (type != null)
+            {
+                if (type.IsGenericType)
+                {
+                    var genType = type.GetGenericTypeDefinition();
+                    if
+                    (
+                        genType == typeof(ValueTuple)
+                        || genType == typeof(ValueTuple<>)
+                        || genType == typeof(ValueTuple<,>)
+                        || genType == typeof(ValueTuple<,,>)
+                        || genType == typeof(ValueTuple<,,,>)
+                        || genType == typeof(ValueTuple<,,,,>)
+                        || genType == typeof(ValueTuple<,,,,,>)
+                        || genType == typeof(ValueTuple<,,,,,,>)
+                        || genType == typeof(ValueTuple<,,,,,,,>)
+                    )
+                        return true;
+                }
+
+                if (!checkBaseTypes)
+                    break;
+
+                type = type.BaseType;
+            }
+
+            return false;
         }
     }
 }

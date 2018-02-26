@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.byteValueRetriever = byteValueRetriever;
         }
 
-        public byte? GetValue(string value)
+        public virtual byte? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return byteValueRetriever(value);

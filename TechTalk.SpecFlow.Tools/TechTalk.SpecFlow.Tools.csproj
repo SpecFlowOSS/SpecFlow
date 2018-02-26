@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
@@ -36,6 +40,7 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+
   </ItemGroup>
 
   <Target Name="GenerateConfigs" BeforeTargets="Build">

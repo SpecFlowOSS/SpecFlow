@@ -16,16 +16,17 @@
 
   <ItemGroup>
     <EmbeddedResource Include=".\MsTestExecutionReport\MsTestToNUnit.xslt;.\NUnitExecutionReport\NUnitExecutionReport.xslt;.\StepDefinitionReport\StepDefinitionReport.xslt;.\Common\Common.xslt;.\Common\GherkinElements.xslt" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+   
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Gherkin" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Gherkin" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
