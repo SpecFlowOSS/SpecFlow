@@ -1,15 +1,15 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
-    [TestFixture]
+    
     public class GuidValueComparerTests
     {
-        [Test]
+        [Fact]
         public void Can_compare_if_the_value_is_a_guid()
         {
             var valueComparer = CreateComparer();
@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Cannot_compare_if_the_value_is_null()
         {
             CreateComparer()
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Cannot_compare_if_the_value_is_not_a_guid()
         {
             var valueComparer = CreateComparer();
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
             valueComparer.CanCompare(3.14).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Returns_true_when_the_value_and_the_string_match()
         {
             var valueComparer = CreateComparer();
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Returns_false_when_the_value_and_the_string_do_not_match()
         {
             var valueComparer = CreateComparer();
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Returns_true_even_if_the_expected_value_is_wrapped_in_curly_braces()
         {
             var valueComparer = CreateComparer();
@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Returns_false_if_the_expected_value_is_not_a_valid_guid()
         {
             var valueComparer = CreateComparer();
@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Returns_true_if_the_expected_value_is_0_and_the_expected_is_an_empty_guid()
         {
             var valueComparer = CreateComparer();
@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Matches_regardless_of_casing()
         {
             var valueComparer = CreateComparer();
@@ -101,7 +101,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Matches_based_on_the_first_eight_digits_when_the_rest_are_zeroes()
         {
             var valueComparer = CreateComparer();
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Matches_based_on_the_first_nine_digits_when_the_rest_are_zeroes()
         {
             var valueComparer = CreateComparer();

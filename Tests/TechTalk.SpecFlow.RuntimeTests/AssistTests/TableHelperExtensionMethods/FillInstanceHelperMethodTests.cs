@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    
     public class FillInstanceHelperMethodTests : CreateInstanceHelperMethodTestBase
     {
         public FillInstanceHelperMethodTests()
@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         {
         }
 
-        [Test]
+        [Fact]
         public virtual void Can_use_horizontal_tables_with_FillInstance()
         {
             var table = new Table("MiddleInitial", "NullableChar");
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             person.NullableChar.Should().Be('S');
         }
 
-        [Test]
+        [Fact]
         public virtual void Can_populate_subtype_properties_with_FillInstance()
         {
             Person person = new PersonWithStyle();
@@ -43,10 +43,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             // Create a variable of type PersonWithStyle to validate that Style was set properly.
             PersonWithStyle personWithStyle = (PersonWithStyle)person;
 
-            Assert.That(personWithStyle.Style, Is.EqualTo(Style.VeryCool));
+            personWithStyle.Style.Should().Be(Style.VeryCool);
         }
 
-        [Test]
+        [Fact]
         public virtual void Can_populate_properties_and_fields()
         {
             var entity = new EntityWithPropertiesAndFields();

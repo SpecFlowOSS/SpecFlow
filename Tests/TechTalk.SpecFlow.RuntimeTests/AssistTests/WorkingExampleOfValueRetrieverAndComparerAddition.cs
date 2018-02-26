@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -68,16 +68,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
     }
 
-    [TestFixture]
-    public class WorkingExampleOfValueRetrieverAndComparerAddition
+    
+    public class WorkingExampleOfValueRetrieverAndComparerAddition : IDisposable
     {
-        [TearDown]
-        public void Cleanup()
-        {
-            Service.Instance.RestoreDefaults();
-        }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_retrieve_the_fancy_name()
         {
 
@@ -92,7 +87,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             lad.Name.LastName.Should().Be("Galt");
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_compare_the_fancy_name()
         {
             Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
@@ -105,6 +100,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var expectedLad  = new FancyLad() { Name = expectedName };
 
             table.CompareToInstance<FancyLad>(expectedLad);
+        }
+
+        public void Dispose()
+        {
+            Service.Instance.RestoreDefaults();
         }
     }
 
@@ -167,16 +167,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
     }
 
-    [TestFixture]
-    public class AnotherWorkingExampleOfValueRetrieverAndComparerAddition
+    
+    public class AnotherWorkingExampleOfValueRetrieverAndComparerAddition : IDisposable
     {
-        [TearDown]
-        public void Cleanup()
-        {
-            Service.Instance.RestoreDefaults();
-        }
-
-        [Test]
+        [Fact]
         public void Should_be_able_to_retrieve_the_category()
         {
 
@@ -192,7 +186,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             lad.Category.Name.Should().Be("Fruit");
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_compare_the_category()
         {
             Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
@@ -206,6 +200,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var expectedProduct = new Product() { Name = "Cucumber", Category = expectedCategory };
 
             table.CompareToInstance<Product>(expectedProduct);
+        }
+
+        public void Dispose()
+        {
+            Service.Instance.RestoreDefaults();
+
         }
     }
 }

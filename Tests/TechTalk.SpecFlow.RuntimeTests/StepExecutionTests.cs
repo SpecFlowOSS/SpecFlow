@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 using Rhino.Mocks;
 using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
@@ -100,10 +101,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
     }
 
-    [TestFixture]
+    
     public class StepExecutionTests : StepExecutionTestsBase
     {
-        [Test]
+        [Fact]
         public void ShouldCallBindingWithoutParameter()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -115,11 +116,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step without param");
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingSingleParameter()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -130,12 +131,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository.ReplayAll();
 
             testRunner.Given("sample step with single param");
-
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingMultipleParameter()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -147,11 +148,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with multiple param");
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingWithTableParameter()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -164,11 +165,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with table param", null, table);
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingWithMlStringParam()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -181,11 +182,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with multi-line string param", mlString, null);
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingWithTableAndMlStringParam()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -199,11 +200,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with table and multi-line string param", mlString, table);
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingWithMixedParams()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -217,11 +218,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with mixed params", mlString, table);
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldRaiseAmbiguousIfMultipleMatch()
         {
             StepExecutionTestsAmbiguousBindings bindingInstance;
@@ -231,11 +232,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step without param");
 
-            Assert.AreEqual(ScenarioExecutionStatus.BindingError, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldDistinguishByTableParam_CallWithoutTable()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -247,11 +248,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Distinguish by table param");
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldDistinguishByTableParam_CallWithTable()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -264,11 +265,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Distinguish by table param", null, table);
 
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldRaiseBindingErrorIfWrongParamNumber()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -278,11 +279,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with wrong param number");
 
-            Assert.AreEqual(ScenarioExecutionStatus.BindingError, GetLastTestStatus());
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingThatReturnsTask()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -299,12 +300,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository.ReplayAll();
 
             testRunner.Given("Returns a Task");
-            Assert.IsTrue(taskFinished);
-            Assert.AreEqual(ScenarioExecutionStatus.OK, GetLastTestStatus());
+            Assert.True(taskFinished);
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             MockRepository.VerifyAll();
         }
 
-        [Test]
+        [Fact]
         public void ShouldCallBindingThatReturnsTaskAndReportError()
         {
             StepExecutionTestsBindings bindingInstance;
@@ -322,9 +323,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository.ReplayAll();
 
             testRunner.Given("Returns a Task");
-            Assert.IsTrue(taskFinished);
-            Assert.AreEqual(ScenarioExecutionStatus.TestError, GetLastTestStatus());
-            Assert.AreEqual("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
+            Assert.True(taskFinished);
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
+            Assert.Equal("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
 
             MockRepository.VerifyAll();
         }

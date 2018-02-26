@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.BindingSkeletons;
 using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 {
-    [TestFixture]
+    
     public class StepTextAnalyzerTests
     {
         private readonly CultureInfo bindingCulture = new CultureInfo("en-US");
 
-        [Test]
+        [Fact]
         public void Should_not_change_simple_step()
         {
             var sut = new StepTextAnalyzer();
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[0].Should().Be("I do something");
         }
 
-        [Test]
+        [Fact]
         public void Should_recognize_quoted_strings()
         {
             var sut = new StepTextAnalyzer();
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[1].Should().Be("\" something");
         }
 
-        [Test]
+        [Fact]
         public void Should_recognize_apostrophed_strings()
         {
             var sut = new StepTextAnalyzer();
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[1].Should().Be("' something");
         }
 
-        [Test]
+        [Fact]
         public void Should_recognize_angle_bracket_strings()
         {
             var sut = new StepTextAnalyzer();
@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[1].Should().Be(" something");
         }
 
-        [Test]
+        [Fact]
         public void Should_handle_quote_overlaps()
         {
             var sut = new StepTextAnalyzer();
@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[1].Should().Be("' really \" strange");
         }
 
-        [Test]
+        [Fact]
         public void Should_handle_overlaps_with_numbers()
         {
             var sut = new StepTextAnalyzer();
@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[1].Should().Be("' foo");
         }
 
-        [Test]
+        [Fact]
         public void Should_recognize_integers()
         {
             var sut = new StepTextAnalyzer();
@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[0].Type.Should().Be("Int32");
         }
 
-        [Test]
+        [Fact]
         public void Should_recognize_decimals()
         {
             var sut = new StepTextAnalyzer();
@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[0].Type.Should().Be("Decimal");
         }
 
-        [Test]
+        [Fact]
         public void Should_recognize_quoted_strings_with_multiple_parameters()
         {
             var sut = new StepTextAnalyzer();
@@ -132,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[2].Should().Be("\" parameters");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_use_smart_parameter_names_when_they_contain_spaces()
         {
             var sut = new StepTextAnalyzer();
@@ -142,7 +142,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[0].Name.Should().Be("p0");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_use_smart_parameter_names_when_they_contain_non_alphabet_characters()
         {
             var sut = new StepTextAnalyzer();
@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[0].Name.Should().Be("p0");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_use_smart_parameter_names_when_they_contain_numeric_characters()
         {
             var sut = new StepTextAnalyzer();
@@ -162,7 +162,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[0].Name.Should().Be("p0");
         }
 
-        [Test]
+        [Fact]
         public void Should_not_use_same_parameter_names_when_they_appear_multiple_times()
         {
             var sut = new StepTextAnalyzer();
@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[1].Name.Should().Be("did1");
         }
 
-        [Test]
+        [Fact]
         public void Should_use_the_correct_param_index_when_they_appear_multiple_times()
         {
             var sut = new StepTextAnalyzer();
@@ -185,7 +185,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[2].Name.Should().Be("did2");
         }
 
-        [Test]
+        [Fact]
         public void Should_correctly_case_parameter_names()
         {
             var sut = new StepTextAnalyzer();
@@ -200,7 +200,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[2].Should().Be("\" parameters");
         }
 
-        [Test]
+        [Fact]
         public void Should_support_accented_characters()
         {
             var sut = new StepTextAnalyzer();

@@ -13,6 +13,8 @@
       <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
     </None>
 
+    <None Include=".\Features\**\*.feature" />
+
     <None Include="..\..\LinkedFeature.feature" Link="LinkedFeature.feature" />
 
     <None Include="..\ExampleFeatures\Features\**\*.feature">

@@ -1,14 +1,14 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    
     public class CreateInstanceHelperMethodTests_WithFunc
     {
-        [Test]
+        [Fact]
         public void CreateInstance_returns_the_object_returned_from_the_func()
         {
             var table = new Table("Field", "Value");
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             person.Should().Be(expectedPerson);
         }
 
-        [Test]
+        [Fact]
         public void Create_instance_will_fill_the_instance_()
         {
             var table = new Table("Field", "Value");

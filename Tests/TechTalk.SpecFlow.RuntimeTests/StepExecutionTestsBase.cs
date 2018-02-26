@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using BoDi;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -90,8 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new CultureInfo("en-US");
         }        
 
-        [SetUp]
-        public virtual void SetUp()
+        public StepExecutionTestsBase()
         {
             TestRunnerManager.Reset();
 

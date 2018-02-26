@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using BoDi;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -18,7 +18,7 @@ using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
-    [TestFixture]
+    
     public class TestExecutionEngineTests
     {
         private ScenarioContext scenarioContext;
@@ -50,8 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private List<IHookBinding> beforeScenarioBlockEvents;
         private List<IHookBinding> afterScenarioBlockEvents;
 
-        [SetUp]
-        public void Setup()
+        public TestExecutionEngineTests()
         {
             specFlowConfiguration = ConfigurationLoader.GetDefault();
 
@@ -182,7 +181,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return hookMock;
         }
 
-        [Test]
+        [Fact]
         public void Should_execute_before_step()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -196,7 +195,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
         }
 
-        [Test]
+        [Fact]
         public void Should_execute_after_step()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -210,7 +209,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
         }
 
-        [Test]
+        [Fact]
         public void Should_not_execute_step_when_there_was_an_error_earlier()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -224,7 +223,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(stepDefMock.Object, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), out duration), Times.Never());
         }
 
-        [Test]
+        [Fact]
         public void Should_not_execute_step_hooks_when_there_was_an_error_earlier()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -242,7 +241,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
 
-        [Test]
+        [Fact]
         public void Should_execute_after_step_when_step_definition_failed()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -256,7 +255,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration));
         }
 
-        [Test]
+        [Fact]
         public void Should_call_step_error_handlers()
         {
             var stepErrorHandlerMock = new Mock<IStepErrorHandler>();
@@ -271,7 +270,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
 
-        [Test]
+        [Fact]
         public void Should_call_multiple_step_error_handlers()
         {
             var stepErrorHandler1Mock = new Mock<IStepErrorHandler>();
@@ -288,7 +287,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             stepErrorHandler2Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_swallow_error_in_step_error_handlers()
         {
             var stepErrorHandlerStub = new Mock<IStepErrorHandler>();
@@ -305,7 +304,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.OK);
         }
 
-        [Test]
+        [Fact]
         public void Step_error_handlers_should_not_swallow_error_by_default()
         {
             var stepErrorHandlerStub = new Mock<IStepErrorHandler>();
@@ -319,7 +318,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.TestError);
         }
 
-        [Test]
+        [Fact]
         public void Should_cleanup_step_context_after_scenario_block_hook_error()
         {
             TimeSpan duration;
@@ -333,7 +332,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             try
             {
                 testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-                Assert.Fail("execution of the step should have failed because of the exeption thrown by the before scenario block hook");
+
+                Assert.True(false, "execution of the step should have failed because of the exeption thrown by the before scenario block hook");
             }
             catch (Exception)
             {
@@ -343,7 +343,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             contextManagerStub.Verify(cm => cm.CleanupStepContext());
         }
 
-        [Test]
+        [Fact]
         public void Should_not_execute_afterstep_when_step_is_undefined()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -382,7 +382,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 testTracerStub.Object, out duration), Times.Once());
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_FeautreContext_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -394,7 +394,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             AssertHooksWasCalledWithParam(hookMock, contextManagerStub.Object.FeatureContext);
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_custom_class_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -406,7 +406,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             AssertHooksWasCalledWithParam(hookMock, DummyClass.LastInstance);
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_container_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -419,7 +419,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             AssertHooksWasCalledWithParam(hookMock, testThreadContainer);
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_multiple_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -432,7 +432,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             AssertHooksWasCalledWithParam(hookMock, contextManagerStub.Object.FeatureContext);
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_BeforeAfterTestRun_hook_parameter_from_test_thread_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -450,7 +450,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 Times.Exactly(2));
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_BeforeAfterScenario_hook_parameter_from_scenario_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -468,7 +468,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 Times.Exactly(2));
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_BeforeAfterScenarioBlock_hook_parameter_from_scenario_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -486,7 +486,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 Times.Exactly(2));
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_BeforeAfterStep_hook_parameter_from_scenario_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -503,7 +503,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 Times.Exactly(2));
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_BeforeAfterFeature_hook_parameter_from_feature_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();

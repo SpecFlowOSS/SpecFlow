@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class StringValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_the_string_value_back()
         {
             var retriever = new StringValueRetriever();

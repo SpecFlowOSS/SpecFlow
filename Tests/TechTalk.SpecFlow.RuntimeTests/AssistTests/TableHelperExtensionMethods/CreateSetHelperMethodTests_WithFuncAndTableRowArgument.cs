@@ -4,22 +4,21 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    
     public class CreateSetHelperMethodTests_WithFuncAndTableRowArgument
     {
-        [SetUp]
-        public void SetUp()
+        public CreateSetHelperMethodTests_WithFuncAndTableRowArgument()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
 
-        [Test]
+        [Fact]
         public void Uses_the_instance_creation_method_when_passed_one_row()
         {
             var table = new Table("FirstName");
@@ -32,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.Single().Should().Be(expectedPerson);
         }
 
-        [Test]
+        [Fact]
         public void Calls_the_instance_creation_method_for_each_row()
         {
             var table = new Table("FirstName");
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.Last().Should().Be(second);
         }
 
-        [Test]
+        [Fact]
         public void Still_loads_the_instance_with_the_values_from_the_table()
         {
             var table = new Table("FirstName");
@@ -73,7 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.Last().FirstName.Should().Be("Howard");
         }
 
-        [Test]
+        [Fact]
         public void The_correct_TableRow_is_passed_to_the_callback()
         {
             var table = new Table("FirstName", "_SpecialInfo");

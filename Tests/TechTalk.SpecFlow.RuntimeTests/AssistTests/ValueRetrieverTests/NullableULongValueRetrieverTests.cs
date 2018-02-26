@@ -1,21 +1,21 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class NullableULongValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_null_when_the_value_is_null()
         {
             var retriever = new NullableULongValueRetriever(v => 0);
             retriever.GetValue(null).Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Returns_value_from_ULongValueRetriever_when_passed_not_empty_string()
         {
             Func<string, ulong> func = v =>
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("another test value").Should().Be((ulong?)456);
         }
 
-        [Test]
+        [Fact]
         public void Returns_null_when_passed_empty_string()
         {
             var retriever = new NullableULongValueRetriever(v => 3);

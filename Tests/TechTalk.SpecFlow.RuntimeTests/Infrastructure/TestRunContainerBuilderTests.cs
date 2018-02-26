@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using FluentAssertions;
 using TechTalk.SpecFlow.Infrastructure;
@@ -9,17 +9,17 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
-    [TestFixture]
-    public class TestRunContainerBuilderTests
+    
+    public class TestRunContainerBuilderTests : IDisposable
     {
-        [Test]
+        [Fact]
         public void Should_create_a_container()
         {
             var container = TestObjectFactories.CreateDefaultGlobalContainer();
             container.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_register_runtime_configuration_with_default_config()
         {
             var container = TestObjectFactories.CreateDefaultGlobalContainer();
@@ -35,17 +35,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         #region Fix: ReSharper test runner assemby loading issue workaround
-        [SetUp]
-        public void Setup()
+        public TestRunContainerBuilderTests()
         {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainOnAssemblyResolve;
         }
-
-        [TearDown]
-        public void TearDown()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;
-        }
+        
 
         private Assembly CurrentDomainOnAssemblyResolve(object sender, ResolveEventArgs args)
         {
@@ -56,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
         #endregion
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_customize_dependencies_from_config()
         {
             var configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -100,7 +94,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             }
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_specify_custom_unit_test_provider_in_config()
         {
             var configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -122,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_specify_custom_unit_test_provider_in_config_compatible_way()
         {
             var configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -136,6 +130,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
             unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
+        }
+
+        public void Dispose()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;
         }
     }
 }

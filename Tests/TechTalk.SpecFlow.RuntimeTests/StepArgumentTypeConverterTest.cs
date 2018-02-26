@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class StepArgumentTypeConverterTests
     {
         private IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly Mock<IBindingInvoker> methodBindingInvokerStub = new Mock<IBindingInvoker>();
         private CultureInfo _enUSCulture;
 
-        [SetUp]
-        public void SetUp()
+        public StepArgumentTypeConverterTests()
         {
             Mock<IBindingRegistry> bindingRegistryStub = new Mock<IBindingRegistry>();
             List<IStepArgumentTransformationBinding> stepTransformations = new List<IStepArgumentTransformationBinding>();
@@ -27,32 +27,32 @@ namespace TechTalk.SpecFlow.RuntimeTests
             _enUSCulture = new CultureInfo("en-US");
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToStringType()
         {
             var result = _stepArgumentTypeConverter.Convert("testValue", typeof(string), _enUSCulture);
-            Assert.That(result, Is.EqualTo("testValue"));
+            result.Should().Be("testValue");
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToIntType()
         {
             var result = _stepArgumentTypeConverter.Convert("10", typeof(int), _enUSCulture);
-            Assert.That(result, Is.EqualTo(10));
+            result.Should().Be(10);
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToDateType()
         {
             var result = _stepArgumentTypeConverter.Convert("2009/10/06", typeof(DateTime), _enUSCulture);
-            Assert.That(result, Is.EqualTo(new DateTime(2009, 10, 06)));
+            result.Should().Be(new DateTime(2009, 10, 06));
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToFloatType()
         {
             var result = _stepArgumentTypeConverter.Convert("10.01", typeof(float), _enUSCulture);
-            Assert.That(result, Is.EqualTo(10.01f));
+            result.Should().Be(10.01f);
         }
 
         private enum TestEnumeration
@@ -60,53 +60,53 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Value1
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToEnumerationType()
         {
             var result = _stepArgumentTypeConverter.Convert("Value1", typeof(TestEnumeration), _enUSCulture);
-            Assert.That(result, Is.EqualTo(TestEnumeration.Value1));
+            result.Should().Be(TestEnumeration.Value1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToEnumerationTypeWithDifferingCase()
         {
             var result = _stepArgumentTypeConverter.Convert("vALUE1", typeof(TestEnumeration), _enUSCulture);
-            Assert.That(result, Is.EqualTo(TestEnumeration.Value1));
+            result.Should().Be(TestEnumeration.Value1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertStringToEnumerationTypeWithWhitespace()
         {
             var result = _stepArgumentTypeConverter.Convert("Value 1", typeof(TestEnumeration), _enUSCulture);
-            Assert.That(result, Is.EqualTo(TestEnumeration.Value1));
+            result.Should().Be(TestEnumeration.Value1);
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertGuidToGuidType()
         {
             var result = _stepArgumentTypeConverter.Convert("{EF338B79-FD29-488F-8CA7-39C67C2B8874}", typeof (Guid), _enUSCulture);
-            Assert.That(result, Is.EqualTo(new Guid("{EF338B79-FD29-488F-8CA7-39C67C2B8874}")));
+            result.Should().Be(new Guid("{EF338B79-FD29-488F-8CA7-39C67C2B8874}"));           
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertNullableGuidToGuidType()
         {
             var result = _stepArgumentTypeConverter.Convert("{1081CFD1-F31F-420F-9360-40590ABEF887}", typeof(Guid?), _enUSCulture);
-            Assert.That(result, Is.EqualTo(new Guid("{1081CFD1-F31F-420F-9360-40590ABEF887}")));
+            result.Should().Be(new Guid("{1081CFD1-F31F-420F-9360-40590ABEF887}"));
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertNullableGuidWithEmptyValueToNull()
         {
             var result = _stepArgumentTypeConverter.Convert("", typeof(Guid?), _enUSCulture);
-            Assert.That(result, Is.Null);
+            result.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void ShouldConvertLooseGuids()
         {
             var result = _stepArgumentTypeConverter.Convert("1", typeof (Guid), _enUSCulture);
-            Assert.That(result, Is.EqualTo(new Guid("10000000-0000-0000-0000-000000000000")));
+            result.Should().Be(new Guid("10000000-0000-0000-0000-000000000000"));
         }
     }
 }

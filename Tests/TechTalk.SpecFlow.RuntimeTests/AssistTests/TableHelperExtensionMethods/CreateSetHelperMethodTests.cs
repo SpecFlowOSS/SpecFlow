@@ -2,18 +2,17 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    
     public class CreateSetHelperMethodTests
     {
-        [SetUp]
-        public void SetUp()
+        public CreateSetHelperMethodTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
@@ -23,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
         }
 
-        [Test]
+        [Fact]
         public void Returns_empty_set_of_type_when_there_are_no_rows()
         {
             var table = new Table("FirstName");
@@ -31,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.Count().Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Returns_one_instance_when_there_is_one_row()
         {
             var table = new Table("FirstName");
@@ -40,7 +39,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.Count().Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public void Sets_properties_with_different_case()
         {
             var table = new Table("firstname");
@@ -49,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().FirstName.Should().Be("John");
         }
 
-        [Test]
+        [Fact]
         public void Sets_properties_from_column_names_with_blanks()
         {
             var table = new Table("first name");
@@ -58,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().FirstName.Should().Be("John");
         }
 
-        [Test]
+        [Fact]
         public void Sets_properties_from_column_names_with_underscore_to_properties_with_underscore()
         {
             var table = new Table("With_Underscore");
@@ -67,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().With_Underscore.Should().Be("John");
         }
 
-        [Test]
+        [Fact]
         public void Sets_properties_from_column_names_to_properties_with_umlaute()
         {
             var table = new Table("WithUmlauteäöü");
@@ -77,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
 
-        [Test]
+        [Fact]
         public void Sets_properties_from_column_names_to_properties_with_dash()
         {
             var table = new Table("first-name");
@@ -86,7 +85,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().FirstName.Should().Be("John");
         }
 
-        [Test]
+        [Fact]
         public void Returns_two_instances_when_there_are_two_rows()
         {
             var table = new Table("FirstName");
@@ -96,7 +95,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.Count().Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Sets_string_values_on_the_instance_when_type_is_string()
         {
             var table = CreatePersonTableHeaders();
@@ -108,7 +107,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().LastName.Should().Be("Galt");
         }
 
-        [Test]
+        [Fact]
         public void Sets_int_values_on_the_instance_when_type_is_int()
         {
             var table = CreatePersonTableHeaders();
@@ -121,7 +120,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
 
 
-        [Test]
+        [Fact]
         public void Sets_Enum_values_on_the_instance_when_type_is_int()
         {
             var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
@@ -132,7 +131,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().Sex.Should().Be(Sex.Male);
         }
 
-        [Test]
+        [Fact]
         public void Sets_datetime_on_the_instance_when_type_is_datetime()
         {
             var table = CreatePersonTableHeaders();
@@ -144,7 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         
-        [Test]
+        [Fact]
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {
             var table = CreatePersonTableHeaders();
@@ -155,7 +154,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().Salary.Should().Be(9997.43M);
         }
 
-        [Test]
+        [Fact]
         public void Sets_bools_on_the_instance_when_type_is_bool()
         {
             var table = CreatePersonTableHeaders();
@@ -166,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().IsRational.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Sets_doubles_on_the_instance_when_type_is_double()
         {
             var table = new Table("Double", "NullableDouble");
@@ -178,7 +177,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableDouble.Should().Be(7.28);
         }
 
-        [Test]
+        [Fact]
         public void Sets_floats_on_the_instance_when_type_is_float()
         {
             var table = new Table("Float", "NullableFloat");
@@ -190,7 +189,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableFloat.Should().Be(8.954F);
         }
 
-        [Test]
+        [Fact]
         public void Sets_guids_on_the_instance_when_the_type_is_guid()
         {
             var table = new Table("GuidId", "NullableGuidId");
@@ -202,7 +201,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableGuidId.Should().Be(new Guid("11116FB0-3E49-473A-B79F-A77D0A5A1526"));
         }
 
-        [Test]
+        [Fact]
         public void Sets_uints_on_the_instance_when_the_type_is_uint()
         {
             var table = new Table("UnsignedInt", "NullableUnsignedInt");
@@ -214,7 +213,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableUnsignedInt.Should().Be((uint?)2);
         }
 
-        [Test]
+        [Fact]
         public void Sets_chars_on_the_instance_when_the_type_is_char()
         {
             var table = new Table("MiddleInitial", "NullableChar");
@@ -226,7 +225,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableChar.Should().Be('K');
         }
 
-        [Test]
+        [Fact]
         public void Works_with_valueTuples()
         {
             var table = new Table("Name", "Age", "HiScore", "ShoeSize");

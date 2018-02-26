@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture]
+    
     public class CreateInstanceHelperMethodTests : CreateInstanceHelperMethodTestBase
     {
         public CreateInstanceHelperMethodTests()
@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         {
         }
 
-        [Test]
+        [Fact]
         public virtual void Create_instance_will_return_an_instance_of_T()
         {
             var table = new Table("Field", "Value");
@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             person.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_create_an_instance_with_similar_enum_values()
         {
             var table = new Table("Field", "Value");

@@ -1,13 +1,19 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture, SetCulture("en-US")]
     public class DecimalValueRetreiverTests
     {
-        [Test]
+        public DecimalValueRetreiverTests()
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
+        [Fact]
         public void Returns_the_decimal_value_when_passed_a_decimal_string()
         {
             var retriever = new DecimalValueRetriever();
@@ -18,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("384.234879").Should().Be(384.234879M);
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_negative_decimal_value_when_passed_one()
         {
             var retriever = new DecimalValueRetriever();
@@ -26,7 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("-32.234").Should().Be(-32.234M);
         }
 
-        [Test]
+        [Fact]
         public void Returns_zero_when_passed_a_non_numeric_value()
         {
             var retriever = new DecimalValueRetriever();

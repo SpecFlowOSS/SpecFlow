@@ -1,14 +1,14 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class GuidValueRetriever_GetValueTests
     {
-        [Test]
+        [Fact]
         public void Returns_a_guid_when_passed_a_valid_guid_string()
         {
             var retriever = new GuidValueRetriever();
@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("2A6E290D-5C4C-4F6D-92F7-0A5CDA038FCD"));
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_guid_when_passed_a_lower_case_guid()
         {
             var retriever = new GuidValueRetriever();
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("2A6E290D-5C4C-4F6D-92F7-0A5CDA038FCD"));
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_guid_when_wrapped_in_curly_braces()
         {
             var retriever = new GuidValueRetriever();
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("BF114C72-618C-48EC-98FE-F2804256A280"));
         }
 
-        [Test]
+        [Fact]
         public void Returns_an_empty_guid_when_passed_invalid_value()
         {
             var retriever = new GuidValueRetriever();
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("xxxxx").Should().Be(new Guid());
         }
 
-        [Test]
+        [Fact]
         public void Adds_trailing_zeroes_when_passed_one_valid_guid_character()
         {
             var retriever = new GuidValueRetriever();
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("F0000000-0000-0000-0000-000000000000"));
         }
 
-        [Test]
+        [Fact]
         public void Adds_trailing_zeroes_when_passed_two_valid_guid_character()
         {
             var retriever = new GuidValueRetriever();
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("DF000000-0000-0000-0000-000000000000"));
         }
 
-        [Test]
+        [Fact]
         public void Adds_trailing_zeroes_when_passed_32_valid_guid_character()
         {
             var retriever = new GuidValueRetriever();
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("DF000000-0000-0000-0000-000000000070"));
         }
 
-        [Test]
+        [Fact]
         public void Adds_trailing_zeroes_when_passed_32_valid_guid_characters_with_no_dashes()
         {
             var retriever = new GuidValueRetriever();
@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 .Should().Be(new Guid("DF000000-0000-0000-0000-000000000070"));
         }
 
-        [Test]
+        [Fact]
         public void Adds_trailing_zeroes_when_passed_9_valid_guid_characters_with_no_dashes()
         {
             var retriever = new GuidValueRetriever();

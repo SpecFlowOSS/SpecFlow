@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class TimespanValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_a_timespan_when_passed_a_parsable_string_representation_of_a_timespan()
         {
             var retriever = new TimeSpanValueRetriever();
@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("00:00:00").Should().Be(System.TimeSpan.Parse("00:00:00"));
         }
 
-        [Test]
+        [Fact]
         public void It_handles_timespans()
         {
             var retriever = new TimeSpanValueRetriever();

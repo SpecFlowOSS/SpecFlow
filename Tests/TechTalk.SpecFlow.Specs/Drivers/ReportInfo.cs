@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
 {
@@ -31,16 +31,19 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public void AssertEqualIgnoringWhitespace(string expectedValue)
         {
-            StringAssert.AreEqualIgnoringCase(
-                NormalizeWhitespace(CleanHtml(expectedValue)),
-                NormalizeWhitespace(CleanHtml(Content)));
+            var expectedValueFormatted = NormalizeWhitespace(CleanHtml(expectedValue));
+            var actualValueFormatted = NormalizeWhitespace(CleanHtml(Content));
+
+            actualValueFormatted.Should().BeEquivalentTo(expectedValueFormatted);
+            
         }
 
         public void AssertContainsIgnoringWhitespace(string expectedValue)
         {
-            StringAssert.Contains(
-                NormalizeWhitespace(HtmlEncode(expectedValue)).ToLowerInvariant(),
-                NormalizeWhitespace(CleanHtml(Content)).ToLowerInvariant());
+            var expectedValueFormatted = NormalizeWhitespace(HtmlEncode(expectedValue)).ToLowerInvariant();
+            var actualValueFormatted = NormalizeWhitespace(CleanHtml(Content)).ToLowerInvariant();
+
+            expectedValueFormatted.Should().ContainEquivalentOf(actualValueFormatted);
         }
 
         private string NormalizeWhitespace(string value)

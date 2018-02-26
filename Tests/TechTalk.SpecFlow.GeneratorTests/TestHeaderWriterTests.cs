@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Generator;
 using FluentAssertions;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    [TestFixture]
+    
     public class TestHeaderWriterTests : TestGeneratorTestsBase
     {
         private TestHeaderWriter CreateTestHeaderWriter()
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             return new TestHeaderWriter();
         }
 
-        [Test]
+        [Fact]
         public void Should_return_version_from_a_cs_file_with_specific_generator_version()
         {
             var testHeaderWriter = CreateTestHeaderWriter();
@@ -40,7 +40,7 @@ namespace Bowling.Specflow
             result.ToString().Should().Be("1.3.0.0");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_version_from_a_vb_file_with_specific_generator_version()
         {
             var testHeaderWriter = CreateTestHeaderWriter();
@@ -61,7 +61,7 @@ namespace Bowling.Specflow
             result.ToString().Should().Be("1.4.0.0");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_version_from_a_cs_file_with_specflow_version()
         {
             var testHeaderWriter = CreateTestHeaderWriter();
@@ -86,7 +86,7 @@ namespace Bowling.Specflow
             result.ToString().Should().Be("1.5.0.0");
         }
 
-        [Test]
+        [Fact]
         public void Should_return_null_from_other_files()
         {
             var testHeaderWriter = CreateTestHeaderWriter();

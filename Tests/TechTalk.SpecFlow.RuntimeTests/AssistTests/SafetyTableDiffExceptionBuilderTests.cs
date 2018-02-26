@@ -1,15 +1,15 @@
 ﻿using System;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class SafetyTableDiffExceptionBuilderTests
     {
-        [Test]
+        [Fact]
         public void Returns_expected_results_when_that_is_returned_from_the_parent()
         {
             var parentResults = new TableDifferenceResults<TestClass>(null, null, null);
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be("Expected Results");
         }
 
-        [Test]
+        [Fact]
         public void Returns_expected_results_times_two_when_that_is_returned_from_the_parent()
         {
             var parentResults = new TableDifferenceResults<TestClass>(null, null, null);
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             result.Should().Be("Expected Results Times Two");
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_special_warning_message_if_the_parent_throws_an_exception()
         {
             var parentResults = new TableDifferenceResults<TestClass>(null, null, null);

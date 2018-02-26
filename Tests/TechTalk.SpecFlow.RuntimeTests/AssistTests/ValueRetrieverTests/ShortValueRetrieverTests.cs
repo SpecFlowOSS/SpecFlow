@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class ShortValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_a_short_when_passed_a_short_value()
         {
             var retriever = new ShortValueRetriever();
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("12345").Should().Be(12345);
         }
 
-        [Test]
+        [Fact]
         public void Returns_negative_numbers_when_passed_a_negative_value()
         {
             var retriever = new ShortValueRetriever();
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("-5").Should().Be(-5);
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_zero_when_passed_an_invalid_short()
         {
             var retriever = new IntValueRetriever();

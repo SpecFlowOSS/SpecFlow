@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Gherkin;
 using Gherkin.Ast;
-using NUnit.Framework;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,10 +10,9 @@ using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    [TestFixture]
     public class ScenarioOutlineParserTests
     {
-        [Test]
+        [Fact]
         public void Parser_throws_meaningful_exception_when_Examples_are_missing_in_Scenario_Outline()
         {
             var feature = @"Feature: Missing
@@ -27,7 +26,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .And.Location.Line.Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Parser_throws_meaningful_exception_when_Examples_are_empty_in_Scenario_Outline()
         {
             var feature = @"Feature: Missing
@@ -44,7 +43,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .And.Location.Line.Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Parser_throws_meaningful_exception_when_Examples_have_header_but_are_empty_in_Scenario_Outline()
         {
             var feature = @"Feature: Missing
@@ -63,7 +62,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .And.Location.Line.Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Parser_throws_meaningful_exception_when_Examples_are_missing_in_multiple_Scenario_Outlines()
         {
             var feature = @"Feature: Missing
@@ -80,7 +79,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             act.ShouldThrow<CompositeParserException>().And.Errors.ShouldBeEquivalentTo(expectedErrors);
         }
 
-        [Test]
+        [Fact]
         public void Parser_doesnt_throw_exception_when_Examples_are_provided_for_Scenario_Outline()
         {
             var feature = @"Feature: Missing

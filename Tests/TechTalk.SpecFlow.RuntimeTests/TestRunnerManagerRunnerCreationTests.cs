@@ -5,7 +5,7 @@ using System.Reflection;
 using BoDi;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
@@ -14,7 +14,7 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class TestRunnerManagerRunnerCreationTests
     {
         private readonly Mock<ITestRunner> testRunnerFake = new Mock<ITestRunner>();
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return testRunnerManager;
         }
 
-        [Test]
+        [Fact]
         public void Should_resolve_a_test_runner()
         {
             var factory = CreateTestRunnerFactory();
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_initialize_test_runner_with_the_provided_assembly()
         {
             var factory = CreateTestRunnerFactory();
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunnerFake.Verify(tr => tr.OnTestRunStart());
         }
 
-        [Test]
+        [Fact]
         public void Should_initialize_test_runner_with_additional_step_assemblies()
         {
             var factory = CreateTestRunnerFactory();
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunnerFake.Verify(tr => tr.OnTestRunStart());
         }
 
-        [Test]
+        [Fact]
         public void Should_initialize_test_runner_with_the_provided_assembly_even_if_there_are_additional_ones()
         {
             var factory = CreateTestRunnerFactory();
@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
 
-        [Test]
+        [Fact]
         public void Should_resolve_a_test_runner_specific_test_tracer()
         {
             //This test can't run in NCrunch as when NCrunch runs the tests it will disable the ability to get different test runners for each thread 

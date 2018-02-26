@@ -6,20 +6,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 {
-    [TestFixture]
+    
     public class StepDefinitionRegexCalculatorTests
     {
         private SpecFlowConfiguration specFlowConfiguration;
 
-        [SetUp]
-        public void Setup()
+        public StepDefinitionRegexCalculatorTests()
         {
             specFlowConfiguration = ConfigurationLoader.GetDefault();
         }
@@ -64,9 +63,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             match.Groups[paramIndex + 1].Value.Should().Be(paramMatch, $"parameter #{paramIndex} should be <{paramMatch}>");
         }
 
-        [TestCase("When_I_do_something")]
-        [TestCase("WhenIDoSomething")]
-        [TestCase("When_I_doSomething")] //mixed
+        [Theory]
+        [InlineData("When_I_do_something")]
+        [InlineData("WhenIDoSomething")]
+        [InlineData("When_I_doSomething")] //mixed
         public void RecognizeSimpleText(string methodName)
         {
             var sut = CreateSut();
@@ -77,10 +77,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertMatches(result, "I do something");
         }
 
-        [Test, Combinatorial]
-        public void RecognizeParametrizedText_ParamInMiddle(
-            [Values("When_that_WHO_does_something", "WhenThatWHODoesSomething", "WhenThat_WHO_DoesSomething")] string methodName,
-            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        [Theory]
+        [InlineData("When_that_WHO_does_something", "Joe")]
+        [InlineData("When_that_WHO_does_something", "'Joe'")]
+        [InlineData("When_that_WHO_does_something", "\"Joe\"")]
+        [InlineData("WhenThatWHODoesSomething", "Joe")]
+        [InlineData("WhenThatWHODoesSomething", "'Joe'")]
+        [InlineData("WhenThatWHODoesSomething", "\"Joe\"")]
+        [InlineData("WhenThat_WHO_DoesSomething", "Joe")]
+        [InlineData("WhenThat_WHO_DoesSomething", "'Joe'")]
+        [InlineData("WhenThat_WHO_DoesSomething", "\"Joe\"")]
+        public void RecognizeParametrizedText_ParamInMiddle(string methodName, string paramInStepText)
         {
             var sut = CreateSut();
 
@@ -91,10 +98,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "Joe");
         }
 
-        [Test, Combinatorial]
-        public void RecognizeParametrizedText_ParamInFront(
-            [Values("When_WHO_does_something", "WhenWHODoesSomething", "When_WHO_DoesSomething")] string methodName,
-            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        [Theory]
+        [InlineData("When_WHO_does_something", "Joe")]
+        [InlineData("When_WHO_does_something", "'Joe'")]
+        [InlineData("When_WHO_does_something", "\"Joe\"")]
+        [InlineData("WhenWHODoesSomething", "Joe")]
+        [InlineData("WhenWHODoesSomething", "'Joe'")]
+        [InlineData("WhenWHODoesSomething", "\"Joe\"")]
+        [InlineData("When_WHO_DoesSomething", "Joe")]
+        [InlineData("When_WHO_DoesSomething", "'Joe'")]
+        [InlineData("When_WHO_DoesSomething", "\"Joe\"")]
+        public void RecognizeParametrizedText_ParamInFront(string methodName,string paramInStepText)
         {
             var sut = CreateSut();
 
@@ -105,10 +119,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "Joe");
         }
 
-        [Test, Combinatorial]
-        public void RecognizeParametrizedText_ParamAtTheEnd(
-            [Values("Given_user_WHO", "GivenUserWHO", "GivenUser_WHO")] string methodName,
-            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        [Theory]
+        [InlineData("Given_user_WHO", "Joe")]
+        [InlineData("Given_user_WHO", "'Joe'")]
+        [InlineData("Given_user_WHO", "\"Joe\"")]
+        [InlineData("GivenUserWHO", "Joe")]
+        [InlineData("GivenUserWHO", "'Joe'")]
+        [InlineData("GivenUserWHO", "\"Joe\"")]
+        [InlineData("GivenUser_WHO", "Joe")]
+        [InlineData("GivenUser_WHO", "'Joe'")]
+        [InlineData("GivenUser_WHO", "\"Joe\"")]
+        public void RecognizeParametrizedText_ParamAtTheEnd(string methodName, string paramInStepText)
         {
             var sut = CreateSut();
 
@@ -119,10 +140,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "Joe");
         }
 
-        [Test, Combinatorial]
-        public void RecognizeParametrizedText_UnderscoreInParamName(
-            [Values("When_that_W_H_O_does_something", "WhenThatW_H_ODoesSomething", "WhenThat_W_H_O_DoesSomething")] string methodName,
-            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        [Theory]
+        [InlineData("When_that_W_H_O_does_something", "Joe")]
+        [InlineData("When_that_W_H_O_does_something", "'Joe'")]
+        [InlineData("When_that_W_H_O_does_something", "\"Joe\"")]
+        [InlineData("WhenThatW_H_ODoesSomething", "Joe")]
+        [InlineData("WhenThatW_H_ODoesSomething", "'Joe'")]
+        [InlineData("WhenThatW_H_ODoesSomething", "\"Joe\"")]
+        [InlineData("WhenThat_W_H_O_DoesSomething", "Joe")]
+        [InlineData("WhenThat_W_H_O_DoesSomething", "'Joe'")]
+        [InlineData("WhenThat_W_H_O_DoesSomething", "\"Joe\"")]
+        public void RecognizeParametrizedText_UnderscoreInParamName(string methodName, string paramInStepText)
         {
             var sut = CreateSut();
 
@@ -133,10 +161,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "Joe");
         }
 
-        [Test, Combinatorial]
-        public void RecognizeParametrizedText_NumberParams(
-            [Values("When_using_VALUE_as_parameter", "WhenUsingVALUEAsParameter", "WhenUsing_VALUE_AsParameter")] string methodName,
-            [Values("1", "123", "-123", "12.3", "£123")] string paramText)
+        [Theory]
+        [InlineData("When_using_VALUE_as_parameter", "1")]
+        [InlineData("When_using_VALUE_as_parameter", "123")]
+        [InlineData("When_using_VALUE_as_parameter", "-123")]
+        [InlineData("When_using_VALUE_as_parameter", "12.3")]
+        [InlineData("When_using_VALUE_as_parameter", "£123")]
+        [InlineData("WhenUsingVALUEAsParameter", "1")]
+        [InlineData("WhenUsingVALUEAsParameter", "123")]
+        [InlineData("WhenUsingVALUEAsParameter", "-123")]
+        [InlineData("WhenUsingVALUEAsParameter", "12.3")]
+        [InlineData("WhenUsingVALUEAsParameter", "£123")]
+        [InlineData("WhenUsing_VALUE_AsParameter", "1")]
+        [InlineData("WhenUsing_VALUE_AsParameter", "123")]
+        [InlineData("WhenUsing_VALUE_AsParameter", "-123")]
+        [InlineData("WhenUsing_VALUE_AsParameter", "12.3")]
+        [InlineData("WhenUsing_VALUE_AsParameter", "£123")]
+        public void RecognizeParametrizedText_NumberParams(string methodName, string paramText)
         {
             var sut = CreateSut();
 
@@ -147,7 +188,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, paramText);
         }
 
-        [Test]
+        [Fact]
         public void SupportsExtraArguments()
         {
             var sut = CreateSut();
@@ -157,11 +198,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
             AssertMatches(result, "Joe does something");
         }
-
-        [TestCase("that:Joe,does;something.?!")]
-        [TestCase("that : Joe , does ; something .?! ")]
-        [TestCase("that -Joe - does -something-")]
-        [TestCase("that' Joe does \"something\"")]
+        
+        [Theory]
+        [InlineData("that:Joe,does;something.?!")]
+        [InlineData("that : Joe , does ; something .?! ")]
+        [InlineData("that -Joe - does -something-")]
+        [InlineData("that' Joe does \"something\"")]
         public void SupportsPunctuation(string stepText)
         {
             var sut = CreateSut();
@@ -173,8 +215,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "Joe");
         }
 
-        [TestCase("!that does not work")]
-        [TestCase(" that does not work")]
+        [Theory]
+        [InlineData("!that does not work")]
+        [InlineData(" that does not work")]
         public void DoesNotSupportWhitespaceOrPunctuationInFrontOfStepText(string stepText)
         {
             var sut = CreateSut();
@@ -186,9 +229,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             match.Success.Should().BeFalse();
         }
 
-        [TestCase("this doesn't work", "this_doesnt_work", false)]
-        [TestCase("this doesn't work", "this_doesn_t_work", true)]
-        [TestCase("this does not work", "this_does_not_work", true)]
+        [Theory]
+        [InlineData("this doesn't work", "this_doesnt_work", false)]
+        [InlineData("this doesn't work", "this_doesn_t_work", true)]
+        [InlineData("this does not work", "this_does_not_work", true)]
         public void DoesNotSupportApostrophedShortenings(string stepText, string methodName, bool shouldMatch)
         {
             var sut = CreateSut();
@@ -200,10 +244,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             match.Success.Should().Be(shouldMatch);
         }
 
-        [TestCase("When_WHO_does_WHAT_with")]
-        [TestCase("WhenWHODoesWHATWith")]
-        [TestCase("When_WHO_Does_WHAT_With")]
-        [TestCase("When_P0_does_P1_with")]
+        [Theory]
+        [InlineData("When_WHO_does_WHAT_with")]
+        [InlineData("WhenWHODoesWHATWith")]
+        [InlineData("When_WHO_Does_WHAT_With")]
+        [InlineData("When_P0_does_P1_with")]
         public void SupportsMultipleParameters(string methodName)
         {
             var sut = CreateSut();
@@ -216,7 +261,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "something", 1);
         }
 
-        [TestCase("(.*) does something with")]
+        [Theory]
+        [InlineData("(.*) does something with")]
         public void SupportsRegexMethodNames(string methodName)
         {
             var sut = CreateSut();
@@ -230,8 +276,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertParamMatch(match, "Joe");
         }
 
-        [TestCase("I_do_something")]
-        [TestCase("IDoSomething")]
+        [Theory]
+        [InlineData("I_do_something")]
+        [InlineData("IDoSomething")]
         public void KeywordCanBeAvoided(string methodName)
         {
             var sut = CreateSut();
@@ -242,9 +289,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertMatches(result, "I do something");
         }
 
-        [TestCase("Angenommen_ich_Knopf_drücke")]
-        [TestCase("Gegeben_sei_ich_Knopf_drücke")]
-        [TestCase("Given_ich_Knopf_drücke")]
+        [Theory]
+        [InlineData("Angenommen_ich_Knopf_drücke")]
+        [InlineData("Gegeben_sei_ich_Knopf_drücke")]
+        [InlineData("Given_ich_Knopf_drücke")]
         public void LocalizedKeywordCanBeUsedIfFeatureLanguageIsConfigured(string methodName)
         {
             specFlowConfiguration.FeatureLanguage = new CultureInfo("de-AT");
@@ -256,9 +304,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             AssertMatches(result, "ich Knopf drücke");
         }
 
-        [TestCase("Допустим_я_не_авторизован")]
-        [TestCase("я_не_авторизован")]
-        [TestCase("Given_я_не_авторизован")]
+        [Theory]
+        [InlineData("Допустим_я_не_авторизован")]
+        [InlineData("я_не_авторизован")]
+        [InlineData("Given_я_не_авторизован")]
         public void Issue715(string methodName)
         {
             specFlowConfiguration.FeatureLanguage = new CultureInfo("ru");

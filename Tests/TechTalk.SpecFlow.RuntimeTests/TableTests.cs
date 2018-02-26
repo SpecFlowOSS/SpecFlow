@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class TableTests
     {
-        [Test]
+        [Fact]
         public void should_return_nice_error_message_when_column_not_is_found_in_table()
         {
             // Arrange
@@ -26,10 +27,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // Assert
             var expected = string.Format(Table.ERROR_COLUMN_NAME_NOT_FOUND, "DontExsist");
-            Assert.IsTrue(mess.StartsWith(expected));
+
+            mess.StartsWith(expected).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void should_return_nice_errormessage_when_adding_null_as_headers()
         {
             // Act
@@ -45,10 +47,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // Assert
-            Assert.IsTrue(mess.StartsWith(Table.ERROR_NO_HEADER_TO_ADD));
+            Assert.True(mess.StartsWith(Table.ERROR_NO_HEADER_TO_ADD));
         }
 
-        [Test]
+        [Fact]
         public void should_return_nice_errormessage_when_adding_0_headers()
         {
             // Act
@@ -65,11 +67,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // Assert
-            Assert.IsTrue(mess.StartsWith(Table.ERROR_NO_HEADER_TO_ADD));
+            Assert.True(mess.StartsWith(Table.ERROR_NO_HEADER_TO_ADD));
 
         }
 
-        [Test]
+        [Fact]
         public void should_return_nice_errormessage_when_adding_null_as_new_tablerow()
         {
             // Arrange
@@ -88,11 +90,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // Assert
-            Assert.IsTrue(mess.StartsWith(Table.ERROR_NO_CELLS_TO_ADD));
+            Assert.True(mess.StartsWith(Table.ERROR_NO_CELLS_TO_ADD));
 
         }
 
-        [Test]
+        [Fact]
         public void should_return_nice_errormessage_when_cells_that_doesnt_match_headers()
         {
             // Arrange
@@ -112,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // Assert
             var expected = string.Format(Table.ERROR_CELLS_NOT_MATCHING_HEADERS, 2, 3);
-            Assert.IsTrue(mess.StartsWith(expected));
+            Assert.True(mess.StartsWith(expected));
         }
 
 
@@ -127,60 +129,60 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return t;
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_set_cell_by_indexing_the_row_with_header()
         {
             var table = CreateDemoTable();
             table.Rows[0]["Column 2"] = "newvalue";
-            Assert.AreEqual("newvalue", table.Rows[0]["Column 2"]);
+            Assert.Equal("newvalue", table.Rows[0]["Column 2"]);
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_get_cell_by_a_valid_header_with_TryGetValue()
         {
             var table = CreateDemoTable();
             string cellValue;
             var result = table.Rows[0].TryGetValue("Column 2", out cellValue);
-            Assert.IsTrue(result);
-            Assert.AreEqual("Value 1:2", cellValue);
+            Assert.True(result);
+            Assert.Equal("Value 1:2", cellValue);
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_get_false_by_an_invalid_header_with_TryGetValue()
         {
             var table = CreateDemoTable();
             string cellValue;
             var result = table.Rows[0].TryGetValue("nosuchcolumn", out cellValue);
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_add_row_from_a_dictionary()
         {
             var table = CreateDemoTable();
 
             table.AddRow(new Dictionary<string, string>() { {"Column 1", "v1"}, {"Column 3", "v3"}, {"Column 2", "v2"} });
 
-            CollectionAssert.AreEqual(new string[] { "v1", "v2", "v3"}, table.Rows[table.RowCount - 1].Values);
+            table.Rows[table.RowCount - 1].Values.Should().BeEquivalentTo(new string[] {"v1", "v2", "v3"});
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_add_row_from_a_partial_dictionary()
         {
             var table = CreateDemoTable();
 
             table.AddRow(new Dictionary<string, string>() { {"Column 1", "v1"}, {"Column 3", "v3"} });
 
-            CollectionAssert.AreEqual(new string[] { "v1", "", "v3"}, table.Rows[table.RowCount - 1].Values);
+            table.Rows[table.RowCount - 1].Values.Should().BeEquivalentTo(new string[] { "v1", "", "v3" });
+            
         }
 
-        [Test]
+        [Fact]
         public void should_be_able_to_rename_column()
         {
             var table = CreateDemoTable();
             table.RenameColumn("Column 1", "c1");
-
-            CollectionAssert.AreEqual(new string[] { "c1", "Column 2", "Column 3" }, table.Header);
+            table.Header.Should().BeEquivalentTo(new string[] {"c1", "Column 2", "Column 3"});
         }
     }
 }

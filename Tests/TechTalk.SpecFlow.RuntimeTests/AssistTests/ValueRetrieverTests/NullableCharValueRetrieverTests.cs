@@ -1,14 +1,14 @@
 ﻿using System;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class NullableCharValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_the_value_from_the_char_value_retriever()
         {
             //var mock = new Mock<CharValueRetriever>();
@@ -27,14 +27,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("the second test value").Should().Be('b');
         }
 
-        [Test]
+        [Fact]
         public void Returns_null_when_value_is_empty()
         {
             var retriever = new NullableCharValueRetriever(v => 'a');
             retriever.GetValue("").Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void Returns_null_when_value_is_null()
         {
             var retriever = new NullableCharValueRetriever(v => 'a');

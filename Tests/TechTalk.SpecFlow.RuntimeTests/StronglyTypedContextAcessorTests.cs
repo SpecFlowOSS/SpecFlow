@@ -1,13 +1,13 @@
 ﻿using BoDi;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class StronglyTypedContextAcessorTests
     {
-        [Test]
+        [Fact]
         public void Can_set_object_according_to_generic_type()
         {
             var scenarioContext = CreateScenarioContext();
@@ -17,22 +17,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actual = scenarioContext[typeof (IScenarioTestInterface).ToString()];
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_bool_with_to_generic_type()
         {
             var scenarioContext = CreateScenarioContext();
 
             scenarioContext.Set(true);
-            Assert.IsTrue((bool) scenarioContext[typeof (bool).ToString()]);
+            Assert.True((bool) scenarioContext[typeof (bool).ToString()]);
 
             scenarioContext.Set(false);
-            Assert.IsFalse((bool) scenarioContext[typeof (bool).ToString()]);
+            Assert.False((bool) scenarioContext[typeof (bool).ToString()]);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_object_with_a_generic_factory_method()
         {
             var scenarioContext = CreateScenarioContext();
@@ -42,10 +42,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actual = scenarioContext.Get<IScenarioTestInterface>();
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Will_not_call_the_generic_factory_method_if_the_value_is_never_pulled_using_generic_Get()
         {
             var scenarioContext = CreateScenarioContext();
@@ -57,10 +57,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
                                                                 return new ScenarioTestClass();
                                                             });
 
-            Assert.IsFalse(wasCalled);
+            Assert.False(wasCalled);
         }
 
-        [Test]
+        [Fact]
         public void Will_call_the_generic_factory_method_every_time_the_generic_get_is_called()
         {
             var scenarioContext = CreateScenarioContext();
@@ -76,10 +76,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             scenarioContext.Get<IScenarioTestInterface>();
             scenarioContext.Get<IScenarioTestInterface>();
 
-            Assert.AreEqual(2, numberOfTimesItTheMethodWasCalled);
+            Assert.Equal(2, numberOfTimesItTheMethodWasCalled);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_object_according_to_generic_type()
         {
             var scenarioContext = CreateScenarioContext();
@@ -88,22 +88,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actual = scenarioContext.Get<IScenarioTestInterface>();
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_bool_with_generic_type()
         {
             var scenarioContext = CreateScenarioContext();
 
             scenarioContext[typeof (bool).ToString()] = true;
-            Assert.IsTrue(scenarioContext.Get<bool>());
+            Assert.True(scenarioContext.Get<bool>());
 
             scenarioContext[typeof (bool).ToString()] = false;
-            Assert.IsFalse(scenarioContext.Get<bool>());
+            Assert.False(scenarioContext.Get<bool>());
         }
 
-        [Test]
+        [Fact]
         public void Can_set_object_according_to_generic_type_and_string()
         {
             var scenarioContext = CreateScenarioContext();
@@ -113,10 +113,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actual = scenarioContext["test"];
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_object_according_to_generic_type_and_string()
         {
             var scenarioContext = CreateScenarioContext();
@@ -125,10 +125,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var actual = scenarioContext.Get<IScenarioTestInterface>("test");
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_retrieve_existing_value_with_try_get_value()
         {
             var scenarioContext = CreateScenarioContext();
@@ -139,11 +139,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ScenarioTestClass actual;
             var retrieved = scenarioContext.TryGetValue(out actual);
 
-            Assert.IsTrue(retrieved);
-            Assert.AreSame(expected, actual);
+            Assert.True(retrieved);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Will_return_null_from_try_get_value_if_no_value_present()
         {
             var scenarioContext = CreateScenarioContext();
@@ -151,11 +151,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ScenarioTestClass actual;
             var retrieved = scenarioContext.TryGetValue(out actual);
 
-            Assert.IsFalse(retrieved);
-            Assert.IsNull(actual);
+            Assert.False(retrieved);
+            Assert.Null(actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_retrieve_existing_value_with_try_get_value_and_generic_type()
         {
             var scenarioContext = CreateScenarioContext();
@@ -166,11 +166,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             IScenarioTestInterface actual;
             var retrieved = scenarioContext.TryGetValue(out actual);
 
-            Assert.IsTrue(retrieved);
-            Assert.AreSame(expected, actual);
+            Assert.True(retrieved);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_retrieve_existing_value_with_try_get_value_and_string()
         {
             var scenarioContext = CreateScenarioContext();
@@ -181,11 +181,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ScenarioTestClass actual;
             var retrieved = scenarioContext.TryGetValue("test", out actual);
 
-            Assert.IsTrue(retrieved);
-            Assert.AreSame(expected, actual);
+            Assert.True(retrieved);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Will_not_retrieve_existing_value_with_different_key_for_try_get_value()
         {
             var scenarioContext = CreateScenarioContext();
@@ -196,11 +196,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ScenarioTestClass actual;
             var retrieved = scenarioContext.TryGetValue("different", out actual);
 
-            Assert.IsFalse(retrieved);
-            Assert.IsNull(actual);
+            Assert.False(retrieved);
+            Assert.Null(actual);
         }
 
-        [Test]
+        [Fact]
         public void Will_call_factory_method_when_retrieving_with_try_get_value()
         {
             var scenarioContext = CreateScenarioContext();
@@ -211,11 +211,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ScenarioTestClass actual;
             var retrieved = scenarioContext.TryGetValue(out actual);
 
-            Assert.IsTrue(retrieved);
-            Assert.AreEqual(expected, actual);
+            Assert.True(retrieved);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Will_call_factory_method_when_retrieving_with_try_get_value_and_generic_type()
         {
             var scenarioContext = CreateScenarioContext();
@@ -226,11 +226,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             IScenarioTestInterface actual;
             var retrieved = scenarioContext.TryGetValue(out actual);
 
-            Assert.IsTrue(retrieved);
-            Assert.AreEqual(expected, actual);
+            Assert.True(retrieved);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Will_handle_null_value_when_retrieving_with_try_get_value()
         {
             var scenarioContext = CreateScenarioContext();
@@ -241,26 +241,26 @@ namespace TechTalk.SpecFlow.RuntimeTests
             string actual;
             var retrieved = scenarioContext.TryGetValue("test", out actual);
 
-            Assert.IsTrue(retrieved);
-            Assert.AreSame(expected, actual);
+            Assert.True(retrieved);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_and_set_a_null_value_with_an_object()
         {
             var scenarioContext = CreateScenarioContext();
             scenarioContext.Set<object>(null, "SomeKey");
             var result = scenarioContext.Get<object>("SomeKey");
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
 
-        [Test]
+        [Fact]
         public void Can_get_and_set_a_null_value_with_a_string()
         {
             var scenarioContext = CreateScenarioContext();
             scenarioContext.Set<string>(null, "SomeKey");
             var result = scenarioContext.Get<string>("SomeKey");
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
 
         private static ScenarioContext CreateScenarioContext()

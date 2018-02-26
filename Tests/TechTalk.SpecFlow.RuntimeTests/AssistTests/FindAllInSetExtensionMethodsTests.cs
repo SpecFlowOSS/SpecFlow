@@ -4,19 +4,17 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class FindAllInSetExtensionMethodsTests
     {
         private IList<InstanceComparisonTestObject> testSet;
-
-        [SetUp]
-        public void SetUp()
+        public FindAllInSetExtensionMethodsTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             testSet = new List<InstanceComparisonTestObject>();
@@ -24,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             testSet.Add(new InstanceComparisonTestObject { StringProperty = "Joel Mario", IntProperty = 20 });
         }
 
-        [Test]
+        [Fact]
         public void It_returns_nothing_when_no_match_could_be_found()
         {
             var table = new Table("Field", "Value");
@@ -33,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.FindAllInSet(testSet).Count().Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void Returns_match_on_full_match()
         {
             var table = new Table("Field", "Value");
@@ -47,7 +45,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             results.First().StringProperty.Should().Be("Joel Mario");
         }
 
-        [Test]
+        [Fact]
         public void Returns_match_on_partial_match()
         {
             var table = new Table("Field", "Value");
@@ -59,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             results.First().IntProperty.Should().Be(20);
         }
 
-        [Test]
+        [Fact]
         public void Returns_nothing_if_the_match_cannot_be_found()
         {
             var table = new Table("Field", "Value");
@@ -68,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.FindAllInSet(testSet).Count().Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void It_should_return_multiple_matches_if_they_can_be_Found()
         {
             var john = new Person {FirstName = "John", LastName = "Doe"};
@@ -84,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             results.Should().Contain(jane);
         }
 
-        [Test]
+        [Fact]
         public void Usage_example()
         {
             var john = new Person {FirstName = "John", LastName = "Doe"};

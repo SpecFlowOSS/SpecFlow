@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
@@ -12,7 +12,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    [TestFixture]
+    
     public class MsTestGeneratorProviderTests
     {
         private const string TestDescriptionAttributeName = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
@@ -114,21 +114,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 | something else | different thing |
 ";
 
-        [Test]
+        [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenOnlyVariantName()
         {
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
                 SpecFlowDocument document = parser.Parse(reader, null);
-                Assert.IsNotNull(document);
+                Assert.NotNull(document);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                Assert.IsNotNull(code);
+                Assert.NotNull(code);
                 var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
                 descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
                 var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
@@ -136,21 +136,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
             }
         }
 
-        [Test]
+        [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsTheSame()
         {
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileSameFirstColumn))
             {
                 SpecFlowDocument document = parser.Parse(reader, null);
-                Assert.IsNotNull(document);
+                Assert.NotNull(document);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                Assert.IsNotNull(code);
+                Assert.NotNull(code);
                 var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant0").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
                 descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 0");
                 var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant1").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
@@ -158,21 +158,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
             }
         }
 
-        [Test]
+        [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsDifferentAndMultipleColumns()
         {
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileMultipleColumns))
             {
                 SpecFlowDocument document = parser.Parse(reader, null);
-                Assert.IsNotNull(document);
+                Assert.NotNull(document);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                Assert.IsNotNull(code);
+                Assert.NotNull(code);
                 var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
                 descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
                 var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
@@ -180,21 +180,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
             }
         }
 
-        [Test]
+        [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenExampleSetIdentifierIsUsed()
         {
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileWithMultipleExampleSets))
             {
                 SpecFlowDocument document = parser.Parse(reader, null);
-                Assert.IsNotNull(document);
+                Assert.NotNull(document);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                Assert.IsNotNull(code);
+                Assert.NotNull(code);
                 var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
                 descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
                 var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
@@ -206,21 +206,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
             }
         }
 
-        [Test]
+        [Fact]
         public void MsTestGeneratorShouldInvokeFeatureSetupMethodWithGlobalNamespaceAlias()
         {
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileWithMultipleExampleSets))
             {
                 SpecFlowDocument document = parser.Parse(reader, null);
-                Assert.IsNotNull(document);
+                Assert.NotNull(document);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                Assert.IsNotNull(code);
+                Assert.NotNull(code);
                 var featureSetupCall = code
                     .Class()
                     .Members()

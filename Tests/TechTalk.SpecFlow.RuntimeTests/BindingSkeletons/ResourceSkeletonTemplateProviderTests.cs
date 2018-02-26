@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.BindingSkeletons;
 using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 {
-    [TestFixture]
+    
     public class ResourceSkeletonTemplateProviderTests
     {
         private void ShouldNotBeMissing(string template)
@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             template.Should().NotBe("undefined template");
         }
 
-        [Test]
+        [Fact]
         public void Should_provide_csharp_templates()
         {
             var sut = new ResourceSkeletonTemplateProvider();
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             ShouldNotBeMissing(sut.GetStepDefinitionTemplate(ProgrammingLanguage.CSharp, false));
         }
 
-        [Test]
+        [Fact]
         public void Should_provide_vb_templates()
         {
             var sut = new ResourceSkeletonTemplateProvider();
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             ShouldNotBeMissing(sut.GetStepDefinitionTemplate(ProgrammingLanguage.VB, false));
         }
 
-        [Test]
+        [Fact]
         public void Should_provide_fsharp_templates()
         {
             var sut = new ResourceSkeletonTemplateProvider();
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         }
     }
 
-    [TestFixture]
+    
     public class DefaultSkeletonTemplateProviderTests
     {
         private void ShouldNotBeMissing(string template)
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             template.Should().NotBe("undefined template");
         }
 
-        [Test]
+        [Fact]
         public void Should_provide_csharp_templates()
         {
             var sut = new DefaultSkeletonTemplateProvider(new ResourceSkeletonTemplateProvider());
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             ShouldNotBeMissing(sut.GetStepDefinitionTemplate(ProgrammingLanguage.CSharp, false));
         }
 
-        [Test]
+        [Fact]
         public void Should_provide_vb_templates()
         {
             var sut = new DefaultSkeletonTemplateProvider(new ResourceSkeletonTemplateProvider());
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             ShouldNotBeMissing(sut.GetStepDefinitionTemplate(ProgrammingLanguage.VB, false));
         }
 
-        [Test]
+        [Fact]
         public void Should_provide_fsharp_templates()
         {
             var sut = new DefaultSkeletonTemplateProvider(new ResourceSkeletonTemplateProvider());

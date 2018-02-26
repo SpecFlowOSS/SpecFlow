@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
@@ -8,10 +8,10 @@ using RowExtensionMethods = TechTalk.SpecFlow.Assist.RowExtensionMethods;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
+    
     public class RowExtensionMethodTests_GetEnum
     {
-        [Test]
+        [Fact]
         public void GetEnum_should_return_the_enum_value_from_the_row()
         {
             var table = new Table("Sex");
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.Male);
         }
 
-        [Test]
+        [Fact]
         public void GetEnum_should_return_the_enum_value_from_the_row_even_when_i_use_spaces()
         {
             var table = new Table("Sex");
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.UnknownSex);
         }
 
-        [Test]
+        [Fact]
         public void GetEnum_should_return_the_enum_value_from_the_row_even_when_i_mess_up_the_casing()
         {
             var table = new Table("Sex");
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.Female);
         }
 
-        [Test]
+        [Fact]
         public void GetEnum_should_return_the_enum_value_from_the_row_even_when_i_mess_up_the_casing_and_use_spaces()
         {
             var table = new Table("Sex");
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.UnknownSex);
         }
 
-        [Test]
+        [Fact]
         public void GetEnum_throws_exception_when_the_value_is_not_defined_in_any_Enum_in_the_type()
         {
             var table = new Table("Sex");
@@ -66,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionThrown.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void GetEnum_should_work_when_there_are_two_enums_of_the_same_type()
         {
             var table = new Table("Color", "AnotherColor");
@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .Should().Be(Colors.Green);
         }
 
-        [Test]
+        [Fact]
         public void GetEnums_should_only_return_the_enum_of_the_requested_property()
         {
             var table = new Table("ColorsAgain1", "Color", "ColorsAgain2");

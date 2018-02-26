@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -18,10 +18,10 @@ using DefaultDependencyProvider = TechTalk.SpecFlow.Generator.DefaultDependencyP
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    [TestFixture]
+    
     public class GeneratorPluginTests
     {
-        [Test]
+        [Fact]
         public void Should_be_able_to_specify_a_plugin()
         {
             var configurationHolder = GetConfigWithPlugin();
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             CreateDefaultContainer(configurationHolder);
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_register_dependencies_from_a_plugin()
         {
             var configurationHolder = GetConfigWithPlugin();
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_change_default_configuration_from_a_plugin()
         {
             var configurationHolder = GetConfigWithPlugin();
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             runtimeConfiguration.SpecFlowConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_register_further_dependencies_based_on_the_configuration()
         {
             var configurationHolder = GetConfigWithPlugin();
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             customHeaderWriter.Should().BeOfType<CustomHeaderWriter>();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_to_specify_a_plugin_with_parameters()
         {
             var configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>

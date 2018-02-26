@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class UShortValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_an_unsigned_short_when_passed_an_unsigned_short_value()
         {
             var retriever = new UShortValueRetriever();
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("12345").Should().Be(12345);
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_zero_when_passed_an_invalid_unsigned_short()
         {
             var retriever = new UShortValueRetriever();

@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    [TestFixture]
+    
     public class ParserTests
     {
-        [Test]
+        [Fact]
         public void Parser_handles_empty_feature_file_without_error()
         {
             var parser = new SpecFlowGherkinParser(CultureInfo.GetCultureInfo("en"));

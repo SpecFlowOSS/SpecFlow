@@ -4,14 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using BoDi;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 using Moq;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
+    
     public class ScenarioContext_BindingInstancesTest
     {
         private TestRunner testRunner;
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]), testThreadContainer.Resolve<ITestObjectResolver>());
         }
 
-        [Test]
+        [Fact]
         public void GetBindingInstance_should_create_new_instances_without_dependency()
         {
             var scenarioContext = CreateScenarioContext();
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().BeOfType(typeof (SimpleClass));
         }
 
-        [Test]
+        [Fact]
         public void GetBindingInstance_should_create_new_instances_with_dependencies()
         {
             var scenarioContext = CreateScenarioContext();
@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().BeOfType(typeof(ClassWithDependencies));
         }
 
-        [Test]
+        [Fact]
         public void GetBindingInstance_should_reuse_created_instances_for_dependencies()
         {
             var scenarioContext = CreateScenarioContext();
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.TheDependency.Should().Be(dependency);
         }
 
-        [Test]
+        [Fact]
         public void GetBindingInstance_should_cache_created_instance()
         {
             var scenarioContext = CreateScenarioContext();
@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result1.Should().Be(result2);
         }
 
-        [Test]
+        [Fact]
         public void GetBindingInstance_should_return_instance_specified_through_SetBindingInstance()
         {
             var scenarioContext = CreateScenarioContext();
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().Be(expectedInstance);
         }
 
-        [Test]
+        [Fact]
         public void GetBindingInstance_should_return_instance_through_TestObjectResolver()
         {
             var expectedInstance = new SimpleClass();
@@ -92,7 +92,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().Be(expectedInstance);
         }
 
-        [Test]
+        [Fact]
         public void Should_dispose_disposable_binding_instances()
         {
             var scenarioContext = CreateScenarioContext();
@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             displosableInstance.WasDisposed.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Should_be_able_do_put_dependencies_on_specflow_objects()
         {
             var scenarioContext = CreateScenarioContext();
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.TestRunner.Should().Be(testRunner);
         }
 
-        [Test]
+        [Fact]
         public void Dispose_should_not_dispose_specflow_objects()
         {
             var displosableInstance = new DisplosableClass();
@@ -127,7 +127,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             displosableInstance.WasDisposed.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void Should_support_classes_with_multiple_construictors()
         {
             var scenarioContext = CreateScenarioContext();
@@ -137,7 +137,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Should_throw_error_if_class_have_multiple_ctor_with_max_parameter_count()
         {
             var scenarioContext = CreateScenarioContext();

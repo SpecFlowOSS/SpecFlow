@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -10,10 +9,10 @@ using Moq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
+using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    [TestFixture]
     public class ErrorProviderTests
     {
         private static ErrorProvider CreateErrorProvider(IStepFormatter stepFormatter = null, SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration = null, IUnitTestRuntimeProvider unitTestRuntimeProvider = null)
@@ -31,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 null);
         }
 
-        [Test]
+        [Fact]
         public void GetMethodText_should_return_string_containing_full_assembly_name_method_name_and_parameters_types()
         {
             const string methodName = "WhenIAdd";
@@ -51,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().Be($"{methodBindingAssemblyName}:{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})");
         }
 
-        [Test]
+        [Fact]
         public void GetCallError_should_return_BindingException_containing_full_assembly_name_method_name_and_parameters_types_and_exception_message()
         {
             const string methodName = "WhenIMultiply";
@@ -77,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Message.Should().Be($"Error calling binding method '{methodBindingAssemblyName}:{methodBindingTypeFullName}.{methodName}({parameter1Type}, {parameter2Type})': {expectedExceptionMessage}");
         }
 
-        [Test]
+        [Fact]
         public void GetParameterCountError_should_return_BindingException_containing_full_assembly_name_method_name_and_parameters_types_and_expected_parameter_count()
         {
             const string methodName = "WhenIMultiply";
@@ -136,7 +135,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Message.Should().Be($"{expectedPrefixMessage} '{stepInstanceDescription}': {methodBindingAssemblyName}:{method1BindingTypeFullName}.{methodName}({parameter1Type}), {methodBindingAssemblyName}:{method2BindingTypeFullName}.{methodName}({parameter1Type})");
         }
 
-        [Test]
+        [Fact]
         public void GetAmbiguousMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
         {
             const string prefixMessage = "Ambiguous step definitions found for step";
@@ -144,7 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 (errorProvider, matches, stepInstance) => errorProvider.GetAmbiguousMatchError(matches, stepInstance), prefixMessage);
         }
 
-        [Test]
+        [Fact]
         public void GetAmbiguousBecauseParamCheckMatchError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
         {
             const string prefixMessage = "Multiple step definitions found, but none of them have matching parameter count and type for step";
@@ -152,7 +151,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 (errorProvider, matches, stepInstance) => errorProvider.GetAmbiguousBecauseParamCheckMatchError(matches, stepInstance), prefixMessage);
         }
 
-        [Test]
+        [Fact]
         public void GetNoMatchBecauseOfScopeFilterError_should_return_BindingException_containing_full_assembly_names_method_names_parameters_types_and_step_description()
         {
             const string prefixMessage = "Multiple step definitions found, but none of them have matching scope for step";
@@ -160,7 +159,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 (errorProvider, matches, stepInstance) => errorProvider.GetNoMatchBecauseOfScopeFilterError(matches, stepInstance), prefixMessage);
         }
 
-        [Test]
+        [Fact]
         public void GetMissingStepDefinitionError_Throws_MissingStepDefinitionException()
         {
             var errorProvider = CreateErrorProvider();
@@ -170,7 +169,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void GetPendingStepDefinitionError_Throws_MissingStepDefinitionException()
         {
             var errorProvider = CreateErrorProvider();
@@ -192,7 +191,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return testRuntimeProviderMock;
         }
 
-        [Test]
+        [Fact]
         public void ThrowPendingError_Signals_TestPending_With_Message_To_Test_Provider_When_StepsOutcome_Is_Pending()
         {
             const string expectedMessage = "Expected message";
@@ -203,7 +202,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRuntimeProviderMock.Verify(p => p.TestPending(expectedMessage));
         }
 
-        [Test]
+        [Fact]
         public void ThrowPendingError_Signals_TestInconclusive_With_Message_To_Test_Provider_When_StepsOutcome_Is_Inconclusive()
         {
             const string expectedMessage = "Expected message";
@@ -214,7 +213,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRuntimeProviderMock.Verify(p => p.TestInconclusive(expectedMessage));
         }
 
-        [Test]
+        [Fact]
         public void ThrowPendingError_Signals_TestIgnore_With_Message_To_Test_Provider_When_StepsOutcome_Is_Ignore()
         {
             const string expectedMessage = "Expected message";
@@ -225,7 +224,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRuntimeProviderMock.Verify(p => p.TestIgnore(expectedMessage));
         }
 
-        [Test]
+        [Fact]
         public void ThrowPendingError_Throws_MissingStepDefinitionException_When_StepsOutcome_Is_Error_And_Test_Status_Is_UndefinedStep()
         {
             string unusedMessage = "";
@@ -235,7 +234,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.Throws<MissingStepDefinitionException>(() => ThrowPendingError(missingOrPendingStepsOutcome, unusedMessage, ScenarioExecutionStatus.UndefinedStep));
         }
 
-        [Test]
+        [Fact]
         public void ThrowPendingError_Throws_PendingStepException_When_StepsOutcome_Is_Error_And_Test_Status_Is_Error()
         {
             string unusedMessage = "";
@@ -245,7 +244,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.Throws<PendingStepException>(() => ThrowPendingError(missingOrPendingStepsOutcome, unusedMessage, ScenarioExecutionStatus.TestError));
         }
 
-        [Test]
+        [Fact]
         public void GetTooManyBindingParamError_Returns_BindingException_With_message_containing_Max_Number_Of_Bindings()
         {
             const int maxParam = 5;
@@ -259,7 +258,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Message.Should().Be($"Binding methods with more than {maxParam} parameters are not supported");
         }
 
-        [Test]
+        [Fact]
         public void GetNonStaticEventError_Throws_BindingException_with_message_containing_full_assembly_name_method_name_and_parameters_types()
         {
             const string methodName = "WhenIAdd";

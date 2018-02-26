@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using NUnit.Framework;
+using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    
     public class SByteValueRetrieverTests
     {
-        [Test]
+        [Fact]
         public void Returns_a_signed_byte_when_passed_a_signed_byte_value()
         {
             var retriever = new SByteValueRetriever();
@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("30").Should().Be(30);
         }
 
-        [Test]
+        [Fact]
         public void Returns_negative_numbers_when_passed_a_negative_value()
         {
             var retriever = new SByteValueRetriever();
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("-5").Should().Be(-5);
         }
 
-        [Test]
+        [Fact]
         public void Returns_a_zero_when_passed_an_invalid_signed_byte()
         {
             var retriever = new SByteValueRetriever();
