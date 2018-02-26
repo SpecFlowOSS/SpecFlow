@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -41,8 +39,8 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public string GetMethodText(IBindingMethod method)
         {
-            return string.Format("{0}.{1}({2})", method.Type.Name, method.Name,
-                string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray()));
+            string parametersDisplayed = string.Join(", ", method.Parameters.Select(p => p.Type.Name).ToArray());
+            return $"{method.Type.AssemblyName}:{method.Type.FullName}.{method.Name}({parametersDisplayed})";
         }
 
         public Exception GetCallError(IBindingMethod method, Exception ex)

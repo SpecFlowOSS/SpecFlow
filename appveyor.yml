@@ -45,4 +45,3 @@ test_script:
 
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
-

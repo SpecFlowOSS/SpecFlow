@@ -15,11 +15,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
+    <PackageReference Include="Gherkin" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gherkin" Version="4.0.0" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
+
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

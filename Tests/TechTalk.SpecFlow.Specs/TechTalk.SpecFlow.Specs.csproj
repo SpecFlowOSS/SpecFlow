@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
     <AssemblyOriginatorKeyFile>../../specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -24,11 +24,14 @@
     <Compile Remove=".\Drivers\Templates\**\*" />
     <EmbeddedResource Include=".\Drivers\Templates\**\*" />
     <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
-    <Compile Include="Drivers\Templates\TemplateManager.cs" />
+    <Compile Include=".\Drivers\Templates\TemplateManager.cs" />
+
     <None Include="App.config" />
+
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SpecFlow.TestGenerator\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj" />
@@ -36,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Gherkin" Version="5.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="NUnit" Version="3.8.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
@@ -46,9 +50,7 @@
     <PackageReference Include="Moq" Version="4.7.99" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
-    <PackageReference Include="Gherkin" Version="4.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.extensions" Version="1.9.2" />
     <PackageReference Include="xunit.runner.console" Version="2.2.0" />
     <PackageReference Include="SpecFlow.NUnit3.ConsoleRunner" Version="1.0.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
@@ -60,7 +62,7 @@
 
  
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+  <ItemGroup>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
@@ -77,15 +79,17 @@
     <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
 
-  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.NewCSProj.targets" />
-
-
   <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
-    <CallTarget Targets="GenerateCodeBehind" />
+    <Exec Command="$(SpecFlowTasksPath) generateAll $(MSBuildProjectFullPath)"/>
+    <CallTarget Targets="AfterUpdateFeatureFilesInProject" />
   </Target>
   
   <Target Name="AfterUpdateFeatureFilesInProject">
+    <ItemGroup>
+      <SpecFlowGeneratedFiles Include="**/Features/**/*.feature.cs" />
+    </ItemGroup>
     <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
   </Target>
+ 
   
 </Project>

@@ -15,6 +15,7 @@
       <Givens>Givens</Givens>
       <Whens>Whens</Whens>
       <Thens>Thens</Thens>
+      <StepDefinitions>StepDefinitions</StepDefinitions>
       <StepDefinition>Step Definition</StepDefinition>
       <Instances>Instances</Instances>
       <BindingsWithoutInstancesMessage>Bindings without instances are not included in this report.</BindingsWithoutInstancesMessage>
@@ -27,6 +28,7 @@
       <Givens>Gegeben Steps</Givens>
       <Whens>Wenn Steps</Whens>
       <Thens>Dann Steps</Thens>
+      <StepDefinitions>StepDefinitions</StepDefinitions>
       <StepDefinition>Step Definition</StepDefinition>
       <Instances>Instanzen</Instances>
       <BindingsWithoutInstancesMessage>Bindings ohne Instanzen sind in diesem Report nicht aufgeführt.</BindingsWithoutInstancesMessage>
@@ -120,6 +122,14 @@
         </h2>
         <xsl:call-template name="process-block">
           <xsl:with-param name="block-name" select="'Then'" />
+        </xsl:call-template>
+        <h2>
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'StepDefinitions'" />
+          </xsl:call-template>
+        </h2>
+        <xsl:call-template name="process-block">
+          <xsl:with-param name="block-name" select="'StepDefinition'" />
         </xsl:call-template>
       </body>
     </html>

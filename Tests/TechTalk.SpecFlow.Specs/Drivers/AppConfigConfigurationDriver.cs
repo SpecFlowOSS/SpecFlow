@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Templates;
 
 namespace TechTalk.SpecFlow.Specs.Drivers

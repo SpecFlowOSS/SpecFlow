@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
         private const string CATEGORY_PROPERTY_NAME = "Category";
+        private const string IGNORE_TAG = "@Ignore";
 
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
 
@@ -177,7 +178,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestClassIgnore(TestClassGenerationContext generationContext)
         {
-            //TODO: how to do class level ignore?
+            // The individual tests have to get Skip argument in their attributes
+            // xUnit does not provide a way to Skip a set of tests - https://xunit.github.io/docs/comparisons.html#attributes
+            // This is handled in FinalizeTestClass
         }
 
         public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
@@ -242,7 +245,51 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            // by default, doing nothing to the final generated code
+            IgnoreFeature(generationContext);
+        }
+
+        protected virtual void IgnoreFeature(TestClassGenerationContext generationContext)
+        {
+            var featureHasIgnoreTag = generationContext.Feature.Tags
+               .Any(x => string.Equals(x.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
+
+            if (featureHasIgnoreTag)
+            {
+                foreach (CodeTypeMember member in generationContext.TestClass.Members)
+                {
+                    var method = member as CodeMemberMethod;
+                    if (method != null && !IsTestMethodAlreadyIgnored(method))
+                    {
+                        SetTestMethodIgnore(generationContext, method);
+                    }
+                }
+            }
+        }
+
+        protected virtual bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod)
+        {
+            return IsTestMethodAlreadyIgnored(testMethod, FACT_ATTRIBUTE, THEORY_ATTRIBUTE);
+        }
+
+        protected static bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod, string factAttributeName, string theoryAttributeName)
+        {
+            var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
+                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == factAttributeName);
+
+            var hasIgnoredFact = factAttr?.Arguments.OfType<CodeAttributeArgument>()
+                .Any(x =>
+                    string.Equals(x.Name, FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
+
+            var theoryAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
+               .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == theoryAttributeName);
+
+            var hasIgnoredTheory = theoryAttr?.Arguments.OfType<CodeAttributeArgument>()
+                .Any(x =>
+                    string.Equals(x.Name, THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
+
+            var result = hasIgnoredFact.GetValueOrDefault() || hasIgnoredTheory.GetValueOrDefault();
+
+            return result;
         }
 
         public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)

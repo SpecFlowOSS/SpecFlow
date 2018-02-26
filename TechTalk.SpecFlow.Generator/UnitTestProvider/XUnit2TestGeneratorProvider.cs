@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            base.FinalizeTestClass(generationContext);
+            IgnoreFeature(generationContext);
 
             // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<ITestOutputHelper>(_testOutputHelper);
             generationContext.ScenarioInitializeMethod.Statements.Add(
@@ -133,6 +133,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         "RegisterInstanceAs",
                         new CodeTypeReference(OUTPUT_INTERFACE)),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
+        }
+
+        protected override bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod)
+        {
+            return IsTestMethodAlreadyIgnored(testMethod, FACT_ATTRIBUTE, THEORY_ATTRIBUTE);
         }
     }
 }

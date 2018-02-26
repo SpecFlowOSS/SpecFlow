@@ -12,6 +12,10 @@
    <ItemGroup>
      <None Include=".build\build.props" />
      <None Include=".build\build.targets" />
+    <None Include="SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
+    <None Include="SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+    <None Include="SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.nuspec" />
+    <None Include="SpecFlow\build\SpecFlow.targets" />
    </ItemGroup>
 
 

@@ -174,7 +174,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IHookBinding> CreateParametrizedHookMock(List<IHookBinding> hookList, params Type[] paramTypes)
         {
             var hookMock = CreateHookMock(hookList);
-            var bindingMethod = new BindingMethod(new BindingType("BT", "Test.BT"), "X", 
+            var bindingMethod = new BindingMethod(new BindingType("AssemblyBT", "BT", "Test.BT"), "X",
                 paramTypes.Select((paramType, i) => new BindingParameter(new RuntimeBindingType(paramType), "p" + i)), 
                 RuntimeBindingType.Void);
             hookMock.Setup(h => h.Method).Returns(bindingMethod);

@@ -7,8 +7,8 @@ using System.Xml;
 using System.Xml.Linq;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Helpers;
 using TechTalk.SpecFlow.Generator.Interfaces;
-using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
@@ -184,11 +184,12 @@ namespace TechTalk.SpecFlow.Generator.Project
                 }
 
                 var fileName = string.IsNullOrWhiteSpace(update) ? include : update;
+                fileName = PathHelper.SanitizeDirectorySeparatorChar(fileName);
 
                 if (IsAFeatureFile(fileName))
                 {
                     var customNamespace = xElement.Descendants(GetNameWithNamespace("CustomToolNamespace", newProjectSystem)).SingleOrDefault();
-                  
+
                     if (fileName.Contains("*"))
                     {
                         var files = _msBuildRelativePathParser.GetFiles(projectFolder, fileName);
@@ -231,7 +232,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                             continue;
                         }
 
-                        var realtivePath = file.Replace(projectFolder, "").Trim('\\');
+                        var realtivePath = file.Replace(projectFolder, "").Trim('\\').Trim(Path.DirectorySeparatorChar);
 
                         result.Add(new FeatureFileInput(realtivePath));
                     }

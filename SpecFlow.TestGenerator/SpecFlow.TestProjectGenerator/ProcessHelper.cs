@@ -21,7 +21,7 @@ namespace SpecFlow.TestProjectGenerator
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
-            psi.CreateNoWindow = false;
+            psi.CreateNoWindow = true;
 
 
             var process = new Process
