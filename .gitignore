@@ -51,3 +51,4 @@ GitExtensions.settings.backup
 /Installer/NuGetPackages/SpecFlow.Tools.MsBuild.Generation/build/SpecFlow.Tools.MsBuild.Generation.targets
 /Installer/NuGetPackages/SpecFlow.Tools.MsBuild.Generation/build/SpecFlow.Tools.MsBuild.Generation.props
 *.feature.cs
+*.binlog
