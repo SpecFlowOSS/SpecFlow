@@ -12,11 +12,6 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly VisualStudioFinder _visualStudioFinder;
 
-        public ProjectCompiler(ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
-        }
-
         public string LastCompilationOutput { get; private set; }
 
         public void Compile(Project project, string target = null)
@@ -25,9 +20,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             //CompileInProc(project);
         }
 
-        public ProjectCompiler(VisualStudioFinder visualStudioFinder)
+        public ProjectCompiler(VisualStudioFinder visualStudioFinder, ITestOutputHelper testOutputHelper)
         {
             _visualStudioFinder = visualStudioFinder;
+            _testOutputHelper = testOutputHelper;
+
         }
 
         private class ConsoleMsBuildLogger : ILogger
