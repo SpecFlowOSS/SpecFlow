@@ -67,7 +67,13 @@
     <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
 
-  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="Build">
+  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="PreBuildEvent">
+    <ItemGroup>
+      <SpecFlowGeneratedFiles Include="**/Features/**/*.feature.cs" />
+      <SpecFlowGeneratedFiles Include="**/Features.Generated/**/*.feature.cs" />
+    </ItemGroup>
+    
+    <Delete Files="@(SpecFlowGeneratedFiles)" />
     <Exec Command="$(SpecFlowTasksPath) generateAll $(MSBuildProjectFullPath)" />
     <CallTarget Targets="AfterUpdateFeatureFilesInProject" />
   </Target>
@@ -78,4 +84,10 @@
     </ItemGroup>
     <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
   </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="" />
+  </Target>
+
+  
 </Project>
