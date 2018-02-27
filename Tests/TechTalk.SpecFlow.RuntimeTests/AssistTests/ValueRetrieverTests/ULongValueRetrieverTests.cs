@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -7,10 +9,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     [TestFixture]
     public class ULongValueRetrieverTests
     {
-        [Test, SetCulture("en-US")]
+        [Test]
         public void Returns_an_unsigned_long_when_passed_an_unsigned_long_value()
-        {
-            var retriever = new ULongValueRetriever();
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			var retriever = new ULongValueRetriever();
             retriever.GetValue("1").Should().Be(1);
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);

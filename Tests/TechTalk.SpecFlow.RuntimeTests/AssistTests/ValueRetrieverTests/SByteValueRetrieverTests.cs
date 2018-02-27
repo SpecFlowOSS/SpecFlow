@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -16,10 +18,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("30").Should().Be(30);
 		}
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Returns_a_signed_byte_when_passed_a_signed_byte_value_if_culture_is_fr_Fr()
-	    {
-		    var retriever = new SByteValueRetriever();
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var retriever = new SByteValueRetriever();
 		    retriever.GetValue("30,0").Should().Be(30);
 	    }
 

@@ -1,13 +1,22 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture, SetCulture("en-US")]
+    [TestFixture]
     public class FloatValueRetrieverTests
-    {
-        [Test]
+	{
+		[SetUp]
+		public void TestSetup()
+		{
+			// this is required, because the tests depend on parsing decimals with the en-US culture
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+		}
+
+		[Test]
         public void Returns_the_Float_value_when_passed_a_Float_string()
         {
             var retriever = new FloatValueRetriever();
@@ -18,9 +27,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("384.234879").Should().Be(384.234879F);
 		}
 
-		[Test, SetCulture("fr-FR")]
+		[Test]
 		public void Returns_the_Float_value_when_passed_a_Float_string_if_culture_if_fr_FR()
 		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
 			var retriever = new FloatValueRetriever();
 			retriever.GetValue("0").Should().Be(0F);
 			retriever.GetValue("1").Should().Be(1F);

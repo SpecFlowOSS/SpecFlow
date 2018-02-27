@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
@@ -7,7 +9,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
-    [TestFixture, SetCulture("en-US")]
+    [TestFixture]
     public class CreateSetHelperMethodTests
     {
         private static Table CreatePersonTableHeaders()
@@ -15,7 +17,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
         }
 
-        [Test]
+	    [SetUp]
+	    public void TestSetup()
+	    {
+		    // this is required, because the tests depend on parsing decimals with the en-US culture
+		    Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+	    }
+
+		[Test]
         public void Returns_empty_set_of_type_when_there_are_no_rows()
         {
             var table = new Table("FirstName");
@@ -135,10 +144,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
 		}
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Sets_datetime_on_the_instance_when_type_is_datetime_and_culture_is_fr_FR()
 	    {
-		    var table = CreatePersonTableHeaders();
+		    Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var table = CreatePersonTableHeaders();
 		    table.AddRow("", "", "28/4/2009", "3", "", "");
 
 		    var people = table.CreateSet<Person>();
@@ -181,9 +192,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableDecimal.Should().Be(7.28M);
 	    }
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Sets_decimals_on_the_instance_when_type_is_decimal_and_culture_is_fr_FR()
-	    {
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
 			var table = new Table("Salary", "NullableDecimal");
 		    table.AddRow("4,193", "7,28");
 
@@ -253,10 +266,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableDouble.Should().Be(7.28);
         }
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Sets_doubles_on_the_instance_when_type_is_double_and_culture_is_fr_FR()
-	    {
-		    var table = new Table("Double", "NullableDouble");
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var table = new Table("Double", "NullableDouble");
 		    table.AddRow("4,193", "7,28");
 
 		    var people = table.CreateSet<Person>();
@@ -277,10 +292,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableByte.Should().Be(7);
 	    }
 
-		[Test, SetCulture("fr-FR")]
+		[Test]
 	    public void Sets_bytes_on_the_instance_when_type_is_byte_and_culture_is_fr_FR()
-	    {
-		    var table = new Table("Byte", "NullableByte");
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var table = new Table("Byte", "NullableByte");
 		    table.AddRow("4,000", "7,000");
 
 		    var people = table.CreateSet<Person>();
@@ -301,10 +318,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 		    people.First().NullableSByte.Value.Should().Be(5);
 		}
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte_and_culture_is_fr_FR()
-	    {
-		    var table = new Table("SByte", "NullableSByte");
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var table = new Table("SByte", "NullableSByte");
 		    table.AddRow("4,0", "5,0");
 
 			var people = table.CreateSet<Person>();
@@ -325,10 +344,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableFloat.Should().Be(8.954F);
         }
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Sets_floats_on_the_instance_when_type_is_float_and_culture_is_fr_FR()
-	    {
-		    var table = new Table("Float", "NullableFloat");
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var table = new Table("Float", "NullableFloat");
 		    table.AddRow("2,698", "8,954");
 
 		    var people = table.CreateSet<Person>();

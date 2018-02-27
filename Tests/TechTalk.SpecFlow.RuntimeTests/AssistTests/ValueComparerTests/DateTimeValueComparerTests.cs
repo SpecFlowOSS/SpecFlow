@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
-    [TestFixture, SetCulture("en-US")]
+    [TestFixture]
     public class DateTimeValueComparerTests
     {
-        [Test]
+	    [SetUp]
+	    public void TestSetup()
+	    {
+		    // this is required, because the tests depend on parsing decimals with the en-US culture
+		    Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+	    }
+
+		[Test]
         public void Can_compare_if_the_value_is_a_datetime()
         {
             new DateTimeValueComparer()

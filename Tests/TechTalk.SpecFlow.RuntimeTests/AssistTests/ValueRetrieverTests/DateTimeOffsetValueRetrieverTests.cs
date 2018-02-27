@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture, SetCulture("en-US")]
+    [TestFixture]
     public class DateTimeOffsetValueRetrieverTests
-    {
-        [Test]
+	{
+		[SetUp]
+		public void TestSetup()
+		{
+			// this is required, because the tests depend on parsing decimals with the en-US culture
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+		}
+
+		[Test]
         public void Returns_MinValue_when_the_value_is_null()
         {
             var retriever = new DateTimeOffsetValueRetriever();
@@ -42,10 +51,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("2011-01-01 5:6:7").Should().Be(new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
 		}
 
-	    [Test, SetCulture("fr-FR")]
+	    [Test]
 	    public void Returns_the_date_and_time_represents_a_valid_date_if_culture_is_fr_FR()
-	    {
-		    var retriever = new DateTimeOffsetValueRetriever();
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var retriever = new DateTimeOffsetValueRetriever();
 			var date1 = new DateTime(2011, 5, 1);
 		    retriever.GetValue("01/05/2011 15:16:17").Should().Be(new DateTimeOffset(2011, 5, 1, 15, 16, 17, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
 		    var date2 = new DateTime(2011, 5, 1);
