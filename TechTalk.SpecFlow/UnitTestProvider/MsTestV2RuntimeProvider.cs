@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.UnitTestProvider
 {
-    class MsTestV2RuntimeProvider:MsTest2010RuntimeProvider
+    public class MsTestV2RuntimeProvider : MsTest2010RuntimeProvider
     {
     }
 }
