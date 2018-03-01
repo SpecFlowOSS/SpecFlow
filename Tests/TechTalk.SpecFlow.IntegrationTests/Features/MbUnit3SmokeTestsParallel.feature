@@ -1,4 +1,4 @@
-﻿Feature: MbUnit v3 Smoke Tests
+﻿Feature: MbUnit v3 Parallel Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
