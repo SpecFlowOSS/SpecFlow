@@ -1,4 +1,4 @@
-﻿Feature: xUnit v2 Smoke Tests
+﻿Feature: xUnit v2 Parallel Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
