@@ -1,4 +1,4 @@
-﻿Feature: NUnit Smoke Tests
+﻿Feature: NUnit Parallel Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
