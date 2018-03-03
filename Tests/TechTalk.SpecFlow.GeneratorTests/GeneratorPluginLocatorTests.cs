@@ -134,32 +134,6 @@ namespace TechTalk.SpecFlow.GeneratorTests
             path.Should().Be($@"C:\Projects\Project\packages\samplegenerator.{packageSuffix}.1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
         }
 
-        [Test, TestCaseSource(nameof(ThirdPartPluginTestCases))]
-        public void LocatePluginAssembly_ShouldResolveAssembly_GlobalPackagesDirectory(String packageSuffix, String relativeAssemblyPath, String assemblySuffix)
-        {
-            // Arrange
-            var projectSettings = new ProjectSettings
-            {
-                ProjectFolder = @"C:\Projects\Project\Project.Tests"
-            };
-
-            var fileSystem = new VirtualFileSystem();
-            fileSystem.AddFiles($@"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
-            fileSystem.AddFiles($@"C:\Users\jdoe\.nuget\packages\samplegenerator.{packageSuffix}\1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
-
-            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
-
-            var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
-
-            // Act
-            var path = loader.LocatePluginAssembly(pluginDescriptor);
-
-            // Assert
-            var seperator = $"{Environment.NewLine}\t";
-            path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
-            path.Should().Be($@"C:\Users\jdoe\.nuget\packages\samplegenerator.{packageSuffix}\1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
-        }
-
         [TestCase(@"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\", Description = "FullPath")]
         [TestCase(@"%TEST_USERPROFILE%\.nuget\packages\samplegenerator\1.0.0\lib\", Description = "PathWithEnvironmentVariable")]
         public void LocatePluginAssembly_ShouldResolveAssembly_PluginPath(string pluginPath)
