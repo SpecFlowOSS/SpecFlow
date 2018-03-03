@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -10,7 +9,7 @@ using TechTalk.SpecFlow.Plugins;
 namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
-    public class GeneratorPluginLoaderTests
+    public class GeneratorPluginLocatorTests
     {
         public static IEnumerable BuiltInPluginTestCases
         {
@@ -84,7 +83,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Test, TestCaseSource(nameof(BuiltInPluginTestCases))]
-        public void GetGeneratorPluginAssemblies_ShouldResolveAssembly_SolutionPackagesDirectory_BuiltInPlugin(String relativeAssemblyPath, String assemblySuffix)
+        public void LocatePluginAssembly_ShouldResolveAssembly_SolutionPackagesDirectory_BuiltInPlugin(String relativeAssemblyPath, String assemblySuffix)
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -96,12 +95,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
             fileSystem.AddFiles($@"C:\Projects\Project\packages\specflow.9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
             fileSystem.AddFiles($@"C:\Projects\Project\packages\specflow.9.9.9{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
 
-            var loader = new GeneratorPluginLoader(projectSettings, @"C:\Projects\Project\packages\specflow.9.9.9\tools", fileSystem);
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Projects\Project\packages\specflow.9.9.9\tools", fileSystem);
 
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
+            var path = loader.LocatePluginAssembly(pluginDescriptor);
 
             // Assert
             var seperator = $"{Environment.NewLine}\t";
@@ -110,7 +109,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Test, TestCaseSource(nameof(ThirdPartPluginTestCases))]
-        public void GetGeneratorPluginAssemblies_ShouldResolveAssembly_SolutionPackagesDirectory_ThirdPartyPlugin(String packageSuffix, String relativeAssemblyPath, String assemblySuffix)
+        public void LocatePluginAssembly_ShouldResolveAssembly_SolutionPackagesDirectory_ThirdPartyPlugin(String packageSuffix, String relativeAssemblyPath, String assemblySuffix)
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -122,12 +121,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
             fileSystem.AddFiles($@"C:\Projects\Project\packages\specflow.9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
             fileSystem.AddFiles($@"C:\Projects\Project\packages\samplegenerator.{packageSuffix}.1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
 
-            var loader = new GeneratorPluginLoader(projectSettings, @"C:\Projects\Project\packages\specflow.9.9.9\tools", fileSystem);
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Projects\Project\packages\specflow.9.9.9\tools", fileSystem);
 
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
+            var path = loader.LocatePluginAssembly(pluginDescriptor);
 
             // Assert
             var seperator = $"{Environment.NewLine}\t";
@@ -136,7 +135,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Test, TestCaseSource(nameof(ThirdPartPluginTestCases))]
-        public void GetGeneratorPluginAssemblies_ShouldResolveAssembly_GlobalPackagesDirectory(String packageSuffix, String relativeAssemblyPath, String assemblySuffix)
+        public void LocatePluginAssembly_ShouldResolveAssembly_GlobalPackagesDirectory(String packageSuffix, String relativeAssemblyPath, String assemblySuffix)
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -148,12 +147,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
             fileSystem.AddFiles($@"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
             fileSystem.AddFiles($@"C:\Users\jdoe\.nuget\packages\samplegenerator.{packageSuffix}\1.0.0{relativeAssemblyPath}\SampleGenerator.{assemblySuffix}.dll");
 
-            var loader = new GeneratorPluginLoader(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
 
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
+            var path = loader.LocatePluginAssembly(pluginDescriptor);
 
             // Assert
             var seperator = $"{Environment.NewLine}\t";
@@ -163,7 +162,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         [TestCase(@"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\", Description = "FullPath")]
         [TestCase(@"%TEST_USERPROFILE%\.nuget\packages\samplegenerator\1.0.0\lib\", Description = "PathWithEnvironmentVariable")]
-        public void GetGeneratorPluginAssemblies_ShouldResolveAssembly_PluginPath(string pluginPath)
+        public void LocatePluginAssembly_ShouldResolveAssembly_PluginPath(string pluginPath)
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -177,12 +176,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
             fileSystem.AddFiles(@"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
             fileSystem.AddFiles(@"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\SampleGenerator.SpecFlowPlugin.dll");
 
-            var loader = new GeneratorPluginLoader(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
 
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", pluginPath, PluginType.Generator, null);
 
             // Act
-            var path = loader.GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
+            var path = loader.LocatePluginAssembly(pluginDescriptor);
 
             // Assert
             var seperator = $"{Environment.NewLine}\t";
@@ -191,7 +190,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Test]
-        public void GetGeneratorPluginAssemblies_ShouldReturnNoResults_WhenPluginDoesNotExist()
+        public void LocatePluginAssembly_ShouldThrow_WhenPluginDoesNotExist()
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -202,19 +201,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var fileSystem = new VirtualFileSystem();
             fileSystem.AddFiles($@"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
 
-            var loader = new GeneratorPluginLoader(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
 
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", null, PluginType.Generator, null);
 
             // Act
-            var paths = loader.GetGeneratorPluginAssemblies(pluginDescriptor);
+            Action action = () => loader.LocatePluginAssembly(pluginDescriptor);
 
             // Assert
-            paths.Should().BeEmpty();
+            action
+                .ShouldThrow<SpecFlowException>()
+                .WithMessage("Unable to find plugin in the plugin search path: SampleGenerator. Please check http://go.specflow.org/doc-plugins for details.");
         }
 
         [Test]
-        public void GetGeneratorPluginAssemblies_ShouldReturnNoResults_WhenPluginPathDoesNotExist()
+        public void LocatePluginAssembly_ShouldThrow_WhenPluginPathDoesNotExist()
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -225,15 +226,17 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var fileSystem = new VirtualFileSystem();
             fileSystem.AddFiles(@"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
 
-            var loader = new GeneratorPluginLoader(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Users\jdoe\.nuget\packages\specflow\9.9.9\tools", fileSystem);
 
             var pluginDescriptor = new PluginDescriptor("SampleGenerator", @"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\", PluginType.Generator, null);
 
             // Act
-            var paths = loader.GetGeneratorPluginAssemblies(pluginDescriptor);
+            Action action = () => loader.LocatePluginAssembly(pluginDescriptor);
 
             // Assert
-            paths.Should().BeEmpty();
+            action
+                .ShouldThrow<SpecFlowException>()
+                .WithMessage("Unable to find plugin in the plugin search path: SampleGenerator. Please check http://go.specflow.org/doc-plugins for details.");
         }
     }
 }
