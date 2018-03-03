@@ -1,9 +1,9 @@
 2.3.2
 Fixes:
-+ Fix issue when using environment variables in a generator plugin's path
++ Fix issue when using environment variables in a generator plugin's path https://github.com/techtalk/SpecFlow/pull/1045
 
 API Changes:
-+ Generator probing functionality was moved from GeneratorPluginLoader to GeneratorPluginLocator
++ Generator probing functionality was moved from GeneratorPluginLoader to GeneratorPluginLocator https://github.com/techtalk/SpecFlow/pull/1045
 
 2.3.1 - 2018-03-01
 Fixes:
