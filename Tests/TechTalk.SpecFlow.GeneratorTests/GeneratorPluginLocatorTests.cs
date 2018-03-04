@@ -136,7 +136,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         [TestCase(@"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\", Description = "FullPath")]
         [TestCase(@"%TEST_USERPROFILE%\.nuget\packages\samplegenerator\1.0.0\lib\", Description = "PathWithEnvironmentVariable")]
-        public void LocatePluginAssembly_ShouldResolveAssembly_PluginPath(string pluginPath)
+        public void LocatePluginAssembly_ShouldResolveAssembly_RootedPluginPath(string pluginPath)
         {
             // Arrange
             var projectSettings = new ProjectSettings
@@ -161,6 +161,35 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var seperator = $"{Environment.NewLine}\t";
             path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
             path.Should().Be(@"C:\Users\jdoe\.nuget\packages\samplegenerator\1.0.0\lib\SampleGenerator.SpecFlowPlugin.dll");
+        }
+
+        [TestCase(@"..\packages\samplegenerator.1.0.0\lib\", Description = "FullPath")]
+        [TestCase(@"..\packages\samplegenerator.%SAMPLEGENERATOR_PLUGIN_VERSION%\lib\", Description = "PathWithEnvironmentVariable")]
+        public void LocatePluginAssembly_ShouldResolveAssembly_RelativePluginPath(string pluginPath)
+        {
+            // Arrange
+            var projectSettings = new ProjectSettings
+            {
+                ProjectFolder = @"C:\Projects\Project\Project.Tests"
+            };
+
+            Environment.SetEnvironmentVariable("SAMPLEGENERATOR_PLUGIN_VERSION", @"1.0.0", EnvironmentVariableTarget.Process);
+
+            var fileSystem = new VirtualFileSystem();
+            fileSystem.AddFiles(@"C:\Projects\Project\packages\specflow.9.9.9\tools\TechTalk.SpecFlow.Generator.dll");
+            fileSystem.AddFiles(@"C:\Projects\Project\packages\samplegenerator.1.0.0\lib\SampleGenerator.SpecFlowPlugin.dll");
+
+            var loader = new GeneratorPluginLocator(projectSettings, @"C:\Projects\Project\packages\specflow.9.9.9\tools", fileSystem);
+
+            var pluginDescriptor = new PluginDescriptor("SampleGenerator", pluginPath, PluginType.Generator, null);
+
+            // Act
+            var path = loader.LocatePluginAssembly(pluginDescriptor);
+
+            // Assert
+            var seperator = $"{Environment.NewLine}\t";
+            path.Should().NotBeNull($"the path should match one of the following paths:{seperator}{String.Join($"{seperator}", fileSystem.ProbedPaths)}");
+            path.Should().Be(@"C:\Projects\Project\packages\samplegenerator.1.0.0\lib\SampleGenerator.SpecFlowPlugin.dll");
         }
 
         [Test]

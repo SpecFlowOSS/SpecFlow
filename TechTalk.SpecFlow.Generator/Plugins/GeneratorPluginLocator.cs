@@ -48,9 +48,14 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
         public String LocatePluginAssembly(PluginDescriptor pluginDescriptor)
         {
-            return
-                GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault() ??
+            var assemblyPath = GetGeneratorPluginAssemblies(pluginDescriptor).FirstOrDefault();
+
+            if (assemblyPath == null)
+            {
                 throw new SpecFlowException($"Unable to find plugin in the plugin search path: {pluginDescriptor.Name}. Please check http://go.specflow.org/doc-plugins for details.");
+            }
+
+            return assemblyPath;
         }
 
         private IEnumerable<string> GetGeneratorPluginAssemblies(PluginDescriptor pluginDescriptor)
