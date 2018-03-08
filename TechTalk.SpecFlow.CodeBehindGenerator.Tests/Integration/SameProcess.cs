@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow.CodeBehindGenerator.Client;
 using TechTalk.SpecFlow.CodeBehindGenerator.Server;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request;
 using Xunit;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Tests.Integration

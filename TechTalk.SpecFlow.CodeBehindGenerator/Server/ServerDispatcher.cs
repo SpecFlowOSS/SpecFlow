@@ -10,6 +10,7 @@ using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Globalization;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
 {

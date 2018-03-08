@@ -1,0 +1,5 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
+
+  <Import Project="..\build\TechTalk.SpecFlow.MSBuildTasks.props"/>
+  
+</Project>

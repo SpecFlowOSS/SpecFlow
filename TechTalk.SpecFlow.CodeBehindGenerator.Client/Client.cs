@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
-using TechTalk.SpecFlow.CodeBehindGenerator.Server;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Client
 {

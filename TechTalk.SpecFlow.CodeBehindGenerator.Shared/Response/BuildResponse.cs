@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
+namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response
 {
     /// <summary>
     /// Base class for all possible responses to a request.

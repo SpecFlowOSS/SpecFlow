@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
+namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared
 {
     /// <summary>
     /// Class for logging information about what happens in the server and client parts of the 

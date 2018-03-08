@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
+namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response
 {
     public sealed class ShutdownBuildResponse : BuildResponse
     {

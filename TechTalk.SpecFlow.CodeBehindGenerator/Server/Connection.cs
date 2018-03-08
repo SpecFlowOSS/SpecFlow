@@ -6,6 +6,9 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
 {

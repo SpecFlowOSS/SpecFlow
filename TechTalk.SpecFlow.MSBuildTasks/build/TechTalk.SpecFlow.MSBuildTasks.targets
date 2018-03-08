@@ -1,0 +1,33 @@
+﻿<Project>
+
+  <Target Name="GenerateCodeBehind">
+    <CallTarget Targets="BeforeUpdateFeatureFilesInProject" />
+    <CallTarget Targets="UpdateFeatureFilesInProject" />
+    <CallTarget Targets="AfterUpdateFeatureFilesInProject" />
+  </Target>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Include="**\*.feature"/>
+    <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
+  </ItemGroup>
+
+  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
+    <PropertyGroup>
+      <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''"></SpecFlowCodeBehindOutputPath>
+    </PropertyGroup>
+    
+    <GenerateFeatureFileCodeBehindTask
+      ProjectPath="$(MSBuildProjectFullPath)"
+      OutputPath="$(SpecFlowCodeBehindOutputPath)"
+      FeatureFiles="@(SpecFlowFeatureFiles)"
+>
+      <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
+    </GenerateFeatureFileCodeBehindTask>
+  </Target>
+
+  <Target Name="BeforeUpdateFeatureFilesInProject">
+  </Target>
+
+  <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
+  </Target>
+</Project>

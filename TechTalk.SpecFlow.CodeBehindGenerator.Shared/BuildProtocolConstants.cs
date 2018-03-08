@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
+namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared
 {
     /// <summary>
     /// Constants about the protocol.

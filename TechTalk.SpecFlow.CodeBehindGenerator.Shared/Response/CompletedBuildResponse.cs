@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
+namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response
 {
     /// <summary>
     /// Represents a Response from the server. A response is as follows.

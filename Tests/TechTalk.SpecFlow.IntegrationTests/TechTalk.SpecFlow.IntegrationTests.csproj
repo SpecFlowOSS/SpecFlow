@@ -24,6 +24,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.MSBuildTasks\TechTalk.SpecFlow.MSBuildTasks.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj" />
   </ItemGroup>
@@ -61,32 +62,27 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-
-   <PropertyGroup>
-    <VerboseOutput>true</VerboseOutput>
-    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
+  <PropertyGroup>
+    <_SpecFlow_TaskAssembly>..\..\TechTalk.SpecFlow.MSBuildTasks\bin\$(Configuration)\$(TargetFramework)\TechTalk.SpecFlow.MSBuildTasks.dll</_SpecFlow_TaskAssembly>
   </PropertyGroup>
+
+  <Import Project="..\..\TechTalk.SpecFlow.MSBuildTasks\build\TechTAlk.SpecFlow.MSBuildTasks.props" />
+  <Import Project="..\..\TechTalk.SpecFlow.MSBuildTasks\build\TechTAlk.SpecFlow.MSBuildTasks.tasks" />
+  <Import Project="..\..\TechTalk.SpecFlow.MSBuildTasks\build\TechTAlk.SpecFlow.MSBuildTasks.targets" />
+  
 
   <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="PreBuildEvent">
     <ItemGroup>
       <SpecFlowGeneratedFiles Include="**/Features/**/*.feature.cs" />
       <SpecFlowGeneratedFiles Include="**/Features.Generated/**/*.feature.cs" />
     </ItemGroup>
+
+    <PropertyGroup>
+      <SpecFlowCodeBehindOutputPath>Features.Generated</SpecFlowCodeBehindOutputPath>
+    </PropertyGroup>
     
     <Delete Files="@(SpecFlowGeneratedFiles)" />
-    <Exec Command="$(SpecFlowTasksPath) generateAll $(MSBuildProjectFullPath)" />
-    <CallTarget Targets="AfterUpdateFeatureFilesInProject" />
-  </Target>
-
-  <Target Name="AfterUpdateFeatureFilesInProject">
-    <ItemGroup>
-      <SpecFlowGeneratedFiles Include="**/Features/**/*.feature.cs" />
-    </ItemGroup>
-    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
-  </Target>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="" />
+    <CallTarget Targets="GenerateCodeBehind" />
   </Target>
 
   

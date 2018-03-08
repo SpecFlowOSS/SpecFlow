@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 // it handles the request, sends a response (described by Response class) back to the client, then
 // disconnects the pipe and ends the thread.
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
+namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request
 {
     /// <summary>
     /// Represents a request from the client. A request is as follows.

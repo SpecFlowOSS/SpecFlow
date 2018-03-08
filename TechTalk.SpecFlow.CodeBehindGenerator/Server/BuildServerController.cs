@@ -11,6 +11,9 @@ using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response;
 
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
