@@ -8,47 +8,43 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
 {
     internal static class BuildProtocolUtil
     {
-        internal static RunRequest GetRunRequest(BuildRequest req)
+        internal static RunRequest GetRunRequest(InitProjectRequest req)
         {
-            string currentDirectory;
-            string libDirectory;
-            string tempDirectory;
-            string[] arguments = GetCommandLineArguments(req, out currentDirectory, out tempDirectory, out libDirectory);
-            string language = "";
-            return new RunRequest(language, currentDirectory, tempDirectory, libDirectory, arguments);
+
+            return new RunRequest();
         }
 
-        internal static string[] GetCommandLineArguments(BuildRequest req, out string currentDirectory, out string tempDirectory, out string libDirectory)
-        {
-            currentDirectory = null;
-            libDirectory = null;
-            tempDirectory = null;
-            List<string> commandLineArguments = new List<string>();
+        //internal static string[] GetCommandLineArguments(BuildRequest req, out string currentDirectory, out string tempDirectory, out string libDirectory)
+        //{
+        //    currentDirectory = null;
+        //    libDirectory = null;
+        //    tempDirectory = null;
+        //    List<string> commandLineArguments = new List<string>();
 
-            foreach (BuildRequest.Argument arg in req.Arguments)
-            {
-                if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.CurrentDirectory)
-                {
-                    currentDirectory = arg.Value;
-                }
-                else if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.TempDirectory)
-                {
-                    tempDirectory = arg.Value;
-                }
-                else if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.LibEnvVariable)
-                {
-                    libDirectory = arg.Value;
-                }
-                else if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.CommandLineArgument)
-                {
-                    int argIndex = arg.ArgumentIndex;
-                    while (argIndex >= commandLineArguments.Count)
-                        commandLineArguments.Add("");
-                    commandLineArguments[argIndex] = arg.Value;
-                }
-            }
+        //    foreach (BuildRequest.Argument arg in req.Arguments)
+        //    {
+        //        if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.CurrentDirectory)
+        //        {
+        //            currentDirectory = arg.Value;
+        //        }
+        //        else if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.TempDirectory)
+        //        {
+        //            tempDirectory = arg.Value;
+        //        }
+        //        else if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.LibEnvVariable)
+        //        {
+        //            libDirectory = arg.Value;
+        //        }
+        //        else if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.CommandLineArgument)
+        //        {
+        //            int argIndex = arg.ArgumentIndex;
+        //            while (argIndex >= commandLineArguments.Count)
+        //                commandLineArguments.Add("");
+        //            commandLineArguments[argIndex] = arg.Value;
+        //        }
+        //    }
 
-            return commandLineArguments.ToArray();
-        }
+        //    return commandLineArguments.ToArray();
+        //}
     }
 }

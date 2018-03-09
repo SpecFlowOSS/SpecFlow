@@ -7,6 +7,6 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
 {
     internal interface ICompilerServerHost
     {
-        BuildResponse RunCompilation(RunRequest request, CancellationToken cancellationToken);
+        InitProjectResponse RunCompilation(RunRequest request, CancellationToken cancellationToken);
     }
 }

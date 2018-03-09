@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
         /// </summary>
         protected abstract Task CreateMonitorDisconnectTask(CancellationToken cancellationToken);
 
-        protected virtual void ValidateBuildRequest(BuildRequest request)
+        protected virtual void ValidateBuildRequest(BaseRequest request)
         {
         }
 
@@ -92,11 +92,12 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
         {
             try
             {
-                BuildRequest request;
+                BaseRequest request;
                 try
                 {
                     Log("Begin reading request.");
-                    request = await BuildRequest.ReadAsync(_stream, cancellationToken).ConfigureAwait(false);
+                    //request = await BuildRequest.ReadAsync(_stream, cancellationToken).ConfigureAwait(false);                 
+                    request = RequestStream.Read<BaseRequest>(_stream); //todo async + cancellationtoken
                     ValidateBuildRequest(request);
                     Log("End reading request.");
                 }
@@ -116,7 +117,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
                 }
                 else
                 {
-                    return await HandleCompilationRequest(request, cancellationToken).ConfigureAwait(false);
+                    return await HandleCompilationRequest((InitProjectRequest)request, cancellationToken).ConfigureAwait(false);
                 }
             }
             finally
@@ -125,9 +126,10 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
             }
         }
 
-        private async Task<ConnectionData> HandleCompilationRequest(BuildRequest request, CancellationToken cancellationToken)
+        private async Task<ConnectionData> HandleCompilationRequest(InitProjectRequest request, CancellationToken cancellationToken)
         {
-            var keepAlive = CheckForNewKeepAlive(request);
+            //var keepAlive = CheckForNewKeepAlive(request); //todo
+            var keepAlive = TimeSpan.Zero;
 
             // Kick off both the compilation and a task to monitor the pipe for closing.
             var buildCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -145,7 +147,8 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
                 try
                 {
                     Log("Begin writing response.");
-                    await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
+                    ResponseStream.Write(response, _stream);
+                    //await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
                     reason = CompletionReason.CompilationCompleted;
                     Log("End writing response.");
                 }
@@ -168,15 +171,20 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
         private async Task<ConnectionData> HandleRejectedRequest(CancellationToken cancellationToken)
         {
             var response = new RejectedBuildResponse();
-            await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
+            ResponseStream.Write(response, _stream);
+
+            //await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
             return new ConnectionData(CompletionReason.CompilationNotStarted);
         }
 
         private async Task<ConnectionData> HandleShutdownRequest(CancellationToken cancellationToken)
         {
             var id = Process.GetCurrentProcess().Id;
-            var response = new ShutdownBuildResponse(id);
-            await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
+            var response = new ShutdownResponse(id);
+
+            ResponseStream.Write(response, _stream);
+
+            //await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
             return new ConnectionData(CompletionReason.ClientShutdownRequest);
         }
 
@@ -184,36 +192,37 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
         /// Check the request arguments for a new keep alive time. If one is present,
         /// set the server timer to the new time.
         /// </summary>
-        private TimeSpan? CheckForNewKeepAlive(BuildRequest request)
-        {
-            TimeSpan? timeout = null;
-            foreach (var arg in request.Arguments)
-            {
-                if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.KeepAlive)
-                {
-                    int result;
-                    // If the value is not a valid integer for any reason,
-                    // ignore it and continue with the current timeout. The client
-                    // is responsible for validating the argument.
-                    if (int.TryParse(arg.Value, out result))
-                    {
-                        // Keep alive times are specified in seconds
-                        timeout = TimeSpan.FromSeconds(result);
-                    }
-                }
-            }
+        //private TimeSpan? CheckForNewKeepAlive(BuildRequest request)
+        //{
+        //    TimeSpan? timeout = null;
+        //    foreach (var arg in request.Arguments)
+        //    {
+        //        if (arg.ArgumentId == BuildProtocolConstants.ArgumentId.KeepAlive)
+        //        {
+        //            int result;
+        //            // If the value is not a valid integer for any reason,
+        //            // ignore it and continue with the current timeout. The client
+        //            // is responsible for validating the argument.
+        //            if (int.TryParse(arg.Value, out result))
+        //            {
+        //                // Keep alive times are specified in seconds
+        //                timeout = TimeSpan.FromSeconds(result);
+        //            }
+        //        }
+        //    }
 
-            return timeout;
+        //    return timeout;
+        //}
+
+        private bool IsShutdownRequest(BaseRequest request)
+        {
+            return request is ShutdownRequest;
+            //return request.Arguments.Count == 1 && request.Arguments[0].ArgumentId == BuildProtocolConstants.ArgumentId.Shutdown;
         }
 
-        private bool IsShutdownRequest(BuildRequest request)
+        protected virtual Task<InitProjectResponse> ServeBuildRequest(InitProjectRequest buildRequest, CancellationToken cancellationToken)
         {
-            return request.Arguments.Count == 1 && request.Arguments[0].ArgumentId == BuildProtocolConstants.ArgumentId.Shutdown;
-        }
-
-        protected virtual Task<BuildResponse> ServeBuildRequest(BuildRequest buildRequest, CancellationToken cancellationToken)
-        {
-            Func<BuildResponse> func = () =>
+            Func<InitProjectResponse> func = () =>
             {
                 // Do the compilation
                 Log("Begin compilation");
@@ -225,7 +234,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
                 return response;
             };
 
-            var task = new Task<BuildResponse>(func, cancellationToken, TaskCreationOptions.LongRunning);
+            var task = new Task<InitProjectResponse>(func, cancellationToken, TaskCreationOptions.LongRunning);
             task.Start();
             return task;
         }

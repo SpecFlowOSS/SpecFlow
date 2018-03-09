@@ -13,14 +13,14 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
         public string LibDirectory { get; }
         public string[] Arguments { get; }
 
-        public RunRequest(string language, string currentDirectory, string tempDirectory, string libDirectory, string[] arguments)
-        {
-            Language = language;
-            CurrentDirectory = currentDirectory;
-            TempDirectory = tempDirectory;
-            LibDirectory = libDirectory;
-            Arguments = arguments;
-        }
+        //public RunRequest(string language, string currentDirectory, string tempDirectory, string libDirectory, string[] arguments)
+        //{
+        //    Language = language;
+        //    CurrentDirectory = currentDirectory;
+        //    TempDirectory = tempDirectory;
+        //    LibDirectory = libDirectory;
+        //    Arguments = arguments;
+        //}
     }
 
     internal abstract class CompilerServerHost : ICompilerServerHost
@@ -42,9 +42,9 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
         }
         
 
-        public BuildResponse RunCompilation(RunRequest request, CancellationToken cancellationToken)
+        public InitProjectResponse RunCompilation(RunRequest request, CancellationToken cancellationToken)
         {
-            return new CompletedBuildResponse(42, false, "Hi!");
+            return new InitProjectResponse();
         }
     }
 }

@@ -141,16 +141,18 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
                     : Timeout.Infinite;
                 using (var client = await ConnectForShutdownAsync(pipeName, realTimeout).ConfigureAwait(false))
                 {
-                    var request = BuildRequest.CreateShutdown();
-                    await request.WriteAsync(client, cancellationToken).ConfigureAwait(false);
-                    var response = await BuildResponse.ReadAsync(client, cancellationToken).ConfigureAwait(false);
-                    var shutdownResponse = (ShutdownBuildResponse)response;
+                    var request = new ShutdownRequest();
+                    RequestStream.Write(request, client); //todo make async + cancellationtoken
+                    //await request.WriteAsync(client, cancellationToken).ConfigureAwait(false);
+
+                    var response = ResponseStream.Read<ShutdownResponse>(client);  //todo make async + cancellationtoken
+                    //var response = await BuildResponse.ReadAsync(client, cancellationToken).ConfigureAwait(false);
 
                     if (waitForProcess)
                     {
                         try
                         {
-                            var process = Process.GetProcessById(shutdownResponse.ServerProcessId);
+                            var process = Process.GetProcessById(response.ServerProcessId);
                             process.WaitForExit();
                         }
                         catch (Exception)

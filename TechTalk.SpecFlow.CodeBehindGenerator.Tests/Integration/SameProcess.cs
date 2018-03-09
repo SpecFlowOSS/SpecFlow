@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TechTalk.SpecFlow.CodeBehindGenerator.Client;
 using TechTalk.SpecFlow.CodeBehindGenerator.Server;
 using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response;
 using Xunit;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Tests.Integration
@@ -25,18 +26,20 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Tests.Integration
 
             Thread.Sleep(1000);
 
-            var buildRequest = BuildRequest.Create(Environment.CurrentDirectory, Path.GetTempPath(), new List<string>(){ "ToServer"});
+            var buildRequest = new InitProjectRequest();
 
-            var client = new Client.Client(port);
+            using (var client = new Client.Client(port))
+            {
 
-            var response = await client.SendRequest(buildRequest);
+                var response = await client.SendRequest<InitProjectResponse>(buildRequest);
 
-            Assert.NotNull(response);
+                Assert.NotNull(response);
+            }
         }
 
         private void Start()
         {
-             _buildServerController = new BuildServerController();
+            _buildServerController = new BuildServerController();
             _buildServerController.Run(4635);
         }
 

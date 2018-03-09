@@ -1,5 +1,7 @@
 
+using System;
 using Microsoft.Build.Framework;
+using TechTalk.SpecFlow.CodeBehindGenerator.Client;
 
 namespace TechTalk.SpecFlow.MSBuildTasks
 {
@@ -15,14 +17,27 @@ namespace TechTalk.SpecFlow.MSBuildTasks
         public ITaskItem[] GeneratedFiles { get; private set; }
         public override bool Execute()
         {
-
-            foreach (var featureFile in FeatureFiles)
+            try
             {
-                Log.LogMessage(MessageImportance.High, featureFile.ItemSpec);
-            }
+                StartOutOfProcGenerator();
 
-            Log.LogMessage(MessageImportance.High, "Aloha");
-            return true;
+                using (var client = new Client(4658))
+                {
+                
+                }
+                
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.LogErrorFromException(e);
+                return false;
+            }
+        }
+
+        private void StartOutOfProcGenerator()
+        {
+            //todo
         }
     }
 
