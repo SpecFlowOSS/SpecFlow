@@ -1,5 +1,5 @@
 ﻿using System;
-using TechTalk.SpecFlow.CodeBehindGenerator.Server;
+using TechTalk.SpecFlow.Rpc.Server;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator
 {

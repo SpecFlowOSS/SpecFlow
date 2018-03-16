@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator.Shared\TechTalk.SpecFlow.CodeBehindGenerator.Shared.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
   </ItemGroup>
 
 </Project>

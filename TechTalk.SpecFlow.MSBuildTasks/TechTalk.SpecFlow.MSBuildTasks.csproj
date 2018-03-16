@@ -21,8 +21,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" />
-    <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator.Client\TechTalk.SpecFlow.CodeBehindGenerator.Client.csproj" />
-    <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator.Shared\TechTalk.SpecFlow.CodeBehindGenerator.Shared.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
   </ItemGroup>
 

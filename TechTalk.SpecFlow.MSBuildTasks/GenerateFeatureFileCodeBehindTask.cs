@@ -1,8 +1,8 @@
 
 using System;
 using Microsoft.Build.Framework;
-using TechTalk.SpecFlow.CodeBehindGenerator.Client;
 using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
+using TechTalk.SpecFlow.Rpc.Client;
 
 namespace TechTalk.SpecFlow.MSBuildTasks
 {
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.MSBuildTasks
                 StartOutOfProcGenerator();
 
 
-                using (var client = new Client<IFeatureCodeBehindGenerator>())
+                using (var client = new Client<IFeatureCodeBehindGenerator>(8371))
                 {
                     client.Execute(c => c.InitializeProject(ProjectPath));
 
