@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request
 {
-    public abstract class BaseRequest
+    public class Request : BaseRequest
     {
+        public string Type { get; set; }
+        public string Method { get; set; }
+        public string Arguments { get; set; }
     }
 }

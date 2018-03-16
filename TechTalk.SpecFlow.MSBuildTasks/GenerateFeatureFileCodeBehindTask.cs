@@ -2,6 +2,7 @@
 using System;
 using Microsoft.Build.Framework;
 using TechTalk.SpecFlow.CodeBehindGenerator.Client;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
 
 namespace TechTalk.SpecFlow.MSBuildTasks
 {
@@ -21,10 +22,21 @@ namespace TechTalk.SpecFlow.MSBuildTasks
             {
                 StartOutOfProcGenerator();
 
-                using (var client = new Client(4658))
+
+                using (var client = new Client<IFeatureCodeBehindGenerator>())
                 {
-                
+                    client.Execute(c => c.InitializeProject(ProjectPath));
+
+                    foreach (var featureFile in FeatureFiles)
+                    {
+                        client.Execute(c => c.GenerateCodeBehindFile(featureFile.ItemSpec));
+                    }
                 }
+
+                //using (var client = new RawClient(4658))
+                //{
+                
+                //}
                 
                 return true;
             }

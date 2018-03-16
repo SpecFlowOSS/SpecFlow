@@ -1,61 +1,80 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
 using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Request;
 using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Client
 {
-    public class Client : IDisposable
+    public class Client<TClientInterface> : IDisposable
     {
-        private readonly int _port;
-        private TcpClient _tcpClient;
-        private NetworkStream _networkStream;
+        private RawClient _rawClient;
 
-        public Client(int port)
+        public Client()
         {
-            _port = port;
-        }
-
-        public async Task<TResponse> SendRequest<TResponse>(BaseRequest buildRequest) where TResponse : BaseResponse
-        {
-            await EnsureConnection();
-
-            RequestStream.Write(buildRequest, _networkStream);
-
-            return ResponseStream.Read<TResponse>(_networkStream);
-
-        }
-
-        private async Task EnsureConnection()
-        {
-            if (_tcpClient == null)
-            {
-                _tcpClient = new TcpClient();
-            }
-
-            if (_tcpClient.Connected == false)
-            {
-                await _tcpClient.ConnectAsync(IPAddress.Loopback, _port);
-            }
-
-            if (_networkStream == null)
-            {
-                _networkStream = _tcpClient.GetStream();
-            }
+            _rawClient = new RawClient(4635);
         }
 
         public void Dispose()
         {
-            _networkStream?.Close();
-            _networkStream?.Dispose();
-            _networkStream = null;
+            _rawClient?.Dispose();
+            _rawClient = null;
+        }
 
-            _tcpClient?.Close();
-            _tcpClient?.Dispose();
-            _tcpClient = null;
+        public async Task<TResult> Execute<TResult>(Expression<Func<TClientInterface, TResult>> p)
+        {
+            var methodInfo = ExtractMethodInfos(p);
+            var request = CreateRequest(methodInfo);
+
+            var response = await _rawClient.SendRequest<Response>(request).ConfigureAwait(false);
+
+            var result = JsonConvert.DeserializeObject<TResult>(response.Result, SerializationOptions.Current);
+
+            return result;
+        }
+
+        private Request CreateRequest((string Typename, string Methodname, Dictionary<int, object> Arguments) methodInfo)
+        {
+            var request = new Request
+            {
+                Type = methodInfo.Typename,
+                Method = methodInfo.Methodname,
+                Arguments = JsonConvert.SerializeObject(methodInfo.Arguments, SerializationOptions.Current)
+            };
+            return request;
+        }
+
+        private (string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos<TResult>(
+            Expression<Func<TClientInterface, TResult>> p)
+        {
+            var body = p.Body as MethodCallExpression;
+
+            var methodName = body.Method.Name;
+            var typeName = body.Method.DeclaringType.Name;
+            var arguments = body.Arguments.Cast<ConstantExpression>().Select((s, i) => new {s, i}).ToDictionary(x => x.i, x => x.s.Value);
+            return (typeName, methodName, arguments);
+        }
+
+        private (string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos(Expression<Action<TClientInterface>> p)
+        {
+            var body = p.Body as MethodCallExpression;
+
+            var methodName = body.Method.Name;
+            var typeName = body.Method.DeclaringType.Name;
+            var arguments = body.Arguments.Cast<ConstantExpression>().Select((s, i) => new {s, i}).ToDictionary(x => x.i, x => x.s.Value);
+            return (typeName, methodName, arguments);
+        }
+
+        public async Task Execute(Expression<Action<TClientInterface>> p)
+        {
+            var methodInfo = ExtractMethodInfos(p);
+            var request = CreateRequest(methodInfo);
+
+            await _rawClient.SendRequest<Response>(request).ConfigureAwait(false);
         }
     }
 }
-

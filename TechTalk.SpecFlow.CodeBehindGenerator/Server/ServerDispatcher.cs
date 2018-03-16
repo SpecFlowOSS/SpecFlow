@@ -14,11 +14,6 @@ using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
 {
-    public interface IClientConnectionHost
-    {
-        Task<IClientConnection> CreateListenTask(CancellationToken cancellationToken);
-    }
-
     /// <summary>
     /// This class manages the connections, timeout and general scheduling of the client
     /// requests.

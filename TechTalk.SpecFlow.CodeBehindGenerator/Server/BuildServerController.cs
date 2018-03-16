@@ -18,13 +18,6 @@ using TechTalk.SpecFlow.CodeBehindGenerator.Shared.Response;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
 {
-
-    internal class CommonCompiler
-    {
-        public static int Succeeded { get; set; }
-        public static int Failed { get; set; }
-    }
-
     /// <summary>
     /// Base type for the build server code.  Contains the basic logic for running the actual server, startup 
     /// and shutdown.
@@ -142,10 +135,10 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator.Server
                 using (var client = await ConnectForShutdownAsync(pipeName, realTimeout).ConfigureAwait(false))
                 {
                     var request = new ShutdownRequest();
-                    RequestStream.Write(request, client); //todo make async + cancellationtoken
+                    RequestStreamHandler.Write(request, client); //todo make async + cancellationtoken
                     //await request.WriteAsync(client, cancellationToken).ConfigureAwait(false);
 
-                    var response = ResponseStream.Read<ShutdownResponse>(client);  //todo make async + cancellationtoken
+                    var response = ResponseStreamHandler.Read<ShutdownResponse>(client);  //todo make async + cancellationtoken
                     //var response = await BuildResponse.ReadAsync(client, cancellationToken).ConfigureAwait(false);
 
                     if (waitForProcess)
