@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
@@ -18,7 +19,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
     {
         private readonly string _loggingIdentifier;
         private readonly Stream _stream;
-        
+
         public string LoggingIdentifier => _loggingIdentifier;
 
         public ClientConnection(string loggingIdentifier, Stream stream)
@@ -32,7 +33,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         /// </summary>
         protected abstract Task CreateMonitorDisconnectTask(CancellationToken cancellationToken);
 
-        protected virtual void ValidateBuildRequest(BaseRequest request)
+        protected virtual void ValidateBuildRequest(Request request)
         {
         }
 
@@ -45,12 +46,12 @@ namespace TechTalk.SpecFlow.Rpc.Server
         {
             try
             {
-                BaseRequest request;
+                Request request;
                 try
                 {
                     Log("Begin reading request.");
                     //request = await BuildRequest.ReadAsync(_stream, cancellationToken).ConfigureAwait(false);   
-                  
+
 
                     request = RequestStreamHandler.Read<Request>(_stream); //todo async + cancellationtoken
                     //ValidateBuildRequest(request);
@@ -63,7 +64,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 }
 
                 return await ExecuteRequest(request, cancellationToken).ConfigureAwait(false);
-                
+
             }
             finally
             {
@@ -71,66 +72,64 @@ namespace TechTalk.SpecFlow.Rpc.Server
             }
         }
 
-        private async Task<ConnectionData> ExecuteRequest(BaseRequest baseRequest, CancellationToken cancellationToken)
+        private async Task<ConnectionData> ExecuteRequest(Request request, CancellationToken cancellationToken)
         {
             //var keepAlive = CheckForNewKeepAlive(request); //todo
             var keepAlive = TimeSpan.Zero;
 
-            if (baseRequest is ShutdownRequest)
+            if (request.IsShutDown)
             {
                 var id = Process.GetCurrentProcess().Id;
-                var response = new ShutdownResponse(id);
+
+                var response = new Response() { Result = id.ToString() };
+
 
                 ResponseStreamHandler.Write(response, _stream);
                 return new ConnectionData(CompletionReason.ClientShutdownRequest);
             }
 
 
-            var request = baseRequest as Request;
 
-            if (request != null)
+            // Kick off both the compilation and a task to monitor the pipe for closing.
+            var buildCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+            var compilationTask = CreateExecutionTask(request, buildCts.Token);
+
+            var monitorTask = CreateMonitorDisconnectTask(buildCts.Token);
+            await Task.WhenAny(compilationTask, monitorTask).ConfigureAwait(false);
+
+            // Do an 'await' on the completed task, preference being compilation, to force
+            // any exceptions to be realized in this method for logging.
+            CompletionReason reason;
+            if (compilationTask.IsCompleted)
             {
-                // Kick off both the compilation and a task to monitor the pipe for closing.
-                var buildCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var response = await compilationTask.ConfigureAwait(false);
 
-                var compilationTask = CreateExecutionTask(request, buildCts.Token);
-
-                var monitorTask = CreateMonitorDisconnectTask(buildCts.Token);
-                await Task.WhenAny(compilationTask, monitorTask).ConfigureAwait(false);
-
-                // Do an 'await' on the completed task, preference being compilation, to force
-                // any exceptions to be realized in this method for logging.
-                CompletionReason reason;
-                if (compilationTask.IsCompleted)
+                try
                 {
-                    var response = await compilationTask.ConfigureAwait(false);
-
-                    try
-                    {
-                        Log("Begin writing response.");
-                        ResponseStreamHandler.Write(response, _stream);
-                        //await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
-                        reason = CompletionReason.CompilationCompleted;
-                        Log("End writing response.");
-                    }
-                    catch (Exception e)
-                    {
-                        reason = CompletionReason.ClientDisconnect;
-                        LogException(e, "");
-                    }
+                    Log("Begin writing response.");
+                    ResponseStreamHandler.Write(response, _stream);
+                    //await response.WriteAsync(_stream, cancellationToken).ConfigureAwait(false);
+                    reason = CompletionReason.CompilationCompleted;
+                    Log("End writing response.");
                 }
-                else
+                catch (Exception e)
                 {
-                    await monitorTask.ConfigureAwait(false);
                     reason = CompletionReason.ClientDisconnect;
+                    LogException(e, "");
                 }
-
-                // Begin the tear down of the Task which didn't complete.
-                buildCts.Cancel();
-                return new ConnectionData(reason, keepAlive);
+            }
+            else
+            {
+                await monitorTask.ConfigureAwait(false);
+                reason = CompletionReason.ClientDisconnect;
             }
 
-            return new ConnectionData(CompletionReason.ClientException, keepAlive);
+            // Begin the tear down of the Task which didn't complete.
+            buildCts.Cancel();
+            return new ConnectionData(reason, keepAlive);
+
+
         }
 
         private Task<Response> CreateExecutionTask(Request request, CancellationToken cancellationToken)
@@ -144,7 +143,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 {
                     Type = request.Type,
                     Method = request.Method,
-                    Result = "OK"
+                    Result = JsonConvert.SerializeObject("OK", SerializationOptions.Current)
                 };
 
                 Log("End compilation");
@@ -155,7 +154,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             task.Start();
             return task;
         }
-        
+
         private void Log(string message)
         {
             CompilerServerLogger.Log("Client {0}: {1}", _loggingIdentifier, message);

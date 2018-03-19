@@ -1,7 +1,7 @@
 ﻿namespace TechTalk.SpecFlow.Rpc.Shared.Request
 {
-    public class ShutdownRequest : BaseRequest
-    {
+    //public class ShutdownRequest : BaseRequest
+    //{
         
-    }
+    //}
 }

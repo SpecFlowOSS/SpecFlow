@@ -14,26 +14,26 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
     {
         private BuildServerController _buildServerController;
 
-        [Fact]
-        public async Task SendRequestGetResoonse()
-        {
-            int port = 4635;
+        //[Fact]
+        //public async Task SendRequestGetResoonse()
+        //{
+        //    int port = 4635;
 
-            var thread = new Thread(Start);
-            thread.Start();
+        //    var thread = new Thread(Start);
+        //    thread.Start();
 
-            Thread.Sleep(1000);
+        //    Thread.Sleep(1000);
 
-            var buildRequest = new InitProjectRequest();
+        //    var buildRequest = new InitProjectRequest();
 
-            using (var client = new RawClient(port))
-            {
+        //    using (var client = new RawClient(port))
+        //    {
 
-                var response = await client.SendRequest<InitProjectResponse>(buildRequest).ConfigureAwait(false);
+        //        var response = await client.SendRequest<InitProjectResponse>(buildRequest).ConfigureAwait(false);
 
-                Assert.NotNull(response);
-            }
-        }
+        //        Assert.NotNull(response);
+        //    }
+        //}
 
         [Fact]
         public async Task ComplexClient()
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
         public void Dispose()
         {
-            _buildServerController?.Stop();
+            //_buildServerController?.Stop();
         }
     }
 }

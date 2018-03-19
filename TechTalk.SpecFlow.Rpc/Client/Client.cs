@@ -32,9 +32,17 @@ namespace TechTalk.SpecFlow.Rpc.Client
 
             var response = await _rawClient.SendRequest<Response>(request).ConfigureAwait(false);
 
-            var result = JsonConvert.DeserializeObject<TResult>(response.Result, SerializationOptions.Current);
+            try
+            {
+                var result = JsonConvert.DeserializeObject<TResult>(response.Result, SerializationOptions.Current);
 
-            return result;
+                return result;
+            }
+            catch (JsonReaderException jsonReaderException)
+            {
+                throw new Exception($"Error while deserializing result: {response.Result}", jsonReaderException);
+                
+            }
         }
 
         private Request CreateRequest((string Typename, string Methodname, Dictionary<int, object> Arguments) methodInfo)

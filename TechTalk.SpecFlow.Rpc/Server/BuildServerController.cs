@@ -91,8 +91,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             return RunServerCore(pipeName, clientConnectionHost, listener, keepAlive, cancellationToken);
         }
 
-        internal int RunShutdown(string pipeName, bool waitForProcess = true, TimeSpan? timeout = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+        internal int RunShutdown(string pipeName, bool waitForProcess = true, TimeSpan? timeout = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return RunShutdownAsync(pipeName, waitForProcess, timeout, cancellationToken).GetAwaiter().GetResult();
         }
@@ -103,8 +102,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         ///     This function will return success if at any time in the function the server is determined to no longer
         ///     be running.
         /// </summary>
-        internal async Task<int> RunShutdownAsync(string pipeName, bool waitForProcess = true, TimeSpan? timeout = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+        internal async Task<int> RunShutdownAsync(string pipeName, bool waitForProcess = true, TimeSpan? timeout = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (WasServerRunning(pipeName) == false)
                 return CommonCompiler.Succeeded;
@@ -114,19 +112,20 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 var realTimeout = timeout != null
                     ? (int) timeout.Value.TotalMilliseconds
                     : Timeout.Infinite;
+
                 using (var client = await ConnectForShutdownAsync(pipeName, realTimeout).ConfigureAwait(false))
                 {
-                    var request = new ShutdownRequest();
+                    var request = new Request(){IsShutDown = true};
                     RequestStreamHandler.Write(request, client); //todo make async + cancellationtoken
                     //await request.WriteAsync(client, cancellationToken).ConfigureAwait(false);
 
-                    var response = ResponseStreamHandler.Read<ShutdownResponse>(client); //todo make async + cancellationtoken
+                    var response = ResponseStreamHandler.Read<Response>(client); //todo make async + cancellationtoken
                     //var response = await BuildResponse.ReadAsync(client, cancellationToken).ConfigureAwait(false);
 
                     if (waitForProcess)
                         try
                         {
-                            var process = Process.GetProcessById(response.ServerProcessId);
+                            var process = Process.GetProcessById(int.Parse(response.Result));
                             process.WaitForExit();
                         }
                         catch (Exception)

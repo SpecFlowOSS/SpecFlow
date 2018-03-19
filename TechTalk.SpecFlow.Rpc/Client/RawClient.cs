@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Rpc.Client
             _port = port;
         }
 
-        public async Task<TResponse> SendRequest<TResponse>(BaseRequest buildRequest) where TResponse : BaseResponse
+        public async Task<TResponse> SendRequest<TResponse>(Request buildRequest) where TResponse : Response
         {
             await EnsureConnection().ConfigureAwait(false);
 

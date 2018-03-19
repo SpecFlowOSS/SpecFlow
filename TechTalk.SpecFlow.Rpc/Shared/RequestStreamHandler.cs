@@ -1,13 +1,12 @@
 ﻿using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using TechTalk.SpecFlow.Rpc.Shared.Request;
 
 namespace TechTalk.SpecFlow.Rpc.Shared
 {
     public class RequestStreamHandler
     {
-        public static void Write<T>(T request, Stream stream) where T : BaseRequest
+        public static void Write<T>(T request, Stream stream) where T : Request.Request
         {
             var requestJson = JsonConvert.SerializeObject(request, SerializationOptions.Current);
 
@@ -20,7 +19,7 @@ namespace TechTalk.SpecFlow.Rpc.Shared
             }
         }
 
-        public static T Read<T>(Stream stream) where T : BaseRequest
+        public static T Read<T>(Stream stream) where T : Request.Request
         {
             using (var writer = new BinaryReader(stream, Encoding.Default, true))
             {
