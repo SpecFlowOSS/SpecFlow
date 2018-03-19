@@ -32,6 +32,7 @@
     <Reference Include="Microsoft.Build" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 
 </Project>

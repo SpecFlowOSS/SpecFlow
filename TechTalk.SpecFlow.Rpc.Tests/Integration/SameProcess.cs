@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using BoDi;
 using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
 using TechTalk.SpecFlow.Rpc.Client;
 using TechTalk.SpecFlow.Rpc.Server;
@@ -10,30 +11,31 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 {
+
+    class FeatureCodeBehindGeneratorMock : IFeatureCodeBehindGenerator
+    {
+        public void InitializeProject(string projectPath)
+        {
+            
+        }
+
+        public string GenerateCodeBehindFile(string featureFile)
+        {
+            return "codeBehindFileCode";
+        }
+    }
+
     public class SameProcess : IDisposable
     {
         private BuildServerController _buildServerController;
+        private ObjectContainer _container;
 
-        //[Fact]
-        //public async Task SendRequestGetResoonse()
-        //{
-        //    int port = 4635;
+        public SameProcess()
+        {
+            _container = new ObjectContainer();
+            _container.RegisterTypeAs<FeatureCodeBehindGeneratorMock, IFeatureCodeBehindGenerator>();
+        }
 
-        //    var thread = new Thread(Start);
-        //    thread.Start();
-
-        //    Thread.Sleep(1000);
-
-        //    var buildRequest = new InitProjectRequest();
-
-        //    using (var client = new RawClient(port))
-        //    {
-
-        //        var response = await client.SendRequest<InitProjectResponse>(buildRequest).ConfigureAwait(false);
-
-        //        Assert.NotNull(response);
-        //    }
-        //}
 
         [Fact]
         public async Task ComplexClient()
@@ -56,7 +58,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
         private void Start()
         {
-            _buildServerController = new BuildServerController();
+            _buildServerController = new BuildServerController(_container);
             _buildServerController.Run(4635);
         }
 

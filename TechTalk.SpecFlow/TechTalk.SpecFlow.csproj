@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BoDi.Embedded" Version="1.2.0" />
+    <PackageReference Include="BoDi" Version="1.4.0-alpha1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
@@ -41,6 +41,8 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
+
 
 </Project>

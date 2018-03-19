@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using BoDi;
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
@@ -19,7 +20,13 @@ namespace TechTalk.SpecFlow.Rpc.Server
     /// </summary>
     public class BuildServerController
     {
+        private readonly ObjectContainer _container;
         internal int DefaultPort = 4242;
+
+        public BuildServerController(ObjectContainer container)
+        {
+            _container = container;
+        }
 
         public int Run(int port)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using BoDi;
 using TechTalk.SpecFlow.Rpc.Server;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator
@@ -7,7 +8,10 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
     {
         static void Main(string[] args)
         {
-            new BuildServerController().Run(4759);
+            var container = new ObjectContainer();
+
+
+            new BuildServerController(container).Run(4759);
         }
     }
 }

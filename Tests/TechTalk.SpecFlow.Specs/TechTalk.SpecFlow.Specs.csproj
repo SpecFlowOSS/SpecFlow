@@ -68,6 +68,7 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 
   <ItemGroup>
