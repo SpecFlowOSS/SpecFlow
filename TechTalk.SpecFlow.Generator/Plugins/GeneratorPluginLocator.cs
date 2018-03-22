@@ -79,7 +79,14 @@ namespace TechTalk.SpecFlow.Generator.Plugins
         {
             var pluginGeneratorFolders = (new[] { @"" })
                 .Concat(GetSpecFlowVersionSpecifiers().Select(v => @"tools\SpecFlowPlugin" + v))
-                .Concat(new[] { @"tools", @"lib\net45", @"lib\net40", @"lib\net35", @"lib" });
+                .Concat(new[]
+                {
+                    @"lib\net45",
+                    @"lib\net40",
+                    @"lib\net35",
+                    @"lib",
+                    @"tools",
+                });
 
             return GetPluginFolders(pluginDescriptor).SelectMany(pluginFolder => pluginGeneratorFolders, Path.Combine);
         }
@@ -89,7 +96,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             if (pluginDescriptor.Path != null)
             {
                 var path = Environment.ExpandEnvironmentVariables(pluginDescriptor.Path);
-                
+
                 yield return Path.IsPathRooted(path)
                     ? path
                     : Path.Combine(projectSettings.ProjectFolder, path);
