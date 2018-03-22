@@ -18,6 +18,9 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         public bool VerboseOutput { get; set; }
         public bool ForceGeneration { get; set; }
 
+        public bool DebugTask { get; set; }
+
+
         [Required]
         public string ProjectPath { get; set; }
 
@@ -30,6 +33,11 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 
         protected override void DoExecute()
         {
+            if (DebugTask)
+            {
+                System.Diagnostics.Debugger.Launch();
+            }
+
             ITraceListener traceListener = VerboseOutput ? (ITraceListener)new TextWriterTraceListener(GetMessageWriter(MessageImportance.High), "SpecFlow: ") : new NullListener();
 
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ProjectPath);

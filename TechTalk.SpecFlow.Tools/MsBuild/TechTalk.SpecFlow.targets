@@ -50,7 +50,9 @@
       
       ProjectPath="$(MSBuildProjectFullPath)"
       ForceGeneration="$(ForceGeneration)"
-      VerboseOutput="$(VerboseOutput)">
+      VerboseOutput="$(VerboseOutput)"
+      DebugTask="$(SpecFlow_DebugMSBuildTask)" 
+      >
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateAll>
   </Target>
