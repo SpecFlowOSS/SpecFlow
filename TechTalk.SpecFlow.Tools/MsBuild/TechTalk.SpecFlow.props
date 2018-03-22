@@ -7,6 +7,8 @@
     <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
     <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
 
+    <SpecFlow_DebugMSBuildTask Condition="'$(SpecFlow_DebugMSBuildTask)' == ''">false</SpecFlow_DebugMSBuildTask>
+
     <_SpecFlowPropsImported Condition="'$(_SpecFlowPropsImported)'==''">true</_SpecFlowPropsImported>
   </PropertyGroup>
 </Project>
