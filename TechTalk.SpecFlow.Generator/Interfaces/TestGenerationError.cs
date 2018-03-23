@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
@@ -45,9 +46,33 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
                    $"\tBaseDirectory: {AppDomain.CurrentDomain.BaseDirectory}" + Environment.NewLine +
                    "Loaded Assemblies:" + Environment.NewLine +
                    "Fullname | Location | Codebase" + Environment.NewLine +
-                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {a.Location} | {a.CodeBase}")) + Environment.NewLine +
+                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {TryGetLocation(a)} | {TryGetCodeBase(a)}")) + Environment.NewLine +
                    Environment.NewLine +
                    ex;
+        }
+
+        private static string TryGetCodeBase(Assembly a)
+        {
+            try
+            {
+                return a.CodeBase;
+            }
+            catch (Exception )
+            {
+                return "unknown";
+            }
+        }
+
+        private static string TryGetLocation(Assembly a)
+        {
+            try
+            {
+                return a.Location;
+            }
+            catch (Exception)
+            {
+                return "unknown";
+            }
         }
     }
 }
