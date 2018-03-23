@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
@@ -36,8 +37,16 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
 
         private static string GetMessage(Exception ex)
         {
-            return ex.Message + Environment.NewLine + 
-                   Environment.NewLine + 
+            return "Message: " + ex.Message + Environment.NewLine + 
+                   Environment.NewLine +
+                   "AppDomain Information: " + Environment.NewLine +
+                   $"\tName: {AppDomain.CurrentDomain.FriendlyName}" + Environment.NewLine + 
+                   $"\tConfigFile: {AppDomain.CurrentDomain.SetupInformation.ConfigurationFile}" + Environment.NewLine +
+                   $"\tBaseDirectory: {AppDomain.CurrentDomain.BaseDirectory}" + Environment.NewLine +
+                   "Loaded Assemblies:" + Environment.NewLine +
+                   "Fullname | Location | Codebase" + Environment.NewLine +
+                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {a.Location} | {a.CodeBase}")) + Environment.NewLine +
+                   Environment.NewLine +
                    ex;
         }
     }
