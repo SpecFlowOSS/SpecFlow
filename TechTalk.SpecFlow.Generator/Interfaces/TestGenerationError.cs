@@ -44,9 +44,10 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
                    $"\tName: {AppDomain.CurrentDomain.FriendlyName}" + Environment.NewLine + 
                    $"\tConfigFile: {AppDomain.CurrentDomain.SetupInformation.ConfigurationFile}" + Environment.NewLine +
                    $"\tBaseDirectory: {AppDomain.CurrentDomain.BaseDirectory}" + Environment.NewLine +
+                   Environment.NewLine +
                    "Loaded Assemblies:" + Environment.NewLine +
                    "Fullname | Location | Codebase" + Environment.NewLine +
-                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {TryGetLocation(a)} | {TryGetCodeBase(a)}")) + Environment.NewLine +
+                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {TryGetLocation(a)} | {TryGetCodeBase(a)}").OrderBy(s => s)) + Environment.NewLine +
                    Environment.NewLine +
                    ex;
         }
