@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Rpc", "Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Rpc.Tests", "TechTalk.SpecFlow.Rpc.Tests\TechTalk.SpecFlow.Rpc.Tests.csproj", "{34B224B6-9344-4E95-9708-48BCF041B4BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoDi", "BoDi\BoDi.csproj", "{B79D033C-3DFB-401A-A5F3-E6903081CABF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +179,12 @@ Global
 		{34B224B6-9344-4E95-9708-48BCF041B4BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34B224B6-9344-4E95-9708-48BCF041B4BC}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
 		{34B224B6-9344-4E95-9708-48BCF041B4BC}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

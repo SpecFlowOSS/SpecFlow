@@ -63,6 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             contextManager.TestThreadContext.Should().NotBeNull();
 
+            var testThreadContext = contextManager.FeatureContext.FeatureContainer.Resolve<TestThreadContext>();
             var ctxFromScenarioContext = contextManager.ScenarioContext.ScenarioContainer.Resolve<TestThreadContext>();
 
             ctxFromScenarioContext.Should().BeSameAs(contextManager.TestThreadContext);

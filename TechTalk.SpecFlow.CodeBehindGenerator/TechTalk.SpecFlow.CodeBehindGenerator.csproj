@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BoDi" Version="1.4.0-alpha1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BoDi\BoDi.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
   </ItemGroup>
