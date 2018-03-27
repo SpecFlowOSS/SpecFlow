@@ -99,17 +99,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Features\Login\SocialLogins.feature.cs">
+    <Compile Include=".\Features\Login\SocialLogins.feature.cs">
       <DependentUpon>SocialLogins.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature.cs">
+    <Compile Include=".\Features\WorkflowDefinition\CreateWorkflowDefinition.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CreateWorkflowDefinition.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\WorkflowInstance\WorkflowInstance.feature.cs">
+    <Compile Include=".\Features\WorkflowInstance\WorkflowInstance.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowInstance.feature</DependentUpon>
@@ -168,16 +168,16 @@
     <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Features\Login\SocialLogins.feature">
+    <None Include=".\Features\Login\SocialLogins.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SocialLogins.feature.cs</LastGenOutput>
     </None>
-    <None Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
+    <None Include=".\Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateWorkflowDefinition.feature.cs</LastGenOutput>
       <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
     </None>
-    <None Include="Features\WorkflowInstance\WorkflowInstance.feature">
+    <None Include=".\Features\WorkflowInstance\WorkflowInstance.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowInstance.feature.cs</LastGenOutput>
     </None>
