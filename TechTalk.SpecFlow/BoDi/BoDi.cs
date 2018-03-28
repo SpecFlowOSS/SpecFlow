@@ -403,6 +403,7 @@ namespace BoDi
 
             public object Resolve(ObjectContainer container, RegistrationKey keyToResolve, ResolutionList resolutionPath)
             {
+                //TODO: store result object in pool?
                 var obj = container.InvokeFactoryDelegate(factoryDelegate, resolutionPath, keyToResolve);
                 return obj;
             }
