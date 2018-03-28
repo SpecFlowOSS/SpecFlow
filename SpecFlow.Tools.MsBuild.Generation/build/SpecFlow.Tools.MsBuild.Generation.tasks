@@ -1,0 +1,3 @@
+﻿<Project>
+  <UsingTask TaskName="SpecFlow.Tools.MsBuild.Generation.GenerateFeatureFileCodeBehindTask" AssemblyFile="$(_SpecFlow_TaskAssembly)" />
+</Project>

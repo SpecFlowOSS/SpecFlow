@@ -1,3 +1,0 @@
-﻿<Project>
-  <UsingTask TaskName="TechTalk.SpecFlow.MSBuildTasks.GenerateFeatureFileCodeBehindTask" AssemblyFile="$(_SpecFlow_TaskAssembly)" />
-</Project>

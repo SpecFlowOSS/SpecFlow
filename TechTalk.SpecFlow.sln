@@ -57,13 +57,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.CodeBehin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeBehindGenerator", "CodeBehindGenerator", "{2CB87D66-959B-4C64-891A-86258283B7BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.MSBuildTasks", "TechTalk.SpecFlow.MSBuildTasks\TechTalk.SpecFlow.MSBuildTasks.csproj", "{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Tools.MsBuild.Generation", "SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj", "{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Rpc", "TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj", "{9135871D-35AF-45E9-867F-E6CBB07C71AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Rpc.Tests", "TechTalk.SpecFlow.Rpc.Tests\TechTalk.SpecFlow.Rpc.Tests.csproj", "{34B224B6-9344-4E95-9708-48BCF041B4BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoDi", "BoDi\BoDi.csproj", "{B79D033C-3DFB-401A-A5F3-E6903081CABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoDi", "BoDi\BoDi.csproj", "{B79D033C-3DFB-401A-A5F3-E6903081CABF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

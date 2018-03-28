@@ -1,10 +1,9 @@
-
 using System;
 using Microsoft.Build.Framework;
 using TechTalk.SpecFlow.CodeBehindGenerator.Shared;
 using TechTalk.SpecFlow.Rpc.Client;
 
-namespace TechTalk.SpecFlow.MSBuildTasks
+namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Microsoft.Build.Utilities.Task
     {
