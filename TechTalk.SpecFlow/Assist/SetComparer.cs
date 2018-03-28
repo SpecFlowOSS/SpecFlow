@@ -25,6 +25,17 @@ namespace TechTalk.SpecFlow.Assist
             return makeSureTheFormattingWorkAboveDoesNotResultInABadException;
         }
 
+        private IEnumerable<int> GetExpectedItemsNotFoundInTheData(IEnumerable<T> set, bool sequentialEquality)
+        {
+            var getListOfExpectedItemsThatCouldNotBeFound =
+                sequentialEquality
+                    ? new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderSensitive)
+                    : new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderInsensitive);
+
+            var expectedItemsNotFoundInTheData = getListOfExpectedItemsThatCouldNotBeFound(set);
+            return expectedItemsNotFoundInTheData;
+        }
+
         public void CompareToSet(IEnumerable<T> set, bool sequentialEquality)
         {
             AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType();
@@ -32,17 +43,11 @@ namespace TechTalk.SpecFlow.Assist
             if (ThereAreNoResultsAndNoExpectedResults(set))
                 return;
 
-            var getListOfExpectedItemsThatCouldNotBeFound = 
-                sequentialEquality ? 
-                new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderSensitive) :
-                new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderInsensitive);
+            var expectedItemsNotFoundInTheData = GetExpectedItemsNotFoundInTheData(set, sequentialEquality);
 
-            if (ThereAreResultsWhenThereShouldBeNone(set))
-                ThrowAnExpectedNoResultsError(set, getListOfExpectedItemsThatCouldNotBeFound(set));
+            AssertThatTheItemsMatchTheExpectedResults(set, expectedItemsNotFoundInTheData);
 
-            AssertThatTheItemsMatchTheExpectedResults(set, getListOfExpectedItemsThatCouldNotBeFound);
-
-            AssertThatNoExtraRowsExist(set, getListOfExpectedItemsThatCouldNotBeFound(set));
+            AssertThatNoExtraRowsExist(set, expectedItemsNotFoundInTheData);
         }
 
         private void AssertThatNoExtraRowsExist(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
@@ -52,25 +57,13 @@ namespace TechTalk.SpecFlow.Assist
             ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
 
-        private void ThrowAnExpectedNoResultsError(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
-        {
-            ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
-        }
-
-        private bool ThereAreResultsWhenThereShouldBeNone(IEnumerable<T> set)
-        {
-            return set.Any() && !table.Rows.Any();
-        }
-
         private bool ThereAreNoResultsAndNoExpectedResults(IEnumerable<T> set)
         {
             return !set.Any() && !table.Rows.Any();
         }
 
-        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set, Func<IEnumerable<T>, IEnumerable<int>> getListOfExpectedItemsThatCouldNotBeFound)
+        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
         {
-            var listOfMissingItems = getListOfExpectedItemsThatCouldNotBeFound(set);
-
             if (ExpectedItemsCouldNotBeFound(listOfMissingItems))
                 ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
