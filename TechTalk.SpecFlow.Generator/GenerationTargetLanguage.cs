@@ -1,4 +1,5 @@
 ﻿using System;
+using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator

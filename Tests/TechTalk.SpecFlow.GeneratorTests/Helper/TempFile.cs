@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 
-namespace TechTalk.SpecFlow.Utils
+namespace TechTalk.SpecFlow.GeneratorTests.Helper
 {
     // this class is based on the class found at http://www.vcskicks.com/code-snippet/temp-file-class.php
 

@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Utils;
 

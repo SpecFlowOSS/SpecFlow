@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.Utils
+﻿namespace TechTalk.SpecFlow.Generator.CodeDom
 {
     public enum CodeDomProviderLanguage
     {
