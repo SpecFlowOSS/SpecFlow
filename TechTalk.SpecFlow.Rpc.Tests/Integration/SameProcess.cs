@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
 
         [Fact]
-        public async Task ComplexClient()
+        public async Task ComplexClient_SingleCall()
         {
             int port = 4635;
 
@@ -52,6 +52,26 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
                 var result = await client.Execute(c => c.GenerateCodeBehindFile("FeatureFilePath")).ConfigureAwait(false);
 
                 Assert.NotNull(result);
+            }
+        }
+
+        [Fact]
+        public async Task ComplexClient_MultipleCalls()
+        {
+            int port = 4635;
+
+            var thread = new Thread(Start);
+            thread.Start();
+
+            Thread.Sleep(1000);
+
+            using (var client = new Client<IFeatureCodeBehindGenerator>(port))
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    var result = await client.Execute(c => c.GenerateCodeBehindFile("FeatureFilePath" + i)).ConfigureAwait(false);
+                    Assert.NotNull(result);
+                }
             }
         }
     }

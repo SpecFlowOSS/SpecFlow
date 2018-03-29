@@ -13,7 +13,7 @@
 
   <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
     <PropertyGroup>
-      <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''"></SpecFlowCodeBehindOutputPath>
+      <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">Features.Generated</SpecFlowCodeBehindOutputPath>
     </PropertyGroup>
     
     <GenerateFeatureFileCodeBehindTask

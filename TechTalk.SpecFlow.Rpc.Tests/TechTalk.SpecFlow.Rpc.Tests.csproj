@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
@@ -17,6 +18,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>C:\Users\awi\.nuget\packages\fluentassertions\4.19.4\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

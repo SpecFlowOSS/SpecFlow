@@ -25,6 +25,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         private static int RunOptionsAndReturnExitCode(CommandLineOptions opts)
         {
+            Console.WriteLine("TechTalk.SpecFlow.CodeBehindGenerator started");
             if (opts.Debug)
             {
                 Debugger.Launch();
@@ -38,7 +39,15 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
             container.RegisterInstanceAs(buildServerController);
             container.RegisterTypeAs<FeatureCodeBehindGenerator, IFeatureCodeBehindGenerator>();
 
-            return buildServerController.Run(opts.Port);
+            try
+            {
+                return buildServerController.Run(opts.Port);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return 999;
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -12,25 +11,34 @@ namespace TechTalk.SpecFlow.Rpc.Client
 {
     public class Client<TClientInterface> : IDisposable
     {
-        private RawClient _rawClient;
+        private readonly int _port;
+
+        //private RawClient _rawClient;
+        private readonly ExtractMethodInfo<TClientInterface> _extractMethodInfo;
 
         public Client(int port)
         {
-            _rawClient = new RawClient(port);
+            _port = port;
+
+            _extractMethodInfo = new ExtractMethodInfo<TClientInterface>();
         }
 
         public void Dispose()
         {
-            _rawClient?.Dispose();
-            _rawClient = null;
+            //_rawClient?.Dispose();
+            //_rawClient = null;
         }
 
         public async Task<TResult> Execute<TResult>(Expression<Func<TClientInterface, TResult>> p)
         {
-            var methodInfo = ExtractMethodInfos(p);
+            var methodInfo = _extractMethodInfo.ExtractFunction(p);
             var request = CreateRequest(methodInfo);
 
-            var response = await _rawClient.SendRequest<Response>(request).ConfigureAwait(false);
+            Response response;
+            using (var rawClient = new RawClient(_port))
+            {
+                response = await rawClient.SendRequest<Response>(request).ConfigureAwait(false);
+            }
 
             try
             {
@@ -45,7 +53,18 @@ namespace TechTalk.SpecFlow.Rpc.Client
             }
         }
 
-        private Request CreateRequest((string Assembly, string Typename, string Methodname, Dictionary<int, object> Arguments) methodInfo)
+        public async Task Execute(Expression<Action<TClientInterface>> p)
+        {
+            var methodInfo = _extractMethodInfo.ExtractMethod(p);
+            var request = CreateRequest(methodInfo);
+
+            using (var rawClient = new RawClient(_port))
+            {
+                await rawClient.SendRequest<Response>(request).ConfigureAwait(false);
+            }
+        }
+
+        private Request CreateRequest(InterfaceMethodInfo methodInfo)
         {
             var request = new Request
             {
@@ -55,35 +74,6 @@ namespace TechTalk.SpecFlow.Rpc.Client
                 Arguments = JsonConvert.SerializeObject(methodInfo.Arguments, SerializationOptions.Current)
             };
             return request;
-        }
-
-        private (string Assembly, string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos<TResult>(
-            Expression<Func<TClientInterface, TResult>> p)
-        {
-            var body = p.Body as MethodCallExpression;
-
-            var methodName = body.Method.Name;
-            var typeName = body.Method.DeclaringType.FullName;
-            var arguments = body.Arguments.Cast<ConstantExpression>().Select((s, i) => new {s, i}).ToDictionary(x => x.i, x => x.s.Value);
-            return (body.Method.DeclaringType.Assembly.FullName,  typeName, methodName, arguments);
-        }
-
-        private (string Assembly, string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos(Expression<Action<TClientInterface>> p)
-        {
-            var body = p.Body as MethodCallExpression;
-
-            var methodName = body.Method.Name;
-            var typeName = body.Method.DeclaringType.FullName;
-            var arguments = body.Arguments.Cast<ConstantExpression>().Select((s, i) => new {s, i}).ToDictionary(x => x.i, x => x.s.Value);
-            return (body.Method.DeclaringType.Assembly.FullName, typeName, methodName, arguments);
-        }
-
-        public async Task Execute(Expression<Action<TClientInterface>> p)
-        {
-            var methodInfo = ExtractMethodInfos(p);
-            var request = CreateRequest(methodInfo);
-
-            await _rawClient.SendRequest<Response>(request).ConfigureAwait(false);
         }
     }
 }

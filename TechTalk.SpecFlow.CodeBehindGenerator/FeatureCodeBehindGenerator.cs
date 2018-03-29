@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.Rpc.Server;
+﻿using System.IO;
+using TechTalk.SpecFlow.Rpc.Server;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator
 {
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
         {
             return new GeneratedCodeBehindFile()
             {
-                Filename = featureFile + ".cs",
+                Filename = Path.GetFileName(featureFile) + ".cs",
                 Content = "from another process with love!"
             };
         }

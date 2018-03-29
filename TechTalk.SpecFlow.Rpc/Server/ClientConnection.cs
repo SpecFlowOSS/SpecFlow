@@ -70,14 +70,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
             }
             finally
             {
-                Close();
+                Close(); 
             }
         }
 
         private async Task<ConnectionData> ExecuteRequest(Request request, ObjectContainer container, CancellationToken cancellationToken)
         {
-            //var keepAlive = CheckForNewKeepAlive(request); //todo
-            var keepAlive = TimeSpan.Zero;
+            var keepAlive = CheckForNewKeepAlive(request); //todo
+            
 
             if (request.IsShutDown)
             {
@@ -132,6 +132,11 @@ namespace TechTalk.SpecFlow.Rpc.Server
             return new ConnectionData(reason, keepAlive);
 
 
+        }
+
+        private TimeSpan? CheckForNewKeepAlive(Request request)
+        {
+            return TimeSpan.FromMinutes(10);
         }
 
         private Task<Response> CreateExecutionTask(Request request, ObjectContainer container, CancellationToken cancellationToken)

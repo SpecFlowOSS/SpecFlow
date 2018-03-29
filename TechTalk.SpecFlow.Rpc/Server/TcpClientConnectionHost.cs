@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -20,8 +21,16 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         public async Task<IClientConnection> CreateListenTask(CancellationToken cancellationToken)
         {
-            var tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(true);
-            return new TcpClientConnection(tcpClient, _connectionCount++.ToString());
+            try
+            {
+                var tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(true);
+                return new TcpClientConnection(tcpClient, _connectionCount++.ToString());
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
         }
 
         private sealed class TcpClientConnection : ClientConnection

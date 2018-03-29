@@ -46,14 +46,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
         /// Time to delay after the last connection before initiating a garbage collection
         /// in the server.
         /// </summary>
-        internal static readonly TimeSpan GCTimeout = TimeSpan.FromSeconds(30);
+        //internal static readonly TimeSpan GCTimeout = TimeSpan.FromSeconds(30);
 
         private readonly IClientConnectionHost _clientConnectionHost;
         private readonly ObjectContainer _container;
         private readonly IDiagnosticListener _diagnosticListener;
-        private State _state;
+        private State CurrentState { get; set; }
         private Task _timeoutTask;
-        private Task _gcTask;
+        //private Task _gcTask;
         private Task<IClientConnection> _listenTask;
         private CancellationTokenSource _listenCancellationTokenSource;
         private List<Task<ConnectionData>> _connectionList = new List<Task<ConnectionData>>();
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         public void StopDispatching()
         {
-            _diagnosticListener.ConnectionRudelyEnded();
+            
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         /// </summary>
         public void ListenAndDispatchConnections(TimeSpan? keepAlive, CancellationToken cancellationToken = default(CancellationToken))
         {
-            _state = State.Running;
+            CurrentState = State.Running;
             _keepAlive = keepAlive;
             _keepAliveIsDefault = true;
 
@@ -89,10 +89,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
             {
                 ListenAndDispatchConnectionsCore(cancellationToken);
             }
+            catch (Exception e)
+            {
+                CompilerServerLogger.LogException(e, "");
+            }
             finally
             {
-                _state = State.Completed;
-                _gcTask = null;
+                CurrentState = State.Completed;
+                //_gcTask = null;
                 _timeoutTask = null;
 
                 if (_listenTask != null)
@@ -110,10 +114,10 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 Debug.Assert(_listenTask != null);
 
                 MaybeCreateTimeoutTask();
-                MaybeCreateGCTask();
+                //MaybeCreateGCTask();
                 WaitForAnyCompletion(cancellationToken);
                 CheckCompletedTasks(cancellationToken);
-            } while (_connectionList.Count > 0 || _state == State.Running);
+            } while (_connectionList.Count > 0 || CurrentState == State.Running);
         }
 
         private void CheckCompletedTasks(CancellationToken cancellationToken)
@@ -134,10 +138,10 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 HandleCompletedTimeoutTask();
             }
 
-            if (_gcTask?.IsCompleted == true)
-            {
-                HandleCompletedGCTask();
-            }
+            //if (_gcTask?.IsCompleted == true)
+            //{
+            //    HandleCompletedGCTask();
+            //}
 
             HandleCompletedConnections();
         }
@@ -148,7 +152,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
             // If cancellation has been requested then the server needs to be in the process
             // of shutting down.
-            _state = State.ShuttingDown;
+            CurrentState = State.ShuttingDown;
 
             CloseListenTask();
 
@@ -176,7 +180,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             all.AddRange(_connectionList);
             all.Add(_timeoutTask);
             all.Add(_listenTask);
-            all.Add(_gcTask);
+            //all.Add(_gcTask);
 
             try
             {
@@ -187,6 +191,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
             {
                 // Thrown when the provided cancellationToken is cancelled.  This is handled in the caller,
                 // here it just serves to break out of the WaitAny call.
+            }
+            catch (ThreadAbortException)
+            {
+                
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 
@@ -211,14 +223,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
         private void HandleCompletedListenTask(CancellationToken cancellationToken)
         {
             _diagnosticListener.ConnectionReceived();
-            var allowCompilationRequests = _state == State.Running;
+            var allowCompilationRequests = CurrentState == State.Running;
             var connectionTask = HandleClientConnection(_listenTask, allowCompilationRequests, cancellationToken);
             _connectionList.Add(connectionTask);
 
             // Timeout and GC are only done when there are no active connections.  Now that we have a new
             // connection cancel out these tasks.
             _timeoutTask = null;
-            _gcTask = null;
+            //_gcTask = null;
 
             // Begin listening again for new connections.
             _listenTask = null;
@@ -230,20 +242,20 @@ namespace TechTalk.SpecFlow.Rpc.Server
             _diagnosticListener.KeepAliveReached();
             _listenCancellationTokenSource.Cancel();
             _timeoutTask = null;
-            _state = State.ShuttingDown;
+            CurrentState = State.ShuttingDown;
         }
 
-        private void HandleCompletedGCTask()
-        {
-            _gcTask = null;
-            for (int i = 0; i < 10; i++)
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-            GC.Collect();
-        }
+        //private void HandleCompletedGCTask()
+        //{
+        //    //_gcTask = null;
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        GC.Collect();
+        //        GC.WaitForPendingFinalizers();
+        //    }
+        //    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+        //    GC.Collect();
+        //}
 
         private void MaybeCreateTimeoutTask()
         {
@@ -255,13 +267,13 @@ namespace TechTalk.SpecFlow.Rpc.Server
             }
         }
 
-        private void MaybeCreateGCTask()
-        {
-            if (_connectionList.Count == 0 && _gcTask == null)
-            {
-                _gcTask = Task.Delay(GCTimeout);
-            }
-        }
+        //private void MaybeCreateGCTask()
+        //{
+        //    if (_connectionList.Count == 0 && _gcTask == null)
+        //    {
+        //        _gcTask = Task.Delay(GCTimeout);
+        //    }
+        //}
 
         /// <summary>
         /// Checks the completed connection objects.
@@ -316,7 +328,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
             if (shutdown)
             {
-                _state = State.ShuttingDown;
+                CurrentState = State.ShuttingDown;
             }
         }
 

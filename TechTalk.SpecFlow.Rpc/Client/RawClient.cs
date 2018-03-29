@@ -26,8 +26,6 @@ namespace TechTalk.SpecFlow.Rpc.Client
 
             RequestStreamHandler.Write(buildRequest, _networkStream);
 
-            //Thread.Sleep(10000);
-
             return ResponseStreamHandler.Read<TResponse>(_networkStream);
 
         }

@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         private TimeSpan? GetKeepAliveTimeout()
         {
-            return null;
+            return TimeSpan.FromMinutes(10);
         }
 
         private string GetDefaultPipeName()
