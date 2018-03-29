@@ -144,6 +144,22 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 ".AgnosticLineBreak());
         }
 
+        [Test]
+        public void Returns_a_descriptive_error_when_no_results_exist_when_one_expected()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+
+            var items = new SetComparisonTestObject[] { };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.AgnosticLineBreak().Should().Be(@"
+  | StringProperty |
+- | orange         |
+".AgnosticLineBreak());
+        }
+
         protected ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
         {
             try
