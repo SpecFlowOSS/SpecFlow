@@ -75,5 +75,13 @@ namespace TechTalk.SpecFlow.Rpc.Client
             };
             return request;
         }
+
+        public async Task ShutdownServer()
+        {
+            using (var rawClient = new RawClient(_port))
+            {
+                await rawClient.SendRequest<Response>(new Request(){IsShutDown = true}).ConfigureAwait(false);
+            }
+        }
     }
 }

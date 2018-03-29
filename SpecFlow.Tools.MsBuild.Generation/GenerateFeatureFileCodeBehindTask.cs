@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.CodeBehindGenerator;
 using TechTalk.SpecFlow.Rpc.Client;
 using TechTalk.SpecFlow.Utils;
@@ -47,6 +49,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private async Task<bool> AsyncExecute()
         {
+            var generatedFiles = new List<ITaskItem>();
+
             try
             {
                 StartOutOfProcGenerator();
@@ -76,14 +80,18 @@ namespace SpecFlow.Tools.MsBuild.Generation
                         string featureFileItemSpec = featureFile.ItemSpec;
                         var featureFileCodeBehindContent = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                        WriteCodeBehindFile(OutputPath, featureFile, featureFileCodeBehindContent);
+                        var resultedFile = WriteCodeBehindFile(OutputPath, featureFile, featureFileCodeBehindContent);
+
+                        generatedFiles.Add(new TaskItem(){ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
                     }
 
 
-                    await client.Execute(c => c.Shutdown());
+                    await client.ShutdownServer();
                 }
 
                 StopOutOfProcGenerator();
+
+                GeneratedFiles = generatedFiles.ToArray();
 
                 return true;
             }
@@ -129,7 +137,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _externalProcess.Kill();
         }
 
-        private void WriteCodeBehindFile(string outputPath, ITaskItem featureFile, GeneratedCodeBehindFile generatedCodeBehindFile)
+        private string WriteCodeBehindFile(string outputPath, ITaskItem featureFile, GeneratedCodeBehindFile generatedCodeBehindFile)
         {
             
             Log.LogMessage(ProjectFolder);
@@ -140,7 +148,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             if (String.IsNullOrEmpty(generatedCodeBehindFile.Filename))
             {
                 Log.LogError($"[SpecFlow] {featureFile.ItemSpec} has no generated filename");
-                return;
+                return null;
             }
 
             Log.LogMessage(path);
@@ -165,6 +173,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 File.WriteAllText(codeBehindFileLocation, generatedCodeBehindFile.Content);
             }
+
+
+            return codeBehindFileLocation;
         }
 
 

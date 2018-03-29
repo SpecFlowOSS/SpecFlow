@@ -74,5 +74,21 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
                 }
             }
         }
+
+        [Fact]
+        public async Task ComplexClient_Shutdown()
+        {
+            int port = 4635;
+
+            var thread = new Thread(Start);
+            thread.Start();
+
+            Thread.Sleep(1000);
+
+            using (var client = new Client<IFeatureCodeBehindGenerator>(port))
+            {
+                await client.ShutdownServer();
+            }
+        }
     }
 }
