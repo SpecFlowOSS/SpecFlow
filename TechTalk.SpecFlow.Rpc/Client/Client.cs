@@ -45,10 +45,11 @@ namespace TechTalk.SpecFlow.Rpc.Client
             }
         }
 
-        private Request CreateRequest((string Typename, string Methodname, Dictionary<int, object> Arguments) methodInfo)
+        private Request CreateRequest((string Assembly, string Typename, string Methodname, Dictionary<int, object> Arguments) methodInfo)
         {
             var request = new Request
             {
+                Assembly = methodInfo.Assembly,
                 Type = methodInfo.Typename,
                 Method = methodInfo.Methodname,
                 Arguments = JsonConvert.SerializeObject(methodInfo.Arguments, SerializationOptions.Current)
@@ -56,25 +57,25 @@ namespace TechTalk.SpecFlow.Rpc.Client
             return request;
         }
 
-        private (string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos<TResult>(
+        private (string Assembly, string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos<TResult>(
             Expression<Func<TClientInterface, TResult>> p)
         {
             var body = p.Body as MethodCallExpression;
 
             var methodName = body.Method.Name;
-            var typeName = body.Method.DeclaringType.Name;
+            var typeName = body.Method.DeclaringType.FullName;
             var arguments = body.Arguments.Cast<ConstantExpression>().Select((s, i) => new {s, i}).ToDictionary(x => x.i, x => x.s.Value);
-            return (typeName, methodName, arguments);
+            return (body.Method.DeclaringType.Assembly.FullName,  typeName, methodName, arguments);
         }
 
-        private (string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos(Expression<Action<TClientInterface>> p)
+        private (string Assembly, string Typename, string Methodname, Dictionary<int, object> Arguments) ExtractMethodInfos(Expression<Action<TClientInterface>> p)
         {
             var body = p.Body as MethodCallExpression;
 
             var methodName = body.Method.Name;
-            var typeName = body.Method.DeclaringType.Name;
+            var typeName = body.Method.DeclaringType.FullName;
             var arguments = body.Arguments.Cast<ConstantExpression>().Select((s, i) => new {s, i}).ToDictionary(x => x.i, x => x.s.Value);
-            return (typeName, methodName, arguments);
+            return (body.Method.DeclaringType.Assembly.FullName, typeName, methodName, arguments);
         }
 
         public async Task Execute(Expression<Action<TClientInterface>> p)

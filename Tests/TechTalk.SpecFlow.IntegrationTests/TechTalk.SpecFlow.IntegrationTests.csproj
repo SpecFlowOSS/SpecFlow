@@ -24,7 +24,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
+    <!--<ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />-->
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj" />
   </ItemGroup>
@@ -45,6 +45,11 @@
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
+
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
+  </Target>
 
   <Target Name="PostcompileScript" AfterTargets="Build">
     <Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />
@@ -84,6 +89,8 @@
     <Delete Files="@(SpecFlowGeneratedFiles)" />
     <CallTarget Targets="GenerateCodeBehind" />
   </Target>
+  
+
 
   
 </Project>

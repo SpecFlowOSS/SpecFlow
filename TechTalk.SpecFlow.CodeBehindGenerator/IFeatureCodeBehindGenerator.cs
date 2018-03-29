@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TechTalk.SpecFlow.CodeBehindGenerator.Shared
+﻿namespace TechTalk.SpecFlow.CodeBehindGenerator
 {
     public interface IFeatureCodeBehindGenerator
     {
         void InitializeProject(string projectPath);
-        string GenerateCodeBehindFile(string featureFile);
+        GeneratedCodeBehindFile GenerateCodeBehindFile(string featureFile);
+        void Ping();
+        void Shutdown();
     }
 }

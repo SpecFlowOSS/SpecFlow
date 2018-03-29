@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using BoDi;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
@@ -42,7 +46,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         /// </summary>
         public abstract void Close();
 
-        public async Task<ConnectionData> HandleConnection(bool allowCompilationRequests = true, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ConnectionData> HandleConnection(bool allowCompilationRequests, CancellationToken cancellationToken, ObjectContainer container)
         {
             try
             {
@@ -50,8 +54,6 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 try
                 {
                     Log("Begin reading request.");
-                    //request = await BuildRequest.ReadAsync(_stream, cancellationToken).ConfigureAwait(false);   
-
 
                     request = RequestStreamHandler.Read<Request>(_stream); //todo async + cancellationtoken
                     //ValidateBuildRequest(request);
@@ -63,7 +65,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                     return new ConnectionData(CompletionReason.CompilationNotStarted);
                 }
 
-                return await ExecuteRequest(request, cancellationToken).ConfigureAwait(false);
+                return await ExecuteRequest(request, container, cancellationToken).ConfigureAwait(false);
 
             }
             finally
@@ -72,7 +74,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             }
         }
 
-        private async Task<ConnectionData> ExecuteRequest(Request request, CancellationToken cancellationToken)
+        private async Task<ConnectionData> ExecuteRequest(Request request, ObjectContainer container, CancellationToken cancellationToken)
         {
             //var keepAlive = CheckForNewKeepAlive(request); //todo
             var keepAlive = TimeSpan.Zero;
@@ -93,7 +95,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             // Kick off both the compilation and a task to monitor the pipe for closing.
             var buildCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            var compilationTask = CreateExecutionTask(request, buildCts.Token);
+            var compilationTask = CreateExecutionTask(request, container, buildCts.Token);
 
             var monitorTask = CreateMonitorDisconnectTask(buildCts.Token);
             await Task.WhenAny(compilationTask, monitorTask).ConfigureAwait(false);
@@ -132,18 +134,31 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         }
 
-        private Task<Response> CreateExecutionTask(Request request, CancellationToken cancellationToken)
+        private Task<Response> CreateExecutionTask(Request request, ObjectContainer container, CancellationToken cancellationToken)
         {
             Func<Response> func = () =>
             {
                 // Do the compilation
                 Log("Begin compilation");
 
+                var assembly = GetAssembly(request);
+
+                var requestedType = GetRequestedType(assembly, request);
+
+                var requestedTypeInstance = container.Resolve(requestedType);
+                var requestedMethodInfo = requestedType.GetMethod(request.Method);
+
+                var requestedArguments = JsonConvert.DeserializeObject<Dictionary<int, object>>(request.Arguments, SerializationOptions.Current);
+
+                var result = requestedMethodInfo.Invoke(requestedTypeInstance, requestedArguments.Values.ToArray());
+
+
                 var response = new Response()
                 {
+                    Assembly = request.Assembly,
                     Type = request.Type,
                     Method = request.Method,
-                    Result = JsonConvert.SerializeObject("OK", SerializationOptions.Current)
+                    Result = JsonConvert.SerializeObject(result, SerializationOptions.Current)
                 };
 
                 Log("End compilation");
@@ -153,6 +168,35 @@ namespace TechTalk.SpecFlow.Rpc.Server
             var task = new Task<Response>(func, cancellationToken, TaskCreationOptions.LongRunning);
             task.Start();
             return task;
+        }
+
+        private Assembly GetAssembly(Request request)
+        {
+            var foundAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName == request.Assembly);
+
+            switch (foundAssemblies.Count())
+            {
+                case 0:
+                    throw new Exception($"No assembly {request.Assembly} found");
+                case 1:
+                    return foundAssemblies.Single();
+                default:
+                    throw new Exception($"more than one assembly {request.Assembly} were loaded");
+            }
+        }
+
+        private Type GetRequestedType(Assembly assembly, Request request)
+        {
+            Type requestedType = null;
+            try
+            {
+                requestedType = assembly.GetType(request.Type, true);
+            }
+            catch (Exception e)
+            {
+                Log($"Type {request.Type} not found!");
+            }
+            return requestedType;
         }
 
         private void Log(string message)

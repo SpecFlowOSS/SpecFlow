@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
+using BoDi;
 using TechTalk.SpecFlow.Rpc.Shared;
 
 namespace TechTalk.SpecFlow.Rpc.Server
@@ -48,6 +49,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         internal static readonly TimeSpan GCTimeout = TimeSpan.FromSeconds(30);
 
         private readonly IClientConnectionHost _clientConnectionHost;
+        private readonly ObjectContainer _container;
         private readonly IDiagnosticListener _diagnosticListener;
         private State _state;
         private Task _timeoutTask;
@@ -58,10 +60,16 @@ namespace TechTalk.SpecFlow.Rpc.Server
         private TimeSpan? _keepAlive;
         private bool _keepAliveIsDefault;
 
-        internal ServerDispatcher(IClientConnectionHost clientConnectionHost, IDiagnosticListener diagnosticListener = null)
+        internal ServerDispatcher(IClientConnectionHost clientConnectionHost, IDiagnosticListener diagnosticListener, ObjectContainer container)
         {
             _clientConnectionHost = clientConnectionHost;
+            _container = container;
             _diagnosticListener = diagnosticListener ?? new DiagnosticListener();
+        }
+
+        public void StopDispatching()
+        {
+            _diagnosticListener.ConnectionRudelyEnded();
         }
 
         /// <summary>
@@ -330,7 +338,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         /// will never fail.  It will always produce a <see cref="ConnectionData"/> value.  Connection errors
         /// will end up being represented as <see cref="CompletionReason.ClientDisconnect"/>
         /// </summary>
-        internal static async Task<ConnectionData> HandleClientConnection(Task<IClientConnection> clientConnectionTask, bool allowCompilationRequests = true, CancellationToken cancellationToken = default(CancellationToken))
+        internal async Task<ConnectionData> HandleClientConnection(Task<IClientConnection> clientConnectionTask, bool allowCompilationRequests = true, CancellationToken cancellationToken = default(CancellationToken))
         {
             IClientConnection clientConnection;
             try
@@ -347,7 +355,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
             try
             {
-                return await clientConnection.HandleConnection(allowCompilationRequests, cancellationToken).ConfigureAwait(false);
+                return await clientConnection.HandleConnection(allowCompilationRequests, cancellationToken, _container).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

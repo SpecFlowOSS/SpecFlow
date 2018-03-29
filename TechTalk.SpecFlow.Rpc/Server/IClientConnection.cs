@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Rpc.Server
 {
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
         /// <summary>
         /// Server the connection and return the result.
         /// </summary>
-        Task<ConnectionData> HandleConnection(bool allowCompilationRequests, CancellationToken cancellationToken);
+        Task<ConnectionData> HandleConnection(bool allowCompilationRequests, CancellationToken cancellationToken, ObjectContainer container);
 
         /// <summary>
         /// Close the underlying client connection.

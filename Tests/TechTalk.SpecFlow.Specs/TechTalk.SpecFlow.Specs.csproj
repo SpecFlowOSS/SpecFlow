@@ -56,6 +56,10 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
+  </Target>
+
   <Target Name="PostcompileScript" AfterTargets="Build">
     <Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />
   </Target>
