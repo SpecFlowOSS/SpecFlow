@@ -48,6 +48,7 @@
 
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <MSBuild Projects="..\..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" ContinueOnError="false" />
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
   </Target>
 
