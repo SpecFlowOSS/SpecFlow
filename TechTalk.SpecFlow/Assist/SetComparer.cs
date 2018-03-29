@@ -119,6 +119,15 @@ namespace TechTalk.SpecFlow.Assist
                 actualItems.Skip(table.RowCount).Select(i => new TableDifferenceItem<T>(i)))
                 .ToList();
 
+            var extraTableItems = table.Rows.Count() - actualItems.Count;
+            if (extraTableItems > 0)
+            {
+                for (var index = actualItems.Count; index < table.Rows.Count(); index++)
+                {
+                    listOfMissingItems.Add(index + 1);
+                }
+            }
+
             return listOfMissingItems;
         }
 
