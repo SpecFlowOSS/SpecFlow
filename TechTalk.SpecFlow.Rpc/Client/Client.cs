@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.Rpc.Shared;
@@ -49,7 +50,7 @@ namespace TechTalk.SpecFlow.Rpc.Client
             catch (JsonReaderException jsonReaderException)
             {
                 throw new Exception($"Error while deserializing result: {response.Result}", jsonReaderException);
-                
+
             }
         }
 
@@ -80,7 +81,30 @@ namespace TechTalk.SpecFlow.Rpc.Client
         {
             using (var rawClient = new RawClient(_port))
             {
-                await rawClient.SendRequest<Response>(new Request(){IsShutDown = true}).ConfigureAwait(false);
+                await rawClient.SendRequest<Response>(new Request() { IsShutDown = true }).ConfigureAwait(false);
+            }
+        }
+        public async Task Ping()
+        {
+            using (var rawClient = new RawClient(_port))
+            {
+                await rawClient.SendRequest<Response>(new Request() { IsPing = true }).ConfigureAwait(false);
+            }
+        }
+
+        public async Task WaitForServer()
+        {
+            while (true)
+            {
+                try
+                {
+                    await Ping();
+                    break;
+                }
+                catch (SocketException socketException)
+                {
+                    //todo logging
+                }
             }
         }
     }

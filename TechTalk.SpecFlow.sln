@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.bat = build.bat
 		changelog.txt = changelog.txt
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		Directory.Build.props = Directory.Build.props
 		LICENSE.txt = LICENSE.txt
 		nuget.config = nuget.config
 		PostCompile.bat = PostCompile.bat

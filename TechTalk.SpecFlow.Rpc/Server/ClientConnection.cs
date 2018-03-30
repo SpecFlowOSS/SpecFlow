@@ -77,7 +77,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
         private async Task<ConnectionData> ExecuteRequest(Request request, ObjectContainer container, CancellationToken cancellationToken)
         {
             var keepAlive = CheckForNewKeepAlive(request); //todo
-            
+
+            if (request.IsPing)
+            {
+                var response = new Response(){Result = "Pong"};
+                ResponseStreamHandler.Write(response, _stream);
+
+                return new ConnectionData(CompletionReason.CompilationNotStarted);
+            }
 
             if (request.IsShutDown)
             {
