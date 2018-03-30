@@ -8,13 +8,14 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.CodeBehindGenerator;
 using TechTalk.SpecFlow.Rpc.Client;
+using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Microsoft.Build.Utilities.Task
     {
-        private readonly int _port = 3483;
+        private readonly int _startPort = 3483;
 
         [Required]
         public string ProjectPath { get; set; }
@@ -44,10 +45,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
             {
                 using (var outOfProcessServer = new OutOfProcessServer(Log))
                 {
-                    outOfProcessServer.Start(_port);
+                    var freePort = FindFreePort.GetAvailablePort(_startPort);
+
+                    outOfProcessServer.Start(freePort);
 
 
-                    using (var client = new Client<IFeatureCodeBehindGenerator>(_port))
+                    using (var client = new Client<IFeatureCodeBehindGenerator>(freePort))
                     {
                         await client.WaitForServer();
 
