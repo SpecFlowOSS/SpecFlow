@@ -36,11 +36,7 @@
       <targetFolder>SpecFlow\tools</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\*.txt">
-      <targetFolder>SpecFlow\tools\Licenses</targetFolder>
-    </additionalFiles>
-
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\*.md">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\*">
       <targetFolder>SpecFlow\tools\Licenses</targetFolder>
     </additionalFiles>
   </ItemGroup>
