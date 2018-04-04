@@ -121,7 +121,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
             else
             {
-                Log.LogError($"[SpecFlow ]Process took longer than {_timeout.TotalMinutes} min to complete");
+                Log.LogError($"[SpecFlow]Process took longer than {_timeout.TotalMinutes} min to complete");
             }
 
 
