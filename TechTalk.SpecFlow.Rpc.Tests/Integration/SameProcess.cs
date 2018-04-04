@@ -2,22 +2,35 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
-using TechTalk.SpecFlow.CodeBehindGenerator;
 using TechTalk.SpecFlow.Rpc.Client;
 using TechTalk.SpecFlow.Rpc.Server;
 using Xunit;
 
 namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 {
+
+    public interface ITestServerInterface
+    {
+        string MethodWithParameter(string parameter);
+    }
+
+    public class TestServerInterface : ITestServerInterface
+    {
+        public string MethodWithParameter(string parameter)
+        {
+            return parameter;
+        }
+    }
+
     public class SameProcess : IDisposable
     {
         public SameProcess()
         {
             _container = new ObjectContainer();
 
-            _featureCodeBehindGeneratorMock = new FeatureCodeBehindGeneratorMock(_buildServerController);
+            _featureCodeBehindGeneratorMock = new TestServerInterface();
 
-            _container.RegisterInstanceAs<IFeatureCodeBehindGenerator>(_featureCodeBehindGeneratorMock);
+            _container.RegisterInstanceAs<ITestServerInterface>(_featureCodeBehindGeneratorMock);
         }
 
         public void Dispose()
@@ -27,7 +40,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
         private BuildServerController _buildServerController;
         private readonly ObjectContainer _container;
-        private readonly FeatureCodeBehindGeneratorMock _featureCodeBehindGeneratorMock;
+        private readonly TestServerInterface _featureCodeBehindGeneratorMock;
 
 
         private void Start()
@@ -47,9 +60,9 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
             Thread.Sleep(1000);
 
-            using (var client = new Client<IFeatureCodeBehindGenerator>(port))
+            using (var client = new Client<ITestServerInterface>(port))
             {
-                var result = await client.Execute(c => c.GenerateCodeBehindFile("FeatureFilePath")).ConfigureAwait(false);
+                var result = await client.Execute(c => c.MethodWithParameter("FeatureFilePath")).ConfigureAwait(false);
 
                 Assert.NotNull(result);
             }
@@ -65,11 +78,11 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
             Thread.Sleep(1000);
 
-            using (var client = new Client<IFeatureCodeBehindGenerator>(port))
+            using (var client = new Client<ITestServerInterface>(port))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    var result = await client.Execute(c => c.GenerateCodeBehindFile("FeatureFilePath" + i)).ConfigureAwait(false);
+                    var result = await client.Execute(c => c.MethodWithParameter("FeatureFilePath" + i)).ConfigureAwait(false);
                     Assert.NotNull(result);
                 }
             }
@@ -85,7 +98,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
             Thread.Sleep(1000);
 
-            using (var client = new Client<IFeatureCodeBehindGenerator>(port))
+            using (var client = new Client<ITestServerInterface>(port))
             {
                 await client.ShutdownServer();
             }
