@@ -4,6 +4,5 @@
     {
         void InitializeProject(string projectPath);
         GeneratedCodeBehindFile GenerateCodeBehindFile(string featureFile);
-        void Ping();
     }
 }

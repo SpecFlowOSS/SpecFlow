@@ -19,13 +19,13 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ben.Demystifier" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" />
     <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
+    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
-    <PackageReference Update="Ben.Demystifier" Version="0.1.1" />
+    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == ''">
