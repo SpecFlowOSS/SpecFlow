@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -30,10 +29,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public override bool Execute()
         {
-            Log.LogMessage("Starting GenerateFeatureFileCodeBehind");
+            Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
             var asyncExecuteTask = AsyncExecute();
-
-
             return asyncExecuteTask.Result;
         }
 
@@ -79,7 +76,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
             catch (Exception e)
             {
-                Log.LogError(e.Demystify().ToString());
+                Log.LogWithNameTag(Log.LogError, e.Demystify().ToString());
                 return false;
             }
         }
@@ -94,16 +91,17 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             if (string.IsNullOrEmpty(generatedCodeBehindFile.Filename))
             {
-                Log.LogError($"[SpecFlow] {featureFile.ItemSpec} has no generated filename");
+                Log.LogWithNameTag(Log.LogError, $"{featureFile.ItemSpec}has no generated filename");
                 return null;
             }
 
-            Log.LogMessage(path);
+            Log.LogWithNameTag(Log.LogMessage, path);
 
             var codeBehindFileLocation = Path.Combine(path, generatedCodeBehindFile.Filename);
 
-            Log.LogMessage(
-                $"[SpecFlow] Writing data to {codeBehindFileLocation}; path = {path}; generatedFilename = {generatedCodeBehindFile.Filename}");
+            Log.LogWithNameTag(
+                Log.LogMessage,
+                $"Writing data to {codeBehindFileLocation}; path = {path}; generatedFilename = {generatedCodeBehindFile.Filename}");
 
             if (File.Exists(codeBehindFileLocation))
             {

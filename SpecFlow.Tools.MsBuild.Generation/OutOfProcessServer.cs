@@ -45,7 +45,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             var exe = Path.Combine(workingDirectory, GeneratorExe);
 
-            Log.LogMessage($"Starting OutOfProcess generation process {exe} in {workingDirectory}");
+            Log.LogWithNameTag(Log.LogMessage, $"Starting OutOfProcess generation process {exe} in {workingDirectory}");
             var processStartInfo = new ProcessStartInfo(exe, $"--port {port}")
             {
                 WorkingDirectory = workingDirectory,
@@ -94,19 +94,19 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
             catch (Exception)
             {
-                Log.LogError($"Error starting {_externalProcess.StartInfo.FileName} {_externalProcess.StartInfo.Arguments} in {_externalProcess.StartInfo.WorkingDirectory}");
+                Log.LogWithNameTag(Log.LogError, $"Error starting {_externalProcess.StartInfo.FileName} {_externalProcess.StartInfo.Arguments} in {_externalProcess.StartInfo.WorkingDirectory}");
                 throw;
             }
             _externalProcess.BeginOutputReadLine();
             _externalProcess.BeginErrorReadLine();
 
-            Log.LogMessage("OutOfProcess generation process started");
+            Log.LogWithNameTag(Log.LogMessage, "OutOfProcess generation process started");
 
         }
 
         private void Process_Exited(object sender, EventArgs e)
         {
-            Log.LogMessage($"OutOfProcess process has exited with exit code {_externalProcess.ExitCode}");
+            Log.LogWithNameTag(Log.LogMessage, $"OutOfProcess process has exited with exit code {_externalProcess.ExitCode}");
 
             _externalProcess.Exited -= Process_Exited;
         }
@@ -117,11 +117,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 _outputWaitHandle.WaitOne(_timeOutInMilliseconds) &&
                 _errorWaitHandle.WaitOne(_timeOutInMilliseconds))
             {
-                Log.LogMessage("[SpecFlow]" + Environment.NewLine + _output);
+                Log.LogWithNameTag(Log.LogMessage, "[SpecFlow]" + Environment.NewLine + _output);
             }
             else
             {
-                Log.LogError($"[SpecFlow]Process took longer than {_timeout.TotalMinutes} min to complete");
+                Log.LogWithNameTag(Log.LogError, $"[SpecFlow]Process took longer than {_timeout.TotalMinutes} min to complete");
             }
 
 
