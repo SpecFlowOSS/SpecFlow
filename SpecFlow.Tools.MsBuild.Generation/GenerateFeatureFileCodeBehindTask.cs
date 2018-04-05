@@ -54,13 +54,16 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                         await client.Execute(c => c.InitializeProject(ProjectPath));
 
-
+                        var codeBehindWriter = new CodeBehindWriter(Log);
                         foreach (var featureFile in FeatureFiles)
                         {
                             string featureFileItemSpec = featureFile.ItemSpec;
                             var featureFileCodeBehindContent = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                            var resultedFile = WriteCodeBehindFile(OutputPath, featureFile, featureFileCodeBehindContent);
+                            var resultedFile = codeBehindWriter.WriteCodeBehindFile(
+                                new FileWriter(Path.Combine(Path.GetDirectoryName(Path.Combine(ProjectFolder, OutputPath, featureFile.ItemSpec)), featureFileCodeBehindContent.Filename)),
+                                featureFile,
+                                featureFileCodeBehindContent);
 
                             generatedFiles.Add(new TaskItem() {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
                         }
@@ -84,8 +87,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private string WriteCodeBehindFile(string outputPath, ITaskItem featureFile, GeneratedCodeBehindFile generatedCodeBehindFile) //todo needs unit tests
         {
-            Log.LogMessage(ProjectFolder);
-            Log.LogMessage(outputPath);
+            Log.LogWithNameTag(Log.LogMessage, ProjectFolder);
+            Log.LogWithNameTag(Log.LogMessage, outputPath);
 
             var path = Path.GetDirectoryName(Path.Combine(ProjectFolder, outputPath, featureFile.ItemSpec));
 
