@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Shared
                 var freePort = FindFreePort.GetAvailablePort(3483);
 
                 //ASSERT
-                freePort.Should().Be(3484);
+                freePort.Should().BeGreaterThan(3483);
             }
             finally
             {
