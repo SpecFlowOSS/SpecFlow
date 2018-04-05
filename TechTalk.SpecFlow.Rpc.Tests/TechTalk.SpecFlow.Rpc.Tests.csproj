@@ -5,6 +5,8 @@
     <TargetFrameworks>net46</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
+    <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

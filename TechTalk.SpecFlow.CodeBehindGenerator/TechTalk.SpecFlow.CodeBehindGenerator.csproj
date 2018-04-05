@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <!--<TargetFrameworks>net46;netcoreapp2.0</TargetFrameworks>-->
     <TargetFrameworks>net46</TargetFrameworks>
+    <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
