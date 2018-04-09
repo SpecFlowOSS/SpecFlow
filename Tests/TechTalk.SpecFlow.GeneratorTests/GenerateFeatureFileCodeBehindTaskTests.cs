@@ -1,6 +1,5 @@
-﻿using System.IO;
+﻿using System;
 using FluentAssertions;
-using Microsoft.Build.Utilities;
 using SpecFlow.Tools.MsBuild.Generation;
 using Xunit;
 
@@ -17,8 +16,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             string generatedCodeBehindName,
             string expected)
         {
-            // ARRANGE & ACT
-            string actual = FilePathGenerator.GenerateFilePath(projectDir, relativeOutputDir, featureFile, generatedCodeBehindName);
+            // ARRANGE
+            var filePathGenerator = new FilePathGenerator();
+
+            // ACT
+            string actual = filePathGenerator.GenerateFilePath(projectDir, relativeOutputDir, featureFile, generatedCodeBehindName);
 
             // ASSERT
             actual.Should().Be(expected);

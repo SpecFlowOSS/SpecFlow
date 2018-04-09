@@ -45,6 +45,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     var freePort = FindFreePort.GetAvailablePort(_startPort);
 
                     outOfProcessServer.Start(freePort);
+                    var filePathGenerator = new FilePathGenerator();
                     using (var client = new Client<IFeatureCodeBehindGenerator>(freePort))
                     {
                         await client.WaitForServer();
@@ -56,7 +57,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                             string featureFileItemSpec = featureFile.ItemSpec;
                             var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                            string targetFilePath = FilePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
+                            string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
                             string resultedFile = codeBehindWriter.WriteCodeBehindFile(
                                 targetFilePath,
                                 featureFile,
