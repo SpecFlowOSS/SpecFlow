@@ -8,12 +8,10 @@ namespace TechTalk.SpecFlow.Rpc.Shared
     {
         public static T Read<T>(Stream stream) where T : Response.Response
         {
-
             using (var writer = new BinaryReader(stream, Encoding.Default, true))
             {
                 var length = writer.ReadInt32();
                 var requestJson = new string(writer.ReadChars(length));
-
 
                 return JsonConvert.DeserializeObject<T>(requestJson, SerializationOptions.Current);
             }

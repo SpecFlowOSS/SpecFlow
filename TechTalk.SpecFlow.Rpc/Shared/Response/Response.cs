@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Rpc.Shared.Response
 {
-    public class Response //: BaseResponse
+    public class Response
     {
         public string Assembly { get; set; }
 
