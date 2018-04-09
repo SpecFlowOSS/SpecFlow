@@ -45,27 +45,24 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     var freePort = FindFreePort.GetAvailablePort(_startPort);
 
                     outOfProcessServer.Start(freePort);
-
-
                     using (var client = new Client<IFeatureCodeBehindGenerator>(freePort))
                     {
                         await client.WaitForServer();
-
-
                         await client.Execute(c => c.InitializeProject(ProjectPath));
 
                         var codeBehindWriter = new CodeBehindWriter(Log);
                         foreach (var featureFile in FeatureFiles)
                         {
                             string featureFileItemSpec = featureFile.ItemSpec;
-                            var featureFileCodeBehindContent = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
+                            var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                            var resultedFile = codeBehindWriter.WriteCodeBehindFile(
-                                new FileWriter(Path.Combine(Path.GetDirectoryName(Path.Combine(ProjectFolder, OutputPath, featureFile.ItemSpec)), featureFileCodeBehindContent.Filename)),
+                            string targetFilePath = FilePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
+                            string resultedFile = codeBehindWriter.WriteCodeBehindFile(
+                                targetFilePath,
                                 featureFile,
-                                featureFileCodeBehindContent);
+                                featureFileCodeBehind);
 
-                            generatedFiles.Add(new TaskItem() {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
+                            generatedFiles.Add(new TaskItem { ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder) });
                         }
 
 
@@ -79,52 +76,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
             catch (Exception e)
             {
-                Log.LogWithNameTag(Log.LogError, e.Demystify().ToString());
+                Log?.LogWithNameTag(Log.LogError, e.Demystify().ToString());
                 return false;
             }
-        }
-
-
-        private string WriteCodeBehindFile(string outputPath, ITaskItem featureFile, GeneratedCodeBehindFile generatedCodeBehindFile) //todo needs unit tests
-        {
-            Log.LogWithNameTag(Log.LogMessage, ProjectFolder);
-            Log.LogWithNameTag(Log.LogMessage, outputPath);
-
-            var path = Path.GetDirectoryName(Path.Combine(ProjectFolder, outputPath, featureFile.ItemSpec));
-
-            if (string.IsNullOrEmpty(generatedCodeBehindFile.Filename))
-            {
-                Log.LogWithNameTag(Log.LogError, $"{featureFile.ItemSpec}has no generated filename");
-                return null;
-            }
-
-            Log.LogWithNameTag(Log.LogMessage, path);
-
-            var codeBehindFileLocation = Path.Combine(path, generatedCodeBehindFile.Filename);
-
-            Log.LogWithNameTag(
-                Log.LogMessage,
-                $"Writing data to {codeBehindFileLocation}; path = {path}; generatedFilename = {generatedCodeBehindFile.Filename}");
-
-            if (File.Exists(codeBehindFileLocation))
-            {
-                if (!FileSystemHelper.FileCompareContent(codeBehindFileLocation, generatedCodeBehindFile.Content))
-                {
-                    File.WriteAllText(codeBehindFileLocation, generatedCodeBehindFile.Content);
-                }
-            }
-            else
-            {
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                File.WriteAllText(codeBehindFileLocation, generatedCodeBehindFile.Content);
-            }
-
-
-            return codeBehindFileLocation;
         }
     }
 }
