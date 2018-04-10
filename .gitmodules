@@ -1,0 +1,3 @@
+[submodule "ExternalRepositories/SpecFlow.TestProjectGenerator"]
+	path = ExternalRepositories/SpecFlow.TestProjectGenerator
+	url = https://github.com/techtalk/SpecFlow.TestProjectGenerator.git
