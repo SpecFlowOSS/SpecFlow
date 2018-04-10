@@ -56,6 +56,11 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <MSBuild Projects="..\..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" ContinueOnError="false" />
+    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
+  </Target>
+
   <Target Name="PostcompileScript" AfterTargets="Build">
     <Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />
   </Target>
@@ -68,6 +73,7 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,27 +81,26 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <VerboseOutput>true</VerboseOutput>
-    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\net45\specflow.exe</SpecFlowTasksPath>
+    <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(TargetFramework)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
   </PropertyGroup>
 
-  <Target Name="GenerateSpecFlowCodeBehinds" BeforeTargets="PreBuildEvent">
+  <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
+  <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.tasks" />
+  <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+
+  <Target Name="BeforeUpdateFeatureFilesInProject">
     <ItemGroup>
       <SpecFlowGeneratedFiles Include="**/Features/**/*.feature.cs" />
       <SpecFlowGeneratedFiles Include="**/Features.Generated/**/*.feature.cs" />
     </ItemGroup>
-    
-    <Delete Files="@(SpecFlowGeneratedFiles)"/>
-    <Exec Command="$(SpecFlowTasksPath) generateAll $(MSBuildProjectFullPath)" />
-    <CallTarget Targets="AfterUpdateFeatureFilesInProject" />
+
+    <PropertyGroup>
+      <SpecFlowCodeBehindOutputPath>Features.Generated</SpecFlowCodeBehindOutputPath>
+    </PropertyGroup>
+
+    <Delete Files="@(SpecFlowGeneratedFiles)" />
   </Target>
-  
-  <Target Name="AfterUpdateFeatureFilesInProject">
-    <ItemGroup>
-      <SpecFlowGeneratedFiles Include="**/Features/**/*.feature.cs" />
-    </ItemGroup>
-    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />   
-  </Target>
- 
-  
+
+
+
 </Project>

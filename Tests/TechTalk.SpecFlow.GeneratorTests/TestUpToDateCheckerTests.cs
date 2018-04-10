@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Utils;
 using FluentAssertions;
+using TechTalk.SpecFlow.GeneratorTests.Helper;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {

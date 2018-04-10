@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--<TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>-->
+    <TargetFrameworks>net46</TargetFrameworks>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackPublishOutput</TargetsForTfmSpecificContentInPackage>
+    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- Change the default location where NuGet will put the build output -->
+    <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
+    <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.1012" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.1012" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
+    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == ''">
+    <!-- include .props/.targets files -->
+    <None Include="build\**" Pack="true" PackagePath="build" />
+    <None Include="buildCrossTargeting\**" Pack="true" PackagePath="buildCrossTargeting" />
+  </ItemGroup>
+
+  <Target Name="PreparePublishToIntermediatePaths">
+    <PropertyGroup>
+      <PublishDir>$(IntermediateOutputPath)TmpPackPublish\</PublishDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <_OldIntermediatePublishFiles Include="$(PublishDir)**\*.*" />
+    </ItemGroup>
+    <Delete Files="@(_OldIntermediatePublishFiles)" ContinueOnError="true" />
+    <RemoveDir Directories="$(PublishDir)" ContinueOnError="true" Condition="Exists('$(PublishDir)')" />
+    <MakeDir Directories="$(PublishDir)" Condition="!Exists('$(PublishDir)')" />
+  </Target>
+
+  <Target Name="PackPublishOutput" DependsOnTargets="PreparePublishToIntermediatePaths;Publish">
+    <ItemGroup>
+      <_IntermediatePublishFiles Include="$(PublishDir)**\*.*" />
+      <TfmSpecificPackageFile Include="@(_IntermediatePublishFiles)" PackagePath="build\$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

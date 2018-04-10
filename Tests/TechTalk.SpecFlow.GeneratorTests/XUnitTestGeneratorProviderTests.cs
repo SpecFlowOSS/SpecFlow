@@ -5,6 +5,8 @@ using FluentAssertions;
 using Gherkin.Ast;
 using Microsoft.CSharp;
 using Rhino.Mocks.Constraints;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.CodeDom;
 using Xunit;
 
 using TechTalk.SpecFlow.Generator.UnitTestProvider;

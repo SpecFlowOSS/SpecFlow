@@ -5,6 +5,7 @@ using Moq;
 using Xunit;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.GeneratorTests.Helper;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests

@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.bat = build.bat
 		changelog.txt = changelog.txt
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		Directory.Build.props = Directory.Build.props
 		LICENSE.txt = LICENSE.txt
 		nuget.config = nuget.config
 		PostCompile.bat = PostCompile.bat
@@ -52,6 +53,18 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Tools", "TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj", "{DCD5104A-5301-44B0-A9B8-0041F782603F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.TestProjectGenerator", "SpecFlow.TestGenerator\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator.csproj", "{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.CodeBehindGenerator", "TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj", "{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeBehindGenerator", "CodeBehindGenerator", "{2CB87D66-959B-4C64-891A-86258283B7BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Tools.MsBuild.Generation", "SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj", "{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Rpc", "TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj", "{9135871D-35AF-45E9-867F-E6CBB07C71AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Rpc.Tests", "TechTalk.SpecFlow.Rpc.Tests\TechTalk.SpecFlow.Rpc.Tests.csproj", "{34B224B6-9344-4E95-9708-48BCF041B4BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoDi", "BoDi\BoDi.csproj", "{B79D033C-3DFB-401A-A5F3-E6903081CABF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,6 +156,36 @@ Global
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2FCDBB-0933-4751-BF17-8D9BF9B2055A}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{34B224B6-9344-4E95-9708-48BCF041B4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B224B6-9344-4E95-9708-48BCF041B4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B224B6-9344-4E95-9708-48BCF041B4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B224B6-9344-4E95-9708-48BCF041B4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B224B6-9344-4E95-9708-48BCF041B4BC}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{34B224B6-9344-4E95-9708-48BCF041B4BC}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79D033C-3DFB-401A-A5F3-E6903081CABF}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +199,9 @@ Global
 		{AEDCA17F-4535-4494-8580-E50A497C605C} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{48E0CB65-33D4-49CD-9E22-1AD49D8684B0} = {0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}
 		{7E637287-6E34-4BEC-8226-B052062AEA1F} = {0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}
+		{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31} = {2CB87D66-959B-4C64-891A-86258283B7BB}
+		{9135871D-35AF-45E9-867F-E6CBB07C71AF} = {2CB87D66-959B-4C64-891A-86258283B7BB}
+		{34B224B6-9344-4E95-9708-48BCF041B4BC} = {2CB87D66-959B-4C64-891A-86258283B7BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}

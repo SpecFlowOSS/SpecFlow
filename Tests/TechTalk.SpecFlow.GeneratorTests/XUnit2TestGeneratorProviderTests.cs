@@ -11,6 +11,8 @@ using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 
 using FluentAssertions;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.CodeDom;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {

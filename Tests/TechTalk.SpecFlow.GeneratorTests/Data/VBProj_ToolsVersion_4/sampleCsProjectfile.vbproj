@@ -175,16 +175,16 @@
     <Content Include="app.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Features\Login\SocialLogins.feature">
+    <None Include=".\Features\Login\SocialLogins.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SocialLogins.feature.vb</LastGenOutput>
     </None>
-    <None Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
+    <None Include=".\Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateWorkflowDefinition.feature.vb</LastGenOutput>
       <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
     </None>
-    <None Include="Features\WorkflowInstance\WorkflowInstance.feature">
+    <None Include=".\Features\WorkflowInstance\WorkflowInstance.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WorkflowInstance.feature.vb</LastGenOutput>
     </None>

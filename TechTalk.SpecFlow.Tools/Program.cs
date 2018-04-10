@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using NConsoler;
 using TechTalk.SpecFlow.Generator;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Reporting.MsTestExecutionReport;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport;
@@ -20,7 +19,6 @@ namespace TechTalk.SpecFlow.Tools
         private static void Main(string[] args)
         {
             Consolery.Run(typeof(Program), args);
-            return;
         }
 
         [Action("Generate tests from all feature files in a project")]
@@ -43,10 +41,10 @@ namespace TechTalk.SpecFlow.Tools
             batchGenerator.ProcessProject(specFlowProject, forceGeneration);
         }
 
-        static void batchGenerator_OnError(Generator.Interfaces.FeatureFileInput featureFileInput, Generator.Interfaces.TestGeneratorResult testGeneratorResult)
+        private static void batchGenerator_OnError(Generator.Interfaces.FeatureFileInput featureFileInput, Generator.Interfaces.TestGeneratorResult testGeneratorResult)
         {
             Console.Error.WriteLine("Error file {0}", featureFileInput.ProjectRelativePath);
-            Console.Error.WriteLine(String.Join(Environment.NewLine, testGeneratorResult.Errors.Select(e => String.Format("Line {0}:{1} - {2}", e.Line, e.LinePosition, e.Message))));
+            Console.Error.WriteLine(string.Join(Environment.NewLine, testGeneratorResult.Errors.Select(e => $"Line {e.Line}:{e.LinePosition} - {e.Message}")));
         }
 
         #region Reports

@@ -74,7 +74,7 @@ namespace BoDi
         }
     }
 
-    public interface IObjectContainer: IDisposable
+    public interface IObjectContainer : IDisposable
     {
         /// <summary>
         /// Fired when a new object is created directly by the container. It is not invoked for resolving instance and factory registrations.
@@ -429,7 +429,7 @@ namespace BoDi
                 var genericArguments = typeToResolve.GetGenericArguments();
                 var keyType = genericArguments[0];
                 var targetType = genericArguments[1];
-                var result = (IDictionary)Activator.CreateInstance(typeof (Dictionary<,>).MakeGenericType(genericArguments));
+                var result = (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(genericArguments));
 
                 foreach (var namedRegistration in container.registrations.Where(r => r.Key.Name != null && r.Key.Type == targetType).Select(r => r.Key))
                 {
@@ -461,7 +461,7 @@ namespace BoDi
 
         public event Action<object> ObjectCreated;
 
-        public ObjectContainer(IObjectContainer baseContainer = null) 
+        public ObjectContainer(IObjectContainer baseContainer = null)
         {
             if (baseContainer != null && !(baseContainer is ObjectContainer))
                 throw new ArgumentException("Base container must be an ObjectContainer", "baseContainer");
@@ -487,7 +487,7 @@ namespace BoDi
 
         public void RegisterTypeAs(Type implementationType, Type interfaceType)
         {
-            if(!IsValidTypeMapping(implementationType, interfaceType))
+            if (!IsValidTypeMapping(implementationType, interfaceType))
                 throw new InvalidOperationException("type mapping is not valid");
             RegisterTypeAs(implementationType, interfaceType, null);
         }
@@ -679,7 +679,7 @@ namespace BoDi
         {
             return registrations
                 .Where(x => x.Key.Type == typeof(T))
-                .Select(x => Resolve (x.Key.Type, x.Key.Name) as T);
+                .Select(x => Resolve(x.Key.Type, x.Key.Name) as T);
         }
 
         private object Resolve(Type typeToResolve, ResolutionList resolutionPath, string name)
@@ -725,13 +725,13 @@ namespace BoDi
 
         private bool IsDefaultNamedInstanceDictionaryKey(RegistrationKey keyToResolve)
         {
-            return IsNamedInstanceDictionaryKey(keyToResolve) && 
+            return IsNamedInstanceDictionaryKey(keyToResolve) &&
                    keyToResolve.Type.GetGenericArguments()[0] == typeof(string);
         }
 
         private bool IsSpecialNamedInstanceDictionaryKey(RegistrationKey keyToResolve)
         {
-            return IsNamedInstanceDictionaryKey(keyToResolve) && 
+            return IsNamedInstanceDictionaryKey(keyToResolve) &&
                    keyToResolve.Type.GetGenericArguments()[0].IsEnum;
         }
 
@@ -771,7 +771,7 @@ namespace BoDi
             var registrationToUse = registrationResult ??
                 new KeyValuePair<ObjectContainer, IRegistration>(this, new TypeRegistration(keyToResolve.Type));
 
-            var resolutionPathForResolve = registrationToUse.Key == this ? 
+            var resolutionPathForResolve = registrationToUse.Key == this ?
                 resolutionPath : new ResolutionList();
             var result = registrationToUse.Value.Resolve(registrationToUse.Key, keyToResolve, resolutionPathForResolve);
             if (isImplicitTypeRegistration) // upon successful implicit registration, we register the rule, so that sub context can also get the same resolved value
@@ -838,7 +838,7 @@ namespace BoDi
 
         private bool IsRegisteredNameParameter(ParameterInfo parameterInfo)
         {
-            return parameterInfo.ParameterType == typeof (string) &&
+            return parameterInfo.ParameterType == typeof(string) &&
                    parameterInfo.Name.Equals(REGISTERED_NAME_PARAMETER_NAME);
         }
 
@@ -904,11 +904,11 @@ namespace BoDi
         public void Add(string implementationType, string interfaceType, string name = null)
         {
             BaseAdd(new ContainerRegistrationConfigElement
-                        {
-                            Implementation = implementationType,
-                            Interface = interfaceType,
-                            Name = name
-                        });
+            {
+                Implementation = implementationType,
+                Interface = interfaceType,
+                Name = name
+            });
         }
     }
 
