@@ -8,11 +8,10 @@ namespace TechTalk.SpecFlow.Rpc.Shared
     {
         public static T Read<T>(Stream stream) where T : Response.Response
         {
-            // TODO: unit testing
-            using (var writer = new BinaryReader(stream, Encoding.Default, true))
+            using (var reader = new BinaryReader(stream, Encoding.Default, true))
             {
-                var length = writer.ReadInt32();
-                var requestJson = new string(writer.ReadChars(length));
+                var length = reader.ReadInt32();
+                var requestJson = new string(reader.ReadChars(length));
 
                 return JsonConvert.DeserializeObject<T>(requestJson, SerializationOptions.Current);
             }
@@ -20,7 +19,6 @@ namespace TechTalk.SpecFlow.Rpc.Shared
 
         public static void Write<T>(T request, Stream stream) where T : Response.Response
         {
-            // TODO: unit testing
             var requestJson = JsonConvert.SerializeObject(request, SerializationOptions.Current);
 
             var length = requestJson.Length;
