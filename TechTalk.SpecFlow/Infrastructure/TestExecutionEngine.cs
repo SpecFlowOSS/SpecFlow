@@ -436,10 +436,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             Debug.Assert(value != null);
             Debug.Assert(typeToConvertTo != null);
-
-            if (typeToConvertTo.IsAssignableTo(value.GetType()))
-                return value;
-
+           
             return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
         }
 

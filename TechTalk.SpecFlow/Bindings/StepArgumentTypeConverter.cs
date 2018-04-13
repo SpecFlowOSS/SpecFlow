@@ -44,13 +44,13 @@ namespace TechTalk.SpecFlow.Bindings
         public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
             if (value == null) throw new ArgumentNullException("value");
-
-            if (typeToConvertTo == value.GetType())
-                return value;
-
+            
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
             if (stepTransformation != null)
                 return DoTransform(stepTransformation, value, cultureInfo);
+
+            if (Type.GetType(typeToConvertTo.FullName).IsAssignableFrom(value.GetType()))
+                return value;
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }
@@ -79,13 +79,13 @@ namespace TechTalk.SpecFlow.Bindings
 
         public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
-            if (value == null) throw new ArgumentNullException("value");
-
-            if (typeToConvertTo == value.GetType())
-                return true;
+            if (value == null) throw new ArgumentNullException("value");           
 
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, false);
             if (stepTransformation != null)
+                return true;
+
+            if (Type.GetType(typeToConvertTo.FullName).IsAssignableFrom(value.GetType()))
                 return true;
 
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
