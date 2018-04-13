@@ -120,6 +120,7 @@
     <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ULongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\UShortValueRetriever.cs" />
+    <Compile Include="AsyncHelpers.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\Keywords.cs" />
