@@ -49,7 +49,8 @@ namespace TechTalk.SpecFlow.Bindings
             if (stepTransformation != null)
                 return DoTransform(stepTransformation, value, cultureInfo);
 
-            if (Type.GetType(typeToConvertTo.FullName).IsAssignableFrom(value.GetType()))
+            var convertToType = Type.GetType(typeToConvertTo.FullName);
+            if (convertToType != null && convertToType.IsAssignableFrom(value.GetType()))
                 return value;
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
@@ -85,7 +86,8 @@ namespace TechTalk.SpecFlow.Bindings
             if (stepTransformation != null)
                 return true;
 
-            if (Type.GetType(typeToConvertTo.FullName).IsAssignableFrom(value.GetType()))
+            var convertToType = Type.GetType(typeToConvertTo.FullName);
+            if (convertToType != null && convertToType.IsAssignableFrom(value.GetType()))
                 return true;
 
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
