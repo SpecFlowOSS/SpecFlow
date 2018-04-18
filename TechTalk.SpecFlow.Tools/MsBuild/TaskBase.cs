@@ -12,6 +12,13 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 {
     public abstract class TaskBase : AppDomainIsolatedTask
     {
+        private string _assemblyLocation;
+
+        protected TaskBase()
+        {
+            _assemblyLocation = Path.GetDirectoryName(GetType().Assembly.Location);
+        }
+
         public bool ShowTrace { get; set;}
 
         protected internal CompilerErrorCollection Errors { get; private set; }
@@ -62,6 +69,14 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 
             if (assemblyName.StartsWith("TechTalk.SpecFlow", StringComparison.InvariantCultureIgnoreCase))
             {
+                var expectedAssemblyLocation = Path.Combine(_assemblyLocation, $"{assemblyName}.dll");
+
+                if (File.Exists(expectedAssemblyLocation))
+                {
+                    return Assembly.LoadFrom(expectedAssemblyLocation);
+                }
+
+
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 var assembly = assemblies.Where(a => a.GetName().Name == assemblyName).SingleOrDefault();
 

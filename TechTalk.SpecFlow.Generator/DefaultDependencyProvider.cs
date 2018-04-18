@@ -15,12 +15,15 @@ namespace TechTalk.SpecFlow.Generator
 
         public virtual void RegisterDefaults(ObjectContainer container)
         {
+            container.RegisterTypeAs<FileSystem, IFileSystem>();
+
             container.RegisterTypeAs<GeneratorConfigurationProvider, IGeneratorConfigurationProvider>();
             container.RegisterTypeAs<InProcGeneratorInfoProvider, IGeneratorInfoProvider>();
             container.RegisterTypeAs<TestGenerator, ITestGenerator>();
             container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
             container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
 
+            container.RegisterTypeAs<GeneratorPluginLocator, IGeneratorPluginLocator>();
             container.RegisterTypeAs<GeneratorPluginLoader, IGeneratorPluginLoader>();
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
 

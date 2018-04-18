@@ -35,5 +35,9 @@
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\MsBuild\*">
       <targetFolder>SpecFlow\tools</targetFolder>
     </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\*">
+      <targetFolder>SpecFlow\tools\Licenses</targetFolder>
+    </additionalFiles>
   </ItemGroup>
 </Project>
