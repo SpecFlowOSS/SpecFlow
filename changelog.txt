@@ -2,10 +2,14 @@
 New Features:
 + Added ability to convert type to same type or one of the base types https://github.com/techtalk/SpecFlow/pull/1110
 
-2.3.2
+2.3.2 - 2018-04-17
 Fixes:
 + Fix issue when using environment variables in a generator plugin's path https://github.com/techtalk/SpecFlow/pull/1045
 + Adjust order of plugin search paths https://github.com/techtalk/SpecFlow/pull/1086
++ Improve error message of test generator https://github.com/techtalk/SpecFlow/pull/1089
++ Fix assembly loading of dependencies in MSBuild task https://github.com/techtalk/SpecFlow/pull/1088
++ Make MSBuild Task debuggable https://github.com/techtalk/SpecFlow/pull/1087
++ add licenses for all dependencies that are shipped with the NuGet packages
 
 API Changes:
 + Generator probing functionality was moved from GeneratorPluginLoader to GeneratorPluginLocator https://github.com/techtalk/SpecFlow/pull/1045
