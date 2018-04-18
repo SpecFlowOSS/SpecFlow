@@ -13,5 +13,11 @@ namespace TechTalk.SpecFlow.Reporting.MsTestExecutionReport
         {
             this.XmlTestResult = Path.GetFullPath(xmlTestResult);
         }
+
+        public MsTestExecutionReportParameters(string projectname, string featureLanguage, string xmlTestResult, string outputFile, string xsltFile)
+            : base(projectname, featureLanguage, outputFile, xsltFile)
+        {
+            this.XmlTestResult = Path.GetFullPath(xmlTestResult);
+        }
     }
 }
