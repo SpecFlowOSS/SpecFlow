@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -7,10 +8,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual short GetValue(string value)
         {
-            short returnValue;
-            short.TryParse(value, out returnValue);
-            return returnValue;
-        }
+			short.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out short returnValue);
+	        return returnValue;
+		}
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
