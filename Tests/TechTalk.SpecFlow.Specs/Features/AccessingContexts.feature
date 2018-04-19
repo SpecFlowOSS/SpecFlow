@@ -1,4 +1,4 @@
-﻿Feature: Acessing Contexts
+﻿Feature: Accessing Contexts
 
 Scenario: Should be able to inject ScenarioContext
 	Given the following binding class
