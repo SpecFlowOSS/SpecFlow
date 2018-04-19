@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -9,16 +10,18 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class FeatureFileSteps
     {
         private readonly InputProjectDriver inputProjectDriver;
+        private readonly ProjectDriver _projectDriver;
 
-        public FeatureFileSteps(InputProjectDriver inputProjectDriver)
+        public FeatureFileSteps(InputProjectDriver inputProjectDriver, ProjectDriver projectDriver)
         {
             this.inputProjectDriver = inputProjectDriver;
+            _projectDriver = projectDriver;
         }
 
         [Given(@"there is a feature file in the project as")]
         public void GivenThereIsAFeatureFileInTheProjectAs(string featureFileContent)
         {
-            inputProjectDriver.AddFeatureFile(featureFileContent);
+            _projectDriver.AddFeatureFile(featureFileContent);
         }
 
         [Given(@"a scenario '(.*)' as")]

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -8,11 +9,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly InputProjectDriver inputProjectDriver;
         private readonly HooksDriver hooksDriver;
+        private readonly ProjectDriver _projectDriver;
 
-        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver)
+        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver, ProjectDriver projectDriver)
         {
             this.inputProjectDriver = inputProjectDriver;
             this.hooksDriver = hooksDriver;
+            _projectDriver = projectDriver;
         }
 
         [Given(@"all steps are bound and pass")]
@@ -40,7 +43,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and pass")]
         public void GivenAllStepsAreBoundAndPass(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "//pass", "'pass");
+            _projectDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "//pass", "'pass");
         }
 
         [Given(@"the following hooks?")]
