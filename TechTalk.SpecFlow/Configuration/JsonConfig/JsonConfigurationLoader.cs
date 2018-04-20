@@ -16,9 +16,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
             var jsonConfig = JsonConvert.DeserializeObject<JsonConfig>(jsonContent);
 
-
-            ContainerRegistrationCollection containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
-            ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
             string unitTestProvider = specFlowConfiguration.UnitTestProvider;
@@ -100,8 +97,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
 
             return new SpecFlowConfiguration(ConfigSource.Json,
-                                            containerRegistrationCollection,
-                                            generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             bindingCulture,
                                             unitTestProvider,
