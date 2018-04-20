@@ -52,9 +52,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
-            if (specFlowConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
-
             container.RegisterInstanceAs(specFlowConfiguration);
 
             if (specFlowConfiguration.UnitTestProvider != null)

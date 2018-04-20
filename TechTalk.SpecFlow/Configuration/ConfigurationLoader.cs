@@ -6,7 +6,6 @@ using System.IO;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
-using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Configuration.JsonConfig;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
@@ -19,14 +18,11 @@ namespace TechTalk.SpecFlow.Configuration
 
         SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration);
 
-        SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection);
-
         void TraceConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration);
     }
 
     public class ConfigurationLoader : IConfigurationLoader
     {
-        private readonly AppConfigConfigurationLoader _appConfigConfigurationLoader;
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
 
@@ -34,7 +30,6 @@ namespace TechTalk.SpecFlow.Configuration
         public ConfigurationLoader()
         {
             _jsonConfigurationLoader = new JsonConfigurationLoader();
-            _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
         }
 
         private static CultureInfo DefaultFeatureLanguage => CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
@@ -63,8 +58,6 @@ namespace TechTalk.SpecFlow.Configuration
         public static bool DefaultMarkFeaturesParallelizable => ConfigDefaults.MarkFeaturesParallelizable;
         public static string[] DefaultSkipParallelizableMarkerForTags => ConfigDefaults.SkipParallelizableMarkerForTags;
 
-        public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
-
         public bool HasJsonConfig
         {
             get
@@ -85,9 +78,6 @@ namespace TechTalk.SpecFlow.Configuration
             {
                 case ConfigSource.Default:
                     return GetDefault();
-                case ConfigSource.AppConfig:
-                    return LoadAppConfig(specFlowConfiguration,
-                        ConfigurationSectionHandler.CreateFromXml(specFlowConfigurationHolder.Content));
                 case ConfigSource.Json:
                     return LoadJson(specFlowConfiguration, specFlowConfigurationHolder.Content);
                 default:
@@ -100,15 +90,7 @@ namespace TechTalk.SpecFlow.Configuration
             if (HasJsonConfig)
                 return LoadJson(specFlowConfiguration);
 
-            if (HasAppConfig)
-                return LoadAppConfig(specFlowConfiguration);
-
             return GetDefault();
-        }
-
-        public SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection)
-        {
-            return LoadAppConfig(specFlowConfiguration, specFlowConfigSection);
         }
 
         public void TraceConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration)
@@ -117,9 +99,6 @@ namespace TechTalk.SpecFlow.Configuration
             {
                 case ConfigSource.Default:
                     traceListener.WriteToolOutput("Using default config");
-                    break;
-                case ConfigSource.AppConfig:
-                    traceListener.WriteToolOutput("Using app.config");
                     break;
                 case ConfigSource.Json:
                     traceListener.WriteToolOutput("Using specflow.json");
@@ -133,8 +112,6 @@ namespace TechTalk.SpecFlow.Configuration
         public static SpecFlowConfiguration GetDefault()
         {
             return new SpecFlowConfiguration(ConfigSource.Default,
-                new ContainerRegistrationCollection(), 
-                new ContainerRegistrationCollection(), 
                 DefaultFeatureLanguage, 
                 DefaultBindingCulture, 
                 DefaultUnitTestProvider, 
@@ -151,20 +128,6 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultMarkFeaturesParallelizable,
                 DefaultSkipParallelizableMarkerForTags
                 );
-        }
-
-
-        private SpecFlowConfiguration LoadAppConfig(SpecFlowConfiguration specFlowConfiguration)
-        {
-            var configSection = ConfigurationManager.GetSection("specFlow") as ConfigurationSectionHandler;
-
-            return LoadAppConfig(specFlowConfiguration, configSection);
-        }
-
-        private SpecFlowConfiguration LoadAppConfig(SpecFlowConfiguration specFlowConfiguration,
-            ConfigurationSectionHandler specFlowConfigSection)
-        {
-            return _appConfigConfigurationLoader.LoadAppConfig(specFlowConfiguration, specFlowConfigSection);
         }
 
 

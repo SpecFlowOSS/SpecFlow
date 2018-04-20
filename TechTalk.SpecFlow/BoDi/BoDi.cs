@@ -622,36 +622,6 @@ namespace BoDi
             registrations.Remove(registrationKey);
         }
 
-#if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
-        public void RegisterFromConfiguration()
-        {
-            var section = (BoDiConfigurationSection)ConfigurationManager.GetSection("boDi");
-            if (section == null)
-                return;
-
-            RegisterFromConfiguration(section.Registrations);
-        }
-
-        public void RegisterFromConfiguration(ContainerRegistrationCollection containerRegistrationCollection)
-        {
-            if (containerRegistrationCollection == null)
-                return;
-
-            foreach (ContainerRegistrationConfigElement registrationConfigElement in containerRegistrationCollection)
-            {
-                RegisterFromConfiguration(registrationConfigElement);
-            }
-        }
-
-        private void RegisterFromConfiguration(ContainerRegistrationConfigElement registrationConfigElement)
-        {
-            Type interfaceType = Type.GetType(registrationConfigElement.Interface, true);
-            Type implementationType = Type.GetType(registrationConfigElement.Implementation, true);
-
-            RegisterTypeAs(implementationType, interfaceType, string.IsNullOrEmpty(registrationConfigElement.Name) ? null : registrationConfigElement.Name);
-        }
-#endif
-
         #endregion
 
         #region Resolve
@@ -870,72 +840,4 @@ namespace BoDi
             resolvedObjects.Clear();
         }
     }
-
-    #region Configuration handling
-#if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
-
-    public class BoDiConfigurationSection : ConfigurationSection
-    {
-        [ConfigurationProperty("", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
-        [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]
-        public ContainerRegistrationCollection Registrations
-        {
-            get { return (ContainerRegistrationCollection)this[""]; }
-            set { this[""] = value; }
-        }
-    }
-
-    public class ContainerRegistrationCollection : ConfigurationElementCollection
-    {
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new ContainerRegistrationConfigElement();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            var registrationConfigElement = ((ContainerRegistrationConfigElement)element);
-            string elementKey = registrationConfigElement.Interface;
-            if (registrationConfigElement.Name != null)
-                elementKey = elementKey + "/" + registrationConfigElement.Name;
-            return elementKey;
-        }
-
-        public void Add(string implementationType, string interfaceType, string name = null)
-        {
-            BaseAdd(new ContainerRegistrationConfigElement
-                        {
-                            Implementation = implementationType,
-                            Interface = interfaceType,
-                            Name = name
-                        });
-        }
-    }
-
-    public class ContainerRegistrationConfigElement : ConfigurationElement
-    {
-        [ConfigurationProperty("as", IsRequired = true)]
-        public string Interface
-        {
-            get { return (string)this["as"]; }
-            set { this["as"] = value; }
-        }
-
-        [ConfigurationProperty("type", IsRequired = true)]
-        public string Implementation
-        {
-            get { return (string)this["type"]; }
-            set { this["type"] = value; }
-        }
-
-        [ConfigurationProperty("name", IsRequired = false, DefaultValue = null)]
-        public string Name
-        {
-            get { return (string)this["name"]; }
-            set { this["name"] = value; }
-        }
-    }
-
-#endif
-    #endregion
 }
