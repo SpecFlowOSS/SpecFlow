@@ -6,14 +6,16 @@
   </Target>
 
   <!--<Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">-->
-  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" >
+  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowGeneratedFiles)">
+  <!--<Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" >-->
     <PropertyGroup>
       <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">Features.Generated</SpecFlowCodeBehindOutputPath>
     </PropertyGroup>
 
     <ItemGroup Condition=" '@(SpecFlowFeatureFiles)' == ''">  
       <SpecFlowFeatureFiles Include="**\*.feature"/>
-      <SpecFlowFeatureFiles Include="**\*.feature.xlsx" /> 
+      <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
+      <SpecFlowGeneratedFiles />
     </ItemGroup>
     
     <GenerateFeatureFileCodeBehindTask
