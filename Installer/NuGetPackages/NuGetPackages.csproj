@@ -26,18 +26,17 @@
 
   </ItemGroup>
 
-  
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
   
-  <Import Project="$(USERPROFILE)\.nuget\packages\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets" Condition="Exists('$(USERPROFILE)\.nuget\packages\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets')" />
-  <Import Project="$(USERPROFILE)\.nuget\packages\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets" Condition="Exists('$(USERPROFILE)\.nuget\packages\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets')" />
+  <Import Project="$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets" Condition="Exists('$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets')" />
+  <Import Project="$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets" Condition="Exists('$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets')" />
   
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(USERPROFILE)\.nuget\packages\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(USERPROFILE)\.nuget\packages\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets'))" />
-    <Error Condition="!Exists('$(USERPROFILE)\.nuget\packages\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(USERPROFILE)\.nuget\packages\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets'))" />
+    <Error Condition="!Exists('$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets'))" />
   </Target>
 </Project>
