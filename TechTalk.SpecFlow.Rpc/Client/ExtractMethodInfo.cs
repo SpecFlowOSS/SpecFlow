@@ -38,14 +38,16 @@ namespace TechTalk.SpecFlow.Rpc.Client
             int index = 0;
             foreach (var bodyArgument in body.Arguments)
             {
-                if (bodyArgument is ConstantExpression constantExpression)
+                switch(bodyArgument)
                 {
-                    arguments[index] = constantExpression.Value;
-                }
-
-                if (bodyArgument is MemberExpression memberExpression)
-                {
-                    arguments[index] = GetValue(memberExpression);
+                    case ConstantExpression constantExpression:
+                        arguments[index] = constantExpression.Value;
+                        break;
+                    case MemberExpression memberExpression:
+                        arguments[index] = GetValue(memberExpression);
+                        break;
+                    default:
+                        throw new NotSupportedException($"Expression of type {bodyArgument.GetType()} is not supported");
                 }
 
                 index++;
