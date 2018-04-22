@@ -46,6 +46,9 @@ namespace TechTalk.SpecFlow.Rpc.Client
                     case MemberExpression memberExpression:
                         arguments[index] = GetValue(memberExpression);
                         break;
+                    case BinaryExpression binaryExpression:
+                        arguments[index] = GetValue(binaryExpression);
+                        break;
                     default:
                         throw new NotSupportedException($"Expression of type {bodyArgument.GetType()} is not supported");
                 }
@@ -55,7 +58,7 @@ namespace TechTalk.SpecFlow.Rpc.Client
             return arguments;
         }
 
-        private object GetValue(MemberExpression member)
+        private object GetValue(Expression member)
         {
             var objectMember = Expression.Convert(member, typeof(object));
 

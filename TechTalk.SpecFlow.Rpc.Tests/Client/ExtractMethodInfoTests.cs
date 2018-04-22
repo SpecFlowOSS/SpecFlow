@@ -119,5 +119,13 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Client
 
             AssertInterfaceMethodInfo(interfaceFunctionInfo, "MethodWithoutParameter");
         }
+
+        [Fact]
+        public void ExtractMethod_ExpressionArgument()
+        {
+            var interfaceMethodInfo = _extractMethodInfo
+                .ExtractMethod(c => c.MethodWithParameter("local_variable" + 1));
+            AssertInterfaceMethodInfo(interfaceMethodInfo, "MethodWithParameter", "local_variable1");
+        }
     }
 }
