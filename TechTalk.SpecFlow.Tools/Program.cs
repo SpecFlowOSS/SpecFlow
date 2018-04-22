@@ -47,12 +47,12 @@ namespace TechTalk.SpecFlow.Tools
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(parameters.ProjectFile));
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
 
-            batchGenerator.OnError += batchGenerator_OnError;
+            batchGenerator.OnError += BatchGenerator_OnError;
 
             batchGenerator.ProcessProject(specFlowProject, parameters.ForceGeneration);
         }
 
-        static void batchGenerator_OnError(Generator.Interfaces.FeatureFileInput featureFileInput, Generator.Interfaces.TestGeneratorResult testGeneratorResult)
+        static void BatchGenerator_OnError(Generator.Interfaces.FeatureFileInput featureFileInput, Generator.Interfaces.TestGeneratorResult testGeneratorResult)
         {
             Console.Error.WriteLine("Error file {0}", featureFileInput.ProjectRelativePath);
             Console.Error.WriteLine(String.Join(Environment.NewLine, testGeneratorResult.Errors.Select(e => String.Format("Line {0}:{1} - {2}", e.Line, e.LinePosition, e.Message))));
