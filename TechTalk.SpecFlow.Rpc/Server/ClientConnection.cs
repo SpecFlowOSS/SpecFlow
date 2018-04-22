@@ -65,8 +65,15 @@ namespace TechTalk.SpecFlow.Rpc.Server
                     return new ConnectionData(CompletionReason.CompilationNotStarted);
                 }
 
-                return await ExecuteRequest(request, container, cancellationToken).ConfigureAwait(false);
-
+                try
+                {
+                    return await ExecuteRequest(request, container, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    LogException(e, "Error executing request.");
+                    return new ConnectionData(CompletionReason.ClientException);
+                }
             }
             finally
             {

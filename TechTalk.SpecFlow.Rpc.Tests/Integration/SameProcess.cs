@@ -41,12 +41,31 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
         private BuildServerController _buildServerController;
         private readonly ObjectContainer _container;
         private readonly TestServerInterface _featureCodeBehindGeneratorMock;
+        private bool _serverStarted;
+        private Exception _serverStartupException;
 
 
         private void Start()
         {
-            _buildServerController = new BuildServerController(_container);
-            _buildServerController.Run(4635);
+            try
+            {
+                _buildServerController = new BuildServerController(_container);
+                _buildServerController.Run(4635);
+                _serverStarted = true;
+            }
+            catch (Exception e)
+            {
+                _serverStartupException = e;
+            }
+        }
+
+        private void EnsureServerStarted()
+        {
+            Thread.Sleep(1000);
+            if (!_serverStarted)
+            {
+                throw new InvalidOperationException("Server startup exception", _serverStartupException);
+            }
         }
 
 
@@ -57,8 +76,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
             var thread = new Thread(Start);
             thread.Start();
-
-            Thread.Sleep(1000);
+            EnsureServerStarted();
 
             using (var client = new Client<ITestServerInterface>(port))
             {
@@ -75,8 +93,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
             var thread = new Thread(Start);
             thread.Start();
-
-            Thread.Sleep(1000);
+            EnsureServerStarted();
 
             using (var client = new Client<ITestServerInterface>(port))
             {
@@ -95,8 +112,7 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
             var thread = new Thread(Start);
             thread.Start();
-
-            Thread.Sleep(1000);
+            EnsureServerStarted();
 
             using (var client = new Client<ITestServerInterface>(port))
             {
