@@ -128,7 +128,19 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
         {
-            return new MsBuildProjectReader(new GeneratorConfigurationProvider(new ConfigurationLoader()), new MSBuildRelativePathParser()).ReadSpecFlowProject(projectFilePath);
+            var configurationProvider = new GeneratorConfigurationProvider(new ConfigurationLoader());
+            var useMSBuildApi = Environment.GetEnvironmentVariable("SPECFLOW_USE_MSBUILDAPI") == "1";
+            ISpecFlowProjectReader projectReader;
+            if (useMSBuildApi)
+            {
+                projectReader = new MsBuildApiProjectReader(configurationProvider);
+            }
+            else
+            {
+                projectReader = new MsBuildProjectReader(configurationProvider, new MSBuildRelativePathParser());
+            }
+
+            return projectReader.ReadSpecFlowProject(projectFilePath);
         }
 
         private string GetAppConfigFile(XDocument xDocument, bool newProjectSystem, string projectFolder)
