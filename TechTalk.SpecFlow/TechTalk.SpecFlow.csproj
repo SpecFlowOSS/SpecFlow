@@ -32,6 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="BoDi" Version="1.4.0-alpha" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
@@ -41,10 +42,6 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BoDi\BoDi.csproj" />
   </ItemGroup>
 
 

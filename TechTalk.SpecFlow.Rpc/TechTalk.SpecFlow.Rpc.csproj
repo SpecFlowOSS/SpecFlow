@@ -10,10 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BoDi\BoDi.csproj" />
+    <PackageReference Include="BoDi" Version="1.4.0-alpha" />
   </ItemGroup>
 
 </Project>
