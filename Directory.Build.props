@@ -1,5 +1,6 @@
 <Project>
  <PropertyGroup>
    <LangVersion>latest</LangVersion>
- </PropertyGroup>
+   <NuGetToolsPath>$(MSBuildThisFileDirectory)\packages\NuGet.CommandLine.4.5.1\tools\</NuGetToolsPath>
+  </PropertyGroup>
 </Project>
