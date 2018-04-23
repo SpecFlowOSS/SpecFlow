@@ -169,7 +169,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableDecimal.Should().Be(19.78M);
         }
 
-        [Test]
+		[Test]
         public void Sets_bool_values()
         {
             var table = new Table("Field", "Value");
