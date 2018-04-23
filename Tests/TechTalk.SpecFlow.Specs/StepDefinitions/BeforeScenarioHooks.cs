@@ -8,15 +8,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public sealed class BeforeScenarioHooks
     {
-        [BeforeTestRun]
-        public static void BeforeTestRun()
-        {
-            var directoryForTestProjects = InputProjectDriver.DetermineDirectoryForTestProjects();
+        //[BeforeTestRun]
+        //public static void BeforeTestRun()
+        //{
+        //    var directoryForTestProjects = InputProjectDriver.DetermineDirectoryForTestProjects();
 
-            if (Directory.Exists(directoryForTestProjects))
-            {
-                Directory.Delete(directoryForTestProjects, true);
-            }
-        }
+        //    if (Directory.Exists(directoryForTestProjects))
+        //    {
+        //        Directory.Delete(directoryForTestProjects, true);
+        //    }
+        //}
     }
 }

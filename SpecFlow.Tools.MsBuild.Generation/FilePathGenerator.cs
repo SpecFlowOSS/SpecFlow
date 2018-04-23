@@ -30,9 +30,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             string featureFileFullPath = Path.GetFullPath(Path.Combine(projectFolder, relativeOutputPath, featureFileName));
             string featureFileDirPath = Path.GetDirectoryName(featureFileFullPath);
 
-            return Path.Combine(
-                featureFileDirPath,
-                generatedCodeBehindFileName);
+            return Path.Combine(featureFileDirPath, generatedCodeBehindFileName);
         }
     }
 }
