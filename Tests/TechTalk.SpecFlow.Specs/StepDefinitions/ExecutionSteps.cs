@@ -51,6 +51,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             {
                 var testExecutionResult = _vsTestExecution.ExecuteTests();
             }
+            else
+            {
+                throw new Exception(compileResult.Output);
+            }
 
             //configurationDriver.UnitTestProviderName.Should().Be("NUnit");
 

@@ -27,10 +27,11 @@
       
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>
+  </Target>
 
-   
+  <Target Name="SpecFlow_UpdateCompileItemGroup">
     <ItemGroup>
-      <Compile Update="@(SpecFlowGeneratedFiles)"/>
+      <Compile Include="@(SpecFlowGeneratedFiles)"/>
     </ItemGroup>
   </Target>
 
