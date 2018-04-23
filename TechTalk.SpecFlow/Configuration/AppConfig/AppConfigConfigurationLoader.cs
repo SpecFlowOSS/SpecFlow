@@ -110,9 +110,14 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
+            var pluginNames = pluginDescriptors.Select(m => m.Name).ToList();
+
             foreach (PluginConfigElement plugin in configSection.Plugins)
             {
-                pluginDescriptors.Add(plugin.ToPluginDescriptor());
+                var pluginDescriptor = plugin.ToPluginDescriptor();
+                if (pluginNames.Contains(pluginDescriptor.Name))
+                    continue;
+                pluginDescriptors.Add(pluginDescriptor);
             }
 
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 
