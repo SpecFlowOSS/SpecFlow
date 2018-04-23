@@ -2,6 +2,7 @@
 Fixes:
 + Fix issue when using environment variables in a generator plugin's path https://github.com/techtalk/SpecFlow/pull/1045
 + Adjust order of plugin search paths https://github.com/techtalk/SpecFlow/pull/1086
++ Resolved loading plugins multiple times. Issue: https://github.com/techtalk/SpecFlow/issues/888 
 
 API Changes:
 + Generator probing functionality was moved from GeneratorPluginLoader to GeneratorPluginLocator https://github.com/techtalk/SpecFlow/pull/1045
