@@ -1,34 +1,41 @@
 ﻿<Project>
 
-    
-  <Target Name="GenerateCodeBehind" BeforeTargets="PreBuildEvent" DependsOnTargets="BeforeUpdateFeatureFilesInProject;UpdateFeatureFilesInProject;AfterUpdateFeatureFilesInProject">
-    
+  
+  <Target Name="GenerateCodeBehind" BeforeTargets="PreBuildEvent" DependsOnTargets="$(SpecFlow_TargetOrder)">
+
   </Target>
 
-  <!--<Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">-->
-  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowGeneratedFiles)">
-  <!--<Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" >-->
+  
+  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" >
+    
     <PropertyGroup>
       <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">Features.Generated</SpecFlowCodeBehindOutputPath>
     </PropertyGroup>
 
-    <ItemGroup Condition=" '@(SpecFlowFeatureFiles)' == ''">  
+    <ItemGroup Condition=" '@(SpecFlowFeatureFiles)' == ''">
       <SpecFlowFeatureFiles Include="**\*.feature"/>
       <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
-      <SpecFlowGeneratedFiles />
     </ItemGroup>
-    
+
+  </Target>
+
+  <Target Name="GenerateFeatureCodeBehindFiles" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)\%(RelativeDir)%(Filename).feature.cs')" DependsOnTargets="UpdateFeatureFilesInProject">
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
-      FeatureFiles="@(SpecFlowFeatureFiles)"
->
+      FeatureFiles="@(SpecFlowFeatureFiles)">
+      
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>
+
+   
+    <ItemGroup>
+      <Compile Update="@(SpecFlowGeneratedFiles)"/>
+    </ItemGroup>
   </Target>
 
   <Target Name="BeforeUpdateFeatureFilesInProject">
-      
+
   </Target>
 
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
