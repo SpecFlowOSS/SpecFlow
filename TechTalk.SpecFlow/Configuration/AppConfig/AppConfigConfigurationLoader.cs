@@ -118,6 +118,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 if (pluginNames.Contains(pluginDescriptor.Name))
                     continue;
                 pluginDescriptors.Add(pluginDescriptor);
+                pluginNames.Add(plugin.Name);
             }
 
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 

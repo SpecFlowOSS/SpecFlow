@@ -99,6 +99,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                     if (pluginNames.Contains(pluginEntry.Name))
                         continue;
                     pluginDescriptors.Add(new PluginDescriptor(pluginEntry.Name, pluginEntry.Path, pluginEntry.Type, pluginEntry.Parameters));
+                    pluginNames.Add(pluginEntry.Name);
                 }
             }
 
