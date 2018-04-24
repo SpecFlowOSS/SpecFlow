@@ -5,8 +5,9 @@
     <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
-    <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
+    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
+    <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
   </PropertyGroup>
 
   <ItemGroup>
