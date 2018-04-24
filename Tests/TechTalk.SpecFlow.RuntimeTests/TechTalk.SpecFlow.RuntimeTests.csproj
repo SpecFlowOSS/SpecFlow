@@ -27,7 +27,6 @@
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
-    <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
