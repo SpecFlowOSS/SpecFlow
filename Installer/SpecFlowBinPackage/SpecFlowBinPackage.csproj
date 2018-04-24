@@ -73,15 +73,14 @@
     <PackageDir>$(TargetDir)\package</PackageDir>
     <PdbDir>$(TargetDir)\pdb</PdbDir>
   </PropertyGroup>
-  
   <Import Project="..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets'))" />
   </Target>
-  
   <Target Name="AfterBuild">
     <ItemGroup>
       <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed.dll" />
@@ -108,4 +107,5 @@
     <Zip Files="@(BinPackageFiles)" Flatten="false" WorkingDirectory="$(PackageDir)" ZipFileName="$(TargetDir)\SpecFlowBinPackage.zip" />
     <Zip Files="@(PdbPackageFiles)" Flatten="false" WorkingDirectory="$(PdbDir)" ZipFileName="$(TargetDir)\SpecFlowSymbolPackage.zip" />
   </Target>
+  <Import Project="..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" />
 </Project>
