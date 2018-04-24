@@ -5,20 +5,9 @@ image: Visual Studio 2017
 branches:
   only:
   - master
-
-environment:
-  SpecFlowBaseVersion: 2.4.0
-  SpecFlowPackageVersion: "2.4.0-ci$(APPVEYOR_BUILD_NUMBER)"
   
 cache:
   - packages -> **\packages.config
-
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: "$(SpecFlowBaseVersion)"
-  assembly_file_version: "$(SpecFlowBaseVersion)"
-  assembly_informational_version: "$(SpecFlowPackageVersion)"
 
 nuget:
   project_feed: true
