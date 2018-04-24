@@ -4,8 +4,9 @@
  </PropertyGroup>
 
  <PropertyGroup>
-   <SpecFlow_Runtime_TFM>net46</SpecFlow_Runtime_TFM>
+   <SpecFlow_Runtime_TFM>net45</SpecFlow_Runtime_TFM>
    <SpecFlow_Generator_TFM>net46</SpecFlow_Generator_TFM>
    <SpecFlow_Test_TFM>net46</SpecFlow_Test_TFM>
+   <SpecFlow_Tools_TFM>net46</SpecFlow_Tools_TFM>
  </PropertyGroup>
 </Project>
