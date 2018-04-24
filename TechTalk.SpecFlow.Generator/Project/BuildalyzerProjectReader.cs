@@ -3,40 +3,37 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
+using Buildalyzer;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
-    public class MsBuildApiProjectReader : ISpecFlowProjectReader
+    public class BuildalyzerProjectReader : ISpecFlowProjectReader
     {
         private readonly IGeneratorConfigurationProvider configurationLoader;
 
-        public MsBuildApiProjectReader(IGeneratorConfigurationProvider configurationLoader)
+        public BuildalyzerProjectReader(IGeneratorConfigurationProvider configurationLoader)
         {
             this.configurationLoader = configurationLoader;
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
-            var currentVersion = Microsoft.Build.Utilities.ToolLocationHelper.CurrentToolsVersion;
-            var project = ProjectCollection.GlobalProjectCollection.LoadProject(projectFilePath);
+            var manager = new AnalyzerManager();
+            var analyzer = manager.GetProject(projectFilePath);
+            var project = analyzer.Project;
 
-            string projectFolder = Path.GetDirectoryName(projectFilePath);
+            var projectFolder = Path.GetDirectoryName(projectFilePath);
 
             var specFlowProject = new SpecFlowProject();
             specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
             specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
             specFlowProject.ProjectSettings.AssemblyName = project.Properties.First(x => x.Name == "AssemblyName").EvaluatedValue;
             specFlowProject.ProjectSettings.DefaultNamespace = project.Properties.First(x => x.Name == "RootNamespace").EvaluatedValue;
-
-
-
             specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(project);
 
-            foreach (ProjectItem item in project.FeatureFiles())
+            foreach (var item in project.FeatureFiles())
             {
                 var featureFile = specFlowProject.GetOrCreateFeatureFile(item.EvaluatedInclude);
                 var ns = item.GetMetadataValue("CustomToolNamespace");
@@ -48,7 +45,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                 }
             }
 
-            ProjectItem appConfigItem = project.ApplicationConfigurationFile();
+            var appConfigItem = project.ApplicationConfigurationFile();
             if (appConfigItem != null)
             {
                 var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);

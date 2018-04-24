@@ -133,7 +133,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             ISpecFlowProjectReader projectReader;
             if (useMSBuildApi)
             {
-                projectReader = new MsBuildApiProjectReader(configurationProvider);
+                projectReader = new BuildalyzerProjectReader(configurationProvider);
             }
             else
             {
