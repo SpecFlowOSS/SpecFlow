@@ -34,8 +34,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Integrati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyProjectForHoldingTheNUnit2Reference", "Tests\DummyProjectForHoldingTheNUnit2Reference\DummyProjectForHoldingTheNUnit2Reference.csproj", "{AEDCA17F-4535-4494-8580-E50A497C605C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Reporting", "TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj", "{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.GeneratorTests", "Tests\TechTalk.SpecFlow.GeneratorTests\TechTalk.SpecFlow.GeneratorTests.csproj", "{48E0CB65-33D4-49CD-9E22-1AD49D8684B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.RuntimeTests", "Tests\TechTalk.SpecFlow.RuntimeTests\TechTalk.SpecFlow.RuntimeTests.csproj", "{7E637287-6E34-4BEC-8226-B052062AEA1F}"
@@ -104,12 +102,6 @@ Global
 		{AEDCA17F-4535-4494-8580-E50A497C605C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEDCA17F-4535-4494-8580-E50A497C605C}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{AEDCA17F-4535-4494-8580-E50A497C605C}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{48E0CB65-33D4-49CD-9E22-1AD49D8684B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48E0CB65-33D4-49CD-9E22-1AD49D8684B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48E0CB65-33D4-49CD-9E22-1AD49D8684B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
