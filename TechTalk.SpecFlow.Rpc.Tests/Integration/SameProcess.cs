@@ -2,26 +2,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
+using FluentAssertions;
 using TechTalk.SpecFlow.Rpc.Client;
 using TechTalk.SpecFlow.Rpc.Server;
+using TechTalk.SpecFlow.Rpc.Shared;
 using Xunit;
 
 namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 {
-
-    public interface ITestServerInterface
-    {
-        string MethodWithParameter(string parameter);
-    }
-
-    public class TestServerInterface : ITestServerInterface
-    {
-        public string MethodWithParameter(string parameter)
-        {
-            return parameter;
-        }
-    }
-
     public class SameProcess : IDisposable
     {
         public SameProcess()
@@ -31,6 +19,8 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
             _featureCodeBehindGeneratorMock = new TestServerInterface();
 
             _container.RegisterInstanceAs<ITestServerInterface>(_featureCodeBehindGeneratorMock);
+
+            _freePort = FindFreePort.GetAvailablePort(4635);
         }
 
         public void Dispose()
@@ -43,15 +33,16 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
         private readonly TestServerInterface _featureCodeBehindGeneratorMock;
         private bool _serverStarted;
         private Exception _serverStartupException;
+        private readonly int _freePort;
 
 
         private void Start()
         {
             try
             {
-                _buildServerController = new BuildServerController(_container);
-                _buildServerController.Run(4635);
                 _serverStarted = true;
+                _buildServerController = new BuildServerController(_container);
+                _buildServerController.Run(_freePort);
             }
             catch (Exception e)
             {
@@ -61,24 +52,42 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
 
         private void EnsureServerStarted()
         {
-            Thread.Sleep(1000);
-            if (!_serverStarted)
+            using (var client = new Client<ITestServerInterface>(_freePort))
             {
-                throw new InvalidOperationException("Server startup exception", _serverStartupException);
+                var task = client.WaitForServer();
+
+                bool isCompletedSuccessfully = task.Wait(TimeSpan.FromSeconds(10));
+
+                if (!isCompletedSuccessfully)
+                {
+                    throw new InvalidOperationException("Server startup exception", _serverStartupException);
+                }
             }
         }
 
 
         [Fact]
+        public async Task ComplexClient_WaitForServer()
+        {
+            var thread = new Thread(Start);
+            thread.Start();
+
+            using (var client = new Client<ITestServerInterface>(_freePort))
+            {
+                await client.WaitForServer();
+            }
+
+            _serverStarted.Should().BeTrue();
+        }
+
+        [Fact]
         public async Task ComplexClient_SingleCall()
         {
-            int port = 4635;
-
             var thread = new Thread(Start);
             thread.Start();
             EnsureServerStarted();
 
-            using (var client = new Client<ITestServerInterface>(port))
+            using (var client = new Client<ITestServerInterface>(_freePort))
             {
                 var result = await client.Execute(c => c.MethodWithParameter("FeatureFilePath")).ConfigureAwait(false);
 
@@ -89,13 +98,11 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
         [Fact]
         public async Task ComplexClient_MultipleCalls()
         {
-            int port = 4635;
-
             var thread = new Thread(Start);
             thread.Start();
             EnsureServerStarted();
 
-            using (var client = new Client<ITestServerInterface>(port))
+            using (var client = new Client<ITestServerInterface>(_freePort))
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -108,13 +115,11 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
         [Fact]
         public async Task ComplexClient_Shutdown()
         {
-            int port = 4635;
-
             var thread = new Thread(Start);
             thread.Start();
             EnsureServerStarted();
 
-            using (var client = new Client<ITestServerInterface>(port))
+            using (var client = new Client<ITestServerInterface>(_freePort))
             {
                 await client.ShutdownServer();
             }
