@@ -13,9 +13,9 @@ Background:
 Scenario: Should be able to execute a simple passing scenario
 	Given all steps are bound and pass
 	When I execute the tests
-	#Then the execution summary should contain
-	#	| Total | Succeeded |
-	#	| 1     | 1         |
+	Then the execution result should contain
+		| Total | TotalSucceeded |
+		| 1     | 1              |
 
 
 Scenario: Should be able to execute a simple failing scenario

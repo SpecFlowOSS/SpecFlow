@@ -5,6 +5,7 @@ using SpecFlow.TestProjectGenerator.NewApi._3_NuGet;
 using SpecFlow.TestProjectGenerator.NewApi._4_Compile;
 using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 using TechTalk.SpecFlow.Specs.Drivers;
+using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -47,19 +48,19 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             var compileResult = _compiler.Run();
 
-            if (compileResult.Successful)
-            {
-                var testExecutionResult = _vsTestExecution.ExecuteTests();
-            }
-            else
+            if (!compileResult.Successful)
             {
                 throw new Exception(compileResult.Output);
             }
 
-            //configurationDriver.UnitTestProviderName.Should().Be("NUnit");
+            _vsTestExecution.ExecuteTests();
+        }
 
-            //projectSteps.EnsureCompiled();
-            //nUnit3TestExecutionDriver.Execute();
+        [Then(@"the execution result should contain")]
+        public void ThenTheExecutionResultShouldContain(Table expectedTestExecutionResult)
+        {
+            _vsTestExecution.LastTestExecutionResult.Should().NotBeNull();
+            expectedTestExecutionResult.CompareToInstance(_vsTestExecution.LastTestExecutionResult);
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
