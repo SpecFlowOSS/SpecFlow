@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the following binding methods?")]
         public void GivenTheFollowingBindings(string bindingCode)
         {
-            inputProjectDriver.AddBindingCode(bindingCode);
+            _projectDriver.AddBindingCode(bindingCode);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)'")]

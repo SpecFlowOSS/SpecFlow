@@ -62,7 +62,7 @@
   </Target>
 
   <Target Name="PostcompileScript" AfterTargets="Build">
-    <Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />
+    <!--<Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />-->
   </Target>
 
  

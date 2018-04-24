@@ -2,19 +2,16 @@
 using System.Linq;
 using System.Text;
 using SpecFlow.TestProjectGenerator.NewApi.Driver;
-using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class FeatureFileSteps
     {
-        private readonly InputProjectDriver inputProjectDriver;
         private readonly ProjectDriver _projectDriver;
 
-        public FeatureFileSteps(InputProjectDriver inputProjectDriver, ProjectDriver projectDriver)
+        public FeatureFileSteps(ProjectDriver projectDriver)
         {
-            this.inputProjectDriver = inputProjectDriver;
             _projectDriver = projectDriver;
         }
 
@@ -28,7 +25,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenAScenarioSimpleScenarioAs(string title, string scenarioContent)
         {
 
-            inputProjectDriver.AddFeatureFile(string.Format(@"Feature: Feature {0}
+            _projectDriver.AddFeatureFile(string.Format(@"Feature: Feature {0}
 Scenario: {1}
 {2}
                 ", Guid.NewGuid(), title, scenarioContent));
@@ -40,38 +37,34 @@ Scenario: {1}
             StringBuilder featureBuilder = new StringBuilder();
             featureBuilder.AppendLine("Feature: " + featureTitle);
 
-            foreach (var scenario in Enumerable.Range(0, passCount).Select(
-                i => string.Format("Scenario: passing scenario nr {0}\r\nWhen the step pass in " + featureTitle, i)))
+            foreach (var scenario in Enumerable.Range(0, passCount).Select(i => string.Format("Scenario: passing scenario nr {0}\r\nWhen the step pass in " + featureTitle, i)))
             {
                 featureBuilder.AppendLine(scenario);
                 featureBuilder.AppendLine();
             }
 
-            foreach (var scenario in Enumerable.Range(0, failCount).Select(
-                i => string.Format("Scenario: failing scenario nr {0}\r\nWhen the step fail in " + featureTitle, i)))
+            foreach (var scenario in Enumerable.Range(0, failCount).Select(i => string.Format("Scenario: failing scenario nr {0}\r\nWhen the step fail in " + featureTitle, i)))
             {
                 featureBuilder.AppendLine(scenario);
                 featureBuilder.AppendLine();
             }
 
-            foreach (var scenario in Enumerable.Range(0, pendingCount).Select(
-                i => string.Format("Scenario: pending scenario nr {0}\r\nWhen the step is pending", i)))
+            foreach (var scenario in Enumerable.Range(0, pendingCount).Select(i => $"Scenario: pending scenario nr {i}\r\nWhen the step is pending"))
             {
                 featureBuilder.AppendLine(scenario);
                 featureBuilder.AppendLine();
             }
 
-            foreach (var scenario in Enumerable.Range(0, ignoredCount).Select(
-                i => string.Format("@ignore\r\nScenario: ignored scenario nr {0}\r\nWhen the step is ignored", i)))
+            foreach (var scenario in Enumerable.Range(0, ignoredCount).Select(i => $"@ignore\r\nScenario: ignored scenario nr {i}\r\nWhen the step is ignored"))
             {
                 featureBuilder.AppendLine(scenario);
                 featureBuilder.AppendLine();
             }
 
-            inputProjectDriver.AddFeatureFile(featureBuilder.ToString());
+            _projectDriver.AddFeatureFile(featureBuilder.ToString());
 
-            inputProjectDriver.AddStepBinding(ScenarioBlock.When, "the step pass in " + featureTitle, code: "//pass");
-            inputProjectDriver.AddStepBinding(ScenarioBlock.When, "the step fail in " + featureTitle, code: "throw new System.Exception(\"simulated failure\");");
+            _projectDriver.AddStepBinding(ScenarioBlock.When.ToString(), "the step pass in " + featureTitle, "//pass", "'pass");
+            _projectDriver.AddStepBinding(ScenarioBlock.When.ToString(), "the step fail in " + featureTitle, "throw new System.Exception(\"simulated failure\");", "Throw New System.Exception(\"simulated failure\")");
         }
     }
 }
