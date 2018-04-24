@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>$(SpecFlow_Generator_TFM)</TargetFramework>
     <AssemblyName>TechTalk.SpecFlow.Generator</AssemblyName>
-    <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
+    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
+    <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>TechTalk.SpecFlow.Generator</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
@@ -22,16 +22,10 @@
     <ProjectReference Include="..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
-
-
-
-
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  <ItemGroup >
     <Reference Include="Microsoft.Build" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
 

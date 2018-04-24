@@ -2,4 +2,25 @@
  <PropertyGroup>
    <LangVersion>latest</LangVersion>
  </PropertyGroup>
+
+ <PropertyGroup>
+   <SpecFlow_Runtime_TFM>net45</SpecFlow_Runtime_TFM>
+   <SpecFlow_Generator_TFM>net46</SpecFlow_Generator_TFM>
+   <SpecFlow_Test_TFM>net46</SpecFlow_Test_TFM>
+   <SpecFlow_Tools_TFM>net46</SpecFlow_Tools_TFM>
+   
+   <SpecFlow_EnableStrongNameSigning>false</SpecFlow_EnableStrongNameSigning>
+ </PropertyGroup>
+
+
+ <PropertyGroup Condition=" '$(SpecFlow_EnableStrongNameSigning)' == 'true'">
+   <SpecFlow_KeyFile>$(MSBuildThisFileDirectory)\specflow.snk</SpecFlow_KeyFile>
+   <SpecFlow_PublicSign>true</SpecFlow_PublicSign>
+   <DefineConstants>$(DefineConstants);SPECFLOW_ENABLE_STRONG_NAME_SIGNING</DefineConstants>
+ </PropertyGroup>
+
+ <PropertyGroup Condition=" '$(SpecFlow_EnableStrongNameSigning)' == 'false'">
+   <SpecFlow_KeyFile></SpecFlow_KeyFile>
+   <SpecFlow_PublicSign>false</SpecFlow_PublicSign>
+ </PropertyGroup>
 </Project>
