@@ -19,13 +19,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var results = service.ValueComparers;
             Assert.Equal(7, results.Count());
 
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DateTimeValueComparer)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(BoolValueComparer)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(GuidValueComparer)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DecimalValueComparer)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DoubleValueComparer)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(FloatValueComparer)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DefaultValueComparer)).Count());
+            Assert.Single(results.Where(x => x.GetType() == typeof(DateTimeValueComparer)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(BoolValueComparer)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(GuidValueComparer)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DecimalValueComparer)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DoubleValueComparer)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(FloatValueComparer)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DefaultValueComparer)));
         }
 
         [Fact]
@@ -36,42 +36,42 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var results = service.ValueRetrievers;
             Assert.Equal(36, results.Count());
 
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(StringValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(ByteValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(SByteValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(IntValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(UIntValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(ShortValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(UShortValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(LongValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(ULongValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(FloatValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DoubleValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DecimalValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(CharValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(BoolValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DateTimeValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(GuidValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(EnumValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(TimeSpanValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(DateTimeOffsetValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableGuidValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableDateTimeValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableBoolValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableCharValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableDecimalValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableDoubleValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableFloatValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableULongValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableByteValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableSByteValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableIntValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableUIntValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableShortValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableUShortValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableLongValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableTimeSpanValueRetriever)).Count());
-            Assert.Equal(1, results.Where(x => x.GetType() == typeof(NullableDateTimeOffsetValueRetriever)).Count());
+            Assert.Single(results.Where(x => x.GetType() == typeof(StringValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(ByteValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(SByteValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(IntValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(UIntValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(ShortValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(UShortValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(LongValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(ULongValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(FloatValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DoubleValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DecimalValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(CharValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(BoolValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DateTimeValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(GuidValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(EnumValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(TimeSpanValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(DateTimeOffsetValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableGuidValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableDateTimeValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableBoolValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableCharValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableDecimalValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableDoubleValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableFloatValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableULongValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableByteValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableSByteValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableIntValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableUIntValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableShortValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableUShortValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableLongValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableTimeSpanValueRetriever)));
+            Assert.Single(results.Where(x => x.GetType() == typeof(NullableDateTimeOffsetValueRetriever)));
         }
 
         [Fact]
@@ -82,12 +82,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             foreach (var valueComparer in service.ValueComparers.ToArray())
             {
                 service.UnregisterValueComparer(valueComparer);
-                Assert.False(service.ValueComparers.Contains(valueComparer));
+                Assert.DoesNotContain(valueComparer, service.ValueComparers);
             }
 
             var thing = new IExistsForTestingValueComparing();
             service.RegisterValueComparer(thing);
-            Assert.Equal(1, service.ValueComparers.Count());
+            Assert.Single(service.ValueComparers);
             Assert.Same(thing, service.ValueComparers.First());
         }
 
@@ -99,12 +99,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             foreach (var valueRetriever in service.ValueRetrievers.ToArray())
             {
                 service.UnregisterValueRetriever(valueRetriever);
-                Assert.False(service.ValueRetrievers.Contains(valueRetriever));
+                Assert.DoesNotContain(valueRetriever, service.ValueRetrievers);
             }
 
             var thing = new IExistsForTestingValueRetrieving();
             service.RegisterValueRetriever(thing);
-            Assert.Equal(1, service.ValueRetrievers.Count());
+            Assert.Single(service.ValueRetrievers);
             Assert.Same(thing, service.ValueRetrievers.First());
         }
 
@@ -117,13 +117,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             foreach (var valueRetriever in service.ValueRetrievers.ToArray())
             {
                 service.UnregisterValueRetriever(valueRetriever);
-                Assert.False(service.ValueRetrievers.Contains(valueRetriever));
+                Assert.DoesNotContain(valueRetriever, service.ValueRetrievers);
             }
 
             foreach (var valueComparer in service.ValueComparers.ToArray())
             {
                 service.UnregisterValueComparer(valueComparer);
-                Assert.False(service.ValueComparers.Contains(valueComparer));
+                Assert.DoesNotContain(valueComparer, service.ValueComparers);
             }
 
             service.RegisterValueRetriever(new IExistsForTestingValueRetrieving());

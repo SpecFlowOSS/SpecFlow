@@ -160,7 +160,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
 
-            Assert.Equal(null, contextManager.StepContext);
+            Assert.Null(contextManager.StepContext);
         }
 
         [Fact]

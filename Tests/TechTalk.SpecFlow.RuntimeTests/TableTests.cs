@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // Assert
-            Assert.True(mess.StartsWith(Table.ERROR_NO_HEADER_TO_ADD));
+            Assert.StartsWith(Table.ERROR_NO_HEADER_TO_ADD, mess);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // Assert
-            Assert.True(mess.StartsWith(Table.ERROR_NO_HEADER_TO_ADD));
+            Assert.StartsWith(Table.ERROR_NO_HEADER_TO_ADD, mess);
 
         }
 
@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
 
             // Assert
-            Assert.True(mess.StartsWith(Table.ERROR_NO_CELLS_TO_ADD));
+            Assert.StartsWith(Table.ERROR_NO_CELLS_TO_ADD, mess);
 
         }
 
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // Assert
             var expected = string.Format(Table.ERROR_CELLS_NOT_MATCHING_HEADERS, 2, 3);
-            Assert.True(mess.StartsWith(expected));
+            Assert.StartsWith(expected, mess);
         }
 
 
