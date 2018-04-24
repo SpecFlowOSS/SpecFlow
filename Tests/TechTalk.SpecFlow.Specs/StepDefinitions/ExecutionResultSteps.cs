@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Text.RegularExpressions;
 using FluentAssertions;
+using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
+using TestExecutionResult = TechTalk.SpecFlow.Specs.Drivers.TestExecutionResult;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ExecutionResultSteps
     { 
-        private readonly TestExecutionResult testExecutionResult;
-        private readonly HooksDriver hooksDriver;
+        private readonly TestExecutionResult _testExecutionResult; // TODO: to remove
+        private readonly HooksDriver _hooksDriver; // TODO: to remove
+        private readonly VSTestExecutionDriver _vsTestExecutionDriver;
 
-        public ExecutionResultSteps(TestExecutionResult testExecutionResult, HooksDriver hooksDriver)
+        public ExecutionResultSteps(TestExecutionResult testExecutionResult, HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver)
         {
-            this.testExecutionResult = testExecutionResult;
-            this.hooksDriver = hooksDriver;
+            _testExecutionResult = testExecutionResult;
+            _hooksDriver = hooksDriver;
+            _vsTestExecutionDriver = vsTestExecutionDriver;
         }
 
         public TestRunSummary ConvertToSummary(Table table)
@@ -31,15 +31,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the scenario should pass")]
         public void ThenAllTestsShouldPass()
         {
-            testExecutionResult.LastExecutionSummary.Should().NotBeNull();
-            testExecutionResult.LastExecutionSummary.Succeeded.Should().Be(testExecutionResult.LastExecutionSummary.Total);
+            _vsTestExecutionDriver.LastTestExecutionResult.Should().NotBeNull();
+            _vsTestExecutionDriver.LastTestExecutionResult.Succeeded.Should().Be(_vsTestExecutionDriver.LastTestExecutionResult.Total);
         }
 
         [Then(@"the execution summary should contain")]
-        public void ThenTheExecutionSummaryShouldContain(Table expectedSummary)
+        public void ThenTheExecutionSummaryShouldContain(Table expectedTestExecutionResult)
         {
-            testExecutionResult.LastExecutionSummary.Should().NotBeNull();
-            expectedSummary.CompareToInstance(testExecutionResult.LastExecutionSummary);
+            _vsTestExecutionDriver.LastTestExecutionResult.Should().NotBeNull();
+            expectedTestExecutionResult.CompareToInstance(_vsTestExecutionDriver.LastTestExecutionResult);
         }
 
         [Then(@"the binding method '(.*)' is executed")]
@@ -51,21 +51,21 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the binding method '(.*)' is executed (.*)")]
         public void ThenTheBindingMethodIsExecuted(string methodName, int times)
         {
-            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
+            _testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
 
             var regex = new Regex(@"-> done: \S+\." + methodName);
             if (times > 0)
-                regex.Match(testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
+                regex.Match(_testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
 
             if (times != int.MaxValue)
-                regex.Matches(testExecutionResult.ExecutionLog).Count.Should().Be(times);
+                regex.Matches(_testExecutionResult.ExecutionLog).Count.Should().Be(times);
         }
 
         [Then(@"the hook '(.*)' is executed (\D.*)")]
         [Then(@"the hook '(.*)' is executed (\d+) times")]
         public void ThenTheHookIsExecuted(string methodName, int times)
         {
-            var hookLog = hooksDriver.HookLog;
+            var hookLog = _hooksDriver.HookLog;
             hookLog.Should().NotBeNullOrEmpty("no execution log generated");
 
             var regex = new Regex(@"-> hook: " + methodName);
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the hooks are executed in the order")]
         public void ThenTheHooksAreExecutedInTheOrder(Table table)
         {
-            var hookLog = hooksDriver.HookLog;
+            var hookLog = _hooksDriver.HookLog;
             hookLog.Should().NotBeNullOrEmpty("no execution log generated");
             int lastPosition = -1;
             foreach (var row in table.Rows)
@@ -93,8 +93,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the execution log should contain text '(.*)'")]
         public void ThenTheExecutionLogShouldContainText(string text)
         {
-            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
-            testExecutionResult.ExecutionLog.Should().Contain(text);
+            _testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
+            _testExecutionResult.ExecutionLog.Should().Contain(text);
         }
 
         [Given(@"the log file '(.*)' is empty")]

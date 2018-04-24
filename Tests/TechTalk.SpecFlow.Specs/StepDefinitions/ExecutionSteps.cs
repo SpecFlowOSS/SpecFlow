@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly SolutionDriver _solutionDriver;
         private readonly NuGet _nuGet;
         private readonly Compiler _compiler;
-        private readonly VSTestExecution _vsTestExecution;
+        private readonly VSTestExecutionDriver _vsTestExecution;
         private readonly AppConfigConfigurationDriver configurationDriver;
         private readonly NUnit3TestExecutionDriver nUnit3TestExecutionDriver;
         private readonly NUnit2TestExecutionDriver nUnit2TestExecutionDriver;
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
         public ExecutionSteps(NUnit3TestExecutionDriver nUnit3TestExecutionDriver, NUnit2TestExecutionDriver nUnit2TestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
             AppConfigConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
-            ProjectSteps projectSteps, SolutionDriver solutionDriver, NuGet nuGet, Compiler compiler, VSTestExecution vsTestExecution )
+            ProjectSteps projectSteps, SolutionDriver solutionDriver, NuGet nuGet, Compiler compiler, VSTestExecutionDriver vsTestExecution )
         {
             this.nUnit3TestExecutionDriver = nUnit3TestExecutionDriver;
             this.nUnit2TestExecutionDriver = nUnit2TestExecutionDriver;
@@ -54,13 +54,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             }
 
             _vsTestExecution.ExecuteTests();
-        }
-
-        [Then(@"the execution result should contain")]
-        public void ThenTheExecutionResultShouldContain(Table expectedTestExecutionResult)
-        {
-            _vsTestExecution.LastTestExecutionResult.Should().NotBeNull();
-            expectedTestExecutionResult.CompareToInstance(_vsTestExecution.LastTestExecutionResult);
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
