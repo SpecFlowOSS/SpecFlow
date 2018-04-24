@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>$(SpecFlow_Test_TFM)</TargetFramework>
     <AssemblyName>TechTalk.SpecFlow.IntegrationTests</AssemblyName>
     <AssemblyOriginatorKeyFile>../../specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -24,7 +24,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <!--<ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />-->
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj" />
   </ItemGroup>

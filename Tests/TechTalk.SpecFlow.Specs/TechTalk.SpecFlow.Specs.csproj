@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>$(SpecFlow_Test_TFM)</TargetFramework>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
     <AssemblyOriginatorKeyFile>../../specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>

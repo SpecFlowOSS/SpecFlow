@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>$(SpecFlow_Runtime_TFM)</TargetFramework>
     <AssemblyName>TechTalk.SpecFlow</AssemblyName>
     <AssemblyOriginatorKeyFile>../specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -34,7 +34,7 @@
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+  <ItemGroup>
     <Reference Include="System.Xml" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Xml.Linq" />

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>$(SpecFlow_Generator_TFM)</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>specflow</AssemblyName>
     <OutputType>Exe</OutputType>

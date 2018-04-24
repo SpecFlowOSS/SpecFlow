@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>BoDi</RootNamespace>
     <AssemblyName>BoDi</AssemblyName>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
     <Copyright>"Copyright (C) 2010-2018, Gaspar Nagy (http://gasparnagy.com)"</Copyright>
     <Company>gasparnagy.com</Company>
     <Description>https://github.com/gasparnagy/bodi</Description>
@@ -21,7 +21,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
