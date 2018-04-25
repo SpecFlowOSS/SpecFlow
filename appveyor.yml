@@ -17,6 +17,10 @@ nuget:
 
 configuration: Debug
 
+
+install:
+- cmd: git submodule update --init --recursive
+
 before_build:
 - cmd: dotnet restore
 
