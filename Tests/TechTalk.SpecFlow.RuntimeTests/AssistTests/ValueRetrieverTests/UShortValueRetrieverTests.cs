@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -7,6 +9,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     
     public class UShortValueRetrieverTests
     {
+        public UShortValueRetrieverTests()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
         [Fact]
         public void Returns_an_unsigned_short_when_passed_an_unsigned_short_value()
         {
@@ -15,9 +22,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);
             retriever.GetValue("12345").Should().Be(12345);
-        }
+	        retriever.GetValue("12,345").Should().Be(12345);
+		}
 
         [Fact]
+	    public void Returns_an_unsigned_short_when_passed_an_unsigned_short_value_if_culture_is_fr_FR()
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var retriever = new UShortValueRetriever();
+		    retriever.GetValue("1").Should().Be(1);
+		    retriever.GetValue("3").Should().Be(3);
+		    retriever.GetValue("30").Should().Be(30);
+		    retriever.GetValue("12345").Should().Be(12345);
+	    }
+
+		[Fact]
         public void Returns_a_zero_when_passed_an_invalid_unsigned_short()
         {
             var retriever = new UShortValueRetriever();

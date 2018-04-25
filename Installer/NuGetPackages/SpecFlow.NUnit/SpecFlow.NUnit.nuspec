@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow nunit</tags>
     <dependencies>
-      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
+      <dependency id="SpecFlow" version="[2.3.2-dotnetcore-testp0162]" />
       <dependency id="NUnit" version="[3.0,)" />
     </dependencies>
   </metadata>

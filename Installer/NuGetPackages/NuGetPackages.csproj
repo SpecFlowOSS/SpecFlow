@@ -1,13 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-   <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <AssemblyName>to_be_removed_nuget</AssemblyName>
-  </PropertyGroup>
 
-   <ItemGroup>
-     <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
-   </ItemGroup>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+  
+  <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
+  <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
+
+  <ItemGroup>
+    <Compile Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
+    <EmbeddedResource Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
+    <None Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
+  </ItemGroup>
 
    <ItemGroup>
      <None Include=".build\build.props" />
@@ -17,13 +34,13 @@
 
 
   <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Include="MSBuild.MSBBuildConvention" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="MSBuild.MSBNuget" Version="1.1.2-pre04" PrivateAssets="All" />
     <PackageReference Include="NuGet.CommandLine" Version="4.5.1" PrivateAssets="All" />
 
   </ItemGroup>
 
-  <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
-  <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
+  
 
 </Project>

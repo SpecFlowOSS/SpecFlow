@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testThreadContainer = containerBuilder.CreateTestThreadContainer(containerBuilder.CreateGlobalContainer());
             var contextManager = CreateContextManager(testThreadContainer);
             contextManager.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null));
-            contextManager.InitializeScenarioContext(new ScenarioInfo("test scenario"));
+            contextManager.InitializeScenarioContext(new ScenarioInfo("test scenario", "test_description"));
 
             contextManager.TestThreadContext.Should().NotBeNull();
 

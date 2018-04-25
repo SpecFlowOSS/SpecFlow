@@ -12,8 +12,8 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("743e1609-8937-4775-9896-6e8757c6d98d")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+
+
 
 
 #if SPECFLOW_ENABLE_STRONG_NAME_SIGNING

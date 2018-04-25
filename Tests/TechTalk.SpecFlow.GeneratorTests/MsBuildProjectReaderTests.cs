@@ -26,10 +26,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be(language);
 
             specflowProjectfile.FeatureFiles.Count.Should().Be(6);
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@".\Features\Login\SocialLogins.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@".\Features\WorkflowDefinition\CreateWorkflowDefinition.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@".\Features\WorkflowDefinition\CreateWorkflowDefinition.feature") && x.CustomNamespace == "CustomNameSpace");
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@".\Features\WorkflowInstance\WorkflowInstance.feature"));
+            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\Login\SocialLogins.feature"));
+            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowDefinition\CreateWorkflowDefinition.feature"));
+            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowDefinition\CreateWorkflowDefinition.feature") && x.CustomNamespace == "CustomNameSpace");
+            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowInstance\WorkflowInstance.feature"));
             specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\..\LinkedFeature.feature"));
             specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
             specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature"));
@@ -51,6 +51,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_parse_CSProj_NewComplex_csproj_file_correctly()
         {
             Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_NewComplex\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
+        }
+
+        [Fact]
+        public void Should_parse_CSProj_NewWithExclude_csproj_file_correctly()
+        {
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_NewWithExclude\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Fact]
