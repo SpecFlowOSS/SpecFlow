@@ -94,5 +94,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\MSBuild.MSBNuget.1.1.2-pre04\build\MSBuild.MSBNuget.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSBuild.MSBNuget.1.1.2-pre04\build\MSBuild.MSBNuget.targets'))" />
     <Error Condition="!Exists('..\..\packages\MSBuild.MSBBuildConvention.2.0.0\build\MSBuild.MSBBuildConvention.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSBuild.MSBBuildConvention.2.0.0\build\MSBuild.MSBBuildConvention.targets'))" />
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets'))" />
   </Target>
+  <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
 </Project>

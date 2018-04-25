@@ -591,5 +591,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins[0].Name.Should().Be("testEntry1");
             runtimeConfig.Plugins[1].Name.Should().Be("testEntry2");
         }
+
+        [Test]
+        public void Check_Plugins_TwoSameNameEntry()
+        {
+            string config = @"{
+                              ""specflow"": {
+                                ""plugins"": 
+                                  [
+                                    { ""name"": ""testEntry"" },
+                                    { ""name"": ""testEntry"" }
+                                  ]                                
+                              }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+
+            runtimeConfig.Plugins.Count.Should().Be(1);
+            runtimeConfig.Plugins[0].Name.Should().Be("testEntry");
+        }
     }
 }
