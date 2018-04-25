@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow bdd gherkin cucumber generator</tags>
     <dependencies>
-      <dependency id="SpecFlow" version="[2.3.2-dotnetcore-testp0162]" />
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
     </dependencies>
     <references>
       <reference file="TechTalk.SpecFlow.Generator.dll" />

@@ -15,7 +15,7 @@
     <language>en-US</language>
     <tags>specflow xUnit</tags>
     <dependencies>
-      <dependency id="SpecFlow" version="[2.3.2-dotnetcore-testp0162]" />
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
       <dependency id="xunit" version="[2.0,)" />
     </dependencies>
   </metadata>
