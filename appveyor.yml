@@ -6,6 +6,7 @@ image: Visual Studio 2017
 branches:
   only:
   - master
+  - /DotNetCore.*/
   
 cache:
   - packages -> **\packages.config
@@ -26,8 +27,8 @@ build:
 
 
 test_script:
-- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.RuntimeTests\bin\Debug\net461\TechTalk.SpecFlow.RuntimeTests.dll" /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.2.0
-- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.GeneratorTests\bin\Debug\net461\TechTalk.SpecFlow.GeneratorTests.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.2.0
+- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.RuntimeTests\bin\Debug\net461\TechTalk.SpecFlow.RuntimeTests.dll" /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.3.1
+- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.GeneratorTests\bin\Debug\net461\TechTalk.SpecFlow.GeneratorTests.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.3.1
 #- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.Specs\bin\Debug\net461\TechTalk.SpecFlow.Specs.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.2.0
 #- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.IntegrationTests\bin\Debug\net461\TechTalk.SpecFlow.IntegrationTests.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.2.0
 
