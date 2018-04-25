@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Gherkin" Version="5.0.1" />
+    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Threading;
 using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -37,7 +39,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("every good boy does fine").Should().Be(0);
         }
 
-	    [Test]
+	    [Fact]
 	    public void Returns_a_zero_when_passed_an_invalid_long_and_culture_is_fr_FR()
 		{
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");

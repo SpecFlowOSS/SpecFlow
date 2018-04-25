@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Buildalyzer" Version="0.4.0" />
     <PackageReference Include="Gherkin" Version="5.0.1" />
+    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Include="Microsoft.Build" Version="15.6.85" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.6.85" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.6.85" />
@@ -28,7 +29,7 @@
     <ProjectReference Include="..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup >
+  <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
 

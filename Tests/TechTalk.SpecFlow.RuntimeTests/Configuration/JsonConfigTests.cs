@@ -592,7 +592,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins[1].Name.Should().Be("testEntry2");
         }
 
-        [Test]
+        [Fact]
         public void Check_Plugins_TwoSameNameEntry()
         {
             string config = @"{

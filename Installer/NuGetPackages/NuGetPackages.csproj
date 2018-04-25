@@ -1,43 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-   <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <AssemblyName>to_be_removed_nuget</AssemblyName>
+
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
+  
+  <Import Project=".build\build.props" />
+  <Import Project=".build\build.targets" />
 
-   <ItemGroup>
-     <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
-   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
+    <EmbeddedResource Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
+    <None Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
+  </ItemGroup>
 
-   <ItemGroup>
-     <None Include=".build\build.props" />
-     <None Include=".build\build.targets" />
-    <None Include="SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
-    <None Include="SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
-    <None Include="SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.nuspec" />
-    <None Include="SpecFlow\build\SpecFlow.targets" />
-   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".build\build.props" />
+    <None Include=".build\build.targets" />
+  </ItemGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Include="MSBuild.MSBBuildConvention" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="MSBuild.MSBNuget" Version="1.1.2-pre04" PrivateAssets="All" />
     <PackageReference Include="NuGet.CommandLine" Version="4.5.1" PrivateAssets="All" />
 
   </ItemGroup>
-
-  <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
-  <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
-  
-  <Import Project="$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets" Condition="Exists('$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets')" />
-  <Import Project="$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets" Condition="Exists('$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets')" />
-  
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)\MSBuild.MSBNuget\1.1.2-pre04\build\MSBuild.MSBNuget.targets'))" />
-    <Error Condition="!Exists('$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(NuGetPackageRoot)\MSBuild.MSBBuildConvention\2.0.0\build\MSBuild.MSBBuildConvention.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
 </Project>

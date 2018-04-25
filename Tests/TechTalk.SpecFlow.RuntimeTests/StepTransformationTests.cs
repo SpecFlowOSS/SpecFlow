@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
             var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
 
-            Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
+            Assert.Matches(stepTransformationBinding.Regex, "user xyz");
 
             var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
             TimeSpan duration;

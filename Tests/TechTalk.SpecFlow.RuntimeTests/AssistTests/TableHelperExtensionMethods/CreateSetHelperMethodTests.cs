@@ -140,24 +140,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var people = table.CreateSet<Person>();
 
             people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
-		}
+        }
 
         
         [Fact]
-	    public void Sets_datetime_on_the_instance_when_type_is_datetime_and_culture_is_fr_FR()
-	    {
-		    Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+        public void Sets_datetime_on_the_instance_when_type_is_datetime_and_culture_is_fr_FR()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
 
-			var table = CreatePersonTableHeaders();
-		    table.AddRow("", "", "28/4/2009", "3", "", "");
+            var table = CreatePersonTableHeaders();
+            table.AddRow("", "", "28/4/2009", "3", "", "");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
-	    }
+            people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
+        }
 
 
-		[Fact]
+        [Fact]
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {
             var table = CreatePersonTableHeaders();
@@ -179,85 +179,81 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().IsRational.Should().BeTrue();
         }
 
-<<<<<<< HEAD
         [Fact]
-=======
-	    [Test]
-	    public void Sets_decimals_on_the_instance_when_type_is_decimal()
-	    {
-			var table = new Table("Salary", "NullableDecimal");
-		    table.AddRow("4.193", "7.28");
+        public void Sets_decimals_on_the_instance_when_type_is_decimal()
+        {
+            var table = new Table("Salary", "NullableDecimal");
+            table.AddRow("4.193", "7.28");
 
-			var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Salary.Should().Be(4.193M);
-		    people.First().NullableDecimal.Should().Be(7.28M);
-	    }
+            people.First().Salary.Should().Be(4.193M);
+            people.First().NullableDecimal.Should().Be(7.28M);
+        }
 
-	    [Test]
-	    public void Sets_decimals_on_the_instance_when_type_is_decimal_and_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+        [Fact]
+        public void Sets_decimals_on_the_instance_when_type_is_decimal_and_culture_is_fr_FR()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
 
-			var table = new Table("Salary", "NullableDecimal");
-		    table.AddRow("4,193", "7,28");
+            var table = new Table("Salary", "NullableDecimal");
+            table.AddRow("4,193", "7,28");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Salary.Should().Be(4.193M);
-		    people.First().NullableDecimal.Should().Be(7.28M);
-		}
+            people.First().Salary.Should().Be(4.193M);
+            people.First().NullableDecimal.Should().Be(7.28M);
+        }
 
-	    [Test]
-	    public void Sets_short_on_the_instance_when_type_is_short()
-	    {
-		    var table = new Table("Short", "NullableShort");
-		    table.AddRow("1234", "1,234");
+        [Fact]
+        public void Sets_short_on_the_instance_when_type_is_short()
+        {
+            var table = new Table("Short", "NullableShort");
+            table.AddRow("1234", "1,234");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Short.Should().Be(1234);
-		    people.First().NullableShort.Should().Be(1234);
-	    }
+            people.First().Short.Should().Be(1234);
+            people.First().NullableShort.Should().Be(1234);
+        }
 
-	    [Test]
-	    public void Sets_ushort_on_the_instance_when_type_is_ushort()
-	    {
-		    var table = new Table("UShort", "NullableUShort");
-		    table.AddRow("1234", "1,234");
+        [Fact]
+        public void Sets_ushort_on_the_instance_when_type_is_ushort()
+        {
+            var table = new Table("UShort", "NullableUShort");
+            table.AddRow("1234", "1,234");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().UShort.Should().Be(1234);
-		    people.First().NullableUShort.Value.Should().Be(1234);
-	    }
+            people.First().UShort.Should().Be(1234);
+            people.First().NullableUShort.Value.Should().Be(1234);
+        }
 
-		[Test]
-	    public void Sets_longs_on_the_instance_when_type_is_long()
-	    {
-		    var table = new Table("Long", "NullableLong");
-		    table.AddRow("1234567890123456789", "1,234,567,890,123,456,789");
+        [Fact]
+        public void Sets_longs_on_the_instance_when_type_is_long()
+        {
+            var table = new Table("Long", "NullableLong");
+            table.AddRow("1234567890123456789", "1,234,567,890,123,456,789");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Long.Should().Be(1234567890123456789L);
-		    people.First().NullableLong.Should().Be(1234567890123456789L);
-	    }
+            people.First().Long.Should().Be(1234567890123456789L);
+            people.First().NullableLong.Should().Be(1234567890123456789L);
+        }
 
-	    [Test]
-	    public void Sets_ulongs_on_the_instance_when_type_is_ulong()
-	    {
-		    var table = new Table("ULong", "NullableULong");
-		    table.AddRow("1234567890123456789", "1,234,567,890,123,456,789");
+        [Fact]
+        public void Sets_ulongs_on_the_instance_when_type_is_ulong()
+        {
+            var table = new Table("ULong", "NullableULong");
+            table.AddRow("1234567890123456789", "1,234,567,890,123,456,789");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().ULong.Should().Be(1234567890123456789UL);
-		    people.First().NullableULong.Should().Be(1234567890123456789UL);
-	    }
+            people.First().ULong.Should().Be(1234567890123456789UL);
+            people.First().NullableULong.Should().Be(1234567890123456789UL);
+        }
 
-		[Test]
->>>>>>> master
+        [Fact]
         public void Sets_doubles_on_the_instance_when_type_is_double()
         {
             var table = new Table("Double", "NullableDouble");
@@ -269,77 +265,73 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableDouble.Should().Be(7.28);
         }
 
-<<<<<<< HEAD
         [Fact]
-=======
-	    [Test]
-	    public void Sets_doubles_on_the_instance_when_type_is_double_and_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+        public void Sets_doubles_on_the_instance_when_type_is_double_and_culture_is_fr_FR()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
 
-			var table = new Table("Double", "NullableDouble");
-		    table.AddRow("4,193", "7,28");
+            var table = new Table("Double", "NullableDouble");
+            table.AddRow("4,193", "7,28");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Double.Should().Be(4.193);
-		    people.First().NullableDouble.Should().Be(7.28);
-	    }
+            people.First().Double.Should().Be(4.193);
+            people.First().NullableDouble.Should().Be(7.28);
+        }
 
-	    [Test]
-	    public void Sets_bytes_on_the_instance_when_type_is_byte()
-	    {
-		    var table = new Table("Byte", "NullableByte");
-		    table.AddRow("4.0", "7.0");
+        [Fact]
+        public void Sets_bytes_on_the_instance_when_type_is_byte()
+        {
+            var table = new Table("Byte", "NullableByte");
+            table.AddRow("4.0", "7.0");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Byte.Should().Be(4);
-		    people.First().NullableByte.Should().Be(7);
-	    }
+            people.First().Byte.Should().Be(4);
+            people.First().NullableByte.Should().Be(7);
+        }
 
-		[Test]
-	    public void Sets_bytes_on_the_instance_when_type_is_byte_and_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+        [Fact]
+        public void Sets_bytes_on_the_instance_when_type_is_byte_and_culture_is_fr_FR()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
 
-			var table = new Table("Byte", "NullableByte");
-		    table.AddRow("4,000", "7,000");
+            var table = new Table("Byte", "NullableByte");
+            table.AddRow("4,000", "7,000");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Byte.Should().Be(4);
-		    people.First().NullableByte.Should().Be(7);
-	    }
+            people.First().Byte.Should().Be(4);
+            people.First().NullableByte.Should().Be(7);
+        }
 
-	    [Test]
-	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte()
-	    {
-		    var table = new Table("SByte", "NullableSByte");
-		    table.AddRow("4.0", "5.0");
+        [Fact]
+        public void Sets_sbytes_on_the_instance_when_type_is_sbyte()
+        {
+            var table = new Table("SByte", "NullableSByte");
+            table.AddRow("4.0", "5.0");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().SByte.Should().Be(4);
-		    people.First().NullableSByte.Value.Should().Be(5);
-		}
+            people.First().SByte.Should().Be(4);
+            people.First().NullableSByte.Value.Should().Be(5);
+        }
 
-	    [Test]
-	    public void Sets_sbytes_on_the_instance_when_type_is_sbyte_and_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+        [Fact]
+        public void Sets_sbytes_on_the_instance_when_type_is_sbyte_and_culture_is_fr_FR()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
 
-			var table = new Table("SByte", "NullableSByte");
-		    table.AddRow("4,0", "5,0");
+            var table = new Table("SByte", "NullableSByte");
+            table.AddRow("4,0", "5,0");
 
-			var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().SByte.Should().Be(4);
-		    people.First().NullableSByte.Value.Should().Be(5);
-		}
+            people.First().SByte.Should().Be(4);
+            people.First().NullableSByte.Value.Should().Be(5);
+        }
 
-		[Test]
->>>>>>> master
+        [Fact]
         public void Sets_floats_on_the_instance_when_type_is_float()
         {
             var table = new Table("Float", "NullableFloat");
@@ -351,25 +343,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableFloat.Should().Be(8.954F);
         }
 
-<<<<<<< HEAD
         [Fact]
-=======
-	    [Test]
-	    public void Sets_floats_on_the_instance_when_type_is_float_and_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+        public void Sets_floats_on_the_instance_when_type_is_float_and_culture_is_fr_FR()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
 
-			var table = new Table("Float", "NullableFloat");
-		    table.AddRow("2,698", "8,954");
+            var table = new Table("Float", "NullableFloat");
+            table.AddRow("2,698", "8,954");
 
-		    var people = table.CreateSet<Person>();
+            var people = table.CreateSet<Person>();
 
-		    people.First().Float.Should().Be(2.698F);
-		    people.First().NullableFloat.Should().Be(8.954F);
-	    }
+            people.First().Float.Should().Be(2.698F);
+            people.First().NullableFloat.Should().Be(8.954F);
+        }
 
-		[Test]
->>>>>>> master
+        [Fact]
         public void Sets_guids_on_the_instance_when_the_type_is_guid()
         {
             var table = new Table("GuidId", "NullableGuidId");

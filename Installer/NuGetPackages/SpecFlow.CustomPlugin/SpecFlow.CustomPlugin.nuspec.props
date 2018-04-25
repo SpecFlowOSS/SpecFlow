@@ -1,31 +1,31 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup Label="SpecFlow.CustomPlugin">
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Parser\bin\$(Configuration)\Gherkin.dll">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Parser\bin\$(Configuration)\net461\Gherkin.dll">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
     
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Generator\bin\$(Configuration)\TechTalk.SpecFlow.Generator.dll">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Generator\bin\$(Configuration)\net461\TechTalk.SpecFlow.Generator.dll">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Utils\bin\$(Configuration)\TechTalk.SpecFlow.Utils.dll">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Utils\bin\$(Configuration)\net461\TechTalk.SpecFlow.Utils.dll">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Parser\bin\$(Configuration)\TechTalk.SpecFlow.Parser.dll">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Parser\bin\$(Configuration)\net461\TechTalk.SpecFlow.Parser.dll">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Generator\bin\$(Configuration)\TechTalk.SpecFlow.Generator.pdb">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Generator\bin\$(Configuration)\net461\TechTalk.SpecFlow.Generator.pdb">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Utils\bin\$(Configuration)\TechTalk.SpecFlow.Utils.pdb">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Utils\bin\$(Configuration)\net461\TechTalk.SpecFlow.Utils.pdb">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\\TechTalk.SpecFlow.Parser\bin\$(Configuration)\TechTalk.SpecFlow.Parser.pdb">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Parser\bin\$(Configuration)\net461\TechTalk.SpecFlow.Parser.pdb">
       <targetFolder>SpecFlow.CustomPlugin\lib\net45</targetFolder>
     </additionalFiles>
 
