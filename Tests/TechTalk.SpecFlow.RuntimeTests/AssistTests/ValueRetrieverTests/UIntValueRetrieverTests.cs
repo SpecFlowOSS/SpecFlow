@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Threading;
 using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -7,6 +9,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     
     public class UIntValueRetrieverTests
     {
+		public UIntValueRetrieverTests()
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+		}
+
         [Fact]
         public void Returns_an_unsigned_integer_when_passed_an_unsigned_integer_value()
         {
@@ -15,7 +22,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("3").Should().Be(3);
             retriever.GetValue("30").Should().Be(30);
             retriever.GetValue("1234567890").Should().Be(1234567890);
-        }
+	        retriever.GetValue("1,234,567,890").Should().Be(1234567890);
+		}
+
+	    [Fact]
+	    public void Returns_an_unsigned_integer_when_passed_an_unsigned_integer_value_if_fr_FR()
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var retriever = new UIntValueRetriever();
+		    retriever.GetValue("1").Should().Be(1);
+		    retriever.GetValue("3").Should().Be(3);
+		    retriever.GetValue("30").Should().Be(30);
+		    retriever.GetValue("1234567890").Should().Be(1234567890);
+	    }
 
         [Fact]
         public void Returns_a_zero_when_passed_an_invalid_unsigned_int()

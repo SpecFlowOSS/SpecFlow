@@ -13,9 +13,6 @@ using System.Security;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("cba254bb-2476-4e96-9a9f-6db1a1b5eb62")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-
 [assembly: AllowPartiallyTrustedCallers]
 
 #if SPECFLOW_ENABLE_STRONG_NAME_SIGNING

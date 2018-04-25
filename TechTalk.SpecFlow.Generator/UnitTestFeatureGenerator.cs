@@ -541,6 +541,7 @@ namespace TechTalk.SpecFlow.Generator
                 new CodeVariableDeclarationStatement(typeof(ScenarioInfo), "scenarioInfo",
                     new CodeObjectCreateExpression(typeof(ScenarioInfo),
                         new CodePrimitiveExpression(scenario.Name),
+                        new CodePrimitiveExpression(scenario.Description),
                         tagsExpression)));
 
             AddLineDirective(testMethod.Statements, scenario);

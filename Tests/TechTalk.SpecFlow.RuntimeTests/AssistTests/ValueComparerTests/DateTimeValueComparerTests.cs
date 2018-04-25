@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
+<<<<<<< HEAD
     public class DateTimeValueComparerTests
     {
         public DateTimeValueComparerTests()

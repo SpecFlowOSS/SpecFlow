@@ -45,6 +45,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Fact]
+	    public void Returns_the_date_and_time_when_value_represents_a_valid_datetime_if_culture_is_fr_FR()
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
+			var retriever = new DateTimeValueRetriever();
+		    retriever.GetValue("1/4/2011 15:16:17").Should().Be(new DateTime(2011, 4, 1, 15, 16, 17));
+		    retriever.GetValue("1/4/2011 5:6:7").Should().Be(new DateTime(2011, 4, 1, 5, 6, 7));
+	    }
+
+		[Fact]
         public void Returns_MinValue_when_the_value_is_not_a_valid_datetime()
         {
             var retriever = new DateTimeValueRetriever();
