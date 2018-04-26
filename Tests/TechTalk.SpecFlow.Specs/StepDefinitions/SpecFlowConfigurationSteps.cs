@@ -1,4 +1,7 @@
-﻿using TechTalk.SpecFlow.Specs.Drivers;
+﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Configuration.AppConfig;
+using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -7,23 +10,31 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
         private readonly SpecFlowJsonConfigurationDriver _specFlowJsonConfigurationDriver;
+        private readonly ConfigurationDriver _configurationDriver;
 
-        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, SpecFlowJsonConfigurationDriver specFlowJsonConfigurationDriver)
+        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, SpecFlowJsonConfigurationDriver specFlowJsonConfigurationDriver, ConfigurationDriver configurationDriver)
         {
             this._appConfigConfigurationDriver = appConfigConfigurationDriver;
             _specFlowJsonConfigurationDriver = specFlowJsonConfigurationDriver;
+            _configurationDriver = configurationDriver;
         }
 
         [Given(@"the specflow configuration is")]
         public void GivenTheSpecflowConfigurationIs(string specFlowConfigurationContent)
         {
-            _appConfigConfigurationDriver.SetSpecFlowConfigurationContent(specFlowConfigurationContent);
+            var configSection = ConfigurationSectionHandler.CreateFromXml(specFlowConfigurationContent);
+            var appConfigConfigurationLoader = new AppConfigConfigurationLoader();
+
+            var specFlowConfiguration = appConfigConfigurationLoader.LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+
+            _configurationDriver.SetUnitTestProvider(specFlowConfiguration.UnitTestProvider);
+            _configurationDriver.SetBindingCulture(specFlowConfiguration.BindingCulture);
         }
 
         [Given(@"the project is configured to use the (.+) provider")]
         public void GivenTheProjectIsConfiguredToUseTheUnitTestProvider(string providerName)
         {
-            _appConfigConfigurationDriver.SetUnitTestProvider(providerName);
+            _configurationDriver.SetUnitTestProvider(providerName);
         }
 
 
