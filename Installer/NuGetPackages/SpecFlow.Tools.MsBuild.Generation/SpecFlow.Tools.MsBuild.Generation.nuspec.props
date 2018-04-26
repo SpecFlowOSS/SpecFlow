@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup Label="SpecFlow.Tools.MsBuild.Generation">
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\net46\*">
-      <targetFolder>SpecFlow.Tools.MsBuild.Generation\tasks\net46</targetFolder>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\net461\*">
+      <targetFolder>SpecFlow.Tools.MsBuild.Generation\tasks\net461</targetFolder>
     </additionalFiles>
 
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\SpecFlow.Tools.MsBuild.Generation\build\*">

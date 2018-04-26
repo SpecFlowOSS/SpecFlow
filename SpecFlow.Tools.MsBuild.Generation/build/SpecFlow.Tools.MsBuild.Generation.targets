@@ -19,7 +19,8 @@
 
   </Target>
 
-  <Target Name="GenerateFeatureCodeBehindFiles" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)\%(RelativeDir)%(Filename).feature.cs')" DependsOnTargets="UpdateFeatureFilesInProject">
+  <!--<Target Name="GenerateFeatureCodeBehindFiles" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)\%(RelativeDir)%(Filename).feature.cs')" DependsOnTargets="UpdateFeatureFilesInProject">-->
+  <Target Name="GenerateFeatureCodeBehindFiles" DependsOnTargets="UpdateFeatureFilesInProject">
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
