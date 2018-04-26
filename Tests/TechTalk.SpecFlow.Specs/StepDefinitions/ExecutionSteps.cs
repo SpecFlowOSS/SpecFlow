@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly NuGet _nuGet;
         private readonly Compiler _compiler;
         private readonly VSTestExecutionDriver _vsTestExecution;
+        private readonly ProjectDriver _projectDriver;
         private readonly AppConfigConfigurationDriver configurationDriver;
         private readonly NUnit3TestExecutionDriver nUnit3TestExecutionDriver;
         private readonly NUnit2TestExecutionDriver nUnit2TestExecutionDriver;
@@ -25,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
         public ExecutionSteps(NUnit3TestExecutionDriver nUnit3TestExecutionDriver, NUnit2TestExecutionDriver nUnit2TestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
             AppConfigConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
-            ProjectSteps projectSteps, SolutionDriver solutionDriver, NuGet nuGet, Compiler compiler, VSTestExecutionDriver vsTestExecution )
+            ProjectSteps projectSteps, SolutionDriver solutionDriver, NuGet nuGet, Compiler compiler, VSTestExecutionDriver vsTestExecution, ProjectDriver projectDriver)
         {
             this.nUnit3TestExecutionDriver = nUnit3TestExecutionDriver;
             this.nUnit2TestExecutionDriver = nUnit2TestExecutionDriver;
@@ -35,6 +36,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _nuGet = nuGet;
             _compiler = compiler;
             _vsTestExecution = vsTestExecution;
+            _projectDriver = projectDriver;
             this.msTestTestExecutionDriver = msTestTestExecutionDriver;
             this.configurationDriver = configurationDriver;
         }
@@ -42,6 +44,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
+            _projectDriver.LastStuffBeforeWritingToDisk();
             _solutionDriver.WriteToDisk();
 
             _nuGet.Restore();

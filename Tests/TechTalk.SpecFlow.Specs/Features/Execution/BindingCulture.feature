@@ -57,7 +57,8 @@ Scenario: The binding culture can be specified to be different than the scenario
     And the specflow configuration is
          """
         <specFlow>
-            <bindingCulture name="de-DE" />
+            <bindingCulture name="de-DE" />  
+            <unitTestProvider name="xunit" />
         </specFlow>
          """
     When I execute the tests
