@@ -5,14 +5,14 @@
 	
 Scenario: Steps can defined in an external .NET (e.g. c# or VB.NET) project
 	Given there is an external class library project 'ExternalSteps'
-	And the following step definition in the external library
+	And the following step definition in the project 'ExternalSteps'
         """
 		[When(@"I do something")]
 		public void WhenIDoSomething()
 		{
 		}
         """
-	And there is a SpecFlow project with a reference to the external library
+	And there is a SpecFlow project with a reference to the project 'ExternalSteps'
 	And a scenario 'Simple Scenario' as
          """
          When I do something
@@ -31,14 +31,14 @@ Scenario: Steps can defined in an external .NET (e.g. c# or VB.NET) project
 @fsharp
 Scenario: Steps can defined in an external F# project
 	Given there is an external F# class library project 'ExternalSteps_FSharp'
-	And the following binding class
+	And the following binding class in the project 'ExternalSteps_FSharp'
         """
 		[<TechTalk.SpecFlow.Binding>]
 		module Bindings
 
 		let [<TechTalk.SpecFlow.When(@"I do something")>] WhenIDoSomething() = ()
         """
-	And there is a SpecFlow project with a reference to the external library
+	And there is a SpecFlow project with a reference to the project 'ExternalSteps_FSharp'
 	And a scenario 'Simple Scenario' as
          """
          When I do something
