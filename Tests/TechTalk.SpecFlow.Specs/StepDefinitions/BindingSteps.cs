@@ -9,13 +9,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly InputProjectDriver inputProjectDriver;
         private readonly HooksDriver hooksDriver;
-        private readonly ProjectDriver _projectDriver;
+        private readonly ProjectsDriver _projectsDriver;
 
-        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver, ProjectDriver projectDriver)
+        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver, ProjectsDriver projectsDriver)
         {
             this.inputProjectDriver = inputProjectDriver;
             this.hooksDriver = hooksDriver;
-            _projectDriver = projectDriver;
+            _projectsDriver = projectsDriver;
         }
 
         [Given(@"all steps are bound and pass")]
@@ -43,7 +43,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and pass")]
         public void GivenAllStepsAreBoundAndPass(ScenarioBlock scenarioBlock)
         {
-            _projectDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "//pass", "'pass");
+            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "//pass", "'pass");
+        }
+
+        [Given(@"the following step definition in the project '(.*)'")]
+        [Given(@"the following binding class in the project '(.*)'")]
+        public void GivenTheFollowingStepDefinitionInTheProject(string projectName, string stepDefinition)
+        {
+            _projectsDriver.AddBindingCode(projectName, stepDefinition);
         }
 
         [Given(@"the following hooks?")]
@@ -52,7 +59,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the following binding methods?")]
         public void GivenTheFollowingBindings(string bindingCode)
         {
-            _projectDriver.AddBindingCode(bindingCode);
+            _projectsDriver.AddBindingCode(bindingCode);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)'")]

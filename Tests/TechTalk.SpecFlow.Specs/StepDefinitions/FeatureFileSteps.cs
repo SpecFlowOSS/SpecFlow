@@ -8,24 +8,24 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class FeatureFileSteps
     {
-        private readonly ProjectDriver _projectDriver;
+        private readonly ProjectsDriver _projectsDriver;
 
-        public FeatureFileSteps(ProjectDriver projectDriver)
+        public FeatureFileSteps(ProjectsDriver projectsDriver)
         {
-            _projectDriver = projectDriver;
+            _projectsDriver = projectsDriver;
         }
 
         [Given(@"there is a feature file in the project as")]
         public void GivenThereIsAFeatureFileInTheProjectAs(string featureFileContent)
         {
-            _projectDriver.AddFeatureFile(featureFileContent);
+            _projectsDriver.AddFeatureFile(featureFileContent);
         }
 
         [Given(@"a scenario '(.*)' as")]
         public void GivenAScenarioSimpleScenarioAs(string title, string scenarioContent)
         {
 
-            _projectDriver.AddFeatureFile(string.Format(@"Feature: Feature {0}
+            _projectsDriver.AddFeatureFile(string.Format(@"Feature: Feature {0}
 Scenario: {1}
 {2}
                 ", Guid.NewGuid(), title, scenarioContent));
@@ -61,10 +61,10 @@ Scenario: {1}
                 featureBuilder.AppendLine();
             }
 
-            _projectDriver.AddFeatureFile(featureBuilder.ToString());
+            _projectsDriver.AddFeatureFile(featureBuilder.ToString());
 
-            _projectDriver.AddStepBinding(ScenarioBlock.When.ToString(), "the step pass in " + featureTitle, "//pass", "'pass");
-            _projectDriver.AddStepBinding(ScenarioBlock.When.ToString(), "the step fail in " + featureTitle, "throw new System.Exception(\"simulated failure\");", "Throw New System.Exception(\"simulated failure\")");
+            _projectsDriver.AddStepBinding(ScenarioBlock.When.ToString(), "the step pass in " + featureTitle, "//pass", "'pass");
+            _projectsDriver.AddStepBinding(ScenarioBlock.When.ToString(), "the step fail in " + featureTitle, "throw new System.Exception(\"simulated failure\");", "Throw New System.Exception(\"simulated failure\")");
         }
     }
 }

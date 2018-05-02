@@ -19,10 +19,11 @@ Scenario: Steps can defined in an external .NET (e.g. c# or VB.NET) project
          """
 	And the specflow configuration is
         """
-		<specFlow>
-			<stepAssemblies>
-				<stepAssembly assembly="ExternalSteps" />
-			</stepAssemblies>
+		<specFlow>                             
+			<stepAssemblies>                         
+				<stepAssembly assembly="ExternalSteps" />    
+			</stepAssemblies>                   
+            <unitTestProvider name="xunit" />
 		</specFlow>
         """
 	When I execute the tests
@@ -33,10 +34,7 @@ Scenario: Steps can defined in an external F# project
 	Given there is an external F# class library project 'ExternalSteps_FSharp'
 	And the following binding class in the project 'ExternalSteps_FSharp'
         """
-		[<TechTalk.SpecFlow.Binding>]
-		module Bindings
-
-		let [<TechTalk.SpecFlow.When(@"I do something")>] WhenIDoSomething() = ()
+		let [<TechTalk.SpecFlow.When>] ``I do something``() = ()
         """
 	And there is a SpecFlow project with a reference to the project 'ExternalSteps_FSharp'
 	And a scenario 'Simple Scenario' as
@@ -45,10 +43,11 @@ Scenario: Steps can defined in an external F# project
          """
 	And the specflow configuration is
         """
-		<specFlow>
+		<specFlow>                             
 			<stepAssemblies>
-				<stepAssembly assembly="ExternalSteps_FSharp" />
-			</stepAssemblies>
+				<stepAssembly assembly="ExternalSteps_FSharp" />    
+			</stepAssemblies>           
+            <unitTestProvider name="xunit" />
 		</specFlow>
         """
 	When I execute the tests

@@ -22,13 +22,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the specflow configuration is")]
         public void GivenTheSpecflowConfigurationIs(string specFlowConfigurationContent)
         {
-            var configSection = ConfigurationSectionHandler.CreateFromXml(specFlowConfigurationContent);
-            var appConfigConfigurationLoader = new AppConfigConfigurationLoader();
-
-            var specFlowConfiguration = appConfigConfigurationLoader.LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            _configurationDriver.SetUnitTestProvider(specFlowConfiguration.UnitTestProvider);
-            _configurationDriver.SetBindingCulture(specFlowConfiguration.BindingCulture);
+            _configurationDriver.AddFromXmlSpecFlowSection(specFlowConfigurationContent);
         }
 
         [Given(@"the project is configured to use the (.+) provider")]
