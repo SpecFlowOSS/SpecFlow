@@ -1,28 +1,28 @@
 ﻿using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
+using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
-    class ConfigurationSteps
+    public class ConfigurationSteps
     {
-        private readonly TestExecutionResult _testExecutionResult;
+        private readonly VSTestExecutionDriver _vstestExecutionDriver;
 
-        public ConfigurationSteps(TestExecutionResult testExecutionResult)
+        public ConfigurationSteps(VSTestExecutionDriver vstestExecutionDriver)
         {
-            _testExecutionResult = testExecutionResult;
+            _vstestExecutionDriver = vstestExecutionDriver;
         }
 
         [Then(@"the app\.config is used for configuration")]
         public void ThenTheApp_ConfigIsUsedForConfiguration()
         {
-            _testExecutionResult.ExecutionLog.Should().Contain("Using app.config");
+            _vstestExecutionDriver.LastTestExecutionResult.Output.Should().Contain("Using app.config");
         }
 
         [Then(@"the specflow\.json is used for configuration")]
         public void ThenTheSpecflow_JsonIsUsedForConfiguration()
         {
-            _testExecutionResult.ExecutionLog.Should().Contain("Using specflow.json");
+            _vstestExecutionDriver.LastTestExecutionResult.Output.Should().Contain("Using specflow.json");
         }
 
     }

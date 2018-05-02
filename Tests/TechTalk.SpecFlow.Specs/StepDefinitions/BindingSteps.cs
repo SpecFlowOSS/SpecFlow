@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and fail")]
         public void GivenAllStepsAreBoundAndFail(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "throw new System.Exception(\"simulated failure\");", "Throw new System.Exception(\"simulated failure\")");
+            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "throw new System.Exception(\"simulated failure\");", "Throw New System.Exception(\"simulated failure\")");
         }
 
         [Given(@"all '(.*)' steps are bound and pass")]

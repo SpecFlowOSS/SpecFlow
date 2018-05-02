@@ -1,6 +1,5 @@
 ﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Configuration.AppConfig;
+using SpecFlow.TestProjectGenerator.NewApi._1_Memory;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -9,13 +8,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class SpecFlowConfigurationSteps
     {
         private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
-        private readonly SpecFlowJsonConfigurationDriver _specFlowJsonConfigurationDriver;
         private readonly ConfigurationDriver _configurationDriver;
 
-        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, SpecFlowJsonConfigurationDriver specFlowJsonConfigurationDriver, ConfigurationDriver configurationDriver)
+        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, ConfigurationDriver configurationDriver)
         {
             this._appConfigConfigurationDriver = appConfigConfigurationDriver;
-            _specFlowJsonConfigurationDriver = specFlowJsonConfigurationDriver;
             _configurationDriver = configurationDriver;
         }
 
@@ -35,13 +32,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"SpecFlow is configured in the app\.config")]
         public void GivenSpecFlowIsConfiguredInTheApp_Config()
         {
-            _appConfigConfigurationDriver.IsUsed = true;
+            _configurationDriver.SetConfigurationFormat(ConfigurationFormat.Config);
         }
 
         [Given(@"SpecFlow is configured in the specflow\.json")]
         public void GivenSpecFlowIsConfiguredInTheSpecflow_Json()
         {
-            _specFlowJsonConfigurationDriver.IsUsed = true;
+            _configurationDriver.SetConfigurationFormat(ConfigurationFormat.Json);
         }
 
 

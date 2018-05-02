@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             foreach (var project in _projectsDriver.Projects.Values)
             {
-                project.GenerateAppConfig();
+                project.GenerateConfigurationFile();
             }
 
             _solutionDriver.WriteToDisk();
