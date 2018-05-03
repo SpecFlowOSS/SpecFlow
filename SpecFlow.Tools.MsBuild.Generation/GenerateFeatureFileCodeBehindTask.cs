@@ -46,7 +46,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                     outOfProcessServer.Start(freePort);
                     var filePathGenerator = new FilePathGenerator();
-                    using (var client = new Client<IFeatureCodeBehindGenerator>(freePort))
+
+
+                    var usedPort = outOfProcessServer.WaitForPort();
+
+                    using (var client = new Client<IFeatureCodeBehindGenerator>(usedPort))
                     {
                         await client.WaitForServer();
                         await client.Execute(c => c.InitializeProject(ProjectPath));

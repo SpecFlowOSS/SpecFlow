@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
+using Serilog.Core;
 using TechTalk.SpecFlow.Rpc.Shared;
 
 namespace TechTalk.SpecFlow.Rpc.Server
@@ -19,12 +20,14 @@ namespace TechTalk.SpecFlow.Rpc.Server
     public class BuildServerController
     {
         private readonly ObjectContainer _container;
+        private readonly Logger _logger;
         internal int DefaultPort = 4242;
         private ServerDispatcher _dispatcher;
 
-        public BuildServerController(ObjectContainer container)
+        public BuildServerController(ObjectContainer container, Logger logger)
         {
             _container = container;
+            _logger = logger;
         }
 
         public int Run(int port)
@@ -49,9 +52,13 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         private IClientConnectionHost CreateClientConnectionHost(string pipeName)
         {
-            var port = int.Parse(pipeName);
-            var endPoint = new IPEndPoint(IPAddress.Loopback, port);
-            var connectionHost = new TcpClientConnectionHost(endPoint);
+            var port = short.Parse(pipeName);
+            
+            var connectionHost = new TcpClientConnectionHost();
+            var usedPort = connectionHost.Start(IPAddress.Loopback, port);
+
+            _logger.Information($"Used port: {usedPort}");
+
             return connectionHost;
         }
 
@@ -78,10 +85,10 @@ namespace TechTalk.SpecFlow.Rpc.Server
         protected virtual int RunServerCore(IClientConnectionHost connectionHost, IDiagnosticListener listener, TimeSpan? keepAlive,
             CancellationToken cancellationToken)
         {
-            CompilerServerLogger.Log("Keep alive timeout is: {0} milliseconds.", keepAlive?.TotalMilliseconds ?? 0);
+            _logger.Information("Keep alive timeout is: {0} milliseconds.", keepAlive?.TotalMilliseconds ?? 0);
             FatalError.Handler = FailFast.OnFatalException;
 
-            _dispatcher = new ServerDispatcher(connectionHost, listener, _container);
+            _dispatcher = new ServerDispatcher(connectionHost, listener, _container, _logger);
             _dispatcher.ListenAndDispatchConnections(keepAlive, cancellationToken);
             return CommonCompiler.Succeeded;
         }

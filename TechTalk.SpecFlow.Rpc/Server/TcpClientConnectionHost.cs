@@ -6,39 +6,49 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog.Core;
 
 namespace TechTalk.SpecFlow.Rpc.Server
 {
     internal sealed class TcpClientConnectionHost : IClientConnectionHost
     {
-        private readonly TcpListener _listener;
+        private TcpListener _listener;
         private int _connectionCount;
 
-        internal TcpClientConnectionHost(IPEndPoint endPoint)
+        public short Start(IPAddress ipAddress, Int16 startPort)
         {
-            _listener = new TcpListener(endPoint);
-            _listener.Start();
+            short usedPort = startPort;
+            while (usedPort < short.MaxValue)
+            {
+
+                try
+                {
+                    _listener = new TcpListener(new IPEndPoint(ipAddress, usedPort));
+                    _listener.Start();
+                }
+                catch (SocketException socketException) when (socketException.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                {
+                    usedPort++;
+                    continue;
+                }
+                
+                break;
+            }
+
+            return usedPort;
         }
 
-        public async Task<IClientConnection> CreateListenTask(CancellationToken cancellationToken)
+        public async Task<IClientConnection> CreateListenTask(CancellationToken cancellationToken, Logger logger)
         {
-            try
-            {
-                var tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(true);
-                return new TcpClientConnection(tcpClient, _connectionCount++.ToString());
-            }
-            catch (Exception e)
-            {
-                
-                throw;
-            }
+            var tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(true);
+            return new TcpClientConnection(tcpClient, _connectionCount++.ToString(), logger);
         }
 
         private sealed class TcpClientConnection : ClientConnection
         {
             private readonly TcpClient _client;
 
-            internal TcpClientConnection(TcpClient client, string loggingIdentifier) : base(loggingIdentifier, client.GetStream())
+            internal TcpClientConnection(TcpClient client, string loggingIdentifier, Logger logger) : base(loggingIdentifier, client.GetStream(), logger)
             {
                 _client = client;
             }

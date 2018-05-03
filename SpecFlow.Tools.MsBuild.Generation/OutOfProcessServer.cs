@@ -20,8 +20,10 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private StringBuilder _output;
         private AutoResetEvent _outputWaitHandle;
         private AutoResetEvent _errorWaitHandle;
+        private AutoResetEvent _usedPortReceived;
         private Process _externalProcess;
-        private readonly string workingDirectory;
+        private readonly string _workingDirectory;
+        private short _usedPort;
         private const string GeneratorExe = "TechTalk.SpecFlow.CodeBehindGenerator.exe";
 
         public OutOfProcessServer(TaskLoggingHelper log)
@@ -29,26 +31,22 @@ namespace SpecFlow.Tools.MsBuild.Generation
             Log = log;
             _timeout = TimeSpan.FromMinutes(10);
             _timeOutInMilliseconds = Convert.ToInt32(_timeout.TotalMilliseconds);
-            workingDirectory = Path.GetDirectoryName(GetType().Assembly.Location);
+            _workingDirectory = Path.GetDirectoryName(GetType().Assembly.Location);
 
             _output = new StringBuilder();
             _outputWaitHandle = new AutoResetEvent(false);
             _errorWaitHandle = new AutoResetEvent(false);
+            _usedPortReceived = new AutoResetEvent(false);
         }
 
         public void Start(int port)
         {
-            
+            var exe = Path.Combine(_workingDirectory, GeneratorExe);
 
-
-            
-
-            var exe = Path.Combine(workingDirectory, GeneratorExe);
-
-            Log.LogWithNameTag(Log.LogMessage, $"Starting OutOfProcess generation process {exe} in {workingDirectory}");
+            Log.LogWithNameTag(Log.LogMessage, $"Starting OutOfProcess generation process {exe} in {_workingDirectory}");
             var processStartInfo = new ProcessStartInfo(exe, $"--port {port}")
             {
-                WorkingDirectory = workingDirectory,
+                WorkingDirectory = _workingDirectory,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -62,8 +60,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             };
             _externalProcess.Exited += Process_Exited;
-
-
             _externalProcess.OutputDataReceived += (sender, e) =>
             {
                 if (e.Data == null)
@@ -72,6 +68,13 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 }
                 else
                 {
+                    if (e.Data.Contains("Used port:"))
+                    {
+                        _usedPort = short.Parse(e.Data.Substring(e.Data.Length - 5).Trim());
+                        _usedPortReceived.Set();
+                    }
+
+
                     _output.AppendLine(e.Data);
                 }
             };
@@ -106,9 +109,20 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private void Process_Exited(object sender, EventArgs e)
         {
+            Log.LogWithNameTag(Log.LogMessage, "Output:" + _output);
             Log.LogWithNameTag(Log.LogMessage, $"OutOfProcess process has exited with exit code {_externalProcess.ExitCode}");
 
             _externalProcess.Exited -= Process_Exited;
+        }
+
+        public short WaitForPort()
+        {
+            if (_usedPortReceived.WaitOne(_timeOutInMilliseconds))
+            {
+                return _usedPort;
+            }
+
+            throw new Exception("Could not find the used port of code generation process");
         }
 
         public void Dispose()
