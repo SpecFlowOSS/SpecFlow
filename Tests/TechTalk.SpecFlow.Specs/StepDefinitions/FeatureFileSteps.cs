@@ -24,11 +24,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"a scenario '(.*)' as")]
         public void GivenAScenarioSimpleScenarioAs(string title, string scenarioContent)
         {
-
-            _projectsDriver.AddFeatureFile(string.Format(@"Feature: Feature {0}
-Scenario: {1}
-{2}
-                ", Guid.NewGuid(), title, scenarioContent));
+            _projectsDriver.AddFeatureFile(
+                $@"Feature: Feature {Guid.NewGuid()}
+Scenario: {title}
+{scenarioContent.Replace("'''", "\"\"\"")}
+                ");
         }
 
         [Given(@"there is a feature '(.*)' with (\d+) passing (\d+) failing (\d+) pending and (\d+) ignored scenarios")]
