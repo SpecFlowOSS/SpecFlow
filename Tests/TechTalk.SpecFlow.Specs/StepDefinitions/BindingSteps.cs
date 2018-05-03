@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the following binding class in the project '(.*)'")]
         public void GivenTheFollowingStepDefinitionInTheProject(string projectName, string stepDefinition)
         {
-            _projectsDriver.AddBindingCode(projectName, stepDefinition);
+            _projectsDriver.AddStepBinding(projectName, stepDefinition);
         }
 
         [Given(@"the following hooks?")]
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the following binding methods?")]
         public void GivenTheFollowingBindings(string bindingCode)
         {
-            _projectsDriver.AddBindingCode(bindingCode);
+            _projectsDriver.AddStepBinding(bindingCode);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)'")]
@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the following class")]
         public void GivenTheFollowingBindingClass(string rawBindingClass)
         {
-            inputProjectDriver.AddRawBindingClass(rawBindingClass);
+            _projectsDriver.AddBindingClass(rawBindingClass);
         }
     }
 }
