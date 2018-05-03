@@ -1,5 +1,7 @@
 ﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using SpecFlow.TestProjectGenerator.NewApi._1_Memory;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -9,17 +11,19 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
         private readonly ConfigurationDriver _configurationDriver;
+        private readonly XmlConfigurationLoaderDriver _xmlConfigurationLoaderDriver;
 
-        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, ConfigurationDriver configurationDriver)
+        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, ConfigurationDriver configurationDriver, XmlConfigurationLoaderDriver xmlConfigurationLoaderDriver)
         {
-            this._appConfigConfigurationDriver = appConfigConfigurationDriver;
+            _appConfigConfigurationDriver = appConfigConfigurationDriver;
             _configurationDriver = configurationDriver;
+            _xmlConfigurationLoaderDriver = xmlConfigurationLoaderDriver;
         }
 
         [Given(@"the specflow configuration is")]
-        public void GivenTheSpecflowConfigurationIs(string specFlowConfigurationContent)
+        public void GivenTheSpecflowConfigurationIs(string specFlowSection)
         {
-            _configurationDriver.AddFromXmlSpecFlowSection(specFlowConfigurationContent);
+            _xmlConfigurationLoaderDriver.AddFromXmlSpecFlowSection(specFlowSection);
         }
 
         [Given(@"the project is configured to use the (.+) provider")]
@@ -51,6 +55,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"row testing is (.+)")]
         public void GivenRowTestingIsRowTest(bool enabled)
         {
+            _configurationDriver.SetIsRowTestsAllowed(enabled);
             _appConfigConfigurationDriver.SetRowTest(enabled);
         }
 
