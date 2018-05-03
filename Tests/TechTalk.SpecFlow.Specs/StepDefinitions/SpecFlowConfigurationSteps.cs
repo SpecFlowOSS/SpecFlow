@@ -1,7 +1,5 @@
 ﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using SpecFlow.TestProjectGenerator.NewApi._1_Memory;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -9,13 +7,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class SpecFlowConfigurationSteps
     {
-        private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
         private readonly ConfigurationDriver _configurationDriver;
         private readonly XmlConfigurationLoaderDriver _xmlConfigurationLoaderDriver;
 
-        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, ConfigurationDriver configurationDriver, XmlConfigurationLoaderDriver xmlConfigurationLoaderDriver)
+        public SpecFlowConfigurationSteps(ConfigurationDriver configurationDriver, XmlConfigurationLoaderDriver xmlConfigurationLoaderDriver)
         {
-            _appConfigConfigurationDriver = appConfigConfigurationDriver;
             _configurationDriver = configurationDriver;
             _xmlConfigurationLoaderDriver = xmlConfigurationLoaderDriver;
         }
@@ -44,8 +40,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _configurationDriver.SetConfigurationFormat(ConfigurationFormat.Json);
         }
-
-
+        
         [StepArgumentTransformation(@"enabled")]
         public bool ConvertEnabled() { return true; }
 
@@ -56,13 +51,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenRowTestingIsRowTest(bool enabled)
         {
             _configurationDriver.SetIsRowTestsAllowed(enabled);
-            _appConfigConfigurationDriver.SetRowTest(enabled);
         }
 
         [Given(@"the type '(.*)' is registered as '(.*)' in SpecFlow runtime configuration")]
         public void GivenTheTypeIsRegisteredAsInSpecFlowRuntimeConfiguration(string typeName, string interfaceName)
         {
-            _appConfigConfigurationDriver.AddRuntimeDependencyCustomization(typeName, interfaceName);
+            _configurationDriver.AddRuntimeRegisterDependency(typeName, interfaceName);
         }
     }
 }
