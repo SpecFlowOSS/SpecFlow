@@ -88,6 +88,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var scenarioContainer = new ObjectContainer(testThreadContainer);
             scenarioContainer.RegisterInstanceAs(scenarioInfo);
+            scenarioContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
 
             scenarioContainer.ObjectCreated += obj =>
             {
