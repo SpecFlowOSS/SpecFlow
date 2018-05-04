@@ -51,14 +51,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the binding method '(.*)' is executed (.*)")]
         public void ThenTheBindingMethodIsExecuted(string methodName, int times)
         {
-            _testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
-
-            var regex = new Regex(@"-> done: \S+\." + methodName);
-            if (times > 0)
-                regex.Match(_testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
-
-            if (times != int.MaxValue)
-                regex.Matches(_testExecutionResult.ExecutionLog).Count.Should().Be(times);
+            _vsTestExecutionDriver.CheckIsBindingMethodExecuted(methodName, times);
         }
 
         [Then(@"the hook '(.*)' is executed (\D.*)")]
@@ -93,8 +86,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the execution log should contain text '(.*)'")]
         public void ThenTheExecutionLogShouldContainText(string text)
         {
-            _testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
-            _testExecutionResult.ExecutionLog.Should().Contain(text);
+            // TODO: do not search in output but in execution log
+            _vsTestExecutionDriver.CheckOutputContainsText(text);
         }
 
         [Given(@"the log file '(.*)' is empty")]
@@ -117,7 +110,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [Then(@"the log file '(.*)' should contain the text '(.*)' (\d+) times")]
-        public void ThenTheLogFileShouldContainTHETextTimes(string logFilePath, string text, int times)
+        public void ThenTheLogFileShouldContainTheTextTimes(string logFilePath, string text, int times)
         {
             var logConent = File.ReadAllText(GetPath(logFilePath));
             logConent.Should().NotBeNullOrEmpty("no trace log is generated");

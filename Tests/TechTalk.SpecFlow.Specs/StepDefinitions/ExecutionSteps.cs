@@ -12,7 +12,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class ExecutionSteps
     {
-        private readonly ProjectSteps projectSteps;
         private readonly SolutionDriver _solutionDriver;
         private readonly NuGet _nuGet;
         private readonly Compiler _compiler;
@@ -23,13 +22,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly XUnitTestExecutionDriver xUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnit3TestExecutionDriver nUnit3TestExecutionDriver, NUnit2TestExecutionDriver nUnit2TestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
-            ProjectSteps projectSteps, SolutionDriver solutionDriver, NuGet nuGet, Compiler compiler, VSTestExecutionDriver vsTestExecution, ProjectsDriver projectsDriver)
+        public ExecutionSteps(NUnit3TestExecutionDriver nUnit3TestExecutionDriver, NUnit2TestExecutionDriver nUnit2TestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver, MsTestTestExecutionDriver msTestTestExecutionDriver, SolutionDriver solutionDriver, NuGet nuGet, Compiler compiler, VSTestExecutionDriver vsTestExecution, ProjectsDriver projectsDriver)
         {
             this.nUnit3TestExecutionDriver = nUnit3TestExecutionDriver;
             this.nUnit2TestExecutionDriver = nUnit2TestExecutionDriver;
             this.xUnitTestExecutionDriver = xUnitTestExecutionDriver;
-            this.projectSteps = projectSteps;
             _solutionDriver = solutionDriver;
             _nuGet = nuGet;
             _compiler = compiler;
@@ -41,6 +38,46 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
+            var compileResult = CompileProject();
+
+            if (!compileResult.Successful) throw new Exception(compileResult.Output);
+
+            _vsTestExecution.ExecuteTests();
+        }
+
+        [When(@"I execute the tests tagged with '@(.+)'")]
+        public void WhenIExecuteTheTestsTaggedWithTag(string tag)
+        {
+            var compileResult = CompileProject();
+
+            if (!compileResult.Successful) throw new Exception(compileResult.Output);
+
+            _vsTestExecution.ExecuteTests(tag);
+        }
+
+        [When(@"I execute the tests with (.*)")]
+        public void WhenIExecuteTheTestsWith(string unitTestProvider)
+        {
+            var compileResult = CompileProject();
+
+            if (!compileResult.Successful) throw new Exception(compileResult.Output);
+
+            // TODO: parse unit test provider before checking it
+            switch (unitTestProvider)
+            {
+                case "xUnit":
+                    _vsTestExecution.ExecuteTests();
+                    break;
+                case "NUnit.2":
+                case "NUnit":
+                case "MsTest":
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        private CompileResult CompileProject()
+        {
             foreach (var project in _projectsDriver.Projects.Values)
             {
                 project.GenerateConfigurationFile();
@@ -49,45 +86,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _solutionDriver.WriteToDisk();
             _nuGet.Restore();
 
-            var compileResult = _compiler.Run();
-
-            if (!compileResult.Successful)
-            {
-                throw new Exception(compileResult.Output);
-            }
-
-            _vsTestExecution.ExecuteTests();
-        }
-
-        [When(@"I execute the tests tagged with '@(.+)'")]
-        public void WhenIExecuteTheTestsTaggedWithTag(string tag)
-        {
-            nUnit3TestExecutionDriver.Include = tag;
-            WhenIExecuteTheTests();
-        }
-
-        [When(@"I execute the tests with (.*)")]
-        public void WhenIExecuteTheTestsWith(string unitTestProvider)
-        {
-            projectSteps.EnsureCompiled();
-
-            switch (unitTestProvider)
-            {
-                case "NUnit.2":
-                    nUnit2TestExecutionDriver.Execute();
-                    break;
-                case "NUnit":
-                    nUnit3TestExecutionDriver.Execute();
-                    break;
-                case "MsTest":
-                    msTestTestExecutionDriver.Execute();
-                    break;
-                case "xUnit":
-                    xUnitTestExecutionDriver.Execute();
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
+            return _compiler.Run();
         }
     }
 }
