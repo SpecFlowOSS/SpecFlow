@@ -33,5 +33,12 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             get { return (MissingOrPendingStepsOutcome)this["missingOrPendingStepsOutcome"]; }
             set { this["missingOrPendingStepsOutcome"] = value; }
         }
+
+        [ConfigurationProperty("obsoleteBehavior", DefaultValue = ConfigDefaults.ObsoleteBehavior, IsRequired = false)]
+        public ObsoleteBehavior ObsoleteBehavior
+        {
+            get { return (ObsoleteBehavior)this["obsoleteBehavior"]; }
+            set { this["obsoleteBehavior"] = value; }
+        }
     }
 }
