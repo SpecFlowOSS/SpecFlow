@@ -13,5 +13,5 @@
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 - [X] I've added tests for my code.
 - [X] My change requires a change to the documentation.
-- [ ] I have updated the documentation accordingly.
+- [X] I have updated the documentation accordingly.
 - [X] I have added an entry to the changelog
