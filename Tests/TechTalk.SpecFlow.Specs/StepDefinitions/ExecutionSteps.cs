@@ -39,6 +39,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void WhenIExecuteTheTests()
         {
             _solutionDriver.CompileSolution();
+            _solutionDriver.CheckSolutionShouldHaveCompiled();
             _vsTestExecution.ExecuteTests();
         }
 
@@ -46,27 +47,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void WhenIExecuteTheTestsTaggedWithTag(string tag)
         {
             _solutionDriver.CompileSolution();
-            _vsTestExecution.ExecuteTests(tag);
-        }
-
-        [When(@"I execute the tests with (.*)")]
-        public void WhenIExecuteTheTestsWith(string unitTestProvider)
-        {
-            _solutionDriver.CompileSolution();
             _solutionDriver.CheckSolutionShouldHaveCompiled();
-
-            // TODO: parse unit test provider before checking it
-            switch (unitTestProvider)
-            {
-                case "xUnit":
-                    _vsTestExecution.ExecuteTests();
-                    break;
-                case "NUnit.2":
-                case "NUnit":
-                case "MsTest":
-                default:
-                    throw new NotSupportedException();
-            }
+            _vsTestExecution.ExecuteTests(tag);
         }
     }
 }

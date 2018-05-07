@@ -54,11 +54,11 @@ Background:
 		"""
 
 Scenario: Precondition: Tests run parallel with NUnit v3
-    When I execute the tests with NUnit
+    When I execute the tests
     Then the execution log should contain text 'Was parallel'
 
 Scenario: Tests should be processed parallel without failure
-    When I execute the tests with NUnit
+    When I execute the tests
     Then the execution log should contain text 'Was parallel'
 	And the execution summary should contain
 		| Total | Succeeded |
@@ -66,7 +66,7 @@ Scenario: Tests should be processed parallel without failure
 
 Scenario Outline: Before/After TestRun hook should only be executed once
     Given a hook 'HookFor<event>' for '<event>'
-    When I execute the tests with NUnit
+    When I execute the tests
     Then the execution log should contain text 'Was parallel'
     And the hook 'HookFor<event>' is executed once
 
@@ -79,6 +79,9 @@ Examples:
 Scenario: TraceListener should be called synchronously
     Given the following binding class
         """
+        using System;
+        using System.IO;
+
         public class NonThreadSafeTraceListener : TechTalk.SpecFlow.Tracing.ITraceListener
         {
             public int startIndex = 0;
@@ -88,7 +91,7 @@ Scenario: TraceListener should be called synchronously
                 var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
                 System.Diagnostics.Debug.WriteLine("NonThreadSafeTraceListener: {0}", message);
                 string filePath = Path.Combine(Path.GetTempPath(), "NonThreadSafeTraceListener.log");
-                System.IO.File.AppendAllText(filePath, "NonThreadSafeTraceListener: " + message + Environment.NewLine);
+                File.AppendAllText(filePath, "NonThreadSafeTraceListener: " + message + Environment.NewLine);
                 System.Threading.Thread.Sleep(100);
                 var afterStartIndex = startIndex;
                 if (afterStartIndex != currentStartIndex)
@@ -143,9 +146,9 @@ Scenario: TraceListener should be called synchronously
         | 4     |
         | 5     |
 		"""
-    And the type 'SpecFlow.TestProject.NonThreadSafeTraceListener, SpecFlow.TestProject' is registered as 'TechTalk.SpecFlow.Tracing.ITraceListener' in SpecFlow runtime configuration
+    And the type 'NonThreadSafeTraceListener' is registered as 'TechTalk.SpecFlow.Tracing.ITraceListener' in SpecFlow runtime configuration
     And the log file 'NonThreadSafeTraceListener.log' is empty
-    When I execute the tests with NUnit
+    When I execute the tests
     Then the execution log should contain text 'Was parallel'
     Then the log file 'NonThreadSafeTraceListener.log' should contain text 'NonThreadSafeTraceListener:'
 	Then the log file 'NonThreadSafeTraceListener.log' should contain the text 'NonThreadSafeTraceListener:' 51 times
@@ -173,7 +176,7 @@ Scenario Outline: Current context cannot be used in multi-threaded execution
             Console.WriteLine(<context>.Current);
 		 }
          """
-    When I execute the tests with NUnit
+    When I execute the tests
     Then the execution log should contain text 'Was parallel'
 	And the execution summary should contain
 		| Failed |

@@ -96,12 +96,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             File.WriteAllText(GetPath(logFilePath), "");
         }
 
-        private string GetPath(string logFilePath)
-        {
-            string filePath = Path.Combine(Path.GetTempPath(), logFilePath);
-            return filePath;
-        }
-
         [Then(@"the log file '(.*)' should contain text '(.*)'")]
         public void ThenTheLogFileShouldContainText(string logFilePath, string text)
         {
@@ -121,6 +115,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             if (times != int.MaxValue) 
                  regex.Matches(logConent).Count.Should().Be(times);
+        }
+
+        private string GetPath(string logFilePath)
+        {
+            string filePath = Path.Combine(Path.GetTempPath(), logFilePath);
+            return filePath;
         }
     }
 }

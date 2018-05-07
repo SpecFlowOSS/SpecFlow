@@ -18,14 +18,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"there is a SpecFlow project")]
         public void GivenThereIsASpecFlowProject()
         {
-            _projectsDriver.CreateProject(Language.CSharp);
-            GivenThereIsASpecFlowProject("SpecFlow.TestProject");
-        }
-
-        [Given(@"there is a SpecFlow project '(.*)'")]
-        public void GivenThereIsASpecFlowProject(string projectName)
-        {
-            _projectsDriver.CreateProject(projectName, Language.CSharp);
         }
 
         [Given(@"I have a '(.*)' test project")]

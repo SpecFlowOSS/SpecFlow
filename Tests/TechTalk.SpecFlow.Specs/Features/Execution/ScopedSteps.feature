@@ -147,6 +147,8 @@ Scenario: Scoping step definitions of a binding class
          """
 	And the following binding class
 		 """
+         using TechTalk.SpecFlow;
+
 		 [Binding, Scope(Tag = "mytag")]
 		 public class ScopedSteps
 		 {
