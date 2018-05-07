@@ -13,6 +13,9 @@
   <Target Name="AfterBuild" AfterTargets="Build" />
 
   <Target Name="GetGitVersion" BeforeTargets="NugetBuild" DependsOnTargets="GetVersion;UpdatePackageVersion">
+    <ItemGroup>
+      <nuspec Include="$(MSBuildThisFileDirectory)\..\**\*.nuspec"/>
+    </ItemGroup>
   </Target>
 
   <Target Name="UpdatePackageVersion" >

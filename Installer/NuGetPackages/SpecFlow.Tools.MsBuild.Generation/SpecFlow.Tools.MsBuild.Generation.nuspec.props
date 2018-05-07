@@ -9,7 +9,7 @@
     </additionalFiles>
 
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\*">
-      <targetFolder>pecFlow.Tools.MsBuild.Generation\tools\Licenses</targetFolder>
+      <targetFolder>SpecFlow.Tools.MsBuild.Generation\tools\Licenses</targetFolder>
     </additionalFiles>
   </ItemGroup>
 </Project>
