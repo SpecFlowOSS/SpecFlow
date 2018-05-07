@@ -40,6 +40,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
             _configurationDriver.SetUnitTestProvider(project, specFlowConfiguration.UnitTestProvider);
             _configurationDriver.SetBindingCulture(project, specFlowConfiguration.BindingCulture);
+            _configurationDriver.SetFeatureLanguage(project, specFlowConfiguration.FeatureLanguage);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the binding method '(.*)' is executed")]
         public void ThenTheBindingMethodIsExecuted(string methodName)
         {
-            ThenTheBindingMethodIsExecuted(methodName, int.MaxValue);
+            ThenTheBindingMethodIsExecuted(methodName, 1);
         }
 
         [Then(@"the binding method '(.*)' is executed (.*)")]

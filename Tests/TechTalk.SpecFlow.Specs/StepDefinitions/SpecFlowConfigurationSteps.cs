@@ -28,7 +28,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _configurationDriver.SetUnitTestProvider(providerName);
         }
 
-
         [Given(@"SpecFlow is configured in the app\.config")]
         public void GivenSpecFlowIsConfiguredInTheApp_Config()
         {
