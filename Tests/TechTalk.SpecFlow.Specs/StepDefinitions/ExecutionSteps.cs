@@ -38,29 +38,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            var compileResult = CompileProject();
-
-            if (!compileResult.Successful) throw new Exception(compileResult.Output);
-
+            _solutionDriver.CompileSolution();
             _vsTestExecution.ExecuteTests();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
         public void WhenIExecuteTheTestsTaggedWithTag(string tag)
         {
-            var compileResult = CompileProject();
-
-            if (!compileResult.Successful) throw new Exception(compileResult.Output);
-
+            _solutionDriver.CompileSolution();
             _vsTestExecution.ExecuteTests(tag);
         }
 
         [When(@"I execute the tests with (.*)")]
         public void WhenIExecuteTheTestsWith(string unitTestProvider)
         {
-            var compileResult = CompileProject();
-
-            if (!compileResult.Successful) throw new Exception(compileResult.Output);
+            _solutionDriver.CompileSolution();
+            _solutionDriver.CheckSolutionShouldHaveCompiled();
 
             // TODO: parse unit test provider before checking it
             switch (unitTestProvider)
@@ -74,19 +67,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
                 default:
                     throw new NotSupportedException();
             }
-        }
-
-        private CompileResult CompileProject()
-        {
-            foreach (var project in _projectsDriver.Projects.Values)
-            {
-                project.GenerateConfigurationFile();
-            }
-
-            _solutionDriver.WriteToDisk();
-            _nuGet.Restore();
-
-            return _compiler.Run();
         }
     }
 }

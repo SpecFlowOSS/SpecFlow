@@ -1,100 +1,49 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
+﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
+using Language = SpecFlow.TestProjectGenerator.ProgrammingLanguage;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ProjectSteps
     {
-        private readonly InputProjectDriver inputProjectDriver;
-        private readonly ProjectGenerator projectGenerator;
-        private readonly ProjectCompiler projectCompiler;
-        private readonly HooksDriver _hooksDriver;
+        private readonly ProjectsDriver _projectsDriver;
+        private readonly SolutionDriver _solutionDriver;
 
-        public ProjectSteps(InputProjectDriver inputProjectDriver, ProjectGenerator projectGenerator, ProjectCompiler projectCompiler, HooksDriver hooksDriver)
+        public ProjectSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver)
         {
-            this.inputProjectDriver = inputProjectDriver;
-            this.projectCompiler = projectCompiler;
-            _hooksDriver = hooksDriver;
-            this.projectGenerator = projectGenerator;
+            _projectsDriver = projectsDriver;
+            _solutionDriver = solutionDriver;
         }
 
         [Given(@"there is a SpecFlow project")]
         public void GivenThereIsASpecFlowProject()
         {
+            _projectsDriver.CreateProject(Language.CSharp);
             GivenThereIsASpecFlowProject("SpecFlow.TestProject");
         }
 
         [Given(@"there is a SpecFlow project '(.*)'")]
         public void GivenThereIsASpecFlowProject(string projectName)
         {
-            inputProjectDriver.ProjectName = projectName;
+            _projectsDriver.CreateProject(projectName, Language.CSharp);
         }
 
         [Given(@"I have a '(.*)' test project")]
         public void GivenIHaveATestProject(string language)
         {
-            inputProjectDriver.Language = language;
-        }
-
-
-        private bool isCompiled = false;
-        private Exception CompilationError;
-
-//        [BeforeScenarioBlock]
-//        public void CompileProject()
-//        {
-//            if ((ScenarioContext.Current.CurrentScenarioBlock == ScenarioBlock.When))
-//            {
-//                EnsureCompiled();
-//            }
-//        }
-//
-        public void EnsureCompiled()
-        {
-            if (!isCompiled)
-            {
-                try
-                {
-                    CompileInternal();
-                }
-                finally
-                {
-                    isCompiled = true;
-                }
-            }
-        }
-
-        private void CompileInternal()
-        {
-            var project = projectGenerator.GenerateProject(inputProjectDriver);
-            projectCompiler.Compile(project);
-
-            _hooksDriver.EnsureInitialized();
+            _projectsDriver.CreateProject(language);
         }
 
         [When(@"the project is compiled")]
         public void WhenTheProjectIsCompiled()
         {
-            try
-            {
-                CompilationError = null;
-                CompileInternal();
-            }
-            catch (Exception ex)
-            {
-                CompilationError = ex;
-            }
+            _solutionDriver.CompileSolution();
         }
 
         [Then(@"no compilation errors are reported")]
         public void ThenNoCompilationErrorsAreReported()
         {
-            CompilationError.Should().BeNull();
+            _solutionDriver.CheckSolutionShouldHaveCompiled();
         }
     }
 }
