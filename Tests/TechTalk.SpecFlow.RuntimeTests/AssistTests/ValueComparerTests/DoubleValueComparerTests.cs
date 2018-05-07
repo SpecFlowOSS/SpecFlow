@@ -1,13 +1,22 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
-    [TestFixture, SetCulture("en-US")]
+    [TestFixture]
     public class DoubleValueComparerTests
-    {
-        [Test]
+	{
+		[SetUp]
+		public void TestSetup()
+		{
+			// this is required, because the tests depend on parsing decimals with the en-US culture
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+		}
+
+		[Test]
         public void Can_compare_if_the_value_is_a_double()
         {
             var valueComparer = new DoubleValueComparer();

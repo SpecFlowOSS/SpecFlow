@@ -1,22 +1,39 @@
-2.4 - 2018-05-07
+2.5 - 2018-05-07
 
 New Features:
 + Added support for customization of dependency injection at feature level via a runtime plugin event to raise feature dependencies
 + Allow raising of feature dependencies from feature container
 
-2.3.2
+2.4 - 2018-??-??
+New Features:
++ Added ability to convert type to same type or one of the base types https://github.com/techtalk/SpecFlow/pull/1110
+
+
+Fixes:
++ Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
++ Resolved loading plugins multiple times. Issue: https://github.com/techtalk/SpecFlow/issues/888 
+
+
+2.3.2 - 2018-04-17
 Fixes:
 + Fix issue when using environment variables in a generator plugin's path https://github.com/techtalk/SpecFlow/pull/1045
 + Adjust order of plugin search paths https://github.com/techtalk/SpecFlow/pull/1086
++ Improve error message of test generator https://github.com/techtalk/SpecFlow/pull/1089
++ Fix assembly loading of dependencies in MSBuild task https://github.com/techtalk/SpecFlow/pull/1088
++ Make MSBuild Task debuggable https://github.com/techtalk/SpecFlow/pull/1087
++ add licenses for all dependencies that are shipped with the NuGet packages
+
 
 API Changes:
 + Generator probing functionality was moved from GeneratorPluginLoader to GeneratorPluginLocator https://github.com/techtalk/SpecFlow/pull/1045
+
 
 2.3.1 - 2018-03-01
 Fixes:
 + Fixes stepdefinitionreport to include bindings that use [StepDefinition] https://github.com/techtalk/SpecFlow/pull/1024
 + Fix code-behind generation for SpecFlow+Excel Excel files https://github.com/techtalk/SpecFlow/pull/1048
 + Fix runtime support for MSTest V2 https://github.com/techtalk/SpecFlow/pull/1053
+
 
 2.3 - 2018-02-16
 

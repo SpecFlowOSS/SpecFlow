@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var instance = new ContainerBuilder();
             var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder);
 
-            return instance.CreateScenarioContainer(testThreadContainer, new ScenarioInfo("test scenario info"));
+            return instance.CreateScenarioContainer(testThreadContainer, new ScenarioInfo("test scenario info", "test_scenario_description"));
         }
     }
 }
