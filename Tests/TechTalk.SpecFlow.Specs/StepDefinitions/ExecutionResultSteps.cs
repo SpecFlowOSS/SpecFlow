@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
+using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
@@ -58,29 +60,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the hook '(.*)' is executed (\d+) times")]
         public void ThenTheHookIsExecuted(string methodName, int times)
         {
-            var hookLog = _hooksDriver.HookLog;
-            hookLog.Should().NotBeNullOrEmpty("no execution log generated");
-
-            var regex = new Regex(@"-> hook: " + methodName);
-            if (times > 0)
-                regex.Match(hookLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
-
-            if (times != int.MaxValue)
-                regex.Matches(hookLog).Count.Should().Be(times);
+            _hooksDriver.CheckIsHookExecuted(methodName, times);
         }
 
         [Then(@"the hooks are executed in the order")]
         public void ThenTheHooksAreExecutedInTheOrder(Table table)
         {
-            var hookLog = _hooksDriver.HookLog;
-            hookLog.Should().NotBeNullOrEmpty("no execution log generated");
-            int lastPosition = -1;
-            foreach (var row in table.Rows)
-            {
-                int currentPosition = hookLog.IndexOf(@"-> hook: " + row[0]);
-                currentPosition.Should().BeGreaterThan(lastPosition);
-                lastPosition = currentPosition;
-            }
+            _hooksDriver.CheckIsHookExecutedInOrder(table.Rows.Select(r => r[0]));
         }
 
         [Then(@"the execution log should contain text '(.*)'")]

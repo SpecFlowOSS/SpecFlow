@@ -9,10 +9,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class FeatureFileSteps
     {
         private readonly ProjectsDriver _projectsDriver;
+        private readonly SolutionDriver _solutionDriver;
 
-        public FeatureFileSteps(ProjectsDriver projectsDriver)
+        public FeatureFileSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver)
         {
             _projectsDriver = projectsDriver;
+            _solutionDriver = solutionDriver;
         }
 
         [Given(@"there is a feature file in the project as")]

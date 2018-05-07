@@ -7,14 +7,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class BindingSteps
     {
-        private readonly InputProjectDriver inputProjectDriver;
-        private readonly HooksDriver hooksDriver;
+        private readonly HooksDriver _hooksDriver;
         private readonly ProjectsDriver _projectsDriver;
 
-        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver, ProjectsDriver projectsDriver)
+        public BindingSteps(HooksDriver hooksDriver, ProjectsDriver projectsDriver)
         {
-            this.inputProjectDriver = inputProjectDriver;
-            this.hooksDriver = hooksDriver;
+            _hooksDriver = hooksDriver;
             _projectsDriver = projectsDriver;
         }
 
@@ -65,13 +63,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"a hook '(.*)' for '([^']*)'")]
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
-            inputProjectDriver.AddEventBinding(eventType, hooksDriver.GetHookLogStatement(methodName), methodName);
+            _projectsDriver.AddHookBinding(eventType, methodName);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)' with order '([^']*)'")]
         public void GivenAHookForWithOrder(string methodName, string eventType, int hookOrder)
         {
-            inputProjectDriver.AddEventBinding(eventType, hooksDriver.GetHookLogStatement(methodName), methodName, hookOrder);
+            _projectsDriver.AddHookBinding(eventType, methodName, order: hookOrder);
         }
 
         [Given(@"the following binding class")]
