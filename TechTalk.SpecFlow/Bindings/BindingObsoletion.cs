@@ -35,12 +35,12 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 IsObsolete = true;
                 message = possibleObsoletionAttribute.Message ?? defaultObsoletionMessage;
-                methodName = stepBinding.Method.Name;
+                methodName = stepBinding?.Method.Name;
             }
         }
 
         public bool IsObsolete { get; private set; }
 
-        public string Message => $"The step {methodName} is obsolete because {message}";
+        public string Message => IsObsolete ? $"The step {methodName} is obsolete because {message}" : string.Empty;
     }
 }
