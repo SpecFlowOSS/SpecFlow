@@ -6,5 +6,6 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         void RegisterGlobalContainerDefaults(ObjectContainer container);
         void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer);
+        void RegisterScenarioContainerDefaults(ObjectContainer scenarioContainer);
     }
 }

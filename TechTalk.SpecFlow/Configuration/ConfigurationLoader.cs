@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
@@ -182,8 +183,9 @@ namespace TechTalk.SpecFlow.Configuration
 
         private string GetSpecflowJsonFilePath()
         {
-            var directory = Path.GetDirectoryName(typeof(ConfigurationLoader).Assembly.Location);
-            var specflowJsonFile = Path.Combine(directory, "specflow.json");
+            //var directory = Path.GetDirectoryName(typeof(ConfigurationLoader).Assembly.Location);
+            //var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var specflowJsonFile = Path.Combine(Environment.CurrentDirectory, "specflow.json"); //todo: check if this works in real project
             return specflowJsonFile;
         }
     }

@@ -1,6 +1,6 @@
-﻿using System;
-using TechTalk.SpecFlow.Infrastructure;
+﻿using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.xUnit.SpecFlowPlugin;
 
 
@@ -21,6 +21,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
             var container = e.ObjectContainer;
 
             container.RegisterTypeAs<OutputHelper, ISpecFlowOutputHelper>();
+            container.RegisterTypeAs<XUnitTraceListener, ITraceListener>();
         }
     }
 }
