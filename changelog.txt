@@ -7,6 +7,7 @@ Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
 + Resolved loading plugins multiple times. Issue: https://github.com/techtalk/SpecFlow/issues/888 
 
+
 2.3.2 - 2018-04-17
 Fixes:
 + Fix issue when using environment variables in a generator plugin's path https://github.com/techtalk/SpecFlow/pull/1045
