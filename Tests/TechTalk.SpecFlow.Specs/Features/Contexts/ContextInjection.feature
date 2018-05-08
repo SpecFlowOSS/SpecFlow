@@ -6,14 +6,17 @@
 Background: 
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		public class SingleContext
 		{
 			public static int InstanceCount = 0;
 			public string ScenarioTitle;
 
-			public SingleContext()
+			public SingleContext(ScenarioContext scenarioContext)
 			{
-				ScenarioTitle = ScenarioContext.Current.ScenarioInfo.Title;
+				ScenarioTitle = scenarioContext.ScenarioInfo.Title;
 				InstanceCount++;
 			}
 		}
@@ -32,11 +35,21 @@ Background:
 		}
 		public class DisposableContext : IDisposable
 		{
+			private object _lock = new object();
+
+			public DisposableContext(TechTalk.SpecFlow.Infrastructure.ISpecFlowOutputHelper outputHelper)
+			{
+				outputHelper.WriteLine("DisposableContext");
+			}
+
 			public static bool WasDisposed = false;
 
 			public void Dispose()
 			{
-				WasDisposed = true;
+				lock(_lock)
+				{
+					WasDisposed = true;
+				}
 			}
 		}
         """
@@ -52,6 +65,10 @@ Background:
 Scenario: Binding class can depend on a single context
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
+
 		[Binding]
 		public class StepsWithSingleContext
 		{
@@ -82,6 +99,9 @@ Scenario: Binding class can depend on a single context
 Scenario: Binding class can depend on multiple contexts
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithMultipleContexts
 		{
@@ -110,6 +130,9 @@ Scenario: Binding class can depend on multiple contexts
 Scenario: Context classes can depend on other context classes recursively
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithNestedContext
 		{
@@ -138,6 +161,9 @@ Scenario: Context classes can depend on other context classes recursively
 Scenario: Context classes are shared across binding classes
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithSingleContext
 		{
@@ -154,6 +180,9 @@ Scenario: Context classes are shared across binding classes
         """
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class OtherStepsWithSingleContext
 		{
@@ -182,6 +211,9 @@ Scenario: Context classes are shared across binding classes
 Scenario: Context classes are recreated for every scenario
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithSingleContext
 		{
@@ -224,6 +256,9 @@ Scenario: Context classes are recreated for every scenario
 Scenario: Disposable dependencies should be disposed after scenario execution
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithSingleContext
 		{
