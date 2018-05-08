@@ -6,20 +6,17 @@ using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
-using TestExecutionResult = TechTalk.SpecFlow.Specs.Drivers.TestExecutionResult;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ExecutionResultSteps
-    { 
-        private readonly TestExecutionResult _testExecutionResult; // TODO: to remove
-        private readonly HooksDriver _hooksDriver; // TODO: to remove
+    {
+        private readonly HooksDriver _hooksDriver;
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
 
-        public ExecutionResultSteps(TestExecutionResult testExecutionResult, HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver)
+        public ExecutionResultSteps(HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver)
         {
-            _testExecutionResult = testExecutionResult;
             _hooksDriver = hooksDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
         }
