@@ -180,7 +180,7 @@ namespace TechTalk.SpecFlow.Configuration
             return _jsonConfigurationLoader.LoadJson(specFlowConfiguration, jsonContent);
         }
 
-        private static string GetSpecflowJsonFilePath()
+        private string GetSpecflowJsonFilePath()
         {
             var directory = Path.GetDirectoryName(typeof(ConfigurationLoader).Assembly.Location);
             var specflowJsonFile = Path.Combine(directory, "specflow.json");
