@@ -3,6 +3,9 @@
 Scenario: Check Scenario description is not empty
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class DescriptionTestsBinding
 		{
@@ -32,6 +35,9 @@ Scenario: Check Scenario description is not empty
 Scenario: Check Scenario description is null if empty
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class DescriptionTestsBinding
 		{	
@@ -62,6 +68,9 @@ Scenario: Check Scenario description is null if empty
 Scenario: Check Feature description is null if empty
 	Given the following binding class
 		"""
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithFeatureContext
 		{
@@ -99,6 +108,9 @@ Scenario: Check Feature description is null if empty
 Scenario: Check Feature description is not empty
 	Given the following binding class
 		"""
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithFeatureContext
 		{

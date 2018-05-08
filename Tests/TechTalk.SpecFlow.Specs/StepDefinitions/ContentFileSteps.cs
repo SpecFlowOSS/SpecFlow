@@ -1,21 +1,21 @@
-﻿using TechTalk.SpecFlow.Specs.Drivers;
+﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public sealed class ContentFileSteps
     {
-        private readonly InputProjectDriver inputProjectDriver;
+        private readonly ProjectsDriver _projectsDriver;
 
-        public ContentFileSteps(InputProjectDriver inputProjectDriver)
+        public ContentFileSteps(ProjectsDriver projectsDriver)
         {
-            this.inputProjectDriver = inputProjectDriver;
+            _projectsDriver = projectsDriver;
         }
 
         [Given("there is a content file '(.*)' in the project as")]
         public void GivenThereIsAContentFileInTheProjectAs(string fileName, string fileContent)
         {
-            inputProjectDriver.AddContentFile(fileName, fileContent);
+            _projectsDriver.AddFile(fileName, fileContent);
         }
     }
 }

@@ -56,18 +56,21 @@ namespace SpecFlow.Tools.MsBuild.Generation
                         await client.Execute(c => c.InitializeProject(ProjectPath));
 
                         var codeBehindWriter = new CodeBehindWriter(Log);
-                        foreach (var featureFile in FeatureFiles)
+                        if (FeatureFiles != null)
                         {
-                            string featureFileItemSpec = featureFile.ItemSpec;
-                            var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
+                            foreach (var featureFile in FeatureFiles)
+                            {
+                                string featureFileItemSpec = featureFile.ItemSpec;
+                                var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                            string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
-                            string resultedFile = codeBehindWriter.WriteCodeBehindFile(
-                                targetFilePath,
-                                featureFile,
-                                featureFileCodeBehind);
+                                string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
+                                string resultedFile = codeBehindWriter.WriteCodeBehindFile(
+                                    targetFilePath,
+                                    featureFile,
+                                    featureFileCodeBehind);
 
-                            generatedFiles.Add(new TaskItem { ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder) });
+                                generatedFiles.Add(new TaskItem {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
+                            }
                         }
 
 

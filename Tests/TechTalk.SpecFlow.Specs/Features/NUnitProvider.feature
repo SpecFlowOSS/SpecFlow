@@ -8,7 +8,7 @@ Scenario Outline: Should be able to execute scenarios with basic results
 		When I do something
 		"""
 	And all steps are bound and <step definition status>
-	When I execute the tests with NUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Total | <result> |
 		| 1     | 1        |
@@ -35,7 +35,7 @@ Scenario Outline: Should handle scenario outlines
 				| something else |
 		"""
 	And all steps are bound and pass
-	When I execute the tests with NUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded |
 		| 2         |
@@ -48,18 +48,19 @@ Examples:
 @config
 Scenario: Should be able to specify NUnit provider in the configuration
 	Given there is a SpecFlow project
-	And a scenario 'Simple Scenario' as
-		"""
-		When I do something
-		"""
-	And all steps are bound and pass
 	And the specflow configuration is
 		"""
 		<specFlow>
 			<unitTestProvider name="NUnit"/>
 		</specFlow>
 		"""
-	When I execute the tests with NUnit
+
+	And a scenario 'Simple Scenario' as
+		"""
+		When I do something
+		"""
+	And all steps are bound and pass
+	When I execute the tests
 	Then the execution summary should contain
 		| Total | 
 		| 1     | 

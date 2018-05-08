@@ -90,6 +90,10 @@ Scenario: Should be able to deploy files
 		"""
 	And the following binding class
         """
+		using System;
+		using System.IO;
+		using TechTalk.SpecFlow;
+
 		using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 		[Binding]
@@ -141,6 +145,10 @@ Scenario: Should be able to deploy files to specific folder
 		"""
 	And the following binding class
         """
+		using System;
+		using System.IO;
+		using TechTalk.SpecFlow;
+
 		using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 		[Binding]
