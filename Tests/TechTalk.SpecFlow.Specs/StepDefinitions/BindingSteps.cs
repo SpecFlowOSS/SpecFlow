@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.Specs.Drivers;
 
@@ -58,6 +59,25 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenTheFollowingBindings(string bindingCode)
         {
             _projectsDriver.AddStepBinding(bindingCode);
+        }
+
+        [Given(@"a hook '(.*)' for '(.*)' for tags '(.*)'")]
+        public void GivenAHookForForTags(string methodName, string eventType, string tags)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, tags: tags);
+        }
+
+        [Given(@"a hook '(.*)' for '(.*)' for scopes '(.*)' on the hook method")]
+        [Given(@"a hook '(.*)' for '(.*)' for scopes '(.*)'")]
+        public void GivenAHookForForScopesOnTheHookMethod(string methodName, string eventType, string tagScopes)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, tags: tagScopes, useScopeTagsOnHookMethods: true);
+        }
+
+        [Given(@"a hook '(.*)' for '(.*)' for scopes '(.*)' on the class")]
+        public void GivenAHookForForScopesOnTheClass(string methodName, string eventType, string tagScopes)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, tags: tagScopes, useScopeTagsOnHookMethods: true);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)'")]
