@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Buildalyzer;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -11,11 +12,11 @@ namespace TechTalk.SpecFlow.Generator.Project
 {
     public class BuildalyzerProjectReader : ISpecFlowProjectReader
     {
-        private readonly IGeneratorConfigurationProvider configurationLoader;
+        private readonly IGeneratorConfigurationProvider _configurationLoader;
 
         public BuildalyzerProjectReader(IGeneratorConfigurationProvider configurationLoader)
         {
-            this.configurationLoader = configurationLoader;
+            _configurationLoader = configurationLoader;
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
@@ -45,17 +46,37 @@ namespace TechTalk.SpecFlow.Generator.Project
                 }
             }
 
-            var appConfigItem = project.ApplicationConfigurationFile();
-            if (appConfigItem != null)
+
+            specFlowProject.ProjectSettings.ConfigurationHolder = GetSpecFlowConfigurationHolder(project, projectFolder);
+
+            if (specFlowProject.ProjectSettings.ConfigurationHolder != null)
             {
-                var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);
-                var configFileContent = File.ReadAllText(configFilePath);
-                var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
-                specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
-                specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder);
+                specFlowProject.Configuration = _configurationLoader.LoadConfiguration(specFlowProject.ProjectSettings.ConfigurationHolder);
             }
 
             return specFlowProject;
+        }
+
+        private SpecFlowConfigurationHolder GetSpecFlowConfigurationHolder(Microsoft.Build.Evaluation.Project project, string projectFolder)
+        {
+            var jsonConfig = project.SpecFlowJsonConfigurationFile();
+            if (jsonConfig != null)
+            {
+                var configFilePath = Path.Combine(projectFolder, jsonConfig.EvaluatedInclude);
+                var configFileContent = File.ReadAllText(configFilePath);
+                return new SpecFlowConfigurationHolder(ConfigSource.Json, configFileContent);
+            }
+            else
+            {
+                var appConfigItem = project.ApplicationConfigurationFile();
+                if (appConfigItem != null)
+                {
+                    var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);
+                    var configFileContent = File.ReadAllText(configFilePath);
+                    return GetConfigurationHolderFromFileContent(configFileContent);
+                }
+            }
+            return null;
         }
 
         private string GetLanguage(Microsoft.Build.Evaluation.Project project)
