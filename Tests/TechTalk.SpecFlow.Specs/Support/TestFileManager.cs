@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace TechTalk.SpecFlow.IntegrationTests.TestFiles
+namespace TechTalk.SpecFlow.Specs.Support
 {
     public class TestFileManager
     {
         public string GetTestFileContent(string testfileName)
         {
-            var projectTemplateStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetType(), testfileName);
+            var projectTemplateStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TechTalk.SpecFlow.Specs.TestFiles." + testfileName);
             Debug.Assert(projectTemplateStream != null);
             string fileContent = new StreamReader(projectTemplateStream).ReadToEnd();
             return fileContent;

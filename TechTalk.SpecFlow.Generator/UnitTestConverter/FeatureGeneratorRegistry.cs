@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public FeatureGeneratorRegistry(IObjectContainer objectContainer)
         {
-            providers = objectContainer.ResolveAll<IFeatureGeneratorProvider>().OrderBy(item => item.Priority).ToList();
+            providers = objectContainer.ResolveAll<IFeatureGeneratorProvider>().ToList().OrderBy(item => item.Priority).ToList();
         }
 
         public IFeatureGenerator CreateGenerator(SpecFlowDocument document)

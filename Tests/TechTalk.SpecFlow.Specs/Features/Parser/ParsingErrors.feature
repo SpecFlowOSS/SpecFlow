@@ -1,4 +1,5 @@
-﻿Feature: Providing meaningful errors for wrong Gherkin files
+﻿@SingleTestConfiguration
+Feature: Providing meaningful errors for wrong Gherkin files
 	In order to find out easily what is wrong with a Gherkin file
 	As a SpecFlow user
 	I want to get proper error messages when the files are parsed

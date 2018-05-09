@@ -10,10 +10,12 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 {
     internal class MultiFeatureGenerator : IFeatureGenerator
     {
+        private readonly IFeatureGenerator _defaultFeatureGenerator;
         private readonly KeyValuePair<Combination, IFeatureGenerator>[] _featureGenerators;
 
-        public MultiFeatureGenerator(IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> featureGenerators)
+        public MultiFeatureGenerator(IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> featureGenerators, IFeatureGenerator defaultFeatureGenerator)
         {
+            _defaultFeatureGenerator = defaultFeatureGenerator;
             _featureGenerators = featureGenerators.ToArray();
 
             foreach (var featureGenerator in _featureGenerators)
@@ -28,7 +30,15 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         public CodeNamespace GenerateUnitTestFixture(SpecFlowDocument specFlowDocument, string testClassName, string targetNamespace)
         {
             CodeNamespace result = null;
-            
+
+            if (specFlowDocument.SpecFlowFeature.HasTags())
+            {
+                if (specFlowDocument.SpecFlowFeature.Tags.Where(t => t.Name == "@SingleTestConfiguration").Any())
+                {
+                    return _defaultFeatureGenerator.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);
+                }
+            }
+
             foreach (var featureGenerator in _featureGenerators)
             {
                 var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);

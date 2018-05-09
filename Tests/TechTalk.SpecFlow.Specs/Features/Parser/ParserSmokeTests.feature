@@ -1,4 +1,5 @@
-﻿Feature: Parser smoke tests
+﻿@SingleTestConfiguration
+Feature: Parser smoke tests
 
 Scenario Outline: Test files can be parsed
 	When the test file '<test file>.feature' is parsed

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
@@ -19,8 +18,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     {
         private readonly List<Combination> _combination = new List<Combination>()
         {
-            new Combination(){ProgrammingLanguage = "CSharp", ProjectFormat = "Old", TargetFramework = "Net452"},
-            new Combination(){ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452"}
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "Old", TargetFramework = "Net452"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452"}
         };
 
         private readonly MultiFeatureGenerator _multiFeatureGenerator;
@@ -35,11 +34,10 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 featureGenerators.Add(new KeyValuePair<Combination, IFeatureGenerator>(combination, combinationFeatureGenerator));
             }
 
-            
-            _multiFeatureGenerator = new MultiFeatureGenerator(featureGenerators);
+            _multiFeatureGenerator = new MultiFeatureGenerator(featureGenerators, new CombinationFeatureGenerator(container.Resolve<CodeDomHelper>(), container.Resolve<SpecFlowConfiguration>(), container.Resolve<IDecoratorRegistry>(), null));
         }
 
-        
+
         public bool CanGenerate(SpecFlowDocument specFlowDocument)
         {
             return true;
