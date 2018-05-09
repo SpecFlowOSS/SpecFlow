@@ -8,7 +8,7 @@ using Gherkin.Ast;
 
 namespace TechTalk.SpecFlow.Parser
 {
-    public class SpecFlowGherkinParser
+    public class SpecFlowGherkinParser : IGherkinParser
     {
         private readonly IGherkinDialectProvider dialectProvider;
 
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Parser
             this.dialectProvider = dialectProvider;
         }
 
-        public SpecFlowGherkinParser(CultureInfo defaultLanguage) 
+        public SpecFlowGherkinParser(CultureInfo defaultLanguage)
             : this(new SpecFlowGherkinDialectProvider(defaultLanguage.Name))
         {
         }
