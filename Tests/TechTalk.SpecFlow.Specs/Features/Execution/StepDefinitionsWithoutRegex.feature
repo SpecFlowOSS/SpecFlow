@@ -125,12 +125,13 @@ Examples:
 
 @fsharp
 Scenario Outline: F# method name can be used as a regex
-	Given there is an external F# class library project 'ExternalSteps'
+    Given there is a SpecFlow project
+	And there is an external F# class library project 'ExternalSteps'
 	And the following step definition in the project 'ExternalSteps'
         """
 		let [<When>] <method> = ()
         """
-	And there is a SpecFlow project with a reference to the project 'ExternalSteps'
+	And there is a reference between the SpecFlow project and the 'ExternalSteps' project
 	And a scenario 'Simple Scenario' as
          """
          When I do something really important
