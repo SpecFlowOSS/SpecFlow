@@ -61,23 +61,41 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddStepBinding(bindingCode);
         }
 
-        [Given(@"a hook '(.*)' for '(.*)' for tags '(.*)'")]
+        [Given(@"a hook '(.*)' for '(.*)' with tags? '([^']*)'")]
         public void GivenAHookForForTags(string methodName, string eventType, string tags)
         {
-            _projectsDriver.AddHookBinding(eventType, methodName, tags: tags);
+            _projectsDriver.AddHookBinding(eventType, methodName, hookTypeAttributeTagsString: tags);
         }
 
-        [Given(@"a hook '(.*)' for '(.*)' for scopes '(.*)' on the hook method")]
-        [Given(@"a hook '(.*)' for '(.*)' for scopes '(.*)'")]
+        [Given(@"a hook '(.*)' for '(.*)' with method scopes? '([^']*)'")]
+        [Given(@"a hook '(.*)' for '(.*)' with scopes? '(.*)'")]
         public void GivenAHookForForScopesOnTheHookMethod(string methodName, string eventType, string tagScopes)
         {
-            _projectsDriver.AddHookBinding(eventType, methodName, tags: tagScopes, useScopeTagsOnHookMethods: true);
+            _projectsDriver.AddHookBinding(eventType, methodName, null, methodScopeAttributeTagsString: tagScopes);
         }
 
-        [Given(@"a hook '(.*)' for '(.*)' for scopes '(.*)' on the class")]
-        public void GivenAHookForForScopesOnTheClass(string methodName, string eventType, string tagScopes)
+        [Given(@"a hook '([^']*)' for '([^']*)' with class scopes? '(.*)'")]
+        public void GivenAHookForForScopesOnTheClass(string methodName, string eventType, string methodScopeTags)
         {
-            _projectsDriver.AddHookBinding(eventType, methodName, tags: tagScopes, useScopeTagsOnHookMethods: true);
+            _projectsDriver.AddHookBinding(eventType, methodName, null, methodScopeAttributeTagsString: methodScopeTags);
+        }
+
+        [Given(@"a hook '([^']*)' for '([^']*)' with tags? '([^']*)' and class scopes? '(.*)'")]
+        public void GivenAHookForTagsForScopesOnTheClass(string methodName, string eventType, string hookTypeTags, string methodScopeTags)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, hookTypeTags, methodScopeAttributeTagsString: methodScopeTags);
+        }
+        
+        [Given(@"a hook '(.*)' for '(.*)' with method scopes? '(.*)' and class scopes? '(.*)'")]
+        public void GivenAHookForForScopesOnTheHookMethodAndScopesOnClass(string methodName, string eventType, string methodScopeTags, string classScopeTags)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, null, methodScopeAttributeTagsString: methodScopeTags, classScopeAttributeTagsString: classScopeTags);
+        }
+
+        [Given(@"a hook '(.*)' for '(.*)' with tags? '(.*)' and method scopes? '(.*)' and class scopes? '(.*)'")]
+        public void GivenAHookForForTagsAndScopesOnTheHookMethodAndScopesOnClass(string methodName, string eventType, string hookTypeTags, string methodScopeTags, string classScopeTags)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, null, methodScopeAttributeTagsString: classScopeTags);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)'")]
