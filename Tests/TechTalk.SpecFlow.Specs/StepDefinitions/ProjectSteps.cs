@@ -1,5 +1,4 @@
 ﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
-using Language = SpecFlow.TestProjectGenerator.ProgrammingLanguage;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -18,6 +17,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"there is a SpecFlow project")]
         public void GivenThereIsASpecFlowProject()
         {
+            _projectsDriver.CreateProject("C#");
         }
 
         [Given(@"parallel execution is enabled")]

@@ -27,17 +27,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.Projects[libraryName].IsSpecFlowFeatureProject = false;
         }
 
-        [Given(@"there is a (.+) SpecFlow project with a reference to the project '(.*)'")]
-        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string language, string referencedProject)
+        [Given(@"there is a reference between the SpecFlow project and the '(.*)' project")]
+        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string referencedProject)
         {
-            _projectsDriver.DefaultProject.Language = _projectsDriver.ParseProgrammingLanguage(language);
             _projectsDriver.AddProjectReference(referencedProject);
         }
 
-        [Given(@"there is a SpecFlow project with a reference to the project '(.*)'")]
-        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string referencedProject)
-        {
-            GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary("C#", referencedProject);
-        }
+
     }
 }
