@@ -18,7 +18,6 @@
 
     <EmbeddedResource Include=".\Drivers\Templates\**\*" />
     <EmbeddedResource Include=".\TestFiles\**\*" />
-    <Compile Include="Drivers\Templates\TemplateManager.cs" />
     
 
     <None Include="App.config" />
@@ -72,101 +71,7 @@
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update=".\TestFiles\and.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>and.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\asterisks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>asterisks.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\background.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>background.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\background_withtitle.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>background_withtitle.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\but.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>but.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\comments.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>comments.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\dutch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>dutch.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\featureheader.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>featureheader.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\french.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>french.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\full.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>full.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\german.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>german.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\givenwhenthenduplication.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>givenwhenthenduplication.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\hungarian.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>hungarian.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\mixedgivenwhenthen.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>mixedgivenwhenthen.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\multilineargument.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>multilineargument.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\multilinetitle.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>multilinetitle.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\scenariooutline.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>scenariooutline.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\simple.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>simple.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\swedish.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>swedish.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\tableargument.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>tableargument.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\taggedexamples.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>taggedexamples.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\tags.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>tags.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update=".\TestFiles\whitespaces.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>whitespaces.feature.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
+  
 
   <PropertyGroup>
     <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\net461\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
