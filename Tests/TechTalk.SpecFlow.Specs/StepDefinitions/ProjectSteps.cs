@@ -20,6 +20,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
         }
 
+        [Given(@"parallel execution is enabled")]
+        public void GivenParallelExecutionIsEnabled()
+        {
+            _projectsDriver.EnableTestParallelExecution();
+        }
+
+
         [Given(@"I have a '(.*)' test project")]
         public void GivenIHaveATestProject(string language)
         {
