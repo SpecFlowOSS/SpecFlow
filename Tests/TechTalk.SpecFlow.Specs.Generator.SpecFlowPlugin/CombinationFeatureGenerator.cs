@@ -1,0 +1,18 @@
+﻿using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.CodeDom;
+using TechTalk.SpecFlow.Generator.UnitTestConverter;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
+
+namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
+{
+    public class CombinationFeatureGenerator : UnitTestFeatureGenerator
+    {
+        
+        public CombinationFeatureGenerator(CodeDomHelper codeDomHelper, SpecFlowConfiguration specFlowConfiguration, IDecoratorRegistry decoratorRegistry, Combination combination) :
+            base(new CustomXUnitGeneratorProvider(codeDomHelper, combination), codeDomHelper, specFlowConfiguration, decoratorRegistry)
+        {
+        
+        }
+    }
+}
