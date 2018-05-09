@@ -9,29 +9,29 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class GherkinParserSteps
     {
-        private readonly ParserDriver parserDriver;
+        private readonly ParserDriver _parserDriver;
         
         public GherkinParserSteps(ParserDriver parserDriver)
         {
-            this.parserDriver = parserDriver;
+            _parserDriver = parserDriver;
         }
 
         [Given(@"there is a Gherkin file as")]
         public void GivenThereIsAGherkinFileAs(string text)
         {
-            parserDriver.FileContent = text;
+            _parserDriver.FileContent = text;
         }
 
         [When(@"the file is parsed")]
         public void WhenTheFileIsParsed()
         {
-            parserDriver.ParseFile();
+            _parserDriver.ParseFile();
         }
 
         [Then(@"no parsing error is reported")]
         public void ThenNoParsingErrorIsReported()
         {
-            parserDriver.ParsingErrors.Should().BeEmpty("There are parsing errors");
+            _parserDriver.ParsingErrors.Should().BeEmpty("There are parsing errors");
         }
 
         [StepArgumentTransformation]
@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the following errors are provided")]
         public void ThenTheTheFollowingErrorsAreProvided(List<ExpectedError> expectedErrors)
         {
-            parserDriver.AssertErrors(expectedErrors);
+            _parserDriver.AssertErrors(expectedErrors);
         }
     }
 }

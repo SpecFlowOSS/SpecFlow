@@ -13,14 +13,8 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove=".\Drivers\Templates\**\*" />
     <Compile Remove=".\Features.Generated\**\*" />
-    <EmbeddedResource Include=".\Drivers\Templates\**\*" />
-    <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
-    <Compile Include=".\Drivers\Templates\TemplateManager.cs" />
-
     <None Include="App.config" />
-
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using FluentAssertions;
 using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
-using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -19,11 +18,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _hooksDriver = hooksDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
-        }
-
-        public TestRunSummary ConvertToSummary(Table table)
-        {
-            return table.CreateInstance<TestRunSummary>();
         }
 
         [Then(@"all tests should pass")]

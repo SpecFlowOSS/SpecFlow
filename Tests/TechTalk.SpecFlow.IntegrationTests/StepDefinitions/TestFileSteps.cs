@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using TechTalk.SpecFlow.IntegrationTests.TestFiles;
-using TechTalk.SpecFlow.Assist;
-using System.Linq;
 using FluentAssertions;
+using SpecFlow.TestProjectGenerator.NewApi;
+using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 
@@ -15,48 +11,47 @@ namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
     [Binding]
     public class TestFileSteps
     {
-        private readonly InputProjectDriver inputProjectDriver;
-        private readonly TestFileManager testFileManager;
-        private readonly ParserDriver parserDriver;
-        
-        public TestFileSteps(TestFileManager testFileManager, ParserDriver parserDriver, InputProjectDriver inputProjectDriver)
+        private readonly TestFileManager _testFileManager;
+        private readonly ProjectsDriver _projectsDriver;
+        private readonly ParserDriver _parserDriver;
+        private readonly TestProjectFolders _testProjectFolders;
+
+        public TestFileSteps(TestFileManager testFileManager, ProjectsDriver projectsDriver, ParserDriver parserDriver, TestProjectFolders testProjectFolders)
         {
-            this.testFileManager = testFileManager;
-            this.inputProjectDriver = inputProjectDriver;
-            this.parserDriver = parserDriver;
+            _testFileManager = testFileManager;
+            _projectsDriver = projectsDriver;
+            _parserDriver = parserDriver;
+            _testProjectFolders = testProjectFolders;
         }
 
         [When(@"the test file '(.*)' is parsed")]
         public void WhenTheTestFileIsParsed(string testFile)
         {
-            string testFileContent = testFileManager.GetTestFileContent(testFile);
-            parserDriver.FileContent = testFileContent;
-            parserDriver.ParseFile();
+            string testFileContent = _testFileManager.GetTestFileContent(testFile);
+            _parserDriver.FileContent = testFileContent;
+            _parserDriver.ParseFile();
         }
 
         [When(@"the parsed result is saved to '(.*)'")]
         public void WhenTheParsedResultIsSavedTo(string parsedFileName)
         {
-            var assemblyFolder = AssemblyFolderHelper.GetTestAssemblyFolder();
-            assemblyFolder.EndsWith(@"\bin\Debug").Should().BeTrue("parsed file saving can only be done from a development environment");
-            parserDriver.SaveSerializedFeatureTo(Path.Combine(assemblyFolder, @"..\..\TestFiles", parsedFileName));
+            _parserDriver.SaveSerializedFeatureTo(Path.Combine(_testProjectFolders.ProjectFolder, @"TestFiles", parsedFileName));
         }
 
         [Then(@"the parsed result is the same as '(.*)'")]
         public void ThenTheParsedResultIsTheSameAs(string parsedFileName)
         {
-            string expected = testFileManager.GetTestFileContent(parsedFileName);
-            parserDriver.AssertParsedFeatureEqualTo(expected);
+            string expected = _testFileManager.GetTestFileContent(parsedFileName);
+            _parserDriver.AssertParsedFeatureEqualTo(expected);
         }
 
         [Given(@"all test files are inluded in the project")]
         public void GivenAllTestFilesAreInludedInTheProject()
         {
-            foreach (var testFile in testFileManager.GetTestFeatureFiles())
+            foreach (string testFile in _testFileManager.GetTestFeatureFiles())
             {
-                inputProjectDriver.AddFeatureFile(testFileManager.GetTestFileContent(testFile), testFile);
+                _projectsDriver.AddFile(testFile, _testFileManager.GetTestFileContent(testFile));
             }
         }
-
     }
 }

@@ -1,6 +1,4 @@
 ﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
-using SpecFlow.TestProjectGenerator.NewApi._1_Memory;
-using SpecFlow.TestProjectGenerator.NewApi._1_Memory.Extensions;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

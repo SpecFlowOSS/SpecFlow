@@ -8,12 +8,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class BindingSteps
     {
-        private readonly HooksDriver _hooksDriver;
         private readonly ProjectsDriver _projectsDriver;
 
-        public BindingSteps(HooksDriver hooksDriver, ProjectsDriver projectsDriver)
+        public BindingSteps(ProjectsDriver projectsDriver)
         {
-            _hooksDriver = hooksDriver;
             _projectsDriver = projectsDriver;
         }
 

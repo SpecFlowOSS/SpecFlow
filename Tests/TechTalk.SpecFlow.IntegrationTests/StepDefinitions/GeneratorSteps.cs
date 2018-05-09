@@ -1,45 +1,28 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
+﻿using FluentAssertions;
+using SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
 {
     [Binding]
     public class GeneratorSteps : Steps
     {
-        private readonly InputProjectDriver inputProjectDriver;
-        private readonly ProjectGenerator projectGenerator;
-        private readonly ProjectCompiler projectCompiler;
-        private Exception compilationError;
+        private readonly SolutionDriver _solutionDriver;
 
-        public GeneratorSteps(InputProjectDriver inputProjectDriver, ProjectGenerator projectGenerator, ProjectCompiler projectCompiler)
+        public GeneratorSteps(SolutionDriver solutionDriver)
         {
-            this.inputProjectDriver = inputProjectDriver;
-            this.projectCompiler = projectCompiler;
-            this.projectGenerator = projectGenerator;
+            _solutionDriver = solutionDriver;
         }
 
         [When(@"the feature files in the project are generated")]
         public void WhenTheFeatureFilesInTheProjectAreGenerated()
         {
-            var project = projectGenerator.GenerateProject(inputProjectDriver);
-            try
-            {
-                compilationError = null;
-                projectCompiler.Compile(project, "UpdateFeatureFilesInProject");
-            }
-            catch (Exception ex)
-            {
-                compilationError = ex;
-            }
+            _solutionDriver.CompileSolution();
         }
 
         [Then(@"no generation error is reported")]
         public void ThenNoGenerationErrorIsReported()
         {
-            compilationError.Should().BeNull();
+            _solutionDriver.CheckSolutionShouldHaveCompiled();
         }
     }
 }
