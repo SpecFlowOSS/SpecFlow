@@ -63,6 +63,10 @@
     </Compile>
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="ScenarioBlock.cs" />
+    <Compile Include="ISemanticValidator.cs" />
+    <Compile Include="SemanticValidators\DuplicateExamplesValidator.cs" />
+    <Compile Include="SemanticValidators\DuplicateScenariosValidator.cs" />
+    <Compile Include="SemanticValidators\MissingExamplesValidator.cs" />
     <Compile Include="SpecFlowDocument.cs" />
     <Compile Include="StepKeyword.cs" />
     <Compile Include="SemanticParserException.cs" />
@@ -74,6 +78,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
