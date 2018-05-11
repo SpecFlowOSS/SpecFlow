@@ -22,6 +22,11 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
+            //if (projectFilePath.EndsWith("DefaultTestProject.csproj"))
+            //{
+            //    Debugger.Launch();
+            //}
+
             var logWriter = new StringWriter();
             logWriter.WriteLine("Using BuildAlyzer");
 
