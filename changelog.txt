@@ -2,6 +2,7 @@
 New Features:
 + Added ability to convert type to same type or one of the base types https://github.com/techtalk/SpecFlow/pull/1110
 + Allow marking steps as Obsolete and have a configurable behavior for it https://github.com/techtalk/SpecFlow/pull/1140
++ IGherkinParser and IGherkinParserFactory interfaces added to support Gherkin Parser pluggability https://github.com/techtalk/SpecFlow/pull/1143
 
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
