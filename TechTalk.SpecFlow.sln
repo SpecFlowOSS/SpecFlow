@@ -81,8 +81,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.xUnit.Spe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin", "Tests\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj", "{03A229D6-BB43-47CC-AAEF-B7265652AD5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DefaultTestProject", "DefaultTestProject\DefaultTestProject.csproj", "{37DF893D-AD38-430B-8620-DD01E493E84A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -209,12 +207,6 @@ Global
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{37DF893D-AD38-430B-8620-DD01E493E84A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37DF893D-AD38-430B-8620-DD01E493E84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37DF893D-AD38-430B-8620-DD01E493E84A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37DF893D-AD38-430B-8620-DD01E493E84A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37DF893D-AD38-430B-8620-DD01E493E84A}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{37DF893D-AD38-430B-8620-DD01E493E84A}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -45,36 +45,44 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     var freePort = FindFreePort.GetAvailablePort(_startPort);
 
                     outOfProcessServer.Start(freePort);
-                    var filePathGenerator = new FilePathGenerator();
-
-
-                    var usedPort = outOfProcessServer.WaitForPort();
-
-                    using (var client = new Client<IFeatureCodeBehindGenerator>(usedPort))
+                    try
                     {
-                        await client.WaitForServer();
-                        await client.Execute(c => c.InitializeProject(ProjectPath));
+                        var filePathGenerator = new FilePathGenerator();
 
-                        var codeBehindWriter = new CodeBehindWriter(Log);
-                        if (FeatureFiles != null)
+
+                        var usedPort = outOfProcessServer.WaitForPort();
+
+                        using (var client = new Client<IFeatureCodeBehindGenerator>(usedPort))
                         {
-                            foreach (var featureFile in FeatureFiles)
+                            await client.WaitForServer();
+                            await client.Execute(c => c.InitializeProject(ProjectPath));
+
+                            var codeBehindWriter = new CodeBehindWriter(Log);
+                            if (FeatureFiles != null)
                             {
-                                string featureFileItemSpec = featureFile.ItemSpec;
-                                var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
+                                foreach (var featureFile in FeatureFiles)
+                                {
+                                    string featureFileItemSpec = featureFile.ItemSpec;
+                                    var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                                string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
-                                string resultedFile = codeBehindWriter.WriteCodeBehindFile(
-                                    targetFilePath,
-                                    featureFile,
-                                    featureFileCodeBehind);
+                                    string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
+                                    string resultedFile = codeBehindWriter.WriteCodeBehindFile(
+                                        targetFilePath,
+                                        featureFile,
+                                        featureFileCodeBehind);
 
-                                generatedFiles.Add(new TaskItem {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
+                                    generatedFiles.Add(new TaskItem {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
+                                }
                             }
+
+
+                            await client.ShutdownServer();
                         }
-
-
-                        await client.ShutdownServer();
+                    }
+                    catch (Exception e)
+                    {
+                        Log?.LogWithNameTag(Log.LogError, outOfProcessServer.CurrentOutput);
+                        throw;
                     }
                 }
 

@@ -16,6 +16,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Test()
         {
+            Environment.SetEnvironmentVariable("MSBuildToolsPath32", "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin", EnvironmentVariableTarget.Process);
+
             var buildalyzerProjectReader = new BuildalyzerProjectReader(new GeneratorConfigurationProvider(new ConfigurationLoader()));
 
             var readSpecFlowProject = buildalyzerProjectReader.ReadSpecFlowProject("G:\\Work\\SpecFlow\\DefaultTestProject\\DefaultTestProject.csproj");

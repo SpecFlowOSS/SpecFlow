@@ -15,6 +15,9 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         static void Main(string[] args)
         {
+            Environment.SetEnvironmentVariable("MSBuildToolsPath32", "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin", EnvironmentVariableTarget.Process);
+
+
             _log = new LoggerConfiguration()
                 .WriteTo.Console()
                 .CreateLogger();

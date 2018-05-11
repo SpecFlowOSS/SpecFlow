@@ -163,5 +163,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _externalProcess = null;
 
         }
+
+        public string CurrentOutput => _output.ToString();
     }
 }

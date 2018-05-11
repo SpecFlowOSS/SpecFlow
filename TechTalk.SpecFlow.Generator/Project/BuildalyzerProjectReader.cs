@@ -109,7 +109,23 @@ namespace TechTalk.SpecFlow.Generator.Project
                     return GetConfigurationHolderFromFileContent(configFileContent);
                 }
             }
-            return null;
+
+            string jsonConfigPath = Path.Combine(projectFolder, "specflow.json");
+            if (File.Exists(jsonConfigPath))
+            {
+                var configFileContent = File.ReadAllText(jsonConfigPath);
+                return new SpecFlowConfigurationHolder(ConfigSource.Json, configFileContent);
+            }
+
+            string appConfigPath = Path.Combine(projectFolder, "app.config");
+            if (File.Exists(appConfigPath))
+            {
+                var configFilePath = Path.Combine(projectFolder, appConfigPath);
+                var configFileContent = File.ReadAllText(configFilePath);
+                return GetConfigurationHolderFromFileContent(configFileContent);
+            }
+
+            throw new Exception($"SpecFlow configuration could not be found in {projectFolder}");
         }
 
         private string GetLanguage(Microsoft.Build.Evaluation.Project project)
