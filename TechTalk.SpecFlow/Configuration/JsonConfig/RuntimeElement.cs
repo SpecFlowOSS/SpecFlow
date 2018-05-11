@@ -8,10 +8,13 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [JsonProperty("stopAtFirstError", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.StopAtFirstError)]
         public bool StopAtFirstError { get; set; }
-
-
+        
         [JsonProperty("missingOrPendingStepsOutcome", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.MissingOrPendingStepsOutcome)]
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
+
+        [JsonProperty("obsoleteBehavior", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        [DefaultValue(ConfigDefaults.ObsoleteBehavior)]
+        public ObsoleteBehavior ObsoleteBehavior { get; set; }
     }
 }

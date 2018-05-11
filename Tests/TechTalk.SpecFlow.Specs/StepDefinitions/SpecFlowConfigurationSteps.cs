@@ -39,6 +39,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _specFlowJsonConfigurationDriver.IsUsed = true;
         }
 
+        [Given(@"obsoleteBehavior configuration value is set to (.*)")]
+        public void GivenObsoleteBehaviorConfigurationValueIsSetTo(string obsoleteBehaviorValue)
+        {
+            var configText = $@"<specFlow>
+			    <runtime obsoleteBehavior=""{obsoleteBehaviorValue}"" />
+                </specFlow >";
+
+            GivenTheSpecflowConfigurationIs(configText);
+        }
 
         [StepArgumentTransformation(@"enabled")]
         public bool ConvertEnabled() { return true; }

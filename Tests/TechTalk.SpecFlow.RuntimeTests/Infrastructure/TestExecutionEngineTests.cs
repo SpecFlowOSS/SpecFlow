@@ -32,6 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<ITestObjectResolver> testObjectResolverMock;
+        private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
         private ObjectContainer testThreadContainer;
@@ -106,6 +107,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock = new Mock<IBindingInvoker>();
 
             stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
+            obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -123,6 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
                 methodBindingInvokerMock.Object,
+                obsoleteTestHandlerMock.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
