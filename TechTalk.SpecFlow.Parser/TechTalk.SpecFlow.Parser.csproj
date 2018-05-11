@@ -61,9 +61,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="IGherkinParserFactory.cs" />
+    <Compile Include="IGherkinParser.cs" />
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="ScenarioBlock.cs" />
     <Compile Include="SpecFlowDocument.cs" />
+    <Compile Include="SpecFlowGherkinParserFactory.cs" />
     <Compile Include="StepKeyword.cs" />
     <Compile Include="SemanticParserException.cs" />
     <Compile Include="SpecFlowFeature.cs" />
