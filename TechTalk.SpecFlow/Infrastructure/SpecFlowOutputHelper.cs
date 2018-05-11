@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    class SpecFlowOutputHelper : ISpecFlowOutputHelper
+    public class SpecFlowOutputHelper : ISpecFlowOutputHelper
     {
         public void WriteLine(string message)
         {
