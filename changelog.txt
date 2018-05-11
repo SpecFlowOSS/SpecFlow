@@ -6,7 +6,7 @@ New Features:
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
 + Resolved loading plugins multiple times. Issue: https://github.com/techtalk/SpecFlow/issues/888 
-
++ Comparing Guid with string using case insensitivity to prevent throwing unnecessary exceptions https://github.com/techtalk/SpecFlow/pull/1145
 
 2.3.2 - 2018-04-17
 Fixes:
