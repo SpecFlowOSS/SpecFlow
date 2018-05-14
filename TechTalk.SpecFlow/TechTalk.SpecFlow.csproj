@@ -130,6 +130,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
     <Compile Include="BindingSkeletons\StepParameterNameGenerator.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
+    <Compile Include="Bindings\BindingObsoletion.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\Discovery\BindingSourceAttribute.cs" />
@@ -178,8 +179,11 @@
     <Compile Include="Configuration\JsonConfig\StepAssemblyElement.cs" />
     <Compile Include="Configuration\JsonConfig\TraceElement.cs" />
     <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
+    <Compile Include="Configuration\ObsoleteBehavior.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="HookAttributes.cs" />
+    <Compile Include="Infrastructure\IObsoleteStepHandler.cs" />
+    <Compile Include="Infrastructure\ObsoleteStepHandler.cs" />
     <Compile Include="Infrastructure\TestObjectResolver.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagerExtensions.cs" />

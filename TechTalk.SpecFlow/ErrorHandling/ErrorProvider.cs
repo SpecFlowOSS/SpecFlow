@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
         void ThrowPendingError(ScenarioExecutionStatus testStatus, string message);
         Exception GetTooManyBindingParamError(int maxParam);
         Exception GetNonStaticEventError(IBindingMethod method);
+        Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion);
     }
 
     internal class ErrorProvider : IErrorProvider
@@ -127,6 +128,11 @@ namespace TechTalk.SpecFlow.ErrorHandling
             throw new BindingException(
                 string.Format("The binding methods for before/after feature and before/after test run events must be static! {0}",
                 GetMethodText(method)));
+        }
+
+        public Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion)
+        {
+            throw new BindingException(bindingObsoletion.Message);
         }
     }
 }

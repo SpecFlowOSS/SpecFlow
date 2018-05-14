@@ -30,6 +30,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
+            ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
@@ -52,6 +53,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             {
                 stopAtFirstError = configSection.Runtime.StopAtFirstError;
                 missingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
+                obsoleteBehavior = configSection.Runtime.ObsoleteBehavior;
 
                 if (IsSpecified(configSection.Runtime.Dependencies))
                 {
@@ -138,7 +140,8 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             markFeaturesParallelizable,
-                                            skipParallelizableMarkerForTags
+                                            skipParallelizableMarkerForTags,
+                                            obsoleteBehavior
                                             );
         }
 

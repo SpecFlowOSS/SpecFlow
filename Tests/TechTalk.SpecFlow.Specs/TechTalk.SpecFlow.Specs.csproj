@@ -148,6 +148,7 @@
     <None Include="Features\InAppDomainParallelExecution.feature" />
     <None Include="Features\InjectoContextToHooks.feature" />
     <None Include="Features\LanguageSupport.feature" />
+    <None Include="Features\ObsoleteSteps.feature" />
     <None Include="Features\Parser\DescriptionParser.feature" />
     <None Include="Features\Reports\StepDefinitionReport.feature" />
     <None Include="Features\ScopedHooks.feature" />
