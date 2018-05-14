@@ -136,6 +136,7 @@ Scenario Outline: F# method name can be used as a regex
          """
          When I do something really important
          """
+    And all steps are bound and pass
 	And the specflow configuration is     
         """
 		<specFlow>                             

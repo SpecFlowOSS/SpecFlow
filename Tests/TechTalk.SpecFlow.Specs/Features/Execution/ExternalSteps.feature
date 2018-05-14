@@ -43,6 +43,7 @@ Scenario: Steps can defined in an external F# project
          """
          When I do something
          """
+    And all steps are bound and pass
     And the specflow configuration is
         """
         <specFlow>                             
