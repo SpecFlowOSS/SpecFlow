@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -36,6 +38,10 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private async Task<bool> AsyncExecute()
         {
+            var environmentVariables = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().Select(e => (Key: e.Key, Value: e.Value)).OrderBy(e => e.Key).ToArray();
+            Log.LogMessage($"Environment variables: {environmentVariables.Length}");
+            Log.LogMessage(string.Join(Environment.NewLine, environmentVariables.Select(v => $"{v.Key}: {v.Value}")));
+
             var generatedFiles = new List<ITaskItem>();
 
             try
