@@ -5,12 +5,14 @@ using System.IO;
 using System.Linq;
 using Gherkin;
 using Gherkin.Ast;
+using TechTalk.SpecFlow.Parser.SemanticValidators;
 
 namespace TechTalk.SpecFlow.Parser
 {
-    public class SpecFlowGherkinParser
+    public class SpecFlowGherkinParser : IGherkinParser
     {
         private readonly IGherkinDialectProvider dialectProvider;
+        private readonly List<ISemanticValidator> semanticValidators;
 
         private class SpecFlowGherkinDialectProvider : GherkinDialectProvider
         {
@@ -48,9 +50,15 @@ namespace TechTalk.SpecFlow.Parser
             this.dialectProvider = dialectProvider;
         }
 
-        public SpecFlowGherkinParser(CultureInfo defaultLanguage) 
+        public SpecFlowGherkinParser(CultureInfo defaultLanguage)
             : this(new SpecFlowGherkinDialectProvider(defaultLanguage.Name))
         {
+            semanticValidators = new List<ISemanticValidator>
+            {
+                new DuplicateScenariosValidator(),
+                new DuplicateExamplesValidator(),
+                new MissingExamplesValidator()
+            };
         }
 
         private static StepKeyword GetStepKeyword(GherkinDialect dialect, string stepKeyword)
@@ -152,74 +160,15 @@ namespace TechTalk.SpecFlow.Parser
             if (specFlowDocument?.SpecFlowFeature == null)
                 return;
 
-            var errors = new List<ParserException>();
-
-            CheckForDuplicateScenarios(specFlowDocument.SpecFlowFeature, errors);
-
-            CheckForDuplicateExamples(specFlowDocument.SpecFlowFeature, errors);
-
-            CheckForMissingExamples(specFlowDocument.SpecFlowFeature, errors);
+            var errors = semanticValidators
+                .SelectMany(x => x.Validate(specFlowDocument.SpecFlowFeature))
+                .ToList();
 
             // collect
             if (errors.Count == 1)
                 throw errors[0];
             if (errors.Count > 1)
                 throw new CompositeParserException(errors.ToArray());
-        }
-
-        private void CheckForDuplicateScenarios(SpecFlowFeature feature, List<ParserException> errors)
-        {
-            // duplicate scenario name
-            var duplicatedScenarios = feature.ScenarioDefinitions.GroupBy(sd => sd.Name, sd => sd).Where(g => g.Count() > 1).ToArray();
-            errors.AddRange(
-                duplicatedScenarios.Select(g =>
-                    new SemanticParserException(
-                        string.Format("Feature file already contains a scenario with name '{0}'", g.Key),
-                        g.ElementAt(1).Location)));
-        }
-
-        private void CheckForDuplicateExamples(SpecFlowFeature feature, List<ParserException> errors)
-        {
-            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
-            {
-                var scenarioOutline = scenarioDefinition as ScenarioOutline;
-                if (scenarioOutline != null)
-                {
-                    var duplicateExamples = scenarioOutline.Examples
-                                                           .Where(e => !String.IsNullOrWhiteSpace(e.Name))
-                                                           .Where(e => e.Tags.All(t => t.Name != "ignore"))
-                                                           .GroupBy(e => e.Name, e => e).Where(g => g.Count() > 1);
-
-                    foreach (var duplicateExample in duplicateExamples)
-                    {
-                        var message = string.Format("Scenario Outline '{0}' already contains an example with name '{1}'", scenarioOutline.Name, duplicateExample.Key);
-                        var semanticParserException = new SemanticParserException(message, duplicateExample.ElementAt(1).Location);
-                        errors.Add(semanticParserException);
-                    }
-                }
-            }
-        }
-
-        private void CheckForMissingExamples(SpecFlowFeature feature, List<ParserException> errors)
-        {
-            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
-            {
-                var scenarioOutline = scenarioDefinition as ScenarioOutline;
-                if (scenarioOutline != null)
-                {
-                    if (DoesntHavePopulatedExamples(scenarioOutline))
-                    {
-                        var message = string.Format("Scenario Outline '{0}' has no examples defined", scenarioOutline.Name);
-                        var semanticParserException = new SemanticParserException(message, scenarioDefinition.Location);
-                        errors.Add(semanticParserException);
-                    }
-                }
-            }
-        }
-
-        private static bool DoesntHavePopulatedExamples(ScenarioOutline scenarioOutline)
-        {
-            return !scenarioOutline.Examples.Any() || scenarioOutline.Examples.Any(x => x.TableBody == null || !x.TableBody.Any());
         }
     }
 }

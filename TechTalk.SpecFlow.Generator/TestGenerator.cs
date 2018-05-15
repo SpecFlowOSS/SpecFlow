@@ -22,16 +22,25 @@ namespace TechTalk.SpecFlow.Generator
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
-        private readonly IFeatureGeneratorRegistry featureGeneratorRegistry;
         protected readonly CodeDomHelper codeDomHelper;
+        private readonly IFeatureGeneratorRegistry featureGeneratorRegistry;
+        private readonly IGherkinParserFactory gherkinParserFactory;
 
-        public TestGenerator(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper)
+
+        public TestGenerator(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration,
+            ProjectSettings projectSettings,
+            ITestHeaderWriter testHeaderWriter,
+            ITestUpToDateChecker testUpToDateChecker,
+            IFeatureGeneratorRegistry featureGeneratorRegistry,
+            CodeDomHelper codeDomHelper,
+            IGherkinParserFactory gherkinParserFactory)
         {
-            if (specFlowConfiguration == null) throw new ArgumentNullException("specFlowConfiguration");
-            if (projectSettings == null) throw new ArgumentNullException("projectSettings");
-            if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
-            if (testUpToDateChecker == null) throw new ArgumentNullException("testUpToDateChecker");
-            if (featureGeneratorRegistry == null) throw new ArgumentNullException("featureGeneratorRegistry");
+            if (specFlowConfiguration == null) throw new ArgumentNullException(nameof(specFlowConfiguration));
+            if (projectSettings == null) throw new ArgumentNullException(nameof(projectSettings));
+            if (testHeaderWriter == null) throw new ArgumentNullException(nameof(testHeaderWriter));
+            if (testUpToDateChecker == null) throw new ArgumentNullException(nameof(testUpToDateChecker));
+            if (featureGeneratorRegistry == null) throw new ArgumentNullException(nameof(featureGeneratorRegistry));
+            if (gherkinParserFactory == null) throw new ArgumentNullException(nameof(gherkinParserFactory));
 
             this.specFlowConfiguration = specFlowConfiguration;
             this.testUpToDateChecker = testUpToDateChecker;
@@ -39,6 +48,7 @@ namespace TechTalk.SpecFlow.Generator
             this.codeDomHelper = codeDomHelper;
             this.testHeaderWriter = testHeaderWriter;
             this.projectSettings = projectSettings;
+            this.gherkinParserFactory = gherkinParserFactory;
         }
 
         protected override TestGeneratorResult GenerateTestFileWithExceptions(FeatureFileInput featureFileInput, GenerationSettings settings)
@@ -104,7 +114,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
 
-            var parser = new SpecFlowGherkinParser(specFlowConfiguration.FeatureLanguage);
+            var parser = gherkinParserFactory.Create(specFlowConfiguration.FeatureLanguage);
             SpecFlowDocument specFlowDocument;
             using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
             {
@@ -117,7 +127,7 @@ namespace TechTalk.SpecFlow.Generator
             return codeNamespace;
         }
 
-        protected virtual SpecFlowDocument ParseContent(SpecFlowGherkinParser parser, TextReader contentReader, string sourceFilePath)
+        protected virtual SpecFlowDocument ParseContent(IGherkinParser parser, TextReader contentReader, string sourceFilePath)
         {
             return parser.Parse(contentReader, sourceFilePath);
         }

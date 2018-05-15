@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Arg<string>.Is.Equal(argument),
                 Arg<IBindingType>.Matches(bt => bt.TypeEquals(type)), 
                 Arg<CultureInfo>.Is.Anything);
-        }
+        }     
     }
 
     [Binding]
@@ -149,6 +149,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
+            StepArgumentTypeConverterStub.Expect(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(Table))).Return(table);
             StepArgumentTypeConverterStub.Expect(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter("argument", typeof(double))).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArgWithTable(1.23, table));
 
