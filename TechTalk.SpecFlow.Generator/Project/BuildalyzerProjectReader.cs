@@ -14,10 +14,12 @@ namespace TechTalk.SpecFlow.Generator.Project
     public class BuildalyzerProjectReader : ISpecFlowProjectReader
     {
         private readonly IGeneratorConfigurationProvider _configurationLoader;
+        private readonly BuildalyzerLanguageReader _languageReader;
 
-        public BuildalyzerProjectReader(IGeneratorConfigurationProvider configurationLoader)
+        public BuildalyzerProjectReader(IGeneratorConfigurationProvider configurationLoader, BuildalyzerLanguageReader languageReader)
         {
             _configurationLoader = configurationLoader;
+            _languageReader = languageReader;
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
@@ -59,7 +61,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                 specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
                 specFlowProject.ProjectSettings.AssemblyName = project.Properties.First(x => x.Name == "AssemblyName").EvaluatedValue;
                 specFlowProject.ProjectSettings.DefaultNamespace = project.Properties.First(x => x.Name == "RootNamespace").EvaluatedValue;
-                specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(project);
+                specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = _languageReader.GetLanguage(project.FullPath);
 
                 foreach (var item in project.FeatureFiles())
                 {
@@ -126,17 +128,6 @@ namespace TechTalk.SpecFlow.Generator.Project
             }
 
             throw new Exception($"SpecFlow configuration could not be found in {projectFolder}");
-        }
-
-        private string GetLanguage(Microsoft.Build.Evaluation.Project project)
-        {
-            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.VisualBasic.targets")))
-                return GenerationTargetLanguage.VB;
-
-            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.CSharp.targets")))
-                return GenerationTargetLanguage.CSharp;
-
-            return GenerationTargetLanguage.CSharp;
         }
 
         private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)

@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Generator.Project
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
         {
             var configurationProvider = new GeneratorConfigurationProvider(new ConfigurationLoader());
-            var projectReader = new BuildalyzerProjectReader(configurationProvider);
+            var projectReader = new BuildalyzerProjectReader(configurationProvider, new BuildalyzerLanguageReader());
             return projectReader.ReadSpecFlowProject(projectFilePath);
         }
     }
