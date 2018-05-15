@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 		PostCompile.bat = PostCompile.bat
 		README.md = README.md
+		vsts.nuget.config = vsts.nuget.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}"
