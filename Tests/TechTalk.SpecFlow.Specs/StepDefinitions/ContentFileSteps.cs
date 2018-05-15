@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given("there is a content file '(.*)' in the project as")]
         public void GivenThereIsAContentFileInTheProjectAs(string fileName, string fileContent)
         {
-            _projectsDriver.AddFile(fileName, fileContent);
+            _projectsDriver.AddFile(fileName, fileContent, "Content");
         }
     }
 }

@@ -118,17 +118,6 @@ Scenario: Should be able to deploy files
 		"""
 		This is a deployment item file
 		"""
-	And there is a test settings file 'Local.testsettings'
-		"""
-		<?xml version="1.0" encoding="UTF-8"?>
-		<TestSettings
-		  id="b8f2810b-cd53-4519-8b18-d0e599219d54"
-		  name="Local"
-		  enableDefaultDataCollectors="false"
-		  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-		  <Deployment enabled="true" />
-		</TestSettings>
-		"""
 	When I execute the tests
 	Then the execution summary should contain
          | Succeeded |
@@ -172,17 +161,6 @@ Scenario: Should be able to deploy files to specific folder
 	And there is a content file 'Resources\DeploymentItemTestFile.txt' in the project as
 		"""
 		This is a deployment item file
-		"""
-	And there is a test settings file 'Local.testsettings'
-		"""
-		<?xml version="1.0" encoding="UTF-8"?>
-		<TestSettings
-		  id="b8f2810b-cd53-4519-8b18-d0e599219d54"
-		  name="Local"
-		  enableDefaultDataCollectors="false"
-		  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-		  <Deployment enabled="true" />
-		</TestSettings>
 		"""
 	When I execute the tests
 	Then the execution summary should contain
