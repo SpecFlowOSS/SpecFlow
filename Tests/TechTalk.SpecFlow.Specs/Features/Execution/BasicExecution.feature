@@ -26,6 +26,7 @@ Scenario: Should be able to execute a simple failing scenario
 		| 1     | 1      |
 
 Scenario: Should be able to execute a simple pending scenario
+    Given all steps are bound and are pending
 	When I execute the tests
 	Then the execution summary should contain
 		| Total | Pending |

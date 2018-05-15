@@ -31,6 +31,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             GivenAllStepsAreBoundAndFail(ScenarioBlock.Then);
         }
 
+        [Given(@"all steps are bound and are pending")]
+        public void GivenAllStepsAreBoundAndArePending()
+        {
+            GivenAllStepsAreBoundAndArePending(ScenarioBlock.Given);
+            GivenAllStepsAreBoundAndArePending(ScenarioBlock.When);
+            GivenAllStepsAreBoundAndArePending(ScenarioBlock.Then);
+        }
+
         [Given(@"all '(.*)' steps are bound and fail")]
         public void GivenAllStepsAreBoundAndFail(ScenarioBlock scenarioBlock)
         {
@@ -41,6 +49,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenAllStepsAreBoundAndPass(ScenarioBlock scenarioBlock)
         {
             _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "//pass", "'pass");
+        }
+
+        [Given(@"all '(.*)' steps are bound and are pending")]
+        public void GivenAllStepsAreBoundAndArePending(ScenarioBlock scenarioBlock)
+        {
+            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "ScenarioContext.Current.Pending();", "ScenarioContext.Current.Pending()");
         }
 
         [Given(@"the following step definition in the project '(.*)'")]
