@@ -21,17 +21,20 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
                 .WriteTo.Console()
                 .CreateLogger();
 
-            var environmentVariables = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().Select(e => (Key: e.Key, Value: e.Value)).OrderBy(e => e.Key).ToArray();
-            _log.Information($"Environment variables: {environmentVariables.Length}");
-            _log.Information(string.Join(Environment.NewLine, environmentVariables.Select(v => $"{v.Key}: {v.Value}")));
-
-            //Environment.SetEnvironmentVariable("MSBuildToolsPath32", "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin", EnvironmentVariableTarget.Process);
+            PrintEnvironmentVariables();
 
             CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args)
                 .WithParsed<CommandLineOptions>(opts => RunOptionsAndReturnExitCode(opts))
                 .WithNotParsed<CommandLineOptions>(HandleParseError);
+        }
 
-
+        private static void PrintEnvironmentVariables()
+        {
+#if DEBUG
+            var environmentVariables = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().Select(e => (Key: e.Key, Value: e.Value)).OrderBy(e => e.Key).ToArray();
+            _log.Information($"Environment variables: {environmentVariables.Length}");
+            _log.Information(string.Join(Environment.NewLine, environmentVariables.Select(v => $"{v.Key}: {v.Value}")));
+#endif
         }
 
         private static void HandleParseError(IEnumerable<Error> errors)
@@ -39,6 +42,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         }
 
+        
         private static int RunOptionsAndReturnExitCode(CommandLineOptions opts)
         {
             try
