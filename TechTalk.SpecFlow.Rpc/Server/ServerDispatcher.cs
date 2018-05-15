@@ -9,6 +9,8 @@ using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
+using Serilog;
+using Serilog.Core;
 using TechTalk.SpecFlow.Rpc.Shared;
 
 namespace TechTalk.SpecFlow.Rpc.Server
@@ -51,6 +53,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         private readonly IClientConnectionHost _clientConnectionHost;
         private readonly ObjectContainer _container;
+        private readonly Logger _logger;
         private readonly IDiagnosticListener _diagnosticListener;
         private State CurrentState { get; set; }
         private Task _timeoutTask;
@@ -61,10 +64,11 @@ namespace TechTalk.SpecFlow.Rpc.Server
         private TimeSpan? _keepAlive;
         private bool _keepAliveIsDefault;
 
-        internal ServerDispatcher(IClientConnectionHost clientConnectionHost, IDiagnosticListener diagnosticListener, ObjectContainer container)
+        internal ServerDispatcher(IClientConnectionHost clientConnectionHost, IDiagnosticListener diagnosticListener, ObjectContainer container, Logger logger)
         {
             _clientConnectionHost = clientConnectionHost;
             _container = container;
+            _logger = logger;
             _diagnosticListener = diagnosticListener ?? new DiagnosticListener();
         }
 
@@ -92,7 +96,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             }
             catch (Exception e)
             {
-                CompilerServerLogger.LogException(e, "");
+                _logger.Error(e, nameof(ListenAndDispatchConnections));
             }
             finally
             {
@@ -208,7 +212,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             Debug.Assert(_listenTask == null);
             Debug.Assert(_timeoutTask == null);
             _listenCancellationTokenSource = new CancellationTokenSource();
-            _listenTask = _clientConnectionHost.CreateListenTask(_listenCancellationTokenSource.Token);
+            _listenTask = _clientConnectionHost.CreateListenTask(_listenCancellationTokenSource.Token, _logger);
             _diagnosticListener.ConnectionListening();
         }
 
@@ -362,7 +366,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             {
                 // Unable to establish a connection with the client.  The client is responsible for
                 // handling this case.  Nothing else for us to do here.
-                CompilerServerLogger.LogException(ex, "Error creating client named pipe");
+                _logger.Error(ex, "Error creating client socket");
                 return new ConnectionData(CompletionReason.CompilationNotStarted);
             }
 
@@ -372,7 +376,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
             }
             catch (Exception ex)
             {
-                CompilerServerLogger.LogException(ex, "Error handling connection");
+                _logger.Error(ex, "Error handling connection");
                 return new ConnectionData(CompletionReason.ClientException);
             }
         }

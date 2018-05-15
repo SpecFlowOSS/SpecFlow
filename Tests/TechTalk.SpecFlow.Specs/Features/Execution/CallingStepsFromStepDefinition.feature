@@ -6,6 +6,8 @@
 Scenario Outline: Other step definition can be called when derive from Steps base class
 	Given the following binding class
          """
+         using TechTalk.SpecFlow;
+
 	     [Binding]
 	     public class CallingStepsFromStepDefinitionSteps : Steps
          {
@@ -40,7 +42,9 @@ Examples:
 
 Scenario: When I call other steps of a different type it shouldn't change the type of the next and step in my feature
 	Given the following binding class
-         """
+         """        
+         using TechTalk.SpecFlow;
+
 	     [Binding]
 	     public class CallingStepsFromStepDefinitionSteps : Steps
          {
@@ -83,7 +87,9 @@ Scenario: When I call other steps of a different type it shouldn't change the ty
 
 Scenario: When I call other steps of a different types in a hierarchy it shouldn't change the type of the next and step in my feature
 	Given the following binding class
-         """
+         """            
+         using TechTalk.SpecFlow;
+
 	     [Binding]
 	     public class CallingStepsFromStepDefinitionSteps : Steps
          {

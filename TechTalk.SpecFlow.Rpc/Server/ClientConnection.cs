@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
 using Newtonsoft.Json;
+using Serilog.Core;
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
@@ -23,23 +24,21 @@ namespace TechTalk.SpecFlow.Rpc.Server
     {
         private readonly string _loggingIdentifier;
         private readonly Stream _stream;
+        private readonly Logger _logger;
 
         public string LoggingIdentifier => _loggingIdentifier;
 
-        public ClientConnection(string loggingIdentifier, Stream stream)
+        public ClientConnection(string loggingIdentifier, Stream stream, Logger logger)
         {
             _loggingIdentifier = loggingIdentifier;
             _stream = stream;
+            _logger = logger;
         }
 
         /// <summary>
         /// Returns a Task that resolves if the client stream gets disconnected.
         /// </summary>
         protected abstract Task CreateMonitorDisconnectTask(CancellationToken cancellationToken);
-
-        protected virtual void ValidateBuildRequest(Request request)
-        {
-        }
 
         /// <summary>
         /// Close the connection.  Can be called multiple times.
@@ -56,7 +55,6 @@ namespace TechTalk.SpecFlow.Rpc.Server
                     Log("Begin reading request.");
 
                     request = RequestStreamHandler.Read<Request>(_stream); //todo async + cancellationtoken
-                    //ValidateBuildRequest(request);
                     Log("End reading request.");
                 }
                 catch (Exception e)
@@ -87,6 +85,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
             if (request.IsPing)
             {
+                Log("Ping received");
                 var response = new Response(){Result = "Pong"};
                 ResponseStreamHandler.Write(response, _stream);
 
@@ -95,6 +94,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
             if (request.IsShutDown)
             {
+                Log("Shutdown request received");
                 var id = Process.GetCurrentProcess().Id;
 
                 var response = new Response() { Result = id.ToString() };
@@ -158,11 +158,13 @@ namespace TechTalk.SpecFlow.Rpc.Server
             Func<Response> func = () =>
             {
                 // Do the compilation
-                Log("Begin compilation");
+                Log("Begin request execution");
 
                 var assembly = GetAssembly(request);
 
                 var requestedType = GetRequestedType(assembly, request);
+
+                Log($"Requesting type {requestedType} from assembly {assembly} to execute {request.Method}");
 
                 var requestedTypeInstance = container.Resolve(requestedType);
                 var requestedMethodInfo = requestedType.GetMethod(request.Method);
@@ -180,7 +182,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                     Result = JsonConvert.SerializeObject(result, SerializationOptions.Current)
                 };
 
-                Log("End compilation");
+                Log("End request execution");
                 return response;
             };
 
@@ -220,12 +222,12 @@ namespace TechTalk.SpecFlow.Rpc.Server
 
         private void Log(string message)
         {
-            CompilerServerLogger.Log("Client {0}: {1}", _loggingIdentifier, message);
+            _logger.Information("Client {0}: {1}", _loggingIdentifier, message);
         }
 
         private void LogException(Exception e, string message)
         {
-            CompilerServerLogger.LogException(e, string.Format("Client {0}: {1}", _loggingIdentifier, message));
+            _logger.Error(e, "Client {0}: {1}", _loggingIdentifier, message);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Serilog.Core;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -10,12 +11,20 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 {
     class FeatureCodeBehindGenerator : IFeatureCodeBehindGenerator
     {
+        private readonly Logger _logger;
         private CodeDomHelper _codeDomHelper;
         private ProjectSettings _projectSettings;
         private SpecFlowProject _specFlowProject;
 
+        public FeatureCodeBehindGenerator(Logger logger)
+        {
+            _logger = logger;
+        }
+
         public void InitializeProject(string projectPath)
         {
+            _logger.Information(nameof(InitializeProject)+$"({projectPath})");
+
             _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath));
 
             _projectSettings = _specFlowProject.ProjectSettings;
@@ -26,6 +35,8 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         public GeneratedCodeBehindFile GenerateCodeBehindFile(string featureFile)
         {
+            _logger.Information(nameof(GenerateCodeBehindFile)+$"{featureFile}");
+
             var testGeneratorFactory = new TestGeneratorFactory();
 
             var testGenerator = testGeneratorFactory.CreateGenerator(_projectSettings);

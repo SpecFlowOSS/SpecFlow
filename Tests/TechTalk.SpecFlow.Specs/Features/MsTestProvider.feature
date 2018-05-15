@@ -9,7 +9,7 @@ Scenario Outline: Should be able to execute scenarios with basic results
 		When I do something
 		"""
 	And all steps are bound and <step definition status>
-	When I execute the tests with MsTest
+	When I execute the tests
 	Then the execution summary should contain
 		| Total | <result> |
 		| 1     | 1        |
@@ -35,7 +35,7 @@ Scenario: Should handle scenario outlines
 				| something else |
 		"""
 	And all steps are bound and pass
-	When I execute the tests with MsTest
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded |
 		| 2         |
@@ -55,7 +55,7 @@ And the following step definition
 			System.Console.WriteLine(ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
 		 }
          """
-		 When I execute the tests with MsTest
+		 When I execute the tests
 	Then the execution summary should contain
 		| Succeeded |
 		| 1         |
@@ -63,18 +63,18 @@ And the following step definition
 @config
 Scenario: Should be able to specify MsTest provider in the configuration
 	Given there is a SpecFlow project
-	And a scenario 'Simple Scenario' as
-		"""
-		When I do something
-		"""
-	And all steps are bound and pass
 	And the specflow configuration is
 		"""
 		<specFlow>
 			<unitTestProvider name="MsTest"/>
 		</specFlow>
 		"""
-	When I execute the tests with MsTest
+	And a scenario 'Simple Scenario' as
+		"""
+		When I do something
+		"""
+	And all steps are bound and pass
+	When I execute the tests
 	Then the execution summary should contain
 		| Total | 
 		| 1     | 
@@ -82,8 +82,18 @@ Scenario: Should be able to specify MsTest provider in the configuration
 @config
 Scenario: Should be able to deploy files
     Given there is a SpecFlow project
+	And the specflow configuration is
+		"""
+		<specFlow>
+			<unitTestProvider name="MsTest"/>
+		</specFlow>
+		"""
 	And the following binding class
         """
+		using System;
+		using System.IO;
+		using TechTalk.SpecFlow;
+
 		using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 		[Binding]
@@ -108,24 +118,7 @@ Scenario: Should be able to deploy files
 		"""
 		This is a deployment item file
 		"""
-	And the specflow configuration is
-		"""
-		<specFlow>
-			<unitTestProvider name="MsTest"/>
-		</specFlow>
-		"""
-	And there is a test settings file 'Local.testsettings'
-		"""
-		<?xml version="1.0" encoding="UTF-8"?>
-		<TestSettings
-		  id="b8f2810b-cd53-4519-8b18-d0e599219d54"
-		  name="Local"
-		  enableDefaultDataCollectors="false"
-		  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-		  <Deployment enabled="true" />
-		</TestSettings>
-		"""
-	When I execute the tests with MsTest
+	When I execute the tests
 	Then the execution summary should contain
          | Succeeded |
          | 1         |
@@ -133,8 +126,18 @@ Scenario: Should be able to deploy files
 @config
 Scenario: Should be able to deploy files to specific folder
     Given there is a SpecFlow project
+	And the specflow configuration is
+		"""
+		<specFlow>
+			<unitTestProvider name="MsTest"/>
+		</specFlow>
+		"""
 	And the following binding class
         """
+		using System;
+		using System.IO;
+		using TechTalk.SpecFlow;
+
 		using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 		[Binding]
@@ -159,24 +162,7 @@ Scenario: Should be able to deploy files to specific folder
 		"""
 		This is a deployment item file
 		"""
-	And the specflow configuration is
-		"""
-		<specFlow>
-			<unitTestProvider name="MsTest"/>
-		</specFlow>
-		"""
-	And there is a test settings file 'Local.testsettings'
-		"""
-		<?xml version="1.0" encoding="UTF-8"?>
-		<TestSettings
-		  id="b8f2810b-cd53-4519-8b18-d0e599219d54"
-		  name="Local"
-		  enableDefaultDataCollectors="false"
-		  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-		  <Deployment enabled="true" />
-		</TestSettings>
-		"""
-	When I execute the tests with MsTest
+	When I execute the tests
 	Then the execution summary should contain
          | Succeeded |
          | 1         |

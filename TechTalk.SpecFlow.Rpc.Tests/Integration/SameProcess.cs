@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
+using Serilog;
+using Serilog.Core;
 using TechTalk.SpecFlow.Rpc.Client;
 using TechTalk.SpecFlow.Rpc.Server;
 using TechTalk.SpecFlow.Rpc.Shared;
@@ -40,8 +42,11 @@ namespace TechTalk.SpecFlow.Rpc.Tests.Integration
         {
             try
             {
+                var logger = new LoggerConfiguration().CreateLogger();
+
+
                 _serverStarted = true;
-                _buildServerController = new BuildServerController(_container);
+                _buildServerController = new BuildServerController(_container, logger);
                 _buildServerController.Run(_freePort);
             }
             catch (Exception e)

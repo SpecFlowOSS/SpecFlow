@@ -62,5 +62,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             testThreadContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
             testThreadContainer.RegisterTypeAs<TestTracer, ITestTracer>();
         }
+
+        public void RegisterScenarioContainerDefaults(ObjectContainer scenarioContainer)
+        {
+            scenarioContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
+
+        }
     }
 }

@@ -116,7 +116,7 @@ Scenario Outline: Pascal case methods
 			{}
 		 """
 	When I execute the tests
-	Then the binding method '<method>' is executed
+	Then the binding method '<method>' is executed once
 
 Examples:
 	| case                  | method                             |
@@ -125,22 +125,24 @@ Examples:
 
 @fsharp
 Scenario Outline: F# method name can be used as a regex
-	Given there is an external F# class library project 'ExternalSteps_FSharp'
-	And the following step definition in the external library
+    Given there is a SpecFlow project
+	And there is an external F# class library project 'ExternalSteps'
+	And the following step definition in the project 'ExternalSteps'
         """
 		let [<When>] <method> = ()
         """
-	And there is a SpecFlow project with a reference to the external library
+	And there is a reference between the SpecFlow project and the 'ExternalSteps' project
 	And a scenario 'Simple Scenario' as
          """
          When I do something really important
          """
-	And the specflow configuration is
+	And the specflow configuration is     
         """
-		<specFlow>
-			<stepAssemblies>
-				<stepAssembly assembly="ExternalSteps_FSharp" />
-			</stepAssemblies>
+		<specFlow>                             
+			<stepAssemblies>                         
+				<stepAssembly assembly="ExternalSteps" />    
+			</stepAssemblies>                   
+            <unitTestProvider name="xunit" />
 		</specFlow>
         """
 	When I execute the tests
@@ -173,11 +175,12 @@ Scenario Outline: Non-English keywords
         <specFlow>
             <!-- the localized prefixes are detected if the feature language 
                  is set in the config -->
-            <language feature="de-DE" /> 
+            <language feature="de-DE" />   
+            <unitTestProvider name="xunit" />
         </specFlow>
         """
 	When I execute the tests
-	Then the binding method '<method prefix>ich_Knopf_drücke' is executed
+	Then the binding method '<method prefix>ich_Knopf_drücke' is executed once
 
 Examples: 
 	| case                           | keyword     | method prefix |

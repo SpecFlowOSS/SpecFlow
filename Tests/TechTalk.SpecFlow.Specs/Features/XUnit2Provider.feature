@@ -8,7 +8,7 @@ Scenario Outline: Should be able to execute scenarios with basic results
 		When I do something
 		"""
 	And all steps are bound and <step definition status>
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Total | <result> |
 		| 1     | 1        |
@@ -35,7 +35,7 @@ Examples:
 				| something else |
 		"""
 	And all steps are bound and pass
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded |
 		| 0         |
@@ -57,7 +57,7 @@ Scenario: Should be able to ignore a scenario
                 Then something should happen
 		"""
 	And all steps are bound and pass
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded | Ignored |
 		| 1         | 1       |
@@ -84,7 +84,7 @@ Scenario: Should be able to ignore all Scenarios in a feature
                 Then something else should happen
 		"""
 	And all steps are bound and pass
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded | Ignored |
 		| 0         | 3       |
@@ -125,7 +125,7 @@ Scenario: Should be able to ignore all Scenarios and Scenario Outlines in a feat
                 Then something should happen
 		"""
 	And all steps are bound and pass
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded | Ignored |
 		| 0         | 4       |
@@ -147,7 +147,7 @@ Scenario Outline: Should handle scenario outlines
 				| something else |
 		"""
 	And all steps are bound and pass
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Succeeded |
 		| 2         |
@@ -171,7 +171,7 @@ Scenario: Should be able to specify xUnit provider in the configuration
 			<unitTestProvider name="xUnit"/>
 		</specFlow>
 		"""
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
 		| Total | 
 		| 1     | 
@@ -191,7 +191,7 @@ And the following step definition
 			ScenarioContext.Current.ScenarioContainer.Resolve<Xunit.Abstractions.ITestOutputHelper>().WriteLine("hello");
 		 }
          """
-		 When I execute the tests with xUnit
+		 When I execute the tests
 	Then the execution summary should contain
 		| Succeeded |
 		| 1         |
@@ -203,6 +203,9 @@ Scenario: Should be able to log custom messages using context injection
 	And the project is configured to use the xUnit provider
 	And the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext
 		{
@@ -225,7 +228,7 @@ Scenario: Should be able to log custom messages using context injection
          """
          When I do something         
          """
-	When I execute the tests with xUnit
+	When I execute the tests
 	Then the execution summary should contain
          | Succeeded |
          | 1         |

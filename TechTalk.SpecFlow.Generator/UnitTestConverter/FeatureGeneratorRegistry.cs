@@ -7,22 +7,22 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
     public class FeatureGeneratorRegistry : IFeatureGeneratorRegistry
     {
-        private readonly List<KeyValuePair<string, IFeatureGeneratorProvider>> providers;
+        private readonly List<IFeatureGeneratorProvider> providers;
 
         public FeatureGeneratorRegistry(IObjectContainer objectContainer)
         {
-            providers = objectContainer.Resolve<IDictionary<string, IFeatureGeneratorProvider>>().OrderBy(item => item.Value.Priority).ToList();
+            providers = objectContainer.ResolveAll<IFeatureGeneratorProvider>().ToList().OrderBy(item => item.Priority).ToList();
         }
 
         public IFeatureGenerator CreateGenerator(SpecFlowDocument document)
         {
             var providerItem = FindProvider(document);
-            return providerItem.Value.CreateGenerator(document);
+            return providerItem.CreateGenerator(document);
         }
 
-        private KeyValuePair<string, IFeatureGeneratorProvider> FindProvider(SpecFlowDocument feature)
+        private IFeatureGeneratorProvider FindProvider(SpecFlowDocument feature)
         {
-            return providers.First(item => item.Value.CanGenerate(feature));
+            return providers.First(item => item.CanGenerate(feature));
         }
     }
 }

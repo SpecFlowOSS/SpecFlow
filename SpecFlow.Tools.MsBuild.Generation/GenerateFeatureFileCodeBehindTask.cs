@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -36,6 +38,10 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private async Task<bool> AsyncExecute()
         {
+            var environmentVariables = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().Select(e => (Key: e.Key, Value: e.Value)).OrderBy(e => e.Key).ToArray();
+            Log.LogMessage($"Environment variables: {environmentVariables.Length}");
+            Log.LogMessage(string.Join(Environment.NewLine, environmentVariables.Select(v => $"{v.Key}: {v.Value}")));
+
             var generatedFiles = new List<ITaskItem>();
 
             try
@@ -45,29 +51,44 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     var freePort = FindFreePort.GetAvailablePort(_startPort);
 
                     outOfProcessServer.Start(freePort);
-                    var filePathGenerator = new FilePathGenerator();
-                    using (var client = new Client<IFeatureCodeBehindGenerator>(freePort))
+                    try
                     {
-                        await client.WaitForServer();
-                        await client.Execute(c => c.InitializeProject(ProjectPath));
+                        var filePathGenerator = new FilePathGenerator();
 
-                        var codeBehindWriter = new CodeBehindWriter(Log);
-                        foreach (var featureFile in FeatureFiles)
+
+                        var usedPort = outOfProcessServer.WaitForPort();
+
+                        using (var client = new Client<IFeatureCodeBehindGenerator>(usedPort))
                         {
-                            string featureFileItemSpec = featureFile.ItemSpec;
-                            var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
+                            await client.WaitForServer();
+                            await client.Execute(c => c.InitializeProject(ProjectPath));
 
-                            string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
-                            string resultedFile = codeBehindWriter.WriteCodeBehindFile(
-                                targetFilePath,
-                                featureFile,
-                                featureFileCodeBehind);
+                            var codeBehindWriter = new CodeBehindWriter(Log);
+                            if (FeatureFiles != null)
+                            {
+                                foreach (var featureFile in FeatureFiles)
+                                {
+                                    string featureFileItemSpec = featureFile.ItemSpec;
+                                    var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
 
-                            generatedFiles.Add(new TaskItem { ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder) });
+                                    string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
+                                    string resultedFile = codeBehindWriter.WriteCodeBehindFile(
+                                        targetFilePath,
+                                        featureFile,
+                                        featureFileCodeBehind);
+
+                                    generatedFiles.Add(new TaskItem {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
+                                }
+                            }
+
+
+                            await client.ShutdownServer();
                         }
-
-
-                        await client.ShutdownServer();
+                    }
+                    catch (Exception e)
+                    {
+                        Log?.LogWithNameTag(Log.LogError, outOfProcessServer.CurrentOutput);
+                        throw;
                     }
                 }
 

@@ -1,4 +1,5 @@
-﻿Feature: DescriptionParser
+﻿@SingleTestConfiguration
+Feature: DescriptionParser
 
 Scenario: Parsing of Feature Description
 	Given there is a Gherkin file as

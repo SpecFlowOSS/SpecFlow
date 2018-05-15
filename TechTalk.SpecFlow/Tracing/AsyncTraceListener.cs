@@ -1,28 +1,27 @@
 ﻿using System;
-using System.Linq;
 using BoDi;
 
 namespace TechTalk.SpecFlow.Tracing
 {
     public class AsyncTraceListener : ITraceListener
     {
-        private readonly ITraceListenerQueue traceListenerQueue;
-        private readonly Lazy<ITestRunner> testRunner;
+        private readonly Lazy<ITestRunner> _testRunner;
+        private readonly ITraceListenerQueue _traceListenerQueue;
 
         public AsyncTraceListener(ITraceListenerQueue traceListenerQueue, IObjectContainer container)
         {
-            this.traceListenerQueue = traceListenerQueue;
-            this.testRunner = new Lazy<ITestRunner>(container.Resolve<ITestRunner>);
+            _traceListenerQueue = traceListenerQueue;
+            _testRunner = new Lazy<ITestRunner>(container.Resolve<ITestRunner>);
         }
 
-        public void WriteTestOutput(string message)
+        public virtual void WriteTestOutput(string message)
         {
-            traceListenerQueue.EnqueueMessgage(testRunner.Value, message, false);
+            _traceListenerQueue.EnqueueMessage(_testRunner.Value, message, false);
         }
 
-        public void WriteToolOutput(string message)
+        public virtual void WriteToolOutput(string message)
         {
-            traceListenerQueue.EnqueueMessgage(testRunner.Value, message, true);
+            _traceListenerQueue.EnqueueMessage(_testRunner.Value, message, true);
         }
     }
 }

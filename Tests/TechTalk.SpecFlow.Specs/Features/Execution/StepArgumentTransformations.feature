@@ -60,7 +60,7 @@ Scenario: Multi-line text arguments can be converted
         [StepArgumentTransformation]
         public XmlDocument TransformXml(string xml)
         {
-            XmlDocument result = new XmlDocument();
+            var result = new XmlDocument();
             result.LoadXml(xml);
             return result;
         }

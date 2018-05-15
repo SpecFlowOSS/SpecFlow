@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
+﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ExternalLibrarySteps : Steps
     {
-        private readonly InputProjectDriver inputProjectDriver;
-        private readonly ProjectGenerator projectGenerator;
-        private readonly ProjectCompiler projectCompiler;
+        private readonly ProjectsDriver _projectsDriver;
 
-        public ExternalLibrarySteps(InputProjectDriver inputProjectDriver, ProjectGenerator projectGenerator, ProjectCompiler projectCompiler)
+        public ExternalLibrarySteps(ProjectsDriver projectsDriver)
         {
-            this.inputProjectDriver = inputProjectDriver;
-            this.projectGenerator = projectGenerator;
-            this.projectCompiler = projectCompiler;
+            _projectsDriver = projectsDriver;
         }
 
         [Given(@"there is an external class library project '(.*)'")]
@@ -31,50 +21,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"there is an external (.+) class library project '(.*)'")]
         public void GivenThereIsAnExternalClassLibraryProject(string language, string libraryName)
         {
-            inputProjectDriver.ProjectName = libraryName;
-            inputProjectDriver.Language = language;
+            _projectsDriver.CreateProject(libraryName, language);
+            _projectsDriver.Projects[libraryName].IsSpecFlowFeatureProject = false;
         }
 
-        [Given(@"the following step definition in the external library")]
-        public void GivenTheFollowingStepDefinitionInTheExternalLibrary(string stepDefinition)
+        [Given(@"there is a reference between the SpecFlow project and the '(.*)' project")]
+        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string referencedProject)
         {
-            Given("the following step definition", stepDefinition);
+            _projectsDriver.AddProjectReference(referencedProject);
         }
 
-        [Given(@"there is a (.+) SpecFlow project with a reference to the external library")]
-        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string language)
-        {
-            var project = projectGenerator.GenerateProject(inputProjectDriver);
-            projectCompiler.Compile(project);
 
-            List<string> assembliesToReference = new List<string>();
-
-            var libName = inputProjectDriver.CompiledAssemblyPath;
-            var savedLibPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(libName));
-            File.Copy(libName, savedLibPath, true);
-            assembliesToReference.Add(savedLibPath);
-
-            foreach (var assemblyFileName in inputProjectDriver.FrameworkAssembliesToCopy)
-            {
-                var originalAssemblyPath = Path.Combine(inputProjectDriver.DeploymentFolder, assemblyFileName);
-                var savedAssemblyPath = Path.Combine(Path.GetTempPath(), assemblyFileName);
-                File.Copy(originalAssemblyPath, savedAssemblyPath, true);
-                assembliesToReference.Add(savedAssemblyPath);
-            }
-
-            inputProjectDriver.Reset();
-            inputProjectDriver.ProjectName = "SpecFlow.TestProject";
-            inputProjectDriver.Language = language;
-            foreach (var assemblyPath in assembliesToReference)
-            {
-                inputProjectDriver.References.Add(assemblyPath);
-            }
-        }
-
-        [Given(@"there is a SpecFlow project with a reference to the external library")]
-        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary()
-        {
-            GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary("C#");
-        }
     }
 }

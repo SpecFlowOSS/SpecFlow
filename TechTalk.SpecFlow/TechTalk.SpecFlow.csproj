@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>$(SpecFlow_Runtime_TFM)</TargetFramework>
@@ -7,20 +7,6 @@
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>SpecFlow</PackageId>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <Authors>TechTalk</Authors>
-    <Company>TechTalk</Company>
-    <Product />
-    <PackageLicenseUrl>http://go.specflow.org/license</PackageLicenseUrl>
-    <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>
-    <PackageIconUrl>http://go.specflow.org/specflow-nuget-icon</PackageIconUrl>
-    <RepositoryUrl>https://github.com/techtalk/SpecFlow</RepositoryUrl>
-    <PackageTags>specflow bdd gherkin cucumber</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,9 +17,9 @@
 
   <ItemGroup>
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-    <PackageReference Include="BoDi" Version="1.4.0-alpha" />
+    <PackageReference Include="BoDi" Version="1.4.0-alpha1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +29,10 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 

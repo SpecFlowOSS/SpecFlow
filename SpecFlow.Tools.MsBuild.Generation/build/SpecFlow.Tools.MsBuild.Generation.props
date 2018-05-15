@@ -4,7 +4,7 @@
     
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netstandard1.6</_SpecFlow_TaskFolder>
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net461</_SpecFlow_TaskFolder>
-    <_SpecFlow_TaskAssembly Condition=" '$(_SpecFlow_TaskAssembly)' == '' "> $(MSBuildThisFileDirectory)..\tasks\$(_SpecFlow_TaskFolder)\TechTalk.SpecFlow.MSBuildTasks.dll</_SpecFlow_TaskAssembly>
+    <_SpecFlow_TaskAssembly Condition=" '$(_SpecFlow_TaskAssembly)' == '' ">..\tasks\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
     <SpecFlow_TargetOrder>BeforeUpdateFeatureFilesInProject;UpdateFeatureFilesInProject;GenerateFeatureCodeBehindFiles;SpecFlow_UpdateCompileItemGroup;AfterUpdateFeatureFilesInProject</SpecFlow_TargetOrder>
   </PropertyGroup>
 

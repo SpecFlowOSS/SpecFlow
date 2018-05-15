@@ -3,6 +3,9 @@
 Scenario: Should be able to inject ScenarioContext
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext
 		{
@@ -29,6 +32,9 @@ Scenario: Should be able to inject ScenarioContext
 Scenario: The same ScenarioContext should be inject in the same scenario
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext
 		{
@@ -49,6 +55,9 @@ Scenario: The same ScenarioContext should be inject in the same scenario
         """	
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class AnotherStepsWithScenarioContext
 		{
@@ -81,6 +90,9 @@ Scenario: The same ScenarioContext should be inject in the same scenario
 Scenario: Different scenarios should have their own ScenarioContext injected
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext
 		{
@@ -117,6 +129,9 @@ Scenario: Different scenarios should have their own ScenarioContext injected
 Scenario: Should be able to inject FeatureContext
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext
 		{
@@ -143,6 +158,9 @@ Scenario: Should be able to inject FeatureContext
 Scenario: The same FeatureContext should be inject in the scenarios of the same feature
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithFeatureContext
 		{
@@ -163,6 +181,9 @@ Scenario: The same FeatureContext should be inject in the scenarios of the same 
         """	
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class AnotherStepsWithFeatureContext
 		{
@@ -200,6 +221,9 @@ Scenario: The same FeatureContext should be inject in the scenarios of the same 
 Scenario: ScenarioContext can be accessed from Steps base class
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext : Steps
 		{
@@ -212,6 +236,9 @@ Scenario: ScenarioContext can be accessed from Steps base class
         """	
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class AnotherStepsWithScenarioContext : Steps
 		{
@@ -236,6 +263,9 @@ Scenario: ScenarioContext can be accessed from Steps base class
 Scenario: FeatureContext can be accessed from Steps base class
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithFeatureContext : Steps
 		{
@@ -248,6 +278,9 @@ Scenario: FeatureContext can be accessed from Steps base class
         """	
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class AnotherStepsWithFeatureContext : Steps
 		{
@@ -277,6 +310,9 @@ Scenario: FeatureContext can be accessed from Steps base class
 Scenario: StepContext can be accessed from Steps base class
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class MySteps : Steps
 		{
@@ -300,6 +336,9 @@ Scenario: StepContext can be accessed from Steps base class
 Scenario: StepContext can be accessed from the ScenarioContext
 	Given the following binding class
         """
+		using System;
+		using TechTalk.SpecFlow;
+
 		[Binding]
 		public class StepsWithScenarioContext
 		{

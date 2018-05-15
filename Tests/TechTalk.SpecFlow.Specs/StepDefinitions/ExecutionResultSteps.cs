@@ -1,30 +1,23 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
+using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
-using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
-using TestExecutionResult = TechTalk.SpecFlow.Specs.Drivers.TestExecutionResult;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ExecutionResultSteps
-    { 
-        private readonly TestExecutionResult _testExecutionResult; // TODO: to remove
-        private readonly HooksDriver _hooksDriver; // TODO: to remove
+    {
+        private readonly HooksDriver _hooksDriver;
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
 
-        public ExecutionResultSteps(TestExecutionResult testExecutionResult, HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver)
+        public ExecutionResultSteps(HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver)
         {
-            _testExecutionResult = testExecutionResult;
             _hooksDriver = hooksDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
-        }
-
-        public TestRunSummary ConvertToSummary(Table table)
-        {
-            return table.CreateInstance<TestRunSummary>();
         }
 
         [Then(@"all tests should pass")]
@@ -45,68 +38,39 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the binding method '(.*)' is executed")]
         public void ThenTheBindingMethodIsExecuted(string methodName)
         {
-            ThenTheBindingMethodIsExecuted(methodName, int.MaxValue);
+            ThenTheBindingMethodIsExecuted(methodName, 1);
         }
 
         [Then(@"the binding method '(.*)' is executed (.*)")]
         public void ThenTheBindingMethodIsExecuted(string methodName, int times)
         {
-            _testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
-
-            var regex = new Regex(@"-> done: \S+\." + methodName);
-            if (times > 0)
-                regex.Match(_testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
-
-            if (times != int.MaxValue)
-                regex.Matches(_testExecutionResult.ExecutionLog).Count.Should().Be(times);
+            _vsTestExecutionDriver.CheckIsBindingMethodExecuted(methodName, times);
         }
 
         [Then(@"the hook '(.*)' is executed (\D.*)")]
         [Then(@"the hook '(.*)' is executed (\d+) times")]
         public void ThenTheHookIsExecuted(string methodName, int times)
         {
-            var hookLog = _hooksDriver.HookLog;
-            hookLog.Should().NotBeNullOrEmpty("no execution log generated");
-
-            var regex = new Regex(@"-> hook: " + methodName);
-            if (times > 0)
-                regex.Match(hookLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
-
-            if (times != int.MaxValue)
-                regex.Matches(hookLog).Count.Should().Be(times);
+            _hooksDriver.CheckIsHookExecuted(methodName, times);
         }
 
         [Then(@"the hooks are executed in the order")]
         public void ThenTheHooksAreExecutedInTheOrder(Table table)
         {
-            var hookLog = _hooksDriver.HookLog;
-            hookLog.Should().NotBeNullOrEmpty("no execution log generated");
-            int lastPosition = -1;
-            foreach (var row in table.Rows)
-            {
-                int currentPosition = hookLog.IndexOf(@"-> hook: " + row[0]);
-                currentPosition.Should().BeGreaterThan(lastPosition);
-                lastPosition = currentPosition;
-            }
+            _hooksDriver.CheckIsHookExecutedInOrder(table.Rows.Select(r => r[0]));
         }
 
         [Then(@"the execution log should contain text '(.*)'")]
         public void ThenTheExecutionLogShouldContainText(string text)
         {
-            _testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
-            _testExecutionResult.ExecutionLog.Should().Contain(text);
+            // TODO: do not search in output but in execution log
+            _vsTestExecutionDriver.CheckOutputContainsText(text);
         }
 
         [Given(@"the log file '(.*)' is empty")]
         public void GivenTheLogFileIsEmpty(string logFilePath)
         {
             File.WriteAllText(GetPath(logFilePath), "");
-        }
-
-        private string GetPath(string logFilePath)
-        {
-            string filePath = Path.Combine(Path.GetTempPath(), logFilePath);
-            return filePath;
         }
 
         [Then(@"the log file '(.*)' should contain text '(.*)'")]
@@ -117,7 +81,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [Then(@"the log file '(.*)' should contain the text '(.*)' (\d+) times")]
-        public void ThenTheLogFileShouldContainTHETextTimes(string logFilePath, string text, int times)
+        public void ThenTheLogFileShouldContainTheTextTimes(string logFilePath, string text, int times)
         {
             var logConent = File.ReadAllText(GetPath(logFilePath));
             logConent.Should().NotBeNullOrEmpty("no trace log is generated");
@@ -128,6 +92,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             if (times != int.MaxValue) 
                  regex.Matches(logConent).Count.Should().Be(times);
+        }
+
+        private string GetPath(string logFilePath)
+        {
+            string filePath = Path.Combine(Path.GetTempPath(), logFilePath);
+            return filePath;
         }
     }
 }

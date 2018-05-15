@@ -8,65 +8,42 @@
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>TechTalk.SpecFlow.Specs</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove=".\Drivers\Templates\**\*" />
     <Compile Remove=".\Features.Generated\**\*" />
+    <Compile Remove=".\TestFiles\**\*" />
+
     <EmbeddedResource Include=".\Drivers\Templates\**\*" />
-    <EmbeddedResource Remove=".\Drivers\Templates\TemplateManager.cs" />
-    <Compile Include=".\Drivers\Templates\TemplateManager.cs" />
+    <EmbeddedResource Include=".\TestFiles\**\*" />
+    
 
     <None Include="App.config" />
-
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator.csproj" />
+    <ProjectReference Include="..\..\Installer\NuGetPackages\NuGetPackages.csproj" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Gherkin" Version="5.0.1" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
-    <PackageReference Include="NUnit" Version="3.8.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
-    <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.6.0" />
-    <PackageReference Include="NUnit.Extension.VSProjectLoader" Version="3.6.0" />
-    <PackageReference Include="NUnit.Runners" Version="3.7.0" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Moq" Version="4.7.99" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
-    <PackageReference Include="SpecFlow.NUnit3.ConsoleRunner" Version="1.0.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <MSBuild Projects="..\..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" ContinueOnError="false" />
-    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
-  </Target>
-
-  <Target Name="PostcompileScript" AfterTargets="Build">
-    <!--<Exec Command="../../PostCompile.bat $(MSBuildProjectDirectory)" />-->
-  </Target>
-
- 
 
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
@@ -77,9 +54,14 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
+
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" />
+    <MSBuild Projects="..\..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" ContinueOnError="false" />
+    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
+  </Target>
+
 
   <PropertyGroup>
     <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\net461\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
@@ -92,6 +74,7 @@
     <ItemGroup>
       <SpecFlowGeneratedFiles2Delete Include="**/Features/**/*.feature.cs" />
       <SpecFlowGeneratedFiles2Delete Include="**/Features.Generated/**/*.feature.cs" />
+      <SpecFlowFeatureFiles Include="Features/**/*.feature" />
     </ItemGroup>
 
     <PropertyGroup>
