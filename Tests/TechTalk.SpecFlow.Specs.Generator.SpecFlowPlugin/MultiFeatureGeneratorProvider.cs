@@ -20,7 +20,9 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         private readonly List<Combination> _combination = new List<Combination>()
         {
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "Old", TargetFramework = "Net452", UnitTestProvider = "XUnit"},
-            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452", UnitTestProvider = "XUnit"}
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452", UnitTestProvider = "XUnit"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452", UnitTestProvider = "MSTest"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452", UnitTestProvider = "NUnit3"},
         };
 
         private readonly MultiFeatureGenerator _multiFeatureGenerator;

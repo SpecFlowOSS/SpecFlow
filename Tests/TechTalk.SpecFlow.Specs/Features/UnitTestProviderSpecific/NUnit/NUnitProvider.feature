@@ -1,8 +1,8 @@
-﻿Feature: NUnit unit test provider
+﻿@NUnit
+Feature: NUnit unit test provider
 
 Scenario Outline: Should be able to execute scenarios with basic results
 	Given there is a SpecFlow project
-	And the project is configured to use the NUnit provider
 	And a scenario 'Simple Scenario' as
 		"""
 		When I do something
@@ -20,7 +20,6 @@ Examples:
 
 Scenario Outline: Should handle scenario outlines
 	Given there is a SpecFlow project
-	And the project is configured to use the NUnit provider
 	And row testing is <row test>
 	Given there is a feature file in the project as
 		"""

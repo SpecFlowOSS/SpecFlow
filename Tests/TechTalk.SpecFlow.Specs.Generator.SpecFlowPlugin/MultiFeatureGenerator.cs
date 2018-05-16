@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator;
@@ -30,9 +31,10 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         {
             CodeNamespace result = null;
 
-            if (specFlowDocument.SpecFlowFeature.HasTags())
+            var specFlowFeature = specFlowDocument.SpecFlowFeature;
+            if (specFlowFeature.HasTags())
             {
-                if (specFlowDocument.SpecFlowFeature.Tags.Where(t => t.Name == "@SingleTestConfiguration").Any())
+                if (specFlowFeature.Tags.Where(t => t.Name == "@SingleTestConfiguration").Any())
                 {
                     return _defaultFeatureGenerator.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);
                 }
@@ -40,6 +42,24 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
             foreach (var featureGenerator in _featureGenerators)
             {
+                if (specFlowFeature.HasTags())
+                {
+                    if (!IsForUnitTestProvider(featureGenerator, "XUnit") && HasFeatureTag(specFlowFeature, "@xunit"))
+                    {
+                        continue;
+                    }
+
+                    if (!IsForUnitTestProvider(featureGenerator, "MsTest") && HasFeatureTag(specFlowFeature, "@MsTest"))
+                    {
+                        continue;
+                    }
+
+                    if (!IsForUnitTestProvider(featureGenerator, "NUnit3") && HasFeatureTag(specFlowFeature, "@NUnit"))
+                    {
+                        continue;
+                    }
+                }
+
                 var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);
 
                 if (result == null)
@@ -56,6 +76,16 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             }
 
             return result;
+        }
+
+        private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)
+        {
+            return string.Compare(featureGenerator.Key.UnitTestProvider, unitTestProvider, StringComparison.CurrentCultureIgnoreCase) == 0;
+        }
+
+        private bool HasFeatureTag(SpecFlowFeature specFlowFeature, string tag)
+        {
+            return specFlowFeature.Tags.Where(t => string.Compare(t.Name, tag, StringComparison.CurrentCultureIgnoreCase) == 0).Any();
         }
     }
 }
