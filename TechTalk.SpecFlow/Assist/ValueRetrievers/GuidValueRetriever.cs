@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             try
             {
                 cleanedValue = RemoveUnnecessaryCharacters(value);
-                return AttempToBuildAGuidFromTheString(value);
+                return AttemptToBuildAGuidFromTheString(cleanedValue);
             }
             catch
             {
@@ -36,11 +36,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return propertyType == typeof(Guid);
         }
 
-        private static Guid AttempToBuildAGuidFromTheString(string value)
+        private static Guid AttemptToBuildAGuidFromTheString(string value)
         {
             var guid = new Guid(value);
 
-            if (RemoveUnnecessaryCharacters(guid) != value)
+            if (string.Compare(RemoveUnnecessaryCharacters(guid), value, true) != 0)
                 throw new Exception("The parsed value is not what was expected.");
 
             return guid;
