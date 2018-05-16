@@ -1,5 +1,5 @@
-﻿using SpecFlow.TestProjectGenerator.NewApi;
-using TechTalk.SpecFlow.Infrastructure;
+﻿using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
 
 namespace TechTalk.SpecFlow.Specs.Support
 {

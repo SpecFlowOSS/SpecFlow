@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

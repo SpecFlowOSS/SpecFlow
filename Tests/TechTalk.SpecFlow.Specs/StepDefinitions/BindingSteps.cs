@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.Specs.Drivers;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

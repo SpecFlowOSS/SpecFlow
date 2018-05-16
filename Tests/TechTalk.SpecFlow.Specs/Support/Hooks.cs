@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions.Common;
-using SpecFlow.TestProjectGenerator;
-using SpecFlow.TestProjectGenerator.Helpers;
-using SpecFlow.TestProjectGenerator.NewApi;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
 
 
 namespace TechTalk.SpecFlow.Specs.Support

@@ -20,6 +20,10 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
             if (_combination != null)
             {
+                string programminLanguageEnum = $"TechTalk.SpecFlow.TestProjectGenerator.ProgrammingLanguage.{_combination.ProgrammingLanguage}";
+                string projectFormatEnum = $"TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory.ProjectFormat.{_combination.ProjectFormat}";
+                string targetFrameworkEnum = $"TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory.TargetFramework.{_combination.TargetFramework}";
+                string unitTestProviderEnum = $"TechTalk.SpecFlow.TestProjectGenerator.UnitTestProvider.{_combination.UnitTestProvider}";
 
                 generationContext.ScenarioInitializeMethod.Statements.Add(
                     new CodeMethodInvokeExpression(
@@ -30,9 +34,9 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                                     "ScenarioContext"),
                                 "ScenarioContainer"),
                             "RegisterInstanceAs",
-                            new CodeTypeReference("global::SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration")),
+                            new CodeTypeReference("TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration")),
                         new CodeVariableReferenceExpression(
-                            $"new global::SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration(global::SpecFlow.TestProjectGenerator.ProgrammingLanguage.{_combination.ProgrammingLanguage}, global::SpecFlow.TestProjectGenerator.NewApi._1_Memory.ProjectFormat.{_combination.ProjectFormat}, global::SpecFlow.TestProjectGenerator.NewApi._1_Memory.TargetFramework.{_combination.TargetFramework})")));
+                            $"new TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration({programminLanguageEnum}, {projectFormatEnum}, {targetFrameworkEnum}, {unitTestProviderEnum})")));
             }
         }
     }

@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator.csproj" />
+    <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\Installer\NuGetPackages\NuGetPackages.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />

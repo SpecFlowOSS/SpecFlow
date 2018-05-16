@@ -12,14 +12,15 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         public string ProjectFormat { get; set; }
         public string TargetFramework { get; set; }
         public string ProgrammingLanguage { get; set; }
+        public string UnitTestProvider { get; set; }
     }
 
     internal class MultiFeatureGeneratorProvider : IFeatureGeneratorProvider
     {
         private readonly List<Combination> _combination = new List<Combination>()
         {
-            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "Old", TargetFramework = "Net452"},
-            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452"}
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "Old", TargetFramework = "Net452", UnitTestProvider = "XUnit"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = "Net452", UnitTestProvider = "XUnit"}
         };
 
         private readonly MultiFeatureGenerator _multiFeatureGenerator;

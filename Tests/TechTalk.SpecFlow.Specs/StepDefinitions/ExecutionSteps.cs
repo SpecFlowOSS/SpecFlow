@@ -1,5 +1,5 @@
-﻿using SpecFlow.TestProjectGenerator.NewApi.Driver;
-using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using SpecFlow.TestProjectGenerator.NewApi.Driver;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
 {

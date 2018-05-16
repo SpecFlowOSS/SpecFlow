@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using SpecFlow.TestProjectGenerator.NewApi.Driver;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

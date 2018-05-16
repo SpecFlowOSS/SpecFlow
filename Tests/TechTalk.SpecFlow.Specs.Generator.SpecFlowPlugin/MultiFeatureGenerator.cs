@@ -1,6 +1,5 @@
 ﻿using System.CodeDom;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -22,7 +21,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             {
                 if (featureGenerator.Value is UnitTestFeatureGenerator unitTestFeatureGenerator)
                 {
-                    unitTestFeatureGenerator.TestclassNameFormat += $"_{featureGenerator.Key.ProgrammingLanguage}_{featureGenerator.Key.ProjectFormat}_{featureGenerator.Key.TargetFramework}";
+                    unitTestFeatureGenerator.TestclassNameFormat += $"_{featureGenerator.Key.UnitTestProvider}_{featureGenerator.Key.TargetFramework}_{featureGenerator.Key.ProjectFormat}_{featureGenerator.Key.ProgrammingLanguage}";
                 }
             }
         }

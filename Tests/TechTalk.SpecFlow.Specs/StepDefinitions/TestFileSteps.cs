@@ -1,10 +1,9 @@
 using System.IO;
 using FluentAssertions;
-using SpecFlow.TestProjectGenerator;
-using SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 using TechTalk.SpecFlow.Specs.Support;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
