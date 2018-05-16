@@ -33,14 +33,29 @@ namespace TechTalk.SpecFlow.Specs.Support
         [BeforeTestRun]
         public static void BeforTestRun()
         {
-            DeletePackageVersionFolders();
-        }
-
-        private static void DeletePackageVersionFolders()
-        {
             var appConfigDriver = new AppConfigDriver();
             var folders = new Folders(appConfigDriver);
 
+
+            DeletePackageVersionFolders(folders);
+            DeleteOldTestRunData(folders);
+        }
+
+        private static void DeleteOldTestRunData(Folders folders)
+        {
+            try
+            {
+                FileSystemHelper.DeleteFolderContent(folders.FolderToSaveGeneratedSolutions);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
+        private static void DeletePackageVersionFolders(Folders folders)
+        {
+            
             var currentVersionDriver = new CurrentVersionDriver(folders, new OutputConnector(new SpecFlowOutputHelper()));
             string[] packageNames = { "SpecFlow", "SpecFlow.CustomPlugin", "SpecFlow.MsTest", "SpecFlow.NUnit", "SpecFlow.NUnit.Runners", "SpecFlow.Tools.MsBuild.Generation", "SpecFlow.xUnit" };
             
