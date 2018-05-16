@@ -43,11 +43,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"obsoleteBehavior configuration value is set to (.*)")]
         public void GivenObsoleteBehaviorConfigurationValueIsSetTo(string obsoleteBehaviorValue)
         {
-            var configText = $@"<specFlow>
-			    <runtime obsoleteBehavior=""{obsoleteBehaviorValue}"" />
-                </specFlow >";
+       //     var configText = $@"<specFlow>
+			    //<runtime obsoleteBehavior=""{obsoleteBehaviorValue}"" />
+       //         </specFlow >";
 
-            GivenTheSpecflowConfigurationIs(configText);
+       //     GivenTheSpecflowConfigurationIs(configText);
+            _configurationDriver.SetRuntimeObsoleteBehavior(obsoleteBehaviorValue);
         }
 
         [StepArgumentTransformation(@"enabled")]
