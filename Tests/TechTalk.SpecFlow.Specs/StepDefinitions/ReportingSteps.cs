@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             processHelper.RunProcess(
                 Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
-                "nunitexecutionreport -ProjectFile:\"{0}\" -xmlTestResult:\"{1}\" -testOutput:\"{2}\" -out:\"{3}\" {4}", inputProjectDriver.ProjectFilePath,
+                "nunitexecutionreport --ProjectFile=\"{0}\" --xmlTestResult=\"{1}\" --testOutput=\"{2}\" --OutputFile=\"{3}\" {4}", inputProjectDriver.ProjectFilePath,
                 Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml"), Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt"),
                 reportInfo.FilePath, GetCustomXsltArgument());
         }
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             processHelper.RunProcess(
                 Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
-                "mstestexecutionreport -ProjectFile:\"{0}\" -testResult:\"{1}\" -out:\"{2}\" {3}", inputProjectDriver.ProjectFilePath,
+                "mstestexecutionreport --ProjectFile=\"{0}\" --TestResult=\"{1}\" --OutputFile=\"{2}\" {3}", inputProjectDriver.ProjectFilePath,
                 Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx"), reportInfo.FilePath, GetCustomXsltArgument());
         }
 
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             processHelper.RunProcess(
                 Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
-                "StepDefinitionReport -ProjectFile:\"{0}\" -out:\"{1}\" {2}", inputProjectDriver.ProjectFilePath, reportInfo.FilePath, Debugger.IsAttached ? "/debug" : "");
+                "StepDefinitionReport --ProjectFile=\"{0}\" --OutputFile=\"{1}\" {2}", inputProjectDriver.ProjectFilePath, reportInfo.FilePath, Debugger.IsAttached ? "/debug" : "");
 
             //StepDefinitionReportParameters reportParameters =
             //    new StepDefinitionReportParameters(inputProjectDriver.ProjectFilePath, reportInfo.FilePath, "", "bin\\Debug", true);
@@ -88,7 +88,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
         private string GetCustomXsltArgument()
         {
-            return customXslt == null ? "" : string.Format(" -xsltFile:\"{0}\"", customXslt);
+            return customXslt == null ? "" : string.Format(" --xsltFile=\"{0}\"", customXslt);
         }
 
         [Given(@"there is an XSLT template containing")]
