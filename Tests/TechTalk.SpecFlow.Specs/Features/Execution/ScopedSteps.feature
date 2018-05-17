@@ -24,11 +24,15 @@ Scenario: Scoping step definitions to tags
 		 """
 			[When("I do something"), Scope(Tag = "mytag")]
 			public void WhenIDoSomethingWithMyTag()
-			{}
+			{
+                global::Log.LogStep();
+            }
 
 			[When("I do something"), Scope(Tag = "othertag")]
 			public void WhenIDoSomethingWithOtherTag()
-			{}
+			{
+                global::Log.LogStep();
+            }
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingWithMyTag' is executed
@@ -43,12 +47,10 @@ Scenario: Scoping step definitions to features
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Feature = "Simple Feature")]
-			public void WhenIDoSomethingInSimpleFeature()
-			{}
+			public void WhenIDoSomethingInSimpleFeature() => global::Log.LogStep();
 
 			[When("I do something"), Scope(Feature = "Other Feature")]
-			public void WhenIDoSomethingInOtherFeature()
-			{}
+			public void WhenIDoSomethingInOtherFeature() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInSimpleFeature' is executed
@@ -65,12 +67,10 @@ Scenario: Scoping step definitions to scenarios
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Scenario = "Simple Scenario")]
-			public void WhenIDoSomethingInSimpleScenario()
-			{}
+			public void WhenIDoSomethingInSimpleScenario() => global::Log.LogStep();
 
 			[When("I do something"), Scope(Scenario = "Other Scenario")]
-			public void WhenIDoSomethingInOtherScenario()
-			{}
+			public void WhenIDoSomethingInOtherScenario() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInSimpleScenario' is executed
@@ -86,8 +86,7 @@ Scenario: Scopes can be conbined with AND
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Feature = "Simple Feature", Tag = "mytag")]
-			public void WhenIDoSomethingInSimpleFeatureAndMyTag()
-			{}
+			public void WhenIDoSomethingInSimpleFeatureAndMyTag() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInSimpleFeatureAndMyTag' is executed
@@ -106,8 +105,7 @@ Scenario: Scopes can be conbined with OR
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Scenario = "Other Scenario"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingInOtherScenarioOrMyTag()
-			{}
+			public void WhenIDoSomethingInOtherScenarioOrMyTag() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInOtherScenarioOrMyTag' is executed twice
@@ -125,12 +123,10 @@ Scenario: Scoped matches have higher precedency
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingWithMyTag()
-			{}
+			public void WhenIDoSomethingWithMyTag() => global::Log.LogStep();
 
 			[When("I do something")]
-			public void WhenIDoSomethingNonScoped()
-			{}
+			public void WhenIDoSomethingNonScoped() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingWithMyTag' is executed
@@ -153,8 +149,7 @@ Scenario: Scoping step definitions of a binding class
 		 public class ScopedSteps
 		 {
 			[When("I do something")]
-			public void WhenIDoSomethingWithMyTag()
-			{}
+			public void WhenIDoSomethingWithMyTag() => global::Log.LogStep();
 		 }
 		 """
 	When I execute the tests
@@ -172,8 +167,7 @@ Scenario: No ambiguouity if the same method matches with multiple scopes
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Scenario = "Simple Scenario"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingInOtherScenarioOrMyTag()
-			{}
+			public void WhenIDoSomethingInOtherScenarioOrMyTag() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInOtherScenarioOrMyTag' is executed
@@ -190,11 +184,10 @@ Scenario: More scope matches have higher precedency
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Feature = "Simple Feature", Tag = "mytag")]
-			public void WhenIDoSomethingInSimpleFeatureAndMyTag()
-			{}
+			public void WhenIDoSomethingInSimpleFeatureAndMyTag() => global::Log.LogStep();
+
 			[When("I do something"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingWithMyTag()
-			{}
+			public void WhenIDoSomethingWithMyTag() => global::Log.LogStep();
 		 """
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInSimpleFeatureAndMyTag' is executed

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -71,6 +68,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenTheFollowingBindings(string bindingCode)
         {
             _projectsDriver.AddStepBinding(bindingCode);
+        }
+        
+        [Given(@"a '(.*)' step definition with name '(.*)'")]
+        public void GivenTheFollowingNamedBindings(string attributeName, string name)
+        {
+            _projectsDriver.AddLoggingStepBinding(attributeName, name, "");
         }
 
         [Given(@"a hook '(.*)' for '(.*)' with tags? '([^']*)'")]

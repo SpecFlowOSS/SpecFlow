@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -7,10 +8,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class ConfigurationSteps
     {
         private readonly VSTestExecutionDriver _vstestExecutionDriver;
+        private readonly ConfigurationDriver _configurationDriver;
 
-        public ConfigurationSteps(VSTestExecutionDriver vstestExecutionDriver)
+        public ConfigurationSteps(VSTestExecutionDriver vstestExecutionDriver, ConfigurationDriver configurationDriver)
         {
             _vstestExecutionDriver = vstestExecutionDriver;
+            _configurationDriver = configurationDriver;
         }
 
         [Then(@"the app\.config is used for configuration")]
@@ -25,5 +28,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _vstestExecutionDriver.LastTestExecutionResult.Output.Should().Contain("Using specflow.json");
         }
 
+        [Given(@"the feature language is '(.*)'")]
+        public void GivenTheFeatureLanguageIs(string featureLanguage)
+        {
+            _configurationDriver.SetFeatureLanguage(featureLanguage);
+        }
     }
 }

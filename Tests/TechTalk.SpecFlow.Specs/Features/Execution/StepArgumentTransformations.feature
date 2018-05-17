@@ -23,7 +23,9 @@ Scenario: Should be able to convert steps arguments to arbritrary class instance
          """
 			[When(@"(.*) books a flight")]
 			public void WhenSomebodyBooksAFlight(User user)
-			{}
+			{{                                                                                                                                                 
+                global::Log.LogStep();  
+            }}
          """
 	And a scenario 'Simple Scenario' as
          """
@@ -45,7 +47,9 @@ Scenario: Should be able to convert step arguments to simple .NET types
          """
 			[Given(@"I have an appointment (.*)")]
 			public void GivenIHaveAnAppointmentAt(DateTime time)
-			{}
+			{{                                                                                                                                                    
+                global::Log.LogStep(); 
+            }}
          """
 	And a scenario 'Simple Scenario' as
          """
@@ -69,7 +73,9 @@ Scenario: Multi-line text arguments can be converted
          """
 			[Given(@"the following XML file")]
 			public void GivenTheFollowingXMLFile(XmlDocument xmlDocument)
-			{}
+			{{                                                                                                                                                       
+                global::Log.LogStep(); 
+            }}
          """
 	And a scenario 'Simple Scenario' as
          """

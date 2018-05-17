@@ -5,10 +5,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class ExternalLibrarySteps : Steps
     {
+        private readonly SolutionDriver _solutionDriver;
         private readonly ProjectsDriver _projectsDriver;
 
-        public ExternalLibrarySteps(ProjectsDriver projectsDriver)
+        public ExternalLibrarySteps(SolutionDriver solutionDriver, ProjectsDriver projectsDriver)
         {
+            _solutionDriver = solutionDriver;
             _projectsDriver = projectsDriver;
         }
 
@@ -22,7 +24,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenThereIsAnExternalClassLibraryProject(string language, string libraryName)
         {
             _projectsDriver.CreateProject(libraryName, language);
-            _projectsDriver.Projects[libraryName].IsSpecFlowFeatureProject = false;
+            _solutionDriver.Projects[libraryName].IsSpecFlowFeatureProject = false;
         }
 
         [Given(@"there is a reference between the SpecFlow project and the '(.*)' project")]

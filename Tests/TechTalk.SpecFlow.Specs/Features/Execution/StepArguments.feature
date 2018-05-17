@@ -6,7 +6,8 @@ Scenario: Steps can be defined without argument
 		[When(@"I do something")]
 		public void WhenIDoSomething()
 		{
-		}
+            global::Log.LogStep();
+        }
         """
 	And a scenario 'Simple Scenario' as
          """
@@ -21,6 +22,7 @@ Scenario: Steps can be defined with table argument
 		[When(@"I do something")]
 		public void WhenIDoSomething(Table table)
 		{
+            global::Log.LogStep();
 		}
         """
 	And a scenario 'Simple Scenario' as
@@ -39,6 +41,7 @@ Scenario: Steps can be defined with multiline text argument
 		[When(@"I do something")]
 		public void WhenIDoSomething(string text)
 		{
+            global::Log.LogStep(); 
 		}
         """
 	And a scenario 'Simple Scenario' as
@@ -59,6 +62,7 @@ Scenario: Step parameters in the step definitions have to be declared before the
 		[When(@"I (.*) something")]
 		public void WhenIDoSomething(string what, Table table)
 		{
+            global::Log.LogStep(); 
 		}
         """
 	And a scenario 'Simple Scenario' as

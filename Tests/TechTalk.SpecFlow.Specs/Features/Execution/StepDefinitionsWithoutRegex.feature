@@ -5,12 +5,7 @@ Scenario: Parameterless steps
          """
 			When I do something
          """
-	And the following step definitions
-		 """
-			[When]
-			public void When_I_do_something()
-			{}
-		 """
+    And a 'When' step definition with name 'When_I_do_something'
 	When I execute the tests
 	Then the binding method 'When_I_do_something' is executed
 
@@ -23,9 +18,10 @@ Scenario Outline: Steps with parameters
 		 """
 			[When]
 			public void When_WHO_does_something(string who)
-			{
+			{{                                                                                                                                                 
+                global::Log.LogStep(); 
 				if (who != "Joe") throw new Exception("invalid parameter: " + who);
-			}
+			}}
 		 """
 	When I execute the tests
 	Then the binding method 'When_WHO_does_something' is executed
@@ -46,8 +42,9 @@ Scenario: Steps with parameters referred by index
 		 """
 			[When]
 			public void When_P0_does_P1_with(string who, string what)
-			{
-			}
+			{{                                                                                                                                             
+                global::Log.LogStep();  
+			}}
 		 """
 	When I execute the tests
 	Then the binding method 'When_P0_does_P1_with' is executed
@@ -63,8 +60,9 @@ Scenario: Supports punctuation
 		 """
 			[When]
 			public void When_WHO_the_man_does_something_with(string who, Table table)
-			{
-			}
+			{{                                                                                                                                                             
+                global::Log.LogStep(); 
+			}}
 		 """
 	When I execute the tests
 	Then the binding method 'When_WHO_the_man_does_something_with' is executed
@@ -75,11 +73,7 @@ Scenario: Keyword prefix can be omitted
          """
 			When I do something
          """
-	And the following step definitions
-		 """
-			[When] public void I_do_something()
-			{}
-		 """
+    And a 'When' step definition with name 'I_do_something'
 	When I execute the tests
 	Then the binding method 'I_do_something' is executed
 
@@ -89,11 +83,7 @@ Scenario Outline: Supports all attributes
          """
 			<step> I do something
          """
-	And the following step definitions
-		 """
-			[<attribute>] public void I_do_something()
-			{}
-		 """
+    And a '<attribute>' step definition with name 'I_do_something'
 	When I execute the tests
 	Then the binding method 'I_do_something' is executed
 
@@ -112,8 +102,10 @@ Scenario Outline: Pascal case methods
 	And the following step definitions
 		 """
 			[When]
-			public void <method>(string howMuch)
-			{}
+			public void <method>(string howMuch)    
+			{{                                                                             
+                global::Log.LogStep(); 
+			}}
 		 """
 	When I execute the tests
 	Then the binding method '<method>' is executed once
@@ -129,7 +121,7 @@ Scenario Outline: F# method name can be used as a regex
 	And there is an external F# class library project 'ExternalSteps'
 	And the following step definition in the project 'ExternalSteps'
         """
-		let [<When>] <method> = ()
+		let [<When>] <method> = System.IO.File.AppendAllText(System.IO.Path.Combine(@"{0}", "steps.log"), "-> step: <method>")
         """
 	And there is a reference between the SpecFlow project and the 'ExternalSteps' project
 	And a scenario 'Simple Scenario' as
@@ -141,8 +133,7 @@ Scenario Outline: F# method name can be used as a regex
 		<specFlow>                             
 			<stepAssemblies>                         
 				<stepAssembly assembly="ExternalSteps" />    
-			</stepAssemblies>                   
-            <unitTestProvider name="xunit" />
+			</stepAssemblies>                 
 		</specFlow>
         """
 	When I execute the tests
@@ -164,21 +155,8 @@ Scenario Outline: Non-English keywords
 			Szenario: Zwei Zahlen hinzufügen
 				<keyword> ich Knopf drücke
 		"""
-	And the following step definitions
-		 """
-			[Given]
-			public void <method prefix>ich_Knopf_drücke()
-			{}
-		 """
-	And the specflow configuration is
-        """
-        <specFlow>
-            <!-- the localized prefixes are detected if the feature language 
-                 is set in the config -->
-            <language feature="de-DE" />   
-            <unitTestProvider name="xunit" />
-        </specFlow>
-        """
+    And a 'Given' step definition with name '<method prefix>ich_Knopf_drücke'
+    And the feature language is 'de-DE'
 	When I execute the tests
 	Then the binding method '<method prefix>ich_Knopf_drücke' is executed once
 
