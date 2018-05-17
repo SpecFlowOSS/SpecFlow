@@ -1,5 +1,4 @@
-using System;
-using System.Linq;
+using System.Diagnostics;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -9,7 +8,10 @@ namespace TechTalk.SpecFlow.Bindings
 
         public IStepDefinitionBinding StepBinding { get; private set; }
         public bool Success { get { return StepBinding != null; } }
-        
+
+        public BindingObsoletion BindingObsoletion { get; private set; }
+        public bool IsObsolete => BindingObsoletion.IsObsolete;
+
         public int ScopeMatches { get; private set; }
         public bool IsScoped { get { return ScopeMatches > 0; } }
 
@@ -22,6 +24,7 @@ namespace TechTalk.SpecFlow.Bindings
             ScopeMatches = scopeMatches;
             Arguments = arguments;
             StepContext = stepContext;
+            BindingObsoletion = new BindingObsoletion(stepBinding);
         }
     }
 }

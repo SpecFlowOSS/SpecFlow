@@ -63,6 +63,8 @@ namespace TechTalk.SpecFlow.Configuration
         public static bool DefaultMarkFeaturesParallelizable => ConfigDefaults.MarkFeaturesParallelizable;
         public static string[] DefaultSkipParallelizableMarkerForTags => ConfigDefaults.SkipParallelizableMarkerForTags;
 
+        public static ObsoleteBehavior DefaultObsoleteBehavior => ConfigDefaults.ObsoleteBehavior;
+
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
         public bool HasJsonConfig
@@ -149,7 +151,8 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowDebugGeneratedFiles, 
                 DefaultAllowRowTests,
                 DefaultMarkFeaturesParallelizable,
-                DefaultSkipParallelizableMarkerForTags
+                DefaultSkipParallelizableMarkerForTags,
+                DefaultObsoleteBehavior
                 );
         }
 

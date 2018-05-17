@@ -37,6 +37,32 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
     }
 
+    [Binding]
+    public class TypeToTypeConverter
+    {
+        [StepArgumentTransformation("string (w+)")]
+        public string StringToStringConvertRegex(string value)
+        {
+            return string.Concat("prefix ", value);
+        }
+
+        [StepArgumentTransformation]
+        public string StringToStringConvert(string value)
+        {
+            return string.Concat("prefix ", value);
+        }
+
+        [StepArgumentTransformation]
+        public Table TableToTableConvert(Table table)
+        {
+            var transformedTable = new List<string>();
+            transformedTable.Add("transformed column");
+            transformedTable.AddRange(table.Header);
+
+            return new Table(transformedTable.ToArray());
+        }
+    }
+
     [TestFixture]
     public class StepTransformationTests
     {
@@ -80,6 +106,53 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.NotNull(result);
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));
+        }
+
+        [Test]
+        public void TypeToTypeConverterShouldConvertStringToStringUsingRegex()
+        {
+            TypeToTypeConverter stepTransformationInstance = new TypeToTypeConverter();
+            var transformMethod = stepTransformationInstance.GetType().GetMethod("StringToStringConvertRegex");
+            var stepTransformationBinding = CreateStepTransformationBinding(@"string (\w+)", transformMethod);
+
+            Assert.True(stepTransformationBinding.Regex.IsMatch("string xyz"));
+
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            TimeSpan duration;
+            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
+            Assert.NotNull(result);
+            Assert.That(result.GetType(), Is.EqualTo(typeof(string)));
+            Assert.That(((string)result), Is.EqualTo("prefix xyz"));
+        }
+
+        [Test]
+        public void TypeToTypeConverterShouldConvertStringToString()
+        {
+            TypeToTypeConverter stepTransformationInstance = new TypeToTypeConverter();
+            var transformMethod = stepTransformationInstance.GetType().GetMethod("StringToStringConvert");
+            var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
+
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            TimeSpan duration;
+            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
+            Assert.NotNull(result);
+            Assert.That(result.GetType(), Is.EqualTo(typeof(string)));
+            Assert.That(((string)result), Is.EqualTo("prefix xyz"));
+        }
+
+        [Test]
+        public void TypeToTypeConverterShouldConvertTableToTable()
+        {
+            TypeToTypeConverter stepTransformationInstance = new TypeToTypeConverter();
+            var transformMethod = stepTransformationInstance.GetType().GetMethod("TableToTableConvert");
+            var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
+
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            TimeSpan duration;
+            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { new Table("h1") }, new Mock<ITestTracer>().Object, out duration);
+            Assert.NotNull(result);
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Table)));
+            Assert.That(((Table)result).Header, Is.EqualTo(new string[] { "transformed column", "h1" }));
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -7,9 +8,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual decimal GetValue(string value)
         {
-            var returnValue = 0M;
-            Decimal.TryParse(value, out returnValue);
-            return returnValue;
+	        Decimal.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out Decimal returnValue);
+			return returnValue;
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)

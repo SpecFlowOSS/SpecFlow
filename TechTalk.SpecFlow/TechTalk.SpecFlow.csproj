@@ -15,6 +15,8 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -128,6 +130,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
     <Compile Include="BindingSkeletons\StepParameterNameGenerator.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
+    <Compile Include="Bindings\BindingObsoletion.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\Discovery\BindingSourceAttribute.cs" />
@@ -176,8 +179,11 @@
     <Compile Include="Configuration\JsonConfig\StepAssemblyElement.cs" />
     <Compile Include="Configuration\JsonConfig\TraceElement.cs" />
     <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
+    <Compile Include="Configuration\ObsoleteBehavior.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="HookAttributes.cs" />
+    <Compile Include="Infrastructure\IObsoleteStepHandler.cs" />
+    <Compile Include="Infrastructure\ObsoleteStepHandler.cs" />
     <Compile Include="Infrastructure\TestObjectResolver.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagerExtensions.cs" />
@@ -302,6 +308,13 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

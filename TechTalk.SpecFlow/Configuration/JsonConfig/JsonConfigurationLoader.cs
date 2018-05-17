@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BoDi;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.BindingSkeletons;
@@ -34,6 +35,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
             string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
+            ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
 
             var specFlowElement = jsonConfig.SpecFlow;
             if (specFlowElement.Language != null)
@@ -64,6 +66,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             {
                 missingOrPendingStepsOutcome = specFlowElement.Runtime.MissingOrPendingStepsOutcome;
                 stopAtFirstError = specFlowElement.Runtime.StopAtFirstError;
+                obsoleteBehavior = specFlowElement.Runtime.ObsoleteBehavior;
             }
 
             if (specFlowElement.Generator != null)
@@ -92,9 +95,13 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
             if (specFlowElement.Plugins != null)
             {
+                var pluginNames = pluginDescriptors.Select(m => m.Name).ToList();
                 foreach (var pluginEntry in specFlowElement.Plugins)
                 {
+                    if (pluginNames.Contains(pluginEntry.Name))
+                        continue;
                     pluginDescriptors.Add(new PluginDescriptor(pluginEntry.Name, pluginEntry.Path, pluginEntry.Type, pluginEntry.Parameters));
+                    pluginNames.Add(pluginEntry.Name);
                 }
             }
 
@@ -116,7 +123,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             markFeaturesParallelizable,
-                                            skipParallelizableMarkerForTags);
+                                            skipParallelizableMarkerForTags,
+                                            obsoleteBehavior);
         }
     }
 }

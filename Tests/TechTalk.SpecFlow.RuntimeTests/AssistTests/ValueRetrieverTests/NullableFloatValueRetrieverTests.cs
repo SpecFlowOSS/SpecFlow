@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture, SetCulture("en-US")]
+    [TestFixture]
     public class NullableFloatValueRetrieverTests
-    {
-        [Test]
+	{
+		[SetUp]
+		public void TestSetup()
+		{
+			// this is required, because the tests depend on parsing decimals with the en-US culture
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+		}
+
+		[Test]
         public void Returns_null_when_passed_null()
         {
             var retriever = new NullableFloatValueRetriever(v => 3.01F);

@@ -36,7 +36,8 @@ namespace TechTalk.SpecFlow.Configuration
             bool allowDebugGeneratedFiles,
             bool allowRowTests,
             bool markFeaturesParallelizable,
-            string[] skipParallelizableMarkerForTags)
+            string[] skipParallelizableMarkerForTags,
+            ObsoleteBehavior obsoleteBehavior)
         {
             ConfigSource = configSource;
             CustomDependencies = customDependencies;
@@ -56,6 +57,7 @@ namespace TechTalk.SpecFlow.Configuration
             AllowRowTests = allowRowTests;
             MarkFeaturesParallelizable = markFeaturesParallelizable;
             SkipParallelizableMarkerForTags = skipParallelizableMarkerForTags;
+            ObsoleteBehavior = obsoleteBehavior;
         }
 
         public ConfigSource ConfigSource { get; set; }
@@ -77,6 +79,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
+
+        public ObsoleteBehavior ObsoleteBehavior { get; set; }
 
         //tracing settings
         public bool TraceSuccessfulSteps { get; set; }
@@ -103,7 +107,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         protected bool Equals(SpecFlowConfiguration other)
         {
-            return ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) && Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies) && Equals(FeatureLanguage, other.FeatureLanguage) && Equals(BindingCulture, other.BindingCulture) && string.Equals(UnitTestProvider, other.UnitTestProvider) && StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles && AllowRowTests == other.AllowRowTests && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings && MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle && Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable && Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags);
+            return ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) && Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies) && Equals(FeatureLanguage, other.FeatureLanguage)&& Equals(BindingCulture, other.BindingCulture) && string.Equals(UnitTestProvider, other.UnitTestProvider) && StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles && AllowRowTests == other.AllowRowTests && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings && MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle && Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable && Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags) 
+              && Equals(ObsoleteBehavior, other.ObsoleteBehavior);
         }
 
         public override bool Equals(object obj)
@@ -136,6 +141,7 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode * 397) ^ (Plugins != null ? Plugins.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ MarkFeaturesParallelizable.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SkipParallelizableMarkerForTags != null ? SkipParallelizableMarkerForTags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) ObsoleteBehavior;
                 return hashCode;
             }
         }

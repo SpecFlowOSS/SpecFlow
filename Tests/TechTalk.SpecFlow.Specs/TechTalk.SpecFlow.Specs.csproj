@@ -143,10 +143,13 @@
     <None Include="Features\CallingStepsFromStepDefinition.feature" />
     <None Include="Features\Configuration.feature" />
     <None Include="Features\ContextInjection.feature" />
+    <None Include="Features\Description.feature" />
     <None Include="Features\ExternalSteps.feature" />
     <None Include="Features\InAppDomainParallelExecution.feature" />
     <None Include="Features\InjectoContextToHooks.feature" />
     <None Include="Features\LanguageSupport.feature" />
+    <None Include="Features\ObsoleteSteps.feature" />
+    <None Include="Features\Parser\DescriptionParser.feature" />
     <None Include="Features\Reports\StepDefinitionReport.feature" />
     <None Include="Features\ScopedHooks.feature" />
     <None Include="Features\XUnit2Provider.feature" />
@@ -240,5 +243,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets'))" />
   </Target>
+  <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
 </Project>

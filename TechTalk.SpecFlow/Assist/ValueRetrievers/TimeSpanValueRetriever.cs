@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -7,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual TimeSpan GetValue(string value)
         {
-            return TimeSpan.Parse(value);
+            return TimeSpan.Parse(value, CultureInfo.CurrentCulture);
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)

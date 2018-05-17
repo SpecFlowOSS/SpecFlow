@@ -30,6 +30,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
+            ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
@@ -52,6 +53,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             {
                 stopAtFirstError = configSection.Runtime.StopAtFirstError;
                 missingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
+                obsoleteBehavior = configSection.Runtime.ObsoleteBehavior;
 
                 if (IsSpecified(configSection.Runtime.Dependencies))
                 {
@@ -110,9 +112,15 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
+            var pluginNames = pluginDescriptors.Select(m => m.Name).ToList();
+
             foreach (PluginConfigElement plugin in configSection.Plugins)
             {
-                pluginDescriptors.Add(plugin.ToPluginDescriptor());
+                var pluginDescriptor = plugin.ToPluginDescriptor();
+                if (pluginNames.Contains(pluginDescriptor.Name))
+                    continue;
+                pluginDescriptors.Add(pluginDescriptor);
+                pluginNames.Add(plugin.Name);
             }
 
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 
@@ -132,7 +140,8 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             markFeaturesParallelizable,
-                                            skipParallelizableMarkerForTags
+                                            skipParallelizableMarkerForTags,
+                                            obsoleteBehavior
                                             );
         }
 

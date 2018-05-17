@@ -73,7 +73,6 @@
     <PackageDir>$(TargetDir)\package</PackageDir>
     <PdbDir>$(TargetDir)\pdb</PdbDir>
   </PropertyGroup>
-  
   <Import Project="..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -81,7 +80,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
   </Target>
-  
   <Target Name="AfterBuild">
     <ItemGroup>
       <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed.dll" />

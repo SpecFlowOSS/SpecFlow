@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -7,8 +8,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual float GetValue(string value)
         {
-            float returnValue = 0F;
-            float.TryParse(value, out returnValue);
+	        float.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out float returnValue);
             return returnValue;
         }
 
