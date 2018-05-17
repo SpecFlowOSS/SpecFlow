@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Specs.Support
         public IEnumerable<string> GetTestFeatureFiles()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            string prefixToRemove = GetType().Namespace + ".";
+            string prefixToRemove = "TechTalk.SpecFlow.Specs.TestFiles.";
             return assembly.GetManifestResourceNames()
                 .Where(rn => rn.EndsWith(".feature") && rn.StartsWith(prefixToRemove))
                 .Select(rn => rn.Substring(prefixToRemove.Length));

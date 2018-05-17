@@ -3,6 +3,7 @@ using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 using TechTalk.SpecFlow.Specs.Support;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -12,11 +13,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly TestFileManager testFileManager;
         private readonly ParserDriver parserDriver;
-        
-        public TestFileSteps(TestFileManager testFileManager, ParserDriver parserDriver)
+        private readonly ProjectsDriver _projectsDriver;
+
+        public TestFileSteps(TestFileManager testFileManager, ParserDriver parserDriver, ProjectsDriver projectsDriver)
         {
             this.testFileManager = testFileManager;
             this.parserDriver = parserDriver;
+            _projectsDriver = projectsDriver;
         }
 
         [When(@"the test file '(.*)' is parsed")]
@@ -42,14 +45,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             parserDriver.AssertParsedFeatureEqualTo(expected);
         }
 
-        //[Given(@"all test files are inluded in the project")]
-        //public void GivenAllTestFilesAreInludedInTheProject()
-        //{
-        //    foreach (var testFile in testFileManager.GetTestFeatureFiles())
-        //    {
-        //        inputProjectDriver.AddFeatureFile(testFileManager.GetTestFileContent(testFile), testFile);
-        //    }
-        //}
+        [Given(@"all test files are inluded in the project")]
+        public void GivenAllTestFilesAreInludedInTheProject()
+        {
+            foreach (var testFile in testFileManager.GetTestFeatureFiles())
+            {
+                string testFileContent = testFileManager.GetTestFileContent(testFile);
+
+                _projectsDriver.AddFeatureFile(testFileContent);
+            }
+        }
 
     }
 }

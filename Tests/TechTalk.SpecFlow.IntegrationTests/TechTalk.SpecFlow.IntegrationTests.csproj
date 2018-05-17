@@ -40,6 +40,10 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="StepDefinitions\" />
+  </ItemGroup>
+
 
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
