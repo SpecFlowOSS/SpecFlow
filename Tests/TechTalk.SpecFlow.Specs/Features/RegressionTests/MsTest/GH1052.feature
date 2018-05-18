@@ -9,7 +9,7 @@ Scenario: GH1052
     Given the following binding class
         """
         using Microsoft.VisualStudio.TestTools.UnitTesting;
-        [assembly: Parallelize(Workers = 2, Scope = ExecutionScope.MethodLevel)]
+        [assembly: Parallelize(Workers = 2, Scope = ExecutionScope.ClassLevel)]
 
         """
     And there is a feature file in the project as
