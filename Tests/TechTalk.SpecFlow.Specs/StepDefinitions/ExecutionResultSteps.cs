@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
@@ -98,5 +100,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             string filePath = Path.Combine(Path.GetTempPath(), logFilePath);
             return filePath;
         }
+
+
+        [Then(@"every scenario has it's individual context id")]
+        public void ThenEveryScenarioHasItSIndividualContextId()
+        {
+            var lastTestExecutionResult = _vsTestExecutionDriver.LastTestExecutionResult;
+
+            foreach (var testResult in lastTestExecutionResult.TestResults)
+            {
+                var contextIdLines = testResult.StdOut.SplitByString(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).Where(s => s.Contains("Context ID"));
+
+                var distinctContextIdLines = contextIdLines.Distinct();
+
+                distinctContextIdLines.Count().Should().Be(1);
+            }
+        }
+
     }
 }

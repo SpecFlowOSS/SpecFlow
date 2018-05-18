@@ -54,6 +54,23 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Features\RegressionTests\GH1052.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GH1052.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Features\RegressionTests\MsTest\GH1052.feature">
+      <Generator></Generator>
+    </None>
+    <None Update="Features\RegressionTests\NUnit\GH1052.feature">
+      <Generator></Generator>
+    </None>
+  </ItemGroup>
+
 
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
