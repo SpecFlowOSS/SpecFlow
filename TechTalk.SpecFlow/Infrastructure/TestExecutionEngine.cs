@@ -412,6 +412,16 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void HandleBlockSwitch(ScenarioBlock block)
         {
+            if (_contextManager == null)
+            {
+                throw new ArgumentNullException(nameof(_contextManager));
+            }
+            
+            if (_contextManager.ScenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(_contextManager.ScenarioContext));
+            }
+
             if (_contextManager.ScenarioContext.CurrentScenarioBlock != block)
             {
                 if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
