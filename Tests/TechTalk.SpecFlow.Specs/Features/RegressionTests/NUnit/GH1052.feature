@@ -147,3 +147,6 @@ Scenario: GH1052
     
     When I execute the tests
     Then every scenario has it's individual context id
+    And the execution summary should contain
+         | Total | Succeeded | Failed |
+         | 38    | 38        | 0      |
