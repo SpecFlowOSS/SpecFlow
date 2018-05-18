@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Plugins
         public event EventHandler<CustomizeGlobalDependenciesEventArgs> CustomizeGlobalDependencies;
         public event EventHandler<ConfigurationDefaultsEventArgs> ConfigurationDefaults;
         public event EventHandler<CustomizeTestThreadDependenciesEventArgs> CustomizeTestThreadDependencies;
+        public event EventHandler<CustomizeFeatureDependenciesEventArgs> CustomizeFeatureDependencies;
         public event EventHandler<CustomizeScenarioDependenciesEventArgs> CustomizeScenarioDependencies;
 
         public void RaiseRegisterGlobalDependencies(ObjectContainer objectContainer)
@@ -30,6 +31,11 @@ namespace TechTalk.SpecFlow.Plugins
         public void RaiseCustomizeTestThreadDependencies(ObjectContainer testThreadContainer)
         {
             CustomizeTestThreadDependencies?.Invoke(this, new CustomizeTestThreadDependenciesEventArgs(testThreadContainer));
+        }
+
+        public void RaiseCustomizeFeatureDependencies(ObjectContainer featureContainer)
+        {
+            CustomizeFeatureDependencies?.Invoke(this, new CustomizeFeatureDependenciesEventArgs(featureContainer));
         }
 
         public void RaiseCustomizeScenarioDependencies(ObjectContainer scenarioContainer)
