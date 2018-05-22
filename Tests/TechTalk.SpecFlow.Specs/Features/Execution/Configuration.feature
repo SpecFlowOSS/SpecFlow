@@ -1,4 +1,5 @@
-﻿Feature: Configuration
+﻿@xunit @MsTest
+Feature: Configuration
 	
 Background: 
 	Given there is a feature file in the project as

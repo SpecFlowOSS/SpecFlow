@@ -1,4 +1,5 @@
-﻿@NUnit
+﻿@NUnit3
+
 Feature: NUnit unit test provider
 
 Scenario Outline: Should be able to execute scenarios with basic results
