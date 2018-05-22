@@ -4,6 +4,7 @@ New Features:
 + Added support for customization of dependency injection at feature level via a runtime plugin event to raise feature dependencies https://github.com/techtalk/SpecFlow/pull/1141
 + Allow marking steps as Obsolete and have a configurable behavior for it https://github.com/techtalk/SpecFlow/pull/1140
 + IGherkinParser and IGherkinParserFactory interfaces added to support Gherkin Parser pluggability https://github.com/techtalk/SpecFlow/pull/1143
++ Assist: remove accents from column headers and property names when comparing objects to a table https://github.com/techtalk/SpecFlow/pull/1096
 
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
