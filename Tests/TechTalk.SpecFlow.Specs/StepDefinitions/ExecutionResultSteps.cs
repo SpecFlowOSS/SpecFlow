@@ -65,7 +65,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the execution log should contain text '(.*)'")]
         public void ThenTheExecutionLogShouldContainText(string text)
         {
-            _vsTestExecutionDriver.CheckTrxOutputContainsText(text);
+            _vsTestExecutionDriver.CheckAnyOutputContainsText(text);
+        }
+
+        [Then(@"the output should contain text '(.*)'")]
+        public void ThenTheOutputShouldContainText(string text)
+        {
+            _vsTestExecutionDriver.CheckOutputContainsText(text);
         }
 
         [Given(@"the log file '(.*)' is empty")]
