@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                             "RegisterInstanceAs",
                             new CodeTypeReference("TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration")),
                         new CodeVariableReferenceExpression(
-                            $"new TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration({programminLanguageEnum}, {projectFormatEnum}, {targetFrameworkEnum}, {unitTestProviderEnum})")));
+                            $"new TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration(){{ ProgrammingLanguage = {programminLanguageEnum}, ProjectFormat = {projectFormatEnum}, TargetFramework = {targetFrameworkEnum}, UnitTestProvider = {unitTestProviderEnum} }}")));
             }
         }
     }
