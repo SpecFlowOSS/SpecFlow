@@ -121,7 +121,7 @@ Scenario Outline: F# method name can be used as a regex
 	And there is an external F# class library project 'ExternalSteps'
 	And the following step definition in the project 'ExternalSteps'
         """
-		let [<When>] <method> = System.IO.File.AppendAllText(System.IO.Path.Combine(@"{0}", "steps.log"), "-> step: <method>")
+		let [<When>] <method> = LocalApp.Log.LogStep @"<method>"
         """
 	And there is a reference between the SpecFlow project and the 'ExternalSteps' project
 	And a scenario 'Simple Scenario' as
