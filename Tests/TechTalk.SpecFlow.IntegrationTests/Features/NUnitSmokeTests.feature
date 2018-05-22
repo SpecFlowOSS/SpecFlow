@@ -1,4 +1,5 @@
-﻿Feature: NUnit Smoke Tests
+﻿@NotParallel
+Feature: NUnit Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
