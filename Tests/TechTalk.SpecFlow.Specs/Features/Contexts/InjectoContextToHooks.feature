@@ -17,14 +17,14 @@ Scenario Outline: Inject FeatureContext into a Feature hook
 		public static void <Hook>Hook(FeatureContext featureContext)
 		{
 			if (featureContext == null)
-				throw new ArgumentNullException("featureContext");
+				throw new ArgumentNullException(nameof(featureContext));
 
-			Console.WriteLine("<Hook>Hook");
+			global::Log.LogHook();
 		}
         """
 	When I execute the tests
 	Then all tests should pass
-	And the execution log should contain text '<Hook>Hook'
+	And the hook '<Hook>Hook' is executed once
 
 Examples: 
 	| Hook          |
@@ -39,14 +39,14 @@ Scenario Outline: Inject ScenarioContext into a Scenario hook
 		public void <Hook>Hook(ScenarioContext scenarioContext)
 		{
 			if (scenarioContext == null)
-				throw new ArgumentNullException("scenarioContext");
+				throw new ArgumentNullException(nameof(scenarioContext));
 
-			Console.WriteLine("<Hook>Hook");
+			global::Log.LogHook();
 		}
         """
 	When I execute the tests
 	Then all tests should pass
-	And the execution log should contain text '<Hook>Hook'
+	And the hook '<Hook>Hook' is executed once
 
 Examples: 
 	| Hook           |
