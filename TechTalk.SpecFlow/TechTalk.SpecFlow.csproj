@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(SpecFlow_Runtime_TFM)</TargetFramework>
+    <TargetFrameworks>$(SpecFlow_Runtime_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow</AssemblyName>
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
