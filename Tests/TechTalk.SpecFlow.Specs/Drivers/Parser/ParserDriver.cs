@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using FluentAssertions;
 using Gherkin;
-using Xunit;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.Parser;
 
@@ -15,11 +14,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
     public class ParserDriver
     {
         private readonly JsonSerializer _serializer = new JsonSerializer();
+        private readonly SpecFlowGherkinParser _parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
         public string FileContent { get; set; }
         public SpecFlowDocument ParsedDocument { get; private set; }
         public ParserException[] ParsingErrors { get; private set; }
-
-        private readonly SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
 
         public void ParseFile()
         {
@@ -29,7 +27,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
             try
             {
-                ParsedDocument = parser.Parse(contentReader, "sample.feature");
+                ParsedDocument = _parser.Parse(contentReader, "sample.feature");
                 ParsedDocument.Should().NotBeNull();                
             }
             catch (ParserException ex)
@@ -38,18 +36,18 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
                 Console.WriteLine("-> parsing errors");
                 foreach (var error in ParsingErrors)
                 {
-                    Console.WriteLine("-> {0}:{1} {2}", error.Location == null ? 0 : error.Location.Line, error.Location == null ? 0 : error.Location.Column, error.Message);
+                    Console.WriteLine("-> {0}:{1} {2}", error.Location?.Line ?? 0, error.Location?.Column ?? 0, error.Message);
                 }
             }
         }
 
         public void AssertParsedFeatureEqualTo(string parsedFeatureXml)
         {
-            const string NS1 = "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"";
-            const string NS2 = "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"";
+            const string ns1 = "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"";
+            const string ns2 = "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"";
 
-            string expected = parsedFeatureXml.Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
-            string got = SerializeDocument(ParsedDocument).Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
+            string expected = parsedFeatureXml.Replace("\r", "").Replace(ns1, "").Replace(ns2, "");
+            string got = SerializeDocument(ParsedDocument).Replace("\r", "").Replace(ns1, "").Replace(ns2, "");
 
             got.Should().Be(expected);
         }
@@ -73,11 +71,6 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             }
         }
 
-        private void SerializeDocument(SpecFlowDocument feature, TextWriter writer)
-        {
-            _serializer.Serialize(writer, feature);
-        }
-
         public void SaveSerializedFeatureTo(string fileName)
         {
             ParsedDocument.Should().NotBeNull("The parsing was not successful");
@@ -99,6 +92,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
                 SerializeDocument(feature, writer);
                 return writer.ToString();
             }
+        }
+
+        private void SerializeDocument(SpecFlowDocument feature, TextWriter writer)
+        {
+            _serializer.Serialize(writer, feature);
         }
     }
 
