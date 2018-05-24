@@ -41,8 +41,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Parser", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow", "TechTalk.SpecFlow\TechTalk.SpecFlow.csproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Parser.Compatibility", "TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj", "{5177B485-5389-4E15-8B43-7E7BC0EAF065}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Generator", "TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj", "{F0A50949-8FE1-4048-9A3E-BB0498843669}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Utils", "TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj", "{D719B8EA-6C89-4B81-AABD-65ACF562F521}"
@@ -127,12 +125,6 @@ Global
 		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{F0A50949-8FE1-4048-9A3E-BB0498843669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F0A50949-8FE1-4048-9A3E-BB0498843669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0A50949-8FE1-4048-9A3E-BB0498843669}.Release|Any CPU.ActiveCfg = Release|Any CPU

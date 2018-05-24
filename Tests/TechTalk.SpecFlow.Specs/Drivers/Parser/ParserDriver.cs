@@ -4,18 +4,17 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 using FluentAssertions;
 using Gherkin;
 using Xunit;
+using Newtonsoft.Json;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.Compatibility;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 {
     public class ParserDriver
     {
+        private readonly JsonSerializer _serializer = new JsonSerializer();
         public string FileContent { get; set; }
         public SpecFlowDocument ParsedDocument { get; private set; }
         public ParserException[] ParsingErrors { get; private set; }
@@ -76,10 +75,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
         private void SerializeDocument(SpecFlowDocument feature, TextWriter writer)
         {
-            var oldFeature = CompatibleAstConverter.ConvertToCompatibleFeature(feature);
-            oldFeature.SourceFile = null;
-            XmlSerializer serializer = new XmlSerializer(typeof(Feature));
-            serializer.Serialize(writer, oldFeature);
+            _serializer.Serialize(writer, feature);
         }
 
         public void SaveSerializedFeatureTo(string fileName)
