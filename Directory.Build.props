@@ -30,12 +30,12 @@
 
   <PropertyGroup Condition=" '$(SpecFlow_EnableStrongNameSigning)' == 'true'">
     <SpecFlow_KeyFile>$(MSBuildThisFileDirectory)\specflow.snk</SpecFlow_KeyFile>
-    <SpecFlow_PublicSign>true</SpecFlow_PublicSign>
+    <SpecFlow_SignAssembly>true</SpecFlow_SignAssembly>
     <DefineConstants>$(DefineConstants);SPECFLOW_ENABLE_STRONG_NAME_SIGNING</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(SpecFlow_EnableStrongNameSigning)' == 'false'">
     <SpecFlow_KeyFile></SpecFlow_KeyFile>
-    <SpecFlow_PublicSign>false</SpecFlow_PublicSign>
+    <SpecFlow_SignAssembly>false</SpecFlow_SignAssembly>
   </PropertyGroup>
 </Project>
