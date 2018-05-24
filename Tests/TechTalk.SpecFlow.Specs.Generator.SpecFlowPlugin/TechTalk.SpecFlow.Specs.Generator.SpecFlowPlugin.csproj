@@ -2,7 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>$(SpecFlow_Generator_TFM)</TargetFramework>
+    <Configurations>Debug;Release;Debug-XUnit</Configurations>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>$(DefineConstants);XUNIT_SPECS;MSTEST_SPECS;NUNIT_SPECS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug-XUnit'">
+    <DefineConstants>$(DefineConstants);XUNIT_SPECS</DefineConstants>
+    <OutputPath>bin\Debug</OutputPath>
+  </PropertyGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />

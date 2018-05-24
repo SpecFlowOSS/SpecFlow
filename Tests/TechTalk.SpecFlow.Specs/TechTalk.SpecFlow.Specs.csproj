@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>$(SpecFlow_Test_TFM)</TargetFramework>
@@ -8,6 +8,7 @@
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>TechTalk.SpecFlow.Specs</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <Configurations>Debug;Release;Debug-XUnit</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>

@@ -66,6 +66,11 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 }
             }
 
+            if (result == null)
+            {
+                result = new CodeNamespace(targetNamespace);
+            }
+
             return result;
         }
 
