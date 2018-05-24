@@ -34,8 +34,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void WhenTheParsedResultIsSavedTo(string parsedFileName)
         {
             var assemblyFolder = AssemblyFolderHelper.GetTestAssemblyFolder();
-            assemblyFolder.EndsWith(@"\bin\Debug").Should().BeTrue("parsed file saving can only be done from a development environment");
-            parserDriver.SaveSerializedFeatureTo(Path.Combine(assemblyFolder, @"..\..\TestFiles", parsedFileName));
+            assemblyFolder.EndsWith(@"\bin\Debug\net471").Should().BeTrue("parsed file saving can only be done from a development environment");
+            parserDriver.SaveSerializedFeatureTo(Path.Combine(assemblyFolder, @"..\..\..\TestFiles", parsedFileName));
         }
 
         [Then(@"the parsed result is the same as '(.*)'")]
