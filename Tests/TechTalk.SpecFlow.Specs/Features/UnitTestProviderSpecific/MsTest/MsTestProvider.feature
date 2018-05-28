@@ -1,58 +1,21 @@
 ﻿@mstest
 Feature: MsTest unit test provider
 
-Scenario Outline: Should be able to execute scenarios with basic results
+Scenario: Should be able to access TestContext in Steps
     Given there is a SpecFlow project
     And a scenario 'Simple Scenario' as
         """
         When I do something
-        """
-    And all steps are bound and <step definition status>
-    When I execute the tests
-    Then the execution summary should contain
-        | Total | <result> |
-        | 1     | 1        |
-
-Examples: 
-    | result    | step definition status |
-    | Succeeded | pass                   |
-    | Failed    | fail                   |
-
-Scenario: Should handle scenario outlines
-    Given there is a SpecFlow project
-    Given there is a feature file in the project as
-        """
-            Feature: Simple Feature
-            Scenario Outline: Simple Scenario Outline
-                Given there is something
-                When I do <what>
-                Then something should happen
-            Examples: 
-                | what           |
-                | something      |
-                | something else |
-        """
-    And all steps are bound and pass
-    When I execute the tests
-    Then the execution summary should contain
-        | Succeeded |
-        | 2         |
-
-Scenario: Should be able to access TestContext in Steps
-Given there is a SpecFlow project
-And a scenario 'Simple Scenario' as
-        """
-        When I do something
         """	
-And the following step definition
-         """
-         [When(@"I do something")]
-         public void WhenIDoSomething()
-         {
-            System.Console.WriteLine(ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
-         }
-         """
-         When I execute the tests
+    And the following step definition
+        """
+        [When(@"I do something")]
+        public void WhenIDoSomething()
+        {
+        System.Console.WriteLine(ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
+        }
+        """
+    When I execute the tests
     Then the execution summary should contain
         | Succeeded |
         | 1         |
@@ -60,12 +23,6 @@ And the following step definition
 @config
 Scenario: Should be able to specify MsTest provider in the configuration
     Given there is a SpecFlow project
-    And the specflow configuration is
-        """
-        <specFlow>
-            <unitTestProvider name="MsTest"/>
-        </specFlow>
-        """
     And a scenario 'Simple Scenario' as
         """
         When I do something
@@ -79,12 +36,6 @@ Scenario: Should be able to specify MsTest provider in the configuration
 @config
 Scenario: Should be able to deploy files
     Given there is a SpecFlow project
-    And the specflow configuration is
-        """
-        <specFlow>
-            <unitTestProvider name="MsTest"/>
-        </specFlow>
-        """
     And the following binding class
         """
         using System;
@@ -123,12 +74,6 @@ Scenario: Should be able to deploy files
 @config
 Scenario: Should be able to deploy files to specific folder
     Given there is a SpecFlow project
-    And the specflow configuration is
-        """
-        <specFlow>
-            <unitTestProvider name="MsTest"/>
-        </specFlow>
-        """
     And the following binding class
         """
         using System;
