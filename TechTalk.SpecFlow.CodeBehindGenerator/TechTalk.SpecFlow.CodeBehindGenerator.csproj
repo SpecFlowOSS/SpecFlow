@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
+    <TargetFrameworks>$(SpecFlow_Tools_TFM)</TargetFrameworks>
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>

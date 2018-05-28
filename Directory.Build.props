@@ -19,10 +19,25 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SpecFlow_Runtime_TFM>net45</SpecFlow_Runtime_TFM>
-    <SpecFlow_Generator_TFM>net461</SpecFlow_Generator_TFM>
-    <SpecFlow_Test_TFM>net471</SpecFlow_Test_TFM>
-    <SpecFlow_Tools_TFM>net461</SpecFlow_Tools_TFM>
+    <SpecFlow_FullFramework_Runtime_TFM>net45</SpecFlow_FullFramework_Runtime_TFM>
+    <SpecFlow_Core_Runtime_TFM>netstandard2.0</SpecFlow_Core_Runtime_TFM>
+
+    <SpecFlow_FullFramework_Generator_TFM>net461</SpecFlow_FullFramework_Generator_TFM>
+    <SpecFlow_Core_Generator_TFM>netstandard2.0</SpecFlow_Core_Generator_TFM>
+
+    <SpecFlow_FullFramework_Test_TFM>net471</SpecFlow_FullFramework_Test_TFM>
+    <SpecFlow_Core_Test_TFM>netcoreapp2.0</SpecFlow_Core_Test_TFM>
+
+    <SpecFlow_FullFramework_Specs_TFM>net471</SpecFlow_FullFramework_Specs_TFM>
+
+    <SpecFlow_FullFramework_Tools_TFM>net461</SpecFlow_FullFramework_Tools_TFM>
+    <SpecFlow_Core_Tools_TFM>netcoreapp2.0</SpecFlow_Core_Tools_TFM>
+
+    <SpecFlow_Runtime_TFM>$(SpecFlow_FullFramework_Runtime_TFM);$(SpecFlow_Core_Runtime_TFM)</SpecFlow_Runtime_TFM>
+    <SpecFlow_Generator_TFM>$(SpecFlow_FullFramework_Generator_TFM);$(SpecFlow_Core_Generator_TFM)</SpecFlow_Generator_TFM>
+    <SpecFlow_Test_TFM>$(SpecFlow_FullFramework_Test_TFM);$(SpecFlow_Core_Test_TFM)</SpecFlow_Test_TFM>
+    <SpecFlow_Specs_TFM>$(SpecFlow_FullFramework_Specs_TFM)</SpecFlow_Specs_TFM>
+    <SpecFlow_Tools_TFM>$(SpecFlow_FullFramework_Tools_TFM);$(SpecFlow_Core_Tools_TFM)</SpecFlow_Tools_TFM>
 
     <SpecFlow_EnableStrongNameSigning>false</SpecFlow_EnableStrongNameSigning>
   </PropertyGroup>
