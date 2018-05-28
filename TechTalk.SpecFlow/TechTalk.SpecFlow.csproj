@@ -11,8 +11,6 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml;.\BindingSkeletons\DefaultSkeletonTemplates.sftemplate" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-
-
   </ItemGroup>
 
   <ItemGroup>
@@ -22,18 +20,12 @@
     <PackageReference Include="BoDi" Version="1.4.0-alpha1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Linq" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
   </ItemGroup>
-
 
 </Project>

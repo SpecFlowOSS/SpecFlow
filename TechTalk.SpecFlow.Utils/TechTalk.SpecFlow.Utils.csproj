@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>$(SpecFlow_Tools_TFM)</TargetFramework>
+    <TargetFrameworks>$(SpecFlow_Tools_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.Utils</AssemblyName>
     <PackageId>TechTalk.SpecFlow.Utils</PackageId>
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>

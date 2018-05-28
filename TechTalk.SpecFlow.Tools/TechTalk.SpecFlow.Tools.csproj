@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(SpecFlow_Tools_TFM)</TargetFramework>
+    <TargetFrameworks>$(SpecFlow_Tools_TFM)</TargetFrameworks>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>specflow</AssemblyName>
     <OutputType>Exe</OutputType>

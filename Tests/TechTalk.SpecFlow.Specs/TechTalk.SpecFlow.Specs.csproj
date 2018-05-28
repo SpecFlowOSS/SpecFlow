@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(SpecFlow_Test_TFM)</TargetFramework>
+    <TargetFrameworks>$(SpecFlow_Test_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
@@ -58,6 +58,177 @@
   <ItemGroup>
     <None Update="Features\**\*.feature">
       <Generator></Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Features\Contexts\AccessingContexts.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Contexts\ContextInjection.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Contexts\InjectoContextToHooks.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Description.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\AsyncSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\BasicExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\BindingCulture.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\CallingStepsFromStepDefinition.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\Configuration.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\ExecutionSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\ExternalSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\IgnoredFeatures.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\IgnoredScenarios.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\InAppDomainParallelExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\ObsoleteSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\ScenarioOutlines.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\ScopedSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\StepArguments.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\StepArgumentTransformations.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\StepDefinitionsWithoutRegex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\TaggedExamples.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Execution\Tracing.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Hooks\HookSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Hooks\OrderedHookSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Hooks\ScopedHooks.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\LanguageSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Parser\DescriptionParser.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Parser\ParserSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\Parser\ParsingErrors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\RegressionTests\MsTest\GH1052.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\RegressionTests\NUnit\GH1052.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\UnitTestProviderSpecific\MsTest\MsTestProvider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="Features\UnitTestProviderSpecific\XUnit\XUnit2Provider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\and.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\asterisks.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\background.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\background_withtitle.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\but.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\comments.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\dutch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\featureheader.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\french.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\full.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\german.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\givenwhenthenduplication.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\hungarian.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\mixedgivenwhenthen.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\multilineargument.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\multilinetitle.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\scenariooutline.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\simple.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\swedish.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\tableargument.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\taggedexamples.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\tags.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+    </None>
+    <None Update="TestFiles\whitespaces.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
     </None>
   </ItemGroup>
 

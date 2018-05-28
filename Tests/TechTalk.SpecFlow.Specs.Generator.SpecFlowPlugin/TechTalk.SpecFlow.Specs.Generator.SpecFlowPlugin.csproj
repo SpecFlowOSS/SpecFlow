@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(SpecFlow_Generator_TFM)</TargetFramework>
+    <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
     <Configurations>Debug;Release;Debug-XUnit;Debug-MSTest;Debug-NUnit</Configurations>
   </PropertyGroup>
 
