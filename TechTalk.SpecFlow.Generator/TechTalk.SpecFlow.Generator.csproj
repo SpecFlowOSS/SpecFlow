@@ -31,12 +31,15 @@
     <ProjectReference Include="..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Generator_TFM)'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
+
   
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Generator_TFM)'">
-        <PackageReference Include="System.CodeDom" Version="4.4.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
+    <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
