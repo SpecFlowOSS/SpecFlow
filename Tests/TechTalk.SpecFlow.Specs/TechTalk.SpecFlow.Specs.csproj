@@ -36,7 +36,7 @@
   <ItemGroup>
     <PackageReference Include="Gherkin" Version="5.0.1" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="FluentAssertions" Version="4.19.4" />
     <PackageReference Include="Moq" Version="4.7.99" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />

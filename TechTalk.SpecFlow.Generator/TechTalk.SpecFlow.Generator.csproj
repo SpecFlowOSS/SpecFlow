@@ -13,9 +13,12 @@
     <PackageReference Include="Buildalyzer" Version="0.4.0" />
     <PackageReference Include="Gherkin" Version="5.0.1" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="Microsoft.Build" Version="15.6.85" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.6.85" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.6.85" />
+
+    <PackageReference Include="Microsoft.Build" Version="15.7.179" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.7.179" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
+
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.8.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
