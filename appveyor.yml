@@ -8,26 +8,17 @@ branches:
   - master
   - /DotNetCore.*/
   
-cache:
-  - packages -> **\packages.config
-
 nuget:
   project_feed: true
   disable_publish_on_pr: true
 
 configuration: Debug
 
-
 install:
 - cmd: git submodule update --init --recursive
 
-before_build:
-- cmd: dotnet restore
-
-build:
-  project: TechTalk.SpecFlow.sln
-  verbosity: normal
-
+build_script:
+- cmd: msbuild /restore /m:1 /bl TechTalk.SpecFlow.sln
 
 
 test_script:
