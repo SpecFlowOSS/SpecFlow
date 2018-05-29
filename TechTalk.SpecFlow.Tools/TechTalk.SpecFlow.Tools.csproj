@@ -29,15 +29,10 @@
     <ProjectReference Include="..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <Target Name="GenerateConfigs" BeforeTargets="Build">
+  <!-- <Target Name="GenerateConfigs" BeforeTargets="Build">
     <Message Text="Generating Configs for Version '$(SpecFlowBaseVersion)'" />
     <ReplaceTokenInFile InputPath="config.template" OutputPath="app.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowBaseVersion)" />
     <ReplaceTokenInFile InputPath="config.template" OutputPath="plugincompability.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowBaseVersion)" />
-  </Target>
+  </Target> -->
 </Project>
 
