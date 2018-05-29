@@ -22,16 +22,6 @@
      <None Include=".build\build.targets" />
    </ItemGroup>
 
-
-  <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="MSBuild.MSBBuildConvention" Version="2.0.0" PrivateAssets="All" />
-    <PackageReference Include="MSBuild.MSBNuget" Version="1.1.2-pre04" PrivateAssets="All" />
-    <PackageReference Include="NuGet.CommandLine" Version="4.5.1" PrivateAssets="All" />
-
-  </ItemGroup>
-
-
   <ItemGroup>
     <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
@@ -39,7 +29,5 @@
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
   </ItemGroup>
-
-  
 
 </Project>
