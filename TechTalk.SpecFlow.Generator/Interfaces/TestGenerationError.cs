@@ -42,7 +42,8 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
                    Environment.NewLine +
                    "AppDomain Information: " + Environment.NewLine +
                    $"\tName: {AppDomain.CurrentDomain.FriendlyName}" + Environment.NewLine + 
-                   $"\tConfigFile: {AppDomain.CurrentDomain.SetupInformation.ConfigurationFile}" + Environment.NewLine +
+                   //TODO
+                  // $"\tConfigFile: {AppDomain.CurrentDomain.SetupInformation.ConfigurationFile}" + Environment.NewLine +
                    $"\tBaseDirectory: {AppDomain.CurrentDomain.BaseDirectory}" + Environment.NewLine +
                    Environment.NewLine +
                    "Loaded Assemblies:" + Environment.NewLine +

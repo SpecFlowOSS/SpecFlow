@@ -34,6 +34,10 @@
   <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Generator_TFM)'">
+        <PackageReference Include="System.CodeDom" Version="4.4.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
