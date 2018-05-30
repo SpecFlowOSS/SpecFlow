@@ -5,6 +5,10 @@
     <NuGetToolsPath>$(NuGetPackageRoot)\NuGet.CommandLine\4.5.1\tools\</NuGetToolsPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.23" />
+  </ItemGroup>
+
   <PropertyGroup>
     <Authors>TechTalk</Authors>
     <Company>TechTalk</Company>

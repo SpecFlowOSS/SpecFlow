@@ -21,7 +21,6 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
     <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
