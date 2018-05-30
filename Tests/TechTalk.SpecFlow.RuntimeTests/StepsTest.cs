@@ -1,7 +1,8 @@
 using BoDi;
+using Moq;
 using Xunit;
 
-using Rhino.Mocks;
+
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -9,7 +10,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     
     public class StepsTest
     {
-        private ITestRunner mockTestRunner;
+        private Mock<ITestRunner> mockTestRunner;
         private StepsTestableHelper steps;
 
         private const string Text = "text";
@@ -18,9 +19,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         public StepsTest()
         {
-            mockTestRunner = MockRepository.GenerateMock<ITestRunner>();
+            mockTestRunner = new Mock<ITestRunner>();
             var container = new ObjectContainer();
-            container.RegisterInstanceAs(mockTestRunner);
+            container.RegisterInstanceAs(mockTestRunner.Object);
             steps = new StepsTestableHelper();
             ((IContainerDependentObject)steps).SetObjectContainer(container);
         }
@@ -30,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.Given(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.Given(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.Given(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -38,7 +39,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.When(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.When(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.When(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -46,7 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.Then(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.Then(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.Then(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -54,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.But(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.But(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.But(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -62,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.And(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.And(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.And(Text, MultilineTextArg, table, null));
         }
 
         public class StepsTestableHelper : Steps

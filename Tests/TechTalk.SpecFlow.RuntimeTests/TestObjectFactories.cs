@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -20,8 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         static internal TestRunner CreateTestRunner(Action<IObjectContainer> registerTestThreadMocks = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
-            IObjectContainer container;
-            return CreateTestRunner(out container, registerTestThreadMocks, registerGlobalMocks);
+            return CreateTestRunner(out _, registerTestThreadMocks, registerGlobalMocks);
         }
 
         internal static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null)

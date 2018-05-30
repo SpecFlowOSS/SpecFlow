@@ -1,27 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using BoDi;
 using Moq;
-using Xunit;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.Utils;
-using MockRepository = Rhino.Mocks.MockRepository;
-using ScenarioExecutionStatus = TechTalk.SpecFlow.ScenarioExecutionStatus;
+
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
     public class StepExecutionTestsBase
     {
-        protected MockRepository MockRepository;
         protected CultureInfo FeatureLanguage;
-        protected IStepArgumentTypeConverter StepArgumentTypeConverterStub;
+        protected Mock<IStepArgumentTypeConverter> StepArgumentTypeConverterStub;
         protected ObjectContainer TestThreadContainer;
 
         protected IContextManager ContextManagerStub;
@@ -94,7 +89,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             TestRunnerManager.Reset();
 
-            MockRepository = new MockRepository();
+            
+            
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
             FeatureLanguage = GetFeatureLanguage();
@@ -121,11 +117,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
                     return featureContainer;
                 });
             ContainerBuilderStub = containerBuilderMock.Object;
-            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), TestThreadContainer, ContainerBuilderStub);
+
+
+            ContextManagerStub = new ContextManager(new Mock<ITestTracer>().Object, TestThreadContainer, ContainerBuilderStub);
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null));
             ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario", "test scenario description"));
 
-            StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
+            StepArgumentTypeConverterStub = new Mock<IStepArgumentTypeConverter>();
         }
 
         protected TestRunner GetTestRunnerFor(params Type[] bindingTypes)
@@ -145,28 +143,27 @@ namespace TechTalk.SpecFlow.RuntimeTests
                         foreach (var bindingType in bindingTypes)
                             builder.BuildBindingsFromType(bindingType);
 
-                        if (registerMocks != null)
-                            registerMocks(container);
+                        registerMocks?.Invoke(container);
                     });
         }
 
-        protected TestRunner GetTestRunnerFor<TBinding>(out TBinding bindingInstance)
+        protected (TestRunner, Mock<TBinding>) GetTestRunnerFor<TBinding>() where TBinding : class 
         {
-            return GetTestRunnerFor(null, out bindingInstance);
+            return GetTestRunnerWithConverterStub<TBinding>(null);
         }
 
-        protected TestRunner GetTestRunnerFor<TBinding>(Action<IObjectContainer> registerMocks, out TBinding bindingInstance)
+        protected (TestRunner, Mock<TBinding>) GetTestRunnerWithConverterStub<TBinding>() where TBinding : class
+        {
+            return GetTestRunnerWithConverterStub<TBinding>(c => c.RegisterInstanceAs(StepArgumentTypeConverterStub.Object));
+        }
+
+        private (TestRunner, Mock<TBinding>) GetTestRunnerWithConverterStub<TBinding>(Action<IObjectContainer> registerMocks) where TBinding : class
         {
             TestRunner testRunner = GetTestRunnerFor(registerMocks, typeof(TBinding));
 
-            bindingInstance = MockRepository.StrictMock<TBinding>();
-            testRunner.ScenarioContext.SetBindingInstance(typeof(TBinding), bindingInstance);
-            return testRunner;
-        }
-
-        protected TestRunner GetTestRunnerWithConverterStub<TBinding>(out TBinding bindingInstance)
-        {
-            return GetTestRunnerFor(c => c.RegisterInstanceAs(StepArgumentTypeConverterStub), out bindingInstance);
+            var bindingInstance = new Mock<TBinding>();
+            testRunner.ScenarioContext.SetBindingInstance(typeof(TBinding), bindingInstance.Object);
+            return (testRunner, bindingInstance);
         }
 
         protected ScenarioExecutionStatus GetLastTestStatus()

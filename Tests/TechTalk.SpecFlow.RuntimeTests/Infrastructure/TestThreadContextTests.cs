@@ -1,5 +1,6 @@
 ﻿using BoDi;
 using FluentAssertions;
+using Moq;
 using Xunit;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         public ContextManager CreateContextManager(IObjectContainer testThreadContainer = null)
         {
-            return new ContextManager(MockRepository.Stub<ITestTracer>(), testThreadContainer ?? TestThreadContainer, ContainerBuilderStub);
+            return new ContextManager(new Mock<ITestTracer>().Object, testThreadContainer ?? this.TestThreadContainer, ContainerBuilderStub);
         }
 
         [Fact]
