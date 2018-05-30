@@ -25,6 +25,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private readonly string _workingDirectory;
         private short _usedPort;
         private const string GeneratorExe = "TechTalk.SpecFlow.CodeBehindGenerator.exe";
+        private const string GeneratorDll = "TechTalk.SpecFlow.CodeBehindGenerator.dll";
 
         public OutOfProcessServer(TaskLoggingHelper log)
         {
@@ -41,17 +42,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public void Start(int port)
         {
-            var exe = Path.Combine(_workingDirectory, GeneratorExe);
-
-            Log.LogWithNameTag(Log.LogMessage, $"Starting OutOfProcess generation process {exe} in {_workingDirectory}");
-            var processStartInfo = new ProcessStartInfo(exe, $"--port {port}")
-            {
-                WorkingDirectory = _workingDirectory,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = false,
-            };
+            var processStartInfo = GetProcessStartInfo(port);
 
             _externalProcess = new Process
             {
@@ -107,6 +98,42 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         }
 
+#if NET471
+        private ProcessStartInfo GetProcessStartInfo(int port)
+        {
+            var exe = Path.Combine(_workingDirectory, GeneratorExe);
+
+            Log.LogWithNameTag(Log.LogMessage, $"Starting OutOfProcess generation process {exe} in {_workingDirectory}");
+            var processStartInfo = new ProcessStartInfo(exe, $"--port {port}")
+            {
+                WorkingDirectory = _workingDirectory,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = false,
+            };
+            return processStartInfo;
+        }
+#endif
+
+
+#if NETCOREAPP2_0
+        private ProcessStartInfo GetProcessStartInfo(int port)
+        {
+            var dll = Path.Combine(_workingDirectory, GeneratorDll);
+
+            Log.LogWithNameTag(Log.LogMessage, $"Starting OutOfProcess generation process {dll} in {_workingDirectory}");
+            var processStartInfo = new ProcessStartInfo("dotnet", $"{dll} --port {port}")
+            {
+                WorkingDirectory = _workingDirectory,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = false,
+            };
+            return processStartInfo;
+        }
+#endif
         private void Process_Exited(object sender, EventArgs e)
         {
             Log.LogWithNameTag(Log.LogMessage, "Output:" + _output);
