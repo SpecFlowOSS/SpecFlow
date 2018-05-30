@@ -43,8 +43,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Generator
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Utils", "TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj", "{D719B8EA-6C89-4B81-AABD-65ACF562F521}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Tools", "TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj", "{DCD5104A-5301-44B0-A9B8-0041F782603F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.TestProjectGenerator", "ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj", "{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.CodeBehindGenerator", "TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj", "{C6F2AA1A-9F69-47EE-8F6A-062B1B58CC31}"
@@ -180,18 +178,6 @@ Global
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCD5104A-5301-44B0-A9B8-0041F782603F}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
