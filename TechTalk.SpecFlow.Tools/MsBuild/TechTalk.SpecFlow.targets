@@ -27,7 +27,6 @@
   <Target Name="SwitchToForceGenerate">
     <PropertyGroup>
       <ForceGeneration>true</ForceGeneration>
-      <OnlyUpdateIfChanged>true</OnlyUpdateIfChanged>
     </PropertyGroup>
   </Target>
 
