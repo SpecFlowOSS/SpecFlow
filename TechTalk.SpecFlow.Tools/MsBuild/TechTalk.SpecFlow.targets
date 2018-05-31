@@ -34,24 +34,26 @@
   </ItemGroup>
 
   <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
-    <GenerateAll
-      ShowTrace="$(ShowTrace)"
 
-      BuildServerMode="$(BuildServerMode)"
-      OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
-      
-      ProjectPath="$(MSBuildProjectFullPath)"
-      ForceGeneration="$(ForceGeneration)"
-      VerboseOutput="$(VerboseOutput)"
-      DebugTask="$(SpecFlow_DebugMSBuildTask)" 
-      >
+    <GenerateAll ProjectPath="$(MSBuildProjectFullPath)"
+
+                 BuildServerMode="$(BuildServerMode)"
+                 OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+                 ForceGeneration="$(ForceGeneration)"
+
+                 ShowTrace="$(ShowTrace)"
+                 VerboseOutput="$(VerboseOutput)"
+                 DebugTask="$(SpecFlow_DebugMSBuildTask)"
+                 >
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateAll>
+
+    <Message Text="%(SpecFlowGeneratedFiles.Identity)" Importance="high" Condition="'$(VerboseOutput)'=='true'" />
   </Target>
 
   <Target Name="BeforeUpdateFeatureFilesInProject">
   </Target>
-  
+
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
   </Target>
 </Project>
