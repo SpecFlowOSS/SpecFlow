@@ -14,6 +14,8 @@
     <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
     <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
 
+    <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)'==''">false</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
+
     <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
     <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
     <SpecFlow_DebugMSBuildTask Condition="'$(SpecFlow_DebugMSBuildTask)' == ''">false</SpecFlow_DebugMSBuildTask>

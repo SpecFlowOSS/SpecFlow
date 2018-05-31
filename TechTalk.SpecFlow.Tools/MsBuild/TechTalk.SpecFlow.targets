@@ -13,7 +13,12 @@
       UpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
+    <CleanDependsOn>
+      CleanFeatureFilesInProject;
+      $(CleanDependsOn)
+    </CleanDependsOn>
     <RebuildDependsOn>
+      CleanFeatureFilesInProject;
       SwitchToForceGenerate;
       $(RebuildDependsOn)
     </RebuildDependsOn>
@@ -52,4 +57,9 @@
 
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
   </Target>
+
+  <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">
+    <Delete Files="%(SpecFlowFeatureFiles.CodeBehindFile)" ContinueOnError="true" />
+  </Target>
+
 </Project>
