@@ -10,9 +10,7 @@
 
   <PropertyGroup>
     <BuildDependsOn>
-      BeforeUpdateFeatureFilesInProject;
       UpdateFeatureFilesInProject;
-      AfterUpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
     <RebuildDependsOn>
@@ -28,12 +26,10 @@
     </PropertyGroup>
   </Target>
 
-  <ItemGroup>
-    <SpecFlowFeatureFiles Include="**\*.feature"/>
-    <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
-  </ItemGroup>
-
-  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
+  <Target Name="UpdateFeatureFilesInProject"
+          DependsOnTargets="BeforeUpdateFeatureFilesInProject"
+          Inputs="@(SpecFlowFeatureFiles)"
+          Outputs="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')">
 
     <GenerateAll ProjectPath="$(MSBuildProjectFullPath)"
 

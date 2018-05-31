@@ -20,4 +20,14 @@
 
     <_SpecFlowPropsImported Condition="'$(_SpecFlowPropsImported)'==''">true</_SpecFlowPropsImported>
   </PropertyGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Include="**\*.feature">
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature.cs</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Include="**\*.feature.xlsx">
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature.cs</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+  </ItemGroup>
+
 </Project>
