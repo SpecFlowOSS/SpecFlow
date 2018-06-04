@@ -18,15 +18,16 @@ install:
 - cmd: git submodule update --init --recursive
 
 build_script:
-- cmd: msbuild /restore /m:1 /bl TechTalk.SpecFlow.sln
+- cmd: msbuild /restore /bl TechTalk.SpecFlow.sln
 
 
-test_script:
-- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.RuntimeTests\bin\Debug\net471\TechTalk.SpecFlow.RuntimeTests.dll" /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.3.1
-- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.GeneratorTests\bin\Debug\net471\TechTalk.SpecFlow.GeneratorTests.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.3.1
-#- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.Specs\bin\Debug\net471\TechTalk.SpecFlow.Specs.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.2.0
-#- vstest.console /logger:Appveyor "Tests\TechTalk.SpecFlow.IntegrationTests\bin\Debug\net471\TechTalk.SpecFlow.IntegrationTests.dll"  /TestAdapterPath:%USERPROFILE%\.nuget\packages\xunit.runner.visualstudio\2.2.0
-
+test:
+  # only assemblies to test
+  assemblies:
+    only:
+      - '**\TechTalk.SpecFlow.RuntimeTests.dll'
+      - '**\TechTalk.SpecFlow.GeneratorTests.dll'
+      - '**\TechTalk.SpecFlow.Specs.dll'
 
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
