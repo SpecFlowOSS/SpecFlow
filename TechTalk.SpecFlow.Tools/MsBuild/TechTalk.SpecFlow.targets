@@ -10,7 +10,9 @@
 
   <PropertyGroup>
     <BuildDependsOn>
+      BeforeUpdateFeatureFilesInProject;
       UpdateFeatureFilesInProject;
+      AfterUpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
     <CleanDependsOn>
