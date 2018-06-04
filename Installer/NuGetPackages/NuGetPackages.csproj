@@ -7,15 +7,20 @@
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
 
+
+  <ItemGroup>
+    <PackageReference Include="MSBuild.MSBBuildConvention" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="MSBuild.MSBNuget" Version="1.1.2-pre04" PrivateAssets="All" />
+    <PackageReference Include="NuGet.CommandLine" Version="4.5.1" PrivateAssets="All" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
     <EmbeddedResource Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
     <None Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
   </ItemGroup>
+
 
    <ItemGroup>
      <None Include=".build\build.props" />
@@ -24,7 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
-    <ProjectReference Include="..\..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
   </ItemGroup>
 

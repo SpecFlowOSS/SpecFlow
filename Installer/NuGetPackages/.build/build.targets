@@ -12,7 +12,7 @@
 
   <Target Name="AfterBuild" AfterTargets="Build" />
 
-  <Target Name="GetGitVersion" BeforeTargets="NugetBuild" DependsOnTargets="GetVersion;UpdatePackageVersion">
+  <Target Name="GetGitVersion" BeforeTargets="NugetBuild" DependsOnTargets="UpdatePackageVersion">
     <ItemGroup>
       <nuspec Include="$(MSBuildThisFileDirectory)\..\**\*.nuspec"/>
     </ItemGroup>
@@ -20,14 +20,14 @@
 
   <Target Name="UpdatePackageVersion" >
     <PropertyGroup>
-      <SpecFlowPackageVersion Condition="'$(SpecFlowPackageVersion)' == ''">$(GitVersion_NuGetVersion)</SpecFlowPackageVersion>
+      <SpecFlowPackageVersion Condition="'$(SpecFlowPackageVersion)' == ''">$(NuGetPackageVersion)</SpecFlowPackageVersion>
       <NugetVersion>$(SpecFlowPackageVersion)</NugetVersion>
       <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
       <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>
 
     </PropertyGroup>
 
-    <Message Importance="High" Text="GitVersion: $(GitVersion_NuGetVersion)" />
+    <Message Importance="High" Text="GitVersion: $(NuGetPackageVersion)" />
     <Message Importance="High" Text="NugetVersion: $(NugetVersion)" />
 
     <!--<Copy SourceFiles="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" DestinationFiles="$(TargetDir)SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" OverwriteReadOnlyFiles="true"  />
