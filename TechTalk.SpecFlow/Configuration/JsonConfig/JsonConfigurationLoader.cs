@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using BoDi;
-using Newtonsoft.Json;
+
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Plugins;
+using Utf8Json;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
@@ -15,7 +16,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         {
             if (String.IsNullOrWhiteSpace(jsonContent)) throw new ArgumentNullException(nameof(jsonContent));
 
-            var jsonConfig = JsonConvert.DeserializeObject<JsonConfig>(jsonContent);
+            var jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonContent);
 
 
             ContainerRegistrationCollection containerRegistrationCollection = specFlowConfiguration.CustomDependencies;

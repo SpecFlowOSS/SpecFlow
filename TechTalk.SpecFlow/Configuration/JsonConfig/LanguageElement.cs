@@ -1,12 +1,13 @@
 using System.ComponentModel;
-using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
     public class LanguageElement
     {
-        [JsonProperty("feature", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonProperty("feature", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue("en")]
+        [DataMember(Name="feature")]
         public string Feature { get; set; }
     }
 }

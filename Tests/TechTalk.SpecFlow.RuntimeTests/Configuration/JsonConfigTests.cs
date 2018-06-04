@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
     {            
         [Theory]
         [InlineData(@"{
-          ""specFlow"": {
+          ""specflow"": {
             ""language"": {
               ""feature"": ""en"",
               ""tool"": ""en""
@@ -25,21 +25,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""generatorProvider"": ""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow"",
               ""runtimeProvider"": ""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow""
             },
-            ""generator"": { ""allowDebugGeneratedFiles"": ""false"" , ""markFeaturesParallelizable"": ""false"", 
+            ""generator"": { ""allowDebugGeneratedFiles"": false , ""markFeaturesParallelizable"": false, 
                              ""skipParallelizableMarkerForTags"": [""mySpecialTag1"", ""mySpecialTag2""]},
             ""runtime"": {
-              ""detectAmbiguousMatches"": ""true"",
-              ""stopAtFirstError"": ""false"",
+              ""detectAmbiguousMatches"": true,
+              ""stopAtFirstError"": false,
               ""missingOrPendingStepsOutcome"": ""Inconclusive""
             },
             ""trace"": {
-              ""traceSuccessfulSteps"": ""true"",
-              ""traceTimings"": ""false"",
+              ""traceSuccessfulSteps"": true,
+              ""traceTimings"": false,
               ""minTracedDuration"": ""0:0:0.1"",
               ""listener"": ""TechTalk.SpecFlow.Tracing.DefaultListener, TechTalk.SpecFlow""
             }
           }
         }")]
+
         public void CanLoadConfigFromString(string configString)
         {
             var configurationLoader = new JsonConfigurationLoader();
@@ -99,7 +100,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""runtime"": { ""stopAtFirstError"": ""true"" }
+                                ""runtime"": { ""stopAtFirstError"": true }
                               }
                             }";
 
@@ -115,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""runtime"": { ""stopAtFirstError"": ""false"" }
+                                ""runtime"": { ""stopAtFirstError"": false }
                               }
                             }";
 
@@ -195,7 +196,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""trace"": { ""traceSuccessfulSteps"": ""true"" }
+                                ""trace"": { ""traceSuccessfulSteps"": true }
                               }
                             }";
 
@@ -211,7 +212,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""trace"": { ""traceSuccessfulSteps"": ""false"" }
+                                ""trace"": { ""traceSuccessfulSteps"": false }
                               }
                             }";
 
@@ -227,7 +228,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""trace"": { ""traceTimings"": ""true"" }
+                                ""trace"": { ""traceTimings"": true }
                               }
                             }";
 
@@ -243,7 +244,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""trace"": { ""traceTimings"": ""false"" }
+                                ""trace"": { ""traceTimings"": false }
                               }
                             }";
 
@@ -259,7 +260,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""trace"": { ""minTracedDuration"": ""0:0:1.0"" }
+                                ""trace"": { ""minTracedDuration"": ""0:0:0:1.0"" }
                               }
                             }";
 
