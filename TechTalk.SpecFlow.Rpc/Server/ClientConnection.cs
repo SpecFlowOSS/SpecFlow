@@ -7,11 +7,11 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
-using Newtonsoft.Json;
 using Serilog.Core;
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
+using Utf8Json;
 
 namespace TechTalk.SpecFlow.Rpc.Server
 {
@@ -169,7 +169,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                 var requestedTypeInstance = container.Resolve(requestedType);
                 var requestedMethodInfo = requestedType.GetMethod(request.Method);
 
-                var requestedArguments = JsonConvert.DeserializeObject<Dictionary<int, object>>(request.Arguments, SerializationOptions.Current);
+                var requestedArguments = JsonSerializer.Deserialize<Dictionary<int, object>>(request.Arguments, SerializationOptions.Current);
 
                 var result = requestedMethodInfo.Invoke(requestedTypeInstance, requestedArguments.Values.ToArray());
 
@@ -179,7 +179,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                     Assembly = request.Assembly,
                     Type = request.Type,
                     Method = request.Method,
-                    Result = JsonConvert.SerializeObject(result, SerializationOptions.Current)
+                    Result = JsonSerializer.Serialize(result, SerializationOptions.Current).ToString()
                 };
 
                 Log("End request execution");

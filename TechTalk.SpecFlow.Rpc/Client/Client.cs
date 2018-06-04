@@ -2,10 +2,11 @@
 using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
+using Utf8Json;
 
 namespace TechTalk.SpecFlow.Rpc.Client
 {
@@ -42,11 +43,11 @@ namespace TechTalk.SpecFlow.Rpc.Client
 
             try
             {
-                var result = JsonConvert.DeserializeObject<TResult>(response.Result, SerializationOptions.Current);
+                var result = JsonSerializer.Deserialize<TResult>(response.Result, SerializationOptions.Current);
 
                 return result;
             }
-            catch (JsonReaderException jsonReaderException)
+            catch (Utf8Json.JsonParsingException jsonReaderException)
             {
                 throw new Exception($"Error while deserializing result: {response.Result}", jsonReaderException);
 
@@ -71,7 +72,7 @@ namespace TechTalk.SpecFlow.Rpc.Client
                 Assembly = methodInfo.Assembly,
                 Type = methodInfo.Typename,
                 Method = methodInfo.Methodname,
-                Arguments = JsonConvert.SerializeObject(methodInfo.Arguments, SerializationOptions.Current)
+                Arguments = JsonSerializer.Serialize(methodInfo.Arguments, SerializationOptions.Current).ToString()
             };
             return request;
         }

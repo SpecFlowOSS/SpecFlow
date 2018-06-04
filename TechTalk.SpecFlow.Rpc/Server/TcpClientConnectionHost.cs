@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Rpc.Server
                     usedPort++;
                     continue;
                 }
-                
+
                 break;
             }
 
@@ -41,6 +41,8 @@ namespace TechTalk.SpecFlow.Rpc.Server
         public async Task<IClientConnection> CreateListenTask(CancellationToken cancellationToken, Logger logger)
         {
             var tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(true);
+            tcpClient.ReceiveTimeout = tcpClient.SendTimeout = (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
+
             return new TcpClientConnection(tcpClient, _connectionCount++.ToString(), logger);
         }
 

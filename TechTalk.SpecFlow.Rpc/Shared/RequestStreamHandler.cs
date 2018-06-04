@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text;
-using Newtonsoft.Json;
+using Utf8Json;
+
 
 namespace TechTalk.SpecFlow.Rpc.Shared
 {
@@ -8,14 +9,14 @@ namespace TechTalk.SpecFlow.Rpc.Shared
     {
         public static void Write<T>(T request, Stream stream) where T : Request.Request
         {
-            var requestJson = JsonConvert.SerializeObject(request, SerializationOptions.Current);
+            byte[] requestJson = JsonSerializer.Serialize(request,SerializationOptions.Current);
 
             var length = requestJson.Length;
 
             using (var writer = new BinaryWriter(stream, Encoding.Default, true))
             {
                 writer.Write(length);
-                writer.Write(requestJson.ToCharArray());
+                writer.Write(requestJson);
             }
         }
 
@@ -26,7 +27,7 @@ namespace TechTalk.SpecFlow.Rpc.Shared
                 var length = reader.ReadInt32();
                 var requestJson = new string(reader.ReadChars(length));
 
-                return JsonConvert.DeserializeObject<T>(requestJson, SerializationOptions.Current);
+                return JsonSerializer.Deserialize<T>(requestJson, SerializationOptions.Current);
             }
         }
     }
