@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Newtonsoft.Json;
+
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
 using Xunit;
@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.Rpc
                 Action testAction = GetTestAction(memoryStream);
 
                 // ASSERT
-                testAction.ShouldThrow<JsonReaderException>();
+                testAction.ShouldThrow<Utf8Json.JsonParsingException>();
             }
         }
 

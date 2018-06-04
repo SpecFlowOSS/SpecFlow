@@ -1,29 +1,29 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Serilog.Core;
+using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 
-namespace TechTalk.SpecFlow.CodeBehindGenerator
+namespace SpecFlow.Tools.MsBuild.Generation
 {
-    public class FeatureCodeBehindGenerator : IFeatureCodeBehindGenerator, IDisposable
+    public class FeatureCodeBehindGenerator : IDisposable
     {
-        private readonly Logger _logger;
+        private readonly TaskLoggingHelper _logger;
         private CodeDomHelper _codeDomHelper;
         private ProjectSettings _projectSettings;
         private SpecFlowProject _specFlowProject;
 
-        public FeatureCodeBehindGenerator(Logger logger)
+        public FeatureCodeBehindGenerator(TaskLoggingHelper logger)
         {
             _logger = logger;
         }
 
         public void InitializeProject(string projectPath)
         {
-            _logger?.Information(nameof(InitializeProject)+$"({projectPath})");
+            _logger.LogWithNameTag(_logger.LogMessage, nameof(InitializeProject)+$"({projectPath})");
 
             _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath));
 
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         public GeneratedCodeBehindFile GenerateCodeBehindFile(string featureFile)
         {
-            _logger?.Information(nameof(GenerateCodeBehindFile)+$"{featureFile}");
+            _logger.LogWithNameTag(_logger.LogMessage, nameof(GenerateCodeBehindFile)+$"{featureFile}");
 
             var testGeneratorFactory = new TestGeneratorFactory();
 

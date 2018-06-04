@@ -2,7 +2,6 @@
 using System.IO;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using TechTalk.SpecFlow.CodeBehindGenerator;
 using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation

@@ -21,14 +21,15 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
-    <ProjectReference Include="..\TechTalk.SpecFlow.CodeBehindGenerator\TechTalk.SpecFlow.CodeBehindGenerator.csproj" />
-    <ProjectReference Include="..\TechTalk.SpecFlow.Rpc\TechTalk.SpecFlow.Rpc.csproj" />
     <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
-    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
     <PackageReference Update="GitVersionTask" Version="4.0.0-beta0012" />
-    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == ''">

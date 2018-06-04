@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using FluentAssertions;
-using Newtonsoft.Json;
 using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Rpc.Shared.Request;
 using TechTalk.SpecFlow.Rpc.Shared.Response;
+using Utf8Json;
 using Xunit;
 
 // ReSharper disable InconsistentNaming
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.Rpc
                 Action testAction = GetTestAction(memoryStream);
 
                 // ASSERT
-                testAction.ShouldThrow<JsonReaderException>();
+                testAction.ShouldThrow<JsonParsingException>();
             }
         }
 

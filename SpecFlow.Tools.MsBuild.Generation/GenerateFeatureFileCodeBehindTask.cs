@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using TechTalk.SpecFlow.CodeBehindGenerator;
 using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
@@ -47,7 +46,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 
 
-                using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator(null))
+                using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator(Log))
                 {
                     featureCodeBehindGenerator.InitializeProject(ProjectPath);
 

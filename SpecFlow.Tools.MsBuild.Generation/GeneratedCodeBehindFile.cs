@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.CodeBehindGenerator
+﻿namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GeneratedCodeBehindFile
     {
