@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.CodeBehindGenerator
 {
-    class FeatureCodeBehindGenerator : IFeatureCodeBehindGenerator
+    public class FeatureCodeBehindGenerator : IFeatureCodeBehindGenerator, IDisposable
     {
         private readonly Logger _logger;
         private CodeDomHelper _codeDomHelper;
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         public void InitializeProject(string projectPath)
         {
-            _logger.Information(nameof(InitializeProject)+$"({projectPath})");
+            _logger?.Information(nameof(InitializeProject)+$"({projectPath})");
 
             _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath));
 
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
 
         public GeneratedCodeBehindFile GenerateCodeBehindFile(string featureFile)
         {
-            _logger.Information(nameof(GenerateCodeBehindFile)+$"{featureFile}");
+            _logger?.Information(nameof(GenerateCodeBehindFile)+$"{featureFile}");
 
             var testGeneratorFactory = new TestGeneratorFactory();
 
@@ -76,6 +76,11 @@ namespace TechTalk.SpecFlow.CodeBehindGenerator
         private CodeDomHelper GetCodeDomHelper(ProjectSettings projectSettings)
         {
             return GenerationTargetLanguage.CreateCodeDomHelper(projectSettings.ProjectPlatformSettings.Language);
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

@@ -4,12 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.CodeBehindGenerator;
-using TechTalk.SpecFlow.Rpc.Client;
-using TechTalk.SpecFlow.Rpc.Shared;
 using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
@@ -32,11 +29,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public override bool Execute()
         {
             Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
-            var asyncExecuteTask = AsyncExecute();
-            return asyncExecuteTask.Result;
+            
+            return AsyncExecute();
         }
 
-        private async Task<bool> AsyncExecute()
+        private bool AsyncExecute()
         {
             var environmentVariables = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().Select(e => (Key: e.Key, Value: e.Value)).OrderBy(e => e.Key).ToArray();
             Log.LogMessage($"Environment variables: {environmentVariables.Length}");
@@ -46,51 +43,34 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             try
             {
-                using (var outOfProcessServer = new OutOfProcessServer(Log))
+                var filePathGenerator = new FilePathGenerator();
+
+                
+
+                using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator(null))
                 {
-                    var freePort = FindFreePort.GetAvailablePort(_startPort);
+                    featureCodeBehindGenerator.InitializeProject(ProjectPath);
 
-                    outOfProcessServer.Start(freePort);
-                    try
+
+                    var codeBehindWriter = new CodeBehindWriter(Log);
+                    if (FeatureFiles != null)
                     {
-                        var filePathGenerator = new FilePathGenerator();
-
-
-                        var usedPort = outOfProcessServer.WaitForPort();
-
-                        using (var client = new Client<IFeatureCodeBehindGenerator>(usedPort))
+                        foreach (var featureFile in FeatureFiles)
                         {
-                            await client.WaitForServer();
-                            await client.Execute(c => c.InitializeProject(ProjectPath));
+                            string featureFileItemSpec = featureFile.ItemSpec;
+                            var featureFileCodeBehind = featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec);
 
-                            var codeBehindWriter = new CodeBehindWriter(Log);
-                            if (FeatureFiles != null)
-                            {
-                                foreach (var featureFile in FeatureFiles)
-                                {
-                                    string featureFileItemSpec = featureFile.ItemSpec;
-                                    var featureFileCodeBehind = await client.Execute(c => c.GenerateCodeBehindFile(featureFileItemSpec));
+                            string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
+                            string resultedFile = codeBehindWriter.WriteCodeBehindFile(
+                                targetFilePath,
+                                featureFile,
+                                featureFileCodeBehind);
 
-                                    string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
-                                    string resultedFile = codeBehindWriter.WriteCodeBehindFile(
-                                        targetFilePath,
-                                        featureFile,
-                                        featureFileCodeBehind);
-
-                                    generatedFiles.Add(new TaskItem {ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder)});
-                                }
-                            }
-
-
-                            await client.ShutdownServer();
+                            generatedFiles.Add(new TaskItem { ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder) });
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Log?.LogWithNameTag(Log.LogError, outOfProcessServer.CurrentOutput);
-                        throw;
-                    }
                 }
+
 
                 GeneratedFiles = generatedFiles.ToArray();
 
