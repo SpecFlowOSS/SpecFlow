@@ -28,7 +28,6 @@
     <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
     <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
-    <PackageReference Update="GitVersionTask" Version="4.0.0-beta0012" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
   </ItemGroup>
 

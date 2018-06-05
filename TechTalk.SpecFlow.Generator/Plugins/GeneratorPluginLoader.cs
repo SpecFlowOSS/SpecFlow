@@ -41,6 +41,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             IGeneratorPlugin plugin;
             try
             {
+                System.Diagnostics.Debugger.Launch();
                 plugin = (IGeneratorPlugin)Activator.CreateInstance(pluginAttribute.PluginType);
             }
             catch (Exception ex)

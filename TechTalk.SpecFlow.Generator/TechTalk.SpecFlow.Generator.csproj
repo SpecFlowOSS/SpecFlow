@@ -18,6 +18,7 @@
     <PackageReference Include="System.Security.Principal" Version="4.3.0" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +35,6 @@
   
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Generator_TFM)'">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
-    <PackageReference Include="System.CodeDom" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

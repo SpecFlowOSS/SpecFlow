@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+#if NETCOREAPP
+using System.Runtime.Loader;
+#endif
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
-    public class GenerateFeatureFileCodeBehindTask : Microsoft.Build.Utilities.Task
+    public class GenerateFeatureFileCodeBehindTask : Task
     {
-        private readonly int _startPort = 3483;
-
         [Required]
         public string ProjectPath { get; set; }
 
@@ -26,49 +27,22 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public ITaskItem[] FeatureFiles { get; set; }
 
         [Output]
-        public ITaskItem[] GeneratedFiles { get; private set; }
+        public ITaskItem[] GeneratedFiles { get; set; }
 
         public override bool Execute()
         {
-            Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
-            
-            return AsyncExecute();
-        }
-
-        private bool AsyncExecute()
-        {
-            var generatedFiles = new List<ITaskItem>();
-
             try
             {
-                var filePathGenerator = new FilePathGenerator();
+                //System.Diagnostics.Debugger.Launch();
 
-                
+                Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
 
-                using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator(Log))
+                var generatedFiles = new List<ITaskItem>();
+
+                foreach (string s in GenerateFilesForProject())
                 {
-                    featureCodeBehindGenerator.InitializeProject(ProjectPath, RootNamespace);
-
-
-                    var codeBehindWriter = new CodeBehindWriter(Log);
-                    if (FeatureFiles != null)
-                    {
-                        foreach (var featureFile in FeatureFiles)
-                        {
-                            string featureFileItemSpec = featureFile.ItemSpec;
-                            var featureFileCodeBehind = featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec);
-
-                            string targetFilePath = filePathGenerator.GenerateFilePath(ProjectFolder, OutputPath, featureFile.ItemSpec, featureFileCodeBehind.Filename);
-                            string resultedFile = codeBehindWriter.WriteCodeBehindFile(
-                                targetFilePath,
-                                featureFile,
-                                featureFileCodeBehind);
-
-                            generatedFiles.Add(new TaskItem { ItemSpec = FileSystemHelper.GetRelativePath(resultedFile, ProjectFolder) });
-                        }
-                    }
+                    generatedFiles.Add(new TaskItem() { ItemSpec = s });
                 }
-
 
                 GeneratedFiles = generatedFiles.ToArray();
 
@@ -80,5 +54,46 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 return false;
             }
         }
+
+#if NETCOREAPP
+        private IEnumerable<string> GenerateFilesForProject()
+        {
+            string taskAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.CodeBase).LocalPath;
+            var ctxt = new CustomAssemblyLoader();
+            Assembly inContextAssembly = ctxt.LoadFromAssemblyPath(taskAssemblyPath);
+            Type innerTaskType = inContextAssembly.GetType(typeof(FeatureFileCodeBehindGenerator).FullName);
+            object innerTask = Activator.CreateInstance(innerTaskType);
+
+            var executeInnerMethod = innerTaskType.GetMethod("GenerateFilesForProject", BindingFlags.Instance | BindingFlags.Public);
+            var result = (IEnumerable<string>)executeInnerMethod.Invoke(innerTask, new object[]{ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), ProjectFolder, OutputPath });
+            return result;
+        }
+
+        private class CustomAssemblyLoader : AssemblyLoadContext
+        {
+            protected virtual string ManagedDllDirectory => Path.GetDirectoryName(new Uri(this.GetType().GetTypeInfo().Assembly.CodeBase).LocalPath);
+
+            protected override Assembly Load(AssemblyName assemblyName)
+            {
+                string assemblyPath = Path.Combine(this.ManagedDllDirectory, assemblyName.Name) + ".dll";
+                if (File.Exists(assemblyPath))
+                {
+                    return LoadFromAssemblyPath(assemblyPath);
+                }
+
+                return Default.LoadFromAssemblyName(assemblyName);
+            }
+        }
+
+
+#else
+        private IEnumerable<string> GenerateFilesForProject()
+        {
+            var generator = new FeatureFileCodeBehindGenerator();
+            return generator.GenerateFilesForProject(ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), ProjectFolder, OutputPath);
+        }
+#endif
     }
+
+
 }

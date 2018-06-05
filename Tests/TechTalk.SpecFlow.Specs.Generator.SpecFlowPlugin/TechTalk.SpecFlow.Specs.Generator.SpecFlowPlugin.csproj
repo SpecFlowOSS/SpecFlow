@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(SpecFlow_Specs_TFM)</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackPublishOutput</TargetsForTfmSpecificContentInPackage>
+
+
     <Configurations>Debug;Release;Debug-XUnit;Debug-MSTest;Debug-NUnit</Configurations>
   </PropertyGroup>
 
@@ -24,9 +29,16 @@
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
 
-  
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemDefinitionGroup>
+
+
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
