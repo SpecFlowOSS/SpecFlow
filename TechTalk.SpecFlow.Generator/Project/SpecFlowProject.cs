@@ -11,21 +11,11 @@ namespace TechTalk.SpecFlow.Generator.Project
     {
         public ProjectSettings ProjectSettings { get; set; }
         public SpecFlowProjectConfiguration Configuration { get; set; }
-        public List<FeatureFileInput> FeatureFiles { get; private set; }
 
         public SpecFlowProject()
         {
             ProjectSettings = new ProjectSettings();
-            FeatureFiles = new List<FeatureFileInput>();
             Configuration = new SpecFlowProjectConfiguration();
-        }
-
-        public FeatureFileInput GetOrCreateFeatureFile(string featureFilePath)
-        {
-            featureFilePath = Path.GetFullPath(Path.Combine(ProjectSettings.ProjectFolder, featureFilePath));
-            var result = FeatureFiles.Find(ff => ff.GetFullPath(ProjectSettings).Equals(featureFilePath, StringComparison.InvariantCultureIgnoreCase)) ??
-                         new FeatureFileInput(FileSystemHelper.GetRelativePath(featureFilePath, ProjectSettings.ProjectFolder));
-            return result;
         }
     }
 }

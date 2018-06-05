@@ -24,7 +24,8 @@
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
-      FeatureFiles="@(SpecFlowFeatureFiles)">
+      FeatureFiles="@(SpecFlowFeatureFiles)"
+      RootNamespace="$(RootNamespace)">
       
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>

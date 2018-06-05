@@ -17,6 +17,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
         [Required]
         public string ProjectPath { get; set; }
 
+        [Required]
+        public string RootNamespace { get; set; }
+
         public string ProjectFolder => Path.GetDirectoryName(ProjectPath);
         public string OutputPath { get; set; }
 
@@ -34,10 +37,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private bool AsyncExecute()
         {
-            var environmentVariables = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().Select(e => (Key: e.Key, Value: e.Value)).OrderBy(e => e.Key).ToArray();
-            Log.LogMessage($"Environment variables: {environmentVariables.Length}");
-            Log.LogMessage(string.Join(Environment.NewLine, environmentVariables.Select(v => $"{v.Key}: {v.Value}")));
-
             var generatedFiles = new List<ITaskItem>();
 
             try
@@ -48,7 +47,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator(Log))
                 {
-                    featureCodeBehindGenerator.InitializeProject(ProjectPath);
+                    featureCodeBehindGenerator.InitializeProject(ProjectPath, RootNamespace);
 
 
                     var codeBehindWriter = new CodeBehindWriter(Log);

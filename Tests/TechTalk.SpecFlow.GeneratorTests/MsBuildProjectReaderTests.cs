@@ -16,24 +16,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath);
             var projectFilePath = Path.Combine(directoryName, csprojPath);
-            var specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath);
+            var specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath, rootNamespace);
 
 
-            specflowProjectfile.ProjectSettings.AssemblyName.Should().Be(assemblyName);
             specflowProjectfile.ProjectSettings.DefaultNamespace.Should().Be(rootNamespace);
             specflowProjectfile.ProjectSettings.ProjectName.Should().Be(projectName);
 
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be(language);
-
-            specflowProjectfile.FeatureFiles.Count.Should().Be(6);
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\Login\SocialLogins.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowDefinition\CreateWorkflowDefinition.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowDefinition\CreateWorkflowDefinition.feature") && x.CustomNamespace == "CustomNameSpace");
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"Features\WorkflowInstance\WorkflowInstance.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\..\LinkedFeature.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature"));
-            specflowProjectfile.FeatureFiles.Should().ContainSingle(x => x.ProjectRelativePath == PathHelper.SanitizeDirectorySeparatorChar(@"..\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature"));
-            
 
             specflowProjectfile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
             specflowProjectfile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();

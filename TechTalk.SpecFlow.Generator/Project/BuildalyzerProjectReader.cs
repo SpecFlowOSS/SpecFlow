@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Xml;
-using Buildalyzer;
-using Microsoft.Build.Framework;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -22,61 +19,20 @@ namespace TechTalk.SpecFlow.Generator.Project
             _languageReader = languageReader;
         }
 
-        public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
+        public SpecFlowProject ReadSpecFlowProject(string projectFilePath, string rootNamespace)
         {
-            //if (projectFilePath.EndsWith("DefaultTestProject.csproj"))
-            //{
-            //    Debugger.Launch();
-            //}
-
-            var logWriter = new StringWriter();
-            logWriter.WriteLine("Using BuildAlyzer");
-
-            string binLog = Path.Combine(Path.GetDirectoryName(projectFilePath), "buildalayzer.binlog");
-
-            string debugInfo = String.Empty;
-
             try
             {
-                var manager = new AnalyzerManager(new AnalyzerManagerOptions()
-                {
-                    LogWriter = logWriter,
-                    LoggerVerbosity = LoggerVerbosity.Detailed,
-                });
-
-                
-                var analyzer = manager.GetProject(projectFilePath).WithBinaryLog(binLog);
-                debugInfo += $"BinLog: {binLog}" + Environment.NewLine;
-
-                debugInfo += String.Join(Environment.NewLine, analyzer.GlobalProperties.Select(kv => $"{kv.Key}: {kv.Value}"));
-
-                var project = analyzer.Project;
-
-                
-
                 var projectFolder = Path.GetDirectoryName(projectFilePath);
 
                 var specFlowProject = new SpecFlowProject();
                 specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
                 specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
-                specFlowProject.ProjectSettings.AssemblyName = project.Properties.First(x => x.Name == "AssemblyName").EvaluatedValue;
-                specFlowProject.ProjectSettings.DefaultNamespace = project.Properties.First(x => x.Name == "RootNamespace").EvaluatedValue;
-                specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = _languageReader.GetLanguage(project.FullPath);
+                specFlowProject.ProjectSettings.DefaultNamespace = rootNamespace;
+                specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = _languageReader.GetLanguage(projectFilePath);
 
-                foreach (var item in project.FeatureFiles())
-                {
-                    var featureFile = specFlowProject.GetOrCreateFeatureFile(item.EvaluatedInclude);
-                    var ns = item.GetMetadataValue("CustomToolNamespace");
-                    if (!String.IsNullOrEmpty(ns))
-                        featureFile.CustomNamespace = ns;
-                    if (!specFlowProject.FeatureFiles.Contains(featureFile))
-                    {
-                        specFlowProject.FeatureFiles.Add(featureFile);
-                    }
-                }
-
-
-                specFlowProject.ProjectSettings.ConfigurationHolder = GetSpecFlowConfigurationHolder(project, projectFolder);
+      
+                specFlowProject.ProjectSettings.ConfigurationHolder = GetSpecFlowConfigurationHolder(projectFolder);
 
                 if (specFlowProject.ProjectSettings.ConfigurationHolder != null)
                 {
@@ -87,31 +43,12 @@ namespace TechTalk.SpecFlow.Generator.Project
             }
             catch (Exception e)
             {
-                
-                throw new Exception("Error when reading project file." + Environment.NewLine + "MSBuild Output: " + Environment.NewLine + logWriter + Environment.NewLine + "DebugInfo:" + Environment.NewLine + debugInfo, e);
+                throw new Exception("Error when reading project file.", e);
             }
         }
 
-        private SpecFlowConfigurationHolder GetSpecFlowConfigurationHolder(Microsoft.Build.Evaluation.Project project, string projectFolder)
+        private SpecFlowConfigurationHolder GetSpecFlowConfigurationHolder(string projectFolder)
         {
-            var jsonConfig = project.SpecFlowJsonConfigurationFile();
-            if (jsonConfig != null)
-            {
-                var configFilePath = Path.Combine(projectFolder, jsonConfig.EvaluatedInclude);
-                var configFileContent = File.ReadAllText(configFilePath);
-                return new SpecFlowConfigurationHolder(ConfigSource.Json, configFileContent);
-            }
-            else
-            {
-                var appConfigItem = project.ApplicationConfigurationFile();
-                if (appConfigItem != null)
-                {
-                    var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);
-                    var configFileContent = File.ReadAllText(configFilePath);
-                    return GetConfigurationHolderFromFileContent(configFileContent);
-                }
-            }
-
             string jsonConfigPath = Path.Combine(projectFolder, "specflow.json");
             if (File.Exists(jsonConfigPath))
             {

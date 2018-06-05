@@ -21,11 +21,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _logger = logger;
         }
 
-        public void InitializeProject(string projectPath)
+        public void InitializeProject(string projectPath, string rootNamespace)
         {
             _logger.LogWithNameTag(_logger.LogMessage, nameof(InitializeProject)+$"({projectPath})");
 
-            _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath));
+            _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath), rootNamespace);
 
             _projectSettings = _specFlowProject.ProjectSettings;
 
