@@ -8,12 +8,12 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
-    public class BuildalyzerProjectReader : ISpecFlowProjectReader
+    public class ProjectReader : ISpecFlowProjectReader
     {
         private readonly IGeneratorConfigurationProvider _configurationLoader;
-        private readonly BuildalyzerLanguageReader _languageReader;
+        private readonly ProjectLanguageReader _languageReader;
 
-        public BuildalyzerProjectReader(IGeneratorConfigurationProvider configurationLoader, BuildalyzerLanguageReader languageReader)
+        public ProjectReader(IGeneratorConfigurationProvider configurationLoader, ProjectLanguageReader languageReader)
         {
             _configurationLoader = configurationLoader;
             _languageReader = languageReader;

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
-    public class BuildalyzerLanguageReader
+    public class ProjectLanguageReader
     {
         public string GetLanguage(string projectFileName)
         {

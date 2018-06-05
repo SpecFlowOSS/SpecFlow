@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void BuildalyzerLanguageReader_csproj_ShouldReturnCSharp()
         {
             // ARRANGE
-            var reader = new BuildalyzerLanguageReader();
+            var reader = new ProjectLanguageReader();
             string expected = GenerationTargetLanguage.CSharp;
             string path = @"C:\project\project.csproj";
 
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void BuildalyzerLanguageReader_vbproj_ShouldReturnVB()
         {
             // ARRANGE
-            var reader = new BuildalyzerLanguageReader();
+            var reader = new ProjectLanguageReader();
             string expected = GenerationTargetLanguage.VB;
             string path = @"C:\project\project.vbproj";
 
