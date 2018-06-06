@@ -16,7 +16,7 @@
     <tags>specflow bdd gherkin cucumber</tags>
     <dependencies>
       <dependency id="Utf8Json" version="1.3.7" />
-      <dependency id="System.ValueTuple" version="4.3.0"/>
+      <dependency id="System.ValueTuple" version="4.4.0"/>
     </dependencies>
   </metadata>
 </package>
