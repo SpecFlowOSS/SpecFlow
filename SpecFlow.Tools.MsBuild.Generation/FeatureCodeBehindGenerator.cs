@@ -13,6 +13,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private CodeDomHelper _codeDomHelper;
         private ProjectSettings _projectSettings;
         private SpecFlowProject _specFlowProject;
+        private ITestGenerator _testGenerator;
 
         public void InitializeProject(string projectPath, string rootNamespace)
         {
@@ -21,21 +22,18 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _projectSettings = _specFlowProject.ProjectSettings;
 
             _codeDomHelper = GetCodeDomHelper(_projectSettings);
+            var testGeneratorFactory = new TestGeneratorFactory();
+
+            _testGenerator = testGeneratorFactory.CreateGenerator(_projectSettings);
         }
 
 
         public GeneratedCodeBehindFile GenerateCodeBehindFile(string featureFile)
         {
-            var testGeneratorFactory = new TestGeneratorFactory();
+            var featureFileInput = new FeatureFileInput(featureFile);
+            var generatedFeatureFileName = Path.GetFileName(_testGenerator.GetTestFullPath(featureFileInput));
 
-            var testGenerator = testGeneratorFactory.CreateGenerator(_projectSettings);
-
-
-            FeatureFileInput featureFileInput = new FeatureFileInput(featureFile);
-            var generatedFeatureFileName = Path.GetFileName(testGenerator.GetTestFullPath(featureFileInput));
-
-
-            var testGeneratorResult = testGenerator.GenerateTestFile(featureFileInput, new GenerationSettings());
+            var testGeneratorResult = _testGenerator.GenerateTestFile(featureFileInput, new GenerationSettings());
 
             string outputFileContent;
             if (testGeneratorResult.Success)

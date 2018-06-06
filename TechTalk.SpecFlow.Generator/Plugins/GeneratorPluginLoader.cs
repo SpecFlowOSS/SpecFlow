@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Infrastructure;
@@ -25,6 +26,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             try
             {
                 pluginAssembly = Assembly.LoadFrom(generatorPluginAssemblyPath);
+
             }
             catch(Exception ex)
             {
@@ -41,7 +43,6 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             IGeneratorPlugin plugin;
             try
             {
-                System.Diagnostics.Debugger.Launch();
                 plugin = (IGeneratorPlugin)Activator.CreateInstance(pluginAttribute.PluginType);
             }
             catch (Exception ex)
