@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- this setting is to workaround the bug in VS (does not detect changes during the pre-build event)
-       see: https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=423670&wa=wsignin1.0
-  -->
-  <PropertyGroup>
-    <SpecFlow_UseHostCompilerIfAvailable Condition="'$(SpecFlow_UseHostCompilerIfAvailable)'==''">false</SpecFlow_UseHostCompilerIfAvailable>
-    <UseHostCompilerIfAvailable>$(SpecFlow_UseHostCompilerIfAvailable)</UseHostCompilerIfAvailable>
-  </PropertyGroup>
-
   <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
@@ -23,7 +15,12 @@
       AfterUpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
+    <CleanDependsOn>
+      CleanFeatureFilesInProject;
+      $(CleanDependsOn)
+    </CleanDependsOn>
     <RebuildDependsOn>
+      CleanFeatureFilesInProject;
       SwitchToForceGenerate;
       $(RebuildDependsOn)
     </RebuildDependsOn>
@@ -32,34 +29,38 @@
   <Target Name="SwitchToForceGenerate">
     <PropertyGroup>
       <ForceGeneration>true</ForceGeneration>
-      <OnlyUpdateIfChanged>true</OnlyUpdateIfChanged>
     </PropertyGroup>
   </Target>
 
-  <ItemGroup>
-    <SpecFlowFeatureFiles Include="**\*.feature"/>
-    <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
-  </ItemGroup>
+  <Target Name="UpdateFeatureFilesInProject"
+          DependsOnTargets="BeforeUpdateFeatureFilesInProject"
+          Inputs="@(SpecFlowFeatureFiles)"
+          Outputs="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')">
 
-  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
-    <GenerateAll
-      ShowTrace="$(ShowTrace)"
+    <GenerateAll ProjectPath="$(MSBuildProjectFullPath)"
 
-      BuildServerMode="$(BuildServerMode)"
-      OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
-      
-      ProjectPath="$(MSBuildProjectFullPath)"
-      ForceGeneration="$(ForceGeneration)"
-      VerboseOutput="$(VerboseOutput)"
-      DebugTask="$(SpecFlow_DebugMSBuildTask)" 
-      >
+                 BuildServerMode="$(BuildServerMode)"
+                 OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+                 ForceGeneration="$(ForceGeneration)"
+
+                 ShowTrace="$(ShowTrace)"
+                 VerboseOutput="$(VerboseOutput)"
+                 DebugTask="$(SpecFlow_DebugMSBuildTask)"
+                 >
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateAll>
+
+    <Message Text="%(SpecFlowGeneratedFiles.Identity)" Importance="high" Condition="'$(VerboseOutput)'=='true'" />
   </Target>
 
   <Target Name="BeforeUpdateFeatureFilesInProject">
   </Target>
-  
+
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
   </Target>
+
+  <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">
+    <Delete Files="%(SpecFlowFeatureFiles.CodeBehindFile)" ContinueOnError="true" />
+  </Target>
+
 </Project>
