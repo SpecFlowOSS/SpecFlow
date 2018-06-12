@@ -9,6 +9,7 @@
     <PackageId>TechTalk.SpecFlow.Specs</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <Configurations>Debug;Release;Debug-XUnit;Debug-MSTest;Debug-NUnit</Configurations>
+    <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
@@ -28,8 +29,13 @@
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\Installer\NuGetPackages\NuGetPackages.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
+    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj">
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
-    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" />
+    <!-- <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj">
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference> -->
   </ItemGroup>
 
   <ItemGroup>
@@ -56,7 +62,7 @@
   
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" />
-    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
+    
   </Target>
 
 
