@@ -12,6 +12,7 @@ Fixes:
 + Resolved loading plugins multiple times. Issue: https://github.com/techtalk/SpecFlow/issues/888
 + Comparing Guid with string using case insensitivity to prevent throwing unnecessary exceptions https://github.com/techtalk/SpecFlow/pull/1145
 + MSBuild Generation: Visual Studio Incremental Build does not always regenerate files on feature file changes https://github.com/techtalk/SpecFlow/pull/1167
++ Fixed test body generation order for outline tests https://github.com/techtalk/SpecFlow/pull/1168
 
 2.3.2 - 2018-04-17
 Fixes:
