@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
 EndProject
@@ -63,6 +63,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.xUnit.SpecFlowPlugin", "Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj", "{D649B28A-352C-4CB0-B6F2-0570DD181F60}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin", "Tests\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj", "{03A229D6-BB43-47CC-AAEF-B7265652AD5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.NUnit.SpecFlowPlugin", "Plugins\TechTalk.SpecFlow.NUnit.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.csproj", "{D151832C-15D6-4869-9999-B245443BC23E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.MSTest.SpecFlowPlugin", "Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.csproj", "{EC77355C-D442-416A-AE67-E42D5FAD0FB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -229,6 +233,30 @@ Global
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{D151832C-15D6-4869-9999-B245443BC23E}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,6 +272,8 @@ Global
 		{1B51F6C9-226E-479B-9212-E6C02A1E6633} = {974420E8-FEEA-4564-B4CE-BE06F7457E3B}
 		{D649B28A-352C-4CB0-B6F2-0570DD181F60} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
 		{03A229D6-BB43-47CC-AAEF-B7265652AD5A} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{D151832C-15D6-4869-9999-B245443BC23E} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
+		{EC77355C-D442-416A-AE67-E42D5FAD0FB9} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}
