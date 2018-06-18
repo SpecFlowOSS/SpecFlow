@@ -16,19 +16,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             _solutionDriver = solutionDriver;
         }
 
-        public void AddFromXmlSpecFlowSection(string projectName, string specFlowSection)
-        {
-            var project = _solutionDriver.Projects[projectName];
-            AddFromXmlSpecFlowSection(project, specFlowSection);
-        }
+        
 
         public void AddFromXmlSpecFlowSection(string specFlowSection)
         {
-            AddFromXmlSpecFlowSection(_solutionDriver.DefaultProject, specFlowSection);
-        }
-
-        public void AddFromXmlSpecFlowSection(ProjectBuilder project, string specFlowSection, bool ignoreUnitTestProvider = true)
-        {
+            ProjectBuilder project = _solutionDriver.DefaultProject;
             var configSection = ConfigurationSectionHandler.CreateFromXml(specFlowSection);
             var appConfigConfigurationLoader = new AppConfigConfigurationLoader();
 
@@ -37,11 +29,6 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             foreach (string stepAssemblyName in specFlowConfiguration.AdditionalStepAssemblies)
             {
                 _configurationDriver.AddStepAssembly(new StepAssembly(stepAssemblyName));
-            }
-
-            if (!ignoreUnitTestProvider)
-            {
-                _configurationDriver.SetUnitTestProvider(project, specFlowConfiguration.UnitTestProvider);
             }
 
             _configurationDriver.SetBindingCulture(project, specFlowConfiguration.BindingCulture);

@@ -65,7 +65,10 @@ namespace SpecFlow.Tools.MsBuild.Generation
             object innerTask = Activator.CreateInstance(innerTaskType);
 
             var executeInnerMethod = innerTaskType.GetMethod("GenerateFilesForProject", BindingFlags.Instance | BindingFlags.Public);
-            var result = (IEnumerable<string>)executeInnerMethod.Invoke(innerTask, new object[]{ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), ProjectFolder, OutputPath });
+
+            var parameters = new object[]{ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), ProjectFolder, OutputPath };
+            var result = (IEnumerable<string>)executeInnerMethod.Invoke(innerTask, parameters);
+
             return result;
         }
 
