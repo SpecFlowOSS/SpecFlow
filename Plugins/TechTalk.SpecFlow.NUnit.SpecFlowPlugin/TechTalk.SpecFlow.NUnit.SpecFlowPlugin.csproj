@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(SpecFlow_Runtime_TFM)</TargetFrameworks>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
+  </ItemGroup>
+
+</Project>
