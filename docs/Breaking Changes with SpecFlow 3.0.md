@@ -1,0 +1,8 @@
+- Plugin Interface was changed
+- GeneratorPlugins are configured with MSBuild
+- RuntimePlugins are configured by References
+- NUnit >= 3.8 supported
+- MSTest V2 >= 1.3 supported
+- XUnit >= 2.3.1 supported
+- specflow.exe is gone
+- Code Behind File generation is always done via MSBuild Task 
