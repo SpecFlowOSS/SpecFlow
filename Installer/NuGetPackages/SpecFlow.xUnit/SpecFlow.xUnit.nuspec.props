@@ -1,13 +1,16 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup Label="SpecFlow.xUnit">
     
-
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\App.config.transform">
-      <targetFolder>SpecFlow.xUnit\content</targetFolder>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\Debug\$(SpecFlow_FullFramework_Runtime_TFM)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.*">
+      <targetFolder>SpecFlow.xUnit\lib\$(SpecFlow_FullFramework_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\Debug\net45\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.*">
-      <targetFolder>SpecFlow.xUnit\lib\net45</targetFolder>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\Debug\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll">
+      <targetFolder>SpecFlow.xUnit\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\Debug\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.pdb">
+      <targetFolder>SpecFlow.xUnit\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
   </ItemGroup>

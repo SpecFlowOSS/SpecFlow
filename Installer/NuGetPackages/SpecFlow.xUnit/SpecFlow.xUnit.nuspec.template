@@ -16,7 +16,7 @@
     <tags>specflow xUnit</tags>
     <dependencies>
       <dependency id="SpecFlow" version="[1.0.0-alpha]" />
-      <dependency id="xunit" version="[2.3.1,)" />
+      <dependency id="xunit.core" version="2.3.1" />
     </dependencies>
   </metadata>
 </package>
