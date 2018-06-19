@@ -1,15 +1,15 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup Label="SpecFlow.MsTest">
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\bin\Debug\$(SpecFlow_FullFramework_Runtime_TFM)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.*">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\bin\$(Configuration)\$(SpecFlow_FullFramework_Runtime_TFM)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.*">
       <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_FullFramework_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\bin\Debug\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll">
       <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\bin\Debug\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.pdb">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.pdb">
       <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
