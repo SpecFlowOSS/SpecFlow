@@ -29,6 +29,14 @@
       <targetFolder>SpecFlow.CustomPlugin\lib\net461</targetFolder>
     </additionalFiles>
 
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.dll">
+      <targetFolder>SpecFlow.CustomPlugin\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.pdb">
+      <targetFolder>SpecFlow.CustomPlugin\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
+    </additionalFiles>
+
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\Gherkin-LICENSE-MIT.txt">
       <targetFolder>SpecFlow.CustomPlugin\lib\net461\Licenses</targetFolder>
     </additionalFiles>
