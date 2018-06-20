@@ -18,7 +18,6 @@
     <Compile Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
     <EmbeddedResource Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
     <None Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
-    <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
   </ItemGroup>
 
 

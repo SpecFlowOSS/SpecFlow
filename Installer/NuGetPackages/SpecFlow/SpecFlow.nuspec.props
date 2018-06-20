@@ -1,43 +1,27 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup Label="SpecFlow">
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\net45\TechTalk.SpecFlow.dll">
-      <targetFolder>SpecFlow\lib\net45</targetFolder>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\$(SpecFlow_FullFramework_Runtime_TFM)\TechTalk.SpecFlow.dll">
+      <targetFolder>SpecFlow\lib\$(SpecFlow_FullFramework_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\net45\TechTalk.SpecFlow.pdb">
-      <targetFolder>SpecFlow\lib\net45</targetFolder>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\$(SpecFlow_FullFramework_Runtime_TFM)\TechTalk.SpecFlow.pdb">
+      <targetFolder>SpecFlow\lib\$(SpecFlow_FullFramework_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\App.config.transform">
-      <targetFolder>SpecFlow\content</targetFolder>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.dll">
+      <targetFolder>SpecFlow\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.pdb">
+      <targetFolder>SpecFlow\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\*.txt">
       <targetFolder>SpecFlow</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\net471\$(Configuration)\*.dll">
-      <targetFolder>SpecFlow\tools</targetFolder>
-    </additionalFiles>
-
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\net471\$(Configuration)\*.exe">
-      <targetFolder>SpecFlow\tools</targetFolder>
-    </additionalFiles>
-
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\net471\$(Configuration)\*.config">
-      <targetFolder>SpecFlow\tools</targetFolder>
-    </additionalFiles>
-
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\net471\$(Configuration)\*.pdb">
-      <targetFolder>SpecFlow\tools</targetFolder>
-    </additionalFiles>
-
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\net471\$(Configuration)\MsBuild\*">
-      <targetFolder>SpecFlow\tools</targetFolder>
-    </additionalFiles>
-
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Licenses\*">
-      <targetFolder>SpecFlow\tools\Licenses</targetFolder>
+      <targetFolder>SpecFlow\Licenses</targetFolder>
     </additionalFiles>
   </ItemGroup>
 </Project>
