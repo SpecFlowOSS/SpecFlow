@@ -6,8 +6,10 @@ namespace TechTalk.SpecFlow.UnitTestProvider
     {
         public void UseUnitTestProvider(string unitTestProviderName)
         {
-            //throws an exception if UnitTestProvider is already set
-            if(!UnitTestProvider.IsNullOrEmpty())
+            if (unitTestProviderName.IsNullOrEmpty())
+                throw new ArgumentNullException();
+
+            if (UnitTestProvider.IsNotNullOrEmpty())
                 throw new Exception("Unit test Provider already set.");
 
             UnitTestProvider = unitTestProviderName;
