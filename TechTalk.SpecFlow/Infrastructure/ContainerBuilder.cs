@@ -58,9 +58,9 @@ namespace TechTalk.SpecFlow.Infrastructure
                 container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
 
             container.RegisterInstanceAs(specFlowConfiguration);
-
-            if (specFlowConfiguration.UnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(specFlowConfiguration.UnitTestProvider));
+            
+            if (unitTestProviderConfigration != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(unitTestProviderConfigration.UnitTestProvider ?? ConfigDefaults.UnitTestProviderName));
 
             runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, specFlowConfiguration);
 
@@ -68,8 +68,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             return container;
         }
-
-       
 
         public virtual IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
         {

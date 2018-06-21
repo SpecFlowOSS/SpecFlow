@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
@@ -49,8 +50,8 @@ namespace TechTalk.SpecFlow.Generator
 
             container.RegisterInstanceAs(container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language));
 
-            if (specFlowConfiguration.SpecFlowConfiguration.UnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.SpecFlowConfiguration.UnitTestProvider));
+            if (unitTestProviderConfigration != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(unitTestProviderConfigration.UnitTestProvider ?? ConfigDefaults.UnitTestProviderName));
 
             generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
 

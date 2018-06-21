@@ -13,5 +13,7 @@
       <targetFolder>SpecFlow.xUnit\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
+    <SpecFlowGeneratorPlugins Include="Path to Generator Plugin dll" />
+
   </ItemGroup>
 </Project>

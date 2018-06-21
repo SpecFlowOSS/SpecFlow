@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             specflowProjectfile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
             specflowProjectfile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();
-            specflowProjectfile.Configuration.SpecFlowConfiguration.UnitTestProvider.Should().Be("MSTest");
+            //specflowProjectfile.Configuration.SpecFlowConfiguration.UnitTestProvider.Should().Be("MSTest");
             specflowProjectfile.Configuration.SpecFlowConfiguration.FeatureLanguage.Name.Should().Be("en-US");
         }
 

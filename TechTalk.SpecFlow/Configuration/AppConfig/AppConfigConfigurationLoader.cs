@@ -16,12 +16,13 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
         public Configuration.SpecFlowConfiguration LoadAppConfig(Configuration.SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException(nameof(configSection));
+            
 
             ContainerRegistrationCollection runtimeContainerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
+            //string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
@@ -78,19 +79,19 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 }
             }
 
-            if (IsSpecified(configSection.UnitTestProvider))
-            {
-                if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
-                {
-                    //compatibility mode, we simulate a custom dependency
-                    runtimeUnitTestProvider = "custom";
-                    runtimeContainerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
-                }
-                else
-                {
-                    runtimeUnitTestProvider = configSection.UnitTestProvider.Name;
-                }
-            }
+            //if (IsSpecified(configSection.UnitTestProvider))
+            //{
+            //    if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
+            //    {
+            //        //compatibility mode, we simulate a custom dependency
+            //        runtimeUnitTestProvider = "custom";
+            //        runtimeContainerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
+            //    }
+            //    else
+            //    {
+            //        runtimeUnitTestProvider = configSection.UnitTestProvider.Name;
+            //    }
+            //}
 
 
             if (IsSpecified(configSection.Trace))
@@ -128,7 +129,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             bindingCulture,
-                                            runtimeUnitTestProvider,
+                                            //runtimeUnitTestProvider,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,

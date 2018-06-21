@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
 {
     public class RuntimePlugin : IRuntimePlugin
     {
-        public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration = null)
+        public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
-            
+            unitTestProviderConfiguration.UseUnitTestProvider("nunit");
         }
     }
 }

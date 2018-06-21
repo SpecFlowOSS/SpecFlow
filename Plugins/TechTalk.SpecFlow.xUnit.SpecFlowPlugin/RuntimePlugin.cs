@@ -15,6 +15,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
             runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
+            unitTestProviderConfiguration.UseUnitTestProvider("xunit");
         }
 
         private void RuntimePluginEvents_CustomizeScenarioDependencies(object sender, CustomizeScenarioDependenciesEventArgs e)

@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Configuration
             ContainerRegistrationCollection generatorCustomDependencies,
             CultureInfo featureLanguage,
             CultureInfo bindingCulture,
-            string unitTestProvider,
+            //string unitTestProvider,
             bool stopAtFirstError,
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome,
             bool traceSuccessfulSteps,
@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Configuration
             GeneratorCustomDependencies = generatorCustomDependencies;
             FeatureLanguage = featureLanguage;
             BindingCulture = bindingCulture;
-            UnitTestProvider = unitTestProvider;
+            //UnitTestProvider = unitTestProvider;
             StopAtFirstError = stopAtFirstError;
             MissingOrPendingStepsOutcome = missingOrPendingStepsOutcome;
             TraceSuccessfulSteps = traceSuccessfulSteps;
@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.Configuration
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
-        public string UnitTestProvider { get; set; }
+        //public string UnitTestProvider { get; set; }
 
         //runtime settings
         public bool StopAtFirstError { get; set; }
@@ -107,7 +107,9 @@ namespace TechTalk.SpecFlow.Configuration
 
         protected bool Equals(SpecFlowConfiguration other)
         {
-            return ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) && Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies) && Equals(FeatureLanguage, other.FeatureLanguage)&& Equals(BindingCulture, other.BindingCulture) && string.Equals(UnitTestProvider, other.UnitTestProvider) && StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles && AllowRowTests == other.AllowRowTests && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings && MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle && Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable && Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags) 
+            return ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) && Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies) && Equals(FeatureLanguage, other.FeatureLanguage)&& Equals(BindingCulture, other.BindingCulture) 
+                   //&& string.Equals(UnitTestProvider, other.UnitTestProvider) 
+                   && StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles && AllowRowTests == other.AllowRowTests && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings && MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle && Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable && Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags) 
               && Equals(ObsoleteBehavior, other.ObsoleteBehavior);
         }
 
@@ -128,7 +130,7 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode * 397) ^ (GeneratorCustomDependencies != null ? GeneratorCustomDependencies.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FeatureLanguage != null ? FeatureLanguage.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (UnitTestProvider != null ? UnitTestProvider.GetHashCode() : 0);
+                //hashCode = (hashCode * 397) ^ (UnitTestProvider != null ? UnitTestProvider.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ StopAtFirstError.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int) MissingOrPendingStepsOutcome;
                 hashCode = (hashCode * 397) ^ AllowDebugGeneratedFiles.GetHashCode();

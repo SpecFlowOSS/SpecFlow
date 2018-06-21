@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
-            string unitTestProvider = specFlowConfiguration.UnitTestProvider;
+            //string unitTestProvider = specFlowConfiguration.UnitTestProvider;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
@@ -55,13 +55,13 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 }
             }
 
-            if (specFlowElement.UnitTestProvider != null)
-            {
-                if (specFlowElement.UnitTestProvider.Name.IsNotNullOrWhiteSpace())
-                {
-                    unitTestProvider = specFlowElement.UnitTestProvider.Name;
-                }
-            }
+            //if (specFlowElement.UnitTestProvider != null)
+            //{
+            //    if (specFlowElement.UnitTestProvider.Name.IsNotNullOrWhiteSpace())
+            //    {
+            //        unitTestProvider = specFlowElement.UnitTestProvider.Name;
+            //    }
+            //}
 
             if (specFlowElement.Runtime != null)
             {
@@ -112,7 +112,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             bindingCulture,
-                                            unitTestProvider,
+                                            //unitTestProvider,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,
