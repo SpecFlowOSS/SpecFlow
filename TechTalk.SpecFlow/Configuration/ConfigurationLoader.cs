@@ -140,7 +140,6 @@ namespace TechTalk.SpecFlow.Configuration
                 new ContainerRegistrationCollection(), 
                 DefaultFeatureLanguage, 
                 DefaultBindingCulture, 
-                //DefaultUnitTestProvider, 
                 DefaultStopAtFirstError, 
                 DefaultMissingOrPendingStepsOutcome,
                 DefaultTraceSuccessfulSteps, 

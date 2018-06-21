@@ -22,7 +22,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
-            //string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
@@ -79,21 +78,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 }
             }
 
-            //if (IsSpecified(configSection.UnitTestProvider))
-            //{
-            //    if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
-            //    {
-            //        //compatibility mode, we simulate a custom dependency
-            //        runtimeUnitTestProvider = "custom";
-            //        runtimeContainerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
-            //    }
-            //    else
-            //    {
-            //        runtimeUnitTestProvider = configSection.UnitTestProvider.Name;
-            //    }
-            //}
-
-
             if (IsSpecified(configSection.Trace))
             {
                 if (!string.IsNullOrEmpty(configSection.Trace.Listener)) // backwards compatibility
@@ -129,7 +113,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             bindingCulture,
-                                            //runtimeUnitTestProvider,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,

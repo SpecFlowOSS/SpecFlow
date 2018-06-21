@@ -82,19 +82,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.BindingCulture.TwoLetterISOLanguageName.Should().Be("de");
         }
 
-        //[Fact]
-        //public void CheckUnitTestProvider()
-        //{
-        //    string config = @"<specflow><unitTestProvider name=""XUnit"" /></specflow>";
-
-        //    var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-        //    var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-        //    runtimeConfig.UnitTestProvider.Should().Be("XUnit");
-        //}
-
-
         [Fact]
         public void Check_Runtime_stopAtFirstError_as_true()
         {
