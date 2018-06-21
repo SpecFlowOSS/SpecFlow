@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
     {
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
-            unitTestProviderConfiguration.UseUnitTestProvider("mstest.v1");
+            unitTestProviderConfiguration.UseUnitTestProvider("mstest");
         }
     }
 }

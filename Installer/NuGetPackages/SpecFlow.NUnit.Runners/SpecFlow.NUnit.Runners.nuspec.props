@@ -1,7 +1,5 @@
 ﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
   <ItemGroup Label="SpecFlow.NUnit.Runners">
     
-    <SpecFlowGeneratorPlugins Include="Path to Generator Plugin dll" />
-  
   </ItemGroup>
 </Project>
