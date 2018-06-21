@@ -14,6 +14,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.UnitTestProvider;
 using DefaultDependencyProvider = TechTalk.SpecFlow.Generator.DefaultDependencyProvider;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -87,7 +88,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
             CreateDefaultContainer(configurationHolder);
 
-            pluginMock.Verify(p => p.Initialize(It.IsAny<GeneratorPluginEvents>(), It.Is<GeneratorPluginParameters>(pp => pp.Parameters == "foo, bar")));
+            pluginMock.Verify(p => p.Initialize(It.IsAny<GeneratorPluginEvents>(), It.Is<GeneratorPluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
         }
 
         private SpecFlowConfigurationHolder GetConfigWithPlugin()
@@ -143,7 +144,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         public class PluginWithCustomDependency : IGeneratorPlugin
         {
-            public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters)
+            public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 generatorPluginEvents.RegisterDependencies += (sender, args) => args.ObjectContainer.RegisterTypeAs<CustomDependency, ICustomDependency>();
             }
@@ -151,7 +152,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         public class PluginWithCustomization : IGeneratorPlugin
         {
-            public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters)
+            public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 generatorPluginEvents.CustomizeDependencies += (sender, args) =>
                 {
@@ -159,6 +160,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                         args.ObjectContainer.RegisterTypeAs<CustomHeaderWriter, ITestHeaderWriter>();
                 };
             }
+            
         }
 
         public class PluginWithCustomConfiguration : IGeneratorPlugin
@@ -170,7 +172,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 this.specifyDefaults = specifyDefaults;
             }
 
-            public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters)
+            public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 generatorPluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.SpecFlowProjectConfiguration); };
             }

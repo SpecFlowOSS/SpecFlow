@@ -11,6 +11,7 @@ using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -19,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         public class PluginWithCustomDependency : IRuntimePlugin
         {
-            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 runtimePluginEvents.RegisterGlobalDependencies += (sender, args) => args.ObjectContainer.RegisterTypeAs<CustomDependency, ICustomDependency>();
             }
@@ -41,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
             }
 
-            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 runtimePluginEvents.CustomizeGlobalDependencies += (sender, args) =>
                                                                    {
@@ -60,7 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 this.specifyDefaults = specifyDefaults;
             }
 
-            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 runtimePluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.SpecFlowConfiguration); };
             }
@@ -75,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 _specificTestRunnerDependencies = specificTestRunnerDependencies;
             }
 
-            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 runtimePluginEvents.CustomizeTestThreadDependencies += (sender, args) => { _specificTestRunnerDependencies(args.ObjectContainer); };
             }
@@ -90,7 +91,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 _specificScenarioDependencies = specificScenarioDependencies;
             }
 
-            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 runtimePluginEvents.CustomizeScenarioDependencies += (sender, args) => { _specificScenarioDependencies(args.ObjectContainer); };
             }
@@ -181,7 +182,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
             TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
 
-            pluginMock.Verify(p => p.Initialize(It.IsAny<RuntimePluginEvents>(), It.Is<RuntimePluginParameters>(pp => pp.Parameters == "foo, bar")));
+            pluginMock.Verify(p => p.Initialize(It.IsAny<RuntimePluginEvents>(), It.Is<RuntimePluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
         }
 
         [Fact]

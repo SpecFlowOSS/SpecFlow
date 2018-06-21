@@ -1,6 +1,7 @@
 ﻿using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.UnitTestProvider;
 using TechTalk.SpecFlow.xUnit.SpecFlowPlugin;
 
 
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 {
     public class RuntimePlugin : IRuntimePlugin
     {
-        public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+        public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
             runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
         }
