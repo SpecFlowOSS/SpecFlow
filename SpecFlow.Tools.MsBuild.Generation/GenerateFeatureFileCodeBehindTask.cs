@@ -26,6 +26,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public ITaskItem[] FeatureFiles { get; set; }
 
+        public ITaskItem[] GeneratorPlugins { get; set; }
+
         [Output]
         public ITaskItem[] GeneratedFiles { get; set; }
 

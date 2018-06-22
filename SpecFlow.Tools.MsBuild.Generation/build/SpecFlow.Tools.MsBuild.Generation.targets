@@ -25,7 +25,8 @@
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
       FeatureFiles="@(SpecFlowFeatureFiles)"
-      RootNamespace="$(RootNamespace)">
+      RootNamespace="$(RootNamespace)"
+      GeneratorPlugins="@(SpecFlowGeneratorPlugins)" >
       
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>

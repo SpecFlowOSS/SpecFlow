@@ -1,0 +1,14 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
+
+  <PropertyGroup>
+
+    <_SpecFlow_NUnitPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.0</_SpecFlow_NUnitPlugin>
+    <_SpecFlow_NUnitPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_NUnitPlugin>
+    <_SpecFlow_NUnitPluginPath>..\tasks\$(_SpecFlow_NUnitPlugin)\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll</_SpecFlow_NUnitPluginPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SpecFlowGeneratorPlugins Include="$(_SpecFlow_NUnitPluginPath)" />
+  </ItemGroup>
+
+</Project>

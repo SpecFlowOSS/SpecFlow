@@ -13,7 +13,9 @@
       <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
-    <SpecFlowGeneratorPlugins Include="Path to Generator Plugin dll" />
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\build\**\*">
+      <targetFolder>SpecFlow.MsTest\build</targetFolder>
+    </additionalFiles>
 
   </ItemGroup>
 </Project>
