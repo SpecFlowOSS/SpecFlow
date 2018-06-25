@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,10 +12,10 @@ namespace TechTalk.SpecFlow.Plugins
         {
             var allRuntimePlugins = new List<string>();
 
-            var currentAssembly = Assembly.GetCallingAssembly();
-            string currentDirectory = Path.GetDirectoryName(currentAssembly.Location);
+            //var currentAssembly = Assembly.GetCallingAssembly();
+            //string currentDirectory = Path.GetDirectoryName(currentAssembly.Location);
 
-            var pluginAssemblies = Directory.EnumerateFiles(currentDirectory, "*.SpecFlowPlugin.dll", SearchOption.TopDirectoryOnly);
+            var pluginAssemblies = Directory.EnumerateFiles(Environment.CurrentDirectory, "*.SpecFlowPlugin.dll", SearchOption.TopDirectoryOnly);
 
 
             foreach (var referencedAssembly in pluginAssemblies)
