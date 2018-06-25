@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BoDi;
 using FluentAssertions;
@@ -19,7 +20,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         
         public FeatureGeneratorRegistryTests()
         {
-            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
         }
 
         private FeatureGeneratorRegistry CreateFeatureGeneratorRegistry()
@@ -102,7 +103,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Should_FeatureGeneratorRegistry_be_registered_as_IFeatureGeneratorRegistry_by_default()
         {
-            var testContainer = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            var testContainer = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
 
             var registry = testContainer.Resolve<IFeatureGeneratorRegistry>();
 

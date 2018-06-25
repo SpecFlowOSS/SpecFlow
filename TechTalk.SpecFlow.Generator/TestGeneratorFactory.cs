@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -14,9 +15,9 @@ namespace TechTalk.SpecFlow.Generator
             return GeneratorVersion;
         }
 
-        public ITestGenerator CreateGenerator(ProjectSettings projectSettings)
+        public ITestGenerator CreateGenerator(ProjectSettings projectSettings, IEnumerable<string> generatorPlugins)
         {
-            var container = GeneratorContainerBuilder.CreateContainer(projectSettings.ConfigurationHolder, projectSettings);
+            var container = GeneratorContainerBuilder.CreateContainer(projectSettings.ConfigurationHolder, projectSettings, generatorPlugins);
             return container.Resolve<ITestGenerator>();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TechTalk.SpecFlow.Generator;
@@ -15,7 +16,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private SpecFlowProject _specFlowProject;
         private ITestGenerator _testGenerator;
 
-        public void InitializeProject(string projectPath, string rootNamespace)
+        public void InitializeProject(string projectPath, string rootNamespace, IEnumerable<string> generatorPlugins)
         {
             _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath), rootNamespace);
 
@@ -24,7 +25,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _codeDomHelper = GetCodeDomHelper(_projectSettings);
             var testGeneratorFactory = new TestGeneratorFactory();
 
-            _testGenerator = testGeneratorFactory.CreateGenerator(_projectSettings);
+            _testGenerator = testGeneratorFactory.CreateGenerator(_projectSettings, generatorPlugins);
         }
 
 

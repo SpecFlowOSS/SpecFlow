@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
@@ -9,6 +10,6 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     public interface ITestGeneratorFactory
     {
         Version GetGeneratorVersion();
-        ITestGenerator CreateGenerator(ProjectSettings projectSettings);
+        ITestGenerator CreateGenerator(ProjectSettings projectSettings, IEnumerable<string> generatorPlugins);
     }
 }

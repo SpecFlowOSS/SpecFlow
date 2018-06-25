@@ -95,7 +95,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private IEnumerable<string> GenerateFilesForProject()
         {
             var generator = new FeatureFileCodeBehindGenerator();
-            return generator.GenerateFilesForProject(ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), ProjectFolder, OutputPath);
+            var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
+            return generator.GenerateFilesForProject(ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), generatorPlugins, ProjectFolder, OutputPath);
         }
 #endif
     }

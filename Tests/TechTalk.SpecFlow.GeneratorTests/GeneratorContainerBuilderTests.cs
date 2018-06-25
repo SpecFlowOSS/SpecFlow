@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -15,14 +16,14 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Should_create_a_container()
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
             container.Should().NotBeNull();
         }
 
         [Fact]
         public void Should_register_generator_configuration_with_default_config()
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
             container.Resolve<Configuration.SpecFlowConfiguration>().Should().NotBeNull();
         }
 
@@ -32,7 +33,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.AppConfig, @"
                 <specFlow>
                   <generator allowDebugGeneratedFiles=""true"" /><!-- default is false -->
-                </specFlow>"), new ProjectSettings());
+                </specFlow>"), new ProjectSettings(), Enumerable.Empty<string>());
             container.Resolve<SpecFlowConfiguration>().AllowDebugGeneratedFiles.Should().Be(true);
         }
     }
