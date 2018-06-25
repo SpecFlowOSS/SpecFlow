@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     {
         public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
+            //unitTestProviderConfiguration.UseUnitTestProvider("specs-multiple-configurations");
             generatorPluginEvents.RegisterDependencies += GeneratorPluginEvents_RegisterDependencies;
             generatorPluginEvents.CustomizeDependencies += GeneratorPluginEvents_CustomizeDependencies;
         }
