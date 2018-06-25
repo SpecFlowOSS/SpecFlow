@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BoDi;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
@@ -125,21 +126,20 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             // load & initalize parameters from configuration
+            var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            foreach (var pluginDescriptor in configurationProvider.GetPlugins(specFlowConfiguration).Where(pd => (pd.Type & PluginType.Runtime) != 0))
+            foreach (var pluginAssemblyName in pluginLocator.GetAllRuntimePlugins())
             {
-                LoadPlugin(pluginDescriptor, pluginLoader, runtimePluginEvents, unitTestProviderConfigration);
+                LoadPlugin(pluginAssemblyName, pluginLoader, runtimePluginEvents, unitTestProviderConfigration);
             }
         }
 
-        protected virtual void LoadPlugin(PluginDescriptor pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
+        protected virtual void LoadPlugin(string pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
             UnitTestProviderConfiguration unitTestProviderConfigration)
         {
             var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
-            var runtimePluginParameters = new RuntimePluginParameters
-            {
-                Parameters = pluginDescriptor.Parameters
-            };
+            var runtimePluginParameters = new RuntimePluginParameters();
+
             plugin.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
         }
 
