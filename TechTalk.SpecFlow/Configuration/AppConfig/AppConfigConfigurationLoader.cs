@@ -5,9 +5,7 @@ using System.Globalization;
 using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
-using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
@@ -29,7 +27,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
-            List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
@@ -97,17 +94,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            var pluginNames = pluginDescriptors.Select(m => m.Name).ToList();
-
-            foreach (PluginConfigElement plugin in configSection.Plugins)
-            {
-                var pluginDescriptor = plugin.ToPluginDescriptor();
-                if (pluginNames.Contains(pluginDescriptor.Name))
-                    continue;
-                pluginDescriptors.Add(pluginDescriptor);
-                pluginNames.Add(plugin.Name);
-            }
-
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
@@ -120,7 +106,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             minTracedDuration,
                                             stepDefinitionSkeletonStyle,
                                             additionalStepAssemblies,
-                                            pluginDescriptors,
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             markFeaturesParallelizable,

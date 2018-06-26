@@ -9,7 +9,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
     {
         SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder);
         SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration);
-        IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder);
     }
 
     public static class GeneratorConfigurationProviderExtensions

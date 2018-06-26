@@ -56,7 +56,6 @@ namespace TechTalk.SpecFlow.Configuration
         private static StepDefinitionSkeletonStyle DefaultStepDefinitionSkeletonStyle => ConfigDefaults.StepDefinitionSkeletonStyle;
 
         private static List<string> DefaultAdditionalStepAssemblies => new List<string>();
-        private static List<PluginDescriptor> DefaultPluginDescriptors => new List<PluginDescriptor>();
         private static bool DefaultAllowDebugGeneratedFiles => ConfigDefaults.AllowDebugGeneratedFiles;
         private static bool DefaultAllowRowTests => ConfigDefaults.AllowRowTests;
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
@@ -147,7 +146,6 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultMinTracedDuration,
                 DefaultStepDefinitionSkeletonStyle, 
                 DefaultAdditionalStepAssemblies, 
-                DefaultPluginDescriptors,
                 DefaultAllowDebugGeneratedFiles, 
                 DefaultAllowRowTests,
                 DefaultMarkFeaturesParallelizable,

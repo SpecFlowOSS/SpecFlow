@@ -17,9 +17,5 @@ namespace TechTalk.SpecFlow.Configuration
             return _configurationLoader.Load(specFlowConfiguration);
         }
 
-        public IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfiguration specFlowConfiguration)
-        {
-            return specFlowConfiguration.Plugins;
-        }
     }
 }

@@ -31,7 +31,6 @@ namespace TechTalk.SpecFlow.Configuration
             TimeSpan minTracedDuration,
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle,
             List<string> additionalStepAssemblies,
-            List<PluginDescriptor> pluginDescriptors,
             bool allowDebugGeneratedFiles,
             bool allowRowTests,
             bool markFeaturesParallelizable,
@@ -50,7 +49,6 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = minTracedDuration;
             StepDefinitionSkeletonStyle = stepDefinitionSkeletonStyle;
             AdditionalStepAssemblies = additionalStepAssemblies;
-            Plugins = pluginDescriptors;
             AllowDebugGeneratedFiles = allowDebugGeneratedFiles;
             AllowRowTests = allowRowTests;
             MarkFeaturesParallelizable = markFeaturesParallelizable;
@@ -85,19 +83,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public List<string> AdditionalStepAssemblies { get; set; }
 
-        public List<PluginDescriptor> Plugins { get; set; }
-
         public bool MarkFeaturesParallelizable { get; set; }
         public string[] SkipParallelizableMarkerForTags { get; set; }
-
-        public static IEnumerable<PluginDescriptor> GetPlugins()
-        {
-            var section = (ConfigurationSectionHandler) ConfigurationManager.GetSection("specFlow");
-            if (section == null || section.Plugins == null)
-                return Enumerable.Empty<PluginDescriptor>();
-
-            return section.Plugins.Select(pce => pce.ToPluginDescriptor());
-        }
 
         protected bool Equals(SpecFlowConfiguration other)
         {
@@ -106,7 +93,7 @@ namespace TechTalk.SpecFlow.Configuration
                    && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles 
                    && AllowRowTests == other.AllowRowTests && ObsoleteBehavior == other.ObsoleteBehavior && TraceSuccessfulSteps == other.TraceSuccessfulSteps 
                    && TraceTimings == other.TraceTimings && MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle 
-                   && Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable 
+                   && Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable 
                    && Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags);
         }
 
@@ -149,7 +136,6 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode * 397) ^ MinTracedDuration.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)StepDefinitionSkeletonStyle;
                 hashCode = (hashCode * 397) ^ (AdditionalStepAssemblies != null ? AdditionalStepAssemblies.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Plugins != null ? Plugins.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ MarkFeaturesParallelizable.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SkipParallelizableMarkerForTags != null ? SkipParallelizableMarkerForTags.GetHashCode() : 0);
                 return hashCode;

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using BoDi;
-
 using TechTalk.SpecFlow.BindingSkeletons;
-using TechTalk.SpecFlow.Plugins;
 using Utf8Json;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
@@ -30,7 +27,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
-            List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
@@ -85,19 +81,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 }
             }
 
-            if (specFlowElement.Plugins != null)
-            {
-                var pluginNames = pluginDescriptors.Select(m => m.Name).ToList();
-                foreach (var pluginEntry in specFlowElement.Plugins)
-                {
-                    if (pluginNames.Contains(pluginEntry.Name))
-                        continue;
-                    pluginDescriptors.Add(new PluginDescriptor(pluginEntry.Name, pluginEntry.Path, pluginEntry.Type, pluginEntry.Parameters));
-                    pluginNames.Add(pluginEntry.Name);
-                }
-            }
-
-
             return new SpecFlowConfiguration(ConfigSource.Json,
                                             containerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
@@ -110,7 +93,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             minTracedDuration,
                                             stepDefinitionSkeletonStyle,
                                             additionalStepAssemblies,
-                                            pluginDescriptors,
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             markFeaturesParallelizable,

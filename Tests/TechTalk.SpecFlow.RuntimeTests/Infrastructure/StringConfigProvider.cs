@@ -27,20 +27,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         }
 
-        public IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfiguration specFlowConfiguration)
-        {
-            return LoadConfiguration(specFlowConfiguration).Plugins;
-        }
-
-        public IEnumerable<PluginDescriptor> GetPlugins()
-        {
-            ConfigurationSectionHandler section = GetSection();
-            if (section == null || section.Plugins == null)
-                return Enumerable.Empty<PluginDescriptor>();
-
-            return section.Plugins.Select(pce => pce.ToPluginDescriptor());
-        }
-
         private ConfigurationSectionHandler GetSection()
         {
             XmlDocument configDocument = new XmlDocument();
