@@ -29,11 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         [Theory]
         [InlineData(@"<specFlow>
     <language feature=""en"" tool=""en"" /> 
-
-    <unitTestProvider name=""NUnit"" 
-                      generatorProvider=""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow""
-                      runtimeProvider=""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow"" />
-
+    
     <generator allowDebugGeneratedFiles=""false"" />
     
     <runtime detectAmbiguousMatches=""true""
