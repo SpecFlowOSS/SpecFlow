@@ -167,23 +167,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
         }
 
-        [Fact]
-        public void Should_be_able_to_specify_a_plugin_with_parameters()
-        {
-            StringConfigProvider configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-              <configuration>
-                <specFlow>
-                  <plugins>
-                    <add name=""MyCompany.MyPlugin"" parameters=""foo, bar"" />
-                  </plugins>
-                </specFlow>
-              </configuration>"));
-            var pluginMock = new Mock<IRuntimePlugin>();
-            ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
-            TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
+        //[Fact]
+        //public void Should_be_able_to_specify_a_plugin_with_parameters()
+        //{
+        //    StringConfigProvider configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+        //      <configuration>
+        //        <specFlow>
+        //          <plugins>
+        //            <add name=""MyCompany.MyPlugin"" parameters=""foo, bar"" />
+        //          </plugins>
+        //        </specFlow>
+        //      </configuration>"));
+        //    var pluginMock = new Mock<IRuntimePlugin>();
+        //    ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
+        //    TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
 
-            pluginMock.Verify(p => p.Initialize(It.IsAny<RuntimePluginEvents>(), It.Is<RuntimePluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
-        }
+        //    pluginMock.Verify(p => p.Initialize(It.IsAny<RuntimePluginEvents>(), It.Is<RuntimePluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
+        //}
 
         [Fact]
         public void Should_be_able_to_register_dependencies_from_a_plugin()

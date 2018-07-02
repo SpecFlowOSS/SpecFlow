@@ -23,37 +23,41 @@ namespace TechTalk.SpecFlow.GeneratorTests
     public class GeneratorPluginTests
     {
         [Fact]
-        public void Should_be_able_to_specify_a_plugin()
-        {
-            var configurationHolder = GetConfigWithPlugin();
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new Mock<IGeneratorPlugin>().Object);
-            CreateDefaultContainer(configurationHolder);
-        }
-
-        [Fact]
         public void Should_be_able_to_register_dependencies_from_a_plugin()
         {
-            var configurationHolder = GetConfigWithPlugin();
+            var pluginWithCustomDependency = new PluginWithCustomDependency();
+            var generatorPluginEvents = new GeneratorPluginEvents();
+            
+            pluginWithCustomDependency.Initialize(generatorPluginEvents, new GeneratorPluginParameters(), new UnitTestProviderConfiguration());
 
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomDependency());
-            var container = CreateDefaultContainer(configurationHolder);
-            var customDependency = container.Resolve<ICustomDependency>();
+
+            var objectContainer = new ObjectContainer();
+            generatorPluginEvents.RaiseRegisterDependencies(objectContainer);
+
+
+            var customDependency = objectContainer.Resolve<ICustomDependency>();
             customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
         [Fact]
         public void Should_be_able_to_change_default_configuration_from_a_plugin()
         {
-            var configurationHolder = GetConfigWithPlugin();
+            var pluginWithCustomConfiguration = new PluginWithCustomConfiguration(conf => conf.SpecFlowConfiguration.StopAtFirstError = true);
+            var generatorPluginEvents = new GeneratorPluginEvents();
 
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.SpecFlowConfiguration.StopAtFirstError = true));
-            var container = CreateDefaultContainer(configurationHolder);
-            var runtimeConfiguration = container.Resolve<SpecFlowProjectConfiguration>();
-            runtimeConfiguration.SpecFlowConfiguration.StopAtFirstError.Should().BeTrue();
+            pluginWithCustomConfiguration.Initialize(generatorPluginEvents, new GeneratorPluginParameters(), new UnitTestProviderConfiguration());
+            
+            var specFlowProjectConfiguration = new SpecFlowProjectConfiguration();
+            generatorPluginEvents.RaiseConfigurationDefaults(specFlowProjectConfiguration);
+
+
+
+
+            specFlowProjectConfiguration.SpecFlowConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
         [Fact]
-        public void Should_be_able_to_register_further_dependencies_based_on_the_configuration()
+        public void Should_be_able_to_register_further_dependencies_based_on_the_configuration() //generatorPluginEvents.RaiseCustomizeDependencies();
         {
             var configurationHolder = GetConfigWithPlugin();
 
@@ -76,20 +80,20 @@ namespace TechTalk.SpecFlow.GeneratorTests
             customHeaderWriter.Should().BeOfType<CustomHeaderWriter>();
         }
 
-        [Fact]
-        public void Should_be_able_to_specify_a_plugin_with_parameters()
-        {
-            var configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
-                  <plugins>
-                    <add name=""MyCompany.MyPlugin"" parameters=""foo, bar"" />
-                  </plugins>
-                </specFlow>"));
-            var pluginMock = new Mock<IGeneratorPlugin>();
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
-            CreateDefaultContainer(configurationHolder);
+        //[Fact]
+        //public void Should_be_able_to_specify_a_plugin_with_parameters()
+        //{
+        //    var configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
+        //          <plugins>
+        //            <add name=""MyCompany.MyPlugin"" parameters=""foo, bar"" />
+        //          </plugins>
+        //        </specFlow>"));
+        //    var pluginMock = new Mock<IGeneratorPlugin>();
+        //    GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
+        //    CreateDefaultContainer(configurationHolder);
 
-            pluginMock.Verify(p => p.Initialize(It.IsAny<GeneratorPluginEvents>(), It.Is<GeneratorPluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
-        }
+        //    pluginMock.Verify(p => p.Initialize(It.IsAny<GeneratorPluginEvents>(), It.Is<GeneratorPluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
+        //}
 
         private SpecFlowConfigurationHolder GetConfigWithPlugin()
         {
