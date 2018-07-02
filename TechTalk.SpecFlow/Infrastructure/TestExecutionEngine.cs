@@ -8,7 +8,6 @@ using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -123,9 +122,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             contextManager.CleanupFeatureContext();
         }
 
-        public void OnScenarioStart(ScenarioInfo scenarioInfo)
+        public void OnScenarioInitialize(ScenarioInfo scenarioInfo)
         {
             contextManager.InitializeScenarioContext(scenarioInfo);
+        }
+
+        public void OnScenarioStart()
+        {
             FireScenarioEvents(HookType.BeforeScenario);
         }
 

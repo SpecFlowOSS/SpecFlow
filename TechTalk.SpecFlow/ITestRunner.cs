@@ -1,6 +1,3 @@
-using System;
-using TechTalk.SpecFlow.Infrastructure;
-
 namespace TechTalk.SpecFlow
 {
     public interface ITestRunner
@@ -16,7 +13,10 @@ namespace TechTalk.SpecFlow
 
         void OnFeatureStart(FeatureInfo featureInfo);
         void OnFeatureEnd();
-        void OnScenarioStart(ScenarioInfo scenarioInfo);
+
+        void OnScenarioInitialize(ScenarioInfo scenarioInfo);
+        void OnScenarioStart();
+
         void CollectScenarioErrors();
         void OnScenarioEnd();
 
