@@ -59,23 +59,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Should_be_able_to_register_further_dependencies_based_on_the_configuration() //generatorPluginEvents.RaiseCustomizeDependencies();
         {
-            var configurationHolder = GetConfigWithPlugin();
+            var pluginWithCustomization = new PluginWithCustomization();
+            var generatorPluginEvents = new GeneratorPluginEvents();
 
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomization());
+            pluginWithCustomization.Initialize(generatorPluginEvents, new GeneratorPluginParameters(), new UnitTestProviderConfiguration());
 
-            // with default settings, the plugin should not change the header writer
-            var container = CreateDefaultContainer(configurationHolder);
-            var testHeaderWriter = container.Resolve<ITestHeaderWriter>();
-            testHeaderWriter.Should().BeOfType<TestHeaderWriter>();
+            var container = new ObjectContainer();
+            var specFlowProjectConfiguration = new SpecFlowProjectConfiguration();
+            generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowProjectConfiguration);
+            container.ResolveAll<ITestHeaderWriter>().Should().BeEmpty();
 
-            // with StopAtFirstError == true, we should get a custom factory
-            var specialConfiguratuion = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
-                  <plugins>
-                    <add name=""MyCompany.MyPlugin"" />
-                  </plugins>
-                  <runtime stopAtFirstError=""true"" />
-                </specFlow>"));
-            container = CreateDefaultContainer(specialConfiguratuion);
+            specFlowProjectConfiguration.SpecFlowConfiguration.StopAtFirstError = true;
+            generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowProjectConfiguration);
+            
             var customHeaderWriter = container.Resolve<ITestHeaderWriter>();
             customHeaderWriter.Should().BeOfType<CustomHeaderWriter>();
         }
