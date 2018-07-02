@@ -254,7 +254,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             Action resolveAction = () => container.Resolve<ICustomDependency>();
 
-            resolveAction.ShouldThrow<ObjectContainerException>();            
+            resolveAction.Should().Throw<ObjectContainerException>();            
         }
 
         [Fact]

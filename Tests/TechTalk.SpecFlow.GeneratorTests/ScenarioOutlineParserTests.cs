@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(feature), null);
 
-            act.ShouldThrow<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
+            act.Should().Throw<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
                 .And.Location.Line.Should().Be(2);
         }
 
@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(feature), null);
 
-            act.ShouldThrow<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
+            act.Should().Throw<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
                 .And.Location.Line.Should().Be(2);
         }
 
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(feature), null);
 
-            act.ShouldThrow<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
+            act.Should().Throw<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
                 .And.Location.Line.Should().Be(2);
         }
 
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var expectedErrors = new List<SemanticParserException> { new SemanticParserException("Scenario Outline 'No Examples' has no examples defined", new Location(2, 29)),
                 new SemanticParserException("Scenario Outline 'Still no Examples' has no examples defined", new Location(3, 29))};
 
-            act.ShouldThrow<CompositeParserException>().And.Errors.ShouldBeEquivalentTo(expectedErrors);
+            act.Should().Throw<CompositeParserException>().And.Errors.Should().BeEquivalentTo(expectedErrors);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(feature), null);
 
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
         }
     }
 }
