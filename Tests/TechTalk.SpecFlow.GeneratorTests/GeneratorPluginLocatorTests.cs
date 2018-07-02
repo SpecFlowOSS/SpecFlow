@@ -217,7 +217,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             // Assert
             action
-                .ShouldThrow<SpecFlowException>()
+                .Should().Throw<SpecFlowException>()
                 .WithMessage("Unable to find plugin in the plugin search path: SampleGenerator. Please check http://go.specflow.org/doc-plugins for details.");
         }
 
@@ -242,7 +242,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             // Assert
             action
-                .ShouldThrow<SpecFlowException>()
+                .Should().Throw<SpecFlowException>()
                 .WithMessage("Unable to find plugin in the plugin search path: SampleGenerator. Please check http://go.specflow.org/doc-plugins for details.");
         }
     }

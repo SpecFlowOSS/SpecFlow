@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -28,7 +29,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_be_able_to_create_generator_with_default_config()
         {
             net35CSProjectSettings.ConfigurationHolder = new SpecFlowConfigurationHolder(ConfigSource.Default, null);
-            factory.CreateGenerator(net35CSProjectSettings).Should().NotBeNull();
+            factory.CreateGenerator(net35CSProjectSettings, Enumerable.Empty<string>()).Should().NotBeNull();
         }
 
         private class DummyGenerator : ITestGenerator
@@ -70,7 +71,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var projectSettings = net35CSProjectSettings;
             projectSettings.ConfigurationHolder = configurationHolder;
-            var generator = factory.CreateGenerator(projectSettings);
+            var generator = factory.CreateGenerator(projectSettings, Enumerable.Empty<string>());
             generator.Should().BeOfType<DummyGenerator>();
         }
     }

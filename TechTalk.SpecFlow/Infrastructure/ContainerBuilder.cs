@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BoDi;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
@@ -46,7 +47,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
             specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
 
-            LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration);
+            var unitTestProviderConfigration = container.Resolve<UnitTestProviderConfiguration>();
+
+            LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration, unitTestProviderConfigration);
 
             runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
@@ -56,9 +59,9 @@ namespace TechTalk.SpecFlow.Infrastructure
                 container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
 
             container.RegisterInstanceAs(specFlowConfiguration);
-
-            if (specFlowConfiguration.UnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(specFlowConfiguration.UnitTestProvider));
+            
+            if (unitTestProviderConfigration != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(unitTestProviderConfigration.UnitTestProvider ?? ConfigDefaults.UnitTestProviderName));
 
             runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, specFlowConfiguration);
 
@@ -66,8 +69,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             return container;
         }
-
-       
 
         public virtual IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
         {
@@ -114,31 +115,32 @@ namespace TechTalk.SpecFlow.Infrastructure
             return featureContainer;
         }
 
-        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents, SpecFlowConfiguration specFlowConfiguration)
+        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents,
+            SpecFlowConfiguration specFlowConfiguration, UnitTestProviderConfiguration unitTestProviderConfigration)
         {
             // initialize plugins that were registered from code
             foreach (var runtimePlugin in container.Resolve<IDictionary<string, IRuntimePlugin>>().Values)
             {
                 // these plugins cannot have parameters
-                runtimePlugin.Initialize(runtimePluginEvents, new RuntimePluginParameters());
+                runtimePlugin.Initialize(runtimePluginEvents, new RuntimePluginParameters(), unitTestProviderConfigration);
             }
 
             // load & initalize parameters from configuration
+            var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            foreach (var pluginDescriptor in configurationProvider.GetPlugins(specFlowConfiguration).Where(pd => (pd.Type & PluginType.Runtime) != 0))
+            foreach (var pluginAssemblyName in pluginLocator.GetAllRuntimePlugins())
             {
-                LoadPlugin(pluginDescriptor, pluginLoader, runtimePluginEvents);
+                LoadPlugin(pluginAssemblyName, pluginLoader, runtimePluginEvents, unitTestProviderConfigration);
             }
         }
 
-        protected virtual void LoadPlugin(PluginDescriptor pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents)
+        protected virtual void LoadPlugin(string pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
+            UnitTestProviderConfiguration unitTestProviderConfigration)
         {
             var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
-            var runtimePluginParameters = new RuntimePluginParameters
-            {
-                Parameters = pluginDescriptor.Parameters
-            };
-            plugin.Initialize(runtimePluginEvents, runtimePluginParameters);
+            var runtimePluginParameters = new RuntimePluginParameters();
+
+            plugin.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
         }
 
         protected virtual void RegisterDefaults(ObjectContainer container)

@@ -23,8 +23,7 @@ Scenario: Steps can defined in an external .NET (e.g. c# or VB.NET) project
         <specFlow>                             
             <stepAssemblies>                         
                 <stepAssembly assembly="ExternalSteps" />    
-            </stepAssemblies>                   
-            <unitTestProvider name="xunit" />
+            </stepAssemblies>
         </specFlow>
         """
     When I execute the tests
@@ -48,8 +47,7 @@ Scenario: Steps can defined in an external F# project
         <specFlow>                             
             <stepAssemblies>
                 <stepAssembly assembly="ExternalSteps_FSharp" />    
-            </stepAssemblies>           
-            <unitTestProvider name="xunit" />
+            </stepAssemblies>
         </specFlow>
         """
     When I execute the tests

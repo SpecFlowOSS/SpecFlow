@@ -5,9 +5,7 @@ using System.Globalization;
 using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
-using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
@@ -16,12 +14,12 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
         public Configuration.SpecFlowConfiguration LoadAppConfig(Configuration.SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException(nameof(configSection));
+            
 
             ContainerRegistrationCollection runtimeContainerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
@@ -29,7 +27,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
-            List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
@@ -78,21 +75,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 }
             }
 
-            if (IsSpecified(configSection.UnitTestProvider))
-            {
-                if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
-                {
-                    //compatibility mode, we simulate a custom dependency
-                    runtimeUnitTestProvider = "custom";
-                    runtimeContainerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
-                }
-                else
-                {
-                    runtimeUnitTestProvider = configSection.UnitTestProvider.Name;
-                }
-            }
-
-
             if (IsSpecified(configSection.Trace))
             {
                 if (!string.IsNullOrEmpty(configSection.Trace.Listener)) // backwards compatibility
@@ -112,23 +94,11 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            var pluginNames = pluginDescriptors.Select(m => m.Name).ToList();
-
-            foreach (PluginConfigElement plugin in configSection.Plugins)
-            {
-                var pluginDescriptor = plugin.ToPluginDescriptor();
-                if (pluginNames.Contains(pluginDescriptor.Name))
-                    continue;
-                pluginDescriptors.Add(pluginDescriptor);
-                pluginNames.Add(plugin.Name);
-            }
-
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             bindingCulture,
-                                            runtimeUnitTestProvider,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,
@@ -136,7 +106,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             minTracedDuration,
                                             stepDefinitionSkeletonStyle,
                                             additionalStepAssemblies,
-                                            pluginDescriptors,
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             markFeaturesParallelizable,

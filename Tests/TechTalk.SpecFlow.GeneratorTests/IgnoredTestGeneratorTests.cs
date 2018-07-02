@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             
         public IgnoredTestGeneratorTests()
         {
-            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
             unitTestGeneratorProviderMock = new Mock<IUnitTestGeneratorProvider>();
             container.RegisterInstanceAs(unitTestGeneratorProviderMock.Object);
         }

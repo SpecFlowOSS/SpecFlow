@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -83,7 +84,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private static IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings());
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
             var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
             specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
             specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??

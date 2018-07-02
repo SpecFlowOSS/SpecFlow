@@ -13,5 +13,21 @@
       <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_Core_Runtime_TFM)</targetFolder>
     </additionalFiles>
 
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin\bin\$(Configuration)\$(SpecFlow_FullFramework_Generator_TFM)\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.*">
+      <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_FullFramework_Generator_TFM)</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.dll">
+      <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_Core_Generator_TFM)</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\Plugins\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin\bin\$(Configuration)\$(SpecFlow_Core_Runtime_TFM)\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.pdb">
+      <targetFolder>SpecFlow.MsTest\lib\$(SpecFlow_Core_Generator_TFM)</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\build\**\*">
+      <targetFolder>SpecFlow.MsTest\build</targetFolder>
+    </additionalFiles>
+
   </ItemGroup>
 </Project>

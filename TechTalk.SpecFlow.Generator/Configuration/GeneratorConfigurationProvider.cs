@@ -23,13 +23,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         {
             return _configurationLoader.Load(specFlowConfiguration);
         }
-
-        public IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder)
-        {
-            var config = LoadConfiguration(specFlowConfiguration, specFlowConfigurationHolder);
-            return config.Plugins;
-        }
-
+        
         internal virtual void UpdateConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
             configuration.SpecFlowConfiguration = _configurationLoader.Update(configuration.SpecFlowConfiguration, specFlowConfigSection);

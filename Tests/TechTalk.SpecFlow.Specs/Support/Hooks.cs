@@ -30,6 +30,7 @@ namespace TechTalk.SpecFlow.Specs.Support
         public void BeforeScenario()
         {
             _currentVersionDriver.NuGetVersion = VersionInfo.NuGetVersion;
+            _currentVersionDriver.SpecFlowNuGetVersion = VersionInfo.NuGetVersion;
             _scenarioContext.ScenarioContainer.RegisterTypeAs<OutputConnector, IOutputWriter>();
         }
 

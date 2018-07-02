@@ -12,11 +12,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         //[JsonProperty("bindingCulture", NullValueHandling = NullValueHandling.Ignore)]
         [DataMember(Name = "bindingCulture")]
         public BindingCultureElement BindingCulture { get; set; }
-
-        //[JsonProperty("unitTestProvider", NullValueHandling = NullValueHandling.Ignore)]
-        [DataMember(Name = "unitTestProvider")]
-        public UnitTestProviderElement UnitTestProvider { get; set; }
-
+        
         //[JsonProperty("runtime", NullValueHandling = NullValueHandling.Ignore)]
         [DataMember(Name = "runtime")]
         public RuntimeElement Runtime { get; set; }
@@ -33,9 +29,5 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         //[JsonProperty("stepAssemblies", NullValueHandling = NullValueHandling.Ignore)]
         [DataMember(Name = "stepAssemblies")]
         public List<StepAssemblyElement> StepAssemblies { get; set; }
-
-        //[JsonProperty("plugins", NullValueHandling = NullValueHandling.Ignore)]
-        [DataMember(Name = "plugins")]
-        public List<PluginElement> Plugins { get; set; }
     }
 }

@@ -29,11 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         [Theory]
         [InlineData(@"<specFlow>
     <language feature=""en"" tool=""en"" /> 
-
-    <unitTestProvider name=""NUnit"" 
-                      generatorProvider=""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow""
-                      runtimeProvider=""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow"" />
-
+    
     <generator allowDebugGeneratedFiles=""false"" />
     
     <runtime detectAmbiguousMatches=""true""
@@ -81,19 +77,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             runtimeConfig.BindingCulture.TwoLetterISOLanguageName.Should().Be("de");
         }
-
-        [Fact]
-        public void CheckUnitTestProvider()
-        {
-            string config = @"<specflow><unitTestProvider name=""XUnit"" /></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.UnitTestProvider.Should().Be("XUnit");
-        }
-
 
         [Fact]
         public void Check_Runtime_stopAtFirstError_as_true()
@@ -346,139 +329,5 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies[1].Should().Be("testEntry2");
         }
 
-        [Fact]
-        public void Check_Plugins_IsEmpty()
-        {
-            string config = @"<specflow><plugins /></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Check_Plugins_NotInConfigFile()
-        {
-            string config = @"<specflow></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Check_Plugins_OneEntry()
-        {
-            string config = @"<specflow><plugins><add name=""testEntry""/></plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins.First().Name.Should().Be("testEntry");
-        }
-
-        [Fact]
-        public void Check_Plugins_PluginPath()
-        {
-            string config = @"<specflow><plugins><add name=""testEntry"" path=""path_to_assembly""/></plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins.First().Path.Should().Be("path_to_assembly");
-        }
-
-        [Fact]
-        public void Check_Plugins_Parameters()
-        {
-            string config = @"<specflow><plugins><add name=""testEntry"" parameters=""pluginParameter""/></plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins.First().Parameters.Should().Be("pluginParameter");
-        }
-
-        [Fact]
-        public void Check_Plugins_PluginType_Runtime()
-        {
-            string config = @"<specflow><plugins><add name=""testEntry"" type=""Runtime""/></plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins.First().Type.Should().Be(PluginType.Runtime);
-        }
-
-        [Fact]
-        public void Check_Plugins_PluginType_Generator()
-        {
-            string config = @"<specflow><plugins><add name=""testEntry"" type=""Generator""/></plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins.First().Type.Should().Be(PluginType.Generator);
-        }
-
-        [Fact]
-        public void Check_Plugins_PluginType_GeneratorAndRuntime()
-        {
-            string config = @"<specflow><plugins><add name=""testEntry"" type=""GeneratorAndRuntime""/></plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins.First().Type.Should().Be(PluginType.GeneratorAndRuntime);
-        }
-
-        [Fact]
-        public void Check_Plugins_TwoEntry()
-        {
-            string config = @"<specflow><plugins>
-                                <add name=""testEntry1""/>
-                                <add name=""testEntry2""/>
-                              </plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(2);
-            runtimeConfig.Plugins[0].Name.Should().Be("testEntry1");
-            runtimeConfig.Plugins[1].Name.Should().Be("testEntry2");
-        }
-
-        [Fact]
-        public void Check_Plugins_TwoSameNameEntry()
-        {
-            string config = @"<specflow><plugins>
-                                <add name=""testEntry""/>
-                                <add name=""testEntry""/>
-                              </plugins></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.Plugins.Count.Should().Be(1);
-            runtimeConfig.Plugins[0].Name.Should().Be("testEntry");
-        }
     }
 }

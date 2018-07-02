@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(""), null);
 
-            act.ShouldNotThrow();
+            act.Should().NotThrow();
         }
     }
 }

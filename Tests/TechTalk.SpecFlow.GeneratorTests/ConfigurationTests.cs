@@ -12,11 +12,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         private const string ConfigWithParallelCodeGenerationOptions =
             @"<specFlow>
                 <language feature=""en"" tool=""en"" /> 
-
-                <unitTestProvider name=""NUnit"" 
-                                    generatorProvider=""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow""
-                                    runtimeProvider=""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow"" />
-
+                
                 <generator allowDebugGeneratedFiles=""false""
                            markFeaturesParallelizable=""true"">
                     <skipParallelizableMarkerForTags>

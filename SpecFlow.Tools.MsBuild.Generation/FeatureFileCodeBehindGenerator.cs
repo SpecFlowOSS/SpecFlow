@@ -17,12 +17,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _filePathGenerator = new FilePathGenerator();
         }
 
-        public IEnumerable<string> GenerateFilesForProject(string projectPath, string rootNamespace, List<string> featureFiles, string projectFolder, string outputPath)
+        public IEnumerable<string> GenerateFilesForProject(string projectPath, string rootNamespace, List<string> featureFiles, List<string> generatorPlugins, string projectFolder, string outputPath)
         {
 
             using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator())
             {
-                featureCodeBehindGenerator.InitializeProject(projectPath, rootNamespace);
+                featureCodeBehindGenerator.InitializeProject(projectPath, rootNamespace, generatorPlugins);
 
                 var codeBehindWriter = new CodeBehindWriter(null);
                 if (featureFiles != null)

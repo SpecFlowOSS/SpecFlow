@@ -94,44 +94,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             }
         }
 
-        [Fact]
-        public void Should_be_able_to_specify_custom_unit_test_provider_in_config()
-        {
-            var configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-              <configuration>
-                <specFlow>
-                  <runtime>  
-                    <dependencies>
-                      <register type=""{0}"" as=""{1}"" name=""myprovider""/>
-                    </dependencies>
-                  </runtime>
-                  <unitTestProvider name=""myprovider"" />
-                </specFlow>
-              </configuration>",
-                typeof(CustomUnitTestProvider).AssemblyQualifiedName,
-                typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName));
-
-            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
-            var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
-            unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
-        }
-
-        [Fact]
-        public void Should_be_able_to_specify_custom_unit_test_provider_in_config_compatible_way()
-        {
-            var configurationHolder = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-              <configuration>
-                <specFlow>
-                  <unitTestProvider name=""myprovider"" runtimeProvider=""{0}"" />
-                </specFlow>
-              </configuration>",
-                typeof(CustomUnitTestProvider).AssemblyQualifiedName));
-
-            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
-            var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
-            unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
-        }
-
         public void Dispose()
         {
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;

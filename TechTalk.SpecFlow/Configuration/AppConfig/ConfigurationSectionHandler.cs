@@ -21,13 +21,6 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["bindingCulture"] = value; }
         }
 
-        [ConfigurationProperty("unitTestProvider", IsRequired = false)]
-        public UnitTestProviderConfigElement UnitTestProvider
-        {
-            get { return (UnitTestProviderConfigElement)this["unitTestProvider"]; }
-            set { this["unitTestProvider"] = value; }
-        }
-
         [ConfigurationProperty("generator", IsRequired = false)]
         public GeneratorConfigElement Generator
         {
@@ -56,15 +49,7 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (StepAssemblyCollection)this["stepAssemblies"]; }
             set { this["stepAssemblies"] = value; }
         }
-
-        [ConfigurationProperty("plugins", IsDefaultCollection = false, IsRequired = false)]
-        [ConfigurationCollection(typeof(PluginCollection), AddItemName = "add")]
-        public PluginCollection Plugins
-        {
-            get { return (PluginCollection)this["plugins"]; }
-            set { this["plugins"] = value; }
-        }
-
+        
         static public ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();

@@ -304,7 +304,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Action disposeAction = () => ((IDisposable) contextManager).Dispose();
 
-            disposeAction.ShouldNotThrow();
+            disposeAction.Should().NotThrow();
         }
 
         [Fact]
@@ -319,7 +319,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Action disposeAction = () => ((IDisposable)contextManager).Dispose();
 
-            disposeAction.ShouldNotThrow();
+            disposeAction.Should().NotThrow();
         }
 
         [Fact]
