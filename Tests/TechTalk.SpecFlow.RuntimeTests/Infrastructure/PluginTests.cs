@@ -152,19 +152,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
               <configuration>
                 <specFlow>
-                  <plugins>
-                    <add name=""MyCompany.MyPlugin"" />
-                  </plugins>
+                  
                 </specFlow>
               </configuration>"));
-        }
-
-        [Fact]
-        public void Should_be_able_to_specify_a_plugin()
-        {
-            StringConfigProvider configurationHolder = GetConfigWithPlugin();
-            ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new Mock<IRuntimePlugin>().Object);
-            TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
         }
 
         //[Fact]

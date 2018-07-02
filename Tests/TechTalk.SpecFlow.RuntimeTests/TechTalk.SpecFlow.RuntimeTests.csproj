@@ -15,9 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.NUnit.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
