@@ -128,16 +128,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             // load & initalize parameters from configuration
             var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
+            var traceListener = container.Resolve<ITraceListener>();
             foreach (var pluginAssemblyName in pluginLocator.GetAllRuntimePlugins())
             {
-                LoadPlugin(pluginAssemblyName, pluginLoader, runtimePluginEvents, unitTestProviderConfigration);
+                LoadPlugin(pluginAssemblyName, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
             }
         }
 
         protected virtual void LoadPlugin(string pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
-            UnitTestProviderConfiguration unitTestProviderConfigration)
+            UnitTestProviderConfiguration unitTestProviderConfigration, ITraceListener traceListener)
         {
-            var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
+            var plugin = pluginLoader.LoadPlugin(pluginDescriptor, traceListener);
             var runtimePluginParameters = new RuntimePluginParameters();
 
             plugin.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
