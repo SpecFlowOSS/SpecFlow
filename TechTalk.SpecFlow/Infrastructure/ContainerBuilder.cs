@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             var plugin = pluginLoader.LoadPlugin(pluginDescriptor, traceListener);
             var runtimePluginParameters = new RuntimePluginParameters();
 
-            plugin.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
+            plugin?.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
         }
 
         protected virtual void RegisterDefaults(ObjectContainer container)

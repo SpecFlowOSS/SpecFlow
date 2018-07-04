@@ -24,7 +24,10 @@ namespace TechTalk.SpecFlow.Plugins
 
             var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));
             if (pluginAttribute == null)
+            {
                 traceListener.WriteToolOutput(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
+                return null;
+            }
 
             if (!typeof(IRuntimePlugin).IsAssignableFrom((pluginAttribute.PluginType)))
                 throw new SpecFlowException(string.Format("Invalid plugin attribute in {0}. Plugin type must implement IRuntimePlugin. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
