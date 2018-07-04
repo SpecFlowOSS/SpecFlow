@@ -47,6 +47,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
             specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
 
+            if (specFlowConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
+
             var unitTestProviderConfigration = container.Resolve<UnitTestProviderConfiguration>();
 
             LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration, unitTestProviderConfigration);
@@ -54,10 +57,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
-
-            if (specFlowConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
-
+            
             container.RegisterInstanceAs(specFlowConfiguration);
             
             if (unitTestProviderConfigration != null)
