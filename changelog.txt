@@ -6,6 +6,7 @@ New Features:
 + IGherkinParser and IGherkinParserFactory interfaces added to support Gherkin Parser pluggability https://github.com/techtalk/SpecFlow/pull/1143
 + Assist: remove accents from column headers and property names when comparing objects to a table https://github.com/techtalk/SpecFlow/pull/1096
 + MSBuild Generation: Experimental support for deleting code-behind files on clean and rebuild
++ Added NUnit current TestContext scenario container registration. See https://github.com/techtalk/SpecFlow/issues/936
 
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
@@ -13,6 +14,7 @@ Fixes:
 + Comparing Guid with string using case insensitivity to prevent throwing unnecessary exceptions https://github.com/techtalk/SpecFlow/pull/1145
 + MSBuild Generation: Visual Studio Incremental Build does not always regenerate files on feature file changes https://github.com/techtalk/SpecFlow/pull/1167
 + Fixed test body generation order for outline tests https://github.com/techtalk/SpecFlow/pull/1168
++ Fix XUnit ITestOutputhelper and MSTest TestContext container registrations so that they are available in BeforeScenario hooks. See https://github.com/techtalk/SpecFlow/issues/936
 
 2.3.2 - 2018-04-17
 Fixes:

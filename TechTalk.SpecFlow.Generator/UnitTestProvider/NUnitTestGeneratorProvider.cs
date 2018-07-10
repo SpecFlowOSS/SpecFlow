@@ -1,7 +1,7 @@
-using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using BoDi;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -18,6 +18,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
         protected const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
         protected const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
+        protected const string TESTCONTEXT_TYPE = "NUnit.Framework.TestContext";
+        protected const string TESTCONTEXT_INSTANCE = "NUnit.Framework.TestContext.CurrentContext";
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
@@ -51,7 +53,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            // by default, doing nothing to the final generated code
+            // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<NUnit.Framework.TestContext>(NUnit.Framework.TestContext.CurrentContext);
+            generationContext.ScenarioInitializeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeMethodReferenceExpression(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
+                                nameof(ScenarioContext)),
+                            nameof(ScenarioContext.ScenarioContainer)),
+                        nameof(IObjectContainer.RegisterInstanceAs),
+                        new CodeTypeReference(TESTCONTEXT_TYPE)),
+                    new CodeVariableReferenceExpression(TESTCONTEXT_INSTANCE)));
         }
 
         public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
@@ -97,7 +110,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             CodeDomHelper.AddAttribute(testMethod, IGNORE_ATTR);
         }
-
 
         public void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
