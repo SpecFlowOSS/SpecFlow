@@ -1,8 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Runtime_TFM)</TargetFrameworks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.0" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />

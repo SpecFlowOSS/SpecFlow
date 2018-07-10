@@ -14,6 +14,14 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
             unitTestProviderConfiguration.UseUnitTestProvider("mstest");
+            runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
+        }
+
+        private void RuntimePluginEvents_CustomizeScenarioDependencies(object sender, CustomizeScenarioDependenciesEventArgs e)
+        {
+            var container = e.ObjectContainer;
+
+            container.RegisterTypeAs<MSTestTraceListener, ITraceListener>();
         }
     }
 }
