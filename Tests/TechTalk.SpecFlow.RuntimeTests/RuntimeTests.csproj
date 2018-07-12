@@ -95,6 +95,7 @@
     <Compile Include="AssistTests\SituationalTests\NullableEnumTests.cs" />
     <Compile Include="AssistTests\TableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestsWithFuncAndTableArgument.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperStandardTypesTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests_WithFunc.cs" />
