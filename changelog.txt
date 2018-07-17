@@ -16,6 +16,7 @@ Fixes:
 + Fixed test body generation order for outline tests https://github.com/techtalk/SpecFlow/pull/1168
 + Update to Gherkin 5.1.0
 + Fix XUnit ITestOutputhelper and MSTest TestContext container registrations so that they are available in BeforeScenario hooks. See https://github.com/techtalk/SpecFlow/issues/936
++ fixed CompareToSet not flagging missing rows correctly with dash https://github.com/techtalk/SpecFlow/pull/1098
 
 2.3.2 - 2018-04-17
 Fixes:
