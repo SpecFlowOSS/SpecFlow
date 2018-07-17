@@ -49,6 +49,7 @@ New Features:
 + Add support for MSTest V2 and [DoNotParallelize] attributes https://github.com/techtalk/SpecFlow/pull/996
 + Environment variables are working in the plugin path https://github.com/techtalk/SpecFlow/pull/986
 + Update to latest Gherkin parser https://github.com/techtalk/SpecFlow/pull/1015
++ Array & List support for strings and enums when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1018
 
 Fixes:
 + Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967

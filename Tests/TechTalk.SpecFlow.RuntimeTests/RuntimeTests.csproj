@@ -95,6 +95,10 @@
     <Compile Include="AssistTests\SituationalTests\NullableEnumTests.cs" />
     <Compile Include="AssistTests\TableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithListOfEnums.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithArrayOfEnums.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithListOfValues.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithArrayOfValues.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperStandardTypesTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests_WithFunc.cs" />
@@ -126,6 +130,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\ByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\DateTimeOffsetValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumListValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_IsAValidGuidTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\LongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableByteValueRetrieverTests.cs" />
@@ -140,6 +145,9 @@
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUShortValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\SByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ShortValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumArrayValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringListValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringArrayValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\UIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_GetValueTests.cs" />
