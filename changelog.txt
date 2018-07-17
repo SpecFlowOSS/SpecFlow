@@ -7,6 +7,7 @@ New Features:
 + Assist: remove accents from column headers and property names when comparing objects to a table https://github.com/techtalk/SpecFlow/pull/1096
 + MSBuild Generation: Experimental support for deleting code-behind files on clean and rebuild
 + Added NUnit current TestContext scenario container registration. See https://github.com/techtalk/SpecFlow/issues/936
++ Array & List support for strings and enums when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1018
 
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
@@ -49,7 +50,6 @@ New Features:
 + Add support for MSTest V2 and [DoNotParallelize] attributes https://github.com/techtalk/SpecFlow/pull/996
 + Environment variables are working in the plugin path https://github.com/techtalk/SpecFlow/pull/986
 + Update to latest Gherkin parser https://github.com/techtalk/SpecFlow/pull/1015
-+ Array & List support for strings and enums when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1018
 
 Fixes:
 + Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
