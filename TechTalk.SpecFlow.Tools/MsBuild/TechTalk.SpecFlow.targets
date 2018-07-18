@@ -20,7 +20,6 @@
       $(CleanDependsOn)
     </CleanDependsOn>
     <RebuildDependsOn>
-      CleanFeatureFilesInProject;
       SwitchToForceGenerate;
       $(RebuildDependsOn)
     </RebuildDependsOn>
