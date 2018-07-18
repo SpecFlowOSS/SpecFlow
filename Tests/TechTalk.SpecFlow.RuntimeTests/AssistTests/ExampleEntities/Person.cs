@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 {
@@ -52,5 +54,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public string With_Underscore { get; set; }
 
         public string WithUmlauteäöü { get; set; }
+
+        public string[] StringArray { get; set; }
+        public List<string> StringList { get; set; }
+        public Language[] Languages { get; set; }
+        public IList<Language> LanguageList { get; set; }
+
     }
 }
