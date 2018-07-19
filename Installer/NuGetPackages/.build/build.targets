@@ -14,7 +14,24 @@
 
   <Target Name="GetGitVersion" BeforeTargets="NugetBuild">
     <CallTarget Targets="GetVersion" />
+    <CallTarget Targets="CreateNuspecFiles" />
     <CallTarget Targets="UpdatePackageVersion" />
+  </Target>
+
+  <Target Name="CreateNuspecFiles">
+    <ItemGroup>
+      <NuspecTemplateFiles Include="$(MSBuildProjectDirectory)\**\*.nuspec.template" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(NuspecTemplateFiles)" DestinationFiles="@(NuspecTemplateFiles -> '%(RelativeDir)%(Filename)')"/>
+  </Target>
+
+  <Target Name="CleanNuspecFiles" BeforeTargets="NugetClean">
+    <ItemGroup>
+      <NuspecFiles Include="$(MSBuildProjectDirectory)\**\*.nuspec" />
+    </ItemGroup>
+
+    <Delete Files="@(NuspecFiles)" ContinueOnError="true" />
   </Target>
 
   <Target Name="UpdatePackageVersion" >
