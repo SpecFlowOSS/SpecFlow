@@ -20,7 +20,6 @@
       $(CleanDependsOn)
     </CleanDependsOn>
     <RebuildDependsOn>
-      CleanFeatureFilesInProject;
       SwitchToForceGenerate;
       $(RebuildDependsOn)
     </RebuildDependsOn>
@@ -60,7 +59,15 @@
   </Target>
 
   <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">
+    <!-- remove known codebehind files for existing feature files -->
     <Delete Files="%(SpecFlowFeatureFiles.CodeBehindFile)" ContinueOnError="true" />
+
+    <!-- remove obsolete codebehind files, scenarios:
+         - after rename operation
+         - after deletion of a feature file
+         - after pulling latest changes from version control with above changes
+     -->
+    <Delete Files="@(SpecFlowObsoleteCodeBehindFiles)" ContinueOnError="true" />
   </Target>
 
 </Project>
