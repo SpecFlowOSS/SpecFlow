@@ -104,7 +104,7 @@ Scenario: TraceListener should be called synchronously
             }
         }
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 5
         Scenario Outline: Simple Scenario Outline
@@ -118,7 +118,7 @@ Scenario: TraceListener should be called synchronously
         | 4     |
         | 5     |
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 3
         Scenario Outline: Simple Scenario Outline
@@ -132,7 +132,7 @@ Scenario: TraceListener should be called synchronously
         | 4     |
         | 5     |
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 4
         Scenario Outline: Simple Scenario Outline

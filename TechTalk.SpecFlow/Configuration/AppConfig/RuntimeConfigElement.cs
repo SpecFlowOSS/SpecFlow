@@ -12,14 +12,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             get { return (ContainerRegistrationCollection)this["dependencies"]; }
             set { this["dependencies"] = value; }
         }
-
-        [ConfigurationProperty("detectAmbiguousMatches", DefaultValue = ConfigDefaults.DetectAmbiguousMatches, IsRequired = false)]
-        public bool DetectAmbiguousMatches
-        {
-            get { return (bool)this["detectAmbiguousMatches"]; }
-            set { this["detectAmbiguousMatches"] = value; }
-        }
-
+        
         [ConfigurationProperty("stopAtFirstError", DefaultValue = ConfigDefaults.StopAtFirstError, IsRequired = false)]
         public bool StopAtFirstError
         {

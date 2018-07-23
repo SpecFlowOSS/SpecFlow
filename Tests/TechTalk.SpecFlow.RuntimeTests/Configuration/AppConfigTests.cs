@@ -32,8 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
     
     <generator allowDebugGeneratedFiles=""false"" />
     
-    <runtime detectAmbiguousMatches=""true""
-             stopAtFirstError=""false""
+    <runtime stopAtFirstError=""false""
              missingOrPendingStepsOutcome=""Inconclusive"" />
 
     <trace traceSuccessfulSteps=""true""
