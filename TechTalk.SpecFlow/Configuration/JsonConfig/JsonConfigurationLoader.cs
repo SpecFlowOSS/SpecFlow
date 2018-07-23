@@ -55,6 +55,14 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 missingOrPendingStepsOutcome = specFlowElement.Runtime.MissingOrPendingStepsOutcome;
                 stopAtFirstError = specFlowElement.Runtime.StopAtFirstError;
                 obsoleteBehavior = specFlowElement.Runtime.ObsoleteBehavior;
+
+                if (specFlowElement.Runtime.Dependencies != null)
+                {
+                    foreach (var runtimeDependency in specFlowElement.Runtime.Dependencies)
+                    {
+                        containerRegistrationCollection.Add(runtimeDependency.ImplementationType, runtimeDependency.InterfaceType);
+                    }
+                }
             }
 
             if (specFlowElement.Generator != null)

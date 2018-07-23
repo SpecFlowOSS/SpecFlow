@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
@@ -21,5 +22,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [DataMember(Name = "obsoleteBehavior")]
         [DefaultValue(ConfigDefaults.ObsoleteBehavior)]
         public ObsoleteBehavior ObsoleteBehavior { get; set; }
+
+        [DataMember(Name = "dependencies")]
+        public List<Dependency> Dependencies { get; set; }
     }
 }
