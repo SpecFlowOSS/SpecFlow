@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _solutionDriver.CompileSolution();
             _solutionDriver.CheckSolutionShouldHaveCompiled();
-            _vsTestExecution.Filter = $"TestCategory={tag}";
+            _vsTestExecution.Filter = $"Category={tag}|TestCategory={tag}";
             _vsTestExecution.ExecuteTests();
         }
     }
