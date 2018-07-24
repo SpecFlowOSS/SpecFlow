@@ -5,6 +5,10 @@
       <NuspecProperties>$(NuspecProperties);version=$(NuGetPackageVersion)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SolutionDir=$(SolutionDir)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);copyright=$(TechTalkCopyright)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Runtime_TFM=$(SpecFlow_FullFramework_Runtime_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Runtime_TFM=$(SpecFlow_Core_Runtime_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Generator_TFM=$(SpecFlow_FullFramework_Generator_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Generator_TFM=$(SpecFlow_Core_Generator_TFM)</NuspecProperties>
     </PropertyGroup>
   </Target>
 

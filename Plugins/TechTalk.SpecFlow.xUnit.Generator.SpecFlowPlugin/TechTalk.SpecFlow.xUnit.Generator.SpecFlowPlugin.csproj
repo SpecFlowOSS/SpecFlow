@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
+    <NuspecFile>$(MSBuildThisFileDirectory)SpecFlow.xUnit.nuspec</NuspecFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+
 
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
   </ItemGroup>
 
 </Project>
