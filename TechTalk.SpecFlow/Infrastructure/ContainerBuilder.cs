@@ -47,6 +47,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
             specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
 
+            if (specFlowConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
+
             var unitTestProviderConfigration = container.Resolve<UnitTestProviderConfiguration>();
 
             LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration, unitTestProviderConfigration);
@@ -54,10 +57,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
-
-            if (specFlowConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
-
+            
             container.RegisterInstanceAs(specFlowConfiguration);
             
             if (unitTestProviderConfigration != null)
@@ -128,19 +128,20 @@ namespace TechTalk.SpecFlow.Infrastructure
             // load & initalize parameters from configuration
             var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
+            var traceListener = container.Resolve<ITraceListener>();
             foreach (var pluginAssemblyName in pluginLocator.GetAllRuntimePlugins())
             {
-                LoadPlugin(pluginAssemblyName, pluginLoader, runtimePluginEvents, unitTestProviderConfigration);
+                LoadPlugin(pluginAssemblyName, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
             }
         }
 
         protected virtual void LoadPlugin(string pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
-            UnitTestProviderConfiguration unitTestProviderConfigration)
+            UnitTestProviderConfiguration unitTestProviderConfigration, ITraceListener traceListener)
         {
-            var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
+            var plugin = pluginLoader.LoadPlugin(pluginDescriptor, traceListener);
             var runtimePluginParameters = new RuntimePluginParameters();
 
-            plugin.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
+            plugin?.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
         }
 
         protected virtual void RegisterDefaults(ObjectContainer container)

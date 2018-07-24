@@ -27,8 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             },
             ""generator"": { ""allowDebugGeneratedFiles"": false , ""markFeaturesParallelizable"": false, 
                              ""skipParallelizableMarkerForTags"": [""mySpecialTag1"", ""mySpecialTag2""]},
-            ""runtime"": {
-              ""detectAmbiguousMatches"": true,
+            ""runtime"": {              
               ""stopAtFirstError"": false,
               ""missingOrPendingStepsOutcome"": ""Inconclusive""
             },

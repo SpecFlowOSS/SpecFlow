@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
@@ -15,11 +16,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly HooksDriver _hooksDriver;
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
+        private readonly TestProjectFolders _testProjectFolders;
 
-        public ExecutionResultSteps(HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver)
+        public ExecutionResultSteps(HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver, TestProjectFolders testProjectFolders)
         {
             _hooksDriver = hooksDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
+            _testProjectFolders = testProjectFolders;
         }
 
         [Then(@"all tests should pass")]
@@ -73,13 +76,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _vsTestExecutionDriver.CheckOutputContainsText(text);
         }
-
-        [Given(@"the log file '(.*)' is empty")]
-        public void GivenTheLogFileIsEmpty(string logFilePath)
-        {
-            File.WriteAllText(GetPath(logFilePath), "");
-        }
-
+        
         [Then(@"the log file '(.*)' should contain text '(.*)'")]
         public void ThenTheLogFileShouldContainText(string logFilePath, string text)
         {
@@ -103,7 +100,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
         private string GetPath(string logFilePath)
         {
-            string filePath = Path.Combine(Path.GetTempPath(), logFilePath);
+            string filePath = Path.Combine(_testProjectFolders.ProjectFolder, logFilePath);
             return filePath;
         }
 

@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
+using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -8,11 +9,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly SolutionDriver _solutionDriver;
         private readonly VSTestExecutionDriver _vsTestExecution;
+        private readonly TestRunConfiguration _testRunConfiguration;
 
-        public ExecutionSteps(SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecution)
+        public ExecutionSteps(SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecution, TestRunConfiguration testRunConfiguration)
         {
             _solutionDriver = solutionDriver;
             _vsTestExecution = vsTestExecution;
+            _testRunConfiguration = testRunConfiguration;
         }
 
         [When(@"I execute the tests")]
@@ -28,7 +31,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _solutionDriver.CompileSolution();
             _solutionDriver.CheckSolutionShouldHaveCompiled();
-            _vsTestExecution.Filter = $"TestCategory={tag}";
+            if (_testRunConfiguration.UnitTestProvider == TestProjectGenerator.UnitTestProvider.XUnit)
+                _vsTestExecution.Filter = $"Category={tag}";
+            else
+                _vsTestExecution.Filter = $"TestCategory={tag}";
             _vsTestExecution.ExecuteTests();
         }
     }

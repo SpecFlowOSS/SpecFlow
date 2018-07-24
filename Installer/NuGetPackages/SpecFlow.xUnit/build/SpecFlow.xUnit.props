@@ -7,6 +7,14 @@
     <_SpecFlow_xUnitPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_xUnitPlugin)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_xUnitPluginPath>
   </PropertyGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
+    <None Include="$(MSBuildThisFileDirectory)\..\lib\netstandard2.0\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>False</Visible>
+    </None>
+  </ItemGroup>
+
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(_SpecFlow_xUnitPluginPath)" />
   </ItemGroup>

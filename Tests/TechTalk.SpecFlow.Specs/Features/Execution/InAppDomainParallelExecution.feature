@@ -90,7 +90,7 @@ Scenario: TraceListener should be called synchronously
             {
                 var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
                 System.Diagnostics.Debug.WriteLine("NonThreadSafeTraceListener: {0}", message);
-                string filePath = Path.Combine(Path.GetTempPath(), "NonThreadSafeTraceListener.log");
+                string filePath = Path.Combine(@"$ProjectDir$", "NonThreadSafeTraceListener.log");
                 File.AppendAllText(filePath, "NonThreadSafeTraceListener: " + message + Environment.NewLine);
                 System.Threading.Thread.Sleep(100);
                 var afterStartIndex = startIndex;
@@ -104,7 +104,7 @@ Scenario: TraceListener should be called synchronously
             }
         }
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 5
         Scenario Outline: Simple Scenario Outline
@@ -118,7 +118,7 @@ Scenario: TraceListener should be called synchronously
         | 4     |
         | 5     |
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 3
         Scenario Outline: Simple Scenario Outline
@@ -132,7 +132,7 @@ Scenario: TraceListener should be called synchronously
         | 4     |
         | 5     |
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 4
         Scenario Outline: Simple Scenario Outline
@@ -146,8 +146,7 @@ Scenario: TraceListener should be called synchronously
         | 4     |
         | 5     |
         """
-    And the type 'NonThreadSafeTraceListener' is registered as 'TechTalk.SpecFlow.Tracing.ITraceListener' in SpecFlow runtime configuration
-    And the log file 'NonThreadSafeTraceListener.log' is empty
+    And the type 'NonThreadSafeTraceListener' is registered as 'TechTalk.SpecFlow.Tracing.ITraceListener' in SpecFlow runtime configuration    
     When I execute the tests
     Then the execution log should contain text 'Was parallel'
     Then the log file 'NonThreadSafeTraceListener.log' should contain text 'NonThreadSafeTraceListener:'

@@ -15,27 +15,11 @@ namespace TechTalk.SpecFlow.Plugins
             //var currentAssembly = Assembly.GetCallingAssembly();
             //string currentDirectory = Path.GetDirectoryName(currentAssembly.Location);
 
-            var pluginAssemblies = Directory.EnumerateFiles(Environment.CurrentDirectory, "*.SpecFlowPlugin.dll", SearchOption.TopDirectoryOnly);
+            var pluginAssemblies = Directory.EnumerateFiles(Environment.CurrentDirectory, "*.SpecFlowPlugin.dll", SearchOption.TopDirectoryOnly).ToList();
 
-
-            foreach (var referencedAssembly in pluginAssemblies)
-            {
-                if (IsRuntimePlugin(referencedAssembly))
-                {
-                    allRuntimePlugins.Add(Path.GetFullPath(referencedAssembly));
-                }
-            }
+            allRuntimePlugins.AddRange(pluginAssemblies.Select(Path.GetFullPath));
 
             return allRuntimePlugins;
-        }
-
-
-        public bool IsRuntimePlugin(string assemblyFile)
-        {
-            Assembly.ReflectionOnlyLoadFrom(GetType().Assembly.Location);
-            var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyFile);
-
-            return assembly.GetCustomAttributesData().Where(a => a.AttributeType.FullName == "TechTalk.SpecFlow.Plugins.RuntimePluginAttribute").Any();
         }
     }
 }

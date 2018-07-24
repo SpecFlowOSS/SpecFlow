@@ -22,9 +22,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 </generator>
                  
     
-                <runtime detectAmbiguousMatches=""true""
-                            stopAtFirstError=""false""
-                            missingOrPendingStepsOutcome=""Inconclusive"" />
+                <runtime stopAtFirstError=""false""
+                         missingOrPendingStepsOutcome=""Inconclusive"" />
 
                 <trace traceSuccessfulSteps=""true""
                         traceTimings=""false""
