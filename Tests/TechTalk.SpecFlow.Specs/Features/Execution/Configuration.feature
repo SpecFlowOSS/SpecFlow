@@ -1,4 +1,5 @@
-﻿@xunit @MsTest
+﻿@ignore
+@xunit @MsTest
 Feature: Configuration
 	
 Background: 
