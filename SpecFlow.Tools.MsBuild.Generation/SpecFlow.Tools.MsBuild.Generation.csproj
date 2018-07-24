@@ -2,17 +2,19 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Tools_TFM)</TargetFrameworks>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackPublishOutput</TargetsForTfmSpecificContentInPackage>
-    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
-    <NoPackageAnalysis>true</NoPackageAnalysis>
-    <!-- Change the default location where NuGet will put the build output -->
-    <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
+    
+
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
+    <NuspecFile>$(MSBuildThisFileDirectory)SpecFlow.Tools.MsBuild.Generation.nuspec</NuspecFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
+
 
   <ItemDefinitionGroup>
     <PackageReference>
@@ -30,30 +32,5 @@
     <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == ''">
-    <!-- include .props/.targets files -->
-    <None Include="build\**" Pack="true" PackagePath="build" />
-    <None Include="buildCrossTargeting\**" Pack="true" PackagePath="buildCrossTargeting" />
-  </ItemGroup>
-
-  <Target Name="PreparePublishToIntermediatePaths">
-    <PropertyGroup>
-      <PublishDir>$(IntermediateOutputPath)TmpPackPublish\</PublishDir>
-    </PropertyGroup>
-    <ItemGroup>
-      <_OldIntermediatePublishFiles Include="$(PublishDir)**\*.*" />
-    </ItemGroup>
-    <Delete Files="@(_OldIntermediatePublishFiles)" ContinueOnError="true" />
-    <RemoveDir Directories="$(PublishDir)" ContinueOnError="true" Condition="Exists('$(PublishDir)')" />
-    <MakeDir Directories="$(PublishDir)" Condition="!Exists('$(PublishDir)')" />
-  </Target>
-
-  <Target Name="PackPublishOutput" DependsOnTargets="PreparePublishToIntermediatePaths;Publish">
-    <ItemGroup>
-      <_IntermediatePublishFiles Include="$(PublishDir)**\*.*" />
-      <TfmSpecificPackageFile Include="@(_IntermediatePublishFiles)" PackagePath="build\$(TargetFramework)" />
-    </ItemGroup>
-  </Target>
-
+ 
 </Project>
