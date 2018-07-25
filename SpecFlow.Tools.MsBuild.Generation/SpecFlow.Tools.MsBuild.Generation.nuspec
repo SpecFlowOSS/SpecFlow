@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SpecFlow.Tools.MsBuild.Generation</id>
+    <version>$version$</version>
+    <title>SpecFlow.Tools.MsBuild.Generation</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <description>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</description>
+    <summary>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <licenseUrl>http://go.specflow.org/license</licenseUrl>
+    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>$copyright$</copyright>
+    <tags>specflow msbuild</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[$version$]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="build\**\*" target="build" />
+    <file src="buildMultiTargeting\**\*" target="buildMultiTargeting" />
+    <file src="bin\$config$\net471\*.dll" target="tasks\net471" />
+    <file src="bin\$config$\netcoreapp2.0\*.dll" target="tasks\netcoreapp2.0" />
+    <file src="bin\$config$\netcoreapp2.0\*.deps.json" target="tasks\netcoreapp2.0" />
+    
+    <file src="$SolutionDir$\Licenses\**\*" target="licenses" />
+  </files>
+</package>
