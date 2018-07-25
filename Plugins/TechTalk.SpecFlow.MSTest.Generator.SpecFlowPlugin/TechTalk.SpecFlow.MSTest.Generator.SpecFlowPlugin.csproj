@@ -2,11 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
+    <NuspecFile>$(MSBuildThisFileDirectory)SpecFlow.MSTest.nuspec</NuspecFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.csproj" />
   </ItemGroup>
 
 </Project>

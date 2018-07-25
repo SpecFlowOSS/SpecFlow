@@ -36,12 +36,10 @@
 
     <Copy SourceFiles="SpecFlow\SpecFlow.nuspec.template" DestinationFiles="SpecFlow\SpecFlow.nuspec" />
     <Copy SourceFiles="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec.template" DestinationFiles="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec" />
-    <Copy SourceFiles="SpecFlow.MsTest\SpecFlow.MsTest.nuspec.template" DestinationFiles="SpecFlow.MsTest\SpecFlow.MsTest.nuspec" />
     <Copy SourceFiles="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec.template" DestinationFiles="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec" />
     
     
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
-    <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="SpecFlow.MsTest\SpecFlow.MsTest.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
     <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow.NUnit']/@version" Value="[$(SpecFlowPackageVersion)]" />
   </Target>
 
