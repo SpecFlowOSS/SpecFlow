@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>SpecFlow</id>
-    <version>1.0.0-alpha</version>
+    <version>$version$</version>
     <title>SpecFlow</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
@@ -19,4 +19,17 @@
       <dependency id="System.ValueTuple" version="4.4.0"/>
     </dependencies>
   </metadata>
+
+  <files>
+
+    <file src="bin\$config$\net45\TechTalk.SpecFlow.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    
+    <file src="$SolutionDir$\Licenses\*" target="Licenses" />
+    <file src="$SolutionDir$\*.txt" target="" />
+
+  </files>
+
 </package>

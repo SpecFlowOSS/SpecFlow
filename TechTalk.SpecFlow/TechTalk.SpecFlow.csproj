@@ -7,6 +7,9 @@
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>SpecFlow</PackageId>
+
+    <NuspecFile>$(MSBuildThisFileDirectory)SpecFlow.nuspec</NuspecFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
