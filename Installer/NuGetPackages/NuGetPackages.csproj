@@ -14,12 +14,6 @@
     <PackageReference Include="NuGet.CommandLine" Version="4.5.1" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
-    <EmbeddedResource Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
-    <None Remove="SpecFlow.Tools.MsBuild.Generation\build\**" />
-  </ItemGroup>
-
 
    <ItemGroup>
      <None Include=".build\build.props" />

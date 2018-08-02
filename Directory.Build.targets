@@ -1,0 +1,28 @@
+<Project>
+  <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec" DependsOnTargets="GetBuildVersion">
+    <PropertyGroup>
+      <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);version=$(NuGetPackageVersion)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SolutionDir=$(SolutionDir)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);copyright=$(TechTalkCopyright)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Runtime_TFM=$(SpecFlow_FullFramework_Runtime_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Runtime_TFM=$(SpecFlow_Core_Runtime_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Generator_TFM=$(SpecFlow_FullFramework_Generator_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Generator_TFM=$(SpecFlow_Core_Generator_TFM)</NuspecProperties>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="CleanupNupkgs" BeforeTargets="Build" >
+    <ItemGroup>
+      <Nupkgs2Delete Include="$(PackageOutputAbsolutePath)\*.nupkg"/>
+    </ItemGroup>
+    <Delete Files="@(Nupkgs2Delete)" />
+  </Target>
+
+  <Target Name="CopyNupkgToFolder" AfterTargets="Pack">
+    <ItemGroup>
+      <GeneratedNupkgs Include="$(PackageOutputAbsolutePath)\*.nupkg"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(SolutionDir)GeneratedNuGetPackages\$(Configuration)" />
+  </Target>
+</Project>

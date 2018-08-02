@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>SpecFlow.NUnit</id>
+    <version>$version$</version>
+    <title>SpecFlow.NUnit</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <description>Combined package to setup SpecFlow with NUnit v2.6+ easily. For running tests with NUnit runners, use SpecFlow.NUnit.Runners package!</description>
+    <summary>Combined package to setup SpecFlow with NUnit v2.6+ easily. For running tests with NUnit runners, use SpecFlow.NUnit.Runners package!</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <licenseUrl>http://go.specflow.org/license</licenseUrl>
+    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>specflow nunit</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[$version$]" />
+      <dependency id="NUnit" version="3.8" />
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="build\**\*" target="build" />
+    <file src="bin\$config$\net471\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+
+    <file src="bin\$config$\net471\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.*" target="build\$SpecFlow_FullFramework_Generator_TFM$" />
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.dll" target="build\$SpecFlow_Core_Generator_TFM$" />
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.pdb" target="build\$SpecFlow_Core_Generator_TFM$" />
+  </files>
+</package>
