@@ -49,6 +49,10 @@
   </ItemGroup>
 
 
+  <Target Name="WarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile" AfterTargets="CoreCompile">
+    <Warning Text="For codebehind file '@(SpecFlowObsoleteCodeBehindFiles)', no feature file was found." File="@(SpecFlowObsoleteCodeBehindFiles)" Condition="'@(SpecFlowObsoleteCodeBehindFiles)' != ''" />
+  </Target>
+
   <Target Name="SwitchToForceGenerate">
     <PropertyGroup>
       <ForceGeneration>true</ForceGeneration>
@@ -100,8 +104,6 @@
       <!-- remove files which got obsolete, typically after rename operation, or getting changes from source control -->
       <Compile Remove="@(SpecFlowObsoleteCodeBehindFiles)" />
     </ItemGroup>
-
-    <Warning Text="Existing generated codebehind files for not existing feature files will be ignored '$(SpecFlowObsoleteCodeBehindFiles)'" Condition="'$(SpecFlowObsoleteCodeBehindFiles)' != ''" />
   </Target>
 
 
