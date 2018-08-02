@@ -53,11 +53,13 @@
     <Warning Text="For codebehind file '@(SpecFlowObsoleteCodeBehindFiles)', no feature file was found." File="@(SpecFlowObsoleteCodeBehindFiles)" Condition="'@(SpecFlowObsoleteCodeBehindFiles)' != ''" />
   </Target>
 
+
   <Target Name="SwitchToForceGenerate">
     <PropertyGroup>
       <ForceGeneration>true</ForceGeneration>
     </PropertyGroup>
   </Target>
+
 
   <Target Name="UpdateFeatureFilesInProject"
           DependsOnTargets="BeforeUpdateFeatureFilesInProject"
@@ -81,29 +83,34 @@
 
     <Message Text="SpecFlowGeneratedFiles: %(SpecFlowGeneratedFiles.Identity)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
 
+
     <!--
       net.sdk support: globbing does not support including files which are dynamically generated inside targets, we have to manually update compile items
     -->
-    <ItemGroup Condition="'$(_SpecFlow_EnableDefaultCompileItems)' == 'true' and '$(EnableDefaultItems)' == 'true' ">
+    <ItemGroup Condition="'$(_SpecFlow_EnableDefaultCompileItems)' == 'true' and '$(EnableDefaultItems)' == 'true' and '$(EnableDefaultCompileItems)' == 'true'">
 
       <!-- if this is the first time generation of codebehind files, we have to manually add them as compile items -->
       <Compile Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')"
-               Exclude="@(Compile)"
-               Condition="'$(EnableDefaultCompileItems)' == 'true'"
-      />
+               Exclude="@(Compile)"/>
 
-      <!-- eather if codebehind files are added manually to compile item group or are added by net.sdk globbing support, ensure they are nested under feature files like in previous specflow versions -->
-      <Compile Update="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')"
-               DependentUpon="%(Filename)"
+      <!--
+        eather if codebehind files are added manually to compile item group or are added by net.sdk globbing support,
+        ensure they are nested under feature files like in previous specflow versions
+        currently, we cannot use itemgroup update attribute inside a target because of some bugs in MSBuild (all items will be updated)
+        - https://github.com/Microsoft/msbuild/issues/1618
+        - https://github.com/Microsoft/msbuild/issues/2835
+        - https://github.com/Microsoft/msbuild/issues/1124
+      -->
+      <Compile DependentUpon="@(SpecFlowFeatureFiles)"
                AutoGen="true"
                DesignTime="true"
                Visible="true"
-               Condition="'$(EnableDefaultCompileItems)' == 'true'"
-      />
+               Condition="'%(Compile.Identity)' == '@(SpecFlowFeatureFiles->'%(CodeBehindFile)')'" />
 
       <!-- remove files which got obsolete, typically after rename operation, or getting changes from source control -->
       <Compile Remove="@(SpecFlowObsoleteCodeBehindFiles)" />
     </ItemGroup>
+
   </Target>
 
 
