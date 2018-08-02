@@ -22,7 +22,7 @@
   <files>
     <file src="build\**\*" target="build" />
     <file src="buildMultiTargeting\**\*" target="buildMultiTargeting" />
-    <file src="bin\$config$\net471\*.dll" target="tasks\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net471\*.dll" target="tasks\$SpecFlow_FullFramework_Generator_TFM$" />
     <file src="bin\$config$\netcoreapp2.0\*.dll" target="tasks\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netcoreapp2.0\*.deps.json" target="tasks\$SpecFlow_Core_Runtime_TFM$" />
     
