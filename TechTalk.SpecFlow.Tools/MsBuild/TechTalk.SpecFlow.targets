@@ -49,7 +49,8 @@
   </ItemGroup>
 
 
-  <Target Name="WarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile" AfterTargets="CoreCompile">
+  <Target Name="WarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile" AfterTargets="CoreCompile"
+          Condition="'$(SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile)' == 'true'">
     <Warning Text="For codebehind file '@(SpecFlowObsoleteCodeBehindFiles)', no feature file was found." File="@(SpecFlowObsoleteCodeBehindFiles)" Condition="'@(SpecFlowObsoleteCodeBehindFiles)' != ''" />
   </Target>
 
