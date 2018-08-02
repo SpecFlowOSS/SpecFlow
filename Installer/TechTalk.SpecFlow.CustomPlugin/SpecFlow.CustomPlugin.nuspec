@@ -31,8 +31,8 @@
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.Utils.*" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.Parser.*" target="lib\$SpecFlow_Core_Runtime_TFM$" />
 
-    <file src="$SolutionDir$\Licenses\Gherkin-LICENSE-MIT.txt" target="Licenses" />
-    <file src="$SolutionDir$\Licenses\BoDi-LICENSE-Apache2.txt" target="Licenses" />
+    <file src="$SolutionDir$Licenses\Gherkin-LICENSE-MIT.txt" target="Licenses" />
+    <file src="$SolutionDir$Licenses\BoDi-LICENSE-Apache2.txt" target="Licenses" />
 
   </files>
 
