@@ -1,4 +1,3 @@
-using System;
 using System.CodeDom;
 using TechTalk.SpecFlow.Utils;
 
@@ -42,6 +41,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, PARALLELIZABLE_ATTR);
+        }
+
+        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(featureTitle.Replace('.', '_'))));
         }
     }
 }
