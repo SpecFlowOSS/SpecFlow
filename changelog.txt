@@ -5,9 +5,10 @@ New Features:
 + Allow marking steps as Obsolete and have a configurable behavior for it https://github.com/techtalk/SpecFlow/pull/1140
 + IGherkinParser and IGherkinParserFactory interfaces added to support Gherkin Parser pluggability https://github.com/techtalk/SpecFlow/pull/1143
 + Assist: remove accents from column headers and property names when comparing objects to a table https://github.com/techtalk/SpecFlow/pull/1096
-+ MSBuild Generation: Experimental support for deleting code-behind files on clean and rebuild
 + Added NUnit current TestContext scenario container registration. See https://github.com/techtalk/SpecFlow/issues/936
 + Array & List support for strings and enums when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1018
++ MSBuild: Experimental support for deleting code-behind files on clean and rebuild when MSBuild https://github.com/techtalk/SpecFlow/pull/1167, https://github.com/techtalk/SpecFlow/pull/1208
++ MSBuild: Experimental support for Net.SDK project system, only for targeting desktop framework, .net core is supported and won't work https://github.com/techtalk/SpecFlow/pull/1223
 
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078

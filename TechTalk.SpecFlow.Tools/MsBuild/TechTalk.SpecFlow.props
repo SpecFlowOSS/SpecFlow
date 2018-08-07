@@ -14,13 +14,28 @@
     <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
     <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
 
-    <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)'==''">false</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
-
     <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
     <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
     <SpecFlow_DebugMSBuildTask Condition="'$(SpecFlow_DebugMSBuildTask)' == ''">false</SpecFlow_DebugMSBuildTask>
 
     <_SpecFlowPropsImported Condition="'$(_SpecFlowPropsImported)'==''">true</_SpecFlowPropsImported>
+  </PropertyGroup>
+
+  <!--
+    property group for feature flags
+  -->
+  <PropertyGroup>
+
+    <!--
+      feature flag to enable experimental support for cleaning up generated code-behind files during rebuild and clean scenarios
+    -->
+    <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)'==''">false</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
+
+    <!--
+      net.sdk support: feature flag to enable experimental support for net.sdk project system
+    -->
+    <SpecFlow_EnableDefaultCompileItems Condition="'$(SpecFlow_EnableDefaultCompileItems)'==''">false</SpecFlow_EnableDefaultCompileItems>
+    <SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile Condition="'$(SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile)'==''">$(SpecFlow_EnableDefaultCompileItems)</SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile>
   </PropertyGroup>
 
   <ItemGroup>
