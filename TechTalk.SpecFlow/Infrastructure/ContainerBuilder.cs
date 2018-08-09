@@ -1,8 +1,6 @@
+using BoDi;
 using System;
 using System.Collections.Generic;
-using BoDi;
-using System.Linq;
-using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
@@ -22,11 +20,11 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         public static IDefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
 
-        private readonly IDefaultDependencyProvider defaultDependencyProvider;
+        private readonly IDefaultDependencyProvider _defaultDependencyProvider;
 
         public ContainerBuilder(IDefaultDependencyProvider defaultDependencyProvider = null)
         {
-            this.defaultDependencyProvider = defaultDependencyProvider ?? DefaultDependencyProvider;
+            _defaultDependencyProvider = defaultDependencyProvider ?? DefaultDependencyProvider;
         }
 
         public virtual IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null)
@@ -48,7 +46,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
 
             if (specFlowConfiguration.CustomDependencies != null)
+            {
                 container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
+            }
 
             var unitTestProviderConfigration = container.Resolve<UnitTestProviderConfiguration>();
 
@@ -57,9 +57,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
-            
+
             container.RegisterInstanceAs(specFlowConfiguration);
-            
+
             if (unitTestProviderConfigration != null)
                 container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(unitTestProviderConfigration.UnitTestProvider ?? ConfigDefaults.UnitTestProviderName));
 
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var testThreadContainer = new ObjectContainer(globalContainer);
 
-            defaultDependencyProvider.RegisterTestThreadContainerDefaults(testThreadContainer);
+            _defaultDependencyProvider.RegisterTestThreadContainerDefaults(testThreadContainer);
 
             var runtimePluginEvents = globalContainer.Resolve<RuntimePluginEvents>();
             runtimePluginEvents.RaiseCustomizeTestThreadDependencies(testThreadContainer);
@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var scenarioContainer = new ObjectContainer(testThreadContainer);
             scenarioContainer.RegisterInstanceAs(scenarioInfo);
-            defaultDependencyProvider.RegisterScenarioContainerDefaults(scenarioContainer);
+            _defaultDependencyProvider.RegisterScenarioContainerDefaults(scenarioContainer);
 
             scenarioContainer.ObjectCreated += obj =>
             {
@@ -111,6 +111,16 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var featureContainer = new ObjectContainer(testThreadContainer);
             featureContainer.RegisterInstanceAs(featureInfo);
+
+            featureContainer.ObjectCreated += obj =>
+            {
+                var containerDependentObject = obj as IContainerDependentObject;
+                if (containerDependentObject != null)
+                    containerDependentObject.SetObjectContainer(featureContainer);
+            };
+
+            var runtimePluginEvents = testThreadContainer.Resolve<RuntimePluginEvents>();
+            runtimePluginEvents.RaiseCustomizeFeatureDependencies(featureContainer);
 
             return featureContainer;
         }
@@ -146,7 +156,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void RegisterDefaults(ObjectContainer container)
         {
-            defaultDependencyProvider.RegisterGlobalContainerDefaults(container);
+            _defaultDependencyProvider.RegisterGlobalContainerDefaults(container);
         }
     }
 }

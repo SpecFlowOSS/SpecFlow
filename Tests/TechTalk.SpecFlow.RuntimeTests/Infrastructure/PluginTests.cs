@@ -145,25 +145,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             }
         }
 
-        class TestDefaultDependencyProvider : DefaultDependencyProvider
-        {
-            private readonly IRuntimePlugin pluginToReturn;
-
-            public TestDefaultDependencyProvider(IRuntimePlugin pluginToReturn)
-            {
-                this.pluginToReturn = pluginToReturn;
-            }
-
-            public override void RegisterGlobalContainerDefaults(BoDi.ObjectContainer container)
-            {
-                base.RegisterGlobalContainerDefaults(container);
-
-                var pluginLoaderStub = new Mock<IRuntimePluginLoader>();
-                var traceListener = container.Resolve<ITraceListener>();
-                pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<string>(), traceListener)).Returns(pluginToReturn);
-                container.RegisterInstanceAs<IRuntimePluginLoader>(pluginLoaderStub.Object);
-            }
-        }
+        
 
         private StringConfigProvider GetConfigWithPlugin()
         {
@@ -303,8 +285,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Should_be_able_to_register_feature_dependencies_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
-            ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomFeatureDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
-            var container = TestObjectFactories.CreateDefaultFeatureContainer(configurationHolder);
+            var testDefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomFeatureDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
+            var container = TestObjectFactories.CreateDefaultFeatureContainer(configurationHolder, testDefaultDependencyProvider);
             var customDependency = container.Resolve<ICustomDependency>();
 
             customDependency.Should().BeOfType(typeof(CustomDependency));
@@ -312,6 +294,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
     }
 
+    class TestDefaultDependencyProvider : DefaultDependencyProvider
+    {
+        private readonly IRuntimePlugin _pluginToReturn;
 
+        public TestDefaultDependencyProvider(IRuntimePlugin pluginToReturn)
+        {
+            _pluginToReturn = pluginToReturn;
+        }
+
+        public override void RegisterGlobalContainerDefaults(BoDi.ObjectContainer container)
+        {
+            base.RegisterGlobalContainerDefaults(container);
+
+            var runtimePluginLocator = new Mock<IRuntimePluginLocator>();
+            runtimePluginLocator.Setup(m => m.GetAllRuntimePlugins()).Returns(new List<string>() { "aPlugin" });
+
+
+            var pluginLoaderStub = new Mock<IRuntimePluginLoader>();
+            var traceListener = container.Resolve<ITraceListener>();
+            pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<string>(), traceListener)).Returns(_pluginToReturn);
+
+
+            container.RegisterInstanceAs<IRuntimePluginLocator>(runtimePluginLocator.Object);
+            container.RegisterInstanceAs<IRuntimePluginLoader>(pluginLoaderStub.Object);
+
+        }
+    }
 
 }

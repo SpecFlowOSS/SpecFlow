@@ -148,7 +148,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 code.Should().NotBeNull();
-                var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioSetup");
+                var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioInitialize");
 
                 scenarioStartMethod.Statements.Count.Should().Be(2);
                 var expression = (scenarioStartMethod.Statements[1] as CodeExpressionStatement).Expression;

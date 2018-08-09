@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Plugins
             ConfigurationDefaults?.Invoke(this, new ConfigurationDefaultsEventArgs(specFlowConfiguration));
         }
 
-        public void RaiseCustomizeGlobalDependencies(ObjectContainer container, Configuration.SpecFlowConfiguration specFlowConfiguration)
+        public void RaiseCustomizeGlobalDependencies(ObjectContainer container, SpecFlowConfiguration specFlowConfiguration)
         {
             CustomizeGlobalDependencies?.Invoke(this, new CustomizeGlobalDependenciesEventArgs(container, specFlowConfiguration));
         }

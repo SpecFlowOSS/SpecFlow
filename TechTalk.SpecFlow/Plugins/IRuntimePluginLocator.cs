@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.Plugins
 {
-    interface IRuntimePluginLocator
+    public interface IRuntimePluginLocator
     {
         IReadOnlyList<string> GetAllRuntimePlugins();
     }

@@ -27,36 +27,36 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         internal static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
-            var instance = new ContainerBuilder();
-            var globalContainer = instance.CreateGlobalContainer(configurationProvider);
-            registerGlobalMocks?.Invoke(globalContainer);
-            return globalContainer;
+            return CreateDefaultGlobalContainer(configurationProvider, registerGlobalMocks, new ContainerBuilder());
         }
 
         internal static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null, Action<IObjectContainer> registerTestThreadMocks = null)
         {
-            var instance = new ContainerBuilder();
-            var globalContainer = CreateDefaultGlobalContainer(configurationProvider, registerGlobalMocks);
-            var testThreadContainer = instance.CreateTestThreadContainer(globalContainer);
-            registerTestThreadMocks?.Invoke(testThreadContainer);
-            return testThreadContainer;
+            return CreateDefaultTestThreadContainer(configurationProvider, registerGlobalMocks, registerTestThreadMocks, new ContainerBuilder());
         }
 
-        internal static IObjectContainer CreateDefaultFeatureContainer(StringConfigProvider configurationHolder)
+        internal static IObjectContainer CreateDefaultFeatureContainer(StringConfigProvider configurationHolder, IDefaultDependencyProvider defaultDependencyProvider = null)
         {
-            var instance = new ContainerBuilder();
-            var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder);
+            var instance = new ContainerBuilder(defaultDependencyProvider);
+            var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder, null, null, instance);
 
             CultureInfo cultureInfo = new CultureInfo("en-US");
             return instance.CreateFeatureContainer(testThreadContainer, new FeatureInfo(cultureInfo, "test feature info", "", ProgrammingLanguage.CSharp));
         }
 
-        internal static IObjectContainer CreateDefaultScenarioContainer(StringConfigProvider configurationHolder)
+        private static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider, Action<IObjectContainer> registerGlobalMocks, ContainerBuilder instance)
         {
-            var instance = new ContainerBuilder();
-            var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder);
+            var globalContainer = instance.CreateGlobalContainer(configurationProvider);
+            registerGlobalMocks?.Invoke(globalContainer);
+            return globalContainer;
+        }
 
-            return instance.CreateScenarioContainer(testThreadContainer, new ScenarioInfo("test scenario info", "test_scenario_description"));
+        private static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider, Action<IObjectContainer> registerGlobalMocks, Action<IObjectContainer> registerTestThreadMocks, ContainerBuilder instance)
+        {
+            var globalContainer = CreateDefaultGlobalContainer(configurationProvider, registerGlobalMocks, instance);
+            var testThreadContainer = instance.CreateTestThreadContainer(globalContainer);
+            registerTestThreadMocks?.Invoke(testThreadContainer);
+            return testThreadContainer;
         }
     }
 }
