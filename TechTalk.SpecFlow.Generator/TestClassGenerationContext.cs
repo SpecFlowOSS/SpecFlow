@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow.Generator
         public CodeMemberMethod TestInitializeMethod { get; private set; }
         public CodeMemberMethod TestCleanupMethod { get; private set; }
         public CodeMemberMethod ScenarioInitializeMethod { get; private set; }
+        public CodeMemberMethod ScenarioStartMethod { get; private set; }
         public CodeMemberMethod ScenarioCleanupMethod { get; private set; }
         public CodeMemberMethod FeatureBackgroundMethod { get; private set; }
         public CodeMemberField TestRunnerField { get; private set; }
@@ -27,7 +28,21 @@ namespace TechTalk.SpecFlow.Generator
 
         public IDictionary<string, object> CustomData { get; private set; }
 
-        public TestClassGenerationContext(IUnitTestGeneratorProvider unitTestGeneratorProvider, SpecFlowDocument document, CodeNamespace ns, CodeTypeDeclaration testClass, CodeMemberField testRunnerField, CodeMemberMethod testClassInitializeMethod, CodeMemberMethod testClassCleanupMethod, CodeMemberMethod testInitializeMethod, CodeMemberMethod testCleanupMethod, CodeMemberMethod scenarioInitializeMethod, CodeMemberMethod scenarioCleanupMethod, CodeMemberMethod featureBackgroundMethod, bool generateRowTests)
+        public TestClassGenerationContext(
+            IUnitTestGeneratorProvider unitTestGeneratorProvider,
+            SpecFlowDocument document,
+            CodeNamespace ns,
+            CodeTypeDeclaration testClass,
+            CodeMemberField testRunnerField,
+            CodeMemberMethod testClassInitializeMethod,
+            CodeMemberMethod testClassCleanupMethod,
+            CodeMemberMethod testInitializeMethod,
+            CodeMemberMethod testCleanupMethod,
+            CodeMemberMethod scenarioInitializeMethod,
+            CodeMemberMethod scenarioStartMethod,
+            CodeMemberMethod scenarioCleanupMethod,
+            CodeMemberMethod featureBackgroundMethod,
+            bool generateRowTests)
         {
             UnitTestGeneratorProvider = unitTestGeneratorProvider;
             Document = document;
@@ -39,6 +54,7 @@ namespace TechTalk.SpecFlow.Generator
             TestInitializeMethod = testInitializeMethod;
             TestCleanupMethod = testCleanupMethod;
             ScenarioInitializeMethod = scenarioInitializeMethod;
+            ScenarioStartMethod = scenarioStartMethod;
             ScenarioCleanupMethod = scenarioCleanupMethod;
             FeatureBackgroundMethod = featureBackgroundMethod;
             GenerateRowTests = generateRowTests;

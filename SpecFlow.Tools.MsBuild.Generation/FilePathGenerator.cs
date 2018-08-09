@@ -12,11 +12,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 throw new ArgumentNullException(nameof(projectFolder));
             }
 
-            if (relativeOutputPath is null)
-            {
-                throw new ArgumentNullException(nameof(relativeOutputPath));
-            }
-
             if (featureFileName is null)
             {
                 throw new ArgumentNullException(nameof(featureFileName));
@@ -27,7 +22,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 throw new ArgumentNullException(nameof(generatedCodeBehindFileName));
             }
 
-            string featureFileFullPath = Path.GetFullPath(Path.Combine(projectFolder, relativeOutputPath, featureFileName));
+            string featureFileFullPath = Path.GetFullPath(Path.Combine(projectFolder, relativeOutputPath ?? "", featureFileName));
             string featureFileDirPath = Path.GetDirectoryName(featureFileFullPath);
 
             return Path.Combine(featureFileDirPath, generatedCodeBehindFileName);

@@ -4,7 +4,6 @@ using FluentAssertions;
 using Microsoft.CSharp;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using Xunit;
-
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 
@@ -78,6 +77,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 testInitializeMethod: null,
                 testCleanupMethod: null,
                 scenarioInitializeMethod: null,
+                scenarioStartMethod: null,
                 scenarioCleanupMethod: null,
                 featureBackgroundMethod: null,
                 generateRowTests: false);

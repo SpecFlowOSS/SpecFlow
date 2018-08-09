@@ -1,11 +1,60 @@
 ﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
 
   <PropertyGroup>
-    
+    <SpecFlow_UseHostCompilerIfAvailable Condition="'$(SpecFlow_UseHostCompilerIfAvailable)'==''">false</SpecFlow_UseHostCompilerIfAvailable>
+    <UseHostCompilerIfAvailable>$(SpecFlow_UseHostCompilerIfAvailable)</UseHostCompilerIfAvailable>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
+    <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
+
+    <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
+    <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
+    <SpecFlow_DebugMSBuildTask Condition="'$(SpecFlow_DebugMSBuildTask)' == ''">false</SpecFlow_DebugMSBuildTask>
+
+    <_SpecFlowPropsImported Condition="'$(_SpecFlowPropsImported)'==''">true</_SpecFlowPropsImported>
+  </PropertyGroup>
+
+ <!--
+    property group for feature flags
+  -->
+  <PropertyGroup>
+
+    <!--
+      feature flag to enable experimental support for cleaning up generated code-behind files during rebuild and clean scenarios
+    -->
+    <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)'==''">false</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
+
+    <!--
+      net.sdk support: feature flag to enable experimental support for net.sdk project system
+    -->
+    <SpecFlow_EnableDefaultCompileItems Condition="'$(SpecFlow_EnableDefaultCompileItems)'==''">false</SpecFlow_EnableDefaultCompileItems>
+    <SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile Condition="'$(SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile)'==''">$(SpecFlow_EnableDefaultCompileItems)</SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Include="**\*.feature">
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature.cs</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Include="**\*.feature.xlsx">
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature.cs</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+
+    <!-- obsolete codebehind files, scenarios:
+         - after rename operation
+         - after deletion of a feature file
+         - after pulling latest changes from version control with above changes
+     -->
+    <SpecFlowObsoleteCodeBehindFiles Include="**\*.feature.cs" Exclude="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+  </ItemGroup>
+
+
+  <PropertyGroup>
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.0</_SpecFlow_TaskFolder>
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net471</_SpecFlow_TaskFolder>
     <_SpecFlow_TaskAssembly Condition=" '$(_SpecFlow_TaskAssembly)' == '' ">..\tasks\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
-    <SpecFlow_TargetOrder>BeforeUpdateFeatureFilesInProject;UpdateFeatureFilesInProject;GenerateFeatureCodeBehindFiles;SpecFlow_UpdateCompileItemGroup;AfterUpdateFeatureFilesInProject</SpecFlow_TargetOrder>
   </PropertyGroup>
 
   <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>

@@ -2,14 +2,11 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-
 using Xunit;
 using Microsoft.CSharp;
-
 using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-
 using FluentAssertions;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
@@ -55,6 +52,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 testInitializeMethod: null,
                 testCleanupMethod: null,
                 scenarioInitializeMethod: null,
+                scenarioStartMethod:null,
                 scenarioCleanupMethod: null,
                 featureBackgroundMethod: null,
                 generateRowTests: false);
@@ -133,6 +131,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 loggerInstance.Attributes.Should().Be(MemberAttributes.Private | MemberAttributes.Final);
             }
         }
+
 
         [Fact]
         public void Should_register_testOutputHelper_on_scenario_setup()

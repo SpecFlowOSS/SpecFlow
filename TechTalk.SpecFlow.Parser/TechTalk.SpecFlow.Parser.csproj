@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
@@ -11,10 +11,6 @@
 
   <ItemGroup>
     <PackageReference Include="Gherkin" Version="5.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

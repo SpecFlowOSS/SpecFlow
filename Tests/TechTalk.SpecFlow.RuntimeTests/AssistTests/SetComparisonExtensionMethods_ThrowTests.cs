@@ -193,6 +193,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Fact]
+        public void Does_not_throw_an_exception_if_the_property_being_checked_for_has_international_characters_mapped_to_identifier_name()
+        {
+            var table = new Table("ŠtríngPröpërtý");
+            table.AddRow("mustard");
+
+            var items = new[] { new SetComparisonTestObject { StringProperty = "mustard" } };
+
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            comparisonResult.ExceptionWasThrown.Should().BeFalse();
+        }
+
+        [Fact]
         public void Does_not_throw_exception_if_string_is_empty_in_table_and_null_on_item()
         {
             var table = new Table("StringProperty");

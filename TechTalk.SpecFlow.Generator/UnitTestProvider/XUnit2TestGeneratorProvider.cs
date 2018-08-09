@@ -3,26 +3,22 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
+using BoDi;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnit2TestGeneratorProvider : XUnitTestGeneratorProvider
     {
-        private const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
-        private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
-        private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        private const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
-        private const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        private new const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
         private const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
-        private const string SKIP_REASON = "Ignored";
         private const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
         private const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
         private const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
         private const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
         private const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
         private const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-
+        
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
             :base(codeDomHelper)
         {
@@ -63,7 +59,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 return;
 
             var args = arguments.Select(
-              arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
+                arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
 
             args.Add(
                 new CodeAttributeArgument(
@@ -129,9 +125,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         new CodePropertyReferenceExpression(
                             new CodePropertyReferenceExpression(
                                 new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
-                                "ScenarioContext"),
-                            "ScenarioContainer"),
-                        "RegisterInstanceAs",
+                                nameof(ScenarioContext)),
+                            nameof(ScenarioContext.ScenarioContainer)),
+                        nameof(IObjectContainer.RegisterInstanceAs),
                         new CodeTypeReference(OUTPUT_INTERFACE)),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
         }

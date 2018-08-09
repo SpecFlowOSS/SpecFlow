@@ -1,7 +1,5 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
 using BoDi;
 using Moq;
 using Xunit;
@@ -71,7 +69,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private static TestClassGenerationContext CreateGenerationContext(string tag)
         {
-            return new TestClassGenerationContext(null, ParserHelper.CreateAnyDocument(new []{ tag }), null, null, null, null, null, null, null, null, null, null, true);
+            return new TestClassGenerationContext(null, ParserHelper.CreateAnyDocument(new []{ tag }), null, null, null, null, null, null, null, null, null, null, null, true);
         }
 
         [Fact]

@@ -95,6 +95,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
             {
                 runtimePluginEvents.CustomizeScenarioDependencies += (sender, args) => { _specificScenarioDependencies(args.ObjectContainer); };
+
+            }
+        }
+
+        public class PluginWithCustomFeatureDependencies : IRuntimePlugin
+        {
+            private readonly Action<ObjectContainer> _specificFeatureDependencies;
+
+            public PluginWithCustomFeatureDependencies(Action<ObjectContainer> specificFeatureDependencies)
+            {
+                _specificFeatureDependencies = specificFeatureDependencies;
+            }
+
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
+            {
+                runtimePluginEvents.CustomizeFeatureDependencies += (sender, args) => { _specificFeatureDependencies(args.ObjectContainer); };
             }
         }
 
@@ -279,10 +295,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             runtimePluginEvents.RaiseCustomizeScenarioDependencies(container);
 
             var customDependency = container.Resolve<ICustomDependency>();
+
+            customDependency.Should().BeOfType(typeof(CustomDependency));
+        }
+
+        [Fact]
+        public void Should_be_able_to_register_feature_dependencies_from_a_plugin()
+        {
+            StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomFeatureDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
+            var container = TestObjectFactories.CreateDefaultFeatureContainer(configurationHolder);
+            var customDependency = container.Resolve<ICustomDependency>();
+
             customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
     }
+
 
 
 }

@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
+using BoDi;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -83,25 +84,24 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<TestContext>(TestContext);
+            // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<TestContext>(_testContext);
             generationContext.ScenarioInitializeMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     new CodeMethodReferenceExpression(
                         new CodePropertyReferenceExpression(
                             new CodePropertyReferenceExpression(
                                 new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
-                                "ScenarioContext"),
-                            "ScenarioContainer"),
-                        "RegisterInstanceAs",
+                                nameof(ScenarioContext)),
+                            nameof(ScenarioContext.ScenarioContainer)),
+                        nameof(IObjectContainer.RegisterInstanceAs),
                         new CodeTypeReference(TESTCONTEXT_TYPE)),
-                    new CodeVariableReferenceExpression(TESTCONTEXT_PROPERTY_NAME)));
+                    new CodeVariableReferenceExpression(TESTCONTEXT_FIELD_NAME)));
         }
 
         public void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             //Not Supported
         }
-
 
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
@@ -201,7 +201,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //MsTest does not support row tests... :(
             throw new NotSupportedException();
         }
-
 
         public virtual void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {

@@ -49,6 +49,13 @@ namespace TechTalk.SpecFlow.Plugins
         }
     }
 
+    public class CustomizeFeatureDependenciesEventArgs : ObjectContainerEventArgs
+    {
+        public CustomizeFeatureDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)
+        {
+        }
+    }
+
     public class CustomizeScenarioDependenciesEventArgs : ObjectContainerEventArgs
     {
         public CustomizeScenarioDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)

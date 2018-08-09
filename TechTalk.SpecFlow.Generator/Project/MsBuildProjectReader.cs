@@ -1,4 +1,4 @@
-﻿using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.Generator.Project

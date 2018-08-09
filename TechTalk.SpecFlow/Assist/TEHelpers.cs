@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Assist.Attributes;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -79,7 +80,8 @@ namespace TechTalk.SpecFlow.Assist
         internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
         {
             // we remove underscores, because they should be equivalent to spaces that were removed too from the column names
-            return name.Replace("_", string.Empty);
+            // we also ignore accents
+            return name.Replace("_", string.Empty).ToIdentifier();
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)

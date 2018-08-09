@@ -117,9 +117,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             _contextManager.CleanupFeatureContext();
         }
 
-        public void OnScenarioStart(ScenarioInfo scenarioInfo)
+        public void OnScenarioInitialize(ScenarioInfo scenarioInfo)
         {
             _contextManager.InitializeScenarioContext(scenarioInfo);
+        }
+
+        public void OnScenarioStart()
+        {
             FireScenarioEvents(HookType.BeforeScenario);
         }
 

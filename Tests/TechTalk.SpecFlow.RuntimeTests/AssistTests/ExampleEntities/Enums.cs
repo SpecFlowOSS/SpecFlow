@@ -10,4 +10,8 @@
         Butch, Male, Soft, VeryCool, Sweet
     }
 
+    public enum Language
+    {
+        English, Finnish, Swedish
+    }
 }
