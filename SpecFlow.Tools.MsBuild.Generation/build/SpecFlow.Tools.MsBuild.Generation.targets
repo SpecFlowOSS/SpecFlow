@@ -1,6 +1,6 @@
 ﻿<Project>
 
-   <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
+  <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
@@ -33,7 +33,7 @@
     </RebuildDependsOn>
   </PropertyGroup>
 
- <!--
+  <!--
     net.sdk support: update default compile items to show generated files as nested items
   -->
   <ItemGroup Condition="'$(_SpecFlow_EnableDefaultCompileItems)' == 'true' and '$(EnableDefaultItems)' == 'true' ">
@@ -58,20 +58,15 @@
       <ForceGeneration>true</ForceGeneration>
     </PropertyGroup>
   </Target>
-  
 
-  <Target Name="GenerateCodeBehind" BeforeTargets="PreBuildEvent" DependsOnTargets="$(SpecFlow_TargetOrder)">
 
-  </Target>
-
-  
   <Target Name="UpdateFeatureFilesInProject"
           DependsOnTargets="BeforeUpdateFeatureFilesInProject"
           Inputs="@(SpecFlowFeatureFiles)"
           Outputs="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')">
 
     <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
-    
+
     <!-- <PropertyGroup>
       <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">Features.Generated</SpecFlowCodeBehindOutputPath>
     </PropertyGroup> -->
@@ -82,7 +77,7 @@
       FeatureFiles="@(SpecFlowFeatureFiles)"
       RootNamespace="$(RootNamespace)"
       GeneratorPlugins="@(SpecFlowGeneratorPlugins)" >
-      
+
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>
 
