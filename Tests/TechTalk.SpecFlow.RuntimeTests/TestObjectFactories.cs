@@ -1,12 +1,7 @@
 ﻿using System;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using BoDi;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
 
