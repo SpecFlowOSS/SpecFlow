@@ -6,3 +6,4 @@
 - XUnit >= 2.3.1 supported
 - specflow.exe is gone
 - Code Behind File generation is always done via MSBuild Task 
+- Unit Test Provider is configured via plugin
