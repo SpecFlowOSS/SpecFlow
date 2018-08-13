@@ -36,7 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="Gherkin" Version="5.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.0" />
     <PackageReference Include="Moq" Version="4.7.99" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
@@ -67,7 +67,7 @@
     <_SpecFlowGeneratorPlugins2Copy Include="$(SolutionDir)Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_PluginTFM)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
 
-  <Target Name="PreBuild" >
+  <Target Name="PreBuild">
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
     <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" />
   </Target>

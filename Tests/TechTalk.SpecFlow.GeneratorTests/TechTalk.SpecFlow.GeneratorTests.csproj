@@ -8,6 +8,7 @@
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>TechTalk.SpecFlow.GeneratorTests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.0" />
     <PackageReference Include="Moq" Version="4.7.99" />
     <PackageReference Include="xunit" Version="2.3.1" />
@@ -39,16 +40,12 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
   </ItemGroup>
 
   
