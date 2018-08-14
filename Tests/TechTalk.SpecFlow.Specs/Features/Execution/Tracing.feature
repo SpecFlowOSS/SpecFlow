@@ -6,10 +6,10 @@ Scenario: Preserves step keywords in trace
 			#language: de-DE
 			Funktionalität: German
 			Szenario: Zwei Zahlen hinzufügen
-				Angenommen ich Knopf 1 drücke
-				Gegeben sei ich Knopf 2 drücke
+				Angenommen ich Knopf 1 druecke
+				Gegeben sei ich Knopf 2 druecke
 		"""
 	And all steps are bound and pass
 	When I execute the tests
-	Then the execution log should contain text 'Angenommen ich Knopf 1 drücke'
-	And the execution log should contain text 'Gegeben sei ich Knopf 2 drücke'
+	Then the execution log should contain text 'Angenommen ich Knopf 1 druecke'
+	And the execution log should contain text 'Gegeben sei ich Knopf 2 druecke'
