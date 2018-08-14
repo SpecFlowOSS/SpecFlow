@@ -87,15 +87,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the log file '(.*)' should contain the text '(.*)' (\d+) times")]
         public void ThenTheLogFileShouldContainTheTextTimes(string logFilePath, string text, int times)
         {
-            var logConent = File.ReadAllText(GetPath(logFilePath));
-            logConent.Should().NotBeNullOrEmpty("no trace log is generated");
+            var logContent = File.ReadAllText(GetPath(logFilePath));
+            logContent.Should().NotBeNullOrEmpty("no trace log is generated");
 
             var regex = new Regex(text, RegexOptions.Multiline);
             if (times > 0)
-                regex.Match(logConent).Success.Should().BeTrue(text + " was not found in the logs");
+                regex.Match(logContent).Success.Should().BeTrue(text + " was not found in the logs");
 
             if (times != int.MaxValue) 
-                 regex.Matches(logConent).Count.Should().Be(times);
+                 regex.Matches(logContent).Count.Should().Be(times, logContent);
         }
 
         private string GetPath(string logFilePath)
