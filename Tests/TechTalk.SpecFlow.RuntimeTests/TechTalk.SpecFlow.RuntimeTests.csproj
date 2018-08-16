@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\netfx.props" />
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Test_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.RuntimeTests</AssemblyName>
@@ -29,10 +29,15 @@
     <PackageReference Include="xunit.runner.console" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
-
-  <ItemGroup>
+  
+ <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />

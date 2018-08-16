@@ -5,6 +5,7 @@
 
   -->
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="..\..\netfx.props" />
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>

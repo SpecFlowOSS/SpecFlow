@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\netfx.props" />
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Test_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.PluginTests</AssemblyName>

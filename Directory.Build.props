@@ -1,4 +1,6 @@
 <Project>
+  <!-- <Import Project="netfx.props" /> -->
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>

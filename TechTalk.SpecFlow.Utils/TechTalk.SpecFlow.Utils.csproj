@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\netfx.props" />
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.Utils</AssemblyName>
@@ -8,7 +9,4 @@
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 </Project>
