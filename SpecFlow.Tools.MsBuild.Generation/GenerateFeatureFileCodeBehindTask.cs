@@ -60,6 +60,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
 #if NETCOREAPP
         private IEnumerable<string> GenerateFilesForProject()
         {
+            var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
+
             string taskAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.CodeBase).LocalPath;
             var ctxt = new CustomAssemblyLoader();
             Assembly inContextAssembly = ctxt.LoadFromAssemblyPath(taskAssemblyPath);
@@ -68,7 +70,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             var executeInnerMethod = innerTaskType.GetMethod("GenerateFilesForProject", BindingFlags.Instance | BindingFlags.Public);
 
-            var parameters = new object[]{ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), ProjectFolder, OutputPath };
+            var parameters = new object[]{ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), generatorPlugins, ProjectFolder, OutputPath };
             var result = (IEnumerable<string>)executeInnerMethod.Invoke(innerTask, parameters);
 
             return result;
