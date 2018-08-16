@@ -30,6 +30,8 @@
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
     <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+    <PackageReference Update="Microsoft.Build.Framework" Version="15.8.166" />
+    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="15.8.166" />
   </ItemGroup>
  
 </Project>
