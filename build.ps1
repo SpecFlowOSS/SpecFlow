@@ -2,6 +2,25 @@ param (
  [string]$Configuration = "Debug"
 )
 
-msbuild /Restore ./TechTalk.SpecFlow.sln
 
-msbuild ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false
+$msbuildPath = "msbuild"
+
+if ($IsWindows){
+  $vswherePath = [System.Environment]::ExpandEnvironmentVariables("%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe")
+  $vswhereParameters = @("-latest", "-products", "*", "-requires", "Microsoft.Component.MSBuild",  "-property", "installationPath")
+  
+  $vsPath = & $vswherePath $vswhereParameters
+  
+  Write-Host $path
+  
+  if ($vsPath) {
+    $msbuildPath = join-path $vsPath 'MSBuild\15.0\Bin\MSBuild.exe'
+  }
+  
+  Write-Host $msbuildPath
+}
+
+
+& $msbuildPath /Restore ./TechTalk.SpecFlow.sln
+
+& $msbuildPath ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false
