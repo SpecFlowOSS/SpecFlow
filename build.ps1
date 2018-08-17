@@ -2,10 +2,9 @@ param (
  [string]$Configuration = "Debug"
 )
 
-
 $msbuildPath = "msbuild"
 
-if ($env:OS = "Windows_NT"){
+if ([Environment]::OSVersion.Platform -eq "Win32NT"){
   $vswherePath = [System.Environment]::ExpandEnvironmentVariables("%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe")
   $vswhereParameters = @("-latest", "-products", "*", "-requires", "Microsoft.Component.MSBuild",  "-property", "installationPath")
   
