@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     var scenarioRef = new ScenarioRef { Name = scenario.Name, SourceFileLine = scenario.Location == null ? -1 : scenario.Location.Line };
                     if (scenario is ScenarioOutline)
                     {
-                        var firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline)scenario);
+                        var firstExampleSteps = CreateAllExampleScenarioSteps((ScenarioOutline)scenario);
                         AddStepInstances(featureRef, scenarioRef, firstExampleSteps, true);
                     }
                     else
@@ -109,8 +109,10 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             return report;
         }
 
-        private IEnumerable<SpecFlowStep> CreateFirstExampleScenarioSteps(ScenarioOutline scenarioOutline)
+        private IEnumerable<SpecFlowStep> CreateAllExampleScenarioSteps(ScenarioOutline scenarioOutline)
         {
+            var allSteps = new List<SpecFlowStep>();
+
             foreach (var exampleSet in scenarioOutline.Examples)
             {
                 foreach (var example in exampleSet.TableBody)
@@ -121,10 +123,11 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                         paramSubst.Add(exampleSet.TableHeader.Cells.ElementAt(i).Value, example.Cells.ElementAt(i).Value);
                     }
 
-                    return CreateScenarioSteps(scenarioOutline, paramSubst);
+                    allSteps.AddRange(CreateScenarioSteps(scenarioOutline, paramSubst));
                 }
             }
-            return new List<SpecFlowStep>();
+
+            return allSteps;
         }
 
         private IEnumerable<SpecFlowStep> CreateScenarioSteps(ScenarioOutline scenarioOutline, Dictionary<string, string> paramSubst)
