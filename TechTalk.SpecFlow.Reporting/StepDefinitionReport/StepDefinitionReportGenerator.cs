@@ -142,7 +142,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     stepArgument = Clone(dataTable, (c) => GetReplacedText(c.Value, paramSubst));
                 }
 
-                var newStep = Clone(specflowStep, stepArgument);
+                var newStep = Clone(specflowStep, stepArgument, paramSubst);
 
                 result.Add(newStep);
             }
@@ -304,9 +304,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
         }
 
-        private SpecFlowStep Clone(SpecFlowStep step, StepArgument stepArgument)
+        private SpecFlowStep Clone(SpecFlowStep step, StepArgument stepArgument, Dictionary<string, string> paramSubst)
         {
-            return new SpecFlowStep(step.Location, step.Keyword, step.Text, stepArgument, step.StepKeyword, step.ScenarioBlock);
+            return new SpecFlowStep(step.Location, step.Keyword, GetReplacedText(step.Text, paramSubst), stepArgument, step.StepKeyword, step.ScenarioBlock);
         }
 
         private DataTable Clone(DataTable table, Func<TableCell, string> getCellValue = null)
