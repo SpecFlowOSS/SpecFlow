@@ -268,7 +268,10 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     }
 
                     var stepDefinition = stepDefByBinding[bindingInfo];
-                    stepDefinition.Instances.Add(instance);
+                    if (!stepDefinition.Instances.Any(i => i.FeatureRef == featureRef && i.ScenarioRef == scenarioRef))
+                    {
+                        stepDefinition.Instances.Add(instance);
+                    }
 
                     if (stepDefinition.ScenarioStep == null)
                     {
