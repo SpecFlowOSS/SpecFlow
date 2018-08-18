@@ -8,11 +8,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Gherkin.Ast;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
-using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 {
@@ -75,7 +73,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     var scenarioRef = new ScenarioRef { Name = scenario.Name, SourceFileLine = scenario.Location == null ? -1 : scenario.Location.Line };
                     if (scenario is ScenarioOutline)
                     {
-                        var firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline) scenario);
+                        var firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline)scenario);
                         AddStepInstances(featureRef, scenarioRef, firstExampleSteps, true);
                     }
                     else
@@ -91,7 +89,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 {
                     CreateSampleStep(stepDefinition);
                 }
-                
+
                 if (stepDefinition.Instances.Count == 0)
                 {
                     stepDefinition.Instances = null;
@@ -134,7 +132,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             var result = new List<SpecFlowStep>();
             foreach (var scenarioStep in scenarioOutline.Steps)
             {
-                var specflowStep = (SpecFlowStep) scenarioStep;
+                var specflowStep = (SpecFlowStep)scenarioStep;
 
                 var stepArgument = specflowStep.Argument;
                 var dataTable = specflowStep.Argument as DataTable;
@@ -144,7 +142,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     stepArgument = Clone(dataTable, (c) => GetReplacedText(c.Value, paramSubst));
                 }
 
-                var newStep = Clone(specflowStep, stepArgument);                
+                var newStep = Clone(specflowStep, stepArgument);
 
                 result.Add(newStep);
             }
@@ -238,7 +236,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
             foreach (var scenarioStep in specFlowSteps)
             {
-                string currentBlock = scenarioStep.ScenarioBlock.ToString();                  
+                string currentBlock = scenarioStep.ScenarioBlock.ToString();
 
                 bool found = false;
 
@@ -252,12 +250,12 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                         continue;
 
                     Instance instance = new Instance
-                                            {
-                                                FromScenarioOutline = fromScenarioOutline,
-                                                ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
-                                                FeatureRef = featureRef,
-                                                ScenarioRef = scenarioRef
-                                            };
+                    {
+                        FromScenarioOutline = fromScenarioOutline,
+                        ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
+                        FeatureRef = featureRef,
+                        ScenarioRef = scenarioRef
+                    };
                     var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
                     if (regexArgs.Length > 0)
                     {
@@ -273,7 +271,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     {
                         var sampleText = GetSampleText(bindingInfo, scenarioStep.Text, match);
                         stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock, sampleText);
-                        
+
                     }
 
                     found = true;
@@ -295,12 +293,12 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     }
 
                     Instance instance = new Instance
-                                            {
-                                                FromScenarioOutline = fromScenarioOutline,
-                                                ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
-                                                FeatureRef = featureRef,
-                                                ScenarioRef = scenarioRef
-                                            };
+                    {
+                        FromScenarioOutline = fromScenarioOutline,
+                        ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
+                        FeatureRef = featureRef,
+                        ScenarioRef = scenarioRef
+                    };
                     stepDefinition.Instances.Add(instance);
                 }
             }
@@ -337,7 +335,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 newStep = new ReportStep(step.Location, step.Keyword, sampleText, ConvertArgument(step.Argument), step.StepKeyword, Parser.ScenarioBlock.Given);
 
             Debug.Assert(newStep != null);
-            
+
             return newStep;
         }
 
@@ -348,15 +346,15 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
             if (argument is DocString)
             {
-                DocString arg = (DocString) argument;
+                DocString arg = (DocString)argument;
 
                 return new DocStringArgument(arg.ContentType, arg.Content);
             }
 
             if (argument is DataTable)
             {
-                DataTable arg = (DataTable) argument;
-                
+                DataTable arg = (DataTable)argument;
+
                 return new TableArgument(arg.Rows.Select(r => new ReportTableRow(r.Cells.Select(c => new ReportTableCell(c.Value)).ToList())).ToList());
             }
 
