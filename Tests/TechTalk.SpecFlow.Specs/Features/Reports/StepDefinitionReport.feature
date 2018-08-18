@@ -1,16 +1,16 @@
 ﻿Feature: StepDefinitionReport
-	
+
 
 Scenario: All steps are bound with one step
 
 Given there is a SpecFlow project
 And there is a feature file in the project as
-		"""
+	"""
 			Feature: Simple Feature
 			Scenario: Simple Scenario
 				Given there is something
 				When I do something
-				Then something should happen			
+				Then something should happen
 		"""
 And the following step definitions
 		 """
@@ -32,8 +32,8 @@ And I generate SpecFlow Step Definition report
 
 Then the generated report contains
 	"""
-	Givens Step Definition Instances there is something [copy] 1 [show] Instances: there is something [copy] Simple Feature / Simple Scenario 
-	Whens Step Definition Instances I do something [copy] 1 [show] Instances: I do something [copy] Simple Feature / Simple Scenario 
+	Givens Step Definition Instances there is something [copy] 1 [show] Instances: there is something [copy] Simple Feature / Simple Scenario
+	Whens Step Definition Instances I do something [copy] 1 [show] Instances: I do something [copy] Simple Feature / Simple Scenario
 	Thens Step Definition Instances something should happen [copy] 1 [show] Instances: something should happen [copy] Simple Feature / Simple Scenario
 	"""
 
@@ -44,7 +44,7 @@ And there is a feature file in the project as
 		"""
 			Feature: Simple Feature
 			Scenario: Simple Scenario
-				Given there is something	
+				Given there is something
 		"""
 And the following step definitions
 		 """
@@ -63,11 +63,11 @@ And I generate SpecFlow Step Definition report
 
 Then the generated report contains
 	"""
-	Givens Step Definition Instances 
-	there is something [copy] 1 [show] Instances: 
-	there is something [copy] Simple Feature / Simple Scenario 
+	Givens Step Definition Instances
+	there is something [copy] 1 [show] Instances:
+	there is something [copy] Simple Feature / Simple Scenario
 	there is something [copy] 0
-	Whens Step Definition Instances 
+	Whens Step Definition Instances
 	Thens Step Definition Instances
 	"""
 
@@ -80,9 +80,9 @@ And there is a feature file in the project as
 			Feature: Simple Feature
 			Scenario: Simple Scenario
 				Given there is something
-				
+
 			Scenario: Simple Scenario 2
-				Given there is something		
+				Given there is something
 		"""
 And the following step definitions
 		 """
@@ -96,10 +96,10 @@ And I generate SpecFlow Step Definition report
 
 Then the generated report contains
 	"""
-	Givens Step Definition Instances 
-	there is something [copy] 2 [show] Instances: 
+	Givens Step Definition Instances
+	there is something [copy] 2 [show] Instances:
 	there is something [copy] Simple Feature / Simple Scenario Simple Feature / Simple Scenario 2
-	Whens Step Definition Instances 
+	Whens Step Definition Instances
 	Thens Step Definition Instances
 	"""
 
@@ -112,7 +112,7 @@ And there is a feature file in the project as
 			Scenario Outline: Simple Scenario Outline
 				Given there is something
 
-			Examples: 
+			Examples:
 				| Col 1     |
 				| Example 1 |
 				| Example 2 |
@@ -130,10 +130,10 @@ And I generate SpecFlow Step Definition report
 
 Then the generated report contains
 	"""
-	Givens Step Definition Instances 
-	there is something [copy] 1 [show] Instances: 
+	Givens Step Definition Instances
+	there is something [copy] 1 [show] Instances:
 	there is something [copy] Simple Feature / Simple Scenario Outline (Scenario Outline Example)
-	Whens Step Definition Instances 
+	Whens Step Definition Instances
 	Thens Step Definition Instances
 	"""
 
@@ -162,10 +162,10 @@ And I generate SpecFlow Step Definition report
 
 Then the generated report contains
 	"""
-	Givens Step Definition Instances 
-	there is something [copy] 1 [show] Instances: 
+	Givens Step Definition Instances
+	there is something [copy] 1 [show] Instances:
 	there is something [copy] Simple Feature / Simple Scenario
-	Whens Step Definition Instances 
+	Whens Step Definition Instances
 	Thens Step Definition Instances
 	"""
 
@@ -194,9 +194,9 @@ And I generate SpecFlow Step Definition report
 
 Then the generated report contains
 	"""
-	Givens Step Definition Instances 
-	there is something [copy] 1 [show] Instances: 
+	Givens Step Definition Instances
+	there is something [copy] 1 [show] Instances:
 	there is something [copy] Simple Feature / Simple Scenario
-	Whens Step Definition Instances 
+	Whens Step Definition Instances
 	Thens Step Definition Instances
 	"""
