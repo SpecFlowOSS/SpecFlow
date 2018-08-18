@@ -167,7 +167,6 @@
     <None Include="Features\LanguageSupport.feature" />
     <None Include="Features\ObsoleteSteps.feature" />
     <None Include="Features\Parser\DescriptionParser.feature" />
-    <None Include="Features\Reports\Goal.feature" />
     <None Include="Features\Reports\StepDefinitionReport.feature" />
     <None Include="Features\ScopedHooks.feature" />
     <None Include="Features\XUnit2Provider.feature" />
