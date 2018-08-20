@@ -81,21 +81,27 @@ Scenario: TraceListener should be called synchronously
         """
         using System;
         using System.IO;
+        using System.Threading;
 
         public class NonThreadSafeTraceListener : TechTalk.SpecFlow.Tracing.ITraceListener
         {
-            public int startIndex = 0;
+            private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
             public void WriteTestOutput(string message)
             {
-                var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
+                // Attempts to enter the semaphore immediately
+                // If not successfully entered, the exception is thrown
+                if (!_semaphore.Wait(0))
+                {
+                    throw new Exception("Listener was called in parallel");
+                }
+
                 System.Diagnostics.Debug.WriteLine("NonThreadSafeTraceListener: {0}", message);
                 string filePath = Path.Combine(@"$ProjectDir$", "NonThreadSafeTraceListener.log");
                 File.AppendAllText(filePath, "NonThreadSafeTraceListener: " + message + Environment.NewLine);
-                System.Threading.Thread.Sleep(100);
-                var afterStartIndex = startIndex;
-                if (afterStartIndex != currentStartIndex)
-                    throw new Exception("Listener was called in parallel");
+                Thread.Sleep(100);
+
+                _semaphore.Release();
             }
 
             public void WriteToolOutput(string message)
