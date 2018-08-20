@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, TESTCASE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(friendlyTestName.Replace('.', '_'))));
+            CodeDomHelper.AddAttribute(testMethod, TESTCASE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(friendlyTestName)));
         }
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
@@ -118,12 +118,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
-            var args = arguments.Select(
+            List<CodeAttributeArgument> args = arguments.Select(
               arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
 
             // addressing ReSharper bug: TestCase attribute with empty string[] param causes inconclusive result - https://github.com/techtalk/SpecFlow/issues/116
             bool hasExampleTags = tags.Any();
-            var exampleTagExpressionList = tags.Select(t => new CodePrimitiveExpression(t));
+            IEnumerable<CodePrimitiveExpression> exampleTagExpressionList = tags.Select(t => new CodePrimitiveExpression(t));
             CodeExpression exampleTagsExpression = hasExampleTags
                 ? new CodeArrayCreateExpression(typeof(string[]), exampleTagExpressionList.ToArray())
                 : (CodeExpression)new CodePrimitiveExpression(null);
@@ -138,7 +138,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
 
             if (isIgnored)
+            {
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));
+            }
 
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
