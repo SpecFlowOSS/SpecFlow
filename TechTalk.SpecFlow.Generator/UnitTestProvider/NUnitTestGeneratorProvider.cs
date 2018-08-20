@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, TESTCASE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(friendlyTestName)));
+            CodeDomHelper.AddAttribute(testMethod, TESTCASE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(friendlyTestName.Replace('.', '_'))));
         }
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
