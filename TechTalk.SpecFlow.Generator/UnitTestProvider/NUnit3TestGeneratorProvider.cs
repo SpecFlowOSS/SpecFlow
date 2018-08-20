@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(featureTitle.Replace('.', '_'))));
+            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(featureTitle)));
         }
     }
 }
