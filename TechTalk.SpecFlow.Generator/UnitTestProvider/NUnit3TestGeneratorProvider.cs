@@ -42,10 +42,5 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, PARALLELIZABLE_ATTR);
         }
-
-        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
-        {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(featureTitle)));
-        }
     }
 }
