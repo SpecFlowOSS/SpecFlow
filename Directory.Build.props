@@ -1,8 +1,6 @@
 <Project>
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetToolsPath>$(NuGetPackageRoot)\NuGet.CommandLine\4.5.1\tools\</NuGetToolsPath>
 
     <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
     <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>
