@@ -123,7 +123,8 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         private bool IsNewProjectSystem(XDocument xDocument)
         {
-            return xDocument.Root.Attribute("Sdk") != null;
+            // net.sdk way of detection based on: https://stackoverflow.com/questions/45943939/how-do-i-override-the-beforebuild-msbuild-task-in-a-vs-2017-net-standard-c-sh
+            return xDocument.Root.Attribute("Sdk") != null || xDocument.Root.Elements("Import").Where(e => e.HasAttributes).Attributes("Sdk").Any();
         }
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)

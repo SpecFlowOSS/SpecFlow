@@ -71,6 +71,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Licenses", "Licenses", "{D7
 		Licenses\System.ValueTuple-LICENSE-MIT.txt = Licenses\System.ValueTuple-LICENSE-MIT.txt
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests", "Tests\TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests\TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests.csproj", "{02A08F81-B90F-4EB3-9C30-CE7447DE2012}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,12 @@ Global
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,6 +197,7 @@ Global
 		{D87E7021-4926-4F5A-AC81-92AFC575FB7E} = {577A0375-1436-446C-802B-3C75C8CEF94F}
 		{DBEEB615-5991-46BC-B274-1516BD0F3D91} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{FA04B445-D04C-4075-9EB0-4D0A70E47FC4} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{02A08F81-B90F-4EB3-9C30-CE7447DE2012} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C32F919-B9E8-48E8-BD8D-566E54B9A27D}

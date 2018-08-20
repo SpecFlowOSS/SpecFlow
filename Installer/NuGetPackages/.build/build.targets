@@ -8,7 +8,9 @@
   <Target Name="Publish"/>
   <Target Name="GetNativeManifest" />
   <Target Name="GetCopyToOutputDirectoryItems" />
-
+  <Target Name="BuiltProjectOutputGroup" />
+  <Target Name="BuiltProjectOutputGroupDependencies" />
+  <Target Name="DebugSymbolsProjectOutputGroup" />
 
   <Target Name="AfterBuild" AfterTargets="Build" />
 
