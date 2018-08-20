@@ -22,12 +22,6 @@
     <PackageReference Include="Utf8Json" Version="1.3.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Nerdbank.GitVersioning" Version="2.1.65" PrivateAssets="all">
-      
-    </PackageReference>
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
