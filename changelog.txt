@@ -1,4 +1,4 @@
-2.4 - 2018-??-??
+2.4 - 2018-08-20
 New Features:
 + Added ability to convert type to same type or one of the base types https://github.com/techtalk/SpecFlow/pull/1110
 + Added support for customization of dependency injection at feature level via a runtime plugin event to raise feature dependencies https://github.com/techtalk/SpecFlow/pull/1141
@@ -19,7 +19,7 @@ Fixes:
 + Update to Gherkin 5.1.0
 + Fix XUnit ITestOutputhelper and MSTest TestContext container registrations so that they are available in BeforeScenario hooks. See https://github.com/techtalk/SpecFlow/issues/936
 + fixed CompareToSet not flagging missing rows correctly with dash https://github.com/techtalk/SpecFlow/pull/1098
-* Fix Used steps are falsely marked as unused in Step Definition Report https://github.com/techtalk/SpecFlow/issues/782
++ Fix Used steps are falsely marked as unused in Step Definition Report https://github.com/techtalk/SpecFlow/issues/782
 
 2.3.2 - 2018-04-17
 Fixes:
