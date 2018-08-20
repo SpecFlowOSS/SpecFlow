@@ -19,7 +19,4 @@ if ([Environment]::OSVersion.Platform -eq "Win32NT"){
   Write-Host $msbuildPath
 }
 
-
-& $msbuildPath /Restore ./TechTalk.SpecFlow.sln
-
-& $msbuildPath ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false
+& $msbuildPath /Restore ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false
