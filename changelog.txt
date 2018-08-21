@@ -9,6 +9,7 @@ New Features:
 + Array & List support for strings and enums when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1018
 + MSBuild: Experimental support for deleting code-behind files on clean and rebuild when MSBuild https://github.com/techtalk/SpecFlow/pull/1167, https://github.com/techtalk/SpecFlow/pull/1208
 + MSBuild: Experimental support for Net.SDK project system, only for targeting desktop framework, .net core is supported and won't work https://github.com/techtalk/SpecFlow/pull/1223
++ Changed Parameter handling of specflow.exe https://github.com/techtalk/SpecFlow/pull/1112
 
 Fixes:
 + Expose ScenarioInfo.Description parameter to get from context https://github.com/techtalk/SpecFlow/pull/1078
