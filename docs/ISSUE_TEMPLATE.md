@@ -3,6 +3,7 @@
 
 <!-- PLEASE CHECK THE OPTIONS THAT APPLY TO YOU BY ADDING AN 'x' TO THE CORRESPONDING CHECKBOX ('[ ]') -->
 ### SpecFlow Version:
+- [ ] 2.4
 - [ ] 2.3
 - [ ]	2.2
 - [ ]	2.1
