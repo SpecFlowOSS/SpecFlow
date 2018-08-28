@@ -30,4 +30,8 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='$(SpecFlow_Core_Runtime_TFM)'">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
 </Project>
