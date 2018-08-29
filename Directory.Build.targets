@@ -9,6 +9,7 @@
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Runtime_TFM=$(SpecFlow_Core_Runtime_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Generator_TFM=$(SpecFlow_FullFramework_Generator_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Generator_TFM=$(SpecFlow_Core_Generator_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Tools_TFM=$(SpecFlow_Core_Tools_TFM)</NuspecProperties>
     </PropertyGroup>
   </Target>
 
