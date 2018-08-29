@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='$(SpecFlow_Core_Runtime_TFM)'">
-    <DefineConstants>NETSTANDARD</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
 </Project>
