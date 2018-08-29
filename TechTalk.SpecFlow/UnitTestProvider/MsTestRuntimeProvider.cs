@@ -4,11 +4,8 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 {
     public class MsTestRuntimeProvider : IUnitTestRuntimeProvider
     {
-#if NETSTANDARD
         private const string MSTEST_ASSEMBLY = "Microsoft.VisualStudio.TestPlatform.TestFramework";
-#else
-        private const string MSTEST_ASSEMBLY = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
-#endif
+
         private const string ASSERT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.Assert";
 
         Action<string, object[]> assertInconclusive = null;
