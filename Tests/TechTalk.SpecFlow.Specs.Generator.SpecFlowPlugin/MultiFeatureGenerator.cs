@@ -33,6 +33,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         public CodeNamespace GenerateUnitTestFixture(SpecFlowDocument specFlowDocument, string testClassName, string targetNamespace)
         {
             CodeNamespace result = null;
+            bool onlyFullframework = false;
 
             //Debugger.Launch();
 
@@ -43,13 +44,15 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     return _defaultFeatureGenerator.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);
                 }
+
+                onlyFullframework = HasFeatureTag(specFlowFeature, "@fullframework");
             }
 
 
             var tagsOfFeature = specFlowFeature.Tags.Select(t => t.Name);
             var unitTestProviders = tagsOfFeature.Where(t => _unitTestProviderTags.Where(utpt => string.Compare(t, "@"+utpt, StringComparison.CurrentCultureIgnoreCase) == 0).Any());
 
-            foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders))
+            foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders, onlyFullframework))
             {
                 var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);
 
@@ -74,7 +77,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             return result;
         }
 
-        private IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> GetFilteredFeatureGenerator(IEnumerable<string> unitTestProviders)
+        private IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> GetFilteredFeatureGenerator(IEnumerable<string> unitTestProviders, bool onlyFullframework)
         {
             if (!unitTestProviders.Any())
             {
@@ -90,7 +93,17 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (IsForUnitTestProvider(featureGenerator, unitTestProvider))
                     {
-                        yield return featureGenerator;
+                        if (onlyFullframework)
+                        {
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_FullFramework)
+                            {
+                                yield return featureGenerator;
+                            }
+                        }
+                        else
+                        {
+                            yield return featureGenerator;
+                        }
                     }
                 }
             }
@@ -103,7 +116,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
         private bool HasFeatureTag(SpecFlowFeature specFlowFeature, string tag)
         {
-            return specFlowFeature.Tags.Where(t => string.Compare(t.Name, tag, StringComparison.CurrentCultureIgnoreCase) == 0).Any();
+            return specFlowFeature.Tags.Any(t => string.Compare(t.Name, tag, StringComparison.CurrentCultureIgnoreCase) == 0);
         }
     }
 }
