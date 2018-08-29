@@ -2,21 +2,23 @@
 
   <PropertyGroup>
 
-    <_SpecFlow_xUnitPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.0</_SpecFlow_xUnitPlugin>
-    <_SpecFlow_xUnitPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_xUnitPlugin>
-    <_SpecFlow_xUnitPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_xUnitPlugin)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_xUnitPluginPath>
+    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_SpecFlow_xUnitGeneratorPlugin>
+    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_xUnitGeneratorPlugin>
+    <_SpecFlow_xUnitGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_xUnitGeneratorPlugin)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_xUnitGeneratorPluginPath>
+    
+    <_SpecFlow_xUnitRuntimePlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_SpecFlow_xUnitRuntimePlugin>
+    <_SpecFlow_xUnitRuntimePlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'">net45</_SpecFlow_xUnitRuntimePlugin>
+    <_SpecFlow_xUnitRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_xUnitRuntimePlugin)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</_SpecFlow_xUnitRuntimePluginPath>
+
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
-    <None Include="$(MSBuildThisFileDirectory)\..\lib\netstandard2.0\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll">
+  <ItemGroup>
+    <SpecFlowGeneratorPlugins Include="$(_SpecFlow_xUnitGeneratorPluginPath)" />
+    <None Include="$(_SpecFlow_xUnitRuntimePluginPath)" >
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <SpecFlowGeneratorPlugins Include="$(_SpecFlow_xUnitPluginPath)" />
   </ItemGroup>
 
 </Project>
