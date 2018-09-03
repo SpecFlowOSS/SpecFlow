@@ -1,4 +1,4 @@
-﻿@mstest @fullframework
+﻿@MSTest @fullframework
 Feature: DeploymentItem
     
 @config

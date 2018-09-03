@@ -1,4 +1,4 @@
-﻿@XUnit
+﻿@xUnit
 Feature: XUnit v2 unit test provider
     
 Scenario: Should be able to log custom messages

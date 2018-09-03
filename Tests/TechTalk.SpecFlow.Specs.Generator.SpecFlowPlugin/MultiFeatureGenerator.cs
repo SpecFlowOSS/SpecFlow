@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Gherkin.Ast;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -50,11 +50,14 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
 
             var tagsOfFeature = specFlowFeature.Tags.Select(t => t.Name);
-            var unitTestProviders = tagsOfFeature.Where(t => _unitTestProviderTags.Where(utpt => string.Compare(t, "@"+utpt, StringComparison.CurrentCultureIgnoreCase) == 0).Any());
+            var unitTestProviders = tagsOfFeature.Where(t => _unitTestProviderTags.Where(utpt => string.Compare(t, "@" + utpt, StringComparison.CurrentCultureIgnoreCase) == 0).Any());
 
             foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders, onlyFullframework))
             {
-                var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(specFlowDocument, testClassName, targetNamespace);
+                var clonedDocument = CloneDocumentAndAddTag(specFlowDocument, featureGenerator.Key.UnitTestProvider);
+
+
+                var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(clonedDocument, testClassName, targetNamespace);
 
                 if (result == null)
                 {
@@ -75,6 +78,29 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             }
 
             return result;
+        }
+
+        private SpecFlowDocument CloneDocumentAndAddTag(SpecFlowDocument specFlowDocument, string unitTestProvider)
+        {
+            if (HasFeatureTag(specFlowDocument.SpecFlowFeature, unitTestProvider))
+            {
+                return specFlowDocument;
+            }
+
+
+            var tags = new List<Tag>();
+            var specFlowFeature = specFlowDocument.SpecFlowFeature;
+            tags.AddRange(specFlowFeature.Tags);
+            tags.Add(new Tag(null, unitTestProvider));
+            var feature = new SpecFlowFeature(tags.ToArray(),
+                                              specFlowFeature.Location,
+                                              specFlowFeature.Language,
+                                              specFlowFeature.Keyword,
+                                              specFlowFeature.Name,
+                                              specFlowFeature.Description,
+                                              specFlowFeature.Children.ToArray());
+
+            return new SpecFlowDocument(feature, specFlowDocument.Comments.ToArray(), specFlowDocument.SourceFilePath);
         }
 
         private IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> GetFilteredFeatureGenerator(IEnumerable<string> unitTestProviders, bool onlyFullframework)
@@ -111,7 +137,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
         private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)
         {
-            return string.Compare("@"+featureGenerator.Key.UnitTestProvider, unitTestProvider, StringComparison.CurrentCultureIgnoreCase) == 0;
+            return string.Compare("@" + featureGenerator.Key.UnitTestProvider, unitTestProvider, StringComparison.CurrentCultureIgnoreCase) == 0;
         }
 
         private bool HasFeatureTag(SpecFlowFeature specFlowFeature, string tag)

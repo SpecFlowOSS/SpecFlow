@@ -1,4 +1,4 @@
-﻿@MsTest
+﻿@MSTest
 Feature: GH1052
 
 Wrong scenario context injected when running tests in parallel using NUnit (also specrun) - https://github.com/techtalk/SpecFlow/issues/1052

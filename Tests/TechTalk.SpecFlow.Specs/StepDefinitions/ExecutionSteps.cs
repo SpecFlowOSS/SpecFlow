@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _solutionDriver.CompileSolution();
             _solutionDriver.CheckSolutionShouldHaveCompiled();
-            if (_testRunConfiguration.UnitTestProvider == TestProjectGenerator.UnitTestProvider.XUnit)
+            if (_testRunConfiguration.UnitTestProvider == TestProjectGenerator.UnitTestProvider.xUnit)
                 _vsTestExecution.Filter = $"Category={tag}";
             else
                 _vsTestExecution.Filter = $"TestCategory={tag}";

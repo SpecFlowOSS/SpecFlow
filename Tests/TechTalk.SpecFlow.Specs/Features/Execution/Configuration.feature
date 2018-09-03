@@ -1,5 +1,5 @@
 ﻿@ignore
-@xunit @MsTest
+@xUnit @MSTest
 Feature: Configuration
 	
 Background: 

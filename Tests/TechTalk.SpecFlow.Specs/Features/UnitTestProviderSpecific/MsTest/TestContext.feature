@@ -1,4 +1,4 @@
-﻿@mstest
+﻿@MSTest
 Feature: TestContext
 
 Scenario: Should be able to access TestContext in Steps
