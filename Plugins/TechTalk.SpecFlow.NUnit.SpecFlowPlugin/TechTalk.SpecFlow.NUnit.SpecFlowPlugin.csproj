@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Runtime_TFM)</TargetFrameworks>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.8.0" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />

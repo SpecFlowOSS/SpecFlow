@@ -13,7 +13,15 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
     {
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
+            runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
             unitTestProviderConfiguration.UseUnitTestProvider("nunit");
+        }
+
+        private void RuntimePluginEvents_CustomizeScenarioDependencies(object sender, CustomizeScenarioDependenciesEventArgs e)
+        {
+            var container = e.ObjectContainer;
+            
+            container.RegisterTypeAs<NUnitTraceListener, ITraceListener>();
         }
     }
 }

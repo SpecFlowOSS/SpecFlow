@@ -6,25 +6,43 @@ Feature: In-AppDomain Parallel Execution
 Background:
     Given there is a SpecFlow project
     And parallel execution is enabled
+    And the following binding class 
+        """
+        using TechTalk.SpecFlow;
+        using TechTalk.SpecFlow.Tracing;
 
-    And the following step definition
-         """
-         public static int startIndex = 0;
+        [Binding]
+        public class TraceSteps
+        {
+            private readonly ITraceListener _traceListener;
 
-         [When(@"I do something")]
-         public void WhenIDoSomething()
-         {
-            var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
-            Console.WriteLine("Start index: {0}", currentStartIndex);
-            System.Threading.Thread.Sleep(500);
-            var afterStartIndex = startIndex;
-            if (afterStartIndex == currentStartIndex)
-                Console.WriteLine("Was not parallel");
-            else
-                Console.WriteLine("Was parallel");
-         }
-         """
-    Given there is a feature file in the project as
+            public TraceSteps(ITraceListener traceListener)
+            {
+                _traceListener = traceListener;
+            }
+
+            public static int startIndex = 0;
+
+            [When(@"I do something")]
+            void WhenIDoSomething()
+            {
+                var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
+                _traceListener.WriteTestOutput($"Start index: {currentStartIndex}");
+                System.Threading.Thread.Sleep(500);
+                var afterStartIndex = startIndex;
+                if (afterStartIndex == currentStartIndex)
+                {
+                    _traceListener.WriteTestOutput("Was not parallel");
+                }
+                else
+                {
+                    _traceListener.WriteTestOutput("Was parallel");
+                }
+            }
+        }
+        """
+
+    And there is a feature file in the project as
         """
         Feature: Feature 1
         Scenario Outline: Simple Scenario Outline
@@ -38,7 +56,7 @@ Background:
         | 4     |
         | 5     |
         """
-    Given there is a feature file in the project as
+    And there is a feature file in the project as
         """
         Feature: Feature 2
         Scenario Outline: Simple Scenario Outline
