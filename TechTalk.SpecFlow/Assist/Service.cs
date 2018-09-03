@@ -35,10 +35,12 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            if (valueComparer.GetType() == typeof(DefaultValueComparer))
-              _registeredValueComparers.Add(valueComparer);
-            else
-              _registeredValueComparers.Insert(0, valueComparer);
+            _registeredValueComparers.Insert(0, valueComparer);
+        }
+
+        public void RegisterDefaultValueComparer(IValueComparer valueComparer)
+        {
+            _registeredValueComparers.Add(valueComparer);
         }
 
         public void UnregisterValueComparer(IValueComparer valueComparer)
@@ -64,7 +66,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueComparer(new DecimalValueComparer());
             RegisterValueComparer(new DoubleValueComparer());
             RegisterValueComparer(new FloatValueComparer());
-            RegisterValueComparer(new DefaultValueComparer());
+            RegisterDefaultValueComparer(new DefaultValueComparer());
 
             RegisterValueRetriever(new StringValueRetriever());
             RegisterValueRetriever(new ByteValueRetriever());

@@ -1,3 +1,7 @@
+2.5 - 2018-??-??
+New Features:
++ Separate addition of default and non-default value comparers https://github.com/techtalk/SpecFlow/pull/1257
+
 2.4 - 2018-08-20
 New Features:
 + Added ability to convert type to same type or one of the base types https://github.com/techtalk/SpecFlow/pull/1110
