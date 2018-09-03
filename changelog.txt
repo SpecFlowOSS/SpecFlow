@@ -1,4 +1,4 @@
-2.5 - 2018-??-??
+3.0 - 2018-??-??
 New Features:
 + Separate addition of default and non-default value comparers https://github.com/techtalk/SpecFlow/pull/1257
 
