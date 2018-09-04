@@ -125,7 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields did not match:
-StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBreak());
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>, Using 'TechTalk.SpecFlow.Assist.ValueComparers.DefaultValueComparer'".AgnosticLineBreak());
         }
 
         [Test]
@@ -145,8 +145,8 @@ StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBre
 
             exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields did not match:
-StringProperty: Expected <Howard Roark>, Actual <Peter Keating>
-IntProperty: Expected <1>, Actual <2>".AgnosticLineBreak());
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>, Using 'TechTalk.SpecFlow.Assist.ValueComparers.DefaultValueComparer'
+IntProperty: Expected <1>, Actual <2>, Using 'TechTalk.SpecFlow.Assist.ValueComparers.DefaultValueComparer'".AgnosticLineBreak());
         }
 
         [Test]
