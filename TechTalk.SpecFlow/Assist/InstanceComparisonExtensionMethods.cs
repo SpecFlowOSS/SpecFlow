@@ -51,9 +51,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private static string DescribeTheErrorForThisDifference(Difference difference)
         {
-            return difference.DoesNotExist
-                ? $"{difference.Property}: Property does not exist"
-                : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>, Using '{difference.Comparer.GetType().FullName}'";
+            return difference.Description;
         }
 
         private static Difference[] FindAnyDifferences<T>(Table table, T instance)
@@ -107,21 +105,13 @@ namespace TechTalk.SpecFlow.Assist
             var propertyName = row.Id();
 
             if (ThePropertyDoesNotExist(instance, row))
-                return new Difference
-                {
-                    Property = propertyName,
-                    DoesNotExist = true
-                };
+                return new PropertyDoesNotExist(propertyName);
 
             var comparer = FindValueComparerForProperty(instance, propertyName);
 
-            return new Difference
-            {
-                Property = propertyName,
-                Expected = row.Value(),
-                Actual = instance.GetPropertyValue(propertyName),
-                Comparer = comparer,
-            };
+            var expected = row.Value();
+            var actual = instance.GetPropertyValue(propertyName);
+            return new PropertyDiffers(propertyName, expected, actual, comparer);
         }
 
         private static IValueComparer FindValueComparerForProperty<T>(T instance, string propertyName) =>
@@ -132,13 +122,41 @@ namespace TechTalk.SpecFlow.Assist
             Service.Instance.ValueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue));
 
-        private class Difference
+        private abstract class Difference
         {
-            public string Property { get; set; }
-            public object Expected { get; set; }
-            public object Actual { get; set; }
-            public bool DoesNotExist { get; set; }
-            public IValueComparer Comparer { get; set; }
+            public abstract string Description { get; }
+        }
+
+        private class PropertyDoesNotExist : Difference
+        {
+            private readonly string propertyName;
+
+            public PropertyDoesNotExist(string propertyName)
+            {
+                this.propertyName = propertyName;
+            }
+
+            public override string Description =>
+                $"{this.propertyName}: Property does not exist";
+        }
+
+        private class PropertyDiffers : Difference
+        {
+            private readonly string propertyName;
+            private readonly object expected;
+            private readonly object actual;
+            private readonly IValueComparer comparer;
+
+            public PropertyDiffers(string propertyName, object expected, object actual, IValueComparer comparer)
+            {
+                this.propertyName = propertyName;
+                this.expected = expected;
+                this.actual = actual;
+                this.comparer = comparer;
+            }
+
+            public override string Description =>
+                $"{propertyName}: Expected <{expected}>, Actual <{actual}>, Using '{comparer.GetType().FullName}'";
         }
     }
 
