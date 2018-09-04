@@ -91,11 +91,9 @@ namespace TechTalk.SpecFlow.Assist
         {
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
+            var comparer = FindValueComparerForValue(propertyValue);
 
-            var valueComparers = Service.Instance.ValueComparers;
-
-            return valueComparers
-                .FirstOrDefault(x => x.CanCompare(propertyValue))
+            return comparer
                 .Compare(expected, propertyValue) == false;
         }
 
@@ -115,12 +113,7 @@ namespace TechTalk.SpecFlow.Assist
                     DoesNotExist = true
                 };
 
-            var propertyValue = instance.GetPropertyValue(propertyName);
-
-            var valueComparers = Service.Instance.ValueComparers;
-
-            var comparer = valueComparers
-                .FirstOrDefault(x => x.CanCompare(propertyValue));
+            var comparer = FindValueComparerForProperty(instance, propertyName);
 
             return new Difference
             {
@@ -129,6 +122,21 @@ namespace TechTalk.SpecFlow.Assist
                 Actual = instance.GetPropertyValue(propertyName),
                 Comparer = comparer,
             };
+        }
+
+        private static IValueComparer FindValueComparerForProperty<T>(T instance, string propertyName)
+        {
+            var propertyValue = instance.GetPropertyValue(propertyName);
+
+            return FindValueComparerForValue(propertyValue);
+        }
+
+        private static IValueComparer FindValueComparerForValue(object propertyValue)
+        {
+            var valueComparers = Service.Instance.ValueComparers;
+
+            return valueComparers
+                .FirstOrDefault(x => x.CanCompare(propertyValue));
         }
 
         private class Difference
