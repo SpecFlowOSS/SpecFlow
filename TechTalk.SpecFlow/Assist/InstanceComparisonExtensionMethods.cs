@@ -106,14 +106,16 @@ namespace TechTalk.SpecFlow.Assist
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
+            var propertyName = row.Id();
+
             if (ThePropertyDoesNotExist(instance, row))
                 return new Difference
                 {
-                    Property = row.Id(),
+                    Property = propertyName,
                     DoesNotExist = true
                 };
 
-            var propertyValue = instance.GetPropertyValue(row.Id());
+            var propertyValue = instance.GetPropertyValue(propertyName);
 
             var valueComparers = Service.Instance.ValueComparers;
 
@@ -122,9 +124,9 @@ namespace TechTalk.SpecFlow.Assist
 
             return new Difference
             {
-                Property = row.Id(),
+                Property = propertyName,
                 Expected = row.Value(),
-                Actual = instance.GetPropertyValue(row.Id()),
+                Actual = instance.GetPropertyValue(propertyName),
                 Comparer = comparer,
             };
         }
