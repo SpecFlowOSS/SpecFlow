@@ -127,6 +127,7 @@ namespace TechTalk.SpecFlow.Assist
             public object Expected { get; set; }
             public object Actual { get; set; }
             public bool DoesNotExist { get; set; }
+            public IValueComparer Comparer { get; set; }
         }
     }
 
