@@ -102,10 +102,9 @@ namespace TechTalk.SpecFlow.Assist
             if (ThePropertyDoesNotExist(instance, row))
                 return new PropertyDoesNotExist(propertyName);
 
-            var comparer = FindValueComparerForProperty(instance, propertyName);
-
             var expected = row.Value();
             var actual = instance.GetPropertyValue(propertyName);
+            var comparer = FindValueComparerForProperty(instance, propertyName);
             return new PropertyDiffers(propertyName, expected, actual, comparer);
         }
 
