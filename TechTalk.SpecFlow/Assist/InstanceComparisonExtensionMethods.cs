@@ -124,20 +124,13 @@ namespace TechTalk.SpecFlow.Assist
             };
         }
 
-        private static IValueComparer FindValueComparerForProperty<T>(T instance, string propertyName)
-        {
-            var propertyValue = instance.GetPropertyValue(propertyName);
+        private static IValueComparer FindValueComparerForProperty<T>(T instance, string propertyName) =>
+            FindValueComparerForValue(
+                instance.GetPropertyValue(propertyName));
 
-            return FindValueComparerForValue(propertyValue);
-        }
-
-        private static IValueComparer FindValueComparerForValue(object propertyValue)
-        {
-            var valueComparers = Service.Instance.ValueComparers;
-
-            return valueComparers
+        private static IValueComparer FindValueComparerForValue(object propertyValue) =>
+            Service.Instance.ValueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue));
-        }
 
         private class Difference
         {
