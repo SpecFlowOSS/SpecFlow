@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             return difference.DoesNotExist
                 ? $"{difference.Property}: Property does not exist"
-                : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>";
+                : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>, Using '{difference.Comparer.GetType().FullName}'";
         }
 
         private static Difference[] FindAnyDifferences<T>(Table table, T instance)
