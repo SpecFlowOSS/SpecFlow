@@ -113,11 +113,19 @@ namespace TechTalk.SpecFlow.Assist
                     DoesNotExist = true
                 };
 
+            var propertyValue = instance.GetPropertyValue(row.Id());
+
+            var valueComparers = Service.Instance.ValueComparers;
+
+            var comparer = valueComparers
+                .FirstOrDefault(x => x.CanCompare(propertyValue));
+
             return new Difference
             {
                 Property = row.Id(),
                 Expected = row.Value(),
-                Actual = instance.GetPropertyValue(row.Id())
+                Actual = instance.GetPropertyValue(row.Id()),
+                Comparer = comparer,
             };
         }
 
