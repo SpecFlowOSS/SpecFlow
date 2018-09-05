@@ -26,26 +26,31 @@ namespace TechTalk.SpecFlow.Assist
             ValueRetrievers = new SpecFlowDefaultValueRetrieverList();
         }
 
+        [Obsolete("Use ValueComparers.Register")]
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
             ValueComparers.Register(valueComparer);
         }
 
+        [Obsolete("Use ValueComparers.RegisterDefault")]
         public void RegisterDefaultValueComparer(IValueComparer valueComparer)
         {
             ValueComparers.RegisterDefault(valueComparer);
         }
 
+        [Obsolete("Use ValueComparers.Unregister")]
         public void UnregisterValueComparer(IValueComparer valueComparer)
         {
             ValueComparers.Unregister(valueComparer);
         }
 
+        [Obsolete("Use ValueRetrievers.Register")]
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
             ValueRetrievers.Register(valueRetriever);
         }
 
+        [Obsolete("Use ValueRetrievers.Unregister")]
         public void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
             ValueRetrievers.Unregister(valueRetriever);
