@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist
     public class Service
     {
 
-        private List<IValueComparer> _registeredValueComparers;
+        private ServiceComponentList<IValueComparer> _registeredValueComparers;
         private ServiceComponentList<IValueRetriever> _registeredValueRetrievers;
 
         public IEnumerable<IValueComparer> ValueComparers => _registeredValueComparers;
@@ -28,24 +28,24 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RestoreDefaults()
         {
-            _registeredValueComparers = new List<IValueComparer>();
+            _registeredValueComparers = new ServiceComponentList<IValueComparer>();
             _registeredValueRetrievers = new SpecFlowDefaultValueRetrieverList();
             RegisterSpecFlowDefaults();
         }
 
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Insert(0, valueComparer);
+            _registeredValueComparers.Register(valueComparer);
         }
 
         public void RegisterDefaultValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Add(valueComparer);
+            _registeredValueComparers.RegisterDefault(valueComparer);
         }
 
         public void UnregisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Remove(valueComparer);
+            _registeredValueComparers.Unregister(valueComparer);
         }
 
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
