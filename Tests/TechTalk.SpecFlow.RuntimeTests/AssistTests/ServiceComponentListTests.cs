@@ -39,6 +39,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_allow_the_addition_of_default_components_at_the_end_of_the_list()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            var registeredLast = new TestComponentImpl();
+            var @default = new TestComponentImpl();
+            sut.Register(registeredFirst);
+            sut.Register(registeredLast);
+            sut.RegisterDefault(@default);
+
+            sut.Should().Equal(registeredLast, registeredFirst, @default);
+        }
+
+        [Test]
         public void Should_allow_unregistration_of_existing_component()
         {
             var sut = new ServiceComponentList<ITestComponent>();
