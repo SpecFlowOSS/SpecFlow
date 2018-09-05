@@ -51,10 +51,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("IntProperty", "20");
 
             var test = new InstanceComparisonTestObject
-                           {
-                               StringProperty = "Howard Roark",
-                               IntProperty = 10
-                           };
+            {
+                StringProperty = "Howard Roark",
+                IntProperty = 10
+            };
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
@@ -125,7 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields did not match:
-StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBreak());
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>, Using 'TechTalk.SpecFlow.Assist.ValueComparers.DefaultValueComparer'".AgnosticLineBreak());
         }
 
         [Test]
@@ -136,17 +136,17 @@ StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBre
             table.AddRow("IntProperty", "1");
 
             var test = new InstanceComparisonTestObject
-                           {
-                               StringProperty = "Peter Keating",
-                               IntProperty = 2
-                           };
+            {
+                StringProperty = "Peter Keating",
+                IntProperty = 2
+            };
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
             exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields did not match:
-StringProperty: Expected <Howard Roark>, Actual <Peter Keating>
-IntProperty: Expected <1>, Actual <2>".AgnosticLineBreak());
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>, Using 'TechTalk.SpecFlow.Assist.ValueComparers.DefaultValueComparer'
+IntProperty: Expected <1>, Actual <2>, Using 'TechTalk.SpecFlow.Assist.ValueComparers.DefaultValueComparer'".AgnosticLineBreak());
         }
 
         [Test]
@@ -170,16 +170,16 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             table.AddRow("BoolProperty", "true");
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
-                                                                                                        {
-                                                                                                            BoolProperty = true
-                                                                                                        });
+            {
+                BoolProperty = true
+            });
 
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
 
             comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
-                                                                                                    {
-                                                                                                        BoolProperty = false
-                                                                                                    });
+            {
+                BoolProperty = false
+            });
 
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
@@ -191,9 +191,9 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             table.AddRow("GuidProperty", "DFFC3F4E-670A-400A-8212-C6841E2EA055");
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
-                                                                                                        {
-                                                                                                            GuidProperty = new Guid("DFFC3F4E-670A-400A-8212-C6841E2EA055")
-                                                                                                        });
+            {
+                GuidProperty = new Guid("DFFC3F4E-670A-400A-8212-C6841E2EA055")
+            });
 
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
@@ -204,9 +204,9 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             var table = new Table("Field", "Value");
             table.AddRow("DecimalProperty", "4.23");
             var comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
-                                                                                 {
-                                                                                     DecimalProperty = 4.23000000M
-                                                                                 });
+            {
+                DecimalProperty = 4.23000000M
+            });
 
             comparisonResult.ExceptionWasThrown.Should().BeFalse();
         }
@@ -264,12 +264,12 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             table.AddRow("Test", "42", "23.01", "11.56");
 
             var test = new InstanceComparisonTestObject
-                           {
-                               StringProperty = "Test",
-                               IntProperty = 42,
-                               DecimalProperty = 23.01M,
-                               FloatProperty = 11.56F
-                           };
+            {
+                StringProperty = "Test",
+                IntProperty = 42,
+                DecimalProperty = 23.01M,
+                FloatProperty = 11.56F
+            };
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
