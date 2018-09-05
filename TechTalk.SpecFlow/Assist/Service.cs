@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RestoreDefaults()
         {
-            ValueComparers = new ServiceComponentList<IValueComparer>();
+            ValueComparers = new SpecFlowDefaultValueComparerList();
             ValueRetrievers = new SpecFlowDefaultValueRetrieverList();
             RegisterSpecFlowDefaults();
         }
@@ -56,13 +56,6 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RegisterSpecFlowDefaults()
         {
-            RegisterValueComparer(new DateTimeValueComparer());
-            RegisterValueComparer(new BoolValueComparer());
-            RegisterValueComparer(new GuidValueComparer(new GuidValueRetriever()));
-            RegisterValueComparer(new DecimalValueComparer());
-            RegisterValueComparer(new DoubleValueComparer());
-            RegisterValueComparer(new FloatValueComparer());
-            RegisterDefaultValueComparer(new DefaultValueComparer());
 
         }
 
