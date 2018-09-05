@@ -47,5 +47,11 @@ namespace TechTalk.SpecFlow.Assist
             Unregister(old);
             Register(@new);
         }
+
+        public void Replace<TOld, TNew>() where TOld : T where TNew : T, new()
+        {
+            Unregister<TOld>();
+            Register<TNew>();
+        }
     }
 }

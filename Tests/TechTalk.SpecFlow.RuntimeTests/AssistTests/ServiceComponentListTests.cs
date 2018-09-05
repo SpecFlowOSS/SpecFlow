@@ -115,6 +115,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             sut.Should().Equal(newComponent);
         }
 
+        [Test]
+        public void Should_allow_to_replace_a_component_with_another_one_via_generic_overload()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            sut.Register(new TestComponentImpl());
+            sut.Replace<TestComponentImpl, AnotherImpl>();
+
+            sut.Should().NotBeEmpty();
+            sut.Should().AllBeOfType<AnotherImpl>();
+        }
+
         private interface ITestComponent
         {
         }
