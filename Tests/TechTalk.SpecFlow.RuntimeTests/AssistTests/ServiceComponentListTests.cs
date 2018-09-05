@@ -74,6 +74,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_allow_unregistration_of_existing_component_via_generic_overload()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            sut.Register(new TestComponentImpl());
+            sut.Unregister<TestComponentImpl>();
+
+            sut.Should().BeEmpty();
+        }
+
+        [Test]
         public void Should_ignore_unregistration_of_nonexisting_component()
         {
             var sut = new ServiceComponentList<ITestComponent>();
@@ -83,11 +93,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             sut.Should().NotBeEmpty();
         }
 
+        [Test]
+        public void Should_ignore_unregistration_of_nonexisting_component_via_generic_overload()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            sut.Register(new TestComponentImpl());
+            sut.Unregister<AnotherImpl>();
+
+            sut.Should().NotBeEmpty();
+        }
+
         private interface ITestComponent
         {
         }
 
         private class TestComponentImpl : ITestComponent
+        {
+        }
+
+        private class AnotherImpl : ITestComponent
         {
         }
     }

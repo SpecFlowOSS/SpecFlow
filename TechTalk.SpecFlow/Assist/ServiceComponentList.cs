@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -34,6 +35,11 @@ namespace TechTalk.SpecFlow.Assist
         public void Unregister(T component)
         {
             components.Remove(component);
+        }
+
+        public void Unregister<TImpl>() where TImpl : T
+        {
+            components.OfType<TImpl>().ToList().ForEach(component => components.Remove(component));
         }
     }
 }
