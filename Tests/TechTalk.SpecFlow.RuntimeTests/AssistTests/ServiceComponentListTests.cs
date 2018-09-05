@@ -103,6 +103,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             sut.Should().NotBeEmpty();
         }
 
+        [Test]
+        public void Should_allow_to_replace_a_component_with_another_one()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var oldComponent = new TestComponentImpl();
+            var newComponent = new TestComponentImpl();
+            sut.Register(oldComponent);
+            sut.Replace(oldComponent, newComponent);
+
+            sut.Should().Equal(newComponent);
+        }
+
         private interface ITestComponent
         {
         }

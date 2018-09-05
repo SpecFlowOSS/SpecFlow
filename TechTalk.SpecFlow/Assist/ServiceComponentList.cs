@@ -41,5 +41,11 @@ namespace TechTalk.SpecFlow.Assist
         {
             components.OfType<TImpl>().ToList().ForEach(component => components.Remove(component));
         }
+
+        public void Replace(T old, T @new)
+        {
+            Unregister(old);
+            Register(@new);
+        }
     }
 }
