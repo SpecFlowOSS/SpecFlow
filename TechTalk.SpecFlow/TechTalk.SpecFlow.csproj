@@ -69,6 +69,7 @@
     <Compile Include="Assist\ServiceComponentList.cs" />
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\Attributes\TableAliasesAttribute.cs" />
+    <Compile Include="Assist\SpecFlowDefaultValueRetrieverList.cs" />
     <Compile Include="Assist\TableDifferenceItem.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
     <Compile Include="Assist\TableDiffExceptionBuilder.cs" />

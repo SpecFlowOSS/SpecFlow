@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Assist
         public void RestoreDefaults()
         {
             _registeredValueComparers = new List<IValueComparer>();
-            _registeredValueRetrievers = new ServiceComponentList<IValueRetriever>();
+            _registeredValueRetrievers = new SpecFlowDefaultValueRetrieverList();
             RegisterSpecFlowDefaults();
         }
 
@@ -68,47 +68,6 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueComparer(new FloatValueComparer());
             RegisterDefaultValueComparer(new DefaultValueComparer());
 
-            RegisterValueRetriever(new StringValueRetriever());
-            RegisterValueRetriever(new ByteValueRetriever());
-            RegisterValueRetriever(new SByteValueRetriever());
-            RegisterValueRetriever(new IntValueRetriever());
-            RegisterValueRetriever(new UIntValueRetriever());
-            RegisterValueRetriever(new ShortValueRetriever());
-            RegisterValueRetriever(new UShortValueRetriever());
-            RegisterValueRetriever(new LongValueRetriever());
-            RegisterValueRetriever(new ULongValueRetriever());
-            RegisterValueRetriever(new FloatValueRetriever());
-            RegisterValueRetriever(new DoubleValueRetriever());
-            RegisterValueRetriever(new DecimalValueRetriever());
-            RegisterValueRetriever(new CharValueRetriever());
-            RegisterValueRetriever(new BoolValueRetriever());
-            RegisterValueRetriever(new DateTimeValueRetriever());
-            RegisterValueRetriever(new GuidValueRetriever());
-            RegisterValueRetriever(new EnumValueRetriever());
-            RegisterValueRetriever(new TimeSpanValueRetriever());
-            RegisterValueRetriever(new DateTimeOffsetValueRetriever());
-            RegisterValueRetriever(new NullableGuidValueRetriever());
-            RegisterValueRetriever(new NullableDateTimeValueRetriever());
-            RegisterValueRetriever(new NullableBoolValueRetriever());
-            RegisterValueRetriever(new NullableCharValueRetriever());
-            RegisterValueRetriever(new NullableDecimalValueRetriever());
-            RegisterValueRetriever(new NullableDoubleValueRetriever());
-            RegisterValueRetriever(new NullableFloatValueRetriever());
-            RegisterValueRetriever(new NullableULongValueRetriever());
-            RegisterValueRetriever(new NullableByteValueRetriever());
-            RegisterValueRetriever(new NullableSByteValueRetriever());
-            RegisterValueRetriever(new NullableIntValueRetriever());
-            RegisterValueRetriever(new NullableUIntValueRetriever());
-            RegisterValueRetriever(new NullableShortValueRetriever());
-            RegisterValueRetriever(new NullableUShortValueRetriever());
-            RegisterValueRetriever(new NullableLongValueRetriever());
-            RegisterValueRetriever(new NullableTimeSpanValueRetriever());
-            RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
-
-            RegisterValueRetriever(new StringArrayValueRetriever());
-            RegisterValueRetriever(new StringListValueRetriever());
-            RegisterValueRetriever(new EnumArrayValueRetriever());
-            RegisterValueRetriever(new EnumListValueRetriever());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
