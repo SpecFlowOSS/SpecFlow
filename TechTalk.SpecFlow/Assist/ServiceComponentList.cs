@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class ServiceComponentList<T> : IEnumerable<T>
     {
-        private readonly IEnumerable<T> components;
+        private readonly List<T> components;
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => components.GetEnumerator();
 
@@ -14,6 +14,11 @@ namespace TechTalk.SpecFlow.Assist
         public ServiceComponentList()
         {
             components = new List<T>();
+        }
+
+        public void Register(T component)
+        {
+            components.Add(component);
         }
     }
 }

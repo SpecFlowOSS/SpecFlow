@@ -15,7 +15,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             sut.Should().BeEmpty();
         }
 
+        [Test]
+        public void Should_allow_the_addition_of_new_components()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var component = new TestComponentImpl();
+            sut.Register(component);
+
+            sut.Should().Equal(component);
+        }
+
         private interface ITestComponent
+        {
+        }
+
+        private class TestComponentImpl : ITestComponent
         {
         }
     }
