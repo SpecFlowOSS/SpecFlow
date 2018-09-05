@@ -7,12 +7,8 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class Service
     {
-
-        private ServiceComponentList<IValueComparer> _registeredValueComparers;
-        private ServiceComponentList<IValueRetriever> _registeredValueRetrievers;
-
-        public IEnumerable<IValueComparer> ValueComparers => _registeredValueComparers;
-        public IEnumerable<IValueRetriever> ValueRetrievers => _registeredValueRetrievers;
+        public ServiceComponentList<IValueComparer> ValueComparers { get; private set; }
+        public ServiceComponentList<IValueRetriever> ValueRetrievers { get; private set; }
 
         public static Service Instance { get; internal set; }
 
@@ -28,34 +24,34 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RestoreDefaults()
         {
-            _registeredValueComparers = new ServiceComponentList<IValueComparer>();
-            _registeredValueRetrievers = new SpecFlowDefaultValueRetrieverList();
+            ValueComparers = new ServiceComponentList<IValueComparer>();
+            ValueRetrievers = new SpecFlowDefaultValueRetrieverList();
             RegisterSpecFlowDefaults();
         }
 
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Register(valueComparer);
+            ValueComparers.Register(valueComparer);
         }
 
         public void RegisterDefaultValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.RegisterDefault(valueComparer);
+            ValueComparers.RegisterDefault(valueComparer);
         }
 
         public void UnregisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Unregister(valueComparer);
+            ValueComparers.Unregister(valueComparer);
         }
 
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Register(valueRetriever);
+            ValueRetrievers.Register(valueRetriever);
         }
 
         public void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Unregister(valueRetriever);
+            ValueRetrievers.Unregister(valueRetriever);
         }
 
         public void RegisterSpecFlowDefaults()
