@@ -20,5 +20,10 @@ namespace TechTalk.SpecFlow.Assist
         {
             components.Insert(0, component);
         }
+
+        public void Unregister(T component)
+        {
+            components.Remove(component);
+        }
     }
 }

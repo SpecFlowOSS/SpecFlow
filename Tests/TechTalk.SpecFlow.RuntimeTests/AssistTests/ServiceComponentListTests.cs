@@ -38,6 +38,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             sut.Should().Equal(components);
         }
 
+        [Test]
+        public void Should_allow_unregistration_of_existing_component()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var component = new TestComponentImpl();
+            sut.Register(component);
+            sut.Unregister(component);
+
+            sut.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Should_ignore_unregistration_of_nonexisting_component()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            sut.Register(new TestComponentImpl());
+            sut.Unregister(new TestComponentImpl());
+
+            sut.Should().NotBeEmpty();
+        }
+
         private interface ITestComponent
         {
         }
