@@ -27,6 +27,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_allow_the_addition_of_new_components_via_generic_overload()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            sut.Register<TestComponentImpl>();
+
+            sut.Should().NotBeEmpty();
+            sut.Should().AllBeOfType<TestComponentImpl>();
+        }
+
+        [Test]
         public void Should_reverse_registration_order_of_added_components()
         {
             var sut = new ServiceComponentList<ITestComponent>();

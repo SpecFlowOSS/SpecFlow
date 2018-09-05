@@ -21,6 +21,11 @@ namespace TechTalk.SpecFlow.Assist
             components.Insert(0, component);
         }
 
+        public void Register<TImpl>() where TImpl : T, new()
+        {
+            Register(new TImpl());
+        }
+
         public void RegisterDefault(T component)
         {
             components.Add(component);
