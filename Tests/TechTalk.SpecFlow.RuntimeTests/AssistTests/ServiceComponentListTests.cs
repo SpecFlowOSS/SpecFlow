@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
 
@@ -23,6 +24,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             sut.Register(component);
 
             sut.Should().Equal(component);
+        }
+
+        [Test]
+        public void Should_reverse_registration_order_of_added_components()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+
+            var components = Enumerable.Range(0, 100).Select(_ => new TestComponentImpl()).ToList();
+            components.ForEach(sut.Register);
+
+            components.Reverse();
+            sut.Should().Equal(components);
         }
 
         private interface ITestComponent

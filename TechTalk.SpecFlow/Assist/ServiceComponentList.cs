@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void Register(T component)
         {
-            components.Add(component);
+            components.Insert(0, component);
         }
     }
 }
