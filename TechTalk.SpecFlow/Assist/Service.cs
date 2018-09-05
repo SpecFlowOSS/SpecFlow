@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -26,7 +24,6 @@ namespace TechTalk.SpecFlow.Assist
         {
             ValueComparers = new SpecFlowDefaultValueComparerList();
             ValueRetrievers = new SpecFlowDefaultValueRetrieverList();
-            RegisterSpecFlowDefaults();
         }
 
         public void RegisterValueComparer(IValueComparer valueComparer)
@@ -52,11 +49,6 @@ namespace TechTalk.SpecFlow.Assist
         public void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
             ValueRetrievers.Unregister(valueRetriever);
-        }
-
-        public void RegisterSpecFlowDefaults()
-        {
-
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
