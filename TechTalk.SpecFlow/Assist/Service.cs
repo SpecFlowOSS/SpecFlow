@@ -113,7 +113,8 @@ namespace TechTalk.SpecFlow.Assist
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
-            foreach(var valueRetriever in ValueRetrievers){
+            foreach (var valueRetriever in ValueRetrievers)
+            {
                 if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType, propertyType))
                     return valueRetriever;
             }
