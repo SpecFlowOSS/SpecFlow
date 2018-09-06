@@ -28,7 +28,7 @@ Background:
             {
                 var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
                 _traceListener.WriteTestOutput($"Start index: {currentStartIndex}");
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Tasks.Task.Delay(500).Wait();
                 var afterStartIndex = startIndex;
                 if (afterStartIndex == currentStartIndex)
                 {
