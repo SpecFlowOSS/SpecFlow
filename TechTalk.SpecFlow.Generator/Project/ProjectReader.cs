@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                 return GetConfigurationHolderFromFileContent(configFileContent);
             }
 
-            throw new Exception($"SpecFlow configuration could not be found in {projectFolder}");
+            return new SpecFlowConfigurationHolder();
         }
 
         private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
