@@ -15,7 +15,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
             var jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonContent);
 
-
             ContainerRegistrationCollection containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
@@ -33,57 +32,56 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
 
-            var specFlowElement = jsonConfig.SpecFlow;
-            if (specFlowElement.Language != null)
+            if (jsonConfig.Language != null)
             {
-                if (specFlowElement.Language.Feature.IsNotNullOrWhiteSpace())
+                if (jsonConfig.Language.Feature.IsNotNullOrWhiteSpace())
                 {
-                    featureLanguage = CultureInfo.GetCultureInfo(specFlowElement.Language.Feature);
+                    featureLanguage = CultureInfo.GetCultureInfo(jsonConfig.Language.Feature);
                 }
             }
 
-            if (specFlowElement.BindingCulture != null)
+            if (jsonConfig.BindingCulture != null)
             {
-                if (specFlowElement.BindingCulture.Name.IsNotNullOrWhiteSpace())
+                if (jsonConfig.BindingCulture.Name.IsNotNullOrWhiteSpace())
                 {
-                    bindingCulture = CultureInfo.GetCultureInfo(specFlowElement.BindingCulture.Name);
+                    bindingCulture = CultureInfo.GetCultureInfo(jsonConfig.BindingCulture.Name);
                 }
             }
 
-            if (specFlowElement.Runtime != null)
+            if (jsonConfig.Runtime != null)
             {
-                missingOrPendingStepsOutcome = specFlowElement.Runtime.MissingOrPendingStepsOutcome;
-                stopAtFirstError = specFlowElement.Runtime.StopAtFirstError;
-                obsoleteBehavior = specFlowElement.Runtime.ObsoleteBehavior;
+                missingOrPendingStepsOutcome = jsonConfig.Runtime.MissingOrPendingStepsOutcome;
+                stopAtFirstError = jsonConfig.Runtime.StopAtFirstError;
+                obsoleteBehavior = jsonConfig.Runtime.ObsoleteBehavior;
 
-                if (specFlowElement.Runtime.Dependencies != null)
+                if (jsonConfig.Runtime.Dependencies != null)
                 {
-                    foreach (var runtimeDependency in specFlowElement.Runtime.Dependencies)
+                    foreach (var runtimeDependency in jsonConfig.Runtime.Dependencies)
                     {
                         containerRegistrationCollection.Add(runtimeDependency.ImplementationType, runtimeDependency.InterfaceType);
                     }
                 }
             }
 
-            if (specFlowElement.Generator != null)
+            if (jsonConfig.Generator != null)
             {
-                allowDebugGeneratedFiles = specFlowElement.Generator.AllowDebugGeneratedFiles;
-                allowRowTests = specFlowElement.Generator.AllowRowTests;
-                markFeaturesParallelizable = specFlowElement.Generator.MarkFeaturesParallelizable;
-                skipParallelizableMarkerForTags = specFlowElement.Generator.SkipParallelizableMarkerForTags?.ToArray();
+                allowDebugGeneratedFiles = jsonConfig.Generator.AllowDebugGeneratedFiles;
+                allowRowTests = jsonConfig.Generator.AllowRowTests;
+                markFeaturesParallelizable = jsonConfig.Generator.MarkFeaturesParallelizable;
+                skipParallelizableMarkerForTags = jsonConfig.Generator.SkipParallelizableMarkerForTags?.ToArray();
             }
 
-            if (specFlowElement.Trace != null)
+            if (jsonConfig.Trace != null)
             {
-                traceSuccessfulSteps = specFlowElement.Trace.TraceSuccessfulSteps;
-                traceTimings = specFlowElement.Trace.TraceTimings;
-                minTracedDuration = specFlowElement.Trace.MinTracedDuration;
-                stepDefinitionSkeletonStyle = specFlowElement.Trace.StepDefinitionSkeletonStyle;
+                traceSuccessfulSteps = jsonConfig.Trace.TraceSuccessfulSteps;
+                traceTimings = jsonConfig.Trace.TraceTimings;
+                minTracedDuration = jsonConfig.Trace.MinTracedDuration;
+                stepDefinitionSkeletonStyle = jsonConfig.Trace.StepDefinitionSkeletonStyle;
             }
 
-            if (specFlowElement.StepAssemblies != null)
+            if (jsonConfig.StepAssemblies != null)
             {
-                foreach (var stepAssemblyEntry in specFlowElement.StepAssemblies)
+                foreach (var stepAssemblyEntry in jsonConfig.StepAssemblies)
                 {
                     additionalStepAssemblies.Add(stepAssemblyEntry.Assembly);
                 }
