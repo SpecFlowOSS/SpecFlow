@@ -5,6 +5,7 @@ using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -269,6 +270,52 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow(11.11F.ToString());
             table.Rows.First()
                 .GetSingle("SomethingThatDoesNotExist").Should().Be(Single.MinValue);
+        }
+
+        [Test]
+        public void GetEnumValue_should_return_the_enum_field_form_the_row()
+        {
+            var table = new Table("Enum");
+            table.AddRow("Male");
+            var firstRow = table.Rows.First();
+
+            firstRow.GetEnumValue<Sex>("Enum").Should().Be(Sex.Male);
+        }
+
+        [Test]
+        public void GetEnumValue_should_throw_when_the_given_value_does_not_exist()
+        {
+            var table = new Table("Enum");
+            table.AddRow("MemberDoesNotExist");
+            var firstRow = table.Rows.First();
+
+            Action act = () => firstRow.GetEnumValue<Sex>("Enum");
+
+            act.ShouldThrow<ArgumentException>();
+        }
+
+        [Test]
+        public void GetEnumValue_should_throw_when_the_given_value_does_not_match_case()
+        {
+            var table = new Table("Enum");
+            table.AddRow("female");
+            var firstRow = table.Rows.First();
+
+            Action act = () => firstRow.GetEnumValue<Sex>("Enum");
+
+            act.ShouldThrow<ArgumentException>();
+        }
+
+        [Test]
+        public void GetSingle_should_throw_when_the_given_value_is_not_defined()
+        {
+            var table = new Table("Enum");
+            table.AddRow("Female");
+            var firstRow = table.Rows.First();
+
+            Action act = () => firstRow.GetEnumValue<Sex>("SomethingThatDoesNotExist");
+
+            act.ShouldThrow<IndexOutOfRangeException>();
         }
     }
 }

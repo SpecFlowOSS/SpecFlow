@@ -2,6 +2,7 @@
 New Features:
 + Separate addition of default and non-default value comparers https://github.com/techtalk/SpecFlow/pull/1257
 + ComparisonException indicates which value comparer was used for each difference https://github.com/techtalk/SpecFlow/issues/1253
++ Add utility to get enum field value from TableRow.
 
 2.4 - 2018-08-20
 New Features:
