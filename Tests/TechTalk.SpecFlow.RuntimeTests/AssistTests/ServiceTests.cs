@@ -97,6 +97,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_allow_the_removal_and_addition_of_new_value_comparers_using_generic_overloads()
+        {
+            var service = new Service();
+
+            service.RegisterValueComparer<IExistsForTestingValueComparing>();
+            Assert.AreEqual(1, service.ValueComparers.Count(x => x.GetType() == typeof(IExistsForTestingValueComparing)));
+
+            service.UnregisterValueComparer<IExistsForTestingValueComparing>();
+            Assert.AreEqual(0, service.ValueComparers.Count(x => x.GetType() == typeof(IExistsForTestingValueComparing)));
+        }
+
+        [Test]
         public void Should_allow_the_addition_of_new_default_value_comparers()
         {
             var service = new Service();
@@ -121,6 +133,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             service.RegisterValueRetriever(thing);
             Assert.AreEqual(1, service.ValueRetrievers.Count());
             Assert.AreSame(thing, service.ValueRetrievers.First());
+        }
+
+        [Test]
+        public void Should_allow_the_removal_and_addition_of_new_value_retrievers_using_generic_overloads()
+        {
+            var service = new Service();
+
+            service.RegisterValueRetriever<IExistsForTestingValueRetrieving>();
+            Assert.AreEqual(1, service.ValueRetrievers.Count(x => x.GetType() == typeof(IExistsForTestingValueRetrieving)));
+
+            service.UnregisterValueRetriever<IExistsForTestingValueRetrieving>();
+            Assert.AreEqual(0, service.ValueRetrievers.Count(x => x.GetType() == typeof(IExistsForTestingValueRetrieving)));
         }
 
 
