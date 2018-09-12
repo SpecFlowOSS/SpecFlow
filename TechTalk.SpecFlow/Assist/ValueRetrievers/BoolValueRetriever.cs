@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual bool GetValue(string value)
         {
-            return value == "True" || value == "true";
+            return value == "True" || value == "true" || value == "1";
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
