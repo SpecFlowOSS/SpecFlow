@@ -16,7 +16,7 @@ For issues/bugs please use the [issue tracker on GitHub](https://github.com/tech
 ![Issues closed](http://issuestats.com/github/techtalk/specflow/badge/issue?style=flat-square)
 
 ## Build status
-Continuous integration: [![Build status](https://specflow.visualstudio.com/SpecFlow/_apis/build/status/SpecFlow.CI)](https://specflow.visualstudio.com/SpecFlow/_build/latest?definitionId=1)
+Continuous integration: [![Build status](https://specflow.visualstudio.com/SpecFlow/_apis/build/status/SpecFlow.CI)](https://specflow.visualstudio.com/SpecFlow/_build/latest?definitionId=2)
 
 CI NuGet Package feed: https://ci.appveyor.com/nuget/specflow-ci
 
