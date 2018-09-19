@@ -4,7 +4,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableIntValueRetriever : NullableValueRetriever<int?>
     {
-        private readonly Func<string, int> intValueRetriever = v => new IntValueRetriever().GetValue(v);
+        private readonly Func<string, int> intValueRetriever;
+
+        public NullableIntValueRetriever()
+            : this(v => new IntValueRetriever().GetValue(v))
+        {
+        }
 
         public NullableIntValueRetriever(Func<string, int> intValueRetriever = null)
         {

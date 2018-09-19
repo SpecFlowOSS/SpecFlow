@@ -4,7 +4,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableLongValueRetriever : NullableValueRetriever<long?>
     {
-        private readonly Func<string, long> longValueRetriever = v => new LongValueRetriever().GetValue(v);
+        private readonly Func<string, long> longValueRetriever;
+
+        public NullableLongValueRetriever()
+            : this(v => new LongValueRetriever().GetValue(v))
+        {
+        }
 
         public NullableLongValueRetriever(Func<string, long> longValueRetriever = null)
         {

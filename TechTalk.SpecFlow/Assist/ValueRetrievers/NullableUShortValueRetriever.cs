@@ -4,7 +4,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableUShortValueRetriever : NullableValueRetriever<ushort?>
     {
-        private readonly Func<string, ushort> ushortValueRetriever = v => new UShortValueRetriever().GetValue(v);
+        private readonly Func<string, ushort> ushortValueRetriever;
+
+        public NullableUShortValueRetriever()
+            : this(v => new UShortValueRetriever().GetValue(v))
+        {
+        }
 
         public NullableUShortValueRetriever(Func<string, ushort> ushortValueRetriever = null)
         {
