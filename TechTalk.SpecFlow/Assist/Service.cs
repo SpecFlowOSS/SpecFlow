@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -38,6 +39,13 @@ namespace TechTalk.SpecFlow.Assist
             _registeredValueComparers.Insert(0, valueComparer);
         }
 
+        public void RegisterValueComparer<TValueComparer>() where TValueComparer : IValueComparer
+        {
+            var valueComparer = Activator.CreateInstance<TValueComparer>();
+
+            RegisterValueComparer(valueComparer);
+        }
+
         public void RegisterDefaultValueComparer(IValueComparer valueComparer)
         {
             _registeredValueComparers.Add(valueComparer);
@@ -48,9 +56,23 @@ namespace TechTalk.SpecFlow.Assist
             _registeredValueComparers.Remove(valueComparer);
         }
 
+        public void UnregisterValueComparer<TValueComparer>() where TValueComparer : IValueComparer
+        {
+            var valueComparer = _registeredValueComparers.FirstOrDefault(x => x.GetType() == typeof(TValueComparer));
+
+            UnregisterValueComparer(valueComparer);
+        }
+
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
             _registeredValueRetrievers.Add(valueRetriever);
+        }
+
+        public void RegisterValueRetriever<TValueRetriever>() where TValueRetriever : IValueRetriever
+        {
+            var valueRetriever = Activator.CreateInstance<TValueRetriever>();
+
+            RegisterValueRetriever(valueRetriever);
         }
 
         public void UnregisterValueRetriever(IValueRetriever valueRetriever)
@@ -58,35 +80,42 @@ namespace TechTalk.SpecFlow.Assist
             _registeredValueRetrievers.Remove(valueRetriever);
         }
 
+        public void UnregisterValueRetriever<TValueRetriever>() where TValueRetriever : IValueRetriever
+        {
+            var valueRetriver = _registeredValueRetrievers.FirstOrDefault(x => x.GetType() == typeof(TValueRetriever));
+            
+            UnregisterValueRetriever(valueRetriver);
+        }
+
         public void RegisterSpecFlowDefaults()
         {
-            RegisterValueComparer(new DateTimeValueComparer());
-            RegisterValueComparer(new BoolValueComparer());
+            RegisterValueComparer<DateTimeValueComparer>();
+            RegisterValueComparer<BoolValueComparer>();
             RegisterValueComparer(new GuidValueComparer(new GuidValueRetriever()));
-            RegisterValueComparer(new DecimalValueComparer());
-            RegisterValueComparer(new DoubleValueComparer());
-            RegisterValueComparer(new FloatValueComparer());
+            RegisterValueComparer<DecimalValueComparer>();
+            RegisterValueComparer<DoubleValueComparer>();
+            RegisterValueComparer<FloatValueComparer>();
             RegisterDefaultValueComparer(new DefaultValueComparer());
 
-            RegisterValueRetriever(new StringValueRetriever());
-            RegisterValueRetriever(new ByteValueRetriever());
-            RegisterValueRetriever(new SByteValueRetriever());
-            RegisterValueRetriever(new IntValueRetriever());
-            RegisterValueRetriever(new UIntValueRetriever());
-            RegisterValueRetriever(new ShortValueRetriever());
-            RegisterValueRetriever(new UShortValueRetriever());
-            RegisterValueRetriever(new LongValueRetriever());
-            RegisterValueRetriever(new ULongValueRetriever());
-            RegisterValueRetriever(new FloatValueRetriever());
-            RegisterValueRetriever(new DoubleValueRetriever());
-            RegisterValueRetriever(new DecimalValueRetriever());
-            RegisterValueRetriever(new CharValueRetriever());
-            RegisterValueRetriever(new BoolValueRetriever());
-            RegisterValueRetriever(new DateTimeValueRetriever());
-            RegisterValueRetriever(new GuidValueRetriever());
-            RegisterValueRetriever(new EnumValueRetriever());
-            RegisterValueRetriever(new TimeSpanValueRetriever());
-            RegisterValueRetriever(new DateTimeOffsetValueRetriever());
+            RegisterValueRetriever<StringValueRetriever>();
+            RegisterValueRetriever<ByteValueRetriever>();
+            RegisterValueRetriever<SByteValueRetriever>();
+            RegisterValueRetriever<IntValueRetriever>();
+            RegisterValueRetriever<UIntValueRetriever>();
+            RegisterValueRetriever<ShortValueRetriever>();
+            RegisterValueRetriever<UShortValueRetriever>();
+            RegisterValueRetriever<LongValueRetriever>();
+            RegisterValueRetriever<ULongValueRetriever>();
+            RegisterValueRetriever<FloatValueRetriever>();
+            RegisterValueRetriever<DoubleValueRetriever>();
+            RegisterValueRetriever<DecimalValueRetriever>();
+            RegisterValueRetriever<CharValueRetriever>();
+            RegisterValueRetriever<BoolValueRetriever>();
+            RegisterValueRetriever<DateTimeValueRetriever>();
+            RegisterValueRetriever<GuidValueRetriever>();
+            RegisterValueRetriever<EnumValueRetriever>();
+            RegisterValueRetriever<TimeSpanValueRetriever>();
+            RegisterValueRetriever<DateTimeOffsetValueRetriever>();
             RegisterValueRetriever(new NullableGuidValueRetriever());
             RegisterValueRetriever(new NullableDateTimeValueRetriever());
             RegisterValueRetriever(new NullableBoolValueRetriever());
@@ -105,10 +134,10 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableTimeSpanValueRetriever());
             RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
 
-            RegisterValueRetriever(new StringArrayValueRetriever());
-            RegisterValueRetriever(new StringListValueRetriever());
-            RegisterValueRetriever(new EnumArrayValueRetriever());
-            RegisterValueRetriever(new EnumListValueRetriever());
+            RegisterValueRetriever<StringArrayValueRetriever>();
+            RegisterValueRetriever<StringListValueRetriever>();
+            RegisterValueRetriever<EnumArrayValueRetriever>();
+            RegisterValueRetriever<EnumListValueRetriever>();
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)

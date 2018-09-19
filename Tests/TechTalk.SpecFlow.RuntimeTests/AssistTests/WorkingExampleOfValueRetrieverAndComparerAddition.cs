@@ -2,8 +2,6 @@
 using System.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using System.Collections.Generic;
 using FluentAssertions;
 
@@ -81,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Should_be_able_to_retrieve_the_fancy_name()
         {
 
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
+            Service.Instance.RegisterValueRetriever<FancyNameValueRetriever>();
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -95,8 +93,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_be_able_to_compare_the_fancy_name()
         {
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
-            Service.Instance.RegisterValueComparer(new FancyNameValueComparer());
+            Service.Instance.RegisterValueRetriever<FancyNameValueRetriever>();
+            Service.Instance.RegisterValueComparer<FancyNameValueComparer>();
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
