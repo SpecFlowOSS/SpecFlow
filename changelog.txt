@@ -1,9 +1,13 @@
 3.0 - 2018-??-??
+Breaking changes:
++ Registration of value retrievers and comparers changes from `RegisterValueComparer(___)` to `ValueComparers.Register(___)`
+
 New Features:
 + Separate addition of default and non-default value comparers https://github.com/techtalk/SpecFlow/pull/1257
 + ComparisonException indicates which value comparer was used for each difference https://github.com/techtalk/SpecFlow/issues/1253
 + BoolValueRetriver can now work with 1s and 0s https://github.com/techtalk/SpecFlow/issues/1216
 + Check for non-default constructors using case-insensitive comparison https://github.com/techtalk/SpecFlow/pull/1265
++ Syntax and structural changes in value retriever/comparer registration https://github.com/techtalk/SpecFlow/pull/1260
 
 2.4 - 2018-08-20
 New Features:
