@@ -96,6 +96,7 @@
     <Compile Include="Assist\ValueRetrievers\DateTimeOffsetValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\EnumListValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\LongValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NonNullableValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableDateTimeOffsetValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableLongValueRetriever.cs" />
