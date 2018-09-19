@@ -105,6 +105,7 @@
     <Compile Include="Assist\ValueRetrievers\NullableTimeSpanValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableULongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUShortValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\SByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\FloatValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUIntValueRetriever.cs" />
