@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableBoolValueRetriever : IValueRetriever
+    public class NullableBoolValueRetriever : NullableValueRetriever<bool?>
     {
         private readonly Func<string, bool> boolValueRetriever = v => new BoolValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.boolValueRetriever = boolValueRetriever;
         }
 
-        public virtual bool? GetValue(string thisValue)
+        protected override bool? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(thisValue)) return null;
-            return boolValueRetriever(thisValue);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(bool?);
+            return boolValueRetriever(value);
         }
     }
 }

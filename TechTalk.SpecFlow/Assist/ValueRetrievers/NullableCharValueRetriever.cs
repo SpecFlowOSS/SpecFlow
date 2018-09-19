@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableCharValueRetriever : IValueRetriever
+    public class NullableCharValueRetriever : NullableValueRetriever<char?>
     {
         private readonly Func<string, char> charValueRetriever = v => new CharValueRetriever().GetValue(v);
 
@@ -13,21 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.charValueRetriever = charValueRetriever;
         }
 
-        public virtual char? GetValue(string value)
+        protected override char? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value))
-                return null;
             return charValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(char?);
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableGuidValueRetriever : IValueRetriever
+    public class NullableGuidValueRetriever : NullableValueRetriever<Guid?>
     {
         private readonly Func<string, Guid> guidValueRetriever = v => new GuidValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.guidValueRetriever = guidValueRetriever;
         }
 
-        public virtual Guid? GetValue(string value)
+        protected override Guid? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return guidValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(Guid?);
         }
     }
 }

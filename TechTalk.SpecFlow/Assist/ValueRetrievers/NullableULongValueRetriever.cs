@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableULongValueRetriever : IValueRetriever
+    public class NullableULongValueRetriever : NullableValueRetriever<ulong?>
     {
         private readonly Func<string, ulong> ulongValueRetriever = v => new ULongValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.ulongValueRetriever = ulongValueRetriever;
         }
 
-        public virtual ulong? GetValue(string value)
+        protected override ulong? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return ulongValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(ulong?);
         }
     }
 }

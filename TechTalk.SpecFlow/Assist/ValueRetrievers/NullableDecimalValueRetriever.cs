@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableDecimalValueRetriever : IValueRetriever
+    public class NullableDecimalValueRetriever : NullableValueRetriever<decimal?>
     {
         private readonly Func<string, decimal> decimalValueRetriever = v => new DecimalValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.decimalValueRetriever = decimalValueRetriever;
         }
 
-        public virtual decimal? GetValue(string value)
+        protected override decimal? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return decimalValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(decimal?);
         }
     }
 }

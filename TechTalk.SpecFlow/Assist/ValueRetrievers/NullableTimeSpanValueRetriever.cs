@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableTimeSpanValueRetriever : IValueRetriever
+    public class NullableTimeSpanValueRetriever : NullableValueRetriever<TimeSpan?>
     {
         private readonly Func<string, TimeSpan?> dateTimeValueRetriever = v => new TimeSpanValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.dateTimeValueRetriever = dateTimeValueRetriever;
         }
 
-        public virtual TimeSpan? GetValue(string value)
+        protected override TimeSpan? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return dateTimeValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(TimeSpan?);
         }
     }
 }

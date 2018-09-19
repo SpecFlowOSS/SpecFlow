@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableUIntValueRetriever : IValueRetriever
+    public class NullableUIntValueRetriever : NullableValueRetriever<uint?>
     {
         private readonly Func<string, uint> uintValueRetriever = v => new UIntValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.uintValueRetriever = uintValueRetriever;
         }
 
-        public virtual uint? GetValue(string value)
+        protected override uint? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return uintValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(uint?);
         }
     }
 }

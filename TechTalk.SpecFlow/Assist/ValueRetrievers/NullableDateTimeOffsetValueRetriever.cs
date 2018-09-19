@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableDateTimeOffsetValueRetriever : IValueRetriever
+    public class NullableDateTimeOffsetValueRetriever : NullableValueRetriever<DateTimeOffset?>
     {
         private readonly Func<string, DateTimeOffset> dateTimeOffsetValueRetriever = v => new DateTimeOffsetValueRetriever().GetValue(v);
 
@@ -13,20 +12,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.dateTimeOffsetValueRetriever = dateTimeOffsetValueRetriever;
         }
 
-        public virtual DateTimeOffset? GetValue(string value)
+        protected override DateTimeOffset? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return dateTimeOffsetValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(DateTimeOffset?);
         }
     }
 }
