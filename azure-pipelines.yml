@@ -22,12 +22,14 @@ phases:
 
 
   - powershell: ./ build.ps1 
-    arguments: Debug
+    inputs: 
+      arguments: Debug
 
     displayName: 'restore & build Debug'
 
   - powershell: ./ build.ps1 
-    arguments: Release
+    inputs: 
+      arguments: Release
 
     displayName: 'restore & build Release'
 
@@ -68,12 +70,14 @@ phases:
 
 
   - powershell: ./ build.ps1 
-    arguments: Debug
+    inputs: 
+      arguments: Debug
 
     displayName: 'restore & build Debug'
 
   - powershell: ./ build.ps1 
-    arguments: Release
+    inputs: 
+      arguments: Release
 
     displayName: 'restore & build Release'
 
