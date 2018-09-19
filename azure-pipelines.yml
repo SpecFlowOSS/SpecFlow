@@ -1,0 +1,95 @@
+resources:
+- repo: self
+  clean: true
+phases:
+- phase: Phase_1
+  displayName: Windows
+
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+  steps:
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet'
+    inputs:
+      versionSpec: 4.6.2
+
+
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core sdk 2.1.401'
+    inputs:
+      version: 2.1.401
+
+
+  - powershell: ./ build.ps1 
+    arguments: Debug
+
+    displayName: 'restore & build Debug'
+
+  - powershell: ./ build.ps1 
+    arguments: Release
+
+    displayName: 'restore & build Release'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive $(Build.SourcesDirectory)'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+
+      archiveFile: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+
+      ArtifactName: 'SpecFlow.CI-BuildResult'
+
+
+
+- phase: Phase_2
+  displayName: Mac OS X
+
+  condition: succeeded()
+  queue:
+    name: Hosted macOS
+  steps:
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet'
+    inputs:
+      versionSpec: 4.6.2
+
+
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core sdk 2.1.401'
+    inputs:
+      version: 2.1.401
+
+
+  - powershell: ./ build.ps1 
+    arguments: Debug
+
+    displayName: 'restore & build Debug'
+
+  - powershell: ./ build.ps1 
+    arguments: Release
+
+    displayName: 'restore & build Release'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive $(Build.SourcesDirectory)'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+
+      archiveFile: '$(Build.ArtifactStagingDirectory)/SpecFlow-MacOS.zip'
+
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/SpecFlow-MacOS.zip'
+
+      ArtifactName: 'SpecFlow.CI-BuildResult'
+
+
