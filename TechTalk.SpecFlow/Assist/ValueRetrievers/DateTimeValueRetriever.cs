@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual DateTime GetValue(string value)
         {
-			DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.None, out DateTime returnValue);
-			return returnValue;
+            DateTime.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.None, out DateTime returnValue);
+            return returnValue;
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)

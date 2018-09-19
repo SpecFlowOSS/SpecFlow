@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual float GetValue(string value)
         {
-	        float.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out float returnValue);
+            float.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out float returnValue);
             return returnValue;
         }
 

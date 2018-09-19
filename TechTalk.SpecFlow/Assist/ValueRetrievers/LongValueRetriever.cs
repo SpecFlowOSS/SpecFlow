@@ -8,10 +8,10 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual long GetValue(string value)
         {
-			long.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out long returnValue);
-			return returnValue;
+            long.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out long returnValue);
+            return returnValue;
         }
-            
+
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return GetValue(keyValuePair.Value);

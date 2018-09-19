@@ -8,9 +8,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual short GetValue(string value)
         {
-			short.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out short returnValue);
-	        return returnValue;
-		}
+            short.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out short returnValue);
+            return returnValue;
+        }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {

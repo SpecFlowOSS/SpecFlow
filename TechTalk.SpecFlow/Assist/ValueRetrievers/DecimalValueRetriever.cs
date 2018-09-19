@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual decimal GetValue(string value)
         {
-	        Decimal.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out Decimal returnValue);
-			return returnValue;
+            Decimal.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out Decimal returnValue);
+            return returnValue;
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)

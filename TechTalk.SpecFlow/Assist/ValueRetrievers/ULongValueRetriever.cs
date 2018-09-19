@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual ulong GetValue(string value)
         {
-	        ulong.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out ulong returnValue);
-			return returnValue;
+            ulong.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out ulong returnValue);
+            return returnValue;
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)

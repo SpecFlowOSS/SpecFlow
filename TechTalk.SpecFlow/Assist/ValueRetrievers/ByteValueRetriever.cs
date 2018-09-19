@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public virtual byte GetValue(string value)
         {
             byte.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out byte returnValue);
-			return returnValue;
+            return returnValue;
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)

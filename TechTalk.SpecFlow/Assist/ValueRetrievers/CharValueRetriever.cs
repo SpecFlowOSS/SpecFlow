@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                        ? '\0'
                        : value[0];
         }
-            
+
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return GetValue(keyValuePair.Value);
