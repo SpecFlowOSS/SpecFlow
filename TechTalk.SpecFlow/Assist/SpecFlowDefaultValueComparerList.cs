@@ -1,5 +1,4 @@
 ﻿using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -7,12 +6,12 @@ namespace TechTalk.SpecFlow.Assist
     {
         public SpecFlowDefaultValueComparerList()
         {
-            Register(new DateTimeValueComparer());
-            Register(new BoolValueComparer());
-            Register(new GuidValueComparer(new GuidValueRetriever()));
-            Register(new DecimalValueComparer());
-            Register(new DoubleValueComparer());
-            Register(new FloatValueComparer());
+            Register<DateTimeValueComparer>();
+            Register<BoolValueComparer>();
+            Register<GuidValueComparer>();
+            Register<DecimalValueComparer>();
+            Register<DoubleValueComparer>();
+            Register<FloatValueComparer>();
             RegisterDefault(new DefaultValueComparer());
         }
     }
