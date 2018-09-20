@@ -6,47 +6,47 @@ namespace TechTalk.SpecFlow.Assist
     {
         public SpecFlowDefaultValueRetrieverList()
         {
-            Register(new StringValueRetriever());
-            Register(new ByteValueRetriever());
-            Register(new SByteValueRetriever());
-            Register(new IntValueRetriever());
-            Register(new UIntValueRetriever());
-            Register(new ShortValueRetriever());
-            Register(new UShortValueRetriever());
-            Register(new LongValueRetriever());
-            Register(new ULongValueRetriever());
-            Register(new FloatValueRetriever());
-            Register(new DoubleValueRetriever());
-            Register(new DecimalValueRetriever());
-            Register(new CharValueRetriever());
-            Register(new BoolValueRetriever());
-            Register(new DateTimeValueRetriever());
-            Register(new GuidValueRetriever());
-            Register(new EnumValueRetriever());
-            Register(new TimeSpanValueRetriever());
-            Register(new DateTimeOffsetValueRetriever());
-            Register(new NullableGuidValueRetriever());
-            Register(new NullableDateTimeValueRetriever());
-            Register(new NullableBoolValueRetriever());
-            Register(new NullableCharValueRetriever());
-            Register(new NullableDecimalValueRetriever());
-            Register(new NullableDoubleValueRetriever());
-            Register(new NullableFloatValueRetriever());
-            Register(new NullableULongValueRetriever());
-            Register(new NullableByteValueRetriever());
-            Register(new NullableSByteValueRetriever());
-            Register(new NullableIntValueRetriever());
-            Register(new NullableUIntValueRetriever());
-            Register(new NullableShortValueRetriever());
-            Register(new NullableUShortValueRetriever());
-            Register(new NullableLongValueRetriever());
-            Register(new NullableTimeSpanValueRetriever());
-            Register(new NullableDateTimeOffsetValueRetriever());
+            Register<StringValueRetriever>();
+            Register<ByteValueRetriever>();
+            Register<SByteValueRetriever>();
+            Register<IntValueRetriever>();
+            Register<UIntValueRetriever>();
+            Register<ShortValueRetriever>();
+            Register<UShortValueRetriever>();
+            Register<LongValueRetriever>();
+            Register<ULongValueRetriever>();
+            Register<FloatValueRetriever>();
+            Register<DoubleValueRetriever>();
+            Register<DecimalValueRetriever>();
+            Register<CharValueRetriever>();
+            Register<BoolValueRetriever>();
+            Register<DateTimeValueRetriever>();
+            Register<GuidValueRetriever>();
+            Register<EnumValueRetriever>();
+            Register<TimeSpanValueRetriever>();
+            Register<DateTimeOffsetValueRetriever>();
+            Register<NullableGuidValueRetriever>();
+            Register<NullableDateTimeValueRetriever>();
+            Register<NullableBoolValueRetriever>();
+            Register<NullableCharValueRetriever>();
+            Register<NullableDecimalValueRetriever>();
+            Register<NullableDoubleValueRetriever>();
+            Register<NullableFloatValueRetriever>();
+            Register<NullableULongValueRetriever>();
+            Register<NullableByteValueRetriever>();
+            Register<NullableSByteValueRetriever>();
+            Register<NullableIntValueRetriever>();
+            Register<NullableUIntValueRetriever>();
+            Register<NullableShortValueRetriever>();
+            Register<NullableUShortValueRetriever>();
+            Register<NullableLongValueRetriever>();
+            Register<NullableTimeSpanValueRetriever>();
+            Register<NullableDateTimeOffsetValueRetriever>();
 
-            Register(new StringArrayValueRetriever());
-            Register(new StringListValueRetriever());
-            Register(new EnumArrayValueRetriever());
-            Register(new EnumListValueRetriever());
+            Register<StringArrayValueRetriever>();
+            Register<StringListValueRetriever>();
+            Register<EnumArrayValueRetriever>();
+            Register<EnumListValueRetriever>();
         }
     }
 }
