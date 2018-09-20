@@ -15,7 +15,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
     {            
         [Theory]
         [InlineData(@"{
-          ""specflow"": {
             ""language"": {
               ""feature"": ""en"",
               ""tool"": ""en""
@@ -37,7 +36,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""minTracedDuration"": ""0:0:0.1"",
               ""listener"": ""TechTalk.SpecFlow.Tracing.DefaultListener, TechTalk.SpecFlow""
             }
-          }
         }")]
 
         public void CanLoadConfigFromString(string configString)
@@ -51,9 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void CheckFeatureLanguage()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""language"": { ""feature"": ""de"" }
-                              }
                             }";
             
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
@@ -65,9 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void CheckBindingCulture()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""bindingCulture"": { ""name"": ""de"" }
-                              }
                             }";
 
             
@@ -81,12 +75,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Runtime_stopAtFirstError_as_true()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""runtime"": { ""stopAtFirstError"": true }
-                              }
                             }";
-
-            
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -97,9 +87,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Runtime_stopAtFirstError_as_false()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""runtime"": { ""stopAtFirstError"": false }
-                              }
                             }";
 
             
@@ -113,9 +101,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Pending()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Pending"" }
-                              }
                             }";
 
             
@@ -129,9 +115,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Error()
         {
             string config = @"{
-                                ""specflow"": {
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Error"" }
-                                }
                             }";
 
             
@@ -145,9 +129,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Ignore()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Ignore"" }
-                              }
                             }";
 
             
@@ -161,9 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Runtime_missingOrPendingStepsOutcome_as_Inconclusive()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Inconclusive"" }
-                              }
                             }";
 
 
@@ -177,9 +157,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_traceSuccessfulSteps_as_True()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""traceSuccessfulSteps"": true }
-                              }
                             }";
 
             
@@ -193,9 +171,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_traceSuccessfulSteps_as_False()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""traceSuccessfulSteps"": false }
-                              }
                             }";
 
             
@@ -209,9 +185,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_traceTimings_as_True()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""traceTimings"": true }
-                              }
                             }";
 
             
@@ -225,9 +199,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_traceTimings_as_False()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""traceTimings"": false }
-                              }
                             }";
 
             
@@ -241,9 +213,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_minTracedDuration()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""minTracedDuration"": ""0:0:0:1.0"" }
-                              }
                             }";
 
             
@@ -257,9 +227,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Trace_Listener_Not_Supported()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""listener"": ""TraceListener"" }
-                              }
                             }";
 
             
@@ -273,9 +241,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_StepDefinitionSkeletonStyle_RegexAttribute()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""RegexAttribute"" }
-                              }
                             }";
 
             
@@ -289,9 +255,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_StepDefinitionSkeletonStyle_MethodNamePascalCase()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""MethodNamePascalCase"" }
-                              }
                             }";
 
             
@@ -305,9 +269,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_StepDefinitionSkeletonStyle_MethodNameRegex()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""MethodNameRegex"" }
-                              }
                             }";
 
             
@@ -321,9 +283,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_Trace_StepDefinitionSkeletonStyle_MethodNameUnderscores()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""MethodNameUnderscores"" }
-                              }
                             }";
 
             
@@ -337,10 +297,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_StepAssemblies_IsEmpty()
         {
             string config = @"{
-                              ""specflow"": {
                                   ""stepAssemblies"" : [
                                  ]
-                              }
                             }";
 
             
@@ -354,9 +312,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_StepAssemblies_NotInConfigFile()
         {
             string config = @"{
-                                ""specflow"": {
-    
-                                }
                             }";
 
             
@@ -370,10 +325,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_StepAssemblies_OneEntry()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""stepAssemblies"": 
                                    [ {""assembly"": ""testEntry""} ]
-                              }
                             }";
 
             
@@ -388,12 +341,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void Check_StepAssemblies_TwoEntry()
         {
             string config = @"{
-                              ""specflow"": {
                                 ""stepAssemblies"": [
                                     { ""assembly"": ""testEntry1"" },
                                     { ""assembly"": ""testEntry2"" }
                                   ]
-                              }
                             }";
 
             
