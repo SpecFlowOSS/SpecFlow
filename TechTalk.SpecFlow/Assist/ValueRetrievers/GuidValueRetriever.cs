@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class GuidValueRetriever : IValueRetriever
+    public class GuidValueRetriever : NonNullableValueRetriever<Guid>
     {
-        public virtual Guid GetValue(string value)
+        public override Guid GetValue(string value)
         {
             var cleanedValue = "";
             try
@@ -24,16 +23,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                     return new Guid();
                 }
             }
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(Guid);
         }
 
         private static Guid AttemptToBuildAGuidFromTheString(string value)

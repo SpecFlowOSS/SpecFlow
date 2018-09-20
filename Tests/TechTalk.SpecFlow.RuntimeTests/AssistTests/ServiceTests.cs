@@ -99,6 +99,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Fact]
+        public void Should_allow_the_addition_of_new_default_value_comparers()
+        {
+            var service = new Service();
+
+            var thing = new IExistsForTestingValueComparing();
+            service.RegisterDefaultValueComparer(thing);
+            Assert.Same(thing, service.ValueComparers.Last());
+        }
+
+        [Fact]
         public void Should_allow_the_removal_and_addition_of_new_value_retrievers()
         {
             var service = new Service();

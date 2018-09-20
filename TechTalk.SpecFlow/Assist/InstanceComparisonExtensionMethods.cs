@@ -46,21 +46,14 @@ namespace TechTalk.SpecFlow.Assist
         private static string CreateDescriptiveErrorMessage(IEnumerable<Difference> differences)
         {
             return differences.Aggregate(@"The following fields did not match:",
-                                         (sum, next) => sum + (Environment.NewLine + DescribeTheErrorForThisDifference(next)));
-        }
-
-        private static string DescribeTheErrorForThisDifference(Difference difference)
-        {
-            return difference.DoesNotExist 
-                ? $"{difference.Property}: Property does not exist" 
-                : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>";
+                                         (sum, next) => sum + (Environment.NewLine + next.Description));
         }
 
         private static Difference[] FindAnyDifferences<T>(Table table, T instance)
         {
             return (from row in table.Rows
-                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
-                   select CreateDifferenceForThisRow(instance, row)).ToArray();
+                    where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
+                    select CreateDifferenceForThisRow(instance, row)).ToArray();
         }
 
         private static bool HasDifference<T>(Table table, T instance)
@@ -91,11 +84,9 @@ namespace TechTalk.SpecFlow.Assist
         {
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
+            var comparer = FindValueComparerForValue(propertyValue);
 
-            var valueComparers = Service.Instance.ValueComparers;
-
-            return valueComparers
-                .FirstOrDefault(x => x.CanCompare(propertyValue))
+            return comparer
                 .Compare(expected, propertyValue) == false;
         }
 
@@ -106,27 +97,60 @@ namespace TechTalk.SpecFlow.Assist
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
-            if (ThePropertyDoesNotExist(instance, row))
-                return new Difference
-                           {
-                               Property = row.Id(),
-                               DoesNotExist = true
-                           };
+            var propertyName = row.Id();
 
-            return new Difference
-                       {
-                           Property = row.Id(),
-                           Expected = row.Value(),
-                           Actual = instance.GetPropertyValue(row.Id())
-                       };
+            if (ThePropertyDoesNotExist(instance, row))
+                return new PropertyDoesNotExist(propertyName);
+
+            var expected = row.Value();
+            var actual = instance.GetPropertyValue(propertyName);
+            var comparer = FindValueComparerForProperty(instance, propertyName);
+            return new PropertyDiffers(propertyName, expected, actual, comparer);
         }
 
-        private class Difference
+        private static IValueComparer FindValueComparerForProperty<T>(T instance, string propertyName) =>
+            FindValueComparerForValue(
+                instance.GetPropertyValue(propertyName));
+
+        private static IValueComparer FindValueComparerForValue(object propertyValue) =>
+            Service.Instance.ValueComparers
+                .FirstOrDefault(x => x.CanCompare(propertyValue));
+
+        private abstract class Difference
         {
-            public string Property { get; set; }
-            public object Expected { get; set; }
-            public object Actual { get; set; }
-            public bool DoesNotExist { get; set; }
+            public abstract string Description { get; }
+        }
+
+        private class PropertyDoesNotExist : Difference
+        {
+            private readonly string propertyName;
+
+            public PropertyDoesNotExist(string propertyName)
+            {
+                this.propertyName = propertyName;
+            }
+
+            public override string Description =>
+                $"{this.propertyName}: Property does not exist";
+        }
+
+        private class PropertyDiffers : Difference
+        {
+            private readonly string propertyName;
+            private readonly object expected;
+            private readonly object actual;
+            private readonly IValueComparer comparer;
+
+            public PropertyDiffers(string propertyName, object expected, object actual, IValueComparer comparer)
+            {
+                this.propertyName = propertyName;
+                this.expected = expected;
+                this.actual = actual;
+                this.comparer = comparer;
+            }
+
+            public override string Description =>
+                $"{propertyName}: Expected <{expected}>, Actual <{actual}>, Using '{comparer.GetType().FullName}'";
         }
     }
 

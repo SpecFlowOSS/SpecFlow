@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableIntValueRetriever : IValueRetriever
+    public class NullableIntValueRetriever : NullableValueRetriever<int?>
     {
-        private readonly Func<string, int> intValueRetriever = v => new IntValueRetriever().GetValue(v);
+        private readonly Func<string, int> intValueRetriever;
+
+        public NullableIntValueRetriever()
+            : this(v => new IntValueRetriever().GetValue(v))
+        {
+        }
 
         public NullableIntValueRetriever(Func<string, int> intValueRetriever = null)
         {
@@ -13,20 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.intValueRetriever = intValueRetriever;
         }
 
-        public virtual int? GetValue(string value)
+        protected override int? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return intValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(int?);
         }
     }
 }
