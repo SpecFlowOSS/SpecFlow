@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
     public class Service
     {
-
-        private List<IValueComparer> _registeredValueComparers;
-        private List<IValueRetriever> _registeredValueRetrievers;
-
-        public IEnumerable<IValueComparer> ValueComparers => _registeredValueComparers;
-        public IEnumerable<IValueRetriever> ValueRetrievers => _registeredValueRetrievers;
+        public ServiceComponentList<IValueComparer> ValueComparers { get; private set; }
+        public ServiceComponentList<IValueRetriever> ValueRetrievers { get; private set; }
 
         public static Service Instance { get; internal set; }
 
@@ -28,92 +22,44 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RestoreDefaults()
         {
-            _registeredValueComparers = new List<IValueComparer>();
-            _registeredValueRetrievers = new List<IValueRetriever>();
-            RegisterSpecFlowDefaults();
+            ValueComparers = new SpecFlowDefaultValueComparerList();
+            ValueRetrievers = new SpecFlowDefaultValueRetrieverList();
         }
 
+        [Obsolete("Use ValueComparers.Register")]
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Insert(0, valueComparer);
+            ValueComparers.Register(valueComparer);
         }
 
+        [Obsolete("Use ValueComparers.RegisterDefault")]
         public void RegisterDefaultValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Add(valueComparer);
+            ValueComparers.RegisterDefault(valueComparer);
         }
 
+        [Obsolete("Use ValueComparers.Unregister")]
         public void UnregisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Remove(valueComparer);
+            ValueComparers.Unregister(valueComparer);
         }
 
+        [Obsolete("Use ValueRetrievers.Register")]
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Add(valueRetriever);
+            ValueRetrievers.Register(valueRetriever);
         }
 
+        [Obsolete("Use ValueRetrievers.Unregister")]
         public void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Remove(valueRetriever);
-        }
-
-        public void RegisterSpecFlowDefaults()
-        {
-            RegisterValueComparer(new DateTimeValueComparer());
-            RegisterValueComparer(new BoolValueComparer());
-            RegisterValueComparer(new GuidValueComparer(new GuidValueRetriever()));
-            RegisterValueComparer(new DecimalValueComparer());
-            RegisterValueComparer(new DoubleValueComparer());
-            RegisterValueComparer(new FloatValueComparer());
-            RegisterDefaultValueComparer(new DefaultValueComparer());
-
-            RegisterValueRetriever(new StringValueRetriever());
-            RegisterValueRetriever(new ByteValueRetriever());
-            RegisterValueRetriever(new SByteValueRetriever());
-            RegisterValueRetriever(new IntValueRetriever());
-            RegisterValueRetriever(new UIntValueRetriever());
-            RegisterValueRetriever(new ShortValueRetriever());
-            RegisterValueRetriever(new UShortValueRetriever());
-            RegisterValueRetriever(new LongValueRetriever());
-            RegisterValueRetriever(new ULongValueRetriever());
-            RegisterValueRetriever(new FloatValueRetriever());
-            RegisterValueRetriever(new DoubleValueRetriever());
-            RegisterValueRetriever(new DecimalValueRetriever());
-            RegisterValueRetriever(new CharValueRetriever());
-            RegisterValueRetriever(new BoolValueRetriever());
-            RegisterValueRetriever(new DateTimeValueRetriever());
-            RegisterValueRetriever(new GuidValueRetriever());
-            RegisterValueRetriever(new EnumValueRetriever());
-            RegisterValueRetriever(new TimeSpanValueRetriever());
-            RegisterValueRetriever(new DateTimeOffsetValueRetriever());
-            RegisterValueRetriever(new NullableGuidValueRetriever());
-            RegisterValueRetriever(new NullableDateTimeValueRetriever());
-            RegisterValueRetriever(new NullableBoolValueRetriever());
-            RegisterValueRetriever(new NullableCharValueRetriever());
-            RegisterValueRetriever(new NullableDecimalValueRetriever());
-            RegisterValueRetriever(new NullableDoubleValueRetriever());
-            RegisterValueRetriever(new NullableFloatValueRetriever());
-            RegisterValueRetriever(new NullableULongValueRetriever());
-            RegisterValueRetriever(new NullableByteValueRetriever());
-            RegisterValueRetriever(new NullableSByteValueRetriever());
-            RegisterValueRetriever(new NullableIntValueRetriever());
-            RegisterValueRetriever(new NullableUIntValueRetriever());
-            RegisterValueRetriever(new NullableShortValueRetriever());
-            RegisterValueRetriever(new NullableUShortValueRetriever());
-            RegisterValueRetriever(new NullableLongValueRetriever());
-            RegisterValueRetriever(new NullableTimeSpanValueRetriever());
-            RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
-
-            RegisterValueRetriever(new StringArrayValueRetriever());
-            RegisterValueRetriever(new StringListValueRetriever());
-            RegisterValueRetriever(new EnumArrayValueRetriever());
-            RegisterValueRetriever(new EnumListValueRetriever());
+            ValueRetrievers.Unregister(valueRetriever);
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
-            foreach(var valueRetriever in ValueRetrievers){
+            foreach (var valueRetriever in ValueRetrievers)
+            {
                 if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType, propertyType))
                     return valueRetriever;
             }
