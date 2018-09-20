@@ -10,9 +10,9 @@ Scenario: Summary is included in the HTML result (NUnit)
 	When I generate SpecFlow NUnit execution report
 	Then the generated report contains
 	"""
-		Summary 
-		Features	Success rate	Scenarios	Success		Failed	Pending		Ignored 
-		2 features	40%				5			2			1		1			1 
+		Summary
+		Features	Success rate (incl. warnings)	Scenarios	Success		Warning		Failed	Pending		Ignored
+		2 features	40% (40%)			5		2		0		1	1		1
 	"""
 
 @mstest
@@ -21,9 +21,9 @@ Scenario: Summary is included in the HTML result (MsTest)
 	When I generate SpecFlow MsTest execution report
 	Then the generated report contains
 	"""
-		Summary 
-		Features	Success rate	Scenarios	Success		Failed	Pending		Ignored 
-		2 features	50%				4			2			1		1			0 
+		Summary
+		Features	Success rate (incl. warnings)	Scenarios	Success		Warning		Failed	Pending		Ignored
+		2 features	50% (50%)			4		2		0		1	1		0
 	"""
 
 Scenario: Feature summary is included in the HTML result (NUnit)
@@ -32,9 +32,9 @@ Scenario: Feature summary is included in the HTML result (NUnit)
 	Then the generated report contains
 	"""
 		Feature Summary
-		Feature								Success rate	Scenarios	Success		Failed	Pending		Ignored		
-		Feature with failing scenarios		0%				3			0			1		1			1
-		Feature with successful scenarios	100%			2			2			0		0			0
+		Feature					Success rate (incl. warnings)	Scenarios	Success		Warning		Failed	Pending		Ignored
+		Feature with failing scenarios		0% (0%)				3		0		0		1	1		1
+		Feature with successful scenarios	100% (100%)			2		2		0		0	0		0
 	"""
 
 @mstest
@@ -44,9 +44,9 @@ Scenario: Feature summary is included in the HTML result (MsTest)
 	Then the generated report contains
 	"""
 		Feature Summary
-		Feature								Success rate	Scenarios	Success		Failed	Pending		Ignored		
-		Feature with failing scenarios		0%				2			0			1		1			0
-		Feature with successful scenarios	100%			2			2			0		0			0
+		Feature					Success rate (incl. warnings)	Scenarios	Success		Warning		Failed	Pending		Ignored
+		Feature with failing scenarios		0% (0%)				2		0		0		1	1		0
+		Feature with successful scenarios	100% (100%)			2		2		0		0	0		0
 	"""
 
 Scenario Outline: Successful test output is included in the HTML result
