@@ -1,3 +1,10 @@
+name: SpecFlow.CI 
+
+resources:
+- repo: self
+  clean: true
+
+
 jobs:
 - template: build.yml  
   parameters:
