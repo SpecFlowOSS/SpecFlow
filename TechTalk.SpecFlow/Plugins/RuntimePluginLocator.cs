@@ -8,18 +8,27 @@ namespace TechTalk.SpecFlow.Plugins
 {
     internal class RuntimePluginLocator : IRuntimePluginLocator
     {
+        private readonly string _pathToFolderWithSpecFlowAssembly;
+
+        public RuntimePluginLocator()
+        {
+            _pathToFolderWithSpecFlowAssembly = Path.GetDirectoryName(typeof(RuntimePluginLocator).Assembly.Location);
+        }
+
         public IReadOnlyList<string> GetAllRuntimePlugins()
         {
             var allRuntimePlugins = new List<string>();
 
-            //var currentAssembly = Assembly.GetCallingAssembly();
-            //string currentDirectory = Path.GetDirectoryName(currentAssembly.Location);
+            allRuntimePlugins.AddRange(SearchPluginsInFolder(Environment.CurrentDirectory));
+            allRuntimePlugins.AddRange(SearchPluginsInFolder(_pathToFolderWithSpecFlowAssembly));
 
-            var pluginAssemblies = Directory.EnumerateFiles(Environment.CurrentDirectory, "*.SpecFlowPlugin.dll", SearchOption.TopDirectoryOnly).ToList();
+            return allRuntimePlugins.Distinct().ToList();
+        }
 
-            allRuntimePlugins.AddRange(pluginAssemblies.Select(Path.GetFullPath));
-
-            return allRuntimePlugins;
+        private List<string> SearchPluginsInFolder(string folder)
+        {
+            var pluginAssemblies = Directory.EnumerateFiles(folder, "*.SpecFlowPlugin.dll", SearchOption.TopDirectoryOnly).ToList();
+            return pluginAssemblies.Select(Path.GetFullPath).ToList();
         }
     }
 }
