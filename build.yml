@@ -1,0 +1,62 @@
+parameters:
+  name: ''
+  pool: ''
+  nugetVersion: 4.6.2
+  sdkVersion: 2.1.401
+  artifactFileName: ''
+
+
+resources:
+- repo: self
+  clean: true
+
+
+jobs:
+- job: ${{ parameters.name }}
+  pool: ${{ parameters.pool }}
+  steps:
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet'
+    inputs:
+      versionSpec: ${{ parameters.nugetVersion }}
+
+
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core'
+    inputs:
+      version: ${{ parameters.sdkVersion }}
+
+
+  - task: PowerShell@2
+    inputs: 
+      filePath: build.ps1
+      workingDirectory: ./
+      arguments: Debug
+
+    displayName: 'restore & build Debug'
+
+  - task: PowerShell@2
+    inputs: 
+      filePath: build.ps1
+      workingDirectory: ./
+      arguments: Release
+
+    displayName: 'restore & build Release'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive $(Build.SourcesDirectory)'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+
+      archiveFile: ${{ parameters.artifactFileName }} 
+
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)'
+
+      ArtifactName: 'SpecFlow.CI-BuildResult'
+
+
+

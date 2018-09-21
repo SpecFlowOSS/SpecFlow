@@ -1,107 +1,14 @@
-resources:
-- repo: self
-  clean: true
-phases:
-- phase: Phase_1
-  displayName: Windows
+jobs:
+- template: build.yml  
+  parameters:
+    name: macOS
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-macOS.zip'
+    pool:
+      name: 'Hosted macOS'
 
-  condition: succeeded()
-  queue:
-    name: Hosted VS2017
-  steps:
-  - task: NuGetToolInstaller@0
-    displayName: 'Use NuGet'
-    inputs:
-      versionSpec: 4.6.2
-
-
-  - task: DotNetCoreInstaller@0
-    displayName: 'Use .NET Core sdk 2.1.401'
-    inputs:
-      version: 2.1.401
-
-
-  - task: PowerShell@2
-    inputs: 
-      filePath: build.ps1
-      workingDirectory: ./
-      arguments: Debug
-
-    displayName: 'restore & build Debug'
-
-  - task: PowerShell@2
-    inputs: 
-      filePath: build.ps1
-      workingDirectory: ./
-      arguments: Release
-
-    displayName: 'restore & build Release'
-
-  - task: ArchiveFiles@2
-    displayName: 'Archive $(Build.SourcesDirectory)'
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)'
-
-      archiveFile: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
-
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
-
-      ArtifactName: 'SpecFlow.CI-BuildResult'
-
-
-
-- phase: Phase_2
-  displayName: Mac OS X
-
-  condition: succeeded()
-  queue:
-    name: Hosted macOS
-  steps:
-  - task: NuGetToolInstaller@0
-    displayName: 'Use NuGet'
-    inputs:
-      versionSpec: 4.6.2
-
-
-  - task: DotNetCoreInstaller@0
-    displayName: 'Use .NET Core sdk 2.1.401'
-    inputs:
-      version: 2.1.401
-
-
-  - task: PowerShell@2
-    inputs: 
-      filePath: build.ps1
-      workingDirectory: ./
-      arguments: Debug
-
-    displayName: 'restore & build Debug'
-
-  - task: PowerShell@2
-    inputs: 
-      filePath: build.ps1
-      workingDirectory: ./
-      arguments: Release
-
-    displayName: 'restore & build Release'
-
-  - task: ArchiveFiles@2
-    displayName: 'Archive $(Build.SourcesDirectory)'
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)'
-
-      archiveFile: '$(Build.ArtifactStagingDirectory)/SpecFlow-MacOS.zip'
-
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/SpecFlow-MacOS.zip'
-
-      ArtifactName: 'SpecFlow.CI-BuildResult'
-
-
+- template: build.yml  
+  parameters:
+    name: Windows
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    pool:
+      name: 'Hosted VS2017'
