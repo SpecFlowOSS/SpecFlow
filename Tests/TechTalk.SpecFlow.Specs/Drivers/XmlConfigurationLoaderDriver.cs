@@ -1,6 +1,8 @@
 ﻿using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Configuration.AppConfig;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
+using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.Data;
+using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory;
 
 namespace TechTalk.SpecFlow.Specs.Drivers

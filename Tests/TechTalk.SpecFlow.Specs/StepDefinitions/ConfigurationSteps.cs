@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using FluentAssertions;
+using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

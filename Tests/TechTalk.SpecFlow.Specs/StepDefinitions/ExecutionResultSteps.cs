@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

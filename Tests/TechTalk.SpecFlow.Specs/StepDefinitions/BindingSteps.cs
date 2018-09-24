@@ -1,4 +1,4 @@
-﻿using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

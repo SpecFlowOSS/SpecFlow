@@ -3,8 +3,8 @@ using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 using TechTalk.SpecFlow.Specs.Support;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi._5_TestRun;
+using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {

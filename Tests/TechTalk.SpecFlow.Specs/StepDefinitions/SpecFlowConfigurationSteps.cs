@@ -1,5 +1,6 @@
 ﻿using TechTalk.SpecFlow.Specs.Drivers;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi.Driver;
+using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
