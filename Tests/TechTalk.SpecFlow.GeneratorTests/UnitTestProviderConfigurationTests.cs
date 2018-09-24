@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var unitTestProvider = container.Resolve<UnitTestProviderConfiguration>();
             unitTestProvider.UseUnitTestProvider("nunit");
-            Assert.Throws<Exception>(() => unitTestProvider.UseUnitTestProvider("nunit"));
+            Assert.Throws<Exception>(() => unitTestProvider.UseUnitTestProvider("xunit"));
         }
     }
 }

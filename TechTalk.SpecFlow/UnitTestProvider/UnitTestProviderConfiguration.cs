@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
             if (unitTestProviderName.IsNullOrEmpty())
                 throw new ArgumentNullException();
 
-            if (UnitTestProvider.IsNotNullOrEmpty())
+            if (UnitTestProvider.IsNotNullOrEmpty() && UnitTestProvider != unitTestProviderName)
                 throw new Exception("Unit test Provider already set.");
 
             UnitTestProvider = unitTestProviderName;

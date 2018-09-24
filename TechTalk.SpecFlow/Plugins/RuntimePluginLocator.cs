@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace TechTalk.SpecFlow.Plugins
 {
     internal class RuntimePluginLocator : IRuntimePluginLocator
     {
+        private readonly IRuntimePluginLocationMerger _runtimePluginLocationMerger;
         private readonly string _pathToFolderWithSpecFlowAssembly;
 
-        public RuntimePluginLocator()
+        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger)
         {
+            _runtimePluginLocationMerger = runtimePluginLocationMerger;
             _pathToFolderWithSpecFlowAssembly = Path.GetDirectoryName(typeof(RuntimePluginLocator).Assembly.Location);
         }
 
@@ -22,7 +23,9 @@ namespace TechTalk.SpecFlow.Plugins
             allRuntimePlugins.AddRange(SearchPluginsInFolder(Environment.CurrentDirectory));
             allRuntimePlugins.AddRange(SearchPluginsInFolder(_pathToFolderWithSpecFlowAssembly));
 
-            return allRuntimePlugins.Distinct().ToList();
+
+
+            return _runtimePluginLocationMerger.Merge(allRuntimePlugins.Distinct().ToList());
         }
 
         private List<string> SearchPluginsInFolder(string folder)

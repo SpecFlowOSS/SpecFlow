@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.PluginTests
         public void LoadPlugins_Find_All_3_Referenced_RuntimePlugins()
         {
             //ARRANGE
-            var runtimePluginLocator = new RuntimePluginLocator();
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger());
 
             //ACT
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
