@@ -32,12 +32,6 @@ namespace TechTalk.SpecFlow.Assist
             ValueComparers.Register(valueComparer);
         }
 
-        [Obsolete("Use ValueComparers.RegisterDefault")]
-        public void RegisterDefaultValueComparer(IValueComparer valueComparer)
-        {
-            ValueComparers.RegisterDefault(valueComparer);
-        }
-
         [Obsolete("Use ValueComparers.Unregister")]
         public void UnregisterValueComparer(IValueComparer valueComparer)
         {

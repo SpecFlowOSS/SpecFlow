@@ -8,9 +8,15 @@ namespace TechTalk.SpecFlow.Assist
     {
         private readonly List<T> components;
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => components.GetEnumerator();
+        private bool hasDefault;
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)components).GetEnumerator();
+        private T @default;
+
+        private IEnumerable<T> componentsWithDefault => hasDefault ? components.Concat(new[] {@default}) : components;
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => componentsWithDefault.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)componentsWithDefault).GetEnumerator();
 
         public ServiceComponentList()
         {
@@ -27,19 +33,21 @@ namespace TechTalk.SpecFlow.Assist
             Register(new TImpl());
         }
 
-        public void RegisterDefault(T component)
-        {
-            components.Add(component);
-        }
-
         public void Unregister(T component)
         {
-            components.Remove(component);
+            if (!components.Remove(component))
+            {
+                if (EqualityComparer<T>.Default.Equals(component, @default))
+                {
+                    hasDefault = false;
+                    @default = default(T);
+                }
+            }
         }
 
         public void Unregister<TImpl>() where TImpl : T
         {
-            components.OfType<TImpl>().ToList().ForEach(component => components.Remove(component));
+            components.OfType<TImpl>().ToList().ForEach(component => Unregister(component));
         }
 
         public void Replace(T old, T @new)
@@ -52,6 +60,17 @@ namespace TechTalk.SpecFlow.Assist
         {
             Unregister<TOld>();
             Register<TNew>();
+        }
+
+        public void ReplaceDefault(T @new)
+        {
+            hasDefault = true;
+            @default = @new;
+        }
+
+        public void ReplaceDefault<TImpl>() where TImpl : T, new()
+        {
+            ReplaceDefault(new TImpl());
         }
     }
 }

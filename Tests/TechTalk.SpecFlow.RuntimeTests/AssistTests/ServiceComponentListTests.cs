@@ -57,9 +57,67 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var @default = new TestComponentImpl();
             sut.Register(registeredFirst);
             sut.Register(registeredLast);
-            sut.RegisterDefault(@default);
+            sut.ReplaceDefault(@default);
 
             sut.Should().Equal(registeredLast, registeredFirst, @default);
+        }
+
+        [Test]
+        public void Should_allow_the_addition_of_default_components_at_the_end_of_the_list_via_generic_overload()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            var registeredLast = new TestComponentImpl();
+            sut.Register(registeredFirst);
+            sut.Register(registeredLast);
+            sut.ReplaceDefault<AnotherImpl>();
+
+            sut.Last().Should().BeOfType<AnotherImpl>();
+        }
+
+        [Test]
+        public void Should_allow_the_replacement_of_default_components_at_the_end_of_the_list()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            var registeredLast = new TestComponentImpl();
+            var @default = new TestComponentImpl();
+            var @default2 = new AnotherImpl();
+            sut.Register(registeredFirst);
+            sut.Register(registeredLast);
+            sut.ReplaceDefault(@default);
+            sut.ReplaceDefault(@default2);
+
+            sut.Should().Equal(registeredLast, registeredFirst, @default2);
+        }
+
+        [Test]
+        public void Should_allow_the_replacement_of_default_components_at_the_end_of_the_list_via_generic_overload()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            var registeredLast = new TestComponentImpl();
+            sut.Register(registeredFirst);
+            sut.Register(registeredLast);
+            sut.ReplaceDefault<TestComponentImpl>();
+            sut.ReplaceDefault<AnotherImpl>();
+
+            sut.Last().Should().BeOfType<AnotherImpl>();
+        }
+
+        [Test]
+        public void Should_allow_the_unregistration_of_default_components()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            var registeredLast = new TestComponentImpl();
+            var @default = new TestComponentImpl();
+            sut.Register(registeredFirst);
+            sut.Register(registeredLast);
+            sut.ReplaceDefault(@default);
+            sut.Unregister(@default);
+
+            sut.Should().Equal(registeredLast, registeredFirst);
         }
 
         [Test]
