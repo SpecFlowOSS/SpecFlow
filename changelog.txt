@@ -1,6 +1,7 @@
 3.0 - 2018-??-??
 Breaking changes:
 + Registration of value retrievers and comparers changes from `RegisterValueComparer(___)` to `ValueComparers.Register(___)`
++ Calling CreateInstance on an object with a constructor with default parameters populates the object using the default parameters instead of nulls https://github.com/techtalk/SpecFlow/pull/1279
 
 New Features:
 + Separate addition of default and non-default value comparers https://github.com/techtalk/SpecFlow/pull/1257
