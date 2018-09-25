@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var @default = new TestComponentImpl();
             sut.Register(registeredFirst);
             sut.Register(registeredLast);
-            sut.ReplaceDefault(@default);
+            sut.SetDefault(@default);
 
             sut.Should().Equal(registeredLast, registeredFirst, @default);
         }
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var registeredLast = new TestComponentImpl();
             sut.Register(registeredFirst);
             sut.Register(registeredLast);
-            sut.ReplaceDefault<AnotherImpl>();
+            sut.SetDefault<AnotherImpl>();
 
             sut.Last().Should().BeOfType<AnotherImpl>();
         }
@@ -85,8 +85,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var @default2 = new AnotherImpl();
             sut.Register(registeredFirst);
             sut.Register(registeredLast);
-            sut.ReplaceDefault(@default);
-            sut.ReplaceDefault(@default2);
+            sut.SetDefault(@default);
+            sut.SetDefault(@default2);
 
             sut.Should().Equal(registeredLast, registeredFirst, @default2);
         }
@@ -99,8 +99,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var registeredLast = new TestComponentImpl();
             sut.Register(registeredFirst);
             sut.Register(registeredLast);
-            sut.ReplaceDefault<TestComponentImpl>();
-            sut.ReplaceDefault<AnotherImpl>();
+            sut.SetDefault<TestComponentImpl>();
+            sut.SetDefault<AnotherImpl>();
 
             sut.Last().Should().BeOfType<AnotherImpl>();
         }
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var @default = new TestComponentImpl();
             sut.Register(registeredFirst);
             sut.Register(registeredLast);
-            sut.ReplaceDefault(@default);
+            sut.SetDefault(@default);
             sut.Unregister(@default);
 
             sut.Should().Equal(registeredLast, registeredFirst);

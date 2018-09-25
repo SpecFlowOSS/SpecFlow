@@ -62,15 +62,15 @@ namespace TechTalk.SpecFlow.Assist
             Register<TNew>();
         }
 
-        public void ReplaceDefault(T @new)
+        public void SetDefault(T @new)
         {
             hasDefault = true;
             @default = @new;
         }
 
-        public void ReplaceDefault<TImpl>() where TImpl : T, new()
+        public void SetDefault<TImpl>() where TImpl : T, new()
         {
-            ReplaceDefault(new TImpl());
+            SetDefault(new TImpl());
         }
     }
 }
