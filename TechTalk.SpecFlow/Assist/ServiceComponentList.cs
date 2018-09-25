@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void Unregister<TImpl>() where TImpl : T
         {
-            components.OfType<TImpl>().ToList().ForEach(component => Unregister(component));
+            componentsWithDefault.OfType<TImpl>().ToList().ForEach(component => Unregister(component));
         }
 
         public void Replace(T old, T @new)

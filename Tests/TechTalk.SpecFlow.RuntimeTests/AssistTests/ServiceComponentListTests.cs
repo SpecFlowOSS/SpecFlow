@@ -106,6 +106,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_allow_the_removal_of_default_component_via_generic_unregistration()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            sut.Register(registeredFirst);
+            sut.SetDefault<AnotherImpl>();
+            sut.Unregister<ITestComponent>();
+
+            sut.Should().BeEmpty();
+        }
+
+        [Test]
         public void Should_allow_the_unregistration_of_default_components()
         {
             var sut = new ServiceComponentList<ITestComponent>();
