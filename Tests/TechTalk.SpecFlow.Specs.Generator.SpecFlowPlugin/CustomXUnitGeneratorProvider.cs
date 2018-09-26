@@ -21,10 +21,10 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             if (_combination != null)
             {
                 string programminLanguageEnum = $"TechTalk.SpecFlow.TestProjectGenerator.ProgrammingLanguage.{_combination.ProgrammingLanguage}";
-                string projectFormatEnum = $"TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory.ProjectFormat.{_combination.ProjectFormat}";
-                string targetFrameworkEnum = $"TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory.TargetFramework.{_combination.TargetFramework}";
+                string projectFormatEnum = $"TechTalk.SpecFlow.TestProjectGenerator.Data.ProjectFormat.{_combination.ProjectFormat}";
+                string targetFrameworkEnum = $"TechTalk.SpecFlow.TestProjectGenerator.Data.TargetFramework.{_combination.TargetFramework}";
                 string unitTestProviderEnum = $"TechTalk.SpecFlow.TestProjectGenerator.UnitTestProvider.{_combination.UnitTestProvider}";
-                string configFormat = $"TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory.ConfigurationFormat.{_combination.ConfigFormat}";
+                string configFormat = $"TechTalk.SpecFlow.TestProjectGenerator.ConfigurationFormat.{_combination.ConfigFormat}";
 
                 generationContext.ScenarioInitializeMethod.Statements.Add(
                     new CodeMethodInvokeExpression(
@@ -35,9 +35,9 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                                     "ScenarioContext"),
                                 "ScenarioContainer"),
                             "RegisterInstanceAs",
-                            new CodeTypeReference("TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration")),
+                            new CodeTypeReference("TechTalk.SpecFlow.TestProjectGenerator.TestRunConfiguration")),
                         new CodeVariableReferenceExpression(
-                            $"new TechTalk.SpecFlow.TestProjectGenerator.NewApi.TestRunConfiguration(){{ ProgrammingLanguage = {programminLanguageEnum}, ProjectFormat = {projectFormatEnum}, TargetFramework = {targetFrameworkEnum}, UnitTestProvider = {unitTestProviderEnum}, ConfigurationFormat = {configFormat} }}")));
+                            $"new TechTalk.SpecFlow.TestProjectGenerator.TestRunConfiguration(){{ ProgrammingLanguage = {programminLanguageEnum}, ProjectFormat = {projectFormatEnum}, TargetFramework = {targetFrameworkEnum}, UnitTestProvider = {unitTestProviderEnum}, ConfigurationFormat = {configFormat} }}")));
             }
         }
     }

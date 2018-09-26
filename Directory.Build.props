@@ -44,12 +44,12 @@
     <SpecFlow_Specs_TFM>$(SpecFlow_FullFramework_Specs_TFM)</SpecFlow_Specs_TFM>
     <SpecFlow_Tools_TFM>$(SpecFlow_FullFramework_Tools_TFM);$(SpecFlow_Core_Tools_TFM)</SpecFlow_Tools_TFM>
 
-    <SpecFlow_EnableStrongNameSigning>false</SpecFlow_EnableStrongNameSigning>
+    <SpecFlow_EnableStrongNameSigning>true</SpecFlow_EnableStrongNameSigning>
   </PropertyGroup>
 
 
   <PropertyGroup Condition=" '$(SpecFlow_EnableStrongNameSigning)' == 'true'">
-    <SpecFlow_KeyFile>$(MSBuildThisFileDirectory)\specflow.snk</SpecFlow_KeyFile>
+    <SpecFlow_KeyFile>$(SolutionDir)\specflow.snk</SpecFlow_KeyFile>
     <SpecFlow_SignAssembly>true</SpecFlow_SignAssembly>
     <DefineConstants>$(DefineConstants);SPECFLOW_ENABLE_STRONG_NAME_SIGNING</DefineConstants>
   </PropertyGroup>
