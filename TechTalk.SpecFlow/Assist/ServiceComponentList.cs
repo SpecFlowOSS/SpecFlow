@@ -68,5 +68,10 @@ namespace TechTalk.SpecFlow.Assist
         {
             SetDefault(new TImpl());
         }
+
+        public void ClearDefault()
+        {
+            defaultComponent = ValueHolder.Empty<T>();
+        }
     }
 }
