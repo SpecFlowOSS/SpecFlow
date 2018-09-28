@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Parser
         private readonly IGherkinDialectProvider dialectProvider;
         private readonly List<ISemanticValidator> semanticValidators;
 
-        private class SpecFlowGherkinDialectProvider : GherkinDialectProvider
+        public class SpecFlowGherkinDialectProvider : GherkinDialectProvider
         {
             public SpecFlowGherkinDialectProvider(string defaultLanguage) : base(defaultLanguage)
             {
