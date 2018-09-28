@@ -319,7 +319,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
