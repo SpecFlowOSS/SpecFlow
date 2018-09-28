@@ -8,9 +8,9 @@ namespace TechTalk.SpecFlow.Assist
     {
         private readonly List<T> components;
 
-        private ValueHolder<T> @default;
+        private ValueHolder<T> defaultComponent;
 
-        private IEnumerable<T> componentsWithDefault => components.Concat(@default);
+        private IEnumerable<T> componentsWithDefault => components.Concat(defaultComponent);
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => componentsWithDefault.GetEnumerator();
 
@@ -35,9 +35,9 @@ namespace TechTalk.SpecFlow.Assist
         {
             if (!components.Remove(component))
             {
-                if (@default.Contains(component))
+                if (defaultComponent.Contains(component))
                 {
-                    @default = ValueHolder.Empty<T>();
+                    defaultComponent = ValueHolder.Empty<T>();
                 }
             }
         }
@@ -47,10 +47,10 @@ namespace TechTalk.SpecFlow.Assist
             componentsWithDefault.OfType<TImpl>().ToList().ForEach(component => Unregister(component));
         }
 
-        public void Replace(T old, T @new)
+        public void Replace(T oldComponent, T newComponent)
         {
-            Unregister(old);
-            Register(@new);
+            Unregister(oldComponent);
+            Register(newComponent);
         }
 
         public void Replace<TOld, TNew>() where TOld : T where TNew : T, new()
@@ -59,9 +59,9 @@ namespace TechTalk.SpecFlow.Assist
             Register<TNew>();
         }
 
-        public void SetDefault(T @new)
+        public void SetDefault(T newComponent)
         {
-            @default = ValueHolder.WithValue(@new);
+            defaultComponent = ValueHolder.WithValue(newComponent);
         }
 
         public void SetDefault<TImpl>() where TImpl : T, new()
