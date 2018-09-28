@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Tracing
 {
     internal static class LanguageHelper
     {
-        struct KeywordSet
+        private struct KeywordSet
         {
             public string DefaultKeyword
             {
@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Tracing
             }
         }
 
-        class KeywordTranslation : Dictionary<StepDefinitionKeyword, KeywordSet>
+        private class KeywordTranslation : Dictionary<StepDefinitionKeyword, KeywordSet>
         {
             public CultureInfo DefaultSpecificCulture { get; set; }
         }
@@ -66,7 +66,7 @@ namespace TechTalk.SpecFlow.Tracing
             return translation;
         }
 
-        static public CultureInfo GetSpecificCultureInfo(CultureInfo language)
+        public static CultureInfo GetSpecificCultureInfo(CultureInfo language)
         {
             //HACK: we need to have a better solution
             if (!language.IsNeutralCulture)
@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow.Tracing
                 result.DefaultSpecificCulture = language;
             }
 
-            foreach (StepDefinitionKeyword keyword in EnumHelper.GetValues(typeof (StepDefinitionKeyword)))
+            foreach (StepDefinitionKeyword keyword in EnumHelper.GetValues(typeof(StepDefinitionKeyword)))
             {
                 var keywordList = langElm.Elements(keyword.ToString()).Select(keywordElm => keywordElm.Value).ToArray();
                 result[keyword] = new KeywordSet(keywordList);
