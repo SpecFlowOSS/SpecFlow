@@ -309,11 +309,6 @@
     <Compile Include="Assist\ValueRetrievers\TimeSpanValueRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Languages.xml">
-      <Link>Languages.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="BindingSkeletons\DefaultSkeletonTemplates.sftemplate" />
   </ItemGroup>
   <ItemGroup>
