@@ -90,6 +90,7 @@
     <Compile Include="Assist\ValueComparers\DecimalValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DefaultValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\GuidValueComparer.cs" />
+    <Compile Include="Assist\ValueHolder.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />

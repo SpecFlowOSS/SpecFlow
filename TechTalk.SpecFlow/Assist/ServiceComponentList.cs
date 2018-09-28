@@ -8,11 +8,9 @@ namespace TechTalk.SpecFlow.Assist
     {
         private readonly List<T> components;
 
-        private bool hasDefault;
+        private ValueHolder<T> @default;
 
-        private T @default;
-
-        private IEnumerable<T> componentsWithDefault => hasDefault ? components.Concat(new[] {@default}) : components;
+        private IEnumerable<T> componentsWithDefault => components.Concat(@default);
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => componentsWithDefault.GetEnumerator();
 
@@ -37,10 +35,9 @@ namespace TechTalk.SpecFlow.Assist
         {
             if (!components.Remove(component))
             {
-                if (EqualityComparer<T>.Default.Equals(component, @default))
+                if (@default.Contains(component))
                 {
-                    hasDefault = false;
-                    @default = default(T);
+                    @default = ValueHolder.Empty<T>();
                 }
             }
         }
@@ -64,8 +61,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void SetDefault(T @new)
         {
-            hasDefault = true;
-            @default = @new;
+            @default = ValueHolder.WithValue(@new);
         }
 
         public void SetDefault<TImpl>() where TImpl : T, new()
