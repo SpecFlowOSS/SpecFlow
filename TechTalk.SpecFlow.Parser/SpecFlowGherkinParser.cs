@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,36 +8,36 @@ using TechTalk.SpecFlow.Parser.SemanticValidators;
 
 namespace TechTalk.SpecFlow.Parser
 {
+    public class SpecFlowGherkinDialectProvider : GherkinDialectProvider
+    {
+        public SpecFlowGherkinDialectProvider(string defaultLanguage) : base(defaultLanguage)
+        {
+        }
+
+        public override GherkinDialect GetDialect(string language, Location location)
+        {
+            if (language.Contains("-"))
+            {
+                try
+                {
+                    return base.GetDialect(language, location);
+                }
+                catch (NoSuchLanguageException)
+                {
+                    var languageBase = language.Split('-')[0];
+                    var languageBaseDialect = base.GetDialect(languageBase, location);
+                    return new GherkinDialect(language, languageBaseDialect.FeatureKeywords, languageBaseDialect.BackgroundKeywords, languageBaseDialect.ScenarioKeywords, languageBaseDialect.ScenarioOutlineKeywords, languageBaseDialect.ExamplesKeywords, languageBaseDialect.GivenStepKeywords, languageBaseDialect.WhenStepKeywords, languageBaseDialect.ThenStepKeywords, languageBaseDialect.AndStepKeywords, languageBaseDialect.ButStepKeywords);
+                }
+            }
+
+            return base.GetDialect(language, location);
+        }
+    }
+
     public class SpecFlowGherkinParser : IGherkinParser
     {
         private readonly IGherkinDialectProvider dialectProvider;
         private readonly List<ISemanticValidator> semanticValidators;
-
-        public class SpecFlowGherkinDialectProvider : GherkinDialectProvider
-        {
-            public SpecFlowGherkinDialectProvider(string defaultLanguage) : base(defaultLanguage)
-            {
-            }
-
-            public override GherkinDialect GetDialect(string language, Location location)
-            {
-                if (language.Contains("-"))
-                {
-                    try
-                    {
-                        return base.GetDialect(language, location);
-                    }
-                    catch (NoSuchLanguageException)
-                    {
-                        var languageBase = language.Split('-')[0];
-                        var languageBaseDialect = base.GetDialect(languageBase, location);
-                        return new GherkinDialect(language, languageBaseDialect.FeatureKeywords, languageBaseDialect.BackgroundKeywords, languageBaseDialect.ScenarioKeywords, languageBaseDialect.ScenarioOutlineKeywords, languageBaseDialect.ExamplesKeywords, languageBaseDialect.GivenStepKeywords, languageBaseDialect.WhenStepKeywords, languageBaseDialect.ThenStepKeywords, languageBaseDialect.AndStepKeywords, languageBaseDialect.ButStepKeywords);
-                    }
-                }
-
-                return base.GetDialect(language, location);
-            }
-        }
 
         public IGherkinDialectProvider DialectProvider
         {

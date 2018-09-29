@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
-            var dialect = new SpecFlowGherkinParser.SpecFlowGherkinDialectProvider(language.Name).DefaultDialect;
+            var dialect = new SpecFlowGherkinDialectProvider(language.Name).DefaultDialect;
 
             return new KeywordTranslation(dialect);
         }
