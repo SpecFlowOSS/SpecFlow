@@ -50,6 +50,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="Gherkin">
+      <HintPath>{LibRoot}\Gherkin.dll</HintPath>
+    </Reference>
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>{SpecFlowRoot}\lib\NET45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
