@@ -75,6 +75,11 @@ namespace TechTalk.SpecFlow.Assist
             return GetTheEnumValue<T>(row[1], row[0]);
         }
 
+        public static TEnum GetEnumValue<TEnum>(this TableRow row, string id)
+        {
+            return (TEnum)Enum.Parse(typeof(TEnum), row[id]);
+        }
+
         public static Enum GetEnum<T>(this TableRow row, string id)
         {
             return GetTheEnumValue<T>(row[id], id);

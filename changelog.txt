@@ -8,6 +8,7 @@ New Features:
 + BoolValueRetriver can now work with 1s and 0s https://github.com/techtalk/SpecFlow/issues/1216
 + Check for non-default constructors using case-insensitive comparison https://github.com/techtalk/SpecFlow/pull/1265
 + Syntax and structural changes in value retriever/comparer registration https://github.com/techtalk/SpecFlow/pull/1260
++ Add utility to get enum field value from TableRow.
 
 2.4 - 2018-08-20
 New Features:
