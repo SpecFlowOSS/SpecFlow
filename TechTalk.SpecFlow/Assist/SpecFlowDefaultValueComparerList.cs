@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Assist
             Register<DecimalValueComparer>();
             Register<DoubleValueComparer>();
             Register<FloatValueComparer>();
-            RegisterDefault(new DefaultValueComparer());
+            SetDefault<DefaultValueComparer>();
         }
     }
 }

@@ -8,9 +8,13 @@ namespace TechTalk.SpecFlow.Assist
     {
         private readonly List<T> components;
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => components.GetEnumerator();
+        private ValueHolder<T> defaultComponent;
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)components).GetEnumerator();
+        private IEnumerable<T> componentsWithDefault => components.Concat(defaultComponent);
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => componentsWithDefault.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)componentsWithDefault).GetEnumerator();
 
         public ServiceComponentList()
         {
@@ -27,31 +31,53 @@ namespace TechTalk.SpecFlow.Assist
             Register(new TImpl());
         }
 
-        public void RegisterDefault(T component)
-        {
-            components.Add(component);
-        }
-
         public void Unregister(T component)
         {
-            components.Remove(component);
+            if (!components.Remove(component))
+            {
+                if (defaultComponent.Contains(component))
+                {
+                    defaultComponent = ValueHolder.Empty<T>();
+                }
+            }
         }
 
         public void Unregister<TImpl>() where TImpl : T
         {
-            components.OfType<TImpl>().ToList().ForEach(component => components.Remove(component));
+            componentsWithDefault.OfType<TImpl>().ToList().ForEach(component => Unregister(component));
         }
 
-        public void Replace(T old, T @new)
+        public void Replace(T oldComponent, T newComponent)
         {
-            Unregister(old);
-            Register(@new);
+            Unregister(oldComponent);
+            Register(newComponent);
         }
 
         public void Replace<TOld, TNew>() where TOld : T where TNew : T, new()
         {
             Unregister<TOld>();
             Register<TNew>();
+        }
+
+        public void SetDefault(T newComponent)
+        {
+            defaultComponent = ValueHolder.WithValue(newComponent);
+        }
+
+        public void SetDefault<TImpl>() where TImpl : T, new()
+        {
+            SetDefault(new TImpl());
+        }
+
+        public void ClearDefault()
+        {
+            defaultComponent = ValueHolder.Empty<T>();
+        }
+
+        public void Clear()
+        {
+            components.Clear();
+            ClearDefault();
         }
     }
 }
