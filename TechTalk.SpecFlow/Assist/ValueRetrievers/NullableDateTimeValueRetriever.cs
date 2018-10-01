@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableDateTimeValueRetriever : IValueRetriever
+    public class NullableDateTimeValueRetriever : NullableValueRetriever<DateTime?>
     {
-        private readonly Func<string, DateTime> dateTimeValueRetriever = v => new DateTimeValueRetriever().GetValue(v);
+        private readonly Func<string, DateTime> dateTimeValueRetriever;
+
+        public NullableDateTimeValueRetriever()
+            : this(v => new DateTimeValueRetriever().GetValue(v))
+        {
+        }
 
         public NullableDateTimeValueRetriever(Func<string, DateTime> dateTimeValueRetriever = null)
         {
@@ -13,20 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.dateTimeValueRetriever = dateTimeValueRetriever;
         }
 
-        public virtual DateTime? GetValue(string value)
+        protected override DateTime? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return dateTimeValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(DateTime?);
         }
     }
 }

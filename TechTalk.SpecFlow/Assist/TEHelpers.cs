@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.Assist
             return (from constructor in typeof(T).GetConstructors()
                     where !projectedPropertyNames.Except(
                         from parameter in constructor.GetParameters()
-                        select parameter.Name).Any()
+                        select parameter.Name, StringComparer.OrdinalIgnoreCase).Any()
                     select constructor).FirstOrDefault();
         }
 

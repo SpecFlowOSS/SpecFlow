@@ -66,8 +66,11 @@
     <Compile Include="Assist\FindInSetExtensionMethods.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
+    <Compile Include="Assist\ServiceComponentList.cs" />
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\Attributes\TableAliasesAttribute.cs" />
+    <Compile Include="Assist\SpecFlowDefaultValueComparerList.cs" />
+    <Compile Include="Assist\SpecFlowDefaultValueRetrieverList.cs" />
     <Compile Include="Assist\TableDifferenceItem.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
     <Compile Include="Assist\TableDiffExceptionBuilder.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Assist\ValueRetrievers\DateTimeOffsetValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\EnumListValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\LongValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NonNullableValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableDateTimeOffsetValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableLongValueRetriever.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="Assist\ValueRetrievers\NullableTimeSpanValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableULongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUShortValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\SByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\FloatValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUIntValueRetriever.cs" />

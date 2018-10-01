@@ -29,6 +29,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Test]
+        public void Returns_true_when_the_value_is_1()
+        {
+            var retriever = new BoolValueRetriever();
+            retriever.GetValue("1").Should().BeTrue();
+        }
+
+        [Test]
+        public void Returns_false_when_the_value_is_0()
+        {
+            var retriever = new BoolValueRetriever();
+            retriever.GetValue("0").Should().BeFalse();
+        }
+
+        [Test]
         public void Returns_false_for_data_that_is_not_bool()
         {
             var retriever = new BoolValueRetriever();

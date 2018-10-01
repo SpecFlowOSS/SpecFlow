@@ -7,6 +7,10 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
     {
         private readonly GuidValueRetriever guidValueRetriever;
 
+        public GuidValueComparer() : this(new GuidValueRetriever())
+        {
+        }
+
         public GuidValueComparer(GuidValueRetriever guidValueRetriever)
         {
             this.guidValueRetriever = guidValueRetriever;
