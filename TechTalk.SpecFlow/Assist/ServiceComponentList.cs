@@ -73,5 +73,11 @@ namespace TechTalk.SpecFlow.Assist
         {
             defaultComponent = ValueHolder.Empty<T>();
         }
+
+        public void Clear()
+        {
+            components.Clear();
+            ClearDefault();
+        }
     }
 }

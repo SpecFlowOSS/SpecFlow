@@ -159,6 +159,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_allow_clearing_all_components()
+        {
+            var sut = new ServiceComponentList<ITestComponent>();
+            var registeredFirst = new TestComponentImpl();
+            var registeredLast = new TestComponentImpl();
+            var @default = new TestComponentImpl();
+            sut.Register(registeredFirst);
+            sut.Register(registeredLast);
+            sut.SetDefault(@default);
+            sut.Clear();
+
+            sut.Should().BeEmpty();
+        }
+
+        [Test]
         public void Should_allow_unregistration_of_existing_component_via_generic_overload()
         {
             var sut = new ServiceComponentList<ITestComponent>();
