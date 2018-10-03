@@ -247,7 +247,7 @@
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="ScenarioStepContext.cs" />
     <Compile Include="ScopeAttributes.cs" />
-    <Compile Include="SpecFlowGherkinDialectProvider.cs" />
+    <Compile Include="Parser\SpecFlowGherkinDialectProvider.cs" />
     <Compile Include="StepArgumentTransformationAttribute.cs" />
     <Compile Include="StepInfo.cs" />
     <Compile Include="Steps.cs" />
