@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceError(Exception ex)
         {
-            traceListener.WriteToolOutput("error: {0}", ex.Message);
+            WriteErrorMessage(ex.Message);
             WriteLoaderExceptionsIfAny(ex);
         }
 
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.Tracing
                     WriteLoaderExceptionsIfAny(typeInitializationException.InnerException);
                     break;
                 case ReflectionTypeLoadException reflectionTypeLoadException:
-                    traceListener.WriteToolOutput("error: {0}", "Type Loader exceptions:");
+                    WriteErrorMessage("Type Loader exceptions:");
                     FormatLoaderExceptions(reflectionTypeLoadException);
                     break;
             }
@@ -100,8 +100,13 @@ namespace TechTalk.SpecFlow.Tracing
                 .Select(x => $"LoaderException: {x}");
             foreach (var ex in exceptions)
             {
-                traceListener.WriteToolOutput("error: {0}", ex);
+                WriteErrorMessage(ex);
             }
+        }
+
+        private void WriteErrorMessage(string ex)
+        {
+            traceListener.WriteToolOutput("error: {0}", ex);
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
