@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
@@ -73,7 +74,33 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceError(Exception ex)
         {
-            traceListener.WriteToolOutput("error: {0}", ex.Message);
+            traceListener.WriteToolOutput("error: {0}", ex.Message + LoaderExceptionsIfAny(ex));
+        }
+
+        private static string LoaderExceptionsIfAny(Exception ex)
+        {
+            switch (ex)
+            {
+                case TypeInitializationException typeInitializationException:
+                    return LoaderExceptionsIfAny(typeInitializationException.InnerException);
+                case ReflectionTypeLoadException reflectionTypeLoadException:
+                    return Environment.NewLine
+                           + "Type Loader exceptions:"
+                           + Environment.NewLine
+                           + FormatLoaderExceptions(reflectionTypeLoadException);
+                default:
+                    return "";
+            }
+        }
+
+        private static string FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException)
+        {
+            return string.Join(
+                Environment.NewLine,
+                reflectionTypeLoadException.LoaderExceptions
+                    .Select(x => x.ToString())
+                    .Distinct()
+                    .Select(x => $"LoaderException: {x}"));
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
