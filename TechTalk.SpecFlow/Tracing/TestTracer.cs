@@ -74,33 +74,34 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceError(Exception ex)
         {
-            traceListener.WriteToolOutput("error: {0}", ex.Message + LoaderExceptionsIfAny(ex));
+            traceListener.WriteToolOutput("error: {0}", ex.Message);
+            WriteLoaderExceptionsIfAny(ex);
         }
 
-        private static string LoaderExceptionsIfAny(Exception ex)
+        private void WriteLoaderExceptionsIfAny(Exception ex)
         {
             switch (ex)
             {
                 case TypeInitializationException typeInitializationException:
-                    return LoaderExceptionsIfAny(typeInitializationException.InnerException);
+                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException);
+                    break;
                 case ReflectionTypeLoadException reflectionTypeLoadException:
-                    return Environment.NewLine
-                           + "Type Loader exceptions:"
-                           + Environment.NewLine
-                           + FormatLoaderExceptions(reflectionTypeLoadException);
-                default:
-                    return "";
+                    traceListener.WriteToolOutput("error: {0}", "Type Loader exceptions:");
+                    FormatLoaderExceptions(reflectionTypeLoadException);
+                    break;
             }
         }
 
-        private static string FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException)
+        private void FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException)
         {
-            return string.Join(
-                Environment.NewLine,
-                reflectionTypeLoadException.LoaderExceptions
-                    .Select(x => x.ToString())
-                    .Distinct()
-                    .Select(x => $"LoaderException: {x}"));
+            var exceptions = reflectionTypeLoadException.LoaderExceptions
+                .Select(x => x.ToString())
+                .Distinct()
+                .Select(x => $"LoaderException: {x}");
+            foreach (var ex in exceptions)
+            {
+                traceListener.WriteToolOutput("error: {0}", ex);
+            }
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
