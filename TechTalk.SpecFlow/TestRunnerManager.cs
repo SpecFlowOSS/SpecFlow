@@ -181,10 +181,19 @@ namespace TechTalk.SpecFlow
 
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
         {
-            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
-            managedThreadId = GetLogicalThreadId(managedThreadId);
-            var testRunnerManager = GetTestRunnerManager(testAssembly);
-            return testRunnerManager.GetTestRunner(managedThreadId.Value);
+            try
+            {
+                testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+                managedThreadId = GetLogicalThreadId(managedThreadId);
+                var testRunnerManager = GetTestRunnerManager(testAssembly);
+                return testRunnerManager.GetTestRunner(managedThreadId.Value);
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                throw new Exception(
+                    "Loader exceptions: " + Environment.NewLine +
+                    string.Join(Environment.NewLine, ex.LoaderExceptions.Select(lex => lex.ToString())), ex);
+            }
         }
 
         private static int GetLogicalThreadId(int? managedThreadId)
