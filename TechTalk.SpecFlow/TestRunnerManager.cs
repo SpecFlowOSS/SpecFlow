@@ -121,6 +121,20 @@ namespace TechTalk.SpecFlow
 
         public virtual ITestRunner GetTestRunner(int threadId)
         {
+            try
+            {
+                return GetTestRunnerWithoutExceptionHandling(threadId);
+
+            }
+            catch (Exception ex)
+            {
+                testTracer.TraceError(ex);
+                throw;
+            }
+        }
+
+        private ITestRunner GetTestRunnerWithoutExceptionHandling(int threadId)
+        {
             ITestRunner testRunner;
             if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
             {
