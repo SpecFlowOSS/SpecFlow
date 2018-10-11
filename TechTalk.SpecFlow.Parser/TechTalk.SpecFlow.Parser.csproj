@@ -14,4 +14,8 @@
     <PackageReference Include="Gherkin" Version="5.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
+  </ItemGroup>
+
 </Project>
