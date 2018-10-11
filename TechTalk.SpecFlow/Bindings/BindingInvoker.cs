@@ -44,13 +44,15 @@ namespace TechTalk.SpecFlow.Bindings
                     if (arguments != null)
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
-                    result = bindingAction.DynamicInvoke(invokeArgs);
 
-                    if (result is Task)
+                    result = AsyncHelpers.RunSync(async () =>
                     {
-                        ((Task)result).Wait();
-                    }
-                   
+                        var r = bindingAction.DynamicInvoke(invokeArgs);
+                        if (r is Task t)
+                            await t;
+                        return r;
+                    });
+
                     stopwatch.Stop();
                 }
 
