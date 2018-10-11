@@ -7,7 +7,6 @@ using System.Text;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration)
         {
-            traceListener.WriteToolOutput("done: {0} ({1:F1}s)", 
+            traceListener.WriteToolOutput("done: {0} ({1:F1}s)",
                 stepFormatter.GetMatchText(match, arguments), duration.TotalSeconds);
         }
 
@@ -75,7 +74,39 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceError(Exception ex)
         {
-            traceListener.WriteToolOutput("error: {0}", ex.Message);
+            WriteErrorMessage(ex.Message);
+            WriteLoaderExceptionsIfAny(ex);
+        }
+
+        private void WriteLoaderExceptionsIfAny(Exception ex)
+        {
+            switch (ex)
+            {
+                case TypeInitializationException typeInitializationException:
+                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException);
+                    break;
+                case ReflectionTypeLoadException reflectionTypeLoadException:
+                    WriteErrorMessage("Type Loader exceptions:");
+                    FormatLoaderExceptions(reflectionTypeLoadException);
+                    break;
+            }
+        }
+
+        private void FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException)
+        {
+            var exceptions = reflectionTypeLoadException.LoaderExceptions
+                .Select(x => x.ToString())
+                .Distinct()
+                .Select(x => $"LoaderException: {x}");
+            foreach (var ex in exceptions)
+            {
+                WriteErrorMessage(ex);
+            }
+        }
+
+        private void WriteErrorMessage(string ex)
+        {
+            traceListener.WriteToolOutput("error: {0}", ex);
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
@@ -85,7 +116,7 @@ namespace TechTalk.SpecFlow.Tracing
                 message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
             else
             {
-                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.", 
+                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.",
                     string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray()));
                 traceListener.WriteToolOutput(preMessage);
                 message.AppendLine("Change the scope or use the following code to create a new step definition:");
@@ -99,7 +130,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
         {
-            traceListener.WriteToolOutput("duration: {0}: {1:F1}s", 
+            traceListener.WriteToolOutput("duration: {0}: {1:F1}s",
                 stepFormatter.GetMatchText(method, arguments), elapsed.TotalSeconds);
         }
 

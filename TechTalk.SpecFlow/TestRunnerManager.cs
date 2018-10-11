@@ -27,6 +27,7 @@ namespace TechTalk.SpecFlow
         protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
         protected readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
+        private readonly ITestTracer testTracer;
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
         private readonly object syncRoot = new object();
         private bool isTestRunInitialized;
@@ -36,12 +37,14 @@ namespace TechTalk.SpecFlow
 
         public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
 
-        public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, Configuration.SpecFlowConfiguration specFlowConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
+        public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, Configuration.SpecFlowConfiguration specFlowConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder,
+            ITestTracer testTracer)
         {
             this.globalContainer = globalContainer;
             this.containerBuilder = containerBuilder;
             this.specFlowConfiguration = specFlowConfiguration;
             this.bindingRegistryBuilder = bindingRegistryBuilder;
+            this.testTracer = testTracer;
         }
 
         public virtual ITestRunner CreateTestRunner(int threadId)
@@ -117,6 +120,20 @@ namespace TechTalk.SpecFlow
         }
 
         public virtual ITestRunner GetTestRunner(int threadId)
+        {
+            try
+            {
+                return GetTestRunnerWithoutExceptionHandling(threadId);
+
+            }
+            catch (Exception ex)
+            {
+                testTracer.TraceError(ex);
+                throw;
+            }
+        }
+
+        private ITestRunner GetTestRunnerWithoutExceptionHandling(int threadId)
         {
             ITestRunner testRunner;
             if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
