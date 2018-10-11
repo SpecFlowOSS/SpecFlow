@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Globalization;
 #if SILVERLIGHT
@@ -26,6 +27,8 @@ namespace TechTalk.SpecFlow
         #region Singleton
         private static bool isCurrentDisabled = false;
         private static FeatureContext current;
+
+        [Obsolete("Please get the FeatureContext via Context Injection - http://www.specflow.org/documentation/Context-Injection/")]
         public static FeatureContext Current
         {
             get
