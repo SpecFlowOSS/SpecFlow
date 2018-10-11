@@ -124,11 +124,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Languages.xml">
-      <Link>Common\Languages.xml</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
   </ItemGroup>
   <ItemGroup>
