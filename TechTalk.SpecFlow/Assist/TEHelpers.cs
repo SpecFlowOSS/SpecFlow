@@ -29,12 +29,15 @@ namespace TechTalk.SpecFlow.Assist
             var parameterValues = new object[constructorParameters.Length];
             for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
             {
-                var parameterName = constructorParameters[parameterIndex].Name;
+                var parameter = constructorParameters[parameterIndex];
+                var parameterName = parameter.Name;
                 var member = (from m in membersThatNeedToBeSet
                               where string.Equals(m.MemberName, parameterName, StringComparison.OrdinalIgnoreCase)
                               select m).FirstOrDefault();
                 if (member != null)
                     parameterValues[parameterIndex] = member.GetValue();
+                else if (parameter.HasDefaultValue)
+                    parameterValues[parameterIndex] = parameter.DefaultValue;
             }
             return (T)constructor.Invoke(parameterValues);
         }
