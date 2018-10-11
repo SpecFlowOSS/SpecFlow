@@ -34,7 +34,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var runtimeBindingRegistryBuilderMock = new Mock<IRuntimeBindingRegistryBuilder>();
 
-            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, _specFlowConfigurationStub, runtimeBindingRegistryBuilderMock.Object);
+            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, _specFlowConfigurationStub, runtimeBindingRegistryBuilderMock.Object,
+                Mock.Of<ITestTracer>());
             testRunnerManager.Initialize(anAssembly);
             return testRunnerManager;
         }
