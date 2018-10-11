@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             @class.Field2.Should().Be("Entry2");
         }
 
-        [Test]
+        [Fact]
         public void Can_create_an_instance_with_a_constructor_with_default_parameters()
         {
             var table = new Table("Field", "Value");

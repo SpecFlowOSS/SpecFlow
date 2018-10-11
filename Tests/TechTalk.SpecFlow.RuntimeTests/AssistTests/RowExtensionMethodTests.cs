@@ -271,7 +271,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .GetSingle("SomethingThatDoesNotExist").Should().Be(Single.MinValue);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumValue_should_return_the_enum_field_form_the_row()
         {
             var table = new Table("Enum");
@@ -281,7 +281,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             firstRow.GetEnumValue<Sex>("Enum").Should().Be(Sex.Male);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumValue_should_throw_when_the_given_value_does_not_exist()
         {
             var table = new Table("Enum");
@@ -290,10 +290,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             Action act = () => firstRow.GetEnumValue<Sex>("Enum");
 
-            act.ShouldThrow<ArgumentException>();
+            act.Should().Throw<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void GetEnumValue_should_throw_when_the_given_value_does_not_match_case()
         {
             var table = new Table("Enum");
@@ -302,10 +302,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             Action act = () => firstRow.GetEnumValue<Sex>("Enum");
 
-            act.ShouldThrow<ArgumentException>();
+            act.Should().Throw<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void GetSingle_should_throw_when_the_given_value_is_not_defined()
         {
             var table = new Table("Enum");
@@ -314,7 +314,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             Action act = () => firstRow.GetEnumValue<Sex>("SomethingThatDoesNotExist");
 
-            act.ShouldThrow<IndexOutOfRangeException>();
+            act.Should().Throw<IndexOutOfRangeException>();
         }
     }
 }
