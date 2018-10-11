@@ -1,13 +1,14 @@
+using BoDi;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using BoDi;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class NUnitTestGeneratorProvider : IUnitTestGeneratorProvider
     {
+        protected const string TESTCASE_ATTR = "NUnit.Framework.TestCase";
         protected const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
         protected const string TEST_ATTR = "NUnit.Framework.TestAttribute";
         protected const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
@@ -35,7 +36,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper = codeDomHelper;
         }
 
-        public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
             CodeDomHelper.AddAttribute(generationContext.TestClass, DESCRIPTION_ATTR, featureTitle);
@@ -97,8 +98,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
-            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
+            CodeDomHelper.AddAttribute(testMethod, TESTCASE_ATTR, new CodeAttributeArgument("TestName", new CodePrimitiveExpression(friendlyTestName.Replace('.', '_'))));
         }
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
@@ -118,16 +118,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
-            var args = arguments.Select(
+            List<CodeAttributeArgument> args = arguments.Select(
               arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
 
             // addressing ReSharper bug: TestCase attribute with empty string[] param causes inconclusive result - https://github.com/techtalk/SpecFlow/issues/116
             bool hasExampleTags = tags.Any();
-            var exampleTagExpressionList = tags.Select(t => new CodePrimitiveExpression(t));
+            IEnumerable<CodePrimitiveExpression> exampleTagExpressionList = tags.Select(t => new CodePrimitiveExpression(t));
             CodeExpression exampleTagsExpression = hasExampleTags
                 ? new CodeArrayCreateExpression(typeof(string[]), exampleTagExpressionList.ToArray())
-                : (CodeExpression) new CodePrimitiveExpression(null);
-                
+                : (CodeExpression)new CodePrimitiveExpression(null);
+
             args.Add(new CodeAttributeArgument(exampleTagsExpression));
 
             // adds 'Category' named parameter so that NUnit also understands that this test case belongs to the given categories
@@ -138,7 +138,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
 
             if (isIgnored)
+            {
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));
+            }
 
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
