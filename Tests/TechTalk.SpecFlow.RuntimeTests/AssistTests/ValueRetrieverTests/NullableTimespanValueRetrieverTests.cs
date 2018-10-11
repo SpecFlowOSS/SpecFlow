@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -36,7 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void It_handles_timespans()
         {
-            var retriever = new NullableTimeSpanValueRetriever();
+            IValueRetriever retriever = new NullableTimeSpanValueRetriever();
             var empty = new System.Collections.Generic.KeyValuePair<string, string>();
             retriever.CanRetrieve(empty, null, typeof(System.TimeSpan?)).Should().BeTrue();
             retriever.CanRetrieve(empty, null, typeof(System.TimeSpan)).Should().BeFalse();

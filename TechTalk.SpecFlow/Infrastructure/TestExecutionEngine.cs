@@ -8,7 +8,6 @@ using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -30,6 +29,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IBindingInvoker bindingInvoker;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly ITestObjectResolver testObjectResolver;
+        private readonly IObsoleteStepHandler obsoleteStepHandler; 
 
         private ProgrammingLanguage defaultTargetLanguage = ProgrammingLanguage.CSharp;
         private CultureInfo defaultBindingCulture = CultureInfo.CurrentCulture;
@@ -37,7 +37,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             Configuration.SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, 
+            ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             this.errorProvider = errorProvider;
             this.bindingInvoker = bindingInvoker;
@@ -53,6 +54,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepDefinitionMatchService = stepDefinitionMatchService;
             this.testObjectResolver = testObjectResolver;
             this.TestThreadContainer = testThreadContainer;
+            this.obsoleteStepHandler = obsoleteStepHandler;
         }
 
         public FeatureContext FeatureContext
@@ -120,9 +122,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             contextManager.CleanupFeatureContext();
         }
 
-        public void OnScenarioStart(ScenarioInfo scenarioInfo)
+        public void OnScenarioInitialize(ScenarioInfo scenarioInfo)
         {
             contextManager.InitializeScenarioContext(scenarioInfo);
+        }
+
+        public void OnScenarioStart()
+        {
             FireScenarioEvents(HookType.BeforeScenario);
         }
 
@@ -303,6 +309,8 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
                 else
                 {
+                    obsoleteStepHandler.Handle(match);
+
                     onStepStartExecuted = true;
                     OnStepStart();
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
@@ -436,10 +444,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             Debug.Assert(value != null);
             Debug.Assert(typeToConvertTo != null);
-
-            if (typeToConvertTo.IsAssignableTo(value.GetType()))
-                return value;
-
+           
             return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
         }
 

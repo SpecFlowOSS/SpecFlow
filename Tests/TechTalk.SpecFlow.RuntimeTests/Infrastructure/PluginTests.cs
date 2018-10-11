@@ -96,6 +96,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             }
         }
 
+        public class PluginWithCustomFeatureDependencies : IRuntimePlugin
+        {
+            private readonly Action<ObjectContainer> _specificFeatureDependencies;
+
+            public PluginWithCustomFeatureDependencies(Action<ObjectContainer> specificFeatureDependencies)
+            {
+                _specificFeatureDependencies = specificFeatureDependencies;
+            }
+
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            {
+                runtimePluginEvents.CustomizeFeatureDependencies += (sender, args) => { _specificFeatureDependencies(args.ObjectContainer); };
+            }
+        }
+
         public interface ICustomDependency
         {
 
@@ -264,13 +279,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             traceListener.Should().BeOfType(typeof(CustomTraceListener));
         }
-
+        
         [Test]
         public void Should_be_able_to_register_scenario_dependencies_from_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
             ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomScenarioDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
             var container = TestObjectFactories.CreateDefaultScenarioContainer(configurationHolder);
+            var customDependency = container.Resolve<ICustomDependency>();
+
+            customDependency.Should().BeOfType(typeof(CustomDependency));
+        }
+
+        [Test]
+        public void Should_be_able_to_register_feature_dependencies_from_a_plugin()
+        {
+            StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomFeatureDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
+            var container = TestObjectFactories.CreateDefaultFeatureContainer(configurationHolder);
             var customDependency = container.Resolve<ICustomDependency>();
 
             customDependency.Should().BeOfType(typeof(CustomDependency));

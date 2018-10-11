@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Assist.Attributes;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -28,12 +29,15 @@ namespace TechTalk.SpecFlow.Assist
             var parameterValues = new object[constructorParameters.Length];
             for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
             {
-                var parameterName = constructorParameters[parameterIndex].Name;
+                var parameter = constructorParameters[parameterIndex];
+                var parameterName = parameter.Name;
                 var member = (from m in membersThatNeedToBeSet
                               where string.Equals(m.MemberName, parameterName, StringComparison.OrdinalIgnoreCase)
                               select m).FirstOrDefault();
                 if (member != null)
                     parameterValues[parameterIndex] = member.GetValue();
+                else if (parameter.HasDefaultValue)
+                    parameterValues[parameterIndex] = parameter.DefaultValue;
             }
             return (T)constructor.Invoke(parameterValues);
         }
@@ -53,7 +57,7 @@ namespace TechTalk.SpecFlow.Assist
             return (from constructor in typeof(T).GetConstructors()
                     where !projectedPropertyNames.Except(
                         from parameter in constructor.GetParameters()
-                        select parameter.Name).Any()
+                        select parameter.Name, StringComparer.OrdinalIgnoreCase).Any()
                     select constructor).FirstOrDefault();
         }
 
@@ -79,7 +83,8 @@ namespace TechTalk.SpecFlow.Assist
         internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
         {
             // we remove underscores, because they should be equivalent to spaces that were removed too from the column names
-            return name.Replace("_", string.Empty);
+            // we also ignore accents
+            return name.Replace("_", string.Empty).ToIdentifier();
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)

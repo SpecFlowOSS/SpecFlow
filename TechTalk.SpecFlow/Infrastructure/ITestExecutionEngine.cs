@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using TechTalk.SpecFlow.Bindings;
+﻿using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -15,7 +13,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         void OnFeatureStart(FeatureInfo featureInfo);
         void OnFeatureEnd();
 
-        void OnScenarioStart(ScenarioInfo scenarioInfo);
+        void OnScenarioInitialize(ScenarioInfo scenarioInfo);
+        void OnScenarioStart();
         void OnAfterLastStep();
         void OnScenarioEnd();
 

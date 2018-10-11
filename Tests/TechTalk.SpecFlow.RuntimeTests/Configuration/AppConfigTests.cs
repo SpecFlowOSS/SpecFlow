@@ -3,11 +3,14 @@ using System.IO;
 using System.Linq;
 using BoDi;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Configuration.AppConfig;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Configuration
@@ -66,7 +69,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             runtimeConfig.FeatureLanguage.TwoLetterISOLanguageName.Should().Be("de");
         }
-        
+
 
         [Test]
         public void CheckBindingCulture()
@@ -461,6 +464,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.Plugins.Count.Should().Be(2);
             runtimeConfig.Plugins[0].Name.Should().Be("testEntry1");
             runtimeConfig.Plugins[1].Name.Should().Be("testEntry2");
+        }
+
+        [Test]
+        public void Check_Plugins_TwoSameNameEntry()
+        {
+            string config = @"<specflow><plugins>
+                                <add name=""testEntry""/>
+                                <add name=""testEntry""/>
+                              </plugins></specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+
+            runtimeConfig.Plugins.Count.Should().Be(1);
+            runtimeConfig.Plugins[0].Name.Should().Be("testEntry");
         }
     }
 }

@@ -4,12 +4,17 @@
 	
 	
 	<Target Name="GenerateConfigs">
-        <Message Text="Generating Configs for Version '$(SpecFlowBaseVersion)'" />
+    <PropertyGroup>
+		  <SpecFlowBaseVersion Condition="'$(SpecFlowBaseVersion)' == ''">$(GitVersion_NuGetVersion)</SpecFlowBaseVersion>
+    </PropertyGroup>
+
+    <Message Text="Generating Configs for Version '$(SpecFlowBaseVersion)'" />
 		<ReplaceTokenInFile InputPath="$(ProjectDir)\\config.template" OutputPath="$(ProjectDir)\\app.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowBaseVersion)"/>
 		<ReplaceTokenInFile InputPath="$(ProjectDir)\\config.template" OutputPath="$(ProjectDir)\\plugincompability.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowBaseVersion)"/>
 	</Target>
 	
 	<Target Name="BeforeBuild">
+		<CallTarget Targets="GetVersion" />
 		<CallTarget Targets="GenerateConfigs" />
     </Target>
 	

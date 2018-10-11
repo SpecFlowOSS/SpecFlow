@@ -8,10 +8,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnitTestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        private const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
+        protected const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
         private const string DESCRIPTION_PROPERTY_NAME = "Description";
-        private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
-        private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        protected const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
+        protected const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         internal const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
         internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         private const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";

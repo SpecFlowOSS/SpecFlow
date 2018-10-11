@@ -18,6 +18,8 @@ namespace TechTalk.SpecFlow
         #region Singleton
         private static bool isCurrentDisabled = false;
         private static ScenarioContext current;
+
+        [Obsolete("Please get the ScenarioContext via Context Injection - http://www.specflow.org/documentation/Context-Injection/")]
         public static ScenarioContext Current
         {
             get
@@ -76,6 +78,11 @@ namespace TechTalk.SpecFlow
         public ScenarioStepContext StepContext => ScenarioContainer.Resolve<IContextManager>().StepContext;
 
         public void Pending()
+        {
+            throw new PendingStepException();
+        }
+
+        public static void StepIsPending()
         {
             throw new PendingStepException();
         }

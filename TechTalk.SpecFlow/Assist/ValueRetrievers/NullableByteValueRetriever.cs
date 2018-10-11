@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableByteValueRetriever : IValueRetriever
+    public class NullableByteValueRetriever : NullableValueRetriever<byte?>
     {
-        private readonly Func<string, byte> byteValueRetriever = v => new ByteValueRetriever().GetValue(v);
+        private readonly Func<string, byte> byteValueRetriever;
+
+        public NullableByteValueRetriever()
+            : this(v => new ByteValueRetriever().GetValue(v))
+        {
+        }
 
         public NullableByteValueRetriever(Func<string, byte> byteValueRetriever = null)
         {
@@ -13,20 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 this.byteValueRetriever = byteValueRetriever;
         }
 
-        public virtual byte? GetValue(string value)
+        protected override byte? GetNonEmptyValue(string value)
         {
-            if (string.IsNullOrEmpty(value)) return null;
             return byteValueRetriever(value);
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(byte?);
         }
     }
 }

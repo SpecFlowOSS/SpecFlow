@@ -1,4 +1,5 @@
-﻿Feature: xUnit v2 Smoke Tests
+﻿@NotParallel
+Feature: xUnit v2 Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project

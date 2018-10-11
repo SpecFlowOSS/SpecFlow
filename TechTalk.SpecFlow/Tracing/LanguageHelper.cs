@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Xml.Linq;
+using Gherkin;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Parser;
 
 
 namespace TechTalk.SpecFlow.Tracing
 {
     internal static class LanguageHelper
     {
-        struct KeywordSet
+        private struct KeywordSet
         {
             public string DefaultKeyword
             {
@@ -23,13 +22,37 @@ namespace TechTalk.SpecFlow.Tracing
 
             public KeywordSet(string[] keywords)
             {
-                this.Keywords = keywords;
+                this.Keywords = keywords
+                    .Select(k => k.Trim())
+                    .Where(k => k != "*")
+                    .ToArray();
             }
         }
 
-        class KeywordTranslation : Dictionary<StepDefinitionKeyword, KeywordSet>
+        private class KeywordTranslation : Dictionary<StepDefinitionKeyword, KeywordSet>
         {
-            public CultureInfo DefaultSpecificCulture { get; set; }
+            private static readonly Dictionary<StepDefinitionKeyword, Func<GherkinDialect, string[]>> getKeywordTranslations =
+                new Dictionary<StepDefinitionKeyword, Func<GherkinDialect, string[]>>
+                {
+                    {StepDefinitionKeyword.Given, d => d.GivenStepKeywords},
+                    {StepDefinitionKeyword.When, d => d.WhenStepKeywords},
+                    {StepDefinitionKeyword.Then, d => d.ThenStepKeywords},
+                    {StepDefinitionKeyword.And, d => d.AndStepKeywords},
+                    {StepDefinitionKeyword.But, d => d.ButStepKeywords},
+                };
+
+            public KeywordTranslation(GherkinDialect dialect)
+            {
+                foreach (StepDefinitionKeyword keyword in EnumHelper.GetValues(typeof(StepDefinitionKeyword)))
+                {
+                    var keywordList = getKeywordTranslations[keyword](dialect);
+                    this[keyword] = new KeywordSet(keywordList);
+                }
+
+                DefaultSpecificCulture = CultureInfo.GetCultureInfo(dialect.Language);
+            }
+
+            public CultureInfo DefaultSpecificCulture { get; }
         }
 
         private static readonly Dictionary<CultureInfo, KeywordTranslation> translationCache = new Dictionary<CultureInfo, KeywordTranslation>();
@@ -66,7 +89,7 @@ namespace TechTalk.SpecFlow.Tracing
             return translation;
         }
 
-        static public CultureInfo GetSpecificCultureInfo(CultureInfo language)
+        public static CultureInfo GetSpecificCultureInfo(CultureInfo language)
         {
             //HACK: we need to have a better solution
             if (!language.IsNeutralCulture)
@@ -79,69 +102,9 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
-            var assembly = typeof(LanguageHelper).Assembly;
-            var docStream = assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
-            if (docStream == null)
-                throw new InvalidOperationException("Language resource not found.");
+            var dialect = new SpecFlowGherkinDialectProvider(language.Name).DefaultDialect;
 
-            XDocument languageDoc;
-            using (var reader = new StreamReader(docStream))
-            {
-                languageDoc = XDocument.Load(reader);
-            }
-
-            XElement langElm = GetBestFitLanguageElement(languageDoc, language);
-
-            KeywordTranslation result = new KeywordTranslation();
-
-            if (language.IsNeutralCulture)
-            {
-                var defaultSpecificCultureAttr = langElm.Attribute(XName.Get("defaultSpecificCulture", ""));
-                if (defaultSpecificCultureAttr == null)
-                    result.DefaultSpecificCulture = CultureInfoHelper.GetCultureInfo("en-US");
-                else
-                    result.DefaultSpecificCulture = CultureInfoHelper.GetCultureInfo(defaultSpecificCultureAttr.Value);
-            }
-            else
-            {
-                result.DefaultSpecificCulture = language;
-            }
-
-            foreach (StepDefinitionKeyword keyword in EnumHelper.GetValues(typeof (StepDefinitionKeyword)))
-            {
-                var keywordList = langElm.Elements(keyword.ToString()).Select(keywordElm => keywordElm.Value).ToArray();
-                result[keyword] = new KeywordSet(keywordList);
-            }
-
-            return result;
-        }
-
-        private static XElement GetBestFitLanguageElement(XDocument languageDoc, CultureInfo language)
-        {
-            var langElm = GetLanguageElement(languageDoc, language);
-            if (langElm == null)
-            {
-                CultureInfo calculatedLanguage = language;
-
-                while (calculatedLanguage.Parent != calculatedLanguage)
-                {
-                    calculatedLanguage = calculatedLanguage.Parent;
-
-                    langElm = GetLanguageElement(languageDoc, calculatedLanguage);
-                    if (langElm != null)
-                        break;
-                }
-
-                if (langElm == null)
-                    throw new SpecFlowException(string.Format("The specified feature file language ('{0}') is not supported.", language));
-            }
-            return langElm;
-        }
-
-        private static XElement GetLanguageElement(XDocument languageDoc, CultureInfo language)
-        {
-            Debug.Assert(languageDoc.Root != null);
-            return languageDoc.Root.Elements("Language").SingleOrDefault(l => l.Attribute("code").Value == language.Name);
+            return new KeywordTranslation(dialect);
         }
     }
 }

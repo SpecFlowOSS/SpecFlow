@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class ByteValueRetriever : IValueRetriever
+    public class ByteValueRetriever : NonNullableValueRetriever<byte>
     {
-        public virtual byte GetValue(string value)
+        public override byte GetValue(string value)
         {
-            byte returnValue;
-            byte.TryParse(value, out returnValue);
+            byte.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out byte returnValue);
             return returnValue;
-        }
-
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return GetValue(keyValuePair.Value);
-        }
-
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            return propertyType == typeof(byte);
         }
     }
 }

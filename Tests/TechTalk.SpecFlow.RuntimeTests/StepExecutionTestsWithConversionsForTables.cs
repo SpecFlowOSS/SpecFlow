@@ -65,13 +65,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Table table = new Table("h1");
             var user = new User();
-
-            // return false unless its a User
-            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter(table, typeof(User))).Return(true);
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
-            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(User))).Return(user);
-
             var multiLineArg = "multi-line arg";
+            // return false unless its a User
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter(table, typeof(User))).Return(true);            
+            StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(multiLineArg, typeof(string))).Return(multiLineArg);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(User))).Return(user);
+            
+
+            
             bindingInstance.Expect(b => b.MultilineArgumentAndTable(multiLineArg, user));
             MockRepository.ReplayAll();
 
@@ -90,14 +92,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Table table = new Table("h1");
             string argumentValue = "argument";
             var user = new User();
-
+            var multiLineArg = "multi-line arg";
             // return false unless its a User
             // must also stub CanConvert & Convert for the string argument as we've introduced a parameter
             StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter(table, typeof(User))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
             StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(User))).Return(user);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(argumentValue, typeof(string))).Return(argumentValue);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(multiLineArg, typeof(string))).Return(multiLineArg);
 
-            var multiLineArg = "multi-line arg";
+            
             bindingInstance.Expect(b => b.ParameterMultilineArgumentAndTable(argumentValue, multiLineArg, user));
             MockRepository.ReplayAll();
 

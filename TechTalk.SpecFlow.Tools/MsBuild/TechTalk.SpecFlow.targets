@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- this setting is to workaround the bug in VS (does not detect changes during the pre-build event)
-       see: https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=423670&wa=wsignin1.0
-  -->
-  <PropertyGroup>
-    <SpecFlow_UseHostCompilerIfAvailable Condition="'$(SpecFlow_UseHostCompilerIfAvailable)'==''">false</SpecFlow_UseHostCompilerIfAvailable>
-    <UseHostCompilerIfAvailable>$(SpecFlow_UseHostCompilerIfAvailable)</UseHostCompilerIfAvailable>
-  </PropertyGroup>
-
   <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'!='true'">true</BuildServerMode>
+
+    <!--
+      net.sdk experimental support:
+      - currently we only want to support either classic project system or netsdk project system.
+      - currently we don't want to support globbing with classic project system => ensure globbing only get enabled with 'UsingMicrosoftNETSdk'
+      - currently we are supporting $(EnableDefaultCompileItems) for disabling globbing support for codebehind files
+    -->
+    <_SpecFlow_EnableDefaultCompileItems Condition="'$(SpecFlow_EnableDefaultCompileItems)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">true</_SpecFlow_EnableDefaultCompileItems>
+    <_SpecFlow_EnableDefaultCompileItems Condition="'$(SpecFlow_EnableDefaultCompileItems)' == 'true' And '$(UsingMicrosoftNETSdk)' == 'true'">true</_SpecFlow_EnableDefaultCompileItems>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -23,43 +24,116 @@
       AfterUpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
+    <CleanDependsOn>
+      CleanFeatureFilesInProject;
+      $(CleanDependsOn)
+    </CleanDependsOn>
     <RebuildDependsOn>
       SwitchToForceGenerate;
       $(RebuildDependsOn)
     </RebuildDependsOn>
   </PropertyGroup>
 
+
+  <!--
+    net.sdk support: update default compile items to show generated files as nested items
+  -->
+  <ItemGroup Condition="'$(_SpecFlow_EnableDefaultCompileItems)' == 'true' and '$(EnableDefaultItems)' == 'true' ">
+    <Compile Update="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')"
+             DependentUpon="%(Filename)"
+             AutoGen="true"
+             DesignTime="true"
+             Visible="true"
+             Condition="'$(EnableDefaultCompileItems)' == 'true'"
+    />
+  </ItemGroup>
+
+
+  <Target Name="WarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile" AfterTargets="CoreCompile"
+          Condition="'$(SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile)' == 'true'">
+    <Warning Text="For codebehind file '@(SpecFlowObsoleteCodeBehindFiles)', no feature file was found." File="@(SpecFlowObsoleteCodeBehindFiles)" Condition="'@(SpecFlowObsoleteCodeBehindFiles)' != ''" />
+  </Target>
+
+
   <Target Name="SwitchToForceGenerate">
     <PropertyGroup>
       <ForceGeneration>true</ForceGeneration>
-      <OnlyUpdateIfChanged>true</OnlyUpdateIfChanged>
     </PropertyGroup>
   </Target>
 
-  <ItemGroup>
-    <SpecFlowFeatureFiles Include="**\*.feature"/>
-    <SpecFlowFeatureFiles Include="**\*.feature.xlsx" />
-  </ItemGroup>
 
-  <Target Name="UpdateFeatureFilesInProject" DependsOnTargets="BeforeUpdateFeatureFilesInProject" Inputs="@(SpecFlowFeatureFiles)" Outputs="@(SpecFlowFeatureFiles->'%(RelativeDir)\%(Filename).feature.cs')">
-    <GenerateAll
-      ShowTrace="$(ShowTrace)"
+  <Target Name="UpdateFeatureFilesInProject"
+          DependsOnTargets="BeforeUpdateFeatureFilesInProject"
+          Inputs="@(SpecFlowFeatureFiles)"
+          Outputs="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')">
 
-      BuildServerMode="$(BuildServerMode)"
-      OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
-      
-      ProjectPath="$(MSBuildProjectFullPath)"
-      ForceGeneration="$(ForceGeneration)"
-      VerboseOutput="$(VerboseOutput)"
-      DebugTask="$(SpecFlow_DebugMSBuildTask)" 
-      >
+    <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
+
+    <GenerateAll ProjectPath="$(MSBuildProjectFullPath)"
+
+                 BuildServerMode="$(BuildServerMode)"
+                 OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+                 ForceGeneration="$(ForceGeneration)"
+
+                 ShowTrace="$(ShowTrace)"
+                 VerboseOutput="$(VerboseOutput)"
+                 DebugTask="$(SpecFlow_DebugMSBuildTask)"
+                 >
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateAll>
+
+    <Message Text="SpecFlowGeneratedFiles: %(SpecFlowGeneratedFiles.Identity)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
+
+
+    <!--
+      net.sdk support: globbing does not support including files which are dynamically generated inside targets, we have to manually update compile items
+    -->
+    <ItemGroup Condition="'$(_SpecFlow_EnableDefaultCompileItems)' == 'true' and '$(EnableDefaultItems)' == 'true' and '$(EnableDefaultCompileItems)' == 'true'">
+
+      <!-- if this is the first time generation of codebehind files, we have to manually add them as compile items -->
+      <Compile Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')"
+               Exclude="@(Compile)"/>
+
+      <!--
+        eather if codebehind files are added manually to compile item group or are added by net.sdk globbing support,
+        ensure they are nested under feature files like in previous specflow versions
+        currently, we cannot use itemgroup update attribute inside a target because of some bugs in MSBuild (all items will be updated)
+        - https://github.com/Microsoft/msbuild/issues/1618
+        - https://github.com/Microsoft/msbuild/issues/2835
+        - https://github.com/Microsoft/msbuild/issues/1124
+      -->
+      <Compile DependentUpon="@(SpecFlowFeatureFiles)"
+               AutoGen="true"
+               DesignTime="true"
+               Visible="true"
+               Condition="'%(Compile.Identity)' == '@(SpecFlowFeatureFiles->'%(CodeBehindFile)')'" />
+
+      <!-- remove files which got obsolete, typically after rename operation, or getting changes from source control -->
+      <Compile Remove="@(SpecFlowObsoleteCodeBehindFiles)" />
+    </ItemGroup>
+
   </Target>
+
 
   <Target Name="BeforeUpdateFeatureFilesInProject">
   </Target>
-  
+
+
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
   </Target>
+
+
+  <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">
+    <!-- remove known codebehind files for existing feature files -->
+    <Delete Files="%(SpecFlowFeatureFiles.CodeBehindFile)" ContinueOnError="true" />
+
+    <!-- remove obsolete codebehind files, scenarios:
+         - after rename operation
+         - after deletion of a feature file
+         - after pulling latest changes from version control with above changes
+     -->
+    <Delete Files="@(SpecFlowObsoleteCodeBehindFiles)" ContinueOnError="true" />
+  </Target>
+
+
 </Project>

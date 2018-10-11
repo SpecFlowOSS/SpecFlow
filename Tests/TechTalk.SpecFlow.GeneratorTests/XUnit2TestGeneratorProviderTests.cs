@@ -2,14 +2,11 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-
 using NUnit.Framework;
 using Microsoft.CSharp;
-
 using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-
 using FluentAssertions;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -53,6 +50,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 testInitializeMethod: null,
                 testCleanupMethod: null,
                 scenarioInitializeMethod: null,
+                scenarioStartMethod:null,
                 scenarioCleanupMethod: null,
                 featureBackgroundMethod: null,
                 generateRowTests: false);
@@ -123,35 +121,5 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 loggerInstance.Attributes.Should().Be(MemberAttributes.Private | MemberAttributes.Final);
             }
         }
-
-        [Test]
-        public void Should_register_testOutputHelper_on_scenario_setup()
-        {
-            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFile))
-            {
-                SpecFlowDocument document = parser.Parse(reader, null);
-                Assert.IsNotNull(document);
-
-                var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
-
-                var converter = provider.CreateUnitTestConverter();
-                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-
-                Assert.IsNotNull(code);
-                var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioSetup");
-
-                scenarioStartMethod.Statements.Count.Should().Be(2);
-                var expression = (scenarioStartMethod.Statements[1] as CodeExpressionStatement).Expression;
-                var method = (expression as CodeMethodInvokeExpression).Method;
-                (method.TargetObject as CodePropertyReferenceExpression).PropertyName.Should().Be("ScenarioContainer");
-                method.MethodName.Should().Be("RegisterInstanceAs");
-                method.TypeArguments.Should().NotBeNullOrEmpty();
-                method.TypeArguments[0].BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
-
-                ((expression as CodeMethodInvokeExpression).Parameters[0] as CodeVariableReferenceExpression).VariableName.Should().Be("_testOutputHelper");
-            }
-        }
-
     }
 }

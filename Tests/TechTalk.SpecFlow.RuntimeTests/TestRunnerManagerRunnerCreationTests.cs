@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Reflection;
 using BoDi;
 using FluentAssertions;
@@ -20,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private readonly Mock<ITestRunner> testRunnerFake = new Mock<ITestRunner>();
         private readonly Mock<IObjectContainer> objectContainerStub = new Mock<IObjectContainer>();
         private readonly Mock<IObjectContainer> globalObjectContainerStub = new Mock<IObjectContainer>();
-        private readonly SpecFlow.Configuration.SpecFlowConfiguration _specFlowConfigurationStub = ConfigurationLoader.GetDefault();
+        private readonly SpecFlowConfiguration _specFlowConfigurationStub = ConfigurationLoader.GetDefault();
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
         private readonly Assembly anotherAssembly = typeof(TestRunnerManager).Assembly;
 
@@ -36,7 +34,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var runtimeBindingRegistryBuilderMock = new Mock<IRuntimeBindingRegistryBuilder>();
 
-            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, _specFlowConfigurationStub, runtimeBindingRegistryBuilderMock.Object);
+            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, _specFlowConfigurationStub, runtimeBindingRegistryBuilderMock.Object,
+                Mock.Of<ITestTracer>());
             testRunnerManager.Initialize(anAssembly);
             return testRunnerManager;
         }
@@ -92,18 +91,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
             {
                 var testRunner1 = TestRunnerManager.GetTestRunner(anAssembly, 0);
                 testRunner1.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
-                testRunner1.OnScenarioStart(new ScenarioInfo("foo"));
+                testRunner1.OnScenarioInitialize(new ScenarioInfo("foo", "foo_desc"));
+                testRunner1.OnScenarioStart();
                 var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
                 var testRunner2 = TestRunnerManager.GetTestRunner(anAssembly, 1);
                 testRunner2.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
-                testRunner2.OnScenarioStart(new ScenarioInfo("foo"));
+                testRunner2.OnScenarioInitialize(new ScenarioInfo("foo", "foo_desc"));
+                testRunner1.OnScenarioStart();
                 var tracer2 = testRunner2.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
                 tracer1.Should().NotBeSameAs(tracer2);
-            }
-            
+            }       
         }
     }
-
 }

@@ -1,4 +1,5 @@
-﻿Feature: MbUnit v3 Smoke Tests
+﻿@NotParallel
+Feature: MbUnit v3 Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project

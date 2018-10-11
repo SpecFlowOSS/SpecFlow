@@ -38,6 +38,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             @class.FourthColor.Should().Be(AClassWithMultipleEnums.ColorAgain.Green);
         }
 
+        [Test]
+        public void Can_create_an_instance_with_a_constructor()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Field2", "Entry2");
+            table.AddRow("Field1", "Entry1");
+
+            var @class = table.CreateInstance<AClassWithAConstructor>();
+
+            @class.Field1.Should().Be("Entry1");
+            @class.Field2.Should().Be("Entry2");
+        }
+
+        [Test]
+        public void Can_create_an_instance_with_a_constructor_with_default_parameters()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Field1", "Entry1");
+
+            var @class = table.CreateInstance<AClassWithAConstructorWithDefaultParameters>();
+
+            @class.Field1.Should().Be("Entry1");
+            @class.Field2.Should().BeNull();
+            @class.Field3.Should().Be("Value3");
+        }
+
         public class AClassWithMultipleEnums
         {
             public Color FirstColor { get; set; }
@@ -47,6 +73,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             public enum Color { Red, Green, Blue }
             public enum ColorAgain { Red, Green, Blue}
+        }
+
+        public class AClassWithAConstructor
+        {
+            public AClassWithAConstructor(string field1, string field2)
+            {
+                Field1 = field1;
+                Field2 = field2;
+            }
+
+            public string Field1 { get; }
+            public string Field2 { get; }
+        }
+
+        public class AClassWithAConstructorWithDefaultParameters
+        {
+            public AClassWithAConstructorWithDefaultParameters(string field1, string field2, string field3 = "Value3")
+            {
+                Field1 = field1;
+                Field2 = field2;
+                Field3 = field3;
+            }
+
+            public string Field1 { get; }
+            public string Field2 { get; }
+            public string Field3 { get; }
         }
     }
 }

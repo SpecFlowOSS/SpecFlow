@@ -110,6 +110,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             var featureContainer = new ObjectContainer(testThreadContainer);
             featureContainer.RegisterInstanceAs(featureInfo);
 
+            featureContainer.ObjectCreated += obj =>
+            {
+                var containerDependentObject = obj as IContainerDependentObject;
+                if (containerDependentObject != null)
+                    containerDependentObject.SetObjectContainer(featureContainer);
+            };
+
+            var runtimePluginEvents = testThreadContainer.Resolve<RuntimePluginEvents>();
+            runtimePluginEvents.RaiseCustomizeFeatureDependencies(featureContainer);
+
             return featureContainer;
         }
 

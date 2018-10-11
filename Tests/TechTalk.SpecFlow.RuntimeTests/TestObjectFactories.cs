@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using BoDi;
@@ -41,12 +42,21 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return testThreadContainer;
         }
 
+        internal static IObjectContainer CreateDefaultFeatureContainer(StringConfigProvider configurationHolder)
+        {
+            var instance = new ContainerBuilder();
+            var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder);
+
+            CultureInfo cultureInfo = new CultureInfo("en-US");
+            return instance.CreateFeatureContainer(testThreadContainer, new FeatureInfo(cultureInfo, "test feature info", "", ProgrammingLanguage.CSharp));
+        }
+
         internal static IObjectContainer CreateDefaultScenarioContainer(StringConfigProvider configurationHolder)
         {
             var instance = new ContainerBuilder();
             var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder);
 
-            return instance.CreateScenarioContainer(testThreadContainer, new ScenarioInfo("test scenario info"));
+            return instance.CreateScenarioContainer(testThreadContainer, new ScenarioInfo("test scenario info", "test_scenario_description"));
         }
     }
 }

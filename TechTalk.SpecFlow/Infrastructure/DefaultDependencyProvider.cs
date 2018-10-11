@@ -46,6 +46,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
+            container.RegisterTypeAs<ObsoleteStepHandler, IObsoleteStepHandler>();
+
             RegisterUnitTestProviders(container);
         }
 

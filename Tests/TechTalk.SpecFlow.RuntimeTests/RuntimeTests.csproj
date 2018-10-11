@@ -92,9 +92,14 @@
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
     <Compile Include="AssistTests\ProjectionTests.cs" />
     <Compile Include="AssistTests\SafetyTableDiffExceptionBuilderTests.cs" />
+    <Compile Include="AssistTests\ServiceComponentListTests.cs" />
     <Compile Include="AssistTests\SituationalTests\NullableEnumTests.cs" />
     <Compile Include="AssistTests\TableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithListOfEnums.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithArrayOfEnums.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithListOfValues.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithArrayOfValues.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperStandardTypesTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests_WithFunc.cs" />
@@ -126,6 +131,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\ByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\DateTimeOffsetValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumListValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_IsAValidGuidTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\LongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableByteValueRetrieverTests.cs" />
@@ -140,6 +146,9 @@
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUShortValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\SByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ShortValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumArrayValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringListValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringArrayValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\UIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_GetValueTests.cs" />
@@ -235,7 +244,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets'))" />
   </Target>
+  <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
