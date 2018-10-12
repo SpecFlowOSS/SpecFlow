@@ -16,7 +16,7 @@
     <tags>specflow nunit</tags>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
-      <dependency id="NUnit" version="3.8" />
+      <dependency id="NUnit" version="3.11.0" />
     </dependencies>
   </metadata>
 
