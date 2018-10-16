@@ -37,13 +37,17 @@
           {
             background-color: #22dd22;
           }
+          .warning
+          {
+            background-color: #ffff00;
+          }
           .failure
           {
             background-color: #dd2222;
           }
           .ignored
           {
-            background-color: #ffff00;
+            background-color: #2266ff;
           }
           .pending
           {
@@ -54,7 +58,7 @@
             height: 1.5em;
             float: left;
           }
-          div.failurePanel
+          div.reasonPanel
           {
             background-color: #DDDDDD;
           }
@@ -79,16 +83,17 @@
         <table class="reportTable" cellpadding="0" cellspacing="0">
           <tr>
             <th class="top left">Features</th>
-            <th class="top" colspan="2">Success rate</th>
+            <th class="top" colspan="2">Success rate (incl. warnings)</th>
             <th class="top">Scenarios</th>
             <th class="top">Success</th>
+            <th class="top">Warning</th>
             <th class="top">Failed</th>
             <th class="top">Pending</th>
             <th class="top">Ignored</th>
           </tr>
           <tr>
             <td class="left">
-                <xsl:value-of select="count(//nunit:test-suite[@type='TestFixture'])"/> features
+              <xsl:value-of select="count(//nunit:test-suite[@type='TestFixture'])"/> features
             </td>
             <xsl:call-template name="summary-row">
               <xsl:with-param name="summary" select="$summary" />
@@ -100,9 +105,10 @@
         <table class="reportTable" cellpadding="0" cellspacing="0">
           <tr>
             <th class="top left">Feature</th>
-            <th class="top" colspan="2">Success rate</th>
+            <th class="top" colspan="2">Success rate (incl. warnings)</th>
             <th class="top">Scenarios</th>
             <th class="top">Success</th>
+            <th class="top">Warning</th>
             <th class="top">Failed</th>
             <th class="top">Pending</th>
             <th class="top">Ignored</th>
@@ -128,7 +134,9 @@
     <xsl:variable name="feature-id" select="generate-id()" />
     <tr>
       <td class="left">
-        <a href="#{$feature-id}"><xsl:call-template name="get-name"/></a>
+        <a href="#{$feature-id}">
+          <xsl:call-template name="get-name"/>
+        </a>
       </td>
       <xsl:call-template name="summary-row">
         <xsl:with-param name="summary" select="$featureSummary" />
@@ -155,6 +163,9 @@
       <xsl:value-of select="msxsl:node-set($summary)/*/success"/>
     </td>
     <td>
+      <xsl:value-of select="msxsl:node-set($summary)/*/warning"/>
+    </td>
+    <td>
       <xsl:value-of select="msxsl:node-set($summary)/*/failure"/>
     </td>
     <td>
@@ -168,9 +179,11 @@
   <xsl:template match="nunit:test-suite">
     <xsl:variable name="feature-id" select="generate-id()" />
     <a name="{$feature-id}" />
-    <h3><xsl:call-template name="get-keyword">
+    <h3>
+      <xsl:call-template name="get-keyword">
         <xsl:with-param name="keyword" select="'Feature'" />
-      </xsl:call-template>: <xsl:call-template name="get-name"/></h3>
+      </xsl:call-template>: <xsl:call-template name="get-name"/>
+    </h3>
     <table class="reportTable" cellpadding="0" cellspacing="0">
       <tr>
         <th class="top left" style="word-wrap: break-word; max-width: 80%;">
@@ -201,14 +214,18 @@
         <xsl:call-template name="get-name"/>
         <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text"><xsl:with-param name="text-key" select="'Show'" /></xsl:call-template>]</a>
+          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+              <xsl:with-param name="text-key" select="'Show'" />
+            </xsl:call-template>]</a>
         </xsl:if>
       </td>
       <td class="{$status}">
         <xsl:value-of select="$status"/>
-        <xsl:if test="$status = 'failure'">
+        <xsl:if test="nunit:failure or nunit:reason">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text"><xsl:with-param name="text-key" select="'Show'" /></xsl:call-template>]</a>
+          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+              <xsl:with-param name="text-key" select="'Show'" />
+            </xsl:call-template>]</a>
         </xsl:if>
       </td>
       <td style="text-align:right;">
@@ -223,7 +240,7 @@
     <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
       <tr id="out{$scenario-id}" class="hidden">
         <td class="left subRow" style="max-width: 80%;">
-          <div class="failurePanel" style="overflow: visible; max-width: 640px">
+          <div class="reasonPanel" style="overflow: visible; max-width: 640px">
             <pre>
               <xsl:call-template name="scenario-output">
                 <xsl:with-param name="word" select="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]/sfr:Text"/>
@@ -233,17 +250,17 @@
         </td>
       </tr>
     </xsl:if>
-    <xsl:if test="$status = 'failure'">
+    <xsl:if test="nunit:failure or nunit:reason">
       <tr id="err{$scenario-id}" class="hidden">
         <td class="left subRow" style="max-width: 80%;">
-          <xsl:apply-templates select="nunit:failure" />
+          <xsl:apply-templates select="*[self::nunit:failure or self::nunit:reason]" />
         </td>
       </tr>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="nunit:failure">
-    <div class="failurePanel" style="overflow: visible; max-width: 640px">
+  <xsl:template match="*[self::nunit:failure or self::nunit:reason]">
+    <div class="reasonPanel" style="overflow: visible; max-width: 640px">
       <xsl:choose>
         <xsl:when test="not(nunit:message)">N/A</xsl:when>
         <xsl:otherwise>
@@ -350,13 +367,16 @@
         <xsl:value-of select="count($nodes)"/>
       </all>
       <success>
-        <xsl:value-of select="count($nodes[@executed = 'True' and @success='True'])"/>
+        <xsl:value-of select="count($nodes[@result = 'Success' and @success = 'True'])"/>
       </success>
+      <warning>
+        <xsl:value-of select="count($nodes[@result = 'Success' and @success = 'False'])"/>
+      </warning>
       <failure>
-        <xsl:value-of select="count($nodes[@executed = 'True' and @success='False' and nunit:failure])"/>
+        <xsl:value-of select="count($nodes[@result = 'Failure' or @result = 'Error'])"/>
       </failure>
       <pending>
-        <xsl:value-of select="count($nodes[@executed = 'True' and @success='False' and not(nunit:failure)])"/>
+        <xsl:value-of select="count($nodes[@result = 'Inconclusive'])"/>
       </pending>
       <ignored>
         <xsl:value-of select="count($nodes[@executed = 'False'])"/>
@@ -368,14 +388,17 @@
     <xsl:param name="summary" />
 
     <xsl:value-of select="round(msxsl:node-set($summary)/*/success * 100 div msxsl:node-set($summary)/*/all)"/>
-    <xsl:text>%</xsl:text>
+    <xsl:text>% (</xsl:text>
+    <xsl:value-of select="round((msxsl:node-set($summary)/*/success + msxsl:node-set($summary)/*/warning) * 100 div msxsl:node-set($summary)/*/all)"/>
+    <xsl:text>%)</xsl:text>
   </xsl:template>
-  
+
   <xsl:template name="draw-bar">
     <xsl:param name="summary" />
 
     <xsl:variable name="testCount" select="msxsl:node-set($summary)/*/all" />
     <xsl:variable name="successWidth" select="(msxsl:node-set($summary)/*/success * 20 div $testCount)" />
+    <xsl:variable name="warningWidth" select="(msxsl:node-set($summary)/*/warning * 20 div $testCount)" />
     <xsl:variable name="failureWidth" select="(msxsl:node-set($summary)/*/failure * 20 div $testCount)" />
     <xsl:variable name="pendingWidth" select="(msxsl:node-set($summary)/*/pending * 20 div $testCount)" />
     <xsl:variable name="ignoredWidth" select="(msxsl:node-set($summary)/*/ignored * 20 div $testCount)" />
@@ -383,22 +406,37 @@
     <div class="bar">
       <xsl:if test="$successWidth != 0">
         <div class="success" style="width:{$successWidth}em" title="{msxsl:node-set($summary)/*/success} succeeded">
-          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">
+            <![CDATA[&nbsp;]]>
+          </xsl:text>
+        </div>
+      </xsl:if>
+      <xsl:if test="$warningWidth != 0">
+        <div class="warning" style="width:{$warningWidth}em" title="{msxsl:node-set($summary)/*/warning} warned">
+          <xsl:text disable-output-escaping="yes">
+            <![CDATA[&nbsp;]]>
+          </xsl:text>
         </div>
       </xsl:if>
       <xsl:if test="$failureWidth != 0">
         <div class="failure" style="width:{$failureWidth}em" title="{msxsl:node-set($summary)/*/failure} failed">
-          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">
+            <![CDATA[&nbsp;]]>
+          </xsl:text>
         </div>
       </xsl:if>
       <xsl:if test="$pendingWidth != 0">
         <div class="pending" style="width:{$pendingWidth}em" title="{msxsl:node-set($summary)/*/pending} pending/not bound">
-          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">
+            <![CDATA[&nbsp;]]>
+          </xsl:text>
         </div>
       </xsl:if>
       <xsl:if test="$ignoredWidth != 0">
         <div class="ignored" style="width:{$ignoredWidth}em" title="{msxsl:node-set($summary)/*/ignored} ignored">
-          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
+          <xsl:text disable-output-escaping="yes">
+            <![CDATA[&nbsp;]]>
+          </xsl:text>
         </div>
       </xsl:if>
     </div>
