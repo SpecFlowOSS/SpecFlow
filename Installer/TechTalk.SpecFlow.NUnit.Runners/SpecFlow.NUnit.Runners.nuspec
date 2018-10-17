@@ -16,8 +16,8 @@
     <tags>specflow nunit nunit.runners nunit-console</tags>
     <dependencies>
       <dependency id="SpecFlow.NUnit" version="[$version$]" />
-      <dependency id="NUnit.Console" version="3.11" />
-      <dependency id="NUnit3TestAdapter" version="3.11" />
+      <dependency id="NUnit.Console" version="3.9" />
+      <dependency id="NUnit3TestAdapter" version="3.10" />
     </dependencies>
   </metadata>
 
