@@ -2,8 +2,8 @@
 
   <PropertyGroup>
 
-    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_xUnitGeneratorPlugin>
-    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net471</_SpecFlow_xUnitGeneratorPlugin>
+    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'" >netstandard2.0</_SpecFlow_xUnitGeneratorPlugin>
+    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'" >net471</_SpecFlow_xUnitGeneratorPlugin>
     <_SpecFlow_xUnitGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_xUnitGeneratorPlugin)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_xUnitGeneratorPluginPath>
 
     <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_xUnitRuntimePlugin>
