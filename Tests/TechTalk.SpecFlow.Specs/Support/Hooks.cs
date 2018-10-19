@@ -29,8 +29,8 @@ namespace TechTalk.SpecFlow.Specs.Support
         [BeforeScenario()]
         public void BeforeScenario()
         {
-            _currentVersionDriver.NuGetVersion = VersionInfo.NuGetVersion;
-            _currentVersionDriver.SpecFlowNuGetVersion = VersionInfo.NuGetVersion;
+            _currentVersionDriver.NuGetVersion = NuGetPackageVersion.Version;
+            _currentVersionDriver.SpecFlowNuGetVersion = NuGetPackageVersion.Version;
             _scenarioContext.ScenarioContainer.RegisterTypeAs<OutputConnector, IOutputWriter>();
         }
 
@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Specs.Support
         private static void DeletePackageVersionFolders()
         {
 
-            var currentVersionDriver = new CurrentVersionDriver {NuGetVersion = VersionInfo.NuGetVersion};
+            var currentVersionDriver = new CurrentVersionDriver {NuGetVersion = NuGetPackageVersion.Version };
 
             string[] packageNames = { "SpecFlow", "SpecFlow.CustomPlugin", "SpecFlow.MsTest", "SpecFlow.NUnit", "SpecFlow.NUnit.Runners", "SpecFlow.Tools.MsBuild.Generation", "SpecFlow.xUnit" };
             

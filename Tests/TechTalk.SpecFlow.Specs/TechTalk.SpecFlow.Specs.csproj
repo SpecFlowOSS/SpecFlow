@@ -24,8 +24,11 @@
 
     <EmbeddedResource Include=".\Drivers\Templates\**\*" />
     <EmbeddedResource Include=".\TestFiles\**\*" />
+    <None Include=".build\build.targets" />
     
     <None Include="App.config" />
+    
+    <None Include="NuGetPackageVersion.template.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -105,6 +108,12 @@
   <ItemGroup>
     <SpecFlowFeatureFiles Remove="TestFiles/**/*.feature" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="NuGetPackageVersion.template.cs" />
+  </ItemGroup>
+  
+  <Import Project=".build\build.targets" />
 
   <!--<Target Name="BeforeUpdateFeatureFilesInProject">
     <ItemGroup>
