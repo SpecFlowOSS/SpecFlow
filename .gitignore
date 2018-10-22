@@ -384,4 +384,4 @@ GitExtensions.settings.backup
 *.feature.cs
 
 # Nerdbank.GitVersioning
-TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs
+Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs
