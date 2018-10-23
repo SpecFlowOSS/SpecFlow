@@ -62,8 +62,7 @@
 
   <Target Name="UpdateFeatureFilesInProject"
           DependsOnTargets="BeforeUpdateFeatureFilesInProject"
-          Inputs="@(SpecFlowFeatureFiles)"
-          Outputs="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')">
+          >
 
     <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
 
