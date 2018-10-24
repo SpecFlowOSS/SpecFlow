@@ -3,6 +3,7 @@
 
 <!-- PLEASE CHECK THE OPTIONS THAT APPLY TO YOU BY ADDING AN 'x' TO THE CORRESPONDING CHECKBOX ('[ ]') -->
 ### SpecFlow Version:
+- [ ] 3.0
 - [ ] 2.4
 - [ ] 2.3
 - [ ]	2.2
@@ -32,10 +33,12 @@ Version number:
 ### .NET Framework:
 - [ ]	>= .NET 4
 - [ ]	before .NET 4
+- [ ] .NET Core 2.0
+- [ ] .NET Core 2.1
 
 ### Test Execution Method:
 - [ ]	Visual Studio Test Explorer
-- [ ]	TFS/VSTS – Task – PLEASE SPECIFY THE NAME OF THE TASK
+- [ ]	TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
 - [ ]	Command line – PLEASE SPECIFY THE FULL COMMAND LINE
  
 ### &lt;SpecFlow> Section in app.config
