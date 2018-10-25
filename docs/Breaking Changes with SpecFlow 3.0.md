@@ -43,7 +43,7 @@ You have to do the same decitions <!-- What does this mean? --> as with the gene
 The specflow.exe was removed.  
 To generate the code-behind files, please use the `SpecFlow.Tools.MsBuild.Generation` NuGet package.  
 
-Reports were removed from the main code-base and aren't currently available for SpecFlow 3.0. For details see GitHub Issue <https://github.com/techtalk/SpecFlow/issues/1036>
+Reports were removed from the main code-base and aren't currently available for SpecFlow 3.0. For details why we did it and where to find the extracted code is written in GitHub Issue <https://github.com/techtalk/SpecFlow/issues/1036>
 
 ## Configuration app.config/specflow.json
 
