@@ -1,4 +1,5 @@
-﻿Feature: Build systems
+﻿@dotnetcore
+Feature: Build systems
 
 
 
