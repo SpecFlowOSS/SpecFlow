@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"the project is compiled")]
         public void WhenTheProjectIsCompiled()
         {
-            _solutionDriver.CompileSolution();
+            _solutionDriver.CompileSolution(BuildTool.MSBuild);
         }
 
         [Then(@"no compilation errors are reported")]
