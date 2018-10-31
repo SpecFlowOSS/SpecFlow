@@ -32,6 +32,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
         {
             try
             {
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
                 var generateFeatureFileCodeBehind = new GenerateFeatureFileCodeBehind();
 
 
@@ -41,9 +43,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
 
                 var featureFiles = FeatureFiles.Select(i => i.ItemSpec).ToList();
-                foreach (string s in generateFeatureFileCodeBehind.GenerateFilesForProject(generatorPlugins, ProjectPath,ProjectFolder, OutputPath,RootNamespace, featureFiles))
+                foreach (string s in generateFeatureFileCodeBehind.GenerateFilesForProject(generatorPlugins, ProjectPath, ProjectFolder, OutputPath, RootNamespace, featureFiles))
                 {
-                    generatedFiles.Add(new TaskItem() { ItemSpec = s });
+                    generatedFiles.Add(new TaskItem() {ItemSpec = s});
                 }
 
                 GeneratedFiles = generatedFiles.ToArray();
@@ -52,10 +54,37 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
             catch (Exception e)
             {
-                Log?.LogWithNameTag(Log.LogError, e.Demystify().ToString());
+                if (e.InnerException != null)
+                {
+                    if (e.InnerException is FileLoadException fle)
+                    {
+                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException Filename: {fle.FileName}");
+                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException FusionLog: {fle.FusionLog}");
+                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException Message: {fle.Message}");
+                    }
+
+                    Log?.LogWithNameTag(Log.LogError, e.InnerException.ToString());
+                }
+
+                Log?.LogWithNameTag(Log.LogError, e.ToString());
                 return false;
             }
+            finally
+            {
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+            }
+
+
         }
+
+        private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Log.LogWithNameTag(Log.LogMessage, args.Name);
+            
+
+            return null;
+        }
+
     }
 
 
