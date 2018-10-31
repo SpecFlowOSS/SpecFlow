@@ -113,6 +113,23 @@
     <Compile Remove="NuGetPackageVersion.template.cs" />
   </ItemGroup>
 
+  
   <Import Project=".build\build.targets" />
+
+  <!--<Target Name="BeforeUpdateFeatureFilesInProject">
+    <ItemGroup>
+      <SpecFlowGeneratedFiles2Delete Include="**/Features/**/*.feature.cs" />
+      <SpecFlowGeneratedFiles2Delete Include="**/Features.Generated/**/*.feature.cs" />
+      <SpecFlowFeatureFiles Include="Features/**/*.feature" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <SpecFlowCodeBehindOutputPath>Features.Generated</SpecFlowCodeBehindOutputPath>
+    </PropertyGroup>
+
+    <Delete Files="@(SpecFlowGeneratedFiles2Delete)" />
+  </Target>-->
+
+
 
 </Project>
