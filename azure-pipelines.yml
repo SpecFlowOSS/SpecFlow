@@ -1,5 +1,8 @@
 name: SpecFlow.CI 
 
+trigger:
+  batch: true
+
 resources:
 - repo: self
   clean: true
