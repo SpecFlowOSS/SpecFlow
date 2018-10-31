@@ -1,10 +1,5 @@
 name: SpecFlow.CI 
 
-trigger:
-  batch: true
-  branches:
-    include:
-    - *
 
 resources:
 - repo: self
