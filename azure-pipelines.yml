@@ -1,5 +1,6 @@
 name: SpecFlow.CI 
 
+
 resources:
 - repo: self
   clean: true
