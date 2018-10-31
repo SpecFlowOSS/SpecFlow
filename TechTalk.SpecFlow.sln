@@ -9,7 +9,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577A0375-1436-446C-802B-3C75C8CEF94F}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
 		build.ps1 = build.ps1
 		changelog.txt = changelog.txt
 		clean.ps1 = clean.ps1
@@ -17,7 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 		nuget.config = nuget.config
 		README.md = README.md
-		vsts.nuget.config = vsts.nuget.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}"
@@ -82,6 +80,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.CustomPlugin", "Installer\TechTalk.SpecFlow.CustomPlugin\TechTalk.SpecFlow.CustomPlugin.csproj", "{FA9DFEFA-4F35-4A57-91AE-64C7B5D41EAA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests", "Tests\TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests\TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests.csproj", "{02A08F81-B90F-4EB3-9C30-CE7447DE2012}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AzurePipelines", "AzurePipelines", "{48E162BC-9431-450D-8353-66D396DCB5FE}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		build.yml = build.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -368,6 +372,7 @@ Global
 		{57335C6A-F74A-491A-8191-95E115B87638} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{FA9DFEFA-4F35-4A57-91AE-64C7B5D41EAA} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{02A08F81-B90F-4EB3-9C30-CE7447DE2012} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{48E162BC-9431-450D-8353-66D396DCB5FE} = {577A0375-1436-446C-802B-3C75C8CEF94F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}
