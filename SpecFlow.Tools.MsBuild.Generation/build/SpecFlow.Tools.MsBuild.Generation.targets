@@ -116,6 +116,7 @@
     <ItemGroup>
       <SpecFlowFeatureFiles
                Include="@(None)"
+               Exclude="@(SpecFlowFeatureFiles)"
                Condition="'%(Extension)'=='.feature' or '%(Extension)'=='.feature.xlsx'">
         <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
       </SpecFlowFeatureFiles>
