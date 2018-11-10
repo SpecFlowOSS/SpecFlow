@@ -114,6 +114,7 @@
 
   <Target
     Name="TheFollowingItemGroupMustBeInsideATargetOtherwiseThereWillBeAnMSB4190Error"
+    Condition="'$(UsingMicrosoftNETSdk)' != 'true'"
     BeforeTargets="BeforeUpdateFeatureFilesInProject">
     <ItemGroup>
       <SpecFlowFeatureFiles
