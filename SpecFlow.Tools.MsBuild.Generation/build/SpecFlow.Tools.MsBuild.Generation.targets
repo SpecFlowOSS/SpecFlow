@@ -114,7 +114,9 @@
 
   <Target Name="TheFollowingItemGroupMustBeInsideATargetOtherwiseThereWillBeAnMSB4190Error" BeforeTargets="BeforeUpdateFeatureFilesInProject">
     <ItemGroup>
-      <SpecFlowFeatureFiles Include="@(None)" Condition="'%(Extension)'=='.feature' or '%(Extension)'=='.feature.xlsx'">
+      <SpecFlowFeatureFiles
+               Include="@(None)"
+               Condition="'%(Extension)'=='.feature' or '%(Extension)'=='.feature.xlsx'">
         <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
       </SpecFlowFeatureFiles>
   
