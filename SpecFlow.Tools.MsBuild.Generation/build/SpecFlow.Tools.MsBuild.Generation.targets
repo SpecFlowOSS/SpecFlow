@@ -112,7 +112,9 @@
 
   </Target>
 
-  <Target Name="TheFollowingItemGroupMustBeInsideATargetOtherwiseThereWillBeAnMSB4190Error" BeforeTargets="BeforeUpdateFeatureFilesInProject">
+  <Target
+    Name="TheFollowingItemGroupMustBeInsideATargetOtherwiseThereWillBeAnMSB4190Error"
+    BeforeTargets="BeforeUpdateFeatureFilesInProject">
     <ItemGroup>
       <SpecFlowFeatureFiles
                Include="@(None)"
