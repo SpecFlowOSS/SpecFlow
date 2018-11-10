@@ -113,7 +113,7 @@
   </Target>
 
   <Target
-    Name="TheFollowingItemGroupMustBeInsideATargetOtherwiseThereWillBeAnMSB4190Error"
+    Name="ScanCodeBehindFilesOfLinkedFeatures_ClassicProjectsOnly"
     Condition="'$(UsingMicrosoftNETSdk)' != 'true'"
     BeforeTargets="BeforeUpdateFeatureFilesInProject">
     <ItemGroup>
