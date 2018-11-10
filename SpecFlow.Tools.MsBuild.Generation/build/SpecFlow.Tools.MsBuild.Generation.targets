@@ -123,13 +123,6 @@
                Condition="'%(Extension)'=='.feature' or '%(Extension)'=='.feature.xlsx'">
         <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
       </SpecFlowFeatureFiles>
-  
-      <!-- obsolete codebehind files, scenarios:
-           - after rename operation
-           - after deletion of a feature file
-           - after pulling latest changes from version control with above changes
-       -->
-      <SpecFlowObsoleteCodeBehindFiles Include="**\*.feature$(DefaultLanguageSourceExtension)" Exclude="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
     </ItemGroup>
   </Target>
 
