@@ -25,9 +25,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             tags = tags ?? new string[0];
 
-            var scenario1 = new Scenario(GetTags(scenarioTags), null, "Scenario", "scenario1 title", "", new Step[0]);
+            var scenario1 = new Scenario(GetTags(scenarioTags), null, "Scenario", "scenario1 title", "", new Step[0], new Examples[0]);
 
-            var specFlowFeature = new SpecFlowFeature(GetTags(tags), null, "en", "feature", "title", "desc", new ScenarioDefinition[] {scenario1});
+            var specFlowFeature = new SpecFlowFeature(GetTags(tags), null, "en", "feature", "title", "desc", new StepsContainer[] {scenario1});
             return new SpecFlowDocument(specFlowFeature, new Comment[0], null);
         }
         public static SpecFlowDocument CreateDocumentWithScenarioOutline(string[] tags = null, string[] scenarioOutlineTags = null, string[] examplesTags = null)
@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 new Examples(GetTags(examplesTags), null, "Examples", "examples name", "", new Gherkin.Ast.TableRow(null, new []{ new TableCell(null, "col1"), }), new Gherkin.Ast.TableRow[0])
             });
 
-            var specFlowFeature = new SpecFlowFeature(GetTags(tags), null, "en", "feature", "title", "desc", new ScenarioDefinition[] {scenario1});
+            var specFlowFeature = new SpecFlowFeature(GetTags(tags), null, "en", "feature", "title", "desc", new StepsContainer[] {scenario1});
             return new SpecFlowDocument(specFlowFeature, new Comment[0], null);
         }
     }
