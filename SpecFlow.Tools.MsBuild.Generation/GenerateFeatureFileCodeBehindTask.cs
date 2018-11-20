@@ -32,6 +32,23 @@ namespace SpecFlow.Tools.MsBuild.Generation
         {
             try
             {
+                try
+                {
+                    var currentProcess = Process.GetCurrentProcess();
+
+                    Log.LogWithNameTag(Log.LogMessage, $"process: {currentProcess.ProcessName}, pid: {currentProcess.Id}, CD: {Environment.CurrentDirectory}");
+
+                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        Log.LogWithNameTag(Log.LogMessage, "  " + assembly.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.LogWithNameTag(Log.LogMessage, $"Error when dumping process info: {e}");
+                }
+
+
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
                 var generateFeatureFileCodeBehind = new GenerateFeatureFileCodeBehind();
