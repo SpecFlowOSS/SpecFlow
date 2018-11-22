@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Parser
             return hasTags.Tags.Any();
         }
 
-        public static bool HasTags(this ScenarioDefinition scenarioDefinition)
+        public static bool HasTags(this StepsContainer scenarioDefinition)
         {
             var hasTags = scenarioDefinition as IHasTags;
             if (hasTags == null)
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.Parser
             return hasTags.HasTags();
         }
 
-        public static IEnumerable<Tag> GetTags(this ScenarioDefinition scenarioDefinition)
+        public static IEnumerable<Tag> GetTags(this StepsContainer scenarioDefinition)
         {
             if (!scenarioDefinition.HasTags())
             {

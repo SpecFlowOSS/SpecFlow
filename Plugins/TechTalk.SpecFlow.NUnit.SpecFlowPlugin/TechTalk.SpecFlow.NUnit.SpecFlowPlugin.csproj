@@ -1,7 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\netfx.props" />
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Runtime_TFM)</TargetFrameworks>
+    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
+    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
+    <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
+    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
+    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
+    <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
+
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.11.0" />

@@ -60,9 +60,24 @@ namespace TechTalk.SpecFlow.Parser
                 this.sourceFilePath = sourceFilePath;
             }
 
-            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, AstNode node)
+            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, IHasLocation[] children, AstNode node)
             {
                 return new SpecFlowFeature(tags, location, language, keyword, name, description, children);
+            }
+
+            protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
+            {
+                ResetBlock();
+                var token = node.GetItems<AstNode>(RuleType.Scenario).Single().GetItems<Token>(RuleType._ScenarioLine).Single();
+                
+
+                if (token.MatchedGherkinDialect.ScenarioOutlineKeywords.Contains(keyword))
+                {
+                    return new ScenarioOutline(tags, location, keyword, name, description, steps, examples);
+                }
+
+                return base.CreateScenario(tags, location, keyword, name, description, steps, examples, node);
+
             }
 
             protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
@@ -84,17 +99,11 @@ namespace TechTalk.SpecFlow.Parser
                 return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments, sourceFilePath);
             }
 
-            protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, AstNode node)
-            {
-                ResetBlock();
-                return base.CreateScenario(tags, location, keyword, name, description, steps, node);
-            }
-
-            protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
-            {
-                ResetBlock();
-                return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples, node);
-            }
+            //protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
+            //{
+            //    ResetBlock();
+            //    return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples, node);
+            //}
 
             protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps, AstNode node)
             {

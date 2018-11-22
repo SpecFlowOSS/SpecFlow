@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.PluginTests
     public class RuntimePluginLocatorTests
     {
         [Fact]
-        public void LoadPlugins_Find_All_3_Referenced_RuntimePlugins()
+        public void LoadPlugins_Find_All_4_Referenced_RuntimePlugins()
         {
             //ARRANGE
             var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger());
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.PluginTests
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
 
             //ASSERT
-            plugins.Count.Should().Be(3);
+            plugins.Count.Should().Be(4, $"{String.Join(",", plugins)} were found");
         }
 
     }

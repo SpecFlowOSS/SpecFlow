@@ -31,6 +31,13 @@ Scenario: {title}
                 ");
         }
 
+        [Given(@"there is a scenario in a feature file")]
+        public void GivenThereIsAScenarioInAFeatureFile()
+        {
+            GivenAScenarioSimpleScenarioAs("Scenario", "Given a step");
+        }
+
+
         [Given(@"there is a feature '(.*)' with (\d+) passing (\d+) failing (\d+) pending and (\d+) ignored scenarios")]
         public void GivenThereAreScenarios(string featureTitle, int passCount, int failCount, int pendingCount, int ignoredCount)
         {

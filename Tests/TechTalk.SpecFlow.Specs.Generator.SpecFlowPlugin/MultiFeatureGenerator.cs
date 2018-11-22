@@ -35,9 +35,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             CodeNamespace result = null;
             bool onlyFullframework = false;
 
-            //Debugger.Launch();
-
             var specFlowFeature = specFlowDocument.SpecFlowFeature;
+            bool onlyDotNetCore = false;
             if (specFlowFeature.HasTags())
             {
                 if (specFlowFeature.Tags.Where(t => t.Name == "@SingleTestConfiguration").Any())
@@ -46,13 +45,14 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 }
 
                 onlyFullframework = HasFeatureTag(specFlowFeature, "@fullframework");
+                onlyDotNetCore = HasFeatureTag(specFlowFeature, "@dotnetcore");
             }
 
 
             var tagsOfFeature = specFlowFeature.Tags.Select(t => t.Name);
             var unitTestProviders = tagsOfFeature.Where(t => _unitTestProviderTags.Where(utpt => string.Compare(t, "@" + utpt, StringComparison.CurrentCultureIgnoreCase) == 0).Any());
 
-            foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders, onlyFullframework))
+            foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders, onlyFullframework, onlyDotNetCore))
             {
                 var clonedDocument = CloneDocumentAndAddTag(specFlowDocument, featureGenerator.Key.UnitTestProvider);
 
@@ -103,13 +103,33 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             return new SpecFlowDocument(feature, specFlowDocument.Comments.ToArray(), specFlowDocument.SourceFilePath);
         }
 
-        private IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> GetFilteredFeatureGenerator(IEnumerable<string> unitTestProviders, bool onlyFullframework)
+        private IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> GetFilteredFeatureGenerator(IEnumerable<string> unitTestProviders, bool onlyFullframework, bool onlyDotNetCore)
         {
             if (!unitTestProviders.Any())
             {
                 foreach (var featureGenerator in _featureGenerators)
                 {
-                    yield return featureGenerator;
+                    if (onlyFullframework)
+                    {
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_FullFramework)
+                        {
+                            yield return featureGenerator;
+                        }
+                    }
+                    else
+                    {
+                        if (onlyDotNetCore)
+                        {
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_NetCore)
+                            {
+                                yield return featureGenerator;
+                            }
+                        }
+                        else
+                        {
+                            yield return featureGenerator;
+                        }
+                    }
                 }
             }
 
@@ -128,7 +148,17 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         }
                         else
                         {
-                            yield return featureGenerator;
+                            if (onlyDotNetCore)
+                            {
+                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_NetCore)
+                                {
+                                    yield return featureGenerator;
+                                }
+                            }
+                            else
+                            {
+                                yield return featureGenerator;
+                            }
                         }
                     }
                 }
