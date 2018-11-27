@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
@@ -163,6 +165,8 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
         [Fact]
         public void Includes_milliseconds_and_ticks_in_error_for_date_time_fields()
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
             var table = new Table("DateTimeProperty");
             table.AddRow("3/28/2018 12:34:56 AM");
 
