@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -43,7 +44,22 @@ namespace TechTalk.SpecFlow.Assist
         {
             var line = "+ |";
             foreach (var header in tableDifferenceResults.Table.Header)
-                line += $" {GetTheValue(item.Item, header)} |";
+            {
+                object value = GetTheValue(item.Item, header);
+
+                if (value is DateTime)
+                {
+                    DateTime dateValue = (DateTime)value;
+
+                    // Append millisecond and ticks, if any, to current culture's default date time format
+                    string dateTimeFormat = DateTimeFormatInfo.CurrentInfo.ShortDatePattern + " " + DateTimeFormatInfo.CurrentInfo.LongTimePattern;
+                    dateTimeFormat = Regex.Replace(dateTimeFormat, "(:ss|:s)", "$1.FFFFFFF");
+                    value = dateValue.ToString(dateTimeFormat);
+                }
+
+                line += $" {value} |";
+            }
+
             realData.AppendLine(line);
         }
 
