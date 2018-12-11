@@ -40,4 +40,9 @@
     <Compile Include="FrameworkDependent\DotNetCore\**\*.cs" Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Tools_TFM)'" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FrameworkDependent\DotNetCore\" />
+    <Folder Include="FrameworkDependent\FullFramework\" />
+  </ItemGroup>
+
 </Project>

@@ -3,15 +3,33 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using SpecFlow.Tools.MsBuild.Generation.FrameworkDependent;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Task
     {
-        
+        private readonly Func<IGenerateFeatureFileCodeBehind> _createGenerateFeatureFileCodeBehind;
+
+        public GenerateFeatureFileCodeBehindTask()
+        {
+        }
+
+        public GenerateFeatureFileCodeBehindTask(Func<IGenerateFeatureFileCodeBehind> createGenerateFeatureFileCodeBehind)
+        {
+            _createGenerateFeatureFileCodeBehind = createGenerateFeatureFileCodeBehind;
+        }
+
+        public GenerateFeatureFileCodeBehindTask(ResourceManager taskResources) : base(taskResources)
+        {
+        }
+
+        public GenerateFeatureFileCodeBehindTask(ResourceManager taskResources, string helpKeywordPrefix) : base(taskResources, helpKeywordPrefix)
+        {
+        }
+
         [Required]
         public string ProjectPath { get; set; }
 
@@ -26,7 +44,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public ITaskItem[] GeneratorPlugins { get; set; }
 
         [Output]
-        public ITaskItem[] GeneratedFiles { get; set; }
+        public ITaskItem[] GeneratedFiles { get; private set; }
 
         public override bool Execute()
         {
@@ -51,7 +69,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-                var generateFeatureFileCodeBehind = new GenerateFeatureFileCodeBehind();
+                var generateFeatureFileCodeBehind = CreateGenerateFeatureFileCodeBehind();
 
 
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
@@ -59,7 +77,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 var generatedFiles = new List<ITaskItem>();
                 var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
 
-                var featureFiles = FeatureFiles.Select(i => i.ItemSpec).ToList();
+                var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
                 foreach (string s in generateFeatureFileCodeBehind.GenerateFilesForProject(generatorPlugins, ProjectPath, ProjectFolder, OutputPath, RootNamespace, featureFiles))
                 {
                     generatedFiles.Add(new TaskItem() {ItemSpec = s});
@@ -92,6 +110,16 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
 
 
+        }
+
+        private IGenerateFeatureFileCodeBehind CreateGenerateFeatureFileCodeBehind()
+        {
+            if (_createGenerateFeatureFileCodeBehind == null)
+            {
+                return new GenerateFeatureFileCodeBehind();
+            }
+
+            return _createGenerateFeatureFileCodeBehind();
         }
 
         private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
