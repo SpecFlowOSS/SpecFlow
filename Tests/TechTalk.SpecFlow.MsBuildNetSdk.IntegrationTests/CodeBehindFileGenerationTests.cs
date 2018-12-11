@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests
         public void TestIfCodeBehindFilesWasGeneratedAndCompiled()
         {
             var assemblyHoldingThisClass = Assembly.GetExecutingAssembly();
-            var typeOfGeneratedFeatureFile = assemblyHoldingThisClass.GetType(nameof(DummyFeatureFileToTestMSBuildNetsdkCodebehindFileGenerationFeature));
+            var typeOfGeneratedFeatureFile = assemblyHoldingThisClass.GetType(typeof(DummyFeatureFileToTestMSBuildNetsdkCodebehindFileGenerationFeature).FullName);
             Assert.IsNotNull(typeOfGeneratedFeatureFile);
         }
     }

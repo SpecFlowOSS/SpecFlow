@@ -52,6 +52,11 @@
          - after pulling latest changes from version control with above changes
      -->
     <SpecFlowObsoleteCodeBehindFiles Include="**\*.feature.cs" Exclude="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+
+
+    <UpToDateCheckInput Include="@(SpecFlowFeatureFiles)" />
+    <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+    <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
   </ItemGroup>
 
 </Project>
