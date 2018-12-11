@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace SpecFlow.Tools.MsBuild.Generation.FrameworkDependent
+namespace SpecFlow.Tools.MsBuild.Generation
 {
-    public class GenerateFeatureFileCodeBehind
+    public interface IGenerateFeatureFileCodeBehind
+    {
+        IEnumerable<string> GenerateFilesForProject(List<string> generatorPlugins, string projectPath, string projectFolder, string outputPath, string rootNamespace, List<string> featureFiles);
+    }
+
+    public class GenerateFeatureFileCodeBehind : IGenerateFeatureFileCodeBehind
     {
         public IEnumerable<string> GenerateFilesForProject(List<string> generatorPlugins, string projectPath, string projectFolder, string outputPath, string rootNamespace, List<string> featureFiles)
         {
