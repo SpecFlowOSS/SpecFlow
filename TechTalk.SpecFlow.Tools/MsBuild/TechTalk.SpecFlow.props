@@ -53,9 +53,11 @@
      -->
     <SpecFlowObsoleteCodeBehindFiles Include="**\*.feature.cs" Exclude="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
 
-
+    <!-- Support for Visual Studio Incremental Build
+        https://github.com/techtalk/SpecFlow/issues/1319
+     -->
     <UpToDateCheckInput Include="@(SpecFlowFeatureFiles)" />
-    <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+    <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" Original="@(SpecFlowFeatureFiles)" />
     <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
   </ItemGroup>
 

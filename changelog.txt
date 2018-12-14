@@ -1,7 +1,7 @@
 2.4.1 - 2018-??-??
 
 Fixes:
-+ fix an issue in SpecFlow.Tools.MSBuild.Generation to detect changes in feature files
++ Visual Studio change detection integration for Net.SDK style projects via SpecFlow.Tools.MSBuild.Generation https://github.com/techtalk/SpecFlow/issues/1319
 
 
 2.4 - 2018-08-20
