@@ -69,7 +69,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-                var generateFeatureFileCodeBehind = CreateGenerateFeatureFileCodeBehind();
+                var generateFeatureFileCodeBehind = new GenerateFeatureFileCodeBehind(Log);
 
 
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
@@ -85,7 +85,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 GeneratedFiles = generatedFiles.ToArray();
 
-                return true;
+                return Log.HasLoggedErrors;
             }
             catch (Exception e)
             {
