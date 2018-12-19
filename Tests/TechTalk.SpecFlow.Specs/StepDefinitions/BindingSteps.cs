@@ -125,6 +125,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddHookBinding(eventType, methodName, order: hookOrder);
         }
 
+        [Given(@"a hook '(.*)' for '([^']*)' with code")]
+        public void GivenAHookForWithCode(string methodName, string eventType, string code)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, code: code);
+        }
+
         [Given(@"the following binding class")]
         [Given(@"the following class")]
         public void GivenTheFollowingBindingClass(string rawBindingClass)
