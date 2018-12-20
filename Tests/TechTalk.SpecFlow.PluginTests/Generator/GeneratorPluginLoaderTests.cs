@@ -2,7 +2,6 @@
 using System.IO;
 using System.Reflection;
 using FluentAssertions;
-
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin;

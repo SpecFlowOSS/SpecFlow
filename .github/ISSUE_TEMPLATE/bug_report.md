@@ -37,10 +37,12 @@ Version number:
 - [ ]	No
  
 ### .NET Framework:
-- [ ]	>= .NET 4
-- [ ]	before .NET 4
+- [ ]	>= .NET 4.5
+- [ ]	before .NET 4.5
 - [ ] .NET Core 2.0
 - [ ] .NET Core 2.1
+- [ ] .NET Core 2.2
+- [ ] .NET Core 3.0
 
 ### Test Execution Method:
 - [ ]	Visual Studio Test Explorer
