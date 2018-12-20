@@ -71,7 +71,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 var generateFeatureFileCodeBehind = new GenerateFeatureFileCodeBehind(Log);
 
-
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
 
                 var generatedFiles = new List<ITaskItem>();
@@ -108,18 +107,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
             {
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             }
-
-
-        }
-
-        private IGenerateFeatureFileCodeBehind CreateGenerateFeatureFileCodeBehind()
-        {
-            if (_createGenerateFeatureFileCodeBehind == null)
-            {
-                return new GenerateFeatureFileCodeBehind();
-            }
-
-            return _createGenerateFeatureFileCodeBehind();
         }
 
         private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
