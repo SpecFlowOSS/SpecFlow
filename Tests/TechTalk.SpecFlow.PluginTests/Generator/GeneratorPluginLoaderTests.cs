@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using FluentAssertions;
-using SpecFlow.Tools.MsBuild.Generation.FrameworkDependent;
+
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin;
