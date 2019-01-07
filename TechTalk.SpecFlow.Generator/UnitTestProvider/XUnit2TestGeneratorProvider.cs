@@ -5,6 +5,7 @@ using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
 using TechTalk.SpecFlow.Utils;
+using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
@@ -18,7 +19,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
         private const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
         private const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        
+        private const string COLLECTION_DEF = "Xunit.Collection";
+        private const string COLLECTION_TAG = "xunit:collection";
+
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
             :base(codeDomHelper)
         {
@@ -108,6 +111,26 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     );
             }
         }
+                 public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        {
+            IEnumerable<string> collection = featureCategories.Where(f => f.StartsWith(COLLECTION_TAG, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (collection.Any())
+            {
+                //Only one 'Xunit.Collection' can exist per class.
+                SetTestClassCollection(generationContext, collection.FirstOrDefault()); 
+            }
+            base.SetTestClassCategories(generationContext, featureCategories);
+        }
+
+        public void SetTestClassCollection(TestClassGenerationContext generationContext, string collection)
+        {
+            //No spaces. 
+            //'-', and '_' are allowed.
+            string collectionMatch = $@"(?<={COLLECTION_TAG}[(])[A-Za-z0-9\-_]+.*?(?=[)])";
+            string description = Regex.Match(collection, collectionMatch, RegexOptions.IgnoreCase).Value;
+            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_DEF, description); 
+        }
+    
 
         public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {

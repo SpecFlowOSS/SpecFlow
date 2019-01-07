@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // xUnit does not use an attribute for the TestFixture, all public classes are potential fixtures
         }
 
-        public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
             foreach (string str in featureCategories)
