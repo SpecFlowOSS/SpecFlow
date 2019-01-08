@@ -54,3 +54,23 @@ Scenario: Should be able to log custom messages using context injection
     Then the execution summary should contain
          | Succeeded |
          | 1         |
+
+Scenario: Should be able to set collection attribute
+    Given there is a SpecFlow project
+    And a scenario 'Simple Scenario' as with collection attribute 'sample'
+        """
+        When I do something
+        """	
+    And the following step definition
+        """
+        [When(@"I do something")]
+        public void WhenIDoSomething()
+        {
+        ScenarioContext.Current.ScenarioContainer.Resolve<Xunit.Abstractions.ITestOutputHelper>().WriteLine("hello");
+        }
+        """
+		When the feature files in the project are generated
+    When I execute the tests
+    Then the execution summary should contain
+        | Succeeded |
+        | 1         |
