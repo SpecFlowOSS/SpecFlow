@@ -69,7 +69,6 @@ Scenario: Should be able to set collection attribute
         ScenarioContext.Current.ScenarioContainer.Resolve<Xunit.Abstractions.ITestOutputHelper>().WriteLine("hello");
         }
         """
-		When the feature files in the project are generated
     When I execute the tests
     Then the execution summary should contain
         | Succeeded |
