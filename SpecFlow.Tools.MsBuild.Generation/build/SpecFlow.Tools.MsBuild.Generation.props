@@ -48,6 +48,13 @@
          - after pulling latest changes from version control with above changes
      -->
     <SpecFlowObsoleteCodeBehindFiles Include="**\*.feature$(DefaultLanguageSourceExtension)" Exclude="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+
+    <!-- Support for Visual Studio Incremental Build
+        https://github.com/techtalk/SpecFlow/issues/1319
+     -->
+    <UpToDateCheckInput Include="@(SpecFlowFeatureFiles)" />
+    <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" Original="@(SpecFlowFeatureFiles)" />
+    <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
   </ItemGroup>
 
 
