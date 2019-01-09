@@ -32,6 +32,17 @@ Scenario: {title}
                 ");
         }
 
+        [Given(@"a scenario '(.*)' as with collection attribute '(.*)'")]
+        public void GivenAScenarioAsWithCollectionAttribute(string title,  string collection, string scenarioContent)
+        {
+            _projectsDriver.AddFeatureFile(
+                 $@"@xunit:collection({collection})
+                    Feature: Feature {Guid.NewGuid()}
+                    Scenario: {title}
+{scenarioContent.Replace("'''", "\"\"\"")}
+                ");
+        }
+
         [Given(@"there is a scenario in a feature file")]
         public void GivenThereIsAScenarioInAFeatureFile()
         {
