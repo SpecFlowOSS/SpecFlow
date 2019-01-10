@@ -6,8 +6,8 @@
     <title>SpecFlow.CustomPlugin</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
-    <description>Package for writing custom extensions for SpecFlow.</description>
-    <summary>Package for writing custom extensions for SpecFlow.</summary>
+    <description>Package for writing custom generator extensions for SpecFlow.</description>
+    <summary>Package for writing custom generator extensions for SpecFlow.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
     <licenseUrl>http://go.specflow.org/license</licenseUrl>
