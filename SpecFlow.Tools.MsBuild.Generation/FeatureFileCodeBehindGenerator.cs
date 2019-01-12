@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
-    class FeatureFileCodeBehindGenerator
+    public class FeatureFileCodeBehindGenerator : IFeatureFileCodeBehindGenerator
     {
         private readonly FilePathGenerator _filePathGenerator;
         

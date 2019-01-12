@@ -36,7 +36,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public void Dispose()
         {
-            _testGenerator.Dispose();
+            _testGenerator?.Dispose();
         }
     }
 }

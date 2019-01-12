@@ -22,21 +22,23 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_OnlyRequiredPropertiesAreSet_ShouldWork()
         {
             //ARRANGE
-            var generateFeatureFileCodeBehindMock = new Mock<IGenerateFeatureFileCodeBehind>();
-            generateFeatureFileCodeBehindMock.Setup(m => m.GenerateFilesForProject(It.IsAny<List<string>>(),
-                                                                                   It.IsAny<string>(),
-                                                                                   It.IsAny<string>(),
-                                                                                   It.IsAny<string>(),
-                                                                                   It.IsAny<string>(),
-                                                                                   It.IsAny<List<string>>()))
-                                             .Returns(new List<string>());
+            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
+            generatorMock
+                .Setup(m => m.GenerateFilesForProject(
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<List<string>>(),
+                    It.IsAny<List<string>>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .Returns(new List<string>());
 
-
-            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask(() => generateFeatureFileCodeBehindMock.Object)
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
-                BuildEngine = new MockBuildEngine(_output)
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = generatorMock.Object
             };
 
             //ACT
@@ -50,22 +52,25 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_AllPropertiesAreSet_ShouldWork()
         {
             //ARRANGE
-            var generateFeatureFileCodeBehindMock = new Mock<IGenerateFeatureFileCodeBehind>();
-            generateFeatureFileCodeBehindMock.Setup(m => m.GenerateFilesForProject(It.IsAny<List<string>>(),
+            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
+            generatorMock
+                .Setup(m => m.GenerateFilesForProject(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
+                    It.IsAny<List<string>>(),
+                    It.IsAny<List<string>>(),
                     It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>()))
+                    It.IsAny<string>()))
                 .Returns(new List<string>());
 
-            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask(() => generateFeatureFileCodeBehindMock.Object)
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
                 FeatureFiles = new TaskItem[0],
                 GeneratorPlugins = new TaskItem[0],
-                BuildEngine = new MockBuildEngine(_output)
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = generatorMock.Object
             };
 
             //ACT
@@ -79,21 +84,24 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_FeatureFilesNotSet_ShouldWork()
         {
             //ARRANGE
-            var generateFeatureFileCodeBehindMock = new Mock<IGenerateFeatureFileCodeBehind>();
-            generateFeatureFileCodeBehindMock.Setup(m => m.GenerateFilesForProject(It.IsAny<List<string>>(),
+            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
+            generatorMock
+                .Setup(m => m.GenerateFilesForProject(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
+                    It.IsAny<List<string>>(),
+                    It.IsAny<List<string>>(),
                     It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>()))
+                    It.IsAny<string>()))
                 .Returns(new List<string>());
 
-            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask(() => generateFeatureFileCodeBehindMock.Object)
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
                 GeneratorPlugins = new TaskItem[0],
-                BuildEngine = new MockBuildEngine(_output)
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = generatorMock.Object
             };
 
             //ACT
@@ -107,21 +115,24 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_GeneratorPluginsNotSet_ShouldWork()
         {
             //ARRANGE
-            var generateFeatureFileCodeBehindMock = new Mock<IGenerateFeatureFileCodeBehind>();
-            generateFeatureFileCodeBehindMock.Setup(m => m.GenerateFilesForProject(It.IsAny<List<string>>(),
+            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
+            generatorMock
+                .Setup(m => m.GenerateFilesForProject(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
+                    It.IsAny<List<string>>(),
+                    It.IsAny<List<string>>(),
                     It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>()))
+                    It.IsAny<string>()))
                 .Returns(new List<string>());
 
-            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask(() => generateFeatureFileCodeBehindMock.Object)
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
                 FeatureFiles = new TaskItem[0],
-                BuildEngine = new MockBuildEngine(_output)
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = generatorMock.Object
             };
 
             //ACT

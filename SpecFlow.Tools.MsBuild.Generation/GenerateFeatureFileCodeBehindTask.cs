@@ -11,24 +11,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Task
     {
-        private readonly Func<IGenerateFeatureFileCodeBehind> _createGenerateFeatureFileCodeBehind;
-
         public GenerateFeatureFileCodeBehindTask()
         {
+            CodeBehindGenerator = new FeatureFileCodeBehindGenerator(Log);
         }
 
-        public GenerateFeatureFileCodeBehindTask(Func<IGenerateFeatureFileCodeBehind> createGenerateFeatureFileCodeBehind)
-        {
-            _createGenerateFeatureFileCodeBehind = createGenerateFeatureFileCodeBehind;
-        }
-
-        public GenerateFeatureFileCodeBehindTask(ResourceManager taskResources) : base(taskResources)
-        {
-        }
-
-        public GenerateFeatureFileCodeBehindTask(ResourceManager taskResources, string helpKeywordPrefix) : base(taskResources, helpKeywordPrefix)
-        {
-        }
+        public IFeatureFileCodeBehindGenerator CodeBehindGenerator { get; set; }
 
         [Required]
         public string ProjectPath { get; set; }
@@ -66,23 +54,25 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     Log.LogWithNameTag(Log.LogMessage, $"Error when dumping process info: {e}");
                 }
 
-
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-                var generateFeatureFileCodeBehind = new GenerateFeatureFileCodeBehind(Log);
+                var generator = CodeBehindGenerator ?? new FeatureFileCodeBehindGenerator(Log);
 
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
 
-                var generatedFiles = new List<ITaskItem>();
                 var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
 
                 var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
-                foreach (string s in generateFeatureFileCodeBehind.GenerateFilesForProject(generatorPlugins, ProjectPath, ProjectFolder, OutputPath, RootNamespace, featureFiles))
-                {
-                    generatedFiles.Add(new TaskItem() { ItemSpec = s });
-                }
 
-                GeneratedFiles = generatedFiles.ToArray();
+                var generatedFiles = generator.GenerateFilesForProject(
+                    ProjectPath,
+                    RootNamespace,
+                    featureFiles,
+                    generatorPlugins,
+                    ProjectFolder,
+                    OutputPath);
+
+                GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
 
                 return !Log.HasLoggedErrors;
             }
