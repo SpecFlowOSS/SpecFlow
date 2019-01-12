@@ -5,11 +5,19 @@ using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
 using System.Collections.Generic;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 {
     public class GenerateFeatureFileCodeBehindTaskTests
     {
+        private readonly ITestOutputHelper _output;
+
+        public GenerateFeatureFileCodeBehindTaskTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public void Execute_OnlyRequiredPropertiesAreSet_ShouldWork()
         {
@@ -28,7 +36,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             {
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
-                BuildEngine = new Mock<IBuildEngine>().Object
+                BuildEngine = new MockBuildEngine(_output)
             };
 
             //ACT
@@ -57,7 +65,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
                 ProjectPath = "ProjectPath",
                 FeatureFiles = new TaskItem[0],
                 GeneratorPlugins = new TaskItem[0],
-                BuildEngine = new Mock<IBuildEngine>().Object
+                BuildEngine = new MockBuildEngine(_output)
             };
 
             //ACT
@@ -85,7 +93,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
                 GeneratorPlugins = new TaskItem[0],
-                BuildEngine = new Mock<IBuildEngine>().Object
+                BuildEngine = new MockBuildEngine(_output)
             };
 
             //ACT
@@ -113,7 +121,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
                 RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
                 FeatureFiles = new TaskItem[0],
-                BuildEngine = new Mock<IBuildEngine>().Object
+                BuildEngine = new MockBuildEngine(_output)
             };
 
             //ACT
