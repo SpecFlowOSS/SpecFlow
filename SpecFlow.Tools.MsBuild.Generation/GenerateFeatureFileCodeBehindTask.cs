@@ -79,12 +79,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
                 foreach (string s in generateFeatureFileCodeBehind.GenerateFilesForProject(generatorPlugins, ProjectPath, ProjectFolder, OutputPath, RootNamespace, featureFiles))
                 {
-                    generatedFiles.Add(new TaskItem() {ItemSpec = s});
+                    generatedFiles.Add(new TaskItem() { ItemSpec = s });
                 }
 
                 GeneratedFiles = generatedFiles.ToArray();
 
-                return Log.HasLoggedErrors;
+                return !Log.HasLoggedErrors;
             }
             catch (Exception e)
             {
