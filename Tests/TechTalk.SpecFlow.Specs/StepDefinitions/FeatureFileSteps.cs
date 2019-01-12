@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
@@ -31,11 +32,30 @@ Scenario: {title}
                 ");
         }
 
+        [Given(@"a scenario '(.*)' as with collection attribute '(.*)'")]
+        public void GivenAScenarioAsWithCollectionAttribute(string title,  string collection, string scenarioContent)
+        {
+            _projectsDriver.AddFeatureFile(
+                 $@"@xunit:collection({collection})
+                    Feature: Feature {Guid.NewGuid()}
+                    Scenario: {title}
+{scenarioContent.Replace("'''", "\"\"\"")}
+                ");
+        }
+
         [Given(@"there is a scenario in a feature file")]
         public void GivenThereIsAScenarioInAFeatureFile()
         {
             GivenAScenarioSimpleScenarioAs("Scenario", "Given a step");
         }
+
+        [Given(@"has a feature file with the SingleFileGenerator configured")]
+        public void GivenHasAFeatureFileWithTheSingleFileGeneratorConfigured()
+        {
+            _projectsDriver.AddFile("FeatureWithSingleFileGenerator.feature", "Feature: Feature File with SingleFileGenerator", "None", new Dictionary<string, string>(){{"Generator", "SpecFlowSingleFileGenerator"}});
+        }
+
+
 
 
         [Given(@"there is a feature '(.*)' with (\d+) passing (\d+) failing (\d+) pending and (\d+) ignored scenarios")]
