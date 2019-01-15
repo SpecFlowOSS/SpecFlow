@@ -24,9 +24,14 @@ We no longer recommend this approach, as you will otherwise experience problems 
 
 Additionally, Microsoft has since fixed a bug in VS, meaning that navigating from the Test Explorer to the feature file works again (<https://developercommunity.visualstudio.com/content/problem/267390/text-explorer-specflow-tests-goes-to-the-feature-c.html>). For this to work, the code-behind files need to be located, and having the generated files in a separate folder will break this feature again.
 
+
+### Known bugs
+
+- Prior to SpecFlow 2.4.1, Visual Studio sometimes does not recognize that a feature file has changed. To generate the code-behind file, you need to rebuild your project. We recommend using SpecFlow 2.4.1 or higher.
+
 ## How to enable it
 
-### SpecFlow 2.3.* & classic project system
+### Classic Project System
 
 1. Add the NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
 2. Add the following MSBuild snippet to the end of your project file, but still within the `<Project>` tag:
@@ -43,68 +48,13 @@ Additionally, Microsoft has since fixed a bug in VS, meaning that navigating fro
 
     ![](https://www.specflow.org/screenshots/CustomTool.png)
 
-#### Known bugs
 
-- Sometimes Visual Studio does not recognize that a feature file has changed. To generate the code-behind file, you need to rebuild your project.
-
-### SpecFlow 2.4.* & classic project system
-
-<!-- isnt' this exactly the same as above, i.e. the only difference between 2.3.* and 2.4 is the known issue? 
-I have therefore not touched the following section until this is clarified. If so, there's no reason to duplicate this
--->
-__Please use at least SpecFlow 2.4.1, as this version fixes the above issue in 2.3.*.__
-
-1. add NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
-2. add following MSBuild snippet at the end of your project file but within the `<Project>` tag:
-
-    ``` xml
-    <Target Name="AfterUpdateFeatureFilesInProject">
-        <ItemGroup>
-        <Compile Include="**\*.feature.cs" Exclude="@(Compile)" />
-        </ItemGroup>
-    </Target>
-    ```
-3. remove all `SpecFlowSingleFileGenerator` custom tools from your feature files.
-
-    ![](https://www.specflow.org/screenshots/CustomTool.png)
-
-### SpecFlow 3.0.* & classic project system
-
-<!-- isnt' this exactly the same as above, i.e. the only difference between 2.3.* and 3.0 is the known issue? 
-I have therefore not touched the following section until this is clarified. If so, there's no reason to duplicate this
--->
-
-1. add NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
-2. add following MSBuild snippet at the end of your project file but within the `<Project>` tag:
-
-    ``` xml
-    <Target Name="AfterUpdateFeatureFilesInProject">
-        <ItemGroup>
-        <Compile Include="**\*.feature.cs" Exclude="@(Compile)" />
-        </ItemGroup>
-    </Target>
-    ```
-3. remove all `SpecFlowSingleFileGenerator` custom tools from your feature files.
-
-    ![](https://www.specflow.org/screenshots/CustomTool.png)
-
-### SpecFlow 2.4.* & sdk- style project system
+### SDK style project system
 
 __Please use at least SpecFlow 2.4.1, as this version fixes the above issue in 2.3.*.__
 
 1. Add the NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
 1. Remove all `SpecFlowSingleFileGenerator` custom tool entries from your feature files.
-
-    ![](https://www.specflow.org/screenshots/CustomTool.png)
-
-### SpecFlow 3.0.* & sdk- style project system
-
-<!-- isnt' this exactly the same as above, i.e. the only difference between 2.4 and 3.0 is the warning about the fixed issue? 
-I have therefore not touched the following section until this is clarified. If so, there's no reason to duplicate this
--->
-
-1. add NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
-2. remove all `SpecFlowSingleFileGenerator` custom tools from your feature files.
 
     ![](https://www.specflow.org/screenshots/CustomTool.png)
 
