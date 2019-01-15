@@ -13,7 +13,7 @@ To do so, you need to use a MSBuild Task.
 ### Cons
 
 - When adding a new file, the CustomTool entered in the feature file's properties has to be removed each time
-- Realtime test discovery will only find new tests after the project has been built
+- Realtime test discovery will only find new tests after the project has been <!-- (re?) -->built
 
 ## Best practises
 
@@ -33,7 +33,7 @@ Additionally, Microsoft has since fixed a bug in VS, meaning that navigating fro
 
 ### Classic Project System
 
-1. Add the NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
+1. Add the NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project.
 2. Add the following MSBuild snippet to the end of your project file, but still within the `<Project>` tag:
 
     ``` xml
@@ -53,7 +53,7 @@ Additionally, Microsoft has since fixed a bug in VS, meaning that navigating fro
 
 __Please use at least SpecFlow 2.4.1, as this version fixes the above issue in 2.3.*.__
 
-1. Add the NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project
+1. Add the NuGet package `SpecFlow.Tools.MsBuild.Generation` with the same version as SpecFlow to your project.
 1. Remove all `SpecFlowSingleFileGenerator` custom tool entries from your feature files.
 
     ![](https://www.specflow.org/screenshots/CustomTool.png)
@@ -67,7 +67,7 @@ If you are using the classic project system, the previous MSBuild targetmay no l
 ### Linked files are not included
 
 If you link feature files into a project, no code-behind file is generated for them.  
-See GitHub Issue: <https://github.com/techtalk/SpecFlow/issues/1295>
+See this GitHub Issue: <https://github.com/techtalk/SpecFlow/issues/1295>
 
 ## More infos about MSBuild:
 
