@@ -19,17 +19,17 @@ To do so, you need to use a MSBuild Task.
 
 ### Store code-behind files in same folder as the feature file
 
-In the past, werecommended moving the generated code-behind files to a different folder from your feature files.  
+In the past, we recommended moving the generated code-behind files to a different folder from your feature files.  
 We no longer recommend this approach, as you will otherwise experience problems with up-to-date checks in MSBuild.
 
-Additionally, Microsoft has since fixed a bug in VS, meaning that navigating from the Test Explorer to the feature file works again (<https://developercommunity.visualstudio.com/content/problem/267390/text-explorer-specflow-tests-goes-to-the-feature-c.html>). For this to work, the code-behind files need to be located, and having the generated files in a separate folder will break this feature again.
+Additionally, Microsoft has since fixed a bug in VS, meaning that navigating from the Test Explorer to the feature file works again (see [here](https://developercommunity.visualstudio.com/content/problem/267390/text-explorer-specflow-tests-goes-to-the-feature-c.html)). For this to work, the code-behind files need to be located by VS, and having the generated files in a separate folder will break this feature again.
 
 
-### Known bugs
+## Known Bugs
 
-- Prior to SpecFlow 2.4.1, Visual Studio sometimes does not recognize that a feature file has changed. To generate the code-behind file, you need to rebuild your project. We recommend using SpecFlow 2.4.1 or higher.
+- Prior to SpecFlow 2.4.1, Visual Studio sometimes does not recognize that a feature file has changed. To generate the code-behind file, you therefore need to rebuild your project. We recommend using SpecFlow 2.4.1 or higher, where this is no longer an issue.
 
-## How to enable it
+## Enabling MSBuild Code Behind Generation
 
 ### Classic Project System
 
