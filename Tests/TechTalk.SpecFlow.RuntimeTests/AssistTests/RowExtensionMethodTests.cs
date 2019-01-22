@@ -316,5 +316,37 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             act.Should().Throw<IndexOutOfRangeException>();
         }
-    }
+
+		[Fact]
+		public void Create_instance_fills_a_new_instance()
+		{
+			var expectedPerson = new Person() { FirstName = "Max", LastName = "Mustermann", BirthDate = new DateTime(1980, 3, 31) };
+
+			var table = new Table("FirstName", "LastName", "BirthDate");
+			table.AddRow(expectedPerson.FirstName, expectedPerson.LastName, expectedPerson.BirthDate.ToString("yyyy-MM-dd"));
+
+			var row = table.Rows[0];
+			var person = row.CreateInstance(() => new Person());
+
+			person.FirstName.Should().Be(expectedPerson.FirstName);
+			person.LastName.Should().Be(expectedPerson.LastName);
+			person.BirthDate.Should().Be(expectedPerson.BirthDate);
+		}
+
+		[Fact]
+		public void Create_instance_creates_a_new_instance()
+		{
+			var expectedPerson = new Person() { FirstName = "Max", LastName = "Mustermann", BirthDate = new DateTime(1978, 9, 27) };
+
+			var table = new Table("FirstName", "LastName", "BirthDate");
+			table.AddRow(expectedPerson.FirstName, expectedPerson.LastName, expectedPerson.BirthDate.ToString("yyyy-MM-dd"));
+
+			var row = table.Rows[0];
+			var person = row.CreateInstance<Person>();
+
+			person.FirstName.Should().Be(expectedPerson.FirstName);
+			person.LastName.Should().Be(expectedPerson.LastName);
+			person.BirthDate.Should().Be(expectedPerson.BirthDate);
+		}
+	}
 }
