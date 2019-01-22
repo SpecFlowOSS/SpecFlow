@@ -166,7 +166,7 @@ namespace TechTalk.SpecFlow.Assist
         }
 
 		/// <summary>
-		/// Creates an new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
+		/// Creates a new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
 		/// </summary>
 		/// <typeparam name="T">The type of the instance to be created.</typeparam>
 		/// <param name="row">The table row.</param>
@@ -178,7 +178,7 @@ namespace TechTalk.SpecFlow.Assist
 		}
 		
 		/// <summary>
-		/// Creates an new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
+		/// Creates a new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
 		/// </summary>
 		/// <typeparam name="T">The type of the instance to be created.</typeparam>
 		/// <param name="row">The table row.</param>
