@@ -40,6 +40,16 @@ namespace TechTalk.SpecFlow.Assist
             AssertThatNoExtraRowsExist(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
         }
 
+        public void CompareToSuperSet(IEnumerable<T> superset)
+        {
+            AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType();
+
+            if (ThereAreNoResultsAndNoExpectedResults(superset))
+                return;
+
+            AssertThatTheItemsMatchTheExpectedResults(superset);
+        }
+
         private void AssertThatNoExtraRowsExist(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
         {
             if (set.Count() == table.Rows.Count()) return;

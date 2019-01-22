@@ -9,5 +9,11 @@ namespace TechTalk.SpecFlow.Assist
             var checker = new SetComparer<T>(table);
             checker.CompareToSet(set);
         }
+        public static void CompareToSuperSet<T>(this Table table, IEnumerable<T> superSet)
+        {
+            var checker = new SetComparer<T>(table);
+            checker.CompareToSuperSet(superSet);
+        }
+
     }
 }
