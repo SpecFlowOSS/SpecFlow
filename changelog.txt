@@ -14,7 +14,7 @@ New Features:
 + Add utility to get enum field value from TableRow.
 + Gherkin language data is used instead of an obsolete copy https://github.com/techtalk/SpecFlow/pull/1288
 + Loader exceptions are appended to the exception message https://github.com/techtalk/SpecFlow/issues/1293
-+ Add CreateItem<T> support to a TableRow
++ Add CreateInstance<T> support to a TableRow
 
 Fixes:
 + Visual Studio change detection integration for Net.SDK style projects via SpecFlow.Tools.MSBuild.Generation https://github.com/techtalk/SpecFlow/issues/1319
