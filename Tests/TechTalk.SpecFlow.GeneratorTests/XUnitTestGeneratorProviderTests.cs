@@ -65,7 +65,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                         keyword: null,
                         name: "",
                         description: null,
-                        children:null
+                        children: null
                         ),
                     comments: null, 
                     sourceFilePath: null),

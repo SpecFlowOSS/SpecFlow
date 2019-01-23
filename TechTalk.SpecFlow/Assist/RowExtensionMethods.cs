@@ -164,5 +164,39 @@ namespace TechTalk.SpecFlow.Assist
         {
             return row.Any(x => x.Key == id);
         }
-    }
+
+		/// <summary>
+		/// Creates a new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of the instance to be created.</typeparam>
+		/// <param name="row">The table row.</param>
+		/// <returns>A new instance of <typeparamref name="T"/> filled with the data from the <see cref="TableRow"/>.</returns>
+		public static T CreateInstance<T>(this TableRow row)
+		{
+			var instanceTable = row.ToTable();
+			return instanceTable.CreateInstance<T>();
+		}
+		
+		/// <summary>
+		/// Creates a new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of the instance to be created.</typeparam>
+		/// <param name="row">The table row.</param>
+		/// <param name="methodToCreateTheInstance">The method to create a new instance.</param>
+		/// <returns>A new instance of <typeparamref name="T"/> filled with the data from the <see cref="TableRow"/>.</returns>
+		public static T CreateInstance<T>(this TableRow row, Func<T> methodToCreateTheInstance)
+		{
+			var instanceTable = row.ToTable();
+			return instanceTable.CreateInstance<T>(methodToCreateTheInstance);
+		}
+
+		private static Table ToTable(this TableRow row)
+		{
+			var instanceTable = new Table("Field", "Value");
+			foreach (var kvp in row)
+				instanceTable.AddRow(kvp.Key, kvp.Value);
+
+			return instanceTable;
+		}
+	}
 }

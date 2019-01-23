@@ -487,7 +487,7 @@ namespace TechTalk.SpecFlow.Generator
             testGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetTitle, variantName, arguments);
         }
 
-        private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, ScenarioDefinition scenario, IEnumerable<Tag> additionalTags, string variantName = null,
+        private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, StepsContainer scenario, IEnumerable<Tag> additionalTags, string variantName = null,
             string exampleSetIdentifier = null)
         {
             CodeMemberMethod testMethod = CreateMethod(generationContext.TestClass);
@@ -503,7 +503,7 @@ namespace TechTalk.SpecFlow.Generator
             GenerateTestBody(generationContext, scenario, testMethod);
         }
 
-        private void GenerateTestBody(TestClassGenerationContext generationContext, ScenarioDefinition scenario, CodeMemberMethod testMethod, CodeExpression additionalTagsExpression = null,
+        private void GenerateTestBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, CodeExpression additionalTagsExpression = null,
             ParameterSubstitution paramToIdentifier = null)
         {
             //call test setup
@@ -582,7 +582,7 @@ namespace TechTalk.SpecFlow.Generator
                     generationContext.ScenarioCleanupMethod.Name));
         }
 
-        private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags,
+        private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, StepsContainer scenarioDefinition, IEnumerable<Tag> additionalTags,
             string variantName, string exampleSetIdentifier, bool rowTest = false)
         {
             testMethod.Attributes = MemberAttributes.Public;
@@ -603,7 +603,7 @@ namespace TechTalk.SpecFlow.Generator
                 testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, scenarioCategories);
         }
 
-        private static string GetTestMethodName(ScenarioDefinition scenario, string variantName, string exampleSetIdentifier)
+        private static string GetTestMethodName(StepsContainer scenario, string variantName, string exampleSetIdentifier)
         {
             var methodName = string.Format(TEST_NAME_FORMAT, scenario.Name.ToIdentifier());
             if (variantName != null)
@@ -779,7 +779,7 @@ namespace TechTalk.SpecFlow.Generator
             AddLineDirective(statements, background.Location);
         }
 
-        private void AddLineDirective(CodeStatementCollection statements, ScenarioDefinition scenarioDefinition)
+        private void AddLineDirective(CodeStatementCollection statements, StepsContainer scenarioDefinition)
         {
             AddLineDirective(statements, scenarioDefinition.Location);
         }

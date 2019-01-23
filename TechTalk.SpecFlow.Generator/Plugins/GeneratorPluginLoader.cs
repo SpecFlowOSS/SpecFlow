@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
-using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 
@@ -9,19 +7,9 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 {
     public class GeneratorPluginLoader : IGeneratorPluginLoader
     {
-        private readonly ProjectSettings projectSettings;
-        private readonly IGeneratorPluginLocator generatorPluginLocator;
-
-        public GeneratorPluginLoader(ProjectSettings projectSettings, IGeneratorPluginLocator generatorPluginLocator)
-        {
-            this.projectSettings = projectSettings;
-            this.generatorPluginLocator = generatorPluginLocator;
-        }
 
         public IGeneratorPlugin LoadPlugin(PluginDescriptor pluginDescriptor)
         {
-            //Debugger.Launch();
-
             Assembly pluginAssembly;
             try
             {

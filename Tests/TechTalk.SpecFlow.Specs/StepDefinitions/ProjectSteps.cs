@@ -20,6 +20,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.CreateProject("C#");
         }
 
+        [Given(@"it is using SpecFlow\.Tools\.MSBuild\.Generator")]
+        public void GivenItIsUsingSpecFlow_Tools_MSBuild_Generator()
+        {
+            
+        }
+
+
         [Given(@"parallel execution is enabled")]
         public void GivenParallelExecutionIsEnabled()
         {
@@ -36,7 +43,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"the project is compiled")]
         public void WhenTheProjectIsCompiled()
         {
-            _solutionDriver.CompileSolution();
+            _solutionDriver.CompileSolution(BuildTool.MSBuild);
         }
 
         [Then(@"no compilation errors are reported")]
@@ -44,5 +51,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             _solutionDriver.CheckSolutionShouldHaveCompiled();
         }
+
+        [Then(@"is a compilation error")]
+        public void ThenIsACompilationError()
+        {
+            _solutionDriver.CheckSolutionShouldHaseCompileError();
+        }
+
     }
 }

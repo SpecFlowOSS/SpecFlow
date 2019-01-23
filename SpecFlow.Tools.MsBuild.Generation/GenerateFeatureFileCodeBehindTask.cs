@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-#if NETCOREAPP
-using System.Runtime.Loader;
-#endif
+using System.Resources;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -15,6 +11,13 @@ namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Task
     {
+        public GenerateFeatureFileCodeBehindTask()
+        {
+            CodeBehindGenerator = new FeatureFileCodeBehindGenerator(Log);
+        }
+
+        public IFeatureFileCodeBehindGenerator CodeBehindGenerator { get; set; }
+
         [Required]
         public string ProjectPath { get; set; }
 
@@ -29,78 +32,81 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public ITaskItem[] GeneratorPlugins { get; set; }
 
         [Output]
-        public ITaskItem[] GeneratedFiles { get; set; }
+        public ITaskItem[] GeneratedFiles { get; private set; }
 
         public override bool Execute()
         {
             try
             {
-                //System.Diagnostics.Debugger.Launch();
+                try
+                {
+                    var currentProcess = Process.GetCurrentProcess();
+
+                    Log.LogWithNameTag(Log.LogMessage, $"process: {currentProcess.ProcessName}, pid: {currentProcess.Id}, CD: {Environment.CurrentDirectory}");
+
+                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        Log.LogWithNameTag(Log.LogMessage, "  " + assembly.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.LogWithNameTag(Log.LogMessage, $"Error when dumping process info: {e}");
+                }
+
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
+                var generator = CodeBehindGenerator ?? new FeatureFileCodeBehindGenerator(Log);
 
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
 
-                var generatedFiles = new List<ITaskItem>();
+                var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
 
-                foreach (string s in GenerateFilesForProject())
-                {
-                    generatedFiles.Add(new TaskItem() { ItemSpec = s });
-                }
+                var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
 
-                GeneratedFiles = generatedFiles.ToArray();
+                var generatedFiles = generator.GenerateFilesForProject(
+                    ProjectPath,
+                    RootNamespace,
+                    featureFiles,
+                    generatorPlugins,
+                    ProjectFolder,
+                    OutputPath);
 
-                return true;
+                GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+
+                return !Log.HasLoggedErrors;
             }
             catch (Exception e)
             {
-                Log?.LogWithNameTag(Log.LogError, e.Demystify().ToString());
-                return false;
-            }
-        }
-
-#if NETCOREAPP
-        private IEnumerable<string> GenerateFilesForProject()
-        {
-            var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
-
-            string taskAssemblyPath = new Uri(this.GetType().GetTypeInfo().Assembly.CodeBase).LocalPath;
-            var ctxt = new CustomAssemblyLoader();
-            Assembly inContextAssembly = ctxt.LoadFromAssemblyPath(taskAssemblyPath);
-            Type innerTaskType = inContextAssembly.GetType(typeof(FeatureFileCodeBehindGenerator).FullName);
-            object innerTask = Activator.CreateInstance(innerTaskType);
-
-            var executeInnerMethod = innerTaskType.GetMethod("GenerateFilesForProject", BindingFlags.Instance | BindingFlags.Public);
-
-            var parameters = new object[]{ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), generatorPlugins, ProjectFolder, OutputPath };
-            var result = (IEnumerable<string>)executeInnerMethod.Invoke(innerTask, parameters);
-
-            return result;
-        }
-
-        private class CustomAssemblyLoader : AssemblyLoadContext
-        {
-            protected virtual string ManagedDllDirectory => Path.GetDirectoryName(new Uri(this.GetType().GetTypeInfo().Assembly.CodeBase).LocalPath);
-
-            protected override Assembly Load(AssemblyName assemblyName)
-            {
-                string assemblyPath = Path.Combine(this.ManagedDllDirectory, assemblyName.Name) + ".dll";
-                if (File.Exists(assemblyPath))
+                if (e.InnerException != null)
                 {
-                    return LoadFromAssemblyPath(assemblyPath);
+                    if (e.InnerException is FileLoadException fle)
+                    {
+                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException Filename: {fle.FileName}");
+                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException FusionLog: {fle.FusionLog}");
+                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException Message: {fle.Message}");
+                    }
+
+                    Log?.LogWithNameTag(Log.LogError, e.InnerException.ToString());
                 }
 
-                return Default.LoadFromAssemblyName(assemblyName);
+                Log?.LogWithNameTag(Log.LogError, e.ToString());
+                return false;
+            }
+            finally
+            {
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             }
         }
 
-
-#else
-        private IEnumerable<string> GenerateFilesForProject()
+        private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            var generator = new FeatureFileCodeBehindGenerator();
-            var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
-            return generator.GenerateFilesForProject(ProjectPath, RootNamespace, FeatureFiles.Select(i => i.ItemSpec).ToList(), generatorPlugins, ProjectFolder, OutputPath);
+            Log.LogWithNameTag(Log.LogMessage, args.Name);
+            
+
+            return null;
         }
-#endif
+
     }
 
 

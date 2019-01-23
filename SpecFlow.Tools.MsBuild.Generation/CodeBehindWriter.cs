@@ -14,9 +14,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public TaskLoggingHelper Log { get; }
 
-        public string WriteCodeBehindFile(string outputPath, string featureFile, GeneratedCodeBehindFile generatedCodeBehindFile) //todo needs unit tests
+        public string WriteCodeBehindFile(string outputPath, string featureFile, TestFileGeneratorResult testFileGeneratorResult) //todo needs unit tests
         {
-            if (string.IsNullOrEmpty(generatedCodeBehindFile.Filename))
+            if (string.IsNullOrEmpty(testFileGeneratorResult.Filename))
             {
                 Log?.LogWithNameTag(Log.LogError, $"{featureFile} has no generated filename");
                 return null;
@@ -25,13 +25,13 @@ namespace SpecFlow.Tools.MsBuild.Generation
             string directoryPath = Path.GetDirectoryName(outputPath) ?? throw new InvalidOperationException();
             Log?.LogWithNameTag(Log.LogMessage, directoryPath);
 
-            Log?.LogWithNameTag(Log.LogMessage, $"Writing data to {outputPath}; path = {directoryPath}; generatedFilename = {generatedCodeBehindFile.Filename}");
+            Log?.LogWithNameTag(Log.LogMessage, $"Writing data to {outputPath}; path = {directoryPath}; generatedFilename = {testFileGeneratorResult.Filename}");
 
             if (File.Exists(outputPath))
             {
-                if (!FileSystemHelper.FileCompareContent(outputPath, generatedCodeBehindFile.Content))
+                if (!FileSystemHelper.FileCompareContent(outputPath, testFileGeneratorResult.GeneratedTestCode))
                 {
-                    File.WriteAllText(outputPath, generatedCodeBehindFile.Content);
+                    File.WriteAllText(outputPath, testFileGeneratorResult.GeneratedTestCode);
                 }
             }
             else
@@ -41,7 +41,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     Directory.CreateDirectory(directoryPath);
                 }
 
-                File.WriteAllText(outputPath, generatedCodeBehindFile.Content);
+                File.WriteAllText(outputPath, testFileGeneratorResult.GeneratedTestCode);
             }
 
             return outputPath;

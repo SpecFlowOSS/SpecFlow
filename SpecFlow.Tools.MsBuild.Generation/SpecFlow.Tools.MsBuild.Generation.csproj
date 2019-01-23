@@ -26,12 +26,23 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.8.166" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.8.166" />
     <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
-    <PackageReference Update="Microsoft.Build.Framework" Version="15.8.166" />
-    <PackageReference Update="Microsoft.Build.Utilities.Core" Version="15.8.166" />
   </ItemGroup>
- 
+
+  <ItemGroup>
+    <Compile Remove="FrameworkDependent\**\*.cs" />
+    <Compile Include="FrameworkDependent\*.cs" />
+    <None Include="FrameworkDependent\**\*.cs" />
+    <Compile Include="FrameworkDependent\FullFramework\**\*.cs" Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Tools_TFM)'" />
+    <Compile Include="FrameworkDependent\DotNetCore\**\*.cs" Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Tools_TFM)'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FrameworkDependent\DotNetCore\" />
+    <Folder Include="FrameworkDependent\FullFramework\" />
+  </ItemGroup>
+
 </Project>

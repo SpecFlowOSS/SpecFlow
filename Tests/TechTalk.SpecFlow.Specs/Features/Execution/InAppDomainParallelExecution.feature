@@ -1,4 +1,4 @@
-﻿@xUnit @NUnit3 @ignore
+﻿@xUnit @NUnit3 @MSTest
 #parallel execution doesn't work currently with MsTest v2
 
 Feature: In-AppDomain Parallel Execution

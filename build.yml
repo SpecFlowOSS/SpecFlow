@@ -49,8 +49,5 @@ jobs:
     displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
     inputs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
-
+      artifactType: container
       ArtifactName: 'SpecFlow.CI-BuildResult'
-
-
-

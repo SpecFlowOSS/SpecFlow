@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using System.Threading;
+using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
@@ -157,6 +159,31 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
             exception.Message.AgnosticLineBreak().Should().Be(@"
   | StringProperty |
 - | orange         |
+".AgnosticLineBreak());
+        }
+
+        [Fact]
+        public void Includes_milliseconds_and_ticks_in_error_for_date_time_fields()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+            var table = new Table("DateTimeProperty");
+            table.AddRow("3/28/2018 12:34:56 AM");
+
+            var items = new[]
+            {
+                new SetComparisonTestObject
+                {
+                    DateTimeProperty = new System.DateTime(2018, 3, 28, 0, 34, 56, 78).AddTicks(9)
+                }
+            };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.AgnosticLineBreak().Should().Be(@"
+  | DateTimeProperty              |
+- | 3/28/2018 12:34:56 AM         |
++ | 3/28/2018 12:34:56.0780009 AM |
 ".AgnosticLineBreak());
         }
 
