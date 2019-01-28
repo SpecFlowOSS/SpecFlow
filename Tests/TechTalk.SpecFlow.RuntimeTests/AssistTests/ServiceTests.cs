@@ -15,70 +15,75 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_load_the_value_comparers_by_default()
         {
+            var expectedDefaultComparers = new object[]
+            {
+                typeof(DateTimeValueComparer),
+                typeof(BoolValueComparer),
+                typeof(GuidValueComparer),
+                typeof(DecimalValueComparer),
+                typeof(DoubleValueComparer),
+                typeof(FloatValueComparer),
+                typeof(DefaultValueComparer),
+            };
+
             var service = new Service();
 
-            var results = service.ValueComparers;
-            Assert.Equal(7, results.Count());
+            var actualComparerTypes = service.ValueComparers.Select(x => x.GetType());
 
-            Assert.Single(results.Where(x => x.GetType() == typeof(DateTimeValueComparer)));
-            Assert.Single(results.Where(x => x.GetType() == typeof(BoolValueComparer)));
-            Assert.Single(results.Where(x => x.GetType() == typeof(GuidValueComparer)));
-            Assert.Single(results.Where(x => x.GetType() == typeof(DecimalValueComparer)));
-            Assert.Single(results.Where(x => x.GetType() == typeof(DoubleValueComparer)));
-            Assert.Single(results.Where(x => x.GetType() == typeof(FloatValueComparer)));
-            Assert.Single(results.Where(x => x.GetType() == typeof(DefaultValueComparer)));
+            actualComparerTypes.Should().BeEquivalentTo(expectedDefaultComparers);
         }
 
         [Fact]
         public void Should_load_the_value_retrievers_by_default()
         {
+            var expectedDefaultRetrievers = new object[]
+            {
+                typeof(StringValueRetriever),
+                typeof(ByteValueRetriever),
+                typeof(SByteValueRetriever),
+                typeof(IntValueRetriever),
+                typeof(UIntValueRetriever),
+                typeof(ShortValueRetriever),
+                typeof(UShortValueRetriever),
+                typeof(LongValueRetriever),
+                typeof(ULongValueRetriever),
+                typeof(FloatValueRetriever),
+                typeof(DoubleValueRetriever),
+                typeof(DecimalValueRetriever),
+                typeof(CharValueRetriever),
+                typeof(BoolValueRetriever),
+                typeof(DateTimeValueRetriever),
+                typeof(GuidValueRetriever),
+                typeof(EnumValueRetriever),
+                typeof(TimeSpanValueRetriever),
+                typeof(DateTimeOffsetValueRetriever),
+                typeof(NullableGuidValueRetriever),
+                typeof(NullableDateTimeValueRetriever),
+                typeof(NullableBoolValueRetriever),
+                typeof(NullableCharValueRetriever),
+                typeof(NullableDecimalValueRetriever),
+                typeof(NullableDoubleValueRetriever),
+                typeof(NullableFloatValueRetriever),
+                typeof(NullableULongValueRetriever),
+                typeof(NullableByteValueRetriever),
+                typeof(NullableSByteValueRetriever),
+                typeof(NullableIntValueRetriever),
+                typeof(NullableUIntValueRetriever),
+                typeof(NullableShortValueRetriever),
+                typeof(NullableUShortValueRetriever),
+                typeof(NullableLongValueRetriever),
+                typeof(NullableTimeSpanValueRetriever),
+                typeof(NullableDateTimeOffsetValueRetriever),
+
+                typeof(ArrayValueRetriever),
+                typeof(ListValueRetriever),
+            };
+
             var service = new Service();
 
-            var results = service.ValueRetrievers;
+            var actualRetrieverTypes = service.ValueRetrievers.Select(x => x.GetType());
 
-            results.Count().Should().Be(40);
-
-            results.Count(x => x.GetType() == typeof(StringValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(ByteValueRetriever)).Should().Be(1); 
-            results.Count(x => x.GetType() == typeof(SByteValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(IntValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(UIntValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(ShortValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(UShortValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(LongValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(ULongValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(FloatValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(DoubleValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(DecimalValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(CharValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(BoolValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(DateTimeValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(GuidValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(EnumValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(TimeSpanValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(DateTimeOffsetValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableGuidValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableDateTimeValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableBoolValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableCharValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableDecimalValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableDoubleValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableFloatValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableULongValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableByteValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableSByteValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableIntValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableUIntValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableShortValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableUShortValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableLongValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableTimeSpanValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(NullableDateTimeOffsetValueRetriever)).Should().Be(1);
-
-            results.Count(x => x.GetType() == typeof(StringArrayValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(StringListValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(EnumArrayValueRetriever)).Should().Be(1);
-            results.Count(x => x.GetType() == typeof(EnumListValueRetriever)).Should().Be(1);
+            actualRetrieverTypes.Should().BeEquivalentTo(expectedDefaultRetrievers);
         }
 
         [Fact]

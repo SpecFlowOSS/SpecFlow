@@ -14,6 +14,7 @@ New Features:
 + Add utility to get enum field value from TableRow.
 + Gherkin language data is used instead of an obsolete copy https://github.com/techtalk/SpecFlow/pull/1288
 + Loader exceptions are appended to the exception message https://github.com/techtalk/SpecFlow/issues/1293
++ Array & List support for any available item value retriever when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1385
 + Add CreateInstance<T> support to a TableRow
 
 Fixes:

@@ -43,10 +43,8 @@ namespace TechTalk.SpecFlow.Assist
             Register<NullableTimeSpanValueRetriever>();
             Register<NullableDateTimeOffsetValueRetriever>();
 
-            Register<StringArrayValueRetriever>();
-            Register<StringListValueRetriever>();
-            Register<EnumArrayValueRetriever>();
-            Register<EnumListValueRetriever>();
+            Register<ArrayValueRetriever>();
+            Register<ListValueRetriever>();
         }
     }
 }
