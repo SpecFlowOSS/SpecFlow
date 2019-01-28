@@ -8,35 +8,69 @@ using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
-    class FeatureFileCodeBehindGenerator
+    public class FeatureFileCodeBehindGenerator : IFeatureFileCodeBehindGenerator
     {
         private readonly FilePathGenerator _filePathGenerator;
-
-        public FeatureFileCodeBehindGenerator()
+        
+        public FeatureFileCodeBehindGenerator(TaskLoggingHelper log)
         {
+            Log = log ?? throw new ArgumentNullException(nameof(log));
             _filePathGenerator = new FilePathGenerator();
         }
 
-        public IEnumerable<string> GenerateFilesForProject(string projectPath, string rootNamespace, List<string> featureFiles, List<string> generatorPlugins, string projectFolder, string outputPath)
-        {
+        public TaskLoggingHelper Log { get; }
 
+        public IEnumerable<string> GenerateFilesForProject(
+            string projectPath,
+            string rootNamespace,
+            List<string> featureFiles,
+            List<string> generatorPlugins,
+            string projectFolder,
+            string outputPath)
+        {
             using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator())
             {
                 featureCodeBehindGenerator.InitializeProject(projectPath, rootNamespace, generatorPlugins);
 
                 var codeBehindWriter = new CodeBehindWriter(null);
-                if (featureFiles != null)
+
+                if (featureFiles == null)
                 {
-                    foreach (var featureFile in featureFiles)
+                    yield break;
+                }
+
+                foreach (var featureFile in featureFiles)
+                {
+                    var featureFileItemSpec = featureFile;
+                    var generatorResult = featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec);
+
+                    if (!generatorResult.Success)
                     {
-                        string featureFileItemSpec = featureFile;
-                        var featureFileCodeBehind = featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec);
-
-                        string targetFilePath = _filePathGenerator.GenerateFilePath(projectFolder, outputPath, featureFile, featureFileCodeBehind.Filename);
-                        string resultedFile = codeBehindWriter.WriteCodeBehindFile(targetFilePath, featureFile, featureFileCodeBehind);
-
-                        yield return FileSystemHelper.GetRelativePath(resultedFile, projectFolder);
+                        foreach (var error in generatorResult.Errors)
+                        {
+                            Log.LogError(
+                                null,
+                                null,
+                                null,
+                                featureFile,
+                                error.Line,
+                                error.LinePosition,
+                                0,
+                                0,
+                                error.Message);
+                        }
+                        continue;
                     }
+
+                    var targetFilePath = _filePathGenerator.GenerateFilePath(
+                        projectFolder,
+                        outputPath,
+                        featureFile,
+                        generatorResult.Filename);
+
+                    var resultedFile = codeBehindWriter.WriteCodeBehindFile(targetFilePath, featureFile, generatorResult);
+
+                    yield return FileSystemHelper.GetRelativePath(resultedFile, projectFolder);
                 }
             }
 
