@@ -16,6 +16,7 @@ New Features:
 + Loader exceptions are appended to the exception message https://github.com/techtalk/SpecFlow/issues/1293
 + Array & List support for any available item value retriever when instantiating class from Specflow table https://github.com/techtalk/SpecFlow/pull/1385
 + Add CreateInstance<T> support to a TableRow
++ Uri value retriever added https://github.com/techtalk/SpecFlow/pull/1403
 
 Fixes:
 + Visual Studio change detection integration for Net.SDK style projects via SpecFlow.Tools.MSBuild.Generation https://github.com/techtalk/SpecFlow/issues/1319
