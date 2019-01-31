@@ -74,6 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 typeof(NullableLongValueRetriever),
                 typeof(NullableTimeSpanValueRetriever),
                 typeof(NullableDateTimeOffsetValueRetriever),
+                typeof(UriValueRetriever),
 
                 typeof(ArrayValueRetriever),
                 typeof(ListValueRetriever),
