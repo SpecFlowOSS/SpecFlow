@@ -2,7 +2,8 @@
 
   <UsingTask TaskName="TokenReplace" 
              TaskFactory="RoslynCodeTaskFactory"
-             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" >
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" 
+             >
     <ParameterGroup>
       <InputPath ParameterType="System.String" Required="true" />
       <OutputPath ParameterType="System.String" Required="true" />

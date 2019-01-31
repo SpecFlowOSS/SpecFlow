@@ -1,7 +1,6 @@
 ﻿<Project>
 
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-  <Import Project="..\..\netfx.props" />
 
   <PropertyGroup>
     <TargetFramework>$(SpecFlow_Specs_TFM)</TargetFramework>
