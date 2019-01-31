@@ -42,6 +42,7 @@ namespace TechTalk.SpecFlow.Assist
             Register<NullableLongValueRetriever>();
             Register<NullableTimeSpanValueRetriever>();
             Register<NullableDateTimeOffsetValueRetriever>();
+            Register<UriValueRetriever>();
 
             Register<ArrayValueRetriever>();
             Register<ListValueRetriever>();
