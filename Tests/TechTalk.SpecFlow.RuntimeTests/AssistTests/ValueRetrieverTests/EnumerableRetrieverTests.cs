@@ -15,11 +15,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
         protected const string FieldName = "Field";
 
-        protected EnumerableRetrieverTests()
-        {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
-        }
-
+        private static readonly CultureInfo TargetCulture = CultureInfo.GetCultureInfo("en-US");
         private static readonly DateTime[] TestDateTimes = { new DateTime(2011, 1, 1), new DateTime(2015, 12, 31), new DateTime(2011, 1, 1, 15, 16, 17) };
         private static readonly TimeSpan[] TestTimeSpans = { TimeSpan.Parse("20:00:00"), TimeSpan.Parse("00:00:00"), TimeSpan.Parse("6.12:14:45.3448") };
         private static readonly Guid[] TestGuids = Enumerable.Range(0, 3).Select(_ => Guid.NewGuid()).ToArray();
@@ -37,10 +33,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 new object[] { typeof(byte?), new[] { "0", "128", "" }, new byte?[] { 0, 128, null } },
                 new object[] { typeof(char), new[] { "a", "A", "1" }, new [] { 'a', 'A', '1' } },
                 new object[] { typeof(char?), new[] { "a", "A", "" }, new char?[] { 'a', 'A', null } },
-                new object[] { typeof(DateTime), TestDateTimes.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray(), TestDateTimes },
-                new object[] { typeof(DateTime?), new[] { TestDateTimes[0].ToString(CultureInfo.InvariantCulture), TestDateTimes[1].ToString(CultureInfo.InvariantCulture), "" }, new DateTime?[] { TestDateTimes[0], TestDateTimes[1], null } },
-                new object[] { typeof(DateTimeOffset), TestDateTimes.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray(), TestDateTimes.Select(x => x.ToDateTimeOffset()) }.ToArray(),
-                new object[] { typeof(DateTimeOffset?), new[] { TestDateTimes[0].ToString(CultureInfo.InvariantCulture), TestDateTimes[1].ToString(CultureInfo.InvariantCulture), "" }, new DateTimeOffset?[] { TestDateTimes[0].ToDateTimeOffset(), TestDateTimes[1].ToDateTimeOffset(), null } },
+                new object[] { typeof(DateTime), TestDateTimes.Select(x => x.ToString(TargetCulture)).ToArray(), TestDateTimes },
+                new object[] { typeof(DateTime?), new[] { TestDateTimes[0].ToString(TargetCulture), TestDateTimes[1].ToString(TargetCulture), "" }, new DateTime?[] { TestDateTimes[0], TestDateTimes[1], null } },
+                new object[] { typeof(DateTimeOffset), TestDateTimes.Select(x => new DateTimeOffset(x).ToString(TargetCulture)).ToArray(), TestDateTimes.Select(x => new DateTimeOffset(x)).ToArray() },
+                new object[] { typeof(DateTimeOffset?), new[] { TestDateTimes[0].ToString(TargetCulture), TestDateTimes[1].ToString(TargetCulture), "" }, new DateTimeOffset?[] { new DateTimeOffset(TestDateTimes[0]), new DateTimeOffset(TestDateTimes[1]), null } },
                 new object[] { typeof(decimal), new[] { "0", "1.234", "-1.234" }, new [] { 0m, 1.234m, -1.234m } },
                 new object[] { typeof(decimal?), new[] { "", "1.234", "-1.234" }, new decimal?[] { null, 1.234m, -1.234m } },
                 new object[] { typeof(double), new[] { "0", "1.234", "-1.234" }, new [] { 0, 1.234, -1.234 } },
@@ -68,6 +64,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 new object[] { typeof(ushort), new[] { "0", "1234", "5678" }, new ushort[] { 0, 1234, 5678 } },
                 new object[] { typeof(ushort?), new[] { "0", "1234", "" }, new ushort?[] { 0, 1234, null } },
             };
+
+        protected EnumerableRetrieverTests()
+        {
+            Thread.CurrentThread.CurrentCulture = TargetCulture;
+    }
 
         [Theory]
         [MemberData(nameof(CanRetrieveData))]
