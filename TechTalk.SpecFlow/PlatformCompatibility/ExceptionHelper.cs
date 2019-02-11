@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace TechTalk.SpecFlow.Compatibility
 {
-    internal static class ExceptionHelper
+	internal static class ExceptionHelper
     {
         public static Exception PreserveStackTrace(this Exception ex, string methodInfo = null)
         {

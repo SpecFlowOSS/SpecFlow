@@ -1,37 +1,35 @@
-﻿using System;
-
-namespace TechTalk.SpecFlow
+﻿namespace TechTalk.SpecFlow
 {
 	internal static class StringExtensions
     {
         internal static bool IsNullOrEmpty(this string value)
         {
-            return String.IsNullOrEmpty(value);
+            return string.IsNullOrEmpty(value);
         }
 
         internal static bool IsNotNullOrEmpty(this string value)
         {
-            return !String.IsNullOrEmpty(value);
+            return !string.IsNullOrEmpty(value);
         }
 
-        internal static bool IsNullOrWhiteSpace(this String value)
+        internal static bool IsNullOrWhiteSpace(this string value)
         {
             if (value == null) return true;
 
             for (int i = 0; i < value.Length; i++)
             {
-                if (!Char.IsWhiteSpace(value[i])) return false;
+                if (!char.IsWhiteSpace(value[i])) return false;
             }
 
             return true;
         }
 
-        internal static bool IsNotNullOrWhiteSpace(this String value)
+        internal static bool IsNotNullOrWhiteSpace(this string value)
         {
             return !value.IsNullOrWhiteSpace();
         }
 
-        internal static string StripWhitespaces(this String value)
+        internal static string StripWhitespaces(this string value)
         {
             return value.Replace(" ", "").Replace("\n", "").Replace("\r", "");
         }
