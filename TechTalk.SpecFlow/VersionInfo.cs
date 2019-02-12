@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TechTalk.SpecFlow
+﻿namespace TechTalk.SpecFlow
 {
-    public class VersionInfo
+	internal class VersionInfo
     {
-        public static string AssemblyVersion => ThisAssembly.AssemblyVersion;
-        public static string AssemblyFileVersion => ThisAssembly.AssemblyFileVersion;
-        public static string AssemblyInformationalVersion => ThisAssembly.AssemblyInformationalVersion;
-        public static string NuGetVersion => ThisAssembly.AssemblyInformationalVersion.Replace("+", "-");
+        internal static string AssemblyVersion => ThisAssembly.AssemblyVersion;
+        internal static string AssemblyFileVersion => ThisAssembly.AssemblyFileVersion;
+        internal static string AssemblyInformationalVersion => ThisAssembly.AssemblyInformationalVersion;
+        internal static string NuGetVersion => ThisAssembly.AssemblyInformationalVersion.Replace("+", "-");
     }
 }
