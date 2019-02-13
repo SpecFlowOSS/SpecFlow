@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 
 namespace TechTalk.SpecFlow.Compatibility
 {
-    internal static class CultureInfoHelper
+	internal static class CultureInfoHelper
     {
         public static CultureInfo GetCultureInfo(string cultureName)
         {
