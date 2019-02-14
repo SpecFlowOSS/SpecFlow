@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace TechTalk.SpecFlow
                 }
                 catch (Exception e)
                 {
-                    synch.InnerException = e;
+                    synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
                     throw;
                 }
                 finally
@@ -60,7 +61,7 @@ namespace TechTalk.SpecFlow
                 }
                 catch (Exception e)
                 {
-                    synch.InnerException = e;
+                    synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
                     throw;
                 }
                 finally
@@ -76,7 +77,7 @@ namespace TechTalk.SpecFlow
         private class ExclusiveSynchronizationContext : SynchronizationContext
         {
             private bool done;
-            public Exception InnerException { get; set; }
+            public ExceptionDispatchInfo InnerExceptionDispatchInfo { get; set; }
             readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(false);
             readonly Queue<Tuple<SendOrPostCallback, object>> items =
                 new Queue<Tuple<SendOrPostCallback, object>>();
@@ -115,9 +116,9 @@ namespace TechTalk.SpecFlow
                     if (task != null)
                     {
                         task.Item1(task.Item2);
-                        if (InnerException != null) // the method threw an exeption
+                        if (InnerExceptionDispatchInfo != null) // the method threw an exeption
                         {
-                            throw InnerException;
+                            InnerExceptionDispatchInfo.Throw();
                         }
                     }
                     else
