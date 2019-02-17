@@ -8,7 +8,7 @@ resources:
 
 jobs:
 - template: build.yml  
- parameters:
+  parameters:
    name: macOS
    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-macOS.zip'
    pool:
