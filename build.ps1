@@ -4,7 +4,21 @@ param (
 
 $msbuildPath = "msbuild"
 
-if ([Environment]::OSVersion.Platform -eq "Win32NT"){
+$_isWindows = false
+$_isMacOS = false
+
+if ($Env:HOME) {
+  $_isMacOS = true
+}
+else {
+  if ($Env:UserProfile)
+  {
+    $_isWindows = true
+  }
+
+}
+
+if ($_isWindows){
   $vswherePath = [System.Environment]::ExpandEnvironmentVariables("%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe")
   $vswhereParameters = @("-latest", "-products", "*", "-requires", "Microsoft.Component.MSBuild",  "-property", "installationPath")
   

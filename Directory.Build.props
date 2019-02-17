@@ -1,9 +1,9 @@
 <Project>
+  <Import Project="macos.props" />
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' AND '$(OS)' == 'Windows_NT' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' AND '$(OS)' != 'Windows_NT' ">$(HOME)/.nuget/packages/</NuGetPackageRoot>
-
+   
     <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
     <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>
   </PropertyGroup>
@@ -11,36 +11,6 @@
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.65" PrivateAssets="all"/>
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(OS)' != 'Windows_NT'">
-    <PackageReference Condition=" '$(TargetFramework)' == 'net45' "
-        Include="Microsoft.TargetingPack.NETFramework.v4.5"
-        Version="1.0.1"
-        ExcludeAssets="All"
-        PrivateAssets="All" />
-    <PackageReference Condition=" '$(TargetFramework)' == 'net462' "
-        Include="Microsoft.TargetingPack.NETFramework.v4.6.2"
-        Version="1.0.1"
-        ExcludeAssets="All"
-        PrivateAssets="All" />
-    <PackageReference Condition=" '$(TargetFramework)' == 'net471' "
-        Include="Microsoft.TargetingPack.NETFramework.v4.7.1"
-        Version="1.0.0"
-        ExcludeAssets="All"
-        PrivateAssets="All" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="mscorlib" />
-    <Reference Include="netstandard" />
-    <Reference Include="System.Threading.Tasks" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net45'" >$(NuGetPackageRoot)microsoft.targetingpack.netframework.v4.5/1.0.1/lib/net45/</FrameworkPathOverride>
-    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net462'" >$(NuGetPackageRoot)microsoft.targetingpack.netframework.v4.6.2/1.0.1/lib/net462/</FrameworkPathOverride>
-    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net471'" >$(NuGetPackageRoot)microsoft.targetingpack.netframework.v4.7.1/1.0.0/lib/net471/</FrameworkPathOverride>
-    <RestoreAdditionalProjectSources>https://dotnet.myget.org/F/dotnet-core/api/v3/index.json</RestoreAdditionalProjectSources>
-  </PropertyGroup>
 
   <PropertyGroup>
     <Authors>TechTalk</Authors>
