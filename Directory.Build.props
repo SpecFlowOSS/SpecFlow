@@ -1,7 +1,9 @@
 <Project>
+  <Import Project="macos.props" />
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-
+   
     <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
     <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>
   </PropertyGroup>
