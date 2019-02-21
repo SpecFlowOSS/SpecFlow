@@ -10,7 +10,6 @@
     <summary>Package to setup SpecFlow for use with MsTest. Does not install MsTest and should be installed into a Test-project template</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow mstest</tags>

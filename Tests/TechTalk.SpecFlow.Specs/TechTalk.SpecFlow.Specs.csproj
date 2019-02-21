@@ -26,7 +26,9 @@
     <None Include=".build\build.targets" />
     
     <None Include="App.config" />
-    
+
+    <Compile Remove="NuGetPackageVersion.template.cs" />
+    <Compile Remove="NuGetPackageVersion.cs" Condition=" Exists('NuGetPackageVersion.cs') " />
     <None Include="NuGetPackageVersion.template.cs" />
   </ItemGroup>
 
@@ -123,7 +125,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="NuGetPackageVersion.template.cs" />
+    
   </ItemGroup>
 
 </Project>

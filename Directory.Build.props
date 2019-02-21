@@ -10,19 +10,20 @@
 
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.65" PrivateAssets="all"/>
+    <None Include="$(SolutionDir)/LICENSE.txt" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <PropertyGroup>
     <Authors>TechTalk</Authors>
     <Company>TechTalk</Company>
     <Product />
-    <PackageLicenseUrl>http://go.specflow.org/license</PackageLicenseUrl>
     <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>
     <PackageIconUrl>http://go.specflow.org/specflow-nuget-icon</PackageIconUrl>
     <RepositoryUrl>https://github.com/techtalk/SpecFlow</RepositoryUrl>
     <PackageTags>specflow bdd gherkin cucumber</PackageTags>
     <Description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today."</Description>
     <Copyright>$(TechTalkCopyright)</Copyright>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup>

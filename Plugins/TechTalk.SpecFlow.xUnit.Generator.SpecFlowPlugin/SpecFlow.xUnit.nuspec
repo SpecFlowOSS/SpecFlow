@@ -5,7 +5,6 @@
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <id>SpecFlow.xUnit</id>
     <title>SpecFlow.xUnit</title>

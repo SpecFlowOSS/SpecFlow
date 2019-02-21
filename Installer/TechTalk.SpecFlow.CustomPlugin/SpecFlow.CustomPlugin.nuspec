@@ -10,7 +10,6 @@
     <summary>Package for writing custom generator extensions for SpecFlow.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow bdd gherkin cucumber generator</tags>

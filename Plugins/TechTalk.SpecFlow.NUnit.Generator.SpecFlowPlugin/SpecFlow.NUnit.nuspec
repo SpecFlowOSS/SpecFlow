@@ -10,7 +10,6 @@
     <summary>Combined package to setup SpecFlow with NUnit v2.6+ easily. For running tests with NUnit runners, use SpecFlow.NUnit.Runners package!</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow nunit</tags>
