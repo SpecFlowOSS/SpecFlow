@@ -20,3 +20,10 @@ jobs:
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     pool:
       name: 'Hosted VS2017'
+
+- template: build.yml  
+  parameters:
+    name: Linux
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    pool:
+      name: 'Hosted Ubuntu 1604'
