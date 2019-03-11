@@ -21,11 +21,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var countdown = new CountdownEvent(times);
             var semaphore = new SemaphoreSlim(1, 1);
             var testOutputList = new List<string>();
+
+            bool failureOnSemaphoreEntering = false;
+
             void WriteTestOutputCallback(string message)
             {
                 countdown.Signal();
                 if (!semaphore.Wait(0))
                 {
+                    failureOnSemaphoreEntering = true;
                     return;
                 }
 
@@ -46,6 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // ASSERT
             countdown.Wait(TimeSpan.FromSeconds(10)).Should().BeTrue();
+            failureOnSemaphoreEntering.Should().BeFalse();
             testOutputList.Should().HaveCount(times);
         }
 
