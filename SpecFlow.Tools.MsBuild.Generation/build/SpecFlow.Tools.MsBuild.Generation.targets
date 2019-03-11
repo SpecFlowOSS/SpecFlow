@@ -43,7 +43,7 @@
              DesignTime="true"
              Visible="true"
              Condition="'$(EnableDefaultCompileItems)' == 'true'" />
-    <None Remove="@(SpecFlowFeatureFiles)" />
+    
   </ItemGroup>
 
 
