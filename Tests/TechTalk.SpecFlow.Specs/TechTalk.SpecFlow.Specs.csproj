@@ -15,7 +15,7 @@
     <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
     <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>true</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
-    
+
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove=".\TestFiles\**\*" />
@@ -94,7 +94,7 @@
     <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
   </PropertyGroup>
 
-
+ <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" /> <!-- has to be before the PropertyGroup change-->
  <PropertyGroup>
     <BuildDependsOn>
       PreBuild;
@@ -102,6 +102,6 @@
     </BuildDependsOn>
   </PropertyGroup>
 
-  <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+  
 
 </Project>
