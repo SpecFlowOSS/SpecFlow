@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <CpsExtensionSchemaDirectory Condition="'$(CpsExtensionSchemaDirectory)' == ''">$(MSBuildThisFileDirectory)Rules\</CpsExtensionSchemaDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(CpsExtensionSchemaDirectory)\ProjectItemsSchema.xaml;"/>
+
+    <PropertyPageSchema Include="$(CpsExtensionSchemaDirectory)\FeatureFileType.xaml;">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+</Project>

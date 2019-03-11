@@ -26,6 +26,7 @@ jobs:
       filePath: build.ps1
       workingDirectory: ./
       arguments: Debug
+      pwsh: true
 
     displayName: 'restore & build Debug'
 
@@ -34,6 +35,7 @@ jobs:
       filePath: build.ps1
       workingDirectory: ./
       arguments: Release
+      pwsh: true
 
     displayName: 'restore & build Release'
 
