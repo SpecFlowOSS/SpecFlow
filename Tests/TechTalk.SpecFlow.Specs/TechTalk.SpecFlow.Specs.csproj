@@ -14,6 +14,8 @@
     <Configurations>Debug;Release;Debug-XUnit;Debug-MSTest;Debug-NUnit</Configurations>
     <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
     <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>true</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove=".\TestFiles\**\*" />
