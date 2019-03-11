@@ -42,9 +42,8 @@
              AutoGen="true"
              DesignTime="true"
              Visible="true"
-             Condition="'$(EnableDefaultCompileItems)' == 'true'"
-    />
-
+             Condition="'$(EnableDefaultCompileItems)' == 'true'" />
+    <None Remove="@(SpecFlowFeatureFiles)" />
   </ItemGroup>
 
 
@@ -62,8 +61,7 @@
 
 
   <Target Name="UpdateFeatureFilesInProject"
-          DependsOnTargets="BeforeUpdateFeatureFilesInProject"
-          >
+          DependsOnTargets="BeforeUpdateFeatureFilesInProject">
 
     <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
 

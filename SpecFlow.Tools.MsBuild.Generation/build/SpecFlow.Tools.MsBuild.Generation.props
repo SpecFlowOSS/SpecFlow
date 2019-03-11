@@ -64,6 +64,8 @@
     <UpToDateCheckInput Include="@(SpecFlowFeatureFiles)" />
     <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" Original="@(SpecFlowFeatureFiles)" />
     <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+
+    
   </ItemGroup>
 
 

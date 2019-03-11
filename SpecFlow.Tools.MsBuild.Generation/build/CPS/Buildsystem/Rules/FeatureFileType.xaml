@@ -5,7 +5,7 @@
     Name="Feature"
     DisplayName="Feature"
     PageTemplate="tool"
-    Description="Feature build items" 
+    Description="SpecFlow Feature file" 
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
@@ -25,7 +25,7 @@
         </StringProperty.DataSource>
     </StringProperty>
 
-    <BoolProperty Name="Visible" Visible="true" />
+    <!--<BoolProperty Name="Visible" Visible="true" />-->
     <StringProperty Name="DependentUpon" Visible="false" />
     <StringProperty Name="Link" Visible="false" />
 
