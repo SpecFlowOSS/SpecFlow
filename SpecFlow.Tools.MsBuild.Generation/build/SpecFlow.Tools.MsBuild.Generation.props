@@ -44,7 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SpecFlowFeatureFiles Include="**\*.feature" Condition="false" >
+    <SpecFlowFeatureFiles Include="**\*.feature" >
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
     </SpecFlowFeatureFiles>
