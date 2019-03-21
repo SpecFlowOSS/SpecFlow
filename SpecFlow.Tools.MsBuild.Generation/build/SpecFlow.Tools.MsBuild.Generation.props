@@ -39,9 +39,13 @@
     -->
     <SpecFlow_EnableDefaultCompileItems Condition="'$(SpecFlow_EnableDefaultCompileItems)'==''">true</SpecFlow_EnableDefaultCompileItems>
     <SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile Condition="'$(SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile)'==''">$(SpecFlow_EnableDefaultCompileItems)</SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile>
+
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.feature</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
+    
+
     <SpecFlowFeatureFiles Include="**\*.feature">
       <CodeBehindFile >%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
       <Visible>true</Visible>
