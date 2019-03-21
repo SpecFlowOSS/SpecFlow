@@ -1,6 +1,6 @@
 ﻿<Project>
 
-  <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
+  <Import Project="SpecFlow.Tools.MsBuild.Generation.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
