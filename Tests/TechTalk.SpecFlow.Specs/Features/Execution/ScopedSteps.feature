@@ -172,6 +172,31 @@ Scenario: No ambiguouity if the same method matches with multiple scopes
 	When I execute the tests
 	Then the binding method 'WhenIDoSomethingInOtherScenarioOrMyTag' is executed
 
+Scenario: No ambiguouity if the same method matches with multiple scopes when scoping step definitions of a binding class
+	Given there is a feature file in the project as
+         """
+			Feature: Simple Feature
+
+			Scenario: Simple Scenario
+			When I do something
+         """
+	And the following binding class
+		 """
+         using TechTalk.SpecFlow;
+
+		 [Binding, Scope(Feature = "Simple Feature")]
+		 public class ScopedSteps
+		 {
+			[When("I do something"), Scope(Scenario = "Simple Scenario")]
+			public void WhenIDoSomethingInSimpleScenario() => global::Log.LogStep();
+
+			[When("I do something"), Scope(Scenario = "Other Scenario")]
+			public void WhenIDoSomethingInOtherScenario() => global::Log.LogStep();
+		 }
+		 """
+	When I execute the tests
+	Then the binding method 'WhenIDoSomethingInSimpleScenario' is executed
+
 Scenario: More scope matches have higher precedency
 	More scope matches (e.g. tag + feature) are "stronger" than less scope matches (e.g. tag) (no ambiguouity)
 	Given there is a feature file in the project as
