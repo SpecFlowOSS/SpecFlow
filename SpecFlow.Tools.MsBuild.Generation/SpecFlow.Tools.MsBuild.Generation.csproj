@@ -39,7 +39,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.8.166" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.8.166" />
-    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
     <PackageReference Update="Microsoft.VisualStudio.Composition" Version="15.8.98" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem" Version="15.8.243" />
