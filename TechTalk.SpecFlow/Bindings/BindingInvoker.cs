@@ -45,13 +45,7 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
 
-                    result = AsyncHelpers.RunSync(async () =>
-                    {
-                        var r = bindingAction.DynamicInvoke(invokeArgs);
-                        if (r is Task t)
-                            await t;
-                        return r;
-                    });
+                    result = InvokeBindingInternal(bindingAction, invokeArgs);
 
                     stopwatch.Stop();
                 }
@@ -80,6 +74,29 @@ namespace TechTalk.SpecFlow.Bindings
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 throw ex;
             }
+        }
+
+        protected virtual object InvokeBindingInternal(Delegate bindingAction, object[] invokeArgs)
+        {
+            if (typeof(Task).IsAssignableFrom(bindingAction.Method.ReturnType))
+                return InvokeBindingAsync(bindingAction, invokeArgs);
+            return InvokeBindingSync(bindingAction, invokeArgs);
+        }
+
+        protected virtual object InvokeBindingSync(Delegate bindingAction, object[] invokeArgs)
+        {
+            return bindingAction.DynamicInvoke(invokeArgs);
+        }
+
+        protected virtual object InvokeBindingAsync(Delegate bindingAction, object[] invokeArgs)
+        {
+            return AsyncHelpers.RunSync(async () =>
+            {
+                var r = bindingAction.DynamicInvoke(invokeArgs);
+                if (r is Task t)
+                    await t;
+                return r;
+            });
         }
 
         protected virtual CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
