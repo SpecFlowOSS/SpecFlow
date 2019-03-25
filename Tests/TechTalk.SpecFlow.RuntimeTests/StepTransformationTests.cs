@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             stepTransformationBinding.Regex.IsMatch("user xyz").Should().BeTrue();
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
             TimeSpan duration;
             var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);
@@ -116,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("string xyz"));
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
             TimeSpan duration;
             var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);
@@ -131,7 +131,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = stepTransformationInstance.GetType().GetMethod("StringToStringConvert");
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
             TimeSpan duration;
             var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);
@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = stepTransformationInstance.GetType().GetMethod("TableToTableConvert");
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
             TimeSpan duration;
             var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { new Table("h1") }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);
