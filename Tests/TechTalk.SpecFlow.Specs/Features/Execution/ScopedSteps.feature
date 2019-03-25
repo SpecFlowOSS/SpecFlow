@@ -1,194 +1,27 @@
-﻿Feature: Scoping step definitions
-	As a developer
-	I would like to be able to scope the step definitions (bindings) on method and class level
-	So that I can implement test logic differently depending on the usage context
+@featureTag
+Feature: SpecFlowFeature1
+	The feature tag is used to scope the Step Definitnion class
+	both scenario tags are scoped to a different method that uses the same [When...] definition.
+	Binding of both When steps is not working.
+	If the feature tag is removed, scenarios are bound properly (but all other bindings within the class are broken)
+	
 
-Attribute usage:
+@scenarioTag1
+Scenario: Add two numbers
+	the scenario tag 1 is used to scope the "I press add" step
+	it is scoped to the method WhenIPressAdd()
 
-[Scope(Tag = "mytag", Feature = "feature title", Scenario = "scenario title")] 
+	Given I have entered 50 into the calculator
+	And I have entered 70 into the calculator
+	When I press add
+	Then the result should be 120 on the screen
 
-Future ideas:
-* scope for previous steps ([StepContext(Step = "my previous step for doing something")])
-* use regex in scopes ([StepContext(Scenario = "(my )?scenario title")])
+@scenarioTag2
+Scenario: Substract two numbers
+	the scenario tag 2 is used to scope the "I press add" step
+	it is scoped to the method WhenIPressAddVariant()
 
-Scenario: Scoping step definitions to tags
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definitions
-		 """
-			[When("I do something"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingWithMyTag()
-			{
-                global::Log.LogStep();
-            }
-
-			[When("I do something"), Scope(Tag = "othertag")]
-			public void WhenIDoSomethingWithOtherTag()
-			{
-                global::Log.LogStep();
-            }
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingWithMyTag' is executed
-
-Scenario: Scoping step definitions to features
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definitions
-		 """
-			[When("I do something"), Scope(Feature = "Simple Feature")]
-			public void WhenIDoSomethingInSimpleFeature() => global::Log.LogStep();
-
-			[When("I do something"), Scope(Feature = "Other Feature")]
-			public void WhenIDoSomethingInOtherFeature() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingInSimpleFeature' is executed
-
-
-Scenario: Scoping step definitions to scenarios
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definitions
-		 """
-			[When("I do something"), Scope(Scenario = "Simple Scenario")]
-			public void WhenIDoSomethingInSimpleScenario() => global::Log.LogStep();
-
-			[When("I do something"), Scope(Scenario = "Other Scenario")]
-			public void WhenIDoSomethingInOtherScenario() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingInSimpleScenario' is executed
-
-Scenario: Scopes can be conbined with AND
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definition
-		 """
-			[When("I do something"), Scope(Feature = "Simple Feature", Tag = "mytag")]
-			public void WhenIDoSomethingInSimpleFeatureAndMyTag() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingInSimpleFeatureAndMyTag' is executed
-
-Scenario: Scopes can be conbined with OR
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-
-			Scenario: Other Scenario
-			When I do something
-         """
-	And the following step definition
-		 """
-			[When("I do something"), Scope(Scenario = "Other Scenario"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingInOtherScenarioOrMyTag() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingInOtherScenarioOrMyTag' is executed twice
-
-Scenario: Scoped matches have higher precedency
-	Scoped matches are "stronger" than non-scoped matches (no ambiguouity).
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definitions
-		 """
-			[When("I do something"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingWithMyTag() => global::Log.LogStep();
-
-			[When("I do something")]
-			public void WhenIDoSomethingNonScoped() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingWithMyTag' is executed
-
-Scenario: Scoping step definitions of a binding class
-	The attribute can be also placed on the binding class.
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following binding class
-		 """
-         using TechTalk.SpecFlow;
-
-		 [Binding, Scope(Tag = "mytag")]
-		 public class ScopedSteps
-		 {
-			[When("I do something")]
-			public void WhenIDoSomethingWithMyTag() => global::Log.LogStep();
-		 }
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingWithMyTag' is executed
-
-
-Scenario: No ambiguouity if the same method matches with multiple scopes
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definition
-		 """
-			[When("I do something"), Scope(Scenario = "Simple Scenario"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingInOtherScenarioOrMyTag() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingInOtherScenarioOrMyTag' is executed
-
-Scenario: More scope matches have higher precedency
-	More scope matches (e.g. tag + feature) are "stronger" than less scope matches (e.g. tag) (no ambiguouity)
-	Given there is a feature file in the project as
-         """
-			Feature: Simple Feature
-			@mytag
-			Scenario: Simple Scenario
-			When I do something
-         """
-	And the following step definition
-		 """
-			[When("I do something"), Scope(Feature = "Simple Feature", Tag = "mytag")]
-			public void WhenIDoSomethingInSimpleFeatureAndMyTag() => global::Log.LogStep();
-
-			[When("I do something"), Scope(Tag = "mytag")]
-			public void WhenIDoSomethingWithMyTag() => global::Log.LogStep();
-		 """
-	When I execute the tests
-	Then the binding method 'WhenIDoSomethingInSimpleFeatureAndMyTag' is executed
-
+	Given I have entered 50 into the calculator
+	And I have entered 70 into the calculator
+	When I press add
+	Then the result should be 120 on the screen
