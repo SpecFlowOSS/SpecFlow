@@ -4,7 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
     /// <summary>
     /// https://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously#answer-5097066
