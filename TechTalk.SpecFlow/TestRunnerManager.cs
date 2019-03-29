@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
         private readonly object syncRoot = new object();
         private bool isTestRunInitialized;
+        private object disposeLockObj = null;
 
         public Assembly TestAssembly { get; private set; }
         public Assembly[] BindingAssemblies { get; private set; }
@@ -99,17 +100,15 @@ namespace TechTalk.SpecFlow
 
         protected internal virtual void OnDomainUnload()
         {
-            OnTestRunnerEnd();
+            Dispose();
         }
 
-        protected virtual void OnTestRunnerEnd()
+        private void FireTestRunEnd()
         {
+            // this method must not be called multiple times
             var onTestRunnerEndExecutionHost = testRunnerRegistry.Values.FirstOrDefault();
             if (onTestRunnerEndExecutionHost != null)
                 onTestRunnerEndExecutionHost.OnTestRunEnd();
-
-            // this will dispose this object
-            globalContainer.Dispose();
         }
 
         protected virtual ITestRunner CreateTestRunnerInstance()
@@ -164,8 +163,16 @@ namespace TechTalk.SpecFlow
 
         public virtual void Dispose()
         {
-            testRunnerRegistry.Clear();
-            OnTestRunnerManagerDisposed(this);
+            if (Interlocked.CompareExchange<object>(ref disposeLockObj, new object(), null) == null)
+            {
+                FireTestRunEnd();
+
+                // this call dispose on this object, but the disposeLockObj will avoid double execution
+                globalContainer.Dispose();
+
+                testRunnerRegistry.Clear();
+                OnTestRunnerManagerDisposed(this);
+            }
         }
 
         #region Static API
@@ -208,9 +215,8 @@ namespace TechTalk.SpecFlow
         public static void OnTestRunEnd(Assembly testAssembly = null)
         {
             testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
-            var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: false) as TestRunnerManager;
-            if (testRunnerManager != null)
-                testRunnerManager.OnDomainUnload();
+            var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: false);
+            testRunnerManager?.Dispose();
         }
 
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
