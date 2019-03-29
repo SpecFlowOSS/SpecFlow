@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow
             testRunner.OnTestRunStart();
 
 #if !SILVERLIGHT
-            EventHandler domainUnload = delegate { OnTestRunnerEnd(); };
+            EventHandler domainUnload = delegate { OnDomainUnload(); };
             AppDomain.CurrentDomain.DomainUnload += domainUnload;
             AppDomain.CurrentDomain.ProcessExit += domainUnload;
 #endif
@@ -95,6 +95,11 @@ namespace TechTalk.SpecFlow
                 bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
             }
             bindingRegistryBuilder.BuildingCompleted();
+        }
+
+        protected internal virtual void OnDomainUnload()
+        {
+            OnTestRunnerEnd();
         }
 
         protected virtual void OnTestRunnerEnd()
@@ -169,15 +174,19 @@ namespace TechTalk.SpecFlow
         private static readonly object testRunnerManagerRegistrySyncRoot = new object();
         private const int FixedLogicalThreadId = 0;
 
-        private static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
+        public static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly = null, IContainerBuilder containerBuilder = null, bool createIfMissing = true)
         {
-            ITestRunnerManager testRunnerManager;
-            if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
+            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+
+            if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out var testRunnerManager))
             {
                 lock (testRunnerManagerRegistrySyncRoot)
                 {
                     if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
                     {
+                        if (!createIfMissing)
+                            return null;
+
                         testRunnerManager = CreateTestRunnerManager(testAssembly, containerBuilder);
                         testRunnerManagerRegistry.Add(testAssembly, testRunnerManager);
                     }
@@ -194,6 +203,14 @@ namespace TechTalk.SpecFlow
             var testRunnerManager = container.Resolve<ITestRunnerManager>();
             testRunnerManager.Initialize(testAssembly);
             return testRunnerManager;
+        }
+
+        public static void OnTestRunEnd(Assembly testAssembly = null)
+        {
+            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: false) as TestRunnerManager;
+            if (testRunnerManager != null)
+                testRunnerManager.OnDomainUnload();
         }
 
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)

@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Binding]
-        public class PrioritisedHookExample
+        public class PrioritizedHookExample
         {
             [BeforeScenario]
             public void OrderTenThousand()
@@ -149,7 +149,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
 
-            builder.BuildBindingsFromType(typeof (PrioritisedHookExample));
+            builder.BuildBindingsFromType(typeof (PrioritizedHookExample));
 
             Assert.Equal(1,
                 bindingSourceProcessorStub.HookBindings.Count(
