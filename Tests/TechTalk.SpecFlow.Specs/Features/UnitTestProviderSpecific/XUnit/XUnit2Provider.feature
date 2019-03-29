@@ -12,14 +12,14 @@ Scenario: Should be able to log custom messages
         [When(@"I do something")]
         public void WhenIDoSomething()
         {
-        ScenarioContext.Current.ScenarioContainer.Resolve<Xunit.Abstractions.ITestOutputHelper>().WriteLine("something");
+        ScenarioContext.Current.ScenarioContainer.Resolve<Xunit.Abstractions.ITestOutputHelper>().WriteLine("F89FFFA1-88CD-40C8-B0E2-2B167E1F81A2");
         }
         """
     When I execute the tests
     Then the execution summary should contain
         | Succeeded |
         | 1         |
-    And the execution log should contain text 'something'
+    And the execution log should contain text 'F89FFFA1-88CD-40C8-B0E2-2B167E1F81A2'
 
 
 Scenario: Should be able to log custom messages using context injection
@@ -43,7 +43,7 @@ Scenario: Should be able to log custom messages using context injection
             [When(@"I do something")]
             public void WhenIDoSomething()
             {
-                _output.WriteLine("something");
+                _output.WriteLine("EB7C1291-2C44-417F-ABB7-A5154843BC7B");
             }
         }
         """	
@@ -55,7 +55,7 @@ Scenario: Should be able to log custom messages using context injection
     Then the execution summary should contain
          | Succeeded |
          | 1         |
-    And the execution log should contain text 'something'
+    And the execution log should contain text 'EB7C1291-2C44-417F-ABB7-A5154843BC7B'
 
 Scenario: Usage of collection attribute adds category
     Given there is a SpecFlow project
@@ -116,7 +116,7 @@ Scenario: Usage of collection attribute injects collection's TFixture
             {
                 if (_sampleFixture != null) 
                 {
-                    _output.WriteLine("TFixture initialization works");
+                    _output.WriteLine("TFixture initialization works 5C3548BE-F19C-485C-8A9F-E2BF1C5BF1B3");
                 }
             }
         }
@@ -125,4 +125,4 @@ Scenario: Usage of collection attribute injects collection's TFixture
     Then the execution summary should contain
         | Succeeded |
         | 1         |
-    And the execution log should contain text 'TFixture initialization works'
+    And the execution log should contain text 'TFixture initialization works 5C3548BE-F19C-485C-8A9F-E2BF1C5BF1B3'
