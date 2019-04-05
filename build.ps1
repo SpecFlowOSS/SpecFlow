@@ -13,7 +13,7 @@ if ($IsWindows){
   Write-Host $path
   
   if ($vsPath) {
-    $msbuildPath = join-path $vsPath 'MSBuild\15.0\Bin\MSBuild.exe'
+    $msbuildPath = join-path $vsPath 'MSBuild\Current\Bin\MSBuild.exe'
   }
   
   Write-Host $msbuildPath
