@@ -17,28 +17,27 @@ namespace TechTalk.SpecFlow.Bindings
         /// <param name="task">Task<T> method to execute</param>
         public static void RunSync(Func<Task> task)
         {
-            var oldContext = SynchronizationContext.Current;
             var synch = new ExclusiveSynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(synch);
-            synch.Post(async _ =>
+            using (new SetSynchronizationContext(synch))
             {
-                try
+                synch.Post(async _ =>
                 {
-                    await task();
-                }
-                catch (Exception e)
-                {
-                    synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
-                    throw;
-                }
-                finally
-                {
-                    synch.EndMessageLoop();
-                }
-            }, null);
-            synch.BeginMessageLoop();
-
-            SynchronizationContext.SetSynchronizationContext(oldContext);
+                    try
+                    {
+                        await task();
+                    }
+                    catch (Exception e)
+                    {
+                        synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
+                        throw;
+                    }
+                    finally
+                    {
+                        synch.EndMessageLoop();
+                    }
+                }, null);
+                synch.BeginMessageLoop();
+            }
         }
 
         /// <summary>
@@ -49,29 +48,29 @@ namespace TechTalk.SpecFlow.Bindings
         /// <returns></returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
-            var oldContext = SynchronizationContext.Current;
             var synch = new ExclusiveSynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(synch);
-            T ret = default(T);
-            synch.Post(async _ =>
+            using (new SetSynchronizationContext(synch))
             {
-                try
+                T ret = default(T);
+                synch.Post(async _ =>
                 {
-                    ret = await task();
-                }
-                catch (Exception e)
-                {
-                    synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
-                    throw;
-                }
-                finally
-                {
-                    synch.EndMessageLoop();
-                }
-            }, null);
-            synch.BeginMessageLoop();
-            SynchronizationContext.SetSynchronizationContext(oldContext);
-            return ret;
+                    try
+                    {
+                        ret = await task();
+                    }
+                    catch (Exception e)
+                    {
+                        synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
+                        throw;
+                    }
+                    finally
+                    {
+                        synch.EndMessageLoop();
+                    }
+                }, null);
+                synch.BeginMessageLoop();
+                return ret;
+            }
         }
 
         private class ExclusiveSynchronizationContext : SynchronizationContext
@@ -131,6 +130,22 @@ namespace TechTalk.SpecFlow.Bindings
             public override SynchronizationContext CreateCopy()
             {
                 return this;
+            }
+        }
+
+        private sealed class SetSynchronizationContext: IDisposable
+        {
+            private SynchronizationContext _oldContext;
+
+            public SetSynchronizationContext(SynchronizationContext synchronizationContext)
+            {
+                _oldContext = SynchronizationContext.Current;
+                SynchronizationContext.SetSynchronizationContext(synchronizationContext);
+            }
+
+            public void Dispose()
+            {
+                SynchronizationContext.SetSynchronizationContext(_oldContext);
             }
         }
     }
