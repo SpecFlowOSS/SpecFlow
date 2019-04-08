@@ -26,9 +26,7 @@
     <None Include="App.config" />
 
     <Compile Remove="NuGetPackageVersion.template.cs" />
-    <Compile Remove="NuGetPackageVersion.cs" Condition=" Exists('NuGetPackageVersion.cs') " />
     <None Include="NuGetPackageVersion.template.cs" />
-    <Compile Remove="NuGetPackageVersion.template.cs" />
     <SpecFlowFeatureFiles Remove="TestFiles/**/*.feature" />
   </ItemGroup>
 
@@ -75,7 +73,6 @@
     <ReplaceTextInFileTask InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" TextToReplace="NUGET_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
 
     <ItemGroup>
-      <Compile Remove="$(ProjectDir)\\NuGetPackageVersion.cs" />
       <Compile Include="$(ProjectDir)\\NuGetPackageVersion.cs" />
     </ItemGroup>
   </Target>
