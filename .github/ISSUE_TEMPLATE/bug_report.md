@@ -31,7 +31,6 @@ Version number:
 - [ ] VS 2019
 - [ ]	VS 2017
 - [ ]	VS 2015
-- [ ]	VS 2013
 
 ### Are the latest Visual Studio updates installed?
 - [ ]	Yes
