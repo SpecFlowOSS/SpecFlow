@@ -1,6 +1,13 @@
 ﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
 
   <PropertyGroup>
+    <SpecFlow_CpsExtensionDesignTimeTargetsPath Condition="'$(SpecFlow_CpsExtensionDesignTimeTargetsPath)' == ''">$(MSBuildThisFileDirectory)CPS\BuildSystem\CpsExtension.DesignTime.targets</SpecFlow_CpsExtensionDesignTimeTargetsPath>
+  </PropertyGroup>
+
+  <Import Project="$(SpecFlow_CpsExtensionDesignTimeTargetsPath)" Condition="'$(DesignTimeBuild)' == 'true' " />
+
+
+  <PropertyGroup>
     <SpecFlow_UseHostCompilerIfAvailable Condition="'$(SpecFlow_UseHostCompilerIfAvailable)'==''">false</SpecFlow_UseHostCompilerIfAvailable>
     <UseHostCompilerIfAvailable>$(SpecFlow_UseHostCompilerIfAvailable)</UseHostCompilerIfAvailable>
   </PropertyGroup>
@@ -17,7 +24,7 @@
     <_SpecFlowPropsImported Condition="'$(_SpecFlowPropsImported)'==''">true</_SpecFlowPropsImported>
   </PropertyGroup>
 
- <!--
+  <!--
     property group for feature flags
   -->
   <PropertyGroup>
@@ -32,14 +39,19 @@
     -->
     <SpecFlow_EnableDefaultCompileItems Condition="'$(SpecFlow_EnableDefaultCompileItems)'==''">true</SpecFlow_EnableDefaultCompileItems>
     <SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile Condition="'$(SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile)'==''">$(SpecFlow_EnableDefaultCompileItems)</SpecFlow_EnableWarnForFeatureCodeBehindFilesWithoutCorrespondingFeatureFile>
+
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.feature</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
-    <SpecFlowFeatureFiles Include="**\*.feature">
-      <CodeBehindFile >%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    <SpecFlowFeatureFiles Include="**\*.feature" >
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
     </SpecFlowFeatureFiles>
+
     <SpecFlowFeatureFiles Include="**\*.feature.xlsx">
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
     </SpecFlowFeatureFiles>
 
     <!-- obsolete codebehind files, scenarios:
@@ -55,6 +67,7 @@
     <UpToDateCheckInput Include="@(SpecFlowFeatureFiles)" />
     <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" Original="@(SpecFlowFeatureFiles)" />
     <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+
   </ItemGroup>
 
 

@@ -28,9 +28,9 @@ Version number:
 
 
 ### Visual Studio Version
+- [ ] VS 2019
 - [ ]	VS 2017
 - [ ]	VS 2015
-- [ ]	VS 2013
 
 ### Are the latest Visual Studio updates installed?
 - [ ]	Yes
@@ -49,8 +49,8 @@ Version number:
 - [ ]	TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
 - [ ]	Command line – PLEASE SPECIFY THE FULL COMMAND LINE
  
-### &lt;SpecFlow> Section in app.config
-<!-- PLEASE COPY THE ENTRIE <SpecFlow> SECTION IN YOUR .config FILE AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
+### &lt;SpecFlow> Section in app.config or content of specflow.json
+<!-- PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTRIE specflow.json AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
 ```
 
 ```

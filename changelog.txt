@@ -1,4 +1,4 @@
-3.0 - 2018-??-??
+3.0 - 2018-03-28
 
 Breaking changes:
 + Registration of value retrievers and comparers changes from `RegisterValueComparer(___)` to `ValueComparers.Register(___)`
