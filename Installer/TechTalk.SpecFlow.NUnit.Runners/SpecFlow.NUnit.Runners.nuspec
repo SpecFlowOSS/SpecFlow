@@ -12,6 +12,7 @@
     <projectUrl>http://www.specflow.org</projectUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow nunit nunit.runners nunit-console</tags>
     <dependencies>
       <dependency id="SpecFlow.NUnit" version="[$version$]" />
@@ -21,6 +22,6 @@
   </metadata>
 
   <files>
-
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
   </files>
 </package>

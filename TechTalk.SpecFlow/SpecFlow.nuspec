@@ -12,6 +12,7 @@
     <projectUrl>http://www.specflow.org</projectUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber</tags>
     <dependencies>
       <group targetFramework="net45">
@@ -46,6 +47,8 @@
     
     <file src="$SolutionDir$\Licenses\*" target="Licenses" />
     <file src="$SolutionDir$\*.txt" target="" />
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
 
   </files>
 
