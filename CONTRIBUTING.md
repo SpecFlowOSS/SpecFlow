@@ -2,15 +2,17 @@
 
 This contributing guide is based on the contributing for ElixirScript (which was based on the guide for contributing to Elixir), with changes suitable for this project.
 
+Contributing can have many faces. It can be code, but also answering questions and issues, writing documentation or trying out preview versions are contributions.
+
 ## Using the issue tracker
 
 Use the issues tracker for:
 
 * [bug reports](#bug)
-* [submitting pull requests](no special label for these)
+* [pull requests](#pull-requests)
 * [feature requests](#feature-request)
 
-## Bug reports
+### Bug reports
 
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
 Good bug reports are extremely helpful - thank you!
@@ -24,43 +26,24 @@ Guidelines for bug reports:
    `master` branch in the repository.
 
 3. **Isolate and report the problem** &mdash; ideally create a reduced test
-   case.
+   case. Fill out the provided template.
 
 4. **Provide a screenshot or example code** &mdash; you might in a situation that
    is very tied to your specific use-case, so provide as much information as
   possible.
 
 Please try to be as detailed as possible in your report. Please provide steps to
-reproduce the issue as well as the outcome you were expecting! All these details
+reproduce the issue as well as the outcome you were expecting! And fill out the issue template. If you don't provide this information, we have to ask them again from you. All these details
 will help developers to fix any potential bugs.
 
-Example:
 
-> Short and descriptive example bug report title
->
-> A summary of the issue and the environment in which it occurs. If suitable,
-> include the steps required to reproduce the bug.
->
-> 1. This is the first step
-> 2. This is the second step
-> 3. Further steps, etc.
->
-> `<url>` - a link to the reduced test case (e.g. a GitHub Gist)
->
-> Used SpecFlow Version: (1.9, 2.0, 2.1, ...)
-> Used Test Runner: (NUnit, XUnit, SpecFlow+Runner, MsTest, ...)
->
-> Any other information you want to share that is relevant to the issue being
-> reported. This might include the lines of code that you have identified as
-> causing the bug, and potential solutions (and your opinions on their
-> merits).
 
 We move issues that need help, but may not be of a criticial nature or require
 intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/techtalk/SpecFlow/labels/up-for-grabs). 
 This is a list of easier tasks that anybody who wants to get into SpecFlow
 development can try.  Thank you!
 
-## Feature requests
+### Feature requests
 
 Feature requests are welcome. But please take a moment to find
 out whether your idea fits with the scope and aims of the project. It's up to *you*
@@ -73,35 +56,13 @@ feature request.  Anybody is free to pick up on the idea, and we welcome the wor
 the interest of keeping the issue list down to a maintainable level, we have to do some
 pruning from time-to-time.
 
-## Contributing
-
-Contributions to SpecFlow are welcomed, appreciated, and loved! These contributions can be
-in the form or code changes, documentation, or ideas of how to implement features.
-
-SpecFlow is broken up into the following parts:
-
-* 1
-* 2
-* 3
-
-## Style and Naming Conventions
-
-### Static versus Instance Methods
-
-We prefer instance methods, even if they can be made static because they do not use instance members. Making a static methods into an instance method happens relatively often and can entail a lot of work.
-
-### Naming Conventions for Tests
-
-The test class should be named like the class it is testing, with a `Tests` suffix.
-So for example:  if a class is named `Calculator`, then the test class is called `CalculatorTests`.
-
-Each test method is named by three parts, separated by an underscore. The parts are "method or property under test", "scenario" and "expected result". For example, if we want to test the `Add` method with a small positive and a big negative argument and the result should be negative, then the text method would be called `Add_SmallPositiveAndBigNegativeArgument_ResultShouldBeNegative`.
-
-## Pull requests
+### Pull requests
 
 Good pull requests - patches, improvements, new features - are a fantastic
 help. They should remain focused in scope and avoid containing unrelated
 commits.
+
+All needed informations about developing SpecFlow can be found at [Development.md](/docs/Development.md).
 
 **NOTE**: Do not send code style changes as pull requests like changing
 the indentation of some particular code snippet or how a function is called.
