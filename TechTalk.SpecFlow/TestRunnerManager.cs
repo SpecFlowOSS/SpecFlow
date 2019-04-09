@@ -72,11 +72,9 @@ namespace TechTalk.SpecFlow
 
             testRunner.OnTestRunStart();
 
-#if !SILVERLIGHT
             EventHandler domainUnload = delegate { OnDomainUnload(); };
             AppDomain.CurrentDomain.DomainUnload += domainUnload;
             AppDomain.CurrentDomain.ProcessExit += domainUnload;
-#endif
         }
 
         protected virtual Assembly[] GetBindingAssemblies()

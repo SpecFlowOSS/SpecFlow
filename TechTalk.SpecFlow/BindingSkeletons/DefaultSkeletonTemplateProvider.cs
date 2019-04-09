@@ -28,15 +28,11 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         protected override string GetTemplateFileContent()
         {
-#if SILVERLIGHT
-            return "";
-#else
             string templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"SpecFlow\SkeletonTemplates.sftemplate");
             if (!File.Exists(templateFilePath))
                 return "";
 
             return File.ReadAllText(templateFilePath);
-#endif
         }
 
         protected internal override string GetTemplate(string key)
