@@ -19,7 +19,7 @@ jobs:
     name: Windows
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     pool:
-      name: 'Hosted VS2017'
+      name: 'Hosted Windows 2019 with VS2019'
 
 # - template: build.yml  
 #   parameters:
