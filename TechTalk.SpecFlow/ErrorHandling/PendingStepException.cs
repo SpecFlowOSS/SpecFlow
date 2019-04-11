@@ -6,9 +6,7 @@ using System.Runtime.Serialization;
 // ReSharper disable once CheckNamespace
 namespace TechTalk.SpecFlow
 {
-#if !SILVERLIGHT
     [Serializable]
-#endif
     public class PendingStepException : SpecFlowException
     {
         public PendingStepException()
@@ -16,12 +14,10 @@ namespace TechTalk.SpecFlow
         {
         }
 
-#if !SILVERLIGHT
         protected PendingStepException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)
         {
         }
-#endif
     }
 }

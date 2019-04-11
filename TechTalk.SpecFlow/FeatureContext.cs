@@ -1,9 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-#if SILVERLIGHT
-using TechTalk.SpecFlow.Compatibility;
-#endif
 using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;

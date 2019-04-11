@@ -7,9 +7,6 @@ using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 
-#if SILVERLIGHT
-using TechTalk.SpecFlow.Compatibility;
-#endif
 
 namespace TechTalk.SpecFlow
 {
