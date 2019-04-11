@@ -10,9 +10,9 @@
     <summary>Combined package to setup SpecFlow with NUnit v2.6+ easily. For running tests with NUnit runners, use SpecFlow.NUnit.Runners package!</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow nunit</tags>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
@@ -29,5 +29,7 @@
     <file src="bin\$config$\net471\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.*" target="build\$SpecFlow_FullFramework_Generator_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.dll" target="build\$SpecFlow_Core_Generator_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.pdb" target="build\$SpecFlow_Core_Generator_TFM$" />
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
   </files>
 </package>

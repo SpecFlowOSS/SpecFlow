@@ -10,9 +10,9 @@
     <summary>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber</tags>
     <dependencies>
       <group targetFramework="net45">
@@ -47,6 +47,8 @@
     
     <file src="$SolutionDir$\Licenses\*" target="Licenses" />
     <file src="$SolutionDir$\*.txt" target="" />
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
 
   </files>
 

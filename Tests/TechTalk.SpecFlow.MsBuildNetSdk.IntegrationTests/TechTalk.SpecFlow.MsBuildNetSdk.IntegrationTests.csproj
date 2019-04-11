@@ -4,7 +4,7 @@
     manual import sdk to be able to simulate nuget based imports
   -->
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-  <Import Project="../../macos.props" />
+  
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>

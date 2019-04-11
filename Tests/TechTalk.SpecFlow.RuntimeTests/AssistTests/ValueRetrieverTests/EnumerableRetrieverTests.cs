@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         {
             TestRetrieve(
                 valueType,
-                $"{textValues[0]},{textValues[1]};{textValues[2]}",
+                $"{textValues[0]},{textValues[1]},{textValues[2]}",
                 expectedValues);
         }
 
