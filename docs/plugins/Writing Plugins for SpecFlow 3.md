@@ -77,42 +77,41 @@ For a generator plugin you  need a reference to the `SpecFlow.CustomPlugin`- NuG
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/build/SpecFlow.SamplePlugin.targets>
 
-Depending on the used MSBuild version (.NET Full Framework or .NET Core), we have to add a different assembly in the ItemGroup.
-Because the `$(MSBuildRuntimeType)` property is only availabe in imported `target`- Files, we have to calculate here the path to the assembly.
+We have to add a different assembly to the ItemGroup depending on the MSBuild version in use (.NET Full Framework or .NET Core).
+Because the `$(MSBuildRuntimeType)` property is only availabe in imported `target` files, we have to work out the path to the assembly here.
 
 #### build/SpecFlow.SamplePlugin.props
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/build/SpecFlow.SamplePlugin.props>
 
-As we have now a property which contains the path to the assembly, we can add it here to the `SpecFlowGeneratorPlugins`- ItemGroup.
+As we have now a property containing the path to the assembly, we can add it to the `SpecFlowGeneratorPlugins` ItemGroup here.
 
 #### Directory.Build.targets
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/Directory.Build.targets>
 
-To specific the path to the assemblies which should be put into the NuGet package, we have to set some NuSpec properties.
-This is done in the `Directory.Build.targets` so it defined for all projects in subfolders. We add the value of the current configuration to the available properties.
+To specify the path to the assemblies which should be included in the NuGet package, we have to set various NuSpec properties.
+This is done in the `Directory.Build.targets`, so it defined for all projects in subfolders. We add the value of the current configuration to the available properties.
 
 #### SamplePlugin.nuspec
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/SamplePlugin.nuspec>
 
-This is the NuSpec- File to provide infos for the NuGet package. To get the files from the build- directory into the NuGet package, we have to specify them in the `file`- list.
-The generator plugin assemblies are also specified here. For that, we are using the additional `$config$` property we added in the `Directory.Build.targets`.
-Here it is important, that they don't get added to the `lib` folder. If they were there, they would be referenced by the project where you add the NuGet package. This is something we don't want.
+This is the NuSpec filethat privodes information for the NuGet package. To get the files from the build directory into the NuGet package, we have to specify them in the `file` list.
+The generator plugin assemblies are also specified here, using the additional `$config$` property we added in the `Directory.Build.targets`.
+It is important to ensure that they are not added to the `lib` folder. If this were the case, they would be referenced by the project where you add the NuGet package. This is something we don't want to happen!
 
 ## Combined Package with both plugins
 
-If you need to adjust Generator and Runtime with a single NuGet package (as we are doing with the `SpecFlow.xUnit`, `SpecFlow.NUnit` and `SpecFlow.xUnit` packages), you need to put the Generator and Runtime plugin in a single NuGet package.
+If you need to update generator and runtime plugisn with a single NuGet package (as we are doing with the `SpecFlow.xUnit`, `SpecFlow.NUnit` and `SpecFlow.xUnit` packages), you can do so.
 
-As with the seperate plugins, you need two projects. One for Runtime plugin, one for Generator plugin. As you only want one NuGet package, you have to put the NuSpec- file only in one of the projects.
-This is in the Generator project. Reason is, the Generator plugin is build with a higher .NET Framework version (.NET 4.7.1) and so you can make a dependency on the Runtime plugin (which is only .NET 4.5).
-It doesn't work in the other direction.
+As with the seperate plugins, you need two projects. One for the runtime plugin, and one for the generator plugin. As you only want one NuGet package, the** NuSpec files must only be present in the generator project**.
+This is because the generator plugin is built with a higher .NET Framework version (.NET 4.7.1), meaning you can add a dependency on the Runtime plugin (which is only .NET 4.5). This will not working the other way around.
 
 You can simply combine the contents of the `.targets` and `.props` file to a single one.
 
 ### Example
 
-A complete example for a NuGet package that contains Runtime and Generator plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/CombinedPlugin>
+A complete example of a NuGet package that contains a runtime and generator plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/CombinedPlugin>
 
 The files do the same as above.
