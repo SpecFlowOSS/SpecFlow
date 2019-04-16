@@ -10,7 +10,7 @@ It loads them in the order it finds it the folder.
 
 ### Example
 
-A complete example for a Runtime plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/RuntimeOnlyPlugin>
+A complete example for a Runtime plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/RuntimeOnlyPlugin>  
 It packages a Runtime plugin into a NuGet package.
 
 #### SampleRuntimePlugin.csproj
@@ -98,6 +98,21 @@ This is done in the `Directory.Build.targets` so it defined for all projects in 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/SamplePlugin.nuspec>
 
 This is the NuSpec- File to provide infos for the NuGet package. To get the files from the build- directory into the NuGet package, we have to specify them in the `file`- list.
-The runtime plugin assemblies are also specified here. For that, we are using the additional `$config$` property we added in the `Directory.Build.targets`.
+The generator plugin assemblies are also specified here. For that, we are using the additional `$config$` property we added in the `Directory.Build.targets`.
+Here it is important, that they don't get added to the `lib` folder. If they were there, they would be referenced by the project where you add the NuGet package. This is something we don't want.
 
-## Combined Package  with both plugins
+## Combined Package with both plugins
+
+If you need to adjust Generator and Runtime with a single NuGet package (as we are doing with the `SpecFlow.xUnit`, `SpecFlow.NUnit` and `SpecFlow.xUnit` packages), you need to put the Generator and Runtime plugin in a single NuGet package.
+
+As with the seperate plugins, you need two projects. One for Runtime plugin, one for Generator plugin. As you only want one NuGet package, you have to put the NuSpec- file only in one of the projects.
+This is in the Generator project. Reason is, the Generator plugin is build with a higher .NET Framework version (.NET 4.7.1) and so you can make a dependency on the Runtime plugin (which is only .NET 4.5).
+It doesn't work in the other direction.
+
+You can simply combine the contents of the `.targets` and `.props` file to a single one.
+
+### Example
+
+A complete example for a NuGet package that contains Runtime and Generator plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/CombinedPlugin>
+
+The files do the same as above.
