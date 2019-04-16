@@ -1,26 +1,26 @@
 # Writing Plugins for SpecFlow 3
 
-With SpecFlow 3 we changed the way how you configure which plugins are used. They aren't configured anymore in the app.config or specflow.json.
+With SpecFlow 3, we have changed how you configure which plugins are used. They are no longer configured in your `app.config` (or `specflow.json`).
 
 ## Runtime plugin
 
 Runtime plugins need to target .NET Framework 4.5 and .NET Standard 2.0.
-SpecFlow searches all assemblies in the folder of the test assembly for files that end with `.SpecFlowPlugin.dll`.
-It loads them in the order it finds it the folder.
+SpecFlow searches through all assemblies in the folder of your test assembly for files that end with `.SpecFlowPlugin.dll`.
+It loads them in the order it finds plugins in the folder.
 
-### Example
+### Sample runtime plugin
 
-A complete example for a Runtime plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/RuntimeOnlyPlugin>  
+A complete example of a Runtime plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/RuntimeOnlyPlugin>  
 It packages a Runtime plugin into a NuGet package.
 
 #### SampleRuntimePlugin.csproj
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/SampleRuntimePlugin.csproj>
 
-The project targets multiple frameworks. So it uses `<TargetFrameworks>` and not `<TargetFramework>`.
-We set a different `<AssemblyName>` to add the needed `.SpecFlowPlugin` at the end. You could also name your project already with the `.SpecFlowPlugin` at the end.
+The project targets multiple frameworks, so it uses `<TargetFrameworks>` and not `<TargetFramework>`.
+We set a different `<AssemblyName>` to add the required `.SpecFlowPlugin` at the end. You can also name your project with  `.SpecFlowPlugin` at the end.
 `<GeneratePackageOnBuild>` is set to true, so that the NuGet package is generated on build.
-We use a NuSpec file (SamplePlugin.nuspec) to provde all information for the NuGet package. This is set at the `<NuspecFile>` property.
+We use a NuSpec file (SamplePlugin.nuspec) to provde all information for the NuGet package. This is set with the `<NuspecFile>` property.
 
 For a Runtime plugin you only need a reference to the `SpecFlow`- NuGet package.
 
@@ -28,50 +28,50 @@ For a Runtime plugin you only need a reference to the `SpecFlow`- NuGet package.
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/build/SpecFlow.SamplePlugin.targets>
 
-Depending on the Target Framework of the project where the Runtime plugin package is used, we have to copy a different assembly in the output folder.
-Because the `$(TargetFrameworkIdentifider)` property is only availabe in imported `target`- Files, we have to calculate here the path to the assembly.
+We need to copy a different assembly to the output folder depending on the target framework of the project using the runtime plugin package.
+Because the `$(TargetFrameworkIdentifider)` property is only availabe in imported `target` files, we have to work out the path to the assembly here.
 
 #### build/SpecFlow.SamplePlugin.props
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/build/SpecFlow.SamplePlugin.props>
 
-To copy the plugin assembly into the output folder, we include it in the `None`- ItemGroup and set `CopyToOutputDirectory` to `PreserveNewest`. That way, it is copied to the output directory also if you changed it.
+To copy the plugin assembly to the output folder, we include it in the `None`- ItemGroup and set `CopyToOutputDirectory` to `PreserveNewest`. This ensures that it is still copied to the output directory also if you change it.
 
 #### Directory.Build.targets
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/Directory.Build.targets>
 
-To specific the path to the assemblies which should be put into the NuGet package, we have to set some NuSpec properties.
-This is done in the `Directory.Build.targets` so it defined for all projects in subfolders. We add the value of the current configuration to the available properties.
+To specify the path to the assemblies which should be included in the NuGet package, we have to set various NuSpec properties.
+This is done in the `Directory.Build.targets`, so it defined for all projects in subfolders. We add the value of the current configuration to the available properties.
 
 #### SamplePlugin.nuspec
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/SamplePlugin.nuspec>
 
-This is the NuSpec- File to provide infos for the NuGet package. To get the files from the build- directory into the NuGet package, we have to specify them in the `file`- list.
-The runtime plugin assemblies are also specified here. For that, we are using the additional `$config$` property we added in the `Directory.Build.targets`.
+This is the NuSpec filethat privodes information for the NuGet package. To get the files from the build directory into the NuGet package, we have to specify them in the `file` list.
+The runtime plugin assemblies are also specified here, using the additional `$config$` property we added in the `Directory.Build.targets`.
 
 ## Generator plugin
 
 Generator plugins need to target .NET Framework 4.7.1 and .NET Standard 2.0.
-The MSBuild task needs to know which generator plugins it should use. For this you have to add your generator plugin to the `SpecFlowGeneratorPlugins`- ItemGroup.
-This is passed to the MSBuild task as a parameter and used later to load the plugins.
+The MSBuild task needs to know which generator plugins it should use. You therfore have to add your generator plugin to the `SpecFlowGeneratorPlugins` ItemGroup.
+This is passed to the MSBuild task as a parameter and later used to load the plugins.
 
-### Example
+### Sample generator plugin
 
-A complete example for a Runtime plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/GeneratorOnlyPlugin>
+A complete example of a generator plugin can be found here: <https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/GeneratorOnlyPlugin>
 It packages a Generator plugin into a NuGet package.
 
 #### SampleGeneratorPlugin.csproj
 
 <https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/SampleGeneratorPlugin.csproj>
 
-The project targets multiple frameworks. So it uses `<TargetFrameworks>` and not `<TargetFramework>`.
-We set a different `<AssemblyName>` to add the needed `.SpecFlowPlugin` at the end. You could also name your project already with the `.SpecFlowPlugin` at the end.
+The project targets multiple frameworks, so it uses `<TargetFrameworks>` and not `<TargetFramework>`.
+We set a different `<AssemblyName>` to add the required `.SpecFlowPlugin` at the end. You can also name your project with  `.SpecFlowPlugin` at the end.
 `<GeneratePackageOnBuild>` is set to true, so that the NuGet package is generated on build.
-We use a NuSpec file (SamplePlugin.nuspec) to provde all information for the NuGet package. This is set at the `<NuspecFile>` property.
+We use a NuSpec file (SamplePlugin.nuspec) to provde all information for the NuGet package. This is set with the `<NuspecFile>` property.
 
-For a Generator plugin you  need a reference to the `SpecFlow.CustomPlugin`- NuGet package.
+For a generator plugin you  need a reference to the `SpecFlow.CustomPlugin`- NuGet package.
 
 #### build/SpecFlow.SamplePlugin.targets
 
