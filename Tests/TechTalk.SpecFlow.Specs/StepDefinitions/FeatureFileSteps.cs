@@ -32,14 +32,14 @@ Scenario: {title}
                 ");
         }
 
-        [Given(@"a scenario '(.*)' as with collection attribute '(.*)'")]
+        [Given(@"a scenario named '(.*)' with collection tag '(.*)' as")]
         public void GivenAScenarioAsWithCollectionAttribute(string title,  string collection, string scenarioContent)
         {
             _projectsDriver.AddFeatureFile(
                  $@"@xunit:collection({collection})
-                    Feature: Feature {Guid.NewGuid()}
-                    Scenario: {title}
-{scenarioContent.Replace("'''", "\"\"\"")}
+Feature: Feature {Guid.NewGuid()}
+Scenario: {title}
+                    {scenarioContent.Replace("'''", "\"\"\"")}
                 ");
         }
 
