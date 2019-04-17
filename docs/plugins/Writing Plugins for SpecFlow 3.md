@@ -103,7 +103,7 @@ It is important to ensure that they are not added to the `lib` folder. If this w
 
 ## Combined Package with both plugins
 
-If you need to update generator and runtime plugisn with a single NuGet package (as we are doing with the `SpecFlow.xUnit`, `SpecFlow.NUnit` and `SpecFlow.xUnit` packages), you can do so.
+If you need to update generator and runtime plugins with a single NuGet package (as we are doing with the `SpecFlow.xUnit`, `SpecFlow.NUnit` and `SpecFlow.xUnit` packages), you can do so.
 
 As with the seperate plugins, you need two projects. One for the runtime plugin, and one for the generator plugin. As you only want one NuGet package, the** NuSpec files must only be present in the generator project**.
 This is because the generator plugin is built with a higher .NET Framework version (.NET 4.7.1), meaning you can add a dependency on the Runtime plugin (which is only .NET 4.5). This will not working the other way around.
