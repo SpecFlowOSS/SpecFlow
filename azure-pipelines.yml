@@ -1,4 +1,4 @@
-name: SpecFlow.CI 
+name: $(GitAssemblyInformationalVersion)
 
 
 resources:
