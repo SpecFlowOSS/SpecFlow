@@ -2,7 +2,7 @@
 
 This page brings you to all the detailed information to develop on SpecFlow.
 
-For the needed installed dependencies have a look at [Dependencies.md](/development/Dependencies.md)
+For the needed installed dependencies have a look at [Dependencies.md](development/Dependencies.md)
 
 How to setup your local machine you can find at [LocalSetup.md](/development/LocalSetup.md)
 
