@@ -1,4 +1,9 @@
-3.0 - 2018-03-28
+3.0 - 2019-04-24
+
+Changes:
++ Adding the "AfterUpdateFeatureFile" target manually in the classic project format is not required anymore.
+
+3.0 - 2019-03-28
 
 Breaking changes:
 + Registration of value retrievers and comparers changes from `RegisterValueComparer(___)` to `ValueComparers.Register(___)`
