@@ -121,6 +121,10 @@
   </Target>
 
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
+    <!-- include any generated SpecFlow files in the compilation of the project if not included yet -->
+    <ItemGroup>
+      <Compile Include="@(SpecFlowGeneratedFiles)" Exclude="@(Compile)" />
+    </ItemGroup>
   </Target>
 
   <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">
