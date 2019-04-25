@@ -20,6 +20,7 @@
     <BuildDependsOn>
       BeforeUpdateFeatureFilesInProject;
       UpdateFeatureFilesInProject;
+      IncludeCodeBehindFilesInProject;
       AfterUpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
@@ -120,11 +121,14 @@
 
   </Target>
 
-  <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
-    <!-- include any generated SpecFlow files in the compilation of the project if not included yet -->
-    <ItemGroup>
+  <Target Name="IncludeCodeBehindFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
+    <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true'">
       <Compile Include="@(SpecFlowGeneratedFiles)" Exclude="@(Compile)" />
     </ItemGroup>
+  </Target>
+
+  <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="IncludeCodeBehindFilesInProject">
+    <!-- include any generated SpecFlow files in the compilation of the project if not included yet -->
   </Target>
 
   <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">
