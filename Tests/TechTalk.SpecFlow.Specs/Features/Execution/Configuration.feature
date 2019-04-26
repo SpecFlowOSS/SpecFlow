@@ -1,6 +1,4 @@
-﻿@ignore
-@xUnit @MSTest
-Feature: Configuration
+﻿Feature: Configuration
 	
 Background: 
 	Given there is a feature file in the project as
@@ -19,7 +17,6 @@ Scenario: Generation configuration in app.config
 	When I execute the tests
 	Then the app.config is used for configuration
 
-@ignore
 Scenario: Generation configuration in specflow.json
 	Given SpecFlow is configured in the specflow.json
 	When I execute the tests
@@ -30,7 +27,6 @@ Scenario: Runtime configuration in app.config
 	When I execute the tests
 	Then the app.config is used for configuration
 
-@ignore
 Scenario: Runtime configuration in specflow.json
 	Given SpecFlow is configured in the specflow.json
 	When I execute the tests
