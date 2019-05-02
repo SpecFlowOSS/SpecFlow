@@ -28,6 +28,7 @@
     <!--<BoolProperty Name="Visible" Visible="true" />-->
     <StringProperty Name="DependentUpon" Visible="false" />
     <StringProperty Name="Link" Visible="false" />
+    <StringProperty Name="Generator" Visible="true" DisplayName="Custom Tool"/>
 
 
 </Rule>
