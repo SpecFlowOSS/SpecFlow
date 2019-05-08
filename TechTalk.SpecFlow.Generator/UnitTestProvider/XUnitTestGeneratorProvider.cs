@@ -10,17 +10,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     public class XUnitTestGeneratorProvider : IUnitTestGeneratorProvider
     {
         protected const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
-        private const string DESCRIPTION_PROPERTY_NAME = "Description";
+        protected const string DESCRIPTION_PROPERTY_NAME = "Description";
         protected const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
         protected const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        internal const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
-        internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        private const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";
-        internal const string SKIP_REASON = "Ignored";
-        private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
-        private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
-        private const string CATEGORY_PROPERTY_NAME = "Category";
-        private const string IGNORE_TAG = "@Ignore";
+        protected internal const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
+        protected internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        protected const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";
+        protected internal const string SKIP_REASON = "Ignored";
+        protected const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
+        protected const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
+        protected const string CATEGORY_PROPERTY_NAME = "Category";
+        protected const string IGNORE_TAG = "@Ignore";
 
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
 
@@ -139,7 +139,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, INLINEDATA_ATTRIBUTE, args.ToArray());
         }
 
-        public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             foreach (string str in scenarioCategories)
                 SetProperty((CodeTypeMember)testMethod, "Category", str);

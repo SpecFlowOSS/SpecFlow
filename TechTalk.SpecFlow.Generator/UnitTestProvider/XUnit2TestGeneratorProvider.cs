@@ -11,16 +11,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnit2TestGeneratorProvider : XUnitTestGeneratorProvider
     {
-        private new const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
-        private const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
-        private const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
-        private const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
-        private const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
-        private const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
-        private const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
-        private const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        private const string COLLECTION_DEF = "Xunit.Collection";
-        private const string COLLECTION_TAG = "xunit:collection";
+        protected new const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
+        protected new const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
+        protected const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
+        protected const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
+        protected const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
+        protected const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
+        protected const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
+        protected const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
+        protected const string COLLECTION_DEF = "Xunit.Collection";
+        protected const string COLLECTION_TAG = "xunit:collection";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
             :base(codeDomHelper)
