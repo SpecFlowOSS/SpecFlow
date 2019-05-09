@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class CucumberMessageSender : ICucumberMessageSender
     {
+        private readonly IClock _clock;
+
+        public CucumberMessageSender(IClock clock)
+        {
+            _clock = clock;
+        }
+
         public void SendTestRunStarted()
         {
         }
