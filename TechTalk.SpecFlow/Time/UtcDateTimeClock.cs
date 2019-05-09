@@ -2,16 +2,16 @@
 
 namespace TechTalk.SpecFlow.Time
 {
-    public class DateTimeClock : IClock
+    public class UtcDateTimeClock : IClock
     {
         public DateTime GetToday()
         {
-            return DateTime.Today;
+            return DateTime.UtcNow.Date;
         }
 
         public DateTime GetNowDateAndTime()
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
     }
 }
