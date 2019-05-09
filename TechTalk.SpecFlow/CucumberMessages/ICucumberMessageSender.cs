@@ -2,5 +2,6 @@
 {
     public interface ICucumberMessageSender
     {
+        void SendTestRunStarted();
     }
 }

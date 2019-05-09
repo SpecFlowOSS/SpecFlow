@@ -8,5 +8,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class CucumberMessageSender : ICucumberMessageSender
     {
+        public void SendTestRunStarted()
+        {
+        }
     }
 }
