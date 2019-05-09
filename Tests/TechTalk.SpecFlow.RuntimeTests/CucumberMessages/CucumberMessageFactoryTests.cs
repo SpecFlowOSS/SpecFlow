@@ -1,6 +1,5 @@
 using System;
 using FluentAssertions;
-using Google.Protobuf.WellKnownTypes;
 using TechTalk.SpecFlow.CucumberMessages;
 using Xunit;
 
