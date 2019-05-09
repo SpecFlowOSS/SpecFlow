@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechTalk.SpecFlow.Utils
+namespace TechTalk.SpecFlow.Time
 {
     public class DateTimeClock : IClock
     {
