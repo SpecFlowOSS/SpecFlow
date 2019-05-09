@@ -1,10 +1,14 @@
-﻿using BoDi;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Time;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -50,6 +54,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
             container.RegisterTypeAs<ObsoleteStepHandler, IObsoleteStepHandler>();
+
+            container.RegisterTypeAs<UtcDateTimeClock, IClock>();
+            container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
+            container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
+
+            // TODO: update when configuration is added
+            container.RegisterInstanceAs(Enumerable.Empty<ICucumberMessageSink>());
 
             RegisterUnitTestProviders(container);
         }

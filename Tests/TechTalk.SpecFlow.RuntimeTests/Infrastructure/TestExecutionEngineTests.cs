@@ -14,6 +14,7 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
+using TechTalk.SpecFlow.CucumberMessages;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -32,6 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<ITestObjectResolver> testObjectResolverMock;
         private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
+        private Mock<ICucumberMessageSender> cucumberMessageSenderMock;
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
         private ObjectContainer testThreadContainer;
@@ -120,6 +122,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
             obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
+
+            cucumberMessageSenderMock.Setup(m => m.SendTestRunStarted())
+                                     .Callback(() => { });
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -138,6 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 stepErrorHandlers, 
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
+                cucumberMessageSenderMock.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
