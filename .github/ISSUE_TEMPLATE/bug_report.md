@@ -26,6 +26,14 @@ about: Create a report to help us improve SpecFlow
 <!-- PLEASE INCLUDE THE VERSION NUMBER OF YOUR TEST RUNNER -->
 Version number:
 
+### Project Format of the SpecFlow project
+- [ ] Classic project format using packages.config
+- [ ] Classis project format using &lt;PackageReference&gt; tags
+- [ ] Sdk-style project format
+
+### .feature.cs files are generated using
+- [ ] `SpecFlow.Tools.MsBuild.Generation` NuGet package
+- [ ] `SpecFlowSingleFileGenerator` custom tool
 
 ### Visual Studio Version
 - [ ] VS 2019
