@@ -123,6 +123,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
             obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
 
+            cucumberMessageSenderMock = new Mock<ICucumberMessageSender>();
             cucumberMessageSenderMock.Setup(m => m.SendTestRunStarted())
                                      .Callback(() => { });
         }
