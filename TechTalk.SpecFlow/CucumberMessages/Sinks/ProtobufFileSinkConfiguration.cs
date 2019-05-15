@@ -1,10 +1,12 @@
-﻿namespace TechTalk.SpecFlow.CucumberMessages.Sinks
+﻿using System;
+
+namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 {
-    public class ProtobufFileSinkConfiguration : IProtobufFileSinkConfiguration
+    public class ProtobufFileSinkConfiguration
     {
         public ProtobufFileSinkConfiguration(string targetFilePath)
         {
-            TargetFilePath = targetFilePath;
+            TargetFilePath = Environment.ExpandEnvironmentVariables(targetFilePath);
         }
 
         public string TargetFilePath { get; }
