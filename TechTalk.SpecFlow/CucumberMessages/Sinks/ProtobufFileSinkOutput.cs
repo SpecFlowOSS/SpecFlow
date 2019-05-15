@@ -2,20 +2,23 @@
 using System.IO;
 using Google.Protobuf;
 using TechTalk.SpecFlow.CommonModels;
+using TechTalk.SpecFlow.CucumberMessages.Configuration;
 using TechTalk.SpecFlow.FileAccess;
 
 namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 {
     public class ProtobufFileSinkOutput : IProtobufFileSinkOutput
     {
-        private readonly IProtobufFileSinkConfiguration _protobufFileSinkConfiguration;
+        private readonly ISinkConfiguration _sinkConfiguration;
         private readonly IBinaryFileAccessor _binaryFileAccessor;
+        private readonly ProtobufFileSinkConfigurationFactory _configurationFactory;
         private bool _isDisposed;
 
-        public ProtobufFileSinkOutput(IProtobufFileSinkConfiguration protobufFileSinkConfiguration, IBinaryFileAccessor binaryFileAccessor)
+        public ProtobufFileSinkOutput(ISinkConfiguration sinkConfiguration, IBinaryFileAccessor binaryFileAccessor, ProtobufFileSinkConfigurationFactory configurationFactory)
         {
-            _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
+            _sinkConfiguration = sinkConfiguration;
             _binaryFileAccessor = binaryFileAccessor;
+            _configurationFactory = configurationFactory;
         }
 
         public Stream OutputStream { get; private set; }
@@ -29,7 +32,13 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
                 return true;
             }
 
-            var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
+            var sinkConfigurationResult = _configurationFactory.FromSinkConfiguration(_sinkConfiguration);
+            if (!(sinkConfigurationResult is Success<ProtobufFileSinkConfiguration> configurationSuccess))
+            {
+                return false;
+            }
+
+            var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(configurationSuccess.Result.TargetFilePath);
 
             if (!(streamResult is Success<Stream> success))
             {

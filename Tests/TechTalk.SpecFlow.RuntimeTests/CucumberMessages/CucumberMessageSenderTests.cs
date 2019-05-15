@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Google.Protobuf;
 using Io.Cucumber.Messages;
 using Moq;
+using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.CucumberMessages.Configuration;
+using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.Time;
 using Xunit;
 
@@ -21,7 +25,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
                                    .Callback<IMessage>(m => sentMessage = m);
 
-            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), new [] { cucumberMessageSinkMock.Object });
+            var sinkFactoryMock = GetSinkFactoryMock(cucumberMessageSinkMock);
+
+            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), sinkFactoryMock.Object, GetCucumberMessageSenderConfiguration());
+            cucumberMessageSender.Initialize();
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -47,7 +54,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
                                    .Callback<IMessage>(m => sentMessage = m);
 
-            var cucumberMessageSender = new CucumberMessageSender(clockMock.Object, new CucumberMessageFactory(), new [] { cucumberMessageSinkMock.Object });
+            var sinkFactoryMock = GetSinkFactoryMock(cucumberMessageSinkMock);
+
+            var cucumberMessageSender = new CucumberMessageSender(clockMock.Object, new CucumberMessageFactory(), sinkFactoryMock.Object, GetCucumberMessageSenderConfiguration());
+            cucumberMessageSender.Initialize();
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -68,7 +78,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
                                    .Callback<IMessage>(m => sentMessage = m);
 
-            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), new[] { cucumberMessageSinkMock.Object });
+            var sinkFactoryMock = GetSinkFactoryMock(cucumberMessageSinkMock);
+
+            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), sinkFactoryMock.Object, GetCucumberMessageSenderConfiguration());
+            cucumberMessageSender.Initialize();
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -76,6 +89,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ASSERT
             sentMessage.Should().BeOfType<TestRunStarted>()
                        .Which.CucumberImplementation.Should().Be(expectedCucumberImplementation);
+        }
+
+        public CucumberMessageSenderConfiguration GetCucumberMessageSenderConfiguration() => new CucumberMessageSenderConfiguration { Sinks = {new SinkConfigurationEntry()}};
+
+        public Mock<ISinkFactory> GetSinkFactoryMock(Mock<ICucumberMessageSink> cucumberMessageSinkMock)
+        {
+            var sinkFactoryMock = new Mock<ISinkFactory>();
+            sinkFactoryMock.Setup(m => m.FromConfiguration(It.IsAny<ISinkConfiguration>()))
+                           .Returns(Result<ICucumberMessageSink>.Success(cucumberMessageSinkMock.Object));
+            return sinkFactoryMock;
         }
     }
 }

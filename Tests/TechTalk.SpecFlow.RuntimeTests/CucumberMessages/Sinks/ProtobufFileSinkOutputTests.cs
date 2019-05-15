@@ -5,6 +5,7 @@ using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.CucumberMessages.Configuration;
 using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.FileAccess;
 using Xunit;
@@ -18,10 +19,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         {
             // ARRANGE
             const bool expectedIsInitialized = true;
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration , binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
             protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
@@ -32,13 +33,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         }
 
         [Fact(DisplayName = @"IsInitialized should return false if the ProtobufFileSinkOutput has not been initialized")]
-        public void IsInitialized_ShouldReturnFalseIfNotInizialized()
+        public void IsInitialized_ShouldReturnFalseIfNotInitialized()
         {
             // ARRANGE
             const bool expectedIsInitialized = false;
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
 
             // ACT
             bool actualIsInitialized = protobufFileSinkOutput.IsInitialized();
@@ -52,10 +53,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         {
             // ARRANGE
             const bool expectedIsInitialized = false;
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var notWritableStream = GetNotWritableStream();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(notWritableStream));
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
             protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
@@ -69,9 +70,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public void EnsureInitialized_ShouldSetOutputStream()
         {
             // ARRANGE
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
 
             // ACT
             protobufFileSinkOutput.EnsureIsInitialized();
@@ -86,9 +87,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public void EnsureInitialized_ShouldReturnCorrectValue(bool fileSuccessfullyOpened, bool expectedSuccess)
         {
             // ARRANGE
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(fileSuccessfullyOpened ? Result<Stream>.Success(GetWritableStream()) : Result<Stream>.Failure());
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
 
             // ACT
             bool actualSuccess = protobufFileSinkOutput.EnsureIsInitialized();
@@ -102,9 +103,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         {
             // ARRANGE
             const bool expectedSuccess = true;
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
             protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
@@ -120,9 +121,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             // ARRANGE
             const bool expectedSuccess = false;
             var message = new TestRunStarted();
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
 
             // ACT
             bool actualSuccess = protobufFileSinkOutput.WriteMessage(message);
@@ -137,9 +138,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             // ARRANGE
             const bool expectedSuccess = true;
             var message = new TestRunStarted();
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
             protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
@@ -155,10 +156,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
             var message = cucumberMessageFactory.BuildTestRunStartedMessage(DateTime.UtcNow);
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
             protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
@@ -171,9 +172,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         [Fact(DisplayName = @"Dispose should dispose OutputStream")]
         public void Dispose_ShouldDisposeOutputStream()
         {
-            var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue");
+            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object);
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(protobufFileSinkConfiguration, binaryFileAccessorMock.Object, new ProtobufFileSinkConfigurationFactory());
             protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
@@ -201,6 +202,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public MemoryStream GetWritableStream()
         {
             return new MemoryStream();
+        }
+
+        public ISinkConfiguration GetProtobufFileSinkConfiguration(string targetFilePath = "CucumberMessageQueue")
+        {
+            return new SinkConfiguration(
+                new SinkConfigurationEntry
+                {
+                    TypeName = typeof(ProtobufFileSink).AssemblyQualifiedName,
+                    ConfigurationValues =
+                    {
+                        [nameof(ProtobufFileSinkConfiguration.TargetFilePath)] = targetFilePath
+                    }
+                });
         }
     }
 }
