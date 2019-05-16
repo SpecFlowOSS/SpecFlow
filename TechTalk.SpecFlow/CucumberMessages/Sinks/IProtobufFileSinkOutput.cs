@@ -1,12 +1,9 @@
-﻿using System;
-using Google.Protobuf;
+﻿using Google.Protobuf;
 
 namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 {
-    public interface IProtobufFileSinkOutput : IDisposable
+    public interface IProtobufFileSinkOutput
     {
-        bool EnsureIsInitialized();
-
         bool WriteMessage(IMessage message);
     }
 }

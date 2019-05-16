@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Threading;
 using Google.Protobuf;
 
 namespace TechTalk.SpecFlow.CucumberMessages.Sinks
@@ -6,24 +7,32 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
     public class ProtobufFileSink : ICucumberMessageSink
     {
         private readonly IProtobufFileSinkOutput _protobufFileSinkOutput;
-        private readonly object _lock;
+        private readonly ProtobufFileSinkConfiguration _protobufFileSinkConfiguration;
 
-        public ProtobufFileSink(IProtobufFileSinkOutput protobufFileSinkOutput, object @lock)
+        public ProtobufFileSink(IProtobufFileSinkOutput protobufFileSinkOutput, ProtobufFileSinkConfiguration protobufFileSinkConfiguration)
         {
             _protobufFileSinkOutput = protobufFileSinkOutput;
-            _lock = @lock;
+            _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
         public void SendMessage(IMessage message)
         {
-            lock (_lock)
+            string absoluteTargetFilePath = Path.GetFullPath(_protobufFileSinkConfiguration.TargetFilePath)
+                                                .Replace('\\', '_')
+                                                .Replace('/', '_')
+                                                .Replace(':', '_');
+            using (var mutex = new Mutex(false, $@"Global\SpecFlowTestExecution_{absoluteTargetFilePath}"))
             {
-                if (!_protobufFileSinkOutput.EnsureIsInitialized())
-                {
-                    throw new InvalidOperationException("Target file could not be opened to write");
-                }
+                mutex.WaitOne();
 
-                _protobufFileSinkOutput.WriteMessage(message);
+                try
+                {
+                    _protobufFileSinkOutput.WriteMessage(message);
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
             }
         }
     }
