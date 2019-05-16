@@ -13,107 +13,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
 {
     public class ProtobufFileSinkOutputTests
     {
-        [Fact(DisplayName = @"IsInitialized should return true if the ProtobufFileSinkOutput has been initialized with a writable OutputStream")]
-        public void IsInitialized_ShouldReturnTrueIfOutputStreamIsSetAndWritable()
-        {
-            // ARRANGE
-            const bool expectedIsInitialized = true;
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var writableStream = GetWritableStream();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-            protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ACT
-            bool actualIsInitialized = protobufFileSinkOutput.IsInitialized();
-
-            // ASSERT
-            actualIsInitialized.Should().Be(expectedIsInitialized);
-        }
-
-        [Fact(DisplayName = @"IsInitialized should return false if the ProtobufFileSinkOutput has not been initialized")]
-        public void IsInitialized_ShouldReturnFalseIfNotInitialized()
-        {
-            // ARRANGE
-            const bool expectedIsInitialized = false;
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-
-            // ACT
-            bool actualIsInitialized = protobufFileSinkOutput.IsInitialized();
-
-            // ASSERT
-            actualIsInitialized.Should().Be(expectedIsInitialized);
-        }
-
-        [Fact(DisplayName = @"IsInitialized should return false if the initialized OutputStream is not writable")]
-        public void IsInitialized_ShouldReturnFalseIfOutputStreamNotWritable()
-        {
-            // ARRANGE
-            const bool expectedIsInitialized = false;
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var notWritableStream = GetNotWritableStream();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(notWritableStream));
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-            protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ACT
-            bool actualIsInitialized = protobufFileSinkOutput.IsInitialized();
-
-            // ASSERT
-            actualIsInitialized.Should().Be(expectedIsInitialized);
-        }
-
-        [Fact(DisplayName = @"EnsureIsInitialized should set the OutputStream property")]
-        public void EnsureInitialized_ShouldSetOutputStream()
-        {
-            // ARRANGE
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-
-            // ACT
-            protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ASSERT
-            protobufFileSinkOutput.OutputStream.Should().NotBeNull();
-        }
-
-        [Theory(DisplayName = @"EnsureIsInitialized should return the correct value depending on the file being able to be opened")]
-        [InlineData(true, true)]
-        [InlineData(false, false)]
-        public void EnsureInitialized_ShouldReturnCorrectValue(bool fileSuccessfullyOpened, bool expectedSuccess)
-        {
-            // ARRANGE
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock(fileSuccessfullyOpened ? Result<Stream>.Success(GetWritableStream()) : Result<Stream>.Failure());
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-
-            // ACT
-            bool actualSuccess = protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ASSERT
-            actualSuccess.Should().Be(expectedSuccess);
-        }
-
-        [Fact(DisplayName = @"EnsureInitialized should return true if the " + nameof(ProtobufFileSinkOutput) + " has been initialized previously")]
-        public void EnsureInitialized_ShouldReturnTrueIfAlreadyInitialized()
-        {
-            // ARRANGE
-            const bool expectedSuccess = true;
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-            protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ACT
-            bool actualSuccess = protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ASSERT
-            actualSuccess.Should().Be(expectedSuccess);
-        }
-
         [Fact(DisplayName = @"WriteMessage should return false if the ProtobufFileSinkOutput is not initialized")]
         public void WriteMessage_Message_ShouldReturnFalseIfNotInitialized()
         {
@@ -140,7 +39,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
             var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-            protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
             bool actualSuccess = protobufFileSinkOutput.WriteMessage(message);
@@ -159,30 +57,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var writableStream = GetWritableStream();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
             var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-            protobufFileSinkOutput.EnsureIsInitialized();
 
             // ACT
             protobufFileSinkOutput.WriteMessage(message);
 
             // ASSERT
             writableStream.Length.Should().BeGreaterThan(0);
-        }
-
-        [Fact(DisplayName = @"Dispose should dispose OutputStream")]
-        public void Dispose_ShouldDisposeOutputStream()
-        {
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-            protobufFileSinkOutput.EnsureIsInitialized();
-
-            // ACT
-            protobufFileSinkOutput.Dispose();
-
-            // ASSERT
-            protobufFileSinkOutput.OutputStream.CanWrite.Should().BeFalse();
-            protobufFileSinkOutput.OutputStream.CanRead.Should().BeFalse();
-            protobufFileSinkOutput.OutputStream.CanSeek.Should().BeFalse();
         }
 
         public Mock<IBinaryFileAccessor> GetBinaryFileAccessorMock(Result<Stream> openOrAppendStream = null)
@@ -206,15 +86,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public ProtobufFileSinkConfiguration GetProtobufFileSinkConfiguration(string targetFilePath = "CucumberMessageQueue")
         {
             return new ProtobufFileSinkConfiguration(targetFilePath);
-            ////return new SinkConfiguration(
-            ////    new SinkConfigurationEntry
-            ////    {
-            ////        TypeName = typeof(ProtobufFileSink).AssemblyQualifiedName,
-            ////        ConfigurationValues =
-            ////        {
-            ////            [nameof(ProtobufFileSinkConfiguration.TargetFilePath)] = targetFilePath
-            ////        }
-            ////    });
         }
     }
 }
