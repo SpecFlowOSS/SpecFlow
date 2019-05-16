@@ -9,6 +9,13 @@ namespace TechTalk.SpecFlow.FileAccess
         {
             try
             {
+                string parentDirectoryPath = Path.GetDirectoryName(filePath);
+
+                if (!Directory.Exists(parentDirectoryPath))
+                {
+                    Directory.CreateDirectory(parentDirectoryPath);
+                }
+
                 var streamToReturn = File.Open(filePath, FileMode.Append, System.IO.FileAccess.Write, FileShare.Read);
                 return Result<Stream>.Success(streamToReturn);
             }

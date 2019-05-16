@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TechTalk.SpecFlow.CommonModels;
-using TechTalk.SpecFlow.CucumberMessages.Configuration;
-using TechTalk.SpecFlow.CucumberMessages.Sinks;
-using TechTalk.SpecFlow.Time;
+﻿using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
@@ -11,17 +6,14 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private readonly IClock _clock;
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
-        private readonly ISinkFactory _sinkFactory;
-        private readonly ICucumberMessageSenderConfiguration _cucumberMessageSenderConfiguration;
-        private IReadOnlyCollection<ICucumberMessageSink> _sinks;
+        private readonly ICucumberMessageSink _cucumberMessageSink;
         private bool _isInitialized;
 
-        public CucumberMessageSender(IClock clock, ICucumberMessageFactory cucumberMessageFactory, ISinkFactory sinkFactory, ICucumberMessageSenderConfiguration cucumberMessageSenderConfiguration)
+        public CucumberMessageSender(IClock clock, ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink)
         {
             _clock = clock;
             _cucumberMessageFactory = cucumberMessageFactory;
-            _sinkFactory = sinkFactory;
-            _cucumberMessageSenderConfiguration = cucumberMessageSenderConfiguration;
+            _cucumberMessageSink = cucumberMessageSink;
         }
 
         public bool Initialize()
@@ -30,13 +22,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
             {
                 return true;
             }
-
-            _sinks = _cucumberMessageSenderConfiguration.Sinks
-                                                        .Select(sinkConfigEntry => new SinkConfiguration(sinkConfigEntry))
-                                                        .Select(sinkConfig => _sinkFactory.FromConfiguration(sinkConfig))
-                                                        .OfType<Success<ICucumberMessageSink>>()
-                                                        .Select(success => success.Result)
-                                                        .ToList();
 
             _isInitialized = true;
             return true;
@@ -50,10 +35,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
             }
 
             var testRunStartedMessage = _cucumberMessageFactory.BuildTestRunStartedMessage(_clock.GetNowDateAndTime());
-            foreach (var cucumberMessageSink in _sinks)
-            {
-                cucumberMessageSink.SendMessage(testRunStartedMessage);
-            }
+
+            _cucumberMessageSink.SendMessage(testRunStartedMessage);
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.CucumberMessages;
-using TechTalk.SpecFlow.CucumberMessages.Configuration;
 using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.FileAccess;
@@ -61,22 +59,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
-
-            container.RegisterInstanceAs<ICucumberMessageSenderConfiguration>(
-                new CucumberMessageSenderConfiguration
-                {
-                    Sinks =
-                    {
-                        new SinkConfigurationEntry
-                        {
-                            TypeName = typeof(ProtobufFileSink).AssemblyQualifiedName,
-                            ConfigurationValues =
-                            {
-                                [nameof(ProtobufFileSinkConfiguration.TargetFilePath)] = "%temp%/CucumberMessageQueue"
-                            }
-                        }
-                    }
-                });
+            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration($"CucumberMessageQueue/{Guid.NewGuid()}"));
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
