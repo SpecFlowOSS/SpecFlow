@@ -19,9 +19,9 @@ namespace TechTalk.SpecFlow.FileAccess
                 var streamToReturn = File.Open(filePath, FileMode.Append, System.IO.FileAccess.Write, FileShare.Read);
                 return Result<Stream>.Success(streamToReturn);
             }
-            catch (IOException)
+            catch (IOException exc)
             {
-                return Result<Stream>.Failure();
+                return Result<Stream>.Failure(exc);
             }
         }
     }
