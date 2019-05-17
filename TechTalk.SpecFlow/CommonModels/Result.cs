@@ -1,4 +1,6 @@
-﻿namespace TechTalk.SpecFlow.CommonModels
+﻿using System;
+
+namespace TechTalk.SpecFlow.CommonModels
 {
     public abstract class Result<T>
     {
@@ -10,6 +12,11 @@
         public static Result<T> Failure()
         {
             return new Failure<T>();
+        }
+
+        public static Result<T> Failure(Exception exception)
+        {
+            return new ExceptionFailure<T>(exception);
         }
     }
 }
