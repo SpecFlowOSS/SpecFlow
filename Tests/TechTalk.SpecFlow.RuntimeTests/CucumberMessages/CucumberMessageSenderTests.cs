@@ -22,7 +22,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<IMessage>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
-            cucumberMessageSender.Initialize();
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -49,7 +48,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<IMessage>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(clockMock.Object, new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
-            cucumberMessageSender.Initialize();
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -71,7 +69,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<IMessage>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
-            cucumberMessageSender.Initialize();
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();

@@ -7,7 +7,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private readonly IClock _clock;
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
         private readonly ICucumberMessageSink _cucumberMessageSink;
-        private bool _isInitialized;
 
         public CucumberMessageSender(IClock clock, ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink)
         {
@@ -16,24 +15,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
             _cucumberMessageSink = cucumberMessageSink;
         }
 
-        public bool Initialize()
-        {
-            if (_isInitialized)
-            {
-                return true;
-            }
-
-            _isInitialized = true;
-            return true;
-        }
-
         public void SendTestRunStarted()
         {
-            if (!_isInitialized)
-            {
-                Initialize();
-            }
-
             var testRunStartedMessage = _cucumberMessageFactory.BuildTestRunStartedMessage(_clock.GetNowDateAndTime());
 
             _cucumberMessageSink.SendMessage(testRunStartedMessage);
