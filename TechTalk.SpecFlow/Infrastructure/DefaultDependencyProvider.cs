@@ -1,10 +1,15 @@
-﻿using BoDi;
+﻿using System;
+using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.FileAccess;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Time;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -50,6 +55,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
             container.RegisterTypeAs<ObsoleteStepHandler, IObsoleteStepHandler>();
+
+            container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
+            container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
+            container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
+            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration($"CucumberMessageQueue/{Guid.NewGuid()}"));
+
+            container.RegisterTypeAs<UtcDateTimeClock, IClock>();
+            container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
+            container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
 
             RegisterUnitTestProviders(container);
         }
