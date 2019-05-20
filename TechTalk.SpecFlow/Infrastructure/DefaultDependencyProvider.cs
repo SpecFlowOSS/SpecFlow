@@ -64,6 +64,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
             container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
+            container.RegisterTypeAs<PickleIdGenerator, IPickleIdGenerator>();
 
             RegisterUnitTestProviders(container);
         }
