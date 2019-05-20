@@ -66,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
 
             // ASSERT
-            result.Should().BeAssignableTo<Failure<TestCaseStarted>>();
+            result.Should().BeOfType<Failure>();
         }
 
         [Fact(DisplayName = @"BuildTestCaseStarted should return a message with the correct pickle ID")]

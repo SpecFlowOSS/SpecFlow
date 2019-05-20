@@ -18,11 +18,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
             };
         }
 
-        public Result<TestCaseStarted> BuildTestCaseStartedMessage(string pickleId, DateTime timeStamp)
+        public Result BuildTestCaseStartedMessage(string pickleId, DateTime timeStamp)
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestCaseStarted>.Failure();
+                return Result.Failure();
             }
 
             var testCaseStarted = new TestCaseStarted
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 PickleId = pickleId
             };
 
-            return Result<TestCaseStarted>.Success(testCaseStarted);
+            return Result.Success(testCaseStarted);
         }
     }
 }
