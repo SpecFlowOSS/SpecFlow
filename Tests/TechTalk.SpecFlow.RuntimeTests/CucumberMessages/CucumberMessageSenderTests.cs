@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<IMessage>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
-            const string pickleId = "pickleId";
+            var pickleId = Guid.NewGuid();
 
             // ACT
             cucumberMessageSender.SendTestCaseStarted(pickleId);

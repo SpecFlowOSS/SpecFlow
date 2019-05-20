@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             SendMessageOrThrowException(testRunStartedMessageResult);
         }
 
-        public void SendTestCaseStarted(string pickleId)
+        public void SendTestCaseStarted(Guid pickleId)
         {
             var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, _clock.GetNowDateAndTime());
             SendMessageOrThrowException(testCaseStartedMessageResult);

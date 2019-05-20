@@ -1,9 +1,11 @@
-﻿namespace TechTalk.SpecFlow.CucumberMessages
+﻿using System;
+
+namespace TechTalk.SpecFlow.CucumberMessages
 {
     public interface ICucumberMessageSender
     {
         void SendTestRunStarted();
 
-        void SendTestCaseStarted(string pickleId);
+        void SendTestCaseStarted(Guid pickleId);
     }
 }

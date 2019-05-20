@@ -8,6 +8,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         Result BuildTestRunStartedMessage(DateTime timeStamp);
 
-        Result BuildTestCaseStartedMessage(string pickleId, DateTime timeStamp);
+        Result BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp);
     }
 }

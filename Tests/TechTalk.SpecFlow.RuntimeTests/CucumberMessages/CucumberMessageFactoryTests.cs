@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, dateTimeKind);
-            const string pickleId = "pickleId";
+            var pickleId = Guid.NewGuid();
 
             // ACT
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
@@ -78,14 +78,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
-            const string pickleId = "pickleId";
+            var pickleId = Guid.NewGuid();
 
             // ACT
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
 
             // ASSERT
             result.Should().BeOfType<Success<TestCaseStarted>>().Which
-                  .Result.PickleId.Should().Be(pickleId);
+                  .Result.PickleId.Should().Be(pickleId.ToString("D"));
         }
 
         [Fact(DisplayName = @"BuildTestCaseStarted should return a success when a UTC date has been specified")]
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
-            const string pickleId = "pickleId";
+            var pickleId = Guid.NewGuid();
 
             // ACT
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);

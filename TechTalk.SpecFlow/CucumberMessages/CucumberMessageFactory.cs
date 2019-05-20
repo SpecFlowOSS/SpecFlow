@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             return Result.Success(testRunStarted);
         }
 
-        public Result BuildTestCaseStartedMessage(string pickleId, DateTime timeStamp)
+        public Result BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp)
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var testCaseStarted = new TestCaseStarted
             {
                 Timestamp = Timestamp.FromDateTime(timeStamp),
-                PickleId = pickleId
+                PickleId = pickleId.ToString("D")
             };
 
             return Result.Success(testCaseStarted);
