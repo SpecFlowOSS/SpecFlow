@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
@@ -66,6 +67,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
             container.RegisterTypeAs<PickleIdGenerator, IPickleIdGenerator>();
             container.RegisterTypeAs<PickleIdStore, IPickleIdStore>();
+            container.RegisterTypeAs<Dictionary<ScenarioInfo, Guid>, IDictionary<ScenarioInfo, Guid>>();
 
             RegisterUnitTestProviders(container);
         }

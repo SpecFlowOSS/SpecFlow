@@ -6,11 +6,12 @@ namespace TechTalk.SpecFlow.CucumberMessages
     public class PickleIdStore : IPickleIdStore
     {
         private readonly IPickleIdGenerator _pickleIdGenerator;
-        private readonly IDictionary<ScenarioInfo, Guid> _scenarioInfoMappings = new Dictionary<ScenarioInfo, Guid>();
+        private readonly IDictionary<ScenarioInfo, Guid> _scenarioInfoMappings;
 
-        public PickleIdStore(IPickleIdGenerator pickleIdGenerator)
+        public PickleIdStore(IPickleIdGenerator pickleIdGenerator, IDictionary<ScenarioInfo, Guid> scenarioInfoMappings)
         {
             _pickleIdGenerator = pickleIdGenerator;
+            _scenarioInfoMappings = scenarioInfoMappings;
         }
 
         public Guid GetPickleIdForScenario(ScenarioInfo scenarioInfo)

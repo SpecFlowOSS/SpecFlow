@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
-                new PickleIdStore(new PickleIdGenerator()),
+                new PickleIdStore(new PickleIdGenerator(), new Dictionary<ScenarioInfo, Guid>()),
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
