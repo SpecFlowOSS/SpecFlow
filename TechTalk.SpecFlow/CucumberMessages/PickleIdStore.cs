@@ -26,7 +26,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 var pickleId = _pickleIdGenerator.GeneratePickleId();
                 _scenarioInfoMappings.Add(scenarioInfo, pickleId);
                 return Result.Success(pickleId);
-
             }
         }
     }
