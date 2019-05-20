@@ -9,13 +9,20 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private const string UsedCucumberImplementationString = @"SpecFlow";
 
-        public TestRunStarted BuildTestRunStartedMessage(DateTime timeStamp)
+        public Result BuildTestRunStartedMessage(DateTime timeStamp)
         {
-            return new TestRunStarted
+            if (timeStamp.Kind != DateTimeKind.Utc)
+            {
+                return Result.Failure();
+            }
+
+            var testRunStarted = new TestRunStarted
             {
                 Timestamp = Timestamp.FromDateTime(timeStamp),
                 CucumberImplementation = UsedCucumberImplementationString
             };
+
+            return Result.Success(testRunStarted);
         }
 
         public Result BuildTestCaseStartedMessage(string pickleId, DateTime timeStamp)

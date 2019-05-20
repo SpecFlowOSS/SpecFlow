@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using FluentAssertions;
+using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
@@ -33,8 +34,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public void WriteMessage_Message_ShouldWriteTheSpecifiedMessageToOutputStream()
         {
             // ARRANGE
-            var cucumberMessageFactory = new CucumberMessageFactory();
-            var message = cucumberMessageFactory.BuildTestRunStartedMessage(DateTime.UtcNow);
+            var message = new TestRunStarted
+            {
+                Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
+                CucumberImplementation = "SpecFlow"
+            };
+
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result.Success<Stream>(writableStream));

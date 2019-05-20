@@ -17,10 +17,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
 
             // ACT
-            var actualTestRunStartedMessage = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
+            var actualTestRunStartedMessageResult = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
 
             // ASSERT
-            actualTestRunStartedMessage.Should().NotBe(null);
+            actualTestRunStartedMessageResult.Should().BeOfType<Success<TestRunStarted>>();
         }
 
         [Fact(DisplayName = @"BuildTestRunResultMessage should return a TestRunResult message object with the specified date and time")]
@@ -31,10 +31,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
 
             // ACT
-            var actualTestRunStartedMessage = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
+            var actualTestRunStartedMessageResult = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
 
             // ASSERT
-            actualTestRunStartedMessage.Timestamp.ToDateTime().Should().Be(dateTime);
+            actualTestRunStartedMessageResult.Should().BeOfType<Success<TestRunStarted>>()
+                                             .Which.Result.Timestamp.ToDateTime().Should().Be(dateTime);
         }
 
         [Fact(DisplayName = @"BuildTestRunResultMessage should return a TestRunResult message object with SpecFlow as used Cucumber implementation")]
@@ -46,10 +47,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
 
             // ACT
-            var actualTestRunStartedMessage = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
+            var actualTestRunStartedMessageResult = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
 
             // ASSERT
-            actualTestRunStartedMessage.CucumberImplementation.Should().Be(expectedCucumberImplementation);
+
+            actualTestRunStartedMessageResult.Should().BeOfType<Success<TestRunStarted>>()
+                                             .Which.Result.CucumberImplementation.Should().Be(expectedCucumberImplementation);
         }
 
         [Theory(DisplayName = @"BuildTestCaseStarted should return a failure when a non-UTC date has been specified")]

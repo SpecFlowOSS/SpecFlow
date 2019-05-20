@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
 {
     public interface ICucumberMessageFactory
     {
-        TestRunStarted BuildTestRunStartedMessage(DateTime timeStamp);
+        Result BuildTestRunStartedMessage(DateTime timeStamp);
 
         Result BuildTestCaseStartedMessage(string pickleId, DateTime timeStamp);
     }
