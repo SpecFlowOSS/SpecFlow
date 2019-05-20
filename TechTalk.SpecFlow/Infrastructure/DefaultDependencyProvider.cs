@@ -65,6 +65,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
             container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
             container.RegisterTypeAs<PickleIdGenerator, IPickleIdGenerator>();
+            container.RegisterTypeAs<PickleIdStore, IPickleIdStore>();
 
             RegisterUnitTestProviders(container);
         }
