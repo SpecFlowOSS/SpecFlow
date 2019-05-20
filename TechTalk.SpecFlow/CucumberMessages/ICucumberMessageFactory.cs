@@ -1,5 +1,4 @@
 ﻿using System;
-using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages
