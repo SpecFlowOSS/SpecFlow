@@ -1,4 +1,7 @@
-﻿using TechTalk.SpecFlow.Time;
+﻿using System;
+using Google.Protobuf;
+using TechTalk.SpecFlow.CommonModels;
+using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
@@ -17,9 +20,27 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestRunStarted()
         {
-            var testRunStartedMessage = _cucumberMessageFactory.BuildTestRunStartedMessage(_clock.GetNowDateAndTime());
+            var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(_clock.GetNowDateAndTime());
+            SendMessageOrThrowException(testRunStartedMessageResult);
+        }
 
-            _cucumberMessageSink.SendMessage(testRunStartedMessage);
+        public void SendTestCaseStarted(string pickleId)
+        {
+            var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, _clock.GetNowDateAndTime());
+            SendMessageOrThrowException(testCaseStartedMessageResult);
+        }
+
+        public void SendMessageOrThrowException(Result messageResult)
+        {
+            switch (messageResult)
+            {
+                case ISuccess<IMessage> success:
+                    _cucumberMessageSink.SendMessage(success.Result);
+                    break;
+
+                case ExceptionFailure failure: throw failure.Exception;
+                default: throw new InvalidOperationException("The message could not be created.");
+            }
         }
     }
 }
