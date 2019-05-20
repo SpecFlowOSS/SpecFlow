@@ -128,6 +128,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioStart()
         {
+            string pickleId = Guid.NewGuid().ToString("D");
+            _cucumberMessageSender.SendTestCaseStarted(pickleId);
             FireScenarioEvents(HookType.BeforeScenario);
         }
 
