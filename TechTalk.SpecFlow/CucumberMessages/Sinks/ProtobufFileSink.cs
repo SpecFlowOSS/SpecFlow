@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using Google.Protobuf;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 {
@@ -27,7 +29,12 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 
                 try
                 {
-                    _protobufFileSinkOutput.WriteMessage(message);
+                    var result = _protobufFileSinkOutput.WriteMessage(message);
+                    switch (result)
+                    {
+                        case ExceptionFailure exceptionFailure: throw exceptionFailure.Exception;
+                        case Failure _: throw new InvalidOperationException($"Could not write to file {_protobufFileSinkConfiguration.TargetFilePath}.");
+                    }
                 }
                 finally
                 {
