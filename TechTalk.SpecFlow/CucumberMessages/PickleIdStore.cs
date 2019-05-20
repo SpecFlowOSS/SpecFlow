@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
@@ -14,18 +13,18 @@ namespace TechTalk.SpecFlow.CucumberMessages
             _pickleIdGenerator = pickleIdGenerator;
         }
 
-        public Result GetPickleIdForScenario(ScenarioInfo scenarioInfo)
+        public Guid GetPickleIdForScenario(ScenarioInfo scenarioInfo)
         {
             lock (_scenarioInfoMappings)
             {
                 if (_scenarioInfoMappings.ContainsKey(scenarioInfo))
                 {
-                    return Result.Success(_scenarioInfoMappings[scenarioInfo]);
+                    return _scenarioInfoMappings[scenarioInfo];
                 }
 
                 var pickleId = _pickleIdGenerator.GeneratePickleId();
                 _scenarioInfoMappings.Add(scenarioInfo, pickleId);
-                return Result.Success(pickleId);
+                return pickleId;
             }
         }
     }

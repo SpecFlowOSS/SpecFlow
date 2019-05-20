@@ -1,9 +1,10 @@
-﻿using TechTalk.SpecFlow.CommonModels;
+﻿using System;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public interface IPickleIdStore
     {
-        Result GetPickleIdForScenario(ScenarioInfo scenarioInfo);
+        Guid GetPickleIdForScenario(ScenarioInfo scenarioInfo);
     }
 }
