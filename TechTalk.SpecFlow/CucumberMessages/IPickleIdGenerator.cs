@@ -1,9 +1,9 @@
-﻿using TechTalk.SpecFlow.CommonModels;
+﻿using System;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public interface IPickleIdGenerator
     {
-        Result GeneratePickleId();
+        Guid GeneratePickleId();
     }
 }
