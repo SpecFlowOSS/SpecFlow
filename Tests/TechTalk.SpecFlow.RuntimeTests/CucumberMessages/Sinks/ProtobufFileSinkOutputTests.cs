@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var message = cucumberMessageFactory.BuildTestRunStartedMessage(DateTime.UtcNow);
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
+            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result.Success(writableStream));
             var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
 
             // ACT
@@ -65,11 +65,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             writableStream.Length.Should().BeGreaterThan(0);
         }
 
-        public Mock<IBinaryFileAccessor> GetBinaryFileAccessorMock(Result<Stream> openOrAppendStream = null)
+        public Mock<IBinaryFileAccessor> GetBinaryFileAccessorMock(Result openOrAppendStream = null)
         {
             var binaryFileAccessorMock = new Mock<IBinaryFileAccessor>();
             binaryFileAccessorMock.Setup(m => m.OpenAppendOrCreateFile(It.IsAny<string>()))
-                                  .Returns(openOrAppendStream ?? Result<Stream>.Success(GetWritableStream()));
+                                  .Returns(openOrAppendStream ?? Result.Success(GetWritableStream()));
             return binaryFileAccessorMock;
         }
 

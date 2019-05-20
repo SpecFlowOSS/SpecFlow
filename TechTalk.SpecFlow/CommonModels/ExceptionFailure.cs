@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.CommonModels
 {
-    public class ExceptionFailure<T> : Failure<T>
+    public class ExceptionFailure : Failure
     {
         public ExceptionFailure(Exception exception)
         {
