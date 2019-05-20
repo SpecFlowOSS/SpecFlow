@@ -17,12 +17,12 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
-        public bool WriteMessage(IMessage message)
+        public Result WriteMessage(IMessage message)
         {
             var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
-            if (!(streamResult is Success<Stream> success))
+            if (!(streamResult is ISuccess<Stream> success))
             {
-                return false;
+                return Result.Failure();
             }
 
             try
@@ -31,12 +31,12 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
                 {
                     message.WriteTo(success.Result);
                     success.Result.Flush();
-                    return true;
+                    return Result.Success();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return Result.Failure(e);
             }
         }
     }

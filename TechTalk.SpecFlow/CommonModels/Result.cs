@@ -4,6 +4,11 @@ namespace TechTalk.SpecFlow.CommonModels
 {
     public abstract class Result
     {
+        public static Result Success()
+        {
+            return new Success();
+        }
+
         public static Result Success<T>(T result)
         {
             return new Success<T>(result);

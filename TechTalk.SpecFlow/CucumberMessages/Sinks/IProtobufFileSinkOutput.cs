@@ -1,9 +1,10 @@
 ﻿using Google.Protobuf;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 {
     public interface IProtobufFileSinkOutput
     {
-        bool WriteMessage(IMessage message);
+        Result WriteMessage(IMessage message);
     }
 }

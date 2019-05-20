@@ -13,38 +13,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
 {
     public class ProtobufFileSinkOutputTests
     {
-        [Fact(DisplayName = @"WriteMessage should return false if the ProtobufFileSinkOutput is not initialized")]
-        public void WriteMessage_Message_ShouldReturnFalseIfNotInitialized()
+        [Fact(DisplayName = @"WriteMessage should return success if the ProtobufFileSinkOutput is initialized")]
+        public void WriteMessage_Message_ShouldReturnSuccessIfInitialized()
         {
             // ARRANGE
-            const bool expectedSuccess = false;
             var message = new TestRunStarted();
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
             var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
 
             // ACT
-            bool actualSuccess = protobufFileSinkOutput.WriteMessage(message);
+            var actualResult = protobufFileSinkOutput.WriteMessage(message);
 
             // ASSERT
-            actualSuccess.Should().Be(expectedSuccess);
-        }
-
-        [Fact(DisplayName = @"WriteMessage should return true if the ProtobufFileSinkOutput is initialized")]
-        public void WriteMessage_Message_ShouldReturnTrueIfInitialized()
-        {
-            // ARRANGE
-            const bool expectedSuccess = true;
-            var message = new TestRunStarted();
-            var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
-
-            // ACT
-            bool actualSuccess = protobufFileSinkOutput.WriteMessage(message);
-
-            // ASSERT
-            actualSuccess.Should().Be(expectedSuccess);
+            actualResult.Should().BeOfType<Success>();
         }
 
         [Fact(DisplayName = @"WriteMessage should write the specified message to OutputStream")]
@@ -55,21 +37,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var message = cucumberMessageFactory.BuildTestRunStartedMessage(DateTime.UtcNow);
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result.Success(writableStream));
+            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result.Success<Stream>(writableStream));
             var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
 
             // ACT
             protobufFileSinkOutput.WriteMessage(message);
 
             // ASSERT
-            writableStream.Length.Should().BeGreaterThan(0);
+            writableStream.ToArray().Length.Should().BeGreaterThan(0);
         }
 
         public Mock<IBinaryFileAccessor> GetBinaryFileAccessorMock(Result openOrAppendStream = null)
         {
             var binaryFileAccessorMock = new Mock<IBinaryFileAccessor>();
             binaryFileAccessorMock.Setup(m => m.OpenAppendOrCreateFile(It.IsAny<string>()))
-                                  .Returns(openOrAppendStream ?? Result.Success(GetWritableStream()));
+                                  .Returns(openOrAppendStream ?? Result.Success<Stream>(GetWritableStream()));
             return binaryFileAccessorMock;
         }
 

@@ -4,7 +4,7 @@
     {
     }
 
-    public class Success<T> : Success
+    public class Success<T> : Success, ISuccess<T>
     {
         public Success(T result)
         {
