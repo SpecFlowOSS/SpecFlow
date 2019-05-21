@@ -1,10 +1,10 @@
 ﻿namespace TechTalk.SpecFlow.CommonModels
 {
-    public class Success : Result
+    public class Success : ISuccess
     {
     }
 
-    public class Success<T> : Success, ISuccess<T>
+    public class Success<T> : ISuccess<T>
     {
         public Success(T result)
         {

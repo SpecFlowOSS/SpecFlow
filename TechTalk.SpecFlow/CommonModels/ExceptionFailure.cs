@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.CommonModels
 {
-    public class ExceptionFailure : Failure
+    public class ExceptionFailure : IFailure
     {
         public ExceptionFailure(Exception exception)
         {
@@ -10,5 +10,12 @@ namespace TechTalk.SpecFlow.CommonModels
         }
 
         public Exception Exception { get; }
+    }
+
+    public class ExceptionFailure<T> : ExceptionFailure, IFailure<T>
+    {
+        public ExceptionFailure(Exception exception) : base(exception)
+        {
+        }
     }
 }

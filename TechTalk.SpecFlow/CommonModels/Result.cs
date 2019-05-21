@@ -2,26 +2,39 @@
 
 namespace TechTalk.SpecFlow.CommonModels
 {
-    public abstract class Result
+    public static class Result
     {
-        public static Result Success()
+        public static IResult Success()
         {
             return new Success();
         }
 
-        public static Result Success<T>(T result)
-        {
-            return new Success<T>(result);
-        }
-
-        public static Result Failure()
+        public static IResult Failure()
         {
             return new Failure();
         }
 
-        public static Result Failure(Exception exception)
+        public static IResult Failure(Exception exception)
         {
             return new ExceptionFailure(exception);
+        }
+    }
+
+    public static class Result<T>
+    {
+        public static IResult<T> Success(T value)
+        {
+            return new Success<T>(value);
+        }
+
+        public static IResult<T> Failure()
+        {
+            return new Failure<T>();
+        }
+
+        public static IResult<T> Failure(Exception exception)
+        {
+            return new ExceptionFailure<T>(exception);
         }
     }
 }
