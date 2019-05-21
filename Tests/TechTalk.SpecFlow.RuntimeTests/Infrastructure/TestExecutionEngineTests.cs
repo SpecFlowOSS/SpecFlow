@@ -145,9 +145,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
-                new PickleIdStore(new PickleIdGenerator(), new Dictionary<ScenarioInfo, Guid>()),
+                GetPickleIdStoreMock().Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
+        }
+
+        private Mock<IPickleIdStore> GetPickleIdStoreMock()
+        {
+            var dictionary = new Dictionary<ScenarioInfo, Guid>();
+            var pickleIdStoreMock = new Mock<IPickleIdStore>();
+            pickleIdStoreMock.Setup(m => m.GetPickleIdForScenario(It.IsAny<ScenarioInfo>()))
+                             .Returns<ScenarioInfo>(info =>
+                             {
+                                 if (dictionary.ContainsKey(info))
+                                 {
+                                     return dictionary[info];
+                                 }
+
+                                 var newGuid = Guid.NewGuid();
+                                 dictionary.Add(info, newGuid);
+                                 return newGuid;
+                             });
+            return pickleIdStoreMock;
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()
