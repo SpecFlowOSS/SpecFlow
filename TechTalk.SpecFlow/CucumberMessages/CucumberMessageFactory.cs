@@ -9,11 +9,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private const string UsedCucumberImplementationString = @"SpecFlow";
 
-        public Result BuildTestRunStartedMessage(DateTime timeStamp)
+        public IResult<TestRunStarted> BuildTestRunStartedMessage(DateTime timeStamp)
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result.Failure();
+                return Result<TestRunStarted>.Failure();
             }
 
             var testRunStarted = new TestRunStarted
@@ -22,14 +22,14 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 CucumberImplementation = UsedCucumberImplementationString
             };
 
-            return Result.Success(testRunStarted);
+            return Result<TestRunStarted>.Success(testRunStarted);
         }
 
-        public Result BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp)
+        public IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp)
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result.Failure();
+                return Result<TestCaseStarted>.Failure();
             }
 
             var testCaseStarted = new TestCaseStarted
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 PickleId = pickleId.ToString("D")
             };
 
-            return Result.Success(testCaseStarted);
+            return Result<TestCaseStarted>.Success(testCaseStarted);
         }
     }
 }

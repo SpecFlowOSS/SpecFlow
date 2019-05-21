@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var actualTestRunStartedMessageResult = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
 
             // ASSERT
-            actualTestRunStartedMessageResult.Should().BeOfType<Success<TestRunStarted>>();
+            actualTestRunStartedMessageResult.Should().BeAssignableTo<ISuccess<TestRunStarted>>();
         }
 
         [Fact(DisplayName = @"BuildTestRunResultMessage should return a TestRunResult message object with the specified date and time")]
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var actualTestRunStartedMessageResult = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
 
             // ASSERT
-            actualTestRunStartedMessageResult.Should().BeOfType<Success<TestRunStarted>>()
+            actualTestRunStartedMessageResult.Should().BeAssignableTo<ISuccess<TestRunStarted>>()
                                              .Which.Result.Timestamp.ToDateTime().Should().Be(dateTime);
         }
 
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             // ASSERT
 
-            actualTestRunStartedMessageResult.Should().BeOfType<Success<TestRunStarted>>()
+            actualTestRunStartedMessageResult.Should().BeAssignableTo<ISuccess<TestRunStarted>>()
                                              .Which.Result.CucumberImplementation.Should().Be(expectedCucumberImplementation);
         }
 
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
 
             // ASSERT
-            result.Should().BeOfType<Failure>();
+            result.Should().BeAssignableTo<IFailure>();
         }
 
         [Fact(DisplayName = @"BuildTestCaseStarted should return a message with the correct pickle ID")]
@@ -84,7 +84,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
 
             // ASSERT
-            result.Should().BeOfType<Success<TestCaseStarted>>().Which
+            result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>().Which
                   .Result.PickleId.Should().Be(pickleId.ToString("D"));
         }
 
@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
 
             // ASSERT
-            result.Should().BeOfType<Success<TestCaseStarted>>();
+            result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>();
         }
     }
 }

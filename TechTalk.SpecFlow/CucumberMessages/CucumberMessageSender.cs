@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             SendMessageOrThrowException(testCaseStartedMessageResult);
         }
 
-        public void SendMessageOrThrowException(Result messageResult)
+        public void SendMessageOrThrowException(IResult<IMessage> messageResult)
         {
             switch (messageResult)
             {

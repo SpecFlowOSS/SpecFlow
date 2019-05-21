@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.FileAccess
 {
     public class BinaryFileAccessor : IBinaryFileAccessor
     {
-        public Result OpenAppendOrCreateFile(string filePath)
+        public IResult<Stream> OpenAppendOrCreateFile(string filePath)
         {
             try
             {
@@ -17,11 +17,11 @@ namespace TechTalk.SpecFlow.FileAccess
                 }
 
                 var streamToReturn = File.Open(filePath, FileMode.Append, System.IO.FileAccess.Write, FileShare.Read);
-                return Result.Success<Stream>(streamToReturn);
+                return Result<Stream>.Success(streamToReturn);
             }
             catch (IOException exc)
             {
-                return Result.Failure(exc);
+                return Result<Stream>.Failure(exc);
             }
         }
     }

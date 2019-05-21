@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
-        public Result WriteMessage(IMessage message)
+        public IResult WriteMessage(IMessage message)
         {
             var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
             if (!(streamResult is ISuccess<Stream> success))
