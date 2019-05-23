@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.FileAccess
 {
     public interface IBinaryFileAccessor
     {
-        Result OpenAppendOrCreateFile(string filePath);
+        IResult<Stream> OpenAppendOrCreateFile(string filePath);
     }
 }

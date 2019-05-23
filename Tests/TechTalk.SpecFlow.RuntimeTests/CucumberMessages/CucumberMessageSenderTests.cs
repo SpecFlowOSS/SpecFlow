@@ -11,6 +11,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
     public class CucumberMessageSenderTests
     {
+        [Fact(DisplayName = @"SendTestCaseStarted should send a TestCaseStarted message to sink")]
+        public void SendTestCaseStarted_ValidParameters_ShouldSendTestRunStartedToSink()
+        {
+            // ARRANGE
+            IMessage sentMessage = default;
+
+            var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
+                                   .Callback<IMessage>(m => sentMessage = m);
+
+            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
+            var pickleId = Guid.NewGuid();
+
+            // ACT
+            cucumberMessageSender.SendTestCaseStarted(pickleId);
+
+            // ASSERT
+            sentMessage.Should().BeOfType<TestCaseStarted>();
+        }
+
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStated message to sink")]
         public void SendTestRunStarted_ShouldSendTestRunStartedToSink()
         {

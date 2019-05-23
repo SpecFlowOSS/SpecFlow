@@ -17,20 +17,25 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
-        public Result WriteMessage(IMessage message)
+        public IResult WriteMessage(IMessage message)
         {
             var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
-            if (!(streamResult is ISuccess<Stream> success))
+            switch (streamResult)
             {
-                return Result.Failure();
+                case IFailure<Stream> failure: return Result.Failure("Stream could not be opened", failure);
+                case ISuccess<Stream> success: return WriteMessageToStream(success.Result, message);
+                default: throw new InvalidOperationException($"The result from {nameof(BinaryFileAccessor.OpenAppendOrCreateFile)} must either implement {nameof(IFailure<Stream>)} or {nameof(ISuccess<Stream>)}");
             }
+        }
 
+        private IResult WriteMessageToStream(Stream target, IMessage message)
+        {
             try
             {
-                using (success.Result)
+                using (target)
                 {
-                    message.WriteTo(success.Result);
-                    success.Result.Flush();
+                    message.WriteTo(target);
+                    target.Flush();
                     return Result.Success();
                 }
             }

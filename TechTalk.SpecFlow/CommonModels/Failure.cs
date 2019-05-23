@@ -1,6 +1,19 @@
 ﻿namespace TechTalk.SpecFlow.CommonModels
 {
-    public class Failure : Result
+    public class Failure : IFailure
     {
+        public Failure(string description)
+        {
+            Description = description;
+        }
+
+        public string Description { get; }
+    }
+
+    public class Failure<T> : Failure, IFailure<T>
+    {
+        public Failure(string description) : base(description)
+        {
+        }
     }
 }

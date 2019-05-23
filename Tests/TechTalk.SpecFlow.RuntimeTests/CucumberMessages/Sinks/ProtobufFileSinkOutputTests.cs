@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using FluentAssertions;
+using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
-using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.FileAccess;
 using Xunit;
@@ -26,18 +26,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var actualResult = protobufFileSinkOutput.WriteMessage(message);
 
             // ASSERT
-            actualResult.Should().BeOfType<Success>();
+            actualResult.Should().BeAssignableTo<ISuccess>();
         }
 
         [Fact(DisplayName = @"WriteMessage should write the specified message to OutputStream")]
         public void WriteMessage_Message_ShouldWriteTheSpecifiedMessageToOutputStream()
         {
             // ARRANGE
-            var cucumberMessageFactory = new CucumberMessageFactory();
-            var message = cucumberMessageFactory.BuildTestRunStartedMessage(DateTime.UtcNow);
+            var message = new TestRunStarted
+            {
+                Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
+                CucumberImplementation = "SpecFlow"
+            };
+
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
-            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result.Success<Stream>(writableStream));
+            var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
             var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
 
             // ACT
@@ -47,11 +51,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             writableStream.ToArray().Length.Should().BeGreaterThan(0);
         }
 
-        public Mock<IBinaryFileAccessor> GetBinaryFileAccessorMock(Result openOrAppendStream = null)
+        public Mock<IBinaryFileAccessor> GetBinaryFileAccessorMock(IResult<Stream> openOrAppendStream = null)
         {
             var binaryFileAccessorMock = new Mock<IBinaryFileAccessor>();
             binaryFileAccessorMock.Setup(m => m.OpenAppendOrCreateFile(It.IsAny<string>()))
-                                  .Returns(openOrAppendStream ?? Result.Success<Stream>(GetWritableStream()));
+                                  .Returns(openOrAppendStream ?? Result<Stream>.Success(GetWritableStream()));
             return binaryFileAccessorMock;
         }
 

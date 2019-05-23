@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.CommonModels
 {
-    public class Success : Result
+    public class Success : ISuccess
     {
     }
 

@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
 {
     public interface IProtobufFileSinkOutput
     {
-        Result WriteMessage(IMessage message);
+        IResult WriteMessage(IMessage message);
     }
 }

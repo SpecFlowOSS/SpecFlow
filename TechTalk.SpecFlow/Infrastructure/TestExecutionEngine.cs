@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IErrorProvider _errorProvider;
         private readonly IObsoleteStepHandler _obsoleteStepHandler;
         private readonly ICucumberMessageSender _cucumberMessageSender;
+        private readonly IPickleIdStore _pickleIdStore;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
@@ -43,6 +44,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
             IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender,
+            IPickleIdStore pickleIdStore,
             ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             _errorProvider = errorProvider;
@@ -61,6 +63,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             TestThreadContainer = testThreadContainer;
             _obsoleteStepHandler = obsoleteStepHandler;
             _cucumberMessageSender = cucumberMessageSender;
+            _pickleIdStore = pickleIdStore;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -128,6 +131,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioStart()
         {
+            var pickleId = _pickleIdStore.GetPickleIdForScenario(_contextManager.ScenarioContext.ScenarioInfo);
+            _cucumberMessageSender.SendTestCaseStarted(pickleId);
             FireScenarioEvents(HookType.BeforeScenario);
         }
 

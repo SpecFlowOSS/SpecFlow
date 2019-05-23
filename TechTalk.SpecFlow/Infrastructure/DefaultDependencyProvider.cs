@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
@@ -64,6 +65,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
             container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
+            container.RegisterTypeAs<PickleIdGenerator, IPickleIdGenerator>();
+            container.RegisterTypeAs<PickleIdStore, IPickleIdStore>();
+            container.RegisterTypeAs<PickleIdStoreDictionaryFactory, IPickleIdStoreDictionaryFactory>();
 
             RegisterUnitTestProviders(container);
         }
