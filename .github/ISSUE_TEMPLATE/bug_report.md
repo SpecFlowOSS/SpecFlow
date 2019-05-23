@@ -28,7 +28,7 @@ Version number:
 
 ### Project Format of the SpecFlow project
 - [ ] Classic project format using `packages.config`
-- [ ] Classis project format using `<PackageReference>` tags
+- [ ] Classic project format using `<PackageReference>` tags
 - [ ] Sdk-style project format
 
 ### .feature.cs files are generated using
@@ -39,6 +39,10 @@ Version number:
 - [ ] VS 2019
 - [ ]	VS 2017
 - [ ]	VS 2015
+
+### `Enable SpecFlowSingleFileGenerator Custom Tool` option in Visual Studio extension settings
+- [ ] Enabled
+- [ ] Disabled
 
 ### Are the latest Visual Studio updates installed?
 - [ ]	Yes
