@@ -4,7 +4,7 @@
     {
     }
 
-    public interface IFailure<out T> : IResult, IResult<T>
+    public interface IFailure<out T> : IFailure, IResult<T>
     {
     }
 }
