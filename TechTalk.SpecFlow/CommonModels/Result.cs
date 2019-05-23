@@ -19,9 +19,9 @@ namespace TechTalk.SpecFlow.CommonModels
             return new ExceptionFailure(exception);
         }
 
-        public static IResult Failure(string description, IResult innerResult)
+        public static IResult Failure(string description, IFailure innerFailure)
         {
-            return new WrappedFailure(description, innerResult);
+            return new WrappedFailure(description, innerFailure);
         }
     }
 
@@ -42,9 +42,9 @@ namespace TechTalk.SpecFlow.CommonModels
             return new ExceptionFailure<T>(exception);
         }
 
-        public static IResult<T> Failure(string description, IResult innerResult)
+        public static IResult<T> Failure(string description, IFailure innerFailure)
         {
-            return new WrappedFailure<T>(description, innerResult);
+            return new WrappedFailure<T>(description, innerFailure);
         }
     }
 }
