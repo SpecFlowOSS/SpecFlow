@@ -33,7 +33,8 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
                     switch (result)
                     {
                         case ExceptionFailure exceptionFailure: throw exceptionFailure.Exception;
-                        case Failure _: throw new InvalidOperationException($"Could not write to file {_protobufFileSinkConfiguration.TargetFilePath}.");
+                        case Failure failure: throw new InvalidOperationException($"Could not write to file {_protobufFileSinkConfiguration.TargetFilePath}. {failure.Description}");
+                        case IFailure _: throw new InvalidOperationException($"Could not write to file {_protobufFileSinkConfiguration.TargetFilePath}.");
                     }
                 }
                 finally
