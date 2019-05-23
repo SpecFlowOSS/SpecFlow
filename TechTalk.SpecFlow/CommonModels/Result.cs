@@ -9,9 +9,9 @@ namespace TechTalk.SpecFlow.CommonModels
             return new Success();
         }
 
-        public static IResult Failure()
+        public static IResult Failure(string description)
         {
-            return new Failure();
+            return new Failure(description);
         }
 
         public static IResult Failure(Exception exception)
@@ -27,9 +27,9 @@ namespace TechTalk.SpecFlow.CommonModels
             return new Success<T>(value);
         }
 
-        public static IResult<T> Failure()
+        public static IResult<T> Failure(string description)
         {
-            return new Failure<T>();
+            return new Failure<T>(description);
         }
 
         public static IResult<T> Failure(Exception exception)

@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestRunStarted>.Failure();
+                return Result<TestRunStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}");
             }
 
             var testRunStarted = new TestRunStarted
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestCaseStarted>.Failure();
+                return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}");
             }
 
             var testCaseStarted = new TestCaseStarted
