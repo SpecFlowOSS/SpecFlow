@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
             if (!(streamResult is ISuccess<Stream> success))
             {
-                return Result.Failure("Stream could not be opened");
+                return Result.Failure("Stream could not be opened", streamResult);
             }
 
             try
