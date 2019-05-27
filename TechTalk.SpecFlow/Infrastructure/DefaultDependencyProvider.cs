@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BoDi;
+﻿using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
@@ -60,7 +58,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
-            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration($"CucumberMessageQueue/{Guid.NewGuid()}"));
+            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages"));
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
