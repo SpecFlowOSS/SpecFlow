@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             {
                 using (target)
                 {
-                    message.WriteTo(target);
+                    message.WriteDelimitedTo(target);
                     target.Flush();
                     return Result.Success();
                 }
