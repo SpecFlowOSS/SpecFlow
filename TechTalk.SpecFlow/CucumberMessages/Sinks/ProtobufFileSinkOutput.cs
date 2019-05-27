@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Google.Protobuf;
+using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.FileAccess;
 
@@ -17,7 +18,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
-        public IResult WriteMessage(IMessage message)
+        public IResult WriteMessage(Wrapper message)
         {
             var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
             switch (streamResult)
@@ -28,7 +29,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             }
         }
 
-        private IResult WriteMessageToStream(Stream target, IMessage message)
+        private IResult WriteMessageToStream(Stream target, Wrapper message)
         {
             try
             {

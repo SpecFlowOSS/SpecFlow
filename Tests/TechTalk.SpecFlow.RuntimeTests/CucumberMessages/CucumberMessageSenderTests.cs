@@ -1,6 +1,5 @@
 using System;
 using FluentAssertions;
-using Google.Protobuf;
 using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CucumberMessages;
@@ -15,11 +14,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void SendTestCaseStarted_ValidParameters_ShouldSendTestRunStartedToSink()
         {
             // ARRANGE
-            IMessage sentMessage = default;
+            Wrapper sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
-                                   .Callback<IMessage>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
+                                   .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
             var pickleId = Guid.NewGuid();
@@ -28,18 +27,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestCaseStarted(pickleId);
 
             // ASSERT
-            sentMessage.Should().BeOfType<TestCaseStarted>();
+            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
         }
 
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStated message to sink")]
         public void SendTestRunStarted_ShouldSendTestRunStartedToSink()
         {
             // ARRANGE
-            IMessage sentMessage = default;
+            Wrapper sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
-                                   .Callback<IMessage>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
+                                   .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
 
@@ -47,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestRunStarted();
 
             // ASSERT
-            sentMessage.Should().BeOfType<TestRunStarted>();
+            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
         }
 
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStated message with correct time stamp to sink")]
@@ -61,11 +60,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             clockMock.Setup(m => m.GetToday())
                      .Returns(now.Date);
 
-            IMessage sentMessage = default;
+            Wrapper sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
-                                   .Callback<IMessage>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
+                                   .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(clockMock.Object, new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
 
@@ -73,8 +72,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestRunStarted();
 
             // ASSERT
-            sentMessage.Should().BeOfType<TestRunStarted>()
-                       .Which.Timestamp.ToDateTime().Should().Be(now);
+            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
+            sentMessage.TestRunStarted.Timestamp.ToDateTime().Should().Be(now);
         }
 
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStarted message with SpecFlow as used Cucumber implementation to sink")]
@@ -82,11 +81,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         {
             // ARRANGE
             const string expectedCucumberImplementation = @"SpecFlow";
-            IMessage sentMessage = default;
+            Wrapper sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<IMessage>()))
-                                   .Callback<IMessage>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
+                                   .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object);
 
@@ -94,8 +93,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestRunStarted();
 
             // ASSERT
-            sentMessage.Should().BeOfType<TestRunStarted>()
-                       .Which.CucumberImplementation.Should().Be(expectedCucumberImplementation);
+            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
+            sentMessage.TestRunStarted.CucumberImplementation.Should().Be(expectedCucumberImplementation);
         }
     }
 }

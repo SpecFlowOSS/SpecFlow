@@ -1,5 +1,5 @@
 ﻿using System;
-using Google.Protobuf;
+using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.Time;
 
@@ -21,20 +21,22 @@ namespace TechTalk.SpecFlow.CucumberMessages
         public void SendTestRunStarted()
         {
             var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(_clock.GetNowDateAndTime());
-            SendMessageOrThrowException(testRunStartedMessageResult);
+            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testRunStartedMessageResult);
+            SendMessageOrThrowException(wrapper);
         }
 
         public void SendTestCaseStarted(Guid pickleId)
         {
             var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, _clock.GetNowDateAndTime());
-            SendMessageOrThrowException(testCaseStartedMessageResult);
+            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseStartedMessageResult);
+            SendMessageOrThrowException(wrapper);
         }
 
-        public void SendMessageOrThrowException(IResult<IMessage> messageResult)
+        public void SendMessageOrThrowException(IResult<Wrapper> messageResult)
         {
             switch (messageResult)
             {
-                case ISuccess<IMessage> success:
+                case ISuccess<Wrapper> success:
                     _cucumberMessageSink.SendMessage(success.Result);
                     break;
 
