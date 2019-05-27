@@ -40,5 +40,27 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             return Result<TestCaseStarted>.Success(testCaseStarted);
         }
+
+        public IResult<Wrapper> BuildWrapperMessage(IResult<TestRunStarted> testRunStarted)
+        {
+            if (!(testRunStarted is ISuccess<TestRunStarted> success))
+            {
+                return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an ISuccess.");
+            }
+
+            var wrapper = new Wrapper { TestRunStarted = success.Result };
+            return Result<Wrapper>.Success(wrapper);
+        }
+
+        public IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseStarted> testCaseStarted)
+        {
+            if (!(testCaseStarted is ISuccess<TestCaseStarted> success))
+            {
+                return Result<Wrapper>.Failure($"{nameof(testCaseStarted)} must be an ISuccess.");
+            }
+
+            var wrapper = new Wrapper { TestCaseStarted = success.Result };
+            return Result<Wrapper>.Success(wrapper);
+        }
     }
 }

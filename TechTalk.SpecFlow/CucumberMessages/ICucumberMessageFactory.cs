@@ -9,5 +9,9 @@ namespace TechTalk.SpecFlow.CucumberMessages
         IResult<TestRunStarted> BuildTestRunStartedMessage(DateTime timeStamp);
 
         IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp);
+
+        IResult<Wrapper> BuildWrapperMessage(IResult<TestRunStarted> testRunStarted);
+
+        IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseStarted> testCaseStarted);
     }
 }
