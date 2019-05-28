@@ -5,6 +5,7 @@ using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.CucumberMessages.Sinks;
+using TechTalk.SpecFlow.EnvironmentAccess;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.FileAccess;
 using TechTalk.SpecFlow.Plugins;
@@ -55,6 +56,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ObsoleteStepHandler, IObsoleteStepHandler>();
 
+            container.RegisterTypeAs<EnvironmentWrapper, IEnvironmentWrapper>();
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
