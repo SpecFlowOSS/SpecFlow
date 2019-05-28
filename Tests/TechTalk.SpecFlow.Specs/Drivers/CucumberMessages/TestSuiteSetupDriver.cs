@@ -7,6 +7,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
     public class TestSuiteSetupDriver
     {
         private readonly ProjectsDriver _projectsDriver;
+        private bool _isProjectCreated;
 
         public TestSuiteSetupDriver(ProjectsDriver projectsDriver)
         {
@@ -15,7 +16,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
 
         public void AddFeatureFiles(int count)
         {
-            if (count == 0)
+            if (count <= 0)
             {
                 _projectsDriver.CreateProject("C#");
                 return;
@@ -35,6 +36,18 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
 
                 _projectsDriver.AddFeatureFile(featureBuilder.ToString());
             }
+
+            _isProjectCreated = true;
+        }
+
+        public void EnsureAProjectIsCreated()
+        {
+            if (_isProjectCreated)
+            {
+                return;
+            }
+
+            AddFeatureFiles(1);
         }
     }
 }
