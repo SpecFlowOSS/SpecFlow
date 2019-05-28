@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [Then(@"a TestRunStarted message has been sent with the following attributes")]
         public void ThenATestRunStartedMessageHasBeenSentWithTheFollowingAttributes(Table attributesTable)
         {
-            ScenarioContext.Current.Pending();
+            _cucumberMessagesDriver.TestRunStartedMessageShouldHaveBeenSent(attributesTable);
         }
     }
 }

@@ -38,5 +38,21 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
                 _projectsDriver.AddFeatureFile(featureBuilder.ToString());
             }
         }
+
+        [Given(@"the cucumber implementation is (.*)")]
+        public void GivenTheCucumberImplementationIs(string cucumberImplementation)
+        {
+            const string featureTitle = "Feature1";
+            var featureBuilder = new StringBuilder();
+            featureBuilder.AppendLine($"Feature: {featureTitle}");
+
+            foreach (string scenario in Enumerable.Range(0, 1).Select(i => $"Scenario: passing scenario nr {i}\r\nWhen the step pass in {featureTitle}"))
+            {
+                featureBuilder.AppendLine(scenario);
+                featureBuilder.AppendLine();
+            }
+
+            _projectsDriver.AddFeatureFile(featureBuilder.ToString());
+        }
     }
 }

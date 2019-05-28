@@ -5,6 +5,7 @@ using System.Linq;
 using FluentAssertions;
 using Google.Protobuf;
 using Io.Cucumber.Messages;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.TestProjectGenerator;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
@@ -46,6 +47,16 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
         {
             var messageQueue = LoadMessageQueue();
             messageQueue.ToArray().Should().Contain(m => m is TestRunStarted);
+        }
+
+        public void TestRunStartedMessageShouldHaveBeenSent(Table values)
+        {
+            var messageQueue = LoadMessageQueue();
+            var testRunStarted = messageQueue.ToArray().Should().Contain(m => m is TestRunStarted)
+                                             .Which.Should().BeOfType<TestRunStarted>()
+                                             .Which;
+
+            values.CompareToInstance(testRunStarted);
         }
     }
 }
