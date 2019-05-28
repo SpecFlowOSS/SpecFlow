@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestRunStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}");
+                return Result<TestRunStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
 
             var testRunStarted = new TestRunStarted
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}");
+                return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
 
             var testCaseStarted = new TestCaseStarted
@@ -45,7 +45,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (!(testRunStarted is ISuccess<TestRunStarted> success))
             {
-                return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an ISuccess.");
+                switch (testRunStarted)
+                {
+                    case Failure failure: return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an ISuccess.", failure);
+                    default: return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an ISuccess.");
+                }
             }
 
             var wrapper = new Wrapper { TestRunStarted = success.Result };

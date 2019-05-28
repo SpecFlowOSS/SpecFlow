@@ -40,7 +40,9 @@ namespace TechTalk.SpecFlow.CucumberMessages
                     _cucumberMessageSink.SendMessage(success.Result);
                     break;
 
-                case ExceptionFailure failure: throw failure.Exception;
+                case WrappedFailure<Wrapper> failure: throw new InvalidOperationException($"The message could not be created. {failure}");
+                case ExceptionFailure<Wrapper> failure: throw failure.Exception;
+                case Failure<Wrapper> failure: throw new InvalidOperationException($"The message could not be created. {failure.Description}");
                 default: throw new InvalidOperationException("The message could not be created.");
             }
         }
