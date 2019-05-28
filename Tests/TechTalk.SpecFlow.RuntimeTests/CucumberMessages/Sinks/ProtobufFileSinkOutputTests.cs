@@ -20,7 +20,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var message = new Wrapper { TestRunStarted = new TestRunStarted()};
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
+            var protobufFileNameResolverMock = GetProtobufFileNameResolverMock();
+
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration, protobufFileNameResolverMock.Object);
 
             // ACT
             var actualResult = protobufFileSinkOutput.WriteMessage(message);
@@ -45,7 +47,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var writableStream = GetWritableStream();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock(Result<Stream>.Success(writableStream));
-            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration);
+            var protobufFileNameResolverMock = GetProtobufFileNameResolverMock();
+
+            var protobufFileSinkOutput = new ProtobufFileSinkOutput(binaryFileAccessorMock.Object, protobufFileSinkConfiguration, protobufFileNameResolverMock.Object);
 
             // ACT
             protobufFileSinkOutput.WriteMessage(message);
@@ -60,6 +64,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             binaryFileAccessorMock.Setup(m => m.OpenAppendOrCreateFile(It.IsAny<string>()))
                                   .Returns(openOrAppendStream ?? Result<Stream>.Success(GetWritableStream()));
             return binaryFileAccessorMock;
+        }
+
+        public Mock<IProtobufFileNameResolver> GetProtobufFileNameResolverMock()
+        {
+            var protobufFileNameResolverMock = new Mock<IProtobufFileNameResolver>();
+            protobufFileNameResolverMock.Setup(m => m.Resolve(It.IsAny<string>()))
+                                        .Returns<string>(Result<string>.Success);
+            return protobufFileNameResolverMock;
         }
 
         public Stream GetNotWritableStream()
