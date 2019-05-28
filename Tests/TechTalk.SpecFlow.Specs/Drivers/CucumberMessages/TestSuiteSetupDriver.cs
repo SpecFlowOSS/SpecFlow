@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             if (count <= 0)
             {
                 _projectsDriver.CreateProject("C#");
+                _isProjectCreated = true;
                 return;
             }
 
