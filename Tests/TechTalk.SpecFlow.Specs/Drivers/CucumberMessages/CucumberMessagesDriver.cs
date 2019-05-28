@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Google.Protobuf;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages.RowObjects;
 using TechTalk.SpecFlow.TestProjectGenerator;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
@@ -55,8 +57,18 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             var testRunStarted = messageQueue.ToArray().Should().Contain(m => m is TestRunStarted)
                                              .Which.Should().BeOfType<TestRunStarted>()
                                              .Which;
+            var testRunStartedRow = values.CreateInstance<TestRunStartedRow>();
 
-            values.CompareToInstance(testRunStarted);
+            if (testRunStartedRow.Timestamp is string expectedTimeStampString
+                && DateTime.TryParse(expectedTimeStampString, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var expectedTimeStamp))
+            {
+                testRunStarted.Timestamp.ToDateTime().Should().Be(expectedTimeStamp);
+            }
+
+            if (testRunStartedRow.CucumberImplementation is string expectedCucumberImplementation)
+            {
+                testRunStarted.CucumberImplementation.Should().Be(expectedCucumberImplementation);
+            }
         }
     }
 }
