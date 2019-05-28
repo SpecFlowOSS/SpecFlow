@@ -11,12 +11,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
         private readonly CucumberMessagesDriver _cucumberMessagesDriver;
         private readonly SolutionDriver _solutionDriver;
+        private readonly TestSuiteInitializationDriver _testSuiteInitializationDriver;
 
-        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, CucumberMessagesDriver cucumberMessagesDriver, SolutionDriver solutionDriver)
+        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, CucumberMessagesDriver cucumberMessagesDriver, SolutionDriver solutionDriver, TestSuiteInitializationDriver testSuiteInitializationDriver)
         {
             _vsTestExecutionDriver = vsTestExecutionDriver;
             _cucumberMessagesDriver = cucumberMessagesDriver;
             _solutionDriver = solutionDriver;
+            _testSuiteInitializationDriver = testSuiteInitializationDriver;
         }
 
         [When(@"the test suite is executed")]
@@ -30,8 +32,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [When(@"the test suite is started at '(.*)'")]
         public void WhenTheTestSuiteIsStartedAt(DateTime startTime)
         {
-            ScenarioContext.Current.Pending();
-            _vsTestExecutionDriver.ExecuteTests();
+            _testSuiteInitializationDriver.OverrideStartupTime = startTime;
         }
 
         [When(@"the test suite was executed")]
