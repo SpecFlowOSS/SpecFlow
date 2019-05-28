@@ -1,17 +1,14 @@
 ﻿using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
-using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
 {
     [Binding]
     public class TestSuiteSteps
     {
-        private readonly ProjectsDriver _projectsDriver;
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
 
-        public TestSuiteSteps(ProjectsDriver projectsDriver, TestSuiteSetupDriver testSuiteSetupDriver)
+        public TestSuiteSteps(TestSuiteSetupDriver testSuiteSetupDriver)
         {
-            _projectsDriver = projectsDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
         }
 
