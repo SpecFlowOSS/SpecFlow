@@ -4,6 +4,8 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
 {
     public interface IEnvironmentWrapper
     {
+        IResult<string> ResolveEnvironmentVariables(string source);
+
         bool IsEnvironmentVariableSet(string name);
 
         IResult<string> GetEnvironmentVariable(string name);

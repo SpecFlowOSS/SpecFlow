@@ -5,6 +5,11 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
 {
     public class EnvironmentWrapper : IEnvironmentWrapper
     {
+        public IResult<string> ResolveEnvironmentVariables(string source)
+        {
+            return Result<string>.Success(Environment.ExpandEnvironmentVariables(source));
+        }
+
         public bool IsEnvironmentVariableSet(string name)
         {
             return Environment.GetEnvironmentVariables().Contains(name);

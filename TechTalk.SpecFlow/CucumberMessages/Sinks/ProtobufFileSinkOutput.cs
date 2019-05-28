@@ -11,16 +11,28 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
     {
         private readonly IBinaryFileAccessor _binaryFileAccessor;
         private readonly ProtobufFileSinkConfiguration _protobufFileSinkConfiguration;
+        private readonly IProtobufFileNameResolver _protobufFileNameResolver;
 
-        public ProtobufFileSinkOutput(IBinaryFileAccessor binaryFileAccessor, ProtobufFileSinkConfiguration protobufFileSinkConfiguration)
+        public ProtobufFileSinkOutput(IBinaryFileAccessor binaryFileAccessor, ProtobufFileSinkConfiguration protobufFileSinkConfiguration, IProtobufFileNameResolver protobufFileNameResolver)
         {
             _binaryFileAccessor = binaryFileAccessor;
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
+            _protobufFileNameResolver = protobufFileNameResolver;
         }
 
         public IResult WriteMessage(Wrapper message)
         {
-            var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(_protobufFileSinkConfiguration.TargetFilePath);
+            var resolveTargetFilePathResult = _protobufFileNameResolver.Resolve(_protobufFileSinkConfiguration.TargetFilePath);
+            if (!(resolveTargetFilePathResult is ISuccess<string> resolveTargetFilePathSuccess))
+            {
+                switch (resolveTargetFilePathResult)
+                {
+                    case IFailure innerFailure: return Result.Failure("Stream could not be opened.", innerFailure);
+                    default: return Result.Failure($"Stream could not be opened. File name '{_protobufFileSinkConfiguration.TargetFilePath}' could not be resolved.");
+                }
+            }
+
+            var streamResult = _binaryFileAccessor.OpenAppendOrCreateFile(resolveTargetFilePathSuccess.Result);
             switch (streamResult)
             {
                 case IFailure<Stream> failure: return Result.Failure("Stream could not be opened", failure);
