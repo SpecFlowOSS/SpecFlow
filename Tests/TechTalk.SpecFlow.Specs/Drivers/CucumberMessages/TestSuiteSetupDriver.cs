@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
 
         public void AddFeatureFiles(int count)
         {
-            if (count <= 0)
+            if (count <= 0 && !_isProjectCreated)
             {
                 _projectsDriver.CreateProject("C#");
                 _isProjectCreated = true;
