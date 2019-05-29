@@ -39,7 +39,5 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
                 }
             }
         }
-
-
     }
 }
