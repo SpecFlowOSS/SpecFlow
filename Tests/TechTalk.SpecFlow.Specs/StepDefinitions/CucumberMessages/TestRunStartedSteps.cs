@@ -9,15 +9,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
     public class TestRunStartedSteps
     {
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
-        private readonly CucumberMessagesDriver _cucumberMessagesDriver;
+        private readonly TestRunStartedDriver _testRunStartedDriver;
         private readonly SolutionDriver _solutionDriver;
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
         private readonly TestSuiteInitializationDriver _testSuiteInitializationDriver;
 
-        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, CucumberMessagesDriver cucumberMessagesDriver, SolutionDriver solutionDriver, TestSuiteSetupDriver testSuiteSetupDriver, TestSuiteInitializationDriver testSuiteInitializationDriver)
+        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, TestRunStartedDriver testRunStartedDriver, SolutionDriver solutionDriver, TestSuiteSetupDriver testSuiteSetupDriver, TestSuiteInitializationDriver testSuiteInitializationDriver)
         {
             _vsTestExecutionDriver = vsTestExecutionDriver;
-            _cucumberMessagesDriver = cucumberMessagesDriver;
+            _testRunStartedDriver = testRunStartedDriver;
             _solutionDriver = solutionDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
@@ -43,13 +43,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [Then(@"a TestRunStarted message has been sent")]
         public void ThenATestRunStartedMessageHasBeenSent()
         {
-            _cucumberMessagesDriver.TestRunStartedMessageShouldHaveBeenSent();
+            _testRunStartedDriver.TestRunStartedMessageShouldHaveBeenSent();
         }
 
         [Then(@"a TestRunStarted message has been sent with the following attributes")]
         public void ThenATestRunStartedMessageHasBeenSentWithTheFollowingAttributes(Table attributesTable)
         {
-            _cucumberMessagesDriver.TestRunStartedMessageShouldHaveBeenSent(attributesTable);
+            _testRunStartedDriver.TestRunStartedMessageShouldHaveBeenSent(attributesTable);
         }
     }
 }
