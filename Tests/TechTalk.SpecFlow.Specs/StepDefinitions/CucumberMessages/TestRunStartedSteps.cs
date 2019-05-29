@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         public void WhenTheTestSuiteIsStartedAt(DateTime startTime)
         {
             _testSuiteSetupDriver.EnsureAProjectIsCreated();
-            _testSuiteInitializationDriver.OverrideStartupTime = startTime;
+            _testSuiteInitializationDriver.OverrideTestSuiteStartupTime = startTime;
         }
 
         [Then(@"a TestRunStarted message has been sent")]
