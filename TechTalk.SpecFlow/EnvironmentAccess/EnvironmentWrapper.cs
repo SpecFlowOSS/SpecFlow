@@ -29,5 +29,7 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
         {
             Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
         }
+
+        public string GetCurrentDirectory() => Environment.CurrentDirectory;
     }
 }

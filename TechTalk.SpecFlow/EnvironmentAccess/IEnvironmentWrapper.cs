@@ -11,5 +11,7 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
         IResult<string> GetEnvironmentVariable(string name);
 
         void SetEnvironmentVariable(string name, string value);
+
+        string GetCurrentDirectory();
     }
 }
