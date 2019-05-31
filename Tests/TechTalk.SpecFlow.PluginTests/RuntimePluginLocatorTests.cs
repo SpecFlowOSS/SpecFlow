@@ -11,13 +11,13 @@ namespace TechTalk.SpecFlow.PluginTests
         public void LoadPlugins_Find_All_4_Referenced_RuntimePlugins()
         {
             //ARRANGE
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger());
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath());
 
             //ACT
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
 
             //ASSERT
-            plugins.Count.Should().Be(4, $"{String.Join(",", plugins)} were found");
+            plugins.Count.Should().Be(4, $"{string.Join(",", plugins)} were found");
         }
 
     }

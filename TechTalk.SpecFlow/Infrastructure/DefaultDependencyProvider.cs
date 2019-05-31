@@ -62,6 +62,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<ProtobufFileNameResolver, IProtobufFileNameResolver>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
             container.RegisterInstanceAs(new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages"));
+            container.RegisterTypeAs<SpecFlowPath, ISpecFlowPath>();
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
