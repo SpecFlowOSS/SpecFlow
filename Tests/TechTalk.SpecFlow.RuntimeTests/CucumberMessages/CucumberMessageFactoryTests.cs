@@ -102,5 +102,110 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>();
         }
+
+        [Fact(DisplayName = @"BuildTestCaseFinished should return a message with the correct pickle ID")]
+        public void BuildTestCaseFinished_PickleId_ShouldReturnMessageWithCorrectPickleId()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+            var testResult = new TestResult
+            {
+                DurationNanoseconds = 1000,
+                Message = "",
+                Status = Status.Passed
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseFinishedMessage(pickleId, dateTime, testResult);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestCaseFinished>>().Which
+                  .Result.PickleId.Should().Be(pickleId.ToString("D"));
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseFinished should return a message with the correct time stamp when a UTC time stamp is passed")]
+        public void BuildTestCaseFinished_UtcDateTime_ShouldReturnMessageWithCorrectTimeStamp()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+            var testResult = new TestResult
+            {
+                DurationNanoseconds = 1000,
+                Message = "",
+                Status = Status.Passed
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseFinishedMessage(pickleId, dateTime, testResult);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestCaseFinished>>().Which
+                  .Result.Timestamp.ToDateTime().Should().Be(dateTime);
+        }
+
+        [Theory(DisplayName = @"BuildTestCaseFinished should return a failure when a non-UTC time stamp is passed")]
+        [InlineData(DateTimeKind.Local)]
+        [InlineData(DateTimeKind.Unspecified)]
+        public void BuildTestCaseFinished_NonUtcDateTime_ShouldReturnFailure(DateTimeKind dateTimeKind)
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, dateTimeKind);
+            var pickleId = Guid.NewGuid();
+            var testResult = new TestResult
+            {
+                DurationNanoseconds = 1000,
+                Message = "",
+                Status = Status.Passed
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseFinishedMessage(pickleId, dateTime, testResult);
+
+            // ASSERT
+            result.Should().BeAssignableTo<IFailure<TestCaseFinished>>();
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseFinished should return a message with the correct TestResult")]
+        public void BuildTestCaseFinished_TestResult_ShouldReturnMessageWithCorrectTestResult()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+            var testResult = new TestResult
+            {
+                DurationNanoseconds = 1000,
+                Message = "",
+                Status = Status.Passed
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseFinishedMessage(pickleId, dateTime, testResult);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestCaseFinished>>().Which
+                  .Result.TestResult.Should().Be(testResult);
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseFinished should return a failure with exception information when null has been specified as TestResult")]
+        public void BuildTestCaseFinished_NullTestResult_ShouldReturnExceptionFailure()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseFinishedMessage(pickleId, dateTime, default);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ExceptionFailure<TestCaseFinished>>().Which
+                  .Exception.Should().BeOfType<ArgumentNullException>();
+        }
     }
 }

@@ -46,6 +46,28 @@ namespace TechTalk.SpecFlow.CucumberMessages
             return Result<TestCaseStarted>.Success(testCaseStarted);
         }
 
+        public IResult<TestCaseFinished> BuildTestCaseFinishedMessage(Guid pickleId, DateTime timeStamp, TestResult testResult)
+        {
+            if (testResult is null)
+            {
+                return Result<TestCaseFinished>.Failure(new ArgumentNullException(nameof(testResult)));
+            }
+
+            if (timeStamp.Kind != DateTimeKind.Utc)
+            {
+                return Result<TestCaseFinished>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
+            }
+
+            var testCaseFinished = new TestCaseFinished
+            {
+                PickleId = ConvertToPickleIdString(pickleId),
+                Timestamp = Timestamp.FromDateTime(timeStamp),
+                TestResult = testResult
+            };
+
+            return Result<TestCaseFinished>.Success(testCaseFinished);
+        }
+
         public IResult<Wrapper> BuildWrapperMessage(IResult<TestRunStarted> testRunStarted)
         {
             if (!(testRunStarted is ISuccess<TestRunStarted> success))
