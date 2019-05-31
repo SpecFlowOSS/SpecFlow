@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testSuiteSetupDriver = testSuiteSetupDriver;
         }
 
+        [Given(@"there are '(\d+)' scenarios")]
         [Given(@"there are (\d+) scenarios")]
         public void GivenThereAreScenarios(int scenarios)
         {

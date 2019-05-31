@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         }
 
 
-        [Then(@"(\d+) TestCaseStarted messages have been sent")]
+        [Then(@"'(\d+)' TestCaseStarted messages have been sent")]
         public void ThenTestCaseStartedMessagesHaveBeenSent(int numberOfTestCaseStartedMessages)
         {
             _testCaseStartedDriver.TestCaseStartedMessagesShouldHaveBeenSent(numberOfTestCaseStartedMessages);
