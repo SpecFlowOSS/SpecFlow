@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestCaseStarted(pickleId);
 
             // ASSERT
-            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
+            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestCaseStarted);
         }
 
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStated message to sink")]
