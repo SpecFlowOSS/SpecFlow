@@ -7,6 +7,11 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
     {
         public IResult<string> ResolveEnvironmentVariables(string source)
         {
+            if (source is null)
+            {
+                return Result<string>.Failure(new ArgumentNullException(nameof(source)));
+            }
+
             return Result<string>.Success(Environment.ExpandEnvironmentVariables(source));
         }
 

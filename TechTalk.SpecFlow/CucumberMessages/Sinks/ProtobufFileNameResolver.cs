@@ -19,18 +19,21 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
         public IResult<string> Resolve(string targetPath)
         {
             var resolveEnvironmentVariablesResult = _environmentWrapper.ResolveEnvironmentVariables(targetPath);
-            if (!(resolveEnvironmentVariablesResult is ISuccess<string> success))
+            switch (resolveEnvironmentVariablesResult)
             {
-                return Result<string>.Failure($"Failed resolving environment variables from string '{targetPath}'");
-            }
+                case ISuccess<string> success when Path.IsPathRooted(success.Result):
+                    return Result<string>.Success(success.Result);
 
-            if (Path.IsPathRooted(success.Result))
-            {
-                return Result<string>.Success(success.Result);
-            }
+                case ISuccess<string> success:
+                    string combinedPath = Path.Combine(_testRunContext.GetTestDirectory(), success.Result);
+                    return Result<string>.Success(combinedPath);
 
-            string combinedPath = Path.Combine( _testRunContext.GetTestDirectory(), targetPath);
-            return Result<string>.Success(combinedPath);
+                case IFailure failure:
+                    return Result<string>.Failure($"Failed resolving environment variables from string '{targetPath}'", failure);
+
+                default:
+                    return Result<string>.Failure($"Failed resolving environment variables from string '{targetPath}'");
+            }
         }
     }
 }
