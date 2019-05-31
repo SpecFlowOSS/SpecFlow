@@ -9,6 +9,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private const string UsedCucumberImplementationString = @"SpecFlow";
 
+        public string ConvertToPickleIdString(Guid id)
+        {
+            return $"{id:D}";
+        }
+
         public IResult<TestRunStarted> BuildTestRunStartedMessage(DateTime timeStamp)
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
@@ -35,7 +40,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var testCaseStarted = new TestCaseStarted
             {
                 Timestamp = Timestamp.FromDateTime(timeStamp),
-                PickleId = pickleId.ToString("D")
+                PickleId = ConvertToPickleIdString(pickleId)
             };
 
             return Result<TestCaseStarted>.Success(testCaseStarted);
