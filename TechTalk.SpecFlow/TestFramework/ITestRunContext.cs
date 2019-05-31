@@ -2,6 +2,6 @@
 {
     public interface ITestRunContext
     {
-        string TestDirectory { get; }
+        string GetTestDirectory();
     }
 }

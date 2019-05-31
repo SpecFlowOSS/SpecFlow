@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
                 return Result<string>.Success(success.Result);
             }
 
-            string combinedPath = Path.Combine( _testRunContext.TestDirectory, targetPath);
+            string combinedPath = Path.Combine( _testRunContext.GetTestDirectory(), targetPath);
             return Result<string>.Success(combinedPath);
         }
     }
