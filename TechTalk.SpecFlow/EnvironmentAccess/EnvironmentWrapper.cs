@@ -5,6 +5,16 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
 {
     public class EnvironmentWrapper : IEnvironmentWrapper
     {
+        public IResult<string> ResolveEnvironmentVariables(string source)
+        {
+            if (source is null)
+            {
+                return Result<string>.Failure(new ArgumentNullException(nameof(source)));
+            }
+
+            return Result<string>.Success(Environment.ExpandEnvironmentVariables(source));
+        }
+
         public bool IsEnvironmentVariableSet(string name)
         {
             return Environment.GetEnvironmentVariables().Contains(name);
@@ -24,5 +34,7 @@ namespace TechTalk.SpecFlow.EnvironmentAccess
         {
             Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
         }
+
+        public string GetCurrentDirectory() => Environment.CurrentDirectory;
     }
 }

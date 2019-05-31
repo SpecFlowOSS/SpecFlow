@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.EnvironmentAccess;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.FileAccess;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.TestFramework;
 using TechTalk.SpecFlow.Time;
 using TechTalk.SpecFlow.Tracing;
 
@@ -59,8 +60,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<EnvironmentWrapper, IEnvironmentWrapper>();
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
+            container.RegisterTypeAs<ProtobufFileNameResolver, IProtobufFileNameResolver>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
             container.RegisterInstanceAs(new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages"));
+            container.RegisterTypeAs<DefaultTestRunContext, ITestRunContext>();
+
+            container.RegisterTypeAs<SpecFlowPath, ISpecFlowPath>();
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
