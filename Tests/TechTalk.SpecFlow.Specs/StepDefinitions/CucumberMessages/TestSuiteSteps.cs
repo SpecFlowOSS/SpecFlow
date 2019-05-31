@@ -12,6 +12,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testSuiteSetupDriver = testSuiteSetupDriver;
         }
 
+        [Given(@"there are '(\d+)' feature files")]
         [Given(@"there are (\d+) feature files")]
         public void GivenThereAreFeatureFiles(int featureFilesCount)
         {

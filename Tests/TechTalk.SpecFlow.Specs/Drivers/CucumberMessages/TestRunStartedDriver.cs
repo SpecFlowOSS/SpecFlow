@@ -23,6 +23,12 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             messageQueue.ToArray().Should().Contain(m => m is TestRunStarted);
         }
 
+        public void TestRunStartedMessageShouldHaveBeenSent(int amount)
+        {
+            var messageQueue = _cucumberMessagesDriver.LoadMessageQueue();
+            messageQueue.ToArray().OfType<TestRunStarted>().Should().HaveCount(amount);
+        }
+
         public void TestRunStartedMessageShouldHaveBeenSent(Table values)
         {
             var messageQueue = _cucumberMessagesDriver.LoadMessageQueue();

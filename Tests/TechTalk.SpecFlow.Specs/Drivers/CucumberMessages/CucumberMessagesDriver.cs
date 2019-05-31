@@ -29,6 +29,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
         public IEnumerable<IMessage> LoadMessageQueue()
         {
             string pathToCucumberMessagesFile = Path.Combine(_testProjectFolders.ProjectBinOutputPath, "CucumberMessageQueue", "messages");
+            if (!File.Exists(pathToCucumberMessagesFile))
+            {
+                yield break;
+            }
+
             using (var fileStream = File.Open(pathToCucumberMessagesFile, FileMode.Open, System.IO.FileAccess.Read))
             {
                 while (fileStream.CanSeek && fileStream.Position < fileStream.Length)
