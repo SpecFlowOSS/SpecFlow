@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
@@ -206,6 +207,48 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ASSERT
             result.Should().BeAssignableTo<ExceptionFailure<TestCaseFinished>>().Which
                   .Exception.Should().BeOfType<ArgumentNullException>();
+        }
+
+        [Fact(DisplayName = @"BuildWrapperMessage should return a wrapper of type TestCaseFinished")]
+        public void BuildWrapperMessage_TestCaseFinishedSuccess_ShouldReturnWrapperOfTypeTestCaseFinished()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var testCaseFinished = new TestCaseFinished
+            {
+                PickleId = Guid.NewGuid().ToString(),
+                TestResult = new TestResult(),
+                Timestamp = Timestamp.FromDateTime(dateTime)
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildWrapperMessage(new Success<TestCaseFinished>(testCaseFinished));
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<Wrapper>>().Which
+                  .Result.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestCaseFinished);
+        }
+
+        [Fact(DisplayName = @"BuildWrapperMessage should return a wrapper with the passed TestCaseFinished message")]
+        public void BuildWrapperMessage_TestCaseFinishedSuccess_ShouldReturnWrapperWithTestCaseFinishedMessage()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var testCaseFinished = new TestCaseFinished
+            {
+                PickleId = Guid.NewGuid().ToString(),
+                TestResult = new TestResult(),
+                Timestamp = Timestamp.FromDateTime(dateTime)
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildWrapperMessage(new Success<TestCaseFinished>(testCaseFinished));
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<Wrapper>>().Which
+                  .Result.TestCaseFinished.Should().Be(testCaseFinished);
         }
     }
 }

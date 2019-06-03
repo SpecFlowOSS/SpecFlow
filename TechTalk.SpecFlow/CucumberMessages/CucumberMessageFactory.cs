@@ -93,5 +93,16 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var wrapper = new Wrapper { TestCaseStarted = success.Result };
             return Result<Wrapper>.Success(wrapper);
         }
+
+        public IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseFinished> testCaseFinished)
+        {
+            if (!(testCaseFinished is ISuccess<TestCaseFinished> success))
+            {
+                return Result<Wrapper>.Failure($"{nameof(testCaseFinished)} must be an ISuccess.");
+            }
+
+            var wrapper = new Wrapper { TestCaseFinished = success.Result };
+            return Result<Wrapper>.Success(wrapper);
+        }
     }
 }
