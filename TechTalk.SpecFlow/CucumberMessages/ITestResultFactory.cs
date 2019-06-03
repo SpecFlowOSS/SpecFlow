@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
 {
     public interface ITestResultFactory
     {
-        IResult<TestResult> BuildPassedResult(ulong durationInNanoseconds, string message);
+        IResult<TestResult> BuildPassedResult(ulong durationInNanoseconds);
 
         IResult<TestResult> BuildFailedResult(ulong durationInNanoseconds, string message);
 
@@ -16,5 +16,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         IResult<TestResult> BuildSkippedResult(ulong durationInNanoseconds, string message);
 
         IResult<TestResult> BuildUndefinedResult(ulong durationInNanoseconds, string message);
+
+        IResult<TestResult> BuildFromScenarioContext(ScenarioContext scenarioContext);
     }
 }

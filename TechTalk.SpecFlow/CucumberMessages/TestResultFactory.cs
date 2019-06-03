@@ -1,13 +1,20 @@
-﻿using Io.Cucumber.Messages;
+﻿using System;
+using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class TestResultFactory : ITestResultFactory
     {
-        public IResult<TestResult> BuildPassedResult(ulong durationInNanoseconds, string message)
+        public ulong ConvertTicksToPositiveNanoseconds(long ticks)
         {
-            return BuildTestResult(durationInNanoseconds, Status.Passed, message);
+            ulong ticksOrZero = (ulong)Math.Min(ticks, 0);
+            return ticksOrZero * 100;
+        }
+
+        public IResult<TestResult> BuildPassedResult(ulong durationInNanoseconds)
+        {
+            return BuildTestResult(durationInNanoseconds, Status.Passed, "");
         }
 
         public IResult<TestResult> BuildFailedResult(ulong durationInNanoseconds, string message)
@@ -45,6 +52,20 @@ namespace TechTalk.SpecFlow.CucumberMessages
             };
 
             return Result<TestResult>.Success(testResult);
+        }
+
+        public IResult<TestResult> BuildFromScenarioContext(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext is null)
+            {
+                return Result<TestResult>.Failure(new ArgumentNullException(nameof(scenarioContext)));
+            }
+
+            switch (scenarioContext.ScenarioExecutionStatus)
+            {
+                case ScenarioExecutionStatus.OK: return BuildPassedResult(ConvertTicksToPositiveNanoseconds(scenarioContext.Stopwatch.Elapsed.Ticks));
+                default: return Result<TestResult>.Failure($"Status '{scenarioContext.ScenarioExecutionStatus}' is unknown or not supported.");
+            }
         }
     }
 }
