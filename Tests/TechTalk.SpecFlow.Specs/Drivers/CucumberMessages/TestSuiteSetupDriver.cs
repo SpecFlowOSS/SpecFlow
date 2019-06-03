@@ -41,6 +41,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
                 _projectsDriver.AddFeatureFile(featureBuilder.ToString());
             }
 
+            _projectsDriver.AddStepBinding("Given", ".*", "//pass", "'pass");
+            _projectsDriver.AddStepBinding("When", ".*", "//pass", "'pass");
+            _projectsDriver.AddStepBinding("Then", ".*", "//pass", "'pass");
+
             _isProjectCreated = true;
         }
 
@@ -65,13 +69,18 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
 
             _projectsDriver.AddFeatureFile(featureBuilder.ToString());
 
+            _projectsDriver.AddStepBinding("Given", ".*", "//pass", "'pass");
+            _projectsDriver.AddStepBinding("When", ".*", "//pass", "'pass");
+            _projectsDriver.AddStepBinding("Then", ".*", "//pass", "'pass");
+
             _isProjectCreated = true;
         }
 
         public void AddScenario(Guid pickleId)
         {
             AddScenarios(1);
-            _testSuiteInitializationDriver.OverridePickleId = pickleId;
+            _testSuiteInitializationDriver.OverrideTestCaseStartedPickleId = pickleId;
+            _testSuiteInitializationDriver.OverrideTestCaseFinishedPickleId = pickleId;
         }
 
         public void EnsureAProjectIsCreated()
