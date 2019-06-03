@@ -25,6 +25,18 @@ namespace TechTalk.SpecFlow.CucumberMessages
             _environmentWrapper = environmentWrapper;
         }
 
+        public DateTime? TryParseUniversalDateTime(string source)
+        {
+            return DateTime.TryParse(source, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var result)
+                ? result
+                : default;
+        }
+
+        public Guid? TryParseGuid(string source)
+        {
+            return Guid.TryParse(source, out var result) ? result : default(Guid?);
+        }
+
         public DateTime? GetTestRunStartedTimeFromEnvironmentVariableOrNull()
         {
             if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestRunStartedTimeOverrideName) is ISuccess<string> success))
@@ -32,12 +44,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 return null;
             }
 
-            if (!DateTime.TryParse(success.Result, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var result))
-            {
-                return null;
-            }
-
-            return result;
+            return TryParseUniversalDateTime(success.Result);
         }
 
         public DateTime? GetTestCaseStartedTimeFromEnvironmentVariableOrNull()
@@ -47,12 +54,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 return null;
             }
 
-            if (!DateTime.TryParse(success.Result, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var result))
-            {
-                return null;
-            }
-
-            return result;
+            return TryParseUniversalDateTime(success.Result);
         }
 
         public Guid? GetTestCaseStartedPickleIdFromEnvironmentVariableOrNull()
@@ -62,7 +64,18 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 return null;
             }
 
-            if (!Guid.TryParse(success.Result, out var result))
+            return TryParseGuid(success.Result);
+        }
+
+        public DateTime? GetTestCaseFinishedTimeFromEnvironmentVariableOrNull()
+        {
+            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseFinishedTimeOverrideName) is ISuccess<string> success))
+            {
+                return null;
+            }
+
+            return TryParseUniversalDateTime(success.Result);
+        }
             {
                 return null;
             }
