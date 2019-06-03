@@ -1,6 +1,8 @@
 using BoDi;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
@@ -10,7 +12,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public interface IContainerBuilder
     {
-        IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null);
+        IObjectContainer CreateGlobalContainer(Assembly testAssembly, IRuntimeConfigurationProvider configurationProvider = null);
         IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer);
         IObjectContainer CreateScenarioContainer(IObjectContainer testThreadContainer, ScenarioInfo scenarioInfo);
         IObjectContainer CreateFeatureContainer(IObjectContainer testThreadContainer, FeatureInfo featureInfo);
@@ -27,7 +29,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             _defaultDependencyProvider = defaultDependencyProvider ?? DefaultDependencyProvider;
         }
 
-        public virtual IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null)
+        public virtual IObjectContainer CreateGlobalContainer(Assembly testAssembly, IRuntimeConfigurationProvider configurationProvider = null)
         {
             var container = new ObjectContainer();
             container.RegisterInstanceAs<IContainerBuilder>(this);
@@ -52,7 +54,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var unitTestProviderConfigration = container.Resolve<UnitTestProviderConfiguration>();
 
-            LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration, unitTestProviderConfigration);
+            LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration, unitTestProviderConfigration, testAssembly);
 
             runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
@@ -126,7 +128,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents,
-            SpecFlowConfiguration specFlowConfiguration, UnitTestProviderConfiguration unitTestProviderConfigration)
+            SpecFlowConfiguration specFlowConfiguration, UnitTestProviderConfiguration unitTestProviderConfigration, Assembly testAssembly)
         {
             // initialize plugins that were registered from code
             foreach (var runtimePlugin in container.Resolve<IDictionary<string, IRuntimePlugin>>().Values)
@@ -139,7 +141,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
             var traceListener = container.Resolve<ITraceListener>();
-            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins())
+            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins(Path.GetDirectoryName(testAssembly.Location)))
             {
                 LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
             }

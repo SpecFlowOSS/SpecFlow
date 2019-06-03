@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         public TestRunnerManagerTest()
         {
-            var globalContainer = new ContainerBuilder().CreateGlobalContainer();
+            var globalContainer = new ContainerBuilder().CreateGlobalContainer(typeof(TestRunnerManagerTest).Assembly);
             testRunnerManager = globalContainer.Resolve<TestRunnerManager>();
             testRunnerManager.Initialize(anAssembly);
         }
