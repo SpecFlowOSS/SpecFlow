@@ -40,10 +40,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testSuiteInitializationDriver.OverrideTestSuiteStartupTime = startTime;
         }
 
-        [Then(@"a TestRunStarted message has been sent")]
-        public void ThenATestRunStartedMessageHasBeenSent()
+        [Then(@"'(\d+)' TestRunStarted messages have been sent")]
+        public void ThenATestRunStartedMessageHasBeenSent(int numberOfMessages)
         {
-            _testRunStartedDriver.TestRunStartedMessageShouldHaveBeenSent();
+            _testRunStartedDriver.TestRunStartedMessageShouldHaveBeenSent(numberOfMessages);
         }
 
         [Then(@"a TestRunStarted message has been sent with the following attributes")]
