@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             {
                 case Wrapper.MessageOneofCase.TestRunStarted: return wrapper.TestRunStarted;
                 case Wrapper.MessageOneofCase.TestCaseStarted: return wrapper.TestCaseStarted;
+                case Wrapper.MessageOneofCase.TestCaseFinished: return wrapper.TestCaseFinished;
                 default: throw new InvalidOperationException($"(Currently) unsupported message type: {wrapper.MessageCase}");
             }
         }
