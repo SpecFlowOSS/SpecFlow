@@ -12,6 +12,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private const string SpecFlowMessagesTestRunStartedTimeOverrideName = "SpecFlow_Messages_TestRunStartedTimeOverride";
         private const string SpecFlowMessagesTestCaseStartedTimeOverrideName = "SpecFlow_Messages_TestCaseStartedTimeOverride";
         private const string SpecFlowMessagesTestCaseStartedPickleIdOverrideName = "SpecFlow_Messages_TestCaseStartedPickleIdOverride";
+        private const string SpecFlowMessagesTestCaseFinishedTimeOverrideName = "SpecFlow_Messages_TestCaseFinishedTimeOverride";
+        private const string SpecFlowMessagesTestCaseFinishedPickleIdOverrideName = "SpecFlow_Messages_TestCaseFinishedPickleIdOverride";
         private readonly IClock _clock;
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
         private readonly ICucumberMessageSink _cucumberMessageSink;
@@ -76,11 +78,15 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             return TryParseUniversalDateTime(success.Result);
         }
+
+        public Guid? GetTestCaseFinishedPickleIdFromEnvironmentVariableOrNull()
+        {
+            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseFinishedPickleIdOverrideName) is ISuccess<string> success))
             {
                 return null;
             }
 
-            return result;
+            return TryParseGuid(success.Result);
         }
 
         public void SendTestRunStarted()
@@ -103,6 +109,19 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var nowDateAndTime = timeFromEnvironmentResult ?? now;
             var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, nowDateAndTime);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseStartedMessageResult);
+            SendMessageOrThrowException(wrapper);
+        }
+
+        public void SendTestCaseFinished(Guid pickleId, TestResult testResult)
+        {
+            var overridePickleId = GetTestCaseFinishedPickleIdFromEnvironmentVariableOrNull();
+            pickleId = overridePickleId ?? pickleId;
+
+            var timeFromEnvironmentResult = GetTestCaseFinishedTimeFromEnvironmentVariableOrNull();
+            var now = _clock.GetNowDateAndTime();
+            var nowDateAndTime = timeFromEnvironmentResult ?? now;
+            var testCaseFinishedMessageResult = _cucumberMessageFactory.BuildTestCaseFinishedMessage(pickleId, nowDateAndTime, testResult);
+            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseFinishedMessageResult);
             SendMessageOrThrowException(wrapper);
         }
 
