@@ -70,39 +70,41 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public IResult<Wrapper> BuildWrapperMessage(IResult<TestRunStarted> testRunStarted)
         {
-            if (!(testRunStarted is ISuccess<TestRunStarted> success))
+            switch (testRunStarted)
             {
-                switch (testRunStarted)
-                {
-                    case Failure failure: return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an ISuccess.", failure);
-                    default: return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an ISuccess.");
-                }
+                case ISuccess<TestRunStarted> success:
+                    return Result<Wrapper>.Success(new Wrapper { TestRunStarted = success.Result });
+                case IFailure failure:
+                    return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an {nameof(ISuccess<TestRunStarted>)}.", failure);
+                default:
+                    return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an  {nameof(ISuccess<TestRunStarted>)}.");
             }
-
-            var wrapper = new Wrapper { TestRunStarted = success.Result };
-            return Result<Wrapper>.Success(wrapper);
         }
 
         public IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseStarted> testCaseStarted)
         {
-            if (!(testCaseStarted is ISuccess<TestCaseStarted> success))
+            switch (testCaseStarted)
             {
-                return Result<Wrapper>.Failure($"{nameof(testCaseStarted)} must be an ISuccess.");
+                case ISuccess<TestCaseStarted> success:
+                    return Result<Wrapper>.Success(new Wrapper { TestCaseStarted = success.Result });
+                case IFailure failure:
+                    return Result<Wrapper>.Failure($"{nameof(testCaseStarted)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
+                default:
+                    return Result<Wrapper>.Failure($"{nameof(testCaseStarted)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
             }
-
-            var wrapper = new Wrapper { TestCaseStarted = success.Result };
-            return Result<Wrapper>.Success(wrapper);
         }
 
         public IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseFinished> testCaseFinished)
         {
-            if (!(testCaseFinished is ISuccess<TestCaseFinished> success))
+            switch (testCaseFinished)
             {
-                return Result<Wrapper>.Failure($"{nameof(testCaseFinished)} must be an ISuccess.");
+                case ISuccess<TestCaseFinished> success:
+                    return Result<Wrapper>.Success(new Wrapper { TestCaseFinished = success.Result });
+                case IFailure failure:
+                    return Result<Wrapper>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
+                default:
+                    return Result<Wrapper>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
             }
-
-            var wrapper = new Wrapper { TestCaseFinished = success.Result };
-            return Result<Wrapper>.Success(wrapper);
         }
     }
 }
