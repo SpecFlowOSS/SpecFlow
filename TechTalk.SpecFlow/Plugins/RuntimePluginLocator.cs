@@ -18,12 +18,20 @@ namespace TechTalk.SpecFlow.Plugins
 
         public IReadOnlyList<string> GetAllRuntimePlugins()
         {
+            return GetAllRuntimePlugins(null);
+        }
+
+        public IReadOnlyList<string> GetAllRuntimePlugins(string testAssemblyLocation)
+        {
             var allRuntimePlugins = new List<string>();
 
             allRuntimePlugins.AddRange(SearchPluginsInFolder(Environment.CurrentDirectory));
             allRuntimePlugins.AddRange(SearchPluginsInFolder(_pathToFolderWithSpecFlowAssembly));
 
-
+            if (testAssemblyLocation.IsNotNullOrWhiteSpace())
+            {
+                allRuntimePlugins.AddRange(SearchPluginsInFolder(testAssemblyLocation));
+            }
 
             return _runtimePluginLocationMerger.Merge(allRuntimePlugins.Distinct().ToList());
         }
