@@ -40,5 +40,18 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
                 testCaseFinished.PickleId.Should().Be(expectedPickleId);
             }
         }
+
+        public void TestCaseFinishedMessageShouldHaveBeenSentWithTestResult(Table values)
+        {
+            var messageQueue = _cucumberMessagesDriver.LoadMessageQueue();
+            var testCaseFinished = messageQueue.ToArray().OfType<TestCaseFinished>().First();
+            var testResult = testCaseFinished.TestResult;
+            var testResultRow = values.CreateInstance<TestResultRow>();
+
+            if (testResultRow.Status is Status expectedStatus)
+            {
+                testResult.Status.Should().Be(expectedStatus);
+            }
+        }
     }
 }

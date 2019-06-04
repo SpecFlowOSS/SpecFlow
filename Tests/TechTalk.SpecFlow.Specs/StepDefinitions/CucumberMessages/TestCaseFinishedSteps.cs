@@ -39,11 +39,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testCaseFinishedDriver.TestCaseFinishedMessagesShouldHaveBeenSent(numberOfMessages);
         }
 
-
         [Then(@"a TestCaseFinished message has been sent with the following attributes")]
         public void ThenATestCaseFinishedMessageHasBeenSentWithTheFollowingAttributes(Table table)
         {
             _testCaseFinishedDriver.TestCaseFinishedMessageShouldHaveBeenSent(table);
+        }
+
+        [Then(@"a TestCaseFinished message has been sent with the following TestResult")]
+        public void ThenATestCaseFinishedMessageHasBeenSentWithTheFollowingTestResult(Table table)
+        {
+            _testCaseFinishedDriver.TestCaseFinishedMessageShouldHaveBeenSentWithTestResult(table);
         }
     }
 }
