@@ -10,6 +10,8 @@ namespace TechTalk.SpecFlow.CommonModels
         }
 
         public Exception Exception { get; }
+
+        public override string ToString() => Exception.ToString();
     }
 
     public class ExceptionFailure<T> : ExceptionFailure, IFailure<T>

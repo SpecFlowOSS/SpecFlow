@@ -153,9 +153,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             var testResultResult = _testResultFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
-            if (testResultResult is ISuccess<TestResult> success)
+            switch (testResultResult)
             {
-                _cucumberMessageSender.SendTestCaseFinished(pickleId, success.Result);
+                case ISuccess<TestResult> success:
+                    _cucumberMessageSender.SendTestCaseFinished(pickleId, success.Result);
+                    break;
+
+                case IFailure failure:
+                    _testTracer.TraceWarning(failure.ToString());
+                    break;
             }
 
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
