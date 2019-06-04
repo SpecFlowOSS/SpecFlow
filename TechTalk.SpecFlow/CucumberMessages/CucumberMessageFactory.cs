@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestRunStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
+                return Result<TestRunStarted>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
 
             var testRunStarted = new TestRunStarted
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
+                return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
 
             var testCaseStarted = new TestCaseStarted
@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
-                return Result<TestCaseFinished>.Failure($"{nameof(timeStamp)} must be a UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
+                return Result<TestCaseFinished>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
 
             var testCaseFinished = new TestCaseFinished
