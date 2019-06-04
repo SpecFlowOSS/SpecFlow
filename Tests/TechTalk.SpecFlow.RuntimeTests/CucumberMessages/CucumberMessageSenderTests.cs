@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             var environmentWrapperMock = GetEnvironmentWrapperMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object, environmentWrapperMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object, new CucumberMessageSenderValueMockSource(environmentWrapperMock.Object));
             var pickleId = Guid.NewGuid();
 
             // ACT
@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             var environmentWrapperMock = GetEnvironmentWrapperMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object, environmentWrapperMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object, new CucumberMessageSenderValueMockSource(environmentWrapperMock.Object));
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             var environmentWrapperMock = GetEnvironmentWrapperMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(clockMock.Object, new CucumberMessageFactory(), cucumberMessageSinkMock.Object, environmentWrapperMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(clockMock.Object, new CucumberMessageFactory(), cucumberMessageSinkMock.Object, new CucumberMessageSenderValueMockSource(environmentWrapperMock.Object));
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             var environmentWrapperMock = GetEnvironmentWrapperMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object, environmentWrapperMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(new UtcDateTimeClock(), new CucumberMessageFactory(), cucumberMessageSinkMock.Object, new CucumberMessageSenderValueMockSource(environmentWrapperMock.Object));
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
