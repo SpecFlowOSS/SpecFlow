@@ -61,9 +61,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 return Result<TestResult>.Failure(new ArgumentNullException(nameof(scenarioContext)));
             }
 
+            ulong nanoseconds = ConvertTicksToPositiveNanoseconds(scenarioContext.Stopwatch.Elapsed.Ticks);
             switch (scenarioContext.ScenarioExecutionStatus)
             {
-                case ScenarioExecutionStatus.OK: return BuildPassedResult(ConvertTicksToPositiveNanoseconds(scenarioContext.Stopwatch.Elapsed.Ticks));
+                case ScenarioExecutionStatus.OK: return BuildPassedResult(nanoseconds);
+                case ScenarioExecutionStatus.TestError: return BuildFailedResult(nanoseconds, scenarioContext.TestError?.ToString() ?? "test failed with an unknown error");
                 default: return Result<TestResult>.Failure($"Status '{scenarioContext.ScenarioExecutionStatus}' is unknown or not supported.");
             }
         }
