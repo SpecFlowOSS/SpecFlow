@@ -6,6 +6,13 @@ namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class TestResultFactory : ITestResultFactory
     {
+        private readonly ITestErrorMessageFactory _testErrorMessageFactory;
+
+        public TestResultFactory(ITestErrorMessageFactory testErrorMessageFactory)
+        {
+            _testErrorMessageFactory = testErrorMessageFactory;
+        }
+
         public ulong ConvertTicksToPositiveNanoseconds(long ticks)
         {
             ulong ticksOrZero = (ulong)Math.Min(ticks, 0);
@@ -65,7 +72,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             switch (scenarioContext.ScenarioExecutionStatus)
             {
                 case ScenarioExecutionStatus.OK: return BuildPassedResult(nanoseconds);
-                case ScenarioExecutionStatus.TestError: return BuildFailedResult(nanoseconds, scenarioContext.TestError?.ToString() ?? "test failed with an unknown error");
+                case ScenarioExecutionStatus.TestError: return BuildFailedResult(nanoseconds, _testErrorMessageFactory.BuildFromScenarioContext(scenarioContext));
                 default: return Result<TestResult>.Failure($"Status '{scenarioContext.ScenarioExecutionStatus}' is unknown or not supported.");
             }
         }

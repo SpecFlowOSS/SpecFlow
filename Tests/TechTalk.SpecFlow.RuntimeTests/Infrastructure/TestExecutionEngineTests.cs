@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
                 GetPickleIdStoreMock().Object,
-                new TestResultFactory(),
+                new TestResultFactory(new TestErrorMessageFactory()),
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
@@ -17,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithStatusPassed()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory();
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
             const Status expectedStatus = Status.Passed;
 
             // ACT
@@ -32,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_Nanoseconds_ShouldReturnTestResultWithCorrectNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory();
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
@@ -47,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithEmptyMessage()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory();
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
             const string expectedMessage = "";
 
             // ACT
@@ -62,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_ValidParameters_ShouldReturnTestResultWithStatusFailed()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory();
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
             const Status expectedStatus = Status.Failed;
 
             // ACT
@@ -77,7 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory();
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
@@ -92,7 +87,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_Message_ShouldReturnTestResultWithMessage()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory();
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
             const string expectedMessage = "This is a test message";
 
             // ACT
