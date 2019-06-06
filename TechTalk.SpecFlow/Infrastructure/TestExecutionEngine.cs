@@ -27,6 +27,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IObsoleteStepHandler _obsoleteStepHandler;
         private readonly ICucumberMessageSender _cucumberMessageSender;
         private readonly ITestResultFactory _testResultFactory;
+        private readonly ITestPendingMessageFactory _testPendingMessageFactory;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
@@ -46,6 +47,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
             IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender, ITestResultFactory testResultFactory,
+            ITestPendingMessageFactory testPendingMessageFactory,
             ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             _errorProvider = errorProvider;
@@ -65,6 +67,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             _obsoleteStepHandler = obsoleteStepHandler;
             _cucumberMessageSender = cucumberMessageSender;
             _testResultFactory = testResultFactory;
+            _testPendingMessageFactory = testPendingMessageFactory;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -166,11 +169,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
             {
+                string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
                 var pendingSteps = _contextManager.ScenarioContext.PendingSteps.Distinct().OrderBy(s => s);
-                _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, string.Format("{0}{2}  {1}",
-                    _errorProvider.GetPendingStepDefinitionError().Message,
-                    string.Join(Environment.NewLine + "  ", pendingSteps.ToArray()),
-                    Environment.NewLine));
+                _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, pendingStepExceptionMessage);
                 return;
             }
 

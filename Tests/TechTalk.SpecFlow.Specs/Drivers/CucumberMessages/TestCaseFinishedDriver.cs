@@ -26,7 +26,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
         public void TestCaseFinishedMessageShouldHaveBeenSent(Table values)
         {
             var messageQueue = _cucumberMessagesDriver.LoadMessageQueue();
-            var testCaseFinished = messageQueue.ToArray().OfType<TestCaseFinished>().First();
+
+            var testCaseFinishedMessages = messageQueue.OfType<TestCaseFinished>().ToArray();
+            testCaseFinishedMessages.Should().HaveCountGreaterOrEqualTo(1);
+
+            var testCaseFinished = testCaseFinishedMessages.First();
             var testCaseFinishedRow = values.CreateInstance<TestCaseFinishedRow>();
 
             if (testCaseFinishedRow.Timestamp is string expectedTimeStampString
@@ -44,7 +48,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
         public void TestCaseFinishedMessageShouldHaveBeenSentWithTestResult(Table values)
         {
             var messageQueue = _cucumberMessagesDriver.LoadMessageQueue();
-            var testCaseFinished = messageQueue.ToArray().OfType<TestCaseFinished>().First();
+
+            var testCaseFinishedMessages = messageQueue.OfType<TestCaseFinished>().ToArray();
+            testCaseFinishedMessages.Should().HaveCountGreaterOrEqualTo(1);
+
+            var testCaseFinished = testCaseFinishedMessages.First();
             var testResult = testCaseFinished.TestResult;
             var testResultRow = values.CreateInstance<TestResultRow>();
 
