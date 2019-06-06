@@ -61,6 +61,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
             container.RegisterTypeAs<TestErrorMessageFactory, ITestErrorMessageFactory>();
             container.RegisterTypeAs<TestPendingMessageFactory, ITestPendingMessageFactory>();
+            container.RegisterTypeAs<TestAmbiguousMessageFactory, ITestAmbiguousMessageFactory>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
             container.RegisterTypeAs<ProtobufFileNameResolver, IProtobufFileNameResolver>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
