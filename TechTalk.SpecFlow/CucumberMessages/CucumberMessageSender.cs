@@ -1,30 +1,20 @@
 ﻿using System;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
-using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class CucumberMessageSender : ICucumberMessageSender
     {
-        private readonly IClock _clock;
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
         private readonly ICucumberMessageSink _cucumberMessageSink;
         private readonly ICucumberMessageSenderValueMockSource _cucumberMessageSenderValueMockSource;
 
-        public CucumberMessageSender(IClock clock, ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink, ICucumberMessageSenderValueMockSource cucumberMessageSenderValueMockSource)
+        public CucumberMessageSender(ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink, ICucumberMessageSenderValueMockSource cucumberMessageSenderValueMockSource)
         {
-            _clock = clock;
             _cucumberMessageFactory = cucumberMessageFactory;
             _cucumberMessageSink = cucumberMessageSink;
             _cucumberMessageSenderValueMockSource = cucumberMessageSenderValueMockSource;
-        }
-
-        public DateTime GetTimeStamp(Func<DateTime?> mockSource)
-        {
-            var timeFromEnvironmentResult = mockSource();
-            var now = _clock.GetNowDateAndTime();
-            return timeFromEnvironmentResult ?? now;
         }
 
         public Guid GetPickleId(Func<Guid?> mockSource, Guid passedPickleId)
@@ -35,27 +25,27 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestRunStarted()
         {
-            var nowDateAndTime = GetTimeStamp(_cucumberMessageSenderValueMockSource.GetTestRunStartedTimeFromEnvironmentVariableOrNull);
+            var nowDateAndTime = _cucumberMessageSenderValueMockSource.GetTestRunStartedTime();
             var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(nowDateAndTime);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testRunStartedMessageResult);
             SendMessageOrThrowException(wrapper);
         }
 
-        public void SendTestCaseStarted(Guid pickleId)
+        public void SendTestCaseStarted(ScenarioInfo scenarioInfo)
         {
-            var actualPickleId = GetPickleId(_cucumberMessageSenderValueMockSource.GetTestCaseStartedPickleIdFromEnvironmentVariableOrNull, pickleId);
+            var actualPickleId = _cucumberMessageSenderValueMockSource.GetTestCaseStartedPickleId(scenarioInfo);
+            var nowDateAndTime = _cucumberMessageSenderValueMockSource.GetTestCaseStartedTime();
 
-            var nowDateAndTime = GetTimeStamp(_cucumberMessageSenderValueMockSource.GetTestCaseStartedTimeFromEnvironmentVariableOrNull);
             var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(actualPickleId, nowDateAndTime);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseStartedMessageResult);
             SendMessageOrThrowException(wrapper);
         }
 
-        public void SendTestCaseFinished(Guid pickleId, TestResult testResult)
+        public void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult)
         {
-            var actualPickleId = GetPickleId(_cucumberMessageSenderValueMockSource.GetTestCaseFinishedPickleIdFromEnvironmentVariableOrNull, pickleId);
+            var actualPickleId = _cucumberMessageSenderValueMockSource.GetTestCaseFinishedPickleId(scenarioInfo);
+            var nowDateAndTime = _cucumberMessageSenderValueMockSource.GetTestCaseFinishedTime();
 
-            var nowDateAndTime = GetTimeStamp(_cucumberMessageSenderValueMockSource.GetTestCaseFinishedTimeFromEnvironmentVariableOrNull);
             var testCaseFinishedMessageResult = _cucumberMessageFactory.BuildTestCaseFinishedMessage(actualPickleId, nowDateAndTime, testResult);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseFinishedMessageResult);
             SendMessageOrThrowException(wrapper);

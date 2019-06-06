@@ -2,6 +2,7 @@
 using System.Globalization;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.EnvironmentAccess;
+using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
@@ -13,72 +14,74 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private const string SpecFlowMessagesTestCaseFinishedTimeOverrideName = "SpecFlow_Messages_TestCaseFinishedTimeOverride";
         private const string SpecFlowMessagesTestCaseFinishedPickleIdOverrideName = "SpecFlow_Messages_TestCaseFinishedPickleIdOverride";
         private readonly IEnvironmentWrapper _environmentWrapper;
+        private readonly IClock _clock;
+        private readonly IPickleIdStore _pickleIdStore;
 
-        public CucumberMessageSenderValueMockSource(IEnvironmentWrapper environmentWrapper)
+        public CucumberMessageSenderValueMockSource(IEnvironmentWrapper environmentWrapper, IClock clock, IPickleIdStore pickleIdStore)
         {
             _environmentWrapper = environmentWrapper;
+            _clock = clock;
+            _pickleIdStore = pickleIdStore;
         }
 
-        public DateTime? TryParseUniversalDateTime(string source)
+        public bool TryParseUniversalDateTime(string source, out DateTime result)
         {
-            return DateTime.TryParse(source, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var result)
-                ? result
-                : default;
+            return DateTime.TryParse(source, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out result);
         }
 
-        public Guid? TryParseGuid(string source)
+        public DateTime GetTestRunStartedTime()
         {
-            return Guid.TryParse(source, out var result) ? result : default(Guid?);
-        }
-
-        public DateTime? GetTestRunStartedTimeFromEnvironmentVariableOrNull()
-        {
-            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestRunStartedTimeOverrideName) is ISuccess<string> success))
+            if (_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestRunStartedTimeOverrideName) is ISuccess<string> success
+                && TryParseUniversalDateTime(success.Result, out var dateTime))
             {
-                return null;
+                return dateTime;
             }
 
-            return TryParseUniversalDateTime(success.Result);
+            return _clock.GetNowDateAndTime();
         }
 
-        public DateTime? GetTestCaseStartedTimeFromEnvironmentVariableOrNull()
+        public DateTime GetTestCaseStartedTime()
         {
-            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseStartedTimeOverrideName) is ISuccess<string> success))
+            if (_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseStartedTimeOverrideName) is ISuccess<string> success
+                && TryParseUniversalDateTime(success.Result, out var dateTime))
             {
-                return null;
+                return dateTime;
             }
 
-            return TryParseUniversalDateTime(success.Result);
+            return _clock.GetNowDateAndTime();
         }
 
-        public Guid? GetTestCaseStartedPickleIdFromEnvironmentVariableOrNull()
+        public Guid GetTestCaseStartedPickleId(ScenarioInfo scenarioInfo)
         {
-            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseStartedPickleIdOverrideName) is ISuccess<string> success))
+            if (_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseStartedPickleIdOverrideName) is ISuccess<string> success
+                && Guid.TryParse(success.Result, out var pickleId))
             {
-                return null;
+                return pickleId;
             }
 
-            return TryParseGuid(success.Result);
+            return _pickleIdStore.GetPickleIdForScenario(scenarioInfo);
         }
 
-        public DateTime? GetTestCaseFinishedTimeFromEnvironmentVariableOrNull()
+        public DateTime GetTestCaseFinishedTime()
         {
-            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseFinishedTimeOverrideName) is ISuccess<string> success))
+            if (_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseFinishedTimeOverrideName) is ISuccess<string> success
+                && TryParseUniversalDateTime(success.Result, out var dateTime))
             {
-                return null;
+                return dateTime;
             }
 
-            return TryParseUniversalDateTime(success.Result);
+            return _clock.GetNowDateAndTime();
         }
 
-        public Guid? GetTestCaseFinishedPickleIdFromEnvironmentVariableOrNull()
+        public Guid GetTestCaseFinishedPickleId(ScenarioInfo scenarioInfo)
         {
-            if (!(_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseFinishedPickleIdOverrideName) is ISuccess<string> success))
+            if (_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestCaseFinishedPickleIdOverrideName) is ISuccess<string> success
+                && Guid.TryParse(success.Result, out var pickleId))
             {
-                return null;
+                return pickleId;
             }
 
-            return TryParseGuid(success.Result);
+            return _pickleIdStore.GetPickleIdForScenario(scenarioInfo);
         }
     }
 }
