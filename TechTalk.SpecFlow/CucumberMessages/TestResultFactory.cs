@@ -9,12 +9,14 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private readonly ITestErrorMessageFactory _testErrorMessageFactory;
         private readonly ITestPendingMessageFactory _testPendingMessageFactory;
         private readonly ITestAmbiguousMessageFactory _testAmbiguousMessageFactory;
+        private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
 
-        public TestResultFactory(ITestErrorMessageFactory testErrorMessageFactory, ITestPendingMessageFactory testPendingMessageFactory, ITestAmbiguousMessageFactory testAmbiguousMessageFactory)
+        public TestResultFactory(ITestErrorMessageFactory testErrorMessageFactory, ITestPendingMessageFactory testPendingMessageFactory, ITestAmbiguousMessageFactory testAmbiguousMessageFactory, ITestUndefinedMessageFactory testUndefinedMessageFactory)
         {
             _testErrorMessageFactory = testErrorMessageFactory;
             _testPendingMessageFactory = testPendingMessageFactory;
             _testAmbiguousMessageFactory = testAmbiguousMessageFactory;
+            _testUndefinedMessageFactory = testUndefinedMessageFactory;
         }
 
         public ulong ConvertTicksToPositiveNanoseconds(long ticks)
@@ -65,7 +67,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             return Result<TestResult>.Success(testResult);
         }
 
-        public IResult<TestResult> BuildFromScenarioContext(ScenarioContext scenarioContext)
+        public IResult<TestResult> BuildFromContext(ScenarioContext scenarioContext, FeatureContext featureContext)
         {
             if (scenarioContext is null)
             {
