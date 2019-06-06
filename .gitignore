@@ -340,7 +340,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 _NCrunch*/
-[Tt]est[Rr]esult*
 *.pidb
 *.userprefs
 *.resharper
