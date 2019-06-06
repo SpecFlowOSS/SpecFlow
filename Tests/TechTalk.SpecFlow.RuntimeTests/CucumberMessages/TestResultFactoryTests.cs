@@ -1,18 +1,39 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Io.Cucumber.Messages;
+using Moq;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.ErrorHandling;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
     public class TestResultFactoryTests
     {
+        [Fact(DisplayName = @"BuildFromScenarioContext should return a failure with an ArgumentNullException when null is passed")]
+        public void BuildFromScenarioContext_Null_ShouldReturnFailureWithArgumentNullException()
+        {
+            // ARRANGE
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
+
+            // ACT
+            var actualTestResult = testResultFactory.BuildFromScenarioContext(null);
+
+            // ASSERT
+            actualTestResult.Should().BeAssignableTo<ExceptionFailure>().Which
+                            .Exception.Should().BeOfType<ArgumentNullException>();
+        }
+
         [Fact(DisplayName = @"BuildPassedResult should return a TestResult with status Passed")]
         public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithStatusPassed()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const Status expectedStatus = Status.Passed;
 
             // ACT
@@ -27,7 +48,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_Nanoseconds_ShouldReturnTestResultWithCorrectNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
@@ -42,7 +65,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithEmptyMessage()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const string expectedMessage = "";
 
             // ACT
@@ -57,7 +82,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_ValidParameters_ShouldReturnTestResultWithStatusFailed()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const Status expectedStatus = Status.Failed;
 
             // ACT
@@ -72,7 +99,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
@@ -87,7 +116,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_Message_ShouldReturnTestResultWithMessage()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const string expectedMessage = "This is a test message";
 
             // ACT
@@ -102,7 +133,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPendingMessage_ValidParameters_ShouldReturnTestResultWithStatusPending()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const Status expectedStatus = Status.Pending;
 
             // ACT
@@ -117,7 +150,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPendingResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
@@ -132,7 +167,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPendingResult_Message_ShouldReturnTestResultWithMessage()
         {
             // ARRANGE
-            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory());
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object));
             const string expectedMessage = "This is a test message";
 
             // ACT
@@ -141,6 +178,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
                             .Result.Message.Should().Be(expectedMessage);
+        }
+
+        public Mock<IErrorProvider> GetErrorProviderMock()
+        {
+            var errorProviderMock = new Mock<IErrorProvider>();
+            errorProviderMock.Setup(m => m.GetPendingStepDefinitionError())
+                             .Returns(new PendingStepException());
+            return errorProviderMock;
         }
     }
 }
