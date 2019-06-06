@@ -41,6 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private ObjectContainer scenarioContainer;
         private TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
         private ITestPendingMessageFactory _testPendingMessageFactory;
+        private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -129,6 +130,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                                      .Callback(() => { });
 
             _testPendingMessageFactory = new TestPendingMessageFactory(errorProviderStub.Object);
+            _testUndefinedMessageFactory = new TestUndefinedMessageFactory(stepDefinitionSkeletonProviderMock.Object, errorProviderStub.Object, specFlowConfiguration);
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -140,16 +142,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 new Mock<IStepArgumentTypeConverter>().Object, 
                 specFlowConfiguration, 
                 bindingRegistryStub.Object,
-                new Mock<IUnitTestRuntimeProvider>().Object,
-                stepDefinitionSkeletonProviderMock.Object, 
+                new Mock<IUnitTestRuntimeProvider>().Object, 
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
-                new TestResultFactory(new TestErrorMessageFactory(), _testPendingMessageFactory, new TestAmbiguousMessageFactory()),
+                new TestResultFactory(new TestErrorMessageFactory(), _testPendingMessageFactory, new TestAmbiguousMessageFactory(), _testUndefinedMessageFactory),
                 _testPendingMessageFactory,
+                _testUndefinedMessageFactory,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }

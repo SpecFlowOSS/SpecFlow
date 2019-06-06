@@ -17,6 +17,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         IResult<TestResult> BuildUndefinedResult(ulong durationInNanoseconds, string message);
 
-        IResult<TestResult> BuildFromScenarioContext(ScenarioContext scenarioContext);
+        IResult<TestResult> BuildFromContext(ScenarioContext scenarioContext, FeatureContext featureContext);
     }
 }

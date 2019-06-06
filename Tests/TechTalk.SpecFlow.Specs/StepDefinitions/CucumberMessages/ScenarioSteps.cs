@@ -37,5 +37,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         {
             _testSuiteSetupDriver.AddDuplicateStepDefinition();
         }
+
+        [Given(@"there are no matching step definitions")]
+        public void GivenThereAreNoMatchingStepDefinitions()
+        {
+            _testSuiteSetupDriver.AddNotMatchingStepDefinition();
+        }
     }
 }
