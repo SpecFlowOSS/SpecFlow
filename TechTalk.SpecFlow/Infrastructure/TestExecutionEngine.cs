@@ -26,7 +26,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IErrorProvider _errorProvider;
         private readonly IObsoleteStepHandler _obsoleteStepHandler;
         private readonly ICucumberMessageSender _cucumberMessageSender;
-        private readonly IPickleIdStore _pickleIdStore;
         private readonly ITestResultFactory _testResultFactory;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
@@ -46,8 +45,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter,
             SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender,
-            IPickleIdStore pickleIdStore, ITestResultFactory testResultFactory,
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender, ITestResultFactory testResultFactory,
             ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             _errorProvider = errorProvider;
@@ -66,7 +64,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             TestThreadContainer = testThreadContainer;
             _obsoleteStepHandler = obsoleteStepHandler;
             _cucumberMessageSender = cucumberMessageSender;
-            _pickleIdStore = pickleIdStore;
             _testResultFactory = testResultFactory;
         }
 
@@ -135,15 +132,13 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioStart()
         {
-            var pickleId = _pickleIdStore.GetPickleIdForScenario(_contextManager.ScenarioContext.ScenarioInfo);
-            _cucumberMessageSender.SendTestCaseStarted(pickleId);
+            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             FireScenarioEvents(HookType.BeforeScenario);
         }
 
         public void OnAfterLastStep()
         {
             HandleBlockSwitch(ScenarioBlock.None);
-            var pickleId = _pickleIdStore.GetPickleIdForScenario(_contextManager.ScenarioContext.ScenarioInfo);
 
             if (_specFlowConfiguration.TraceTimings)
             {
@@ -156,7 +151,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             switch (testResultResult)
             {
                 case ISuccess<TestResult> success:
-                    _cucumberMessageSender.SendTestCaseFinished(pickleId, success.Result);
+                    _cucumberMessageSender.SendTestCaseFinished(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
                     break;
 
                 case IFailure failure:

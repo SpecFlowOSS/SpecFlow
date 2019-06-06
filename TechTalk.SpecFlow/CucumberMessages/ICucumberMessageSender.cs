@@ -7,8 +7,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         void SendTestRunStarted();
 
-        void SendTestCaseStarted(Guid pickleId);
+        void SendTestCaseStarted(ScenarioInfo scenarioInfo);
 
-        void SendTestCaseFinished(Guid pickleId, TestResult testResult);
+        void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult);
     }
 }
