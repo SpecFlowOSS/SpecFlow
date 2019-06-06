@@ -81,6 +81,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             _projectsDriver.AddStepBinding("When", "the step pass in .*", "//pass", "'pass");
         }
 
+        public void AddNotMatchingStepDefinition()
+        {
+            _projectsDriver.AddStepBinding("When", "the step does not pass in .*", "//pass", "'pass");
+        }
+
         public void EnsureAProjectIsCreated()
         {
             if (_isProjectCreated)
