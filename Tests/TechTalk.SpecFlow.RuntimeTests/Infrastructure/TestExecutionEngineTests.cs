@@ -40,6 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private ObjectContainer featureContainer;
         private ObjectContainer scenarioContainer;
         private TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
+        private ITestPendingMessageFactory _testPendingMessageFactory;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -126,6 +127,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             cucumberMessageSenderMock = new Mock<ICucumberMessageSender>();
             cucumberMessageSenderMock.Setup(m => m.SendTestRunStarted())
                                      .Callback(() => { });
+
+            _testPendingMessageFactory = new TestPendingMessageFactory(errorProviderStub.Object);
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -145,7 +148,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
-                new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderStub.Object)),
+                new TestResultFactory(new TestErrorMessageFactory(), _testPendingMessageFactory),
+                _testPendingMessageFactory,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
