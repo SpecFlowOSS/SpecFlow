@@ -38,6 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <CucumberMessagesSpecFlowFeatureFiles Include="..\..\ExternalRepositories\cucumber\cucumber-messages\specs\*.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MSBuild.AdditionalTasks" Version="*" />
     <PackageReference Include="Gherkin" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
@@ -75,6 +79,10 @@
     <ItemGroup>
       <Compile Include="$(ProjectDir)\\NuGetPackageVersion.cs" />
     </ItemGroup>
+  </Target>
+
+  <Target Name="IncludeCucumberMessagesSpecs" BeforeTargets="BeforeUpdateFeatureFilesInProject" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
+    <Copy SourceFiles="@(CucumberMessagesSpecFlowFeatureFiles)" DestinationFolder="$(ProjectDir)/Features/CucumberMessages" />
   </Target>
 
   <Target Name="PreBuild">

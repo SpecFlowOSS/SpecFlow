@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using BoDi;
+using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.BindingSkeletons;
+using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.CucumberMessages;
@@ -24,7 +26,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IErrorProvider _errorProvider;
         private readonly IObsoleteStepHandler _obsoleteStepHandler;
         private readonly ICucumberMessageSender _cucumberMessageSender;
-        private readonly IPickleIdStore _pickleIdStore;
+        private readonly ITestResultFactory _testResultFactory;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
@@ -43,8 +45,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter,
             SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender,
-            IPickleIdStore pickleIdStore,
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender, ITestResultFactory testResultFactory,
             ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             _errorProvider = errorProvider;
@@ -63,7 +64,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             TestThreadContainer = testThreadContainer;
             _obsoleteStepHandler = obsoleteStepHandler;
             _cucumberMessageSender = cucumberMessageSender;
-            _pickleIdStore = pickleIdStore;
+            _testResultFactory = testResultFactory;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -131,8 +132,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioStart()
         {
-            var pickleId = _pickleIdStore.GetPickleIdForScenario(_contextManager.ScenarioContext.ScenarioInfo);
-            _cucumberMessageSender.SendTestCaseStarted(pickleId);
+            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             FireScenarioEvents(HookType.BeforeScenario);
         }
 
@@ -147,8 +147,22 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testTracer.TraceDuration(duration, "Scenario: " + _contextManager.ScenarioContext.ScenarioInfo.Title);
             }
 
+            var testResultResult = _testResultFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
+            switch (testResultResult)
+            {
+                case ISuccess<TestResult> success:
+                    _cucumberMessageSender.SendTestCaseFinished(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
+                    break;
+
+                case IFailure failure:
+                    _testTracer.TraceWarning(failure.ToString());
+                    break;
+            }
+
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
+            {
                 return;
+            }
 
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
             {
@@ -174,7 +188,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             if (_contextManager.ScenarioContext.TestError == null)
+            {
                 throw new InvalidOperationException("test failed with an unknown error");
+            }
 
             _contextManager.ScenarioContext.TestError.PreserveStackTrace();
             throw _contextManager.ScenarioContext.TestError;

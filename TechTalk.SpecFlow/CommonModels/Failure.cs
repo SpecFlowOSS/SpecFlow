@@ -8,6 +8,8 @@
         }
 
         public string Description { get; }
+
+        public override string ToString() => Description;
     }
 
     public class Failure<T> : Failure, IFailure<T>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Io.Cucumber.Messages;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
@@ -6,6 +7,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         void SendTestRunStarted();
 
-        void SendTestCaseStarted(Guid pickleId);
+        void SendTestCaseStarted(ScenarioInfo scenarioInfo);
+
+        void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult);
     }
 }

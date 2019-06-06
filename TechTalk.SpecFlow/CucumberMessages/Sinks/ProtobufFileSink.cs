@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-using Google.Protobuf;
+using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.CucumberMessages.Sinks
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
-        public void SendMessage(IMessage message)
+        public void SendMessage(Wrapper message)
         {
             string absoluteTargetFilePath = Path.GetFullPath(_protobufFileSinkConfiguration.TargetFilePath)
                                                 .Replace('\\', '_')

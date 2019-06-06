@@ -1,44 +1,67 @@
 ﻿using System;
-using Google.Protobuf;
+using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
-using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class CucumberMessageSender : ICucumberMessageSender
     {
-        private readonly IClock _clock;
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
         private readonly ICucumberMessageSink _cucumberMessageSink;
+        private readonly IFieldValueProvider _fieldValueProvider;
 
-        public CucumberMessageSender(IClock clock, ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink)
+        public CucumberMessageSender(ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink, IFieldValueProvider fieldValueProvider)
         {
-            _clock = clock;
             _cucumberMessageFactory = cucumberMessageFactory;
             _cucumberMessageSink = cucumberMessageSink;
+            _fieldValueProvider = fieldValueProvider;
+        }
+
+        public Guid GetPickleId(Func<Guid?> mockSource, Guid passedPickleId)
+        {
+            var overridePickleId = mockSource();
+            return overridePickleId ?? passedPickleId;
         }
 
         public void SendTestRunStarted()
         {
-            var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(_clock.GetNowDateAndTime());
-            SendMessageOrThrowException(testRunStartedMessageResult);
+            var nowDateAndTime = _fieldValueProvider.GetTestRunStartedTime();
+            var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(nowDateAndTime);
+            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testRunStartedMessageResult);
+            SendMessageOrThrowException(wrapper);
         }
 
-        public void SendTestCaseStarted(Guid pickleId)
+        public void SendTestCaseStarted(ScenarioInfo scenarioInfo)
         {
-            var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, _clock.GetNowDateAndTime());
-            SendMessageOrThrowException(testCaseStartedMessageResult);
+            var actualPickleId = _fieldValueProvider.GetTestCaseStartedPickleId(scenarioInfo);
+            var nowDateAndTime = _fieldValueProvider.GetTestCaseStartedTime();
+
+            var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(actualPickleId, nowDateAndTime);
+            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseStartedMessageResult);
+            SendMessageOrThrowException(wrapper);
         }
 
-        public void SendMessageOrThrowException(IResult<IMessage> messageResult)
+        public void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult)
+        {
+            var actualPickleId = _fieldValueProvider.GetTestCaseFinishedPickleId(scenarioInfo);
+            var nowDateAndTime = _fieldValueProvider.GetTestCaseFinishedTime();
+
+            var testCaseFinishedMessageResult = _cucumberMessageFactory.BuildTestCaseFinishedMessage(actualPickleId, nowDateAndTime, testResult);
+            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseFinishedMessageResult);
+            SendMessageOrThrowException(wrapper);
+        }
+
+        public void SendMessageOrThrowException(IResult<Wrapper> messageResult)
         {
             switch (messageResult)
             {
-                case ISuccess<IMessage> success:
+                case ISuccess<Wrapper> success:
                     _cucumberMessageSink.SendMessage(success.Result);
                     break;
 
-                case ExceptionFailure failure: throw failure.Exception;
+                case WrappedFailure<Wrapper> failure: throw new InvalidOperationException($"The message could not be created. {failure}");
+                case ExceptionFailure<Wrapper> failure: throw failure.Exception;
+                case Failure<Wrapper> failure: throw new InvalidOperationException($"The message could not be created. {failure.Description}");
                 default: throw new InvalidOperationException("The message could not be created.");
             }
         }

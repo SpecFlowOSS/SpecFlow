@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using BoDi;
+﻿using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.CucumberMessages.Sinks;
+using TechTalk.SpecFlow.EnvironmentAccess;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.FileAccess;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.TestFramework;
 using TechTalk.SpecFlow.Time;
 using TechTalk.SpecFlow.Tracing;
 
@@ -57,17 +57,25 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ObsoleteStepHandler, IObsoleteStepHandler>();
 
+            container.RegisterTypeAs<EnvironmentWrapper, IEnvironmentWrapper>();
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
+            container.RegisterTypeAs<TestErrorMessageFactory, ITestErrorMessageFactory>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
+            container.RegisterTypeAs<ProtobufFileNameResolver, IProtobufFileNameResolver>();
             container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
-            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration($"CucumberMessageQueue/{Guid.NewGuid()}"));
+            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages"));
+            container.RegisterTypeAs<DefaultTestRunContext, ITestRunContext>();
+
+            container.RegisterTypeAs<SpecFlowPath, ISpecFlowPath>();
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
+            container.RegisterTypeAs<TestResultFactory, ITestResultFactory>();
             container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
             container.RegisterTypeAs<PickleIdGenerator, IPickleIdGenerator>();
             container.RegisterTypeAs<PickleIdStore, IPickleIdStore>();
             container.RegisterTypeAs<PickleIdStoreDictionaryFactory, IPickleIdStoreDictionaryFactory>();
+            container.RegisterTypeAs<FieldValueProvider, IFieldValueProvider>();
 
             RegisterUnitTestProviders(container);
         }

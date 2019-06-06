@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Container
             //ARRANGE
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger());
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath());
 
 
             //ACT
