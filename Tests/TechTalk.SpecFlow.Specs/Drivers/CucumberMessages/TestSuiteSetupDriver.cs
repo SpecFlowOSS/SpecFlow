@@ -75,6 +75,12 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             _testSuiteInitializationDriver.OverrideTestCaseFinishedPickleId = pickleId;
         }
 
+        public void AddDuplicateStepDefinition()
+        {
+            _projectsDriver.AddStepBinding("When", "the step pass in .*", "//pass", "'pass");
+            _projectsDriver.AddStepBinding("When", "the step pass in .*", "//pass", "'pass");
+        }
+
         public void EnsureAProjectIsCreated()
         {
             if (_isProjectCreated)

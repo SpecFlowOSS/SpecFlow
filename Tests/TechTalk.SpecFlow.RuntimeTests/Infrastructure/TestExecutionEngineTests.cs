@@ -148,7 +148,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
-                new TestResultFactory(new TestErrorMessageFactory(), _testPendingMessageFactory),
+                new TestResultFactory(new TestErrorMessageFactory(), _testPendingMessageFactory, new TestAmbiguousMessageFactory()),
                 _testPendingMessageFactory,
                 testObjectResolverMock.Object,
                 testThreadContainer);

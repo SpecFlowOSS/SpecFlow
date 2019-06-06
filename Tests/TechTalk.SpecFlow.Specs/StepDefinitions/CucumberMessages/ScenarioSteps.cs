@@ -31,5 +31,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         {
             _testSuiteSetupDriver.AddScenario(pickleId);
         }
+
+        [Given(@"there are two step definitions with identical bindings")]
+        public void GivenThereAreTwoStepDefinitionsWithIdenticalRegex()
+        {
+            _testSuiteSetupDriver.AddDuplicateStepDefinition();
+        }
     }
 }
