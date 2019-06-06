@@ -8,11 +8,13 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private readonly ITestErrorMessageFactory _testErrorMessageFactory;
         private readonly ITestPendingMessageFactory _testPendingMessageFactory;
+        private readonly ITestAmbiguousMessageFactory _testAmbiguousMessageFactory;
 
-        public TestResultFactory(ITestErrorMessageFactory testErrorMessageFactory, ITestPendingMessageFactory testPendingMessageFactory)
+        public TestResultFactory(ITestErrorMessageFactory testErrorMessageFactory, ITestPendingMessageFactory testPendingMessageFactory, ITestAmbiguousMessageFactory testAmbiguousMessageFactory)
         {
             _testErrorMessageFactory = testErrorMessageFactory;
             _testPendingMessageFactory = testPendingMessageFactory;
+            _testAmbiguousMessageFactory = testAmbiguousMessageFactory;
         }
 
         public ulong ConvertTicksToPositiveNanoseconds(long ticks)
@@ -76,6 +78,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 case ScenarioExecutionStatus.OK: return BuildPassedResult(nanoseconds);
                 case ScenarioExecutionStatus.TestError: return BuildFailedResult(nanoseconds, _testErrorMessageFactory.BuildFromScenarioContext(scenarioContext));
                 case ScenarioExecutionStatus.StepDefinitionPending: return BuildPendingResult(nanoseconds, _testPendingMessageFactory.BuildFromScenarioContext(scenarioContext));
+                case ScenarioExecutionStatus.BindingError: return BuildAmbiguousResult(nanoseconds, _testAmbiguousMessageFactory.BuildFromScenarioContext(scenarioContext));
                 default: return Result<TestResult>.Failure($"Status '{scenarioContext.ScenarioExecutionStatus}' is unknown or not supported.");
             }
         }
