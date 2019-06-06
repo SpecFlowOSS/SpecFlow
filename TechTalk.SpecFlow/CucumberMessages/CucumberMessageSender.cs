@@ -17,12 +17,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
             _fieldValueProvider = fieldValueProvider;
         }
 
-        public Guid GetPickleId(Func<Guid?> mockSource, Guid passedPickleId)
-        {
-            var overridePickleId = mockSource();
-            return overridePickleId ?? passedPickleId;
-        }
-
         public void SendTestRunStarted()
         {
             var nowDateAndTime = _fieldValueProvider.GetTestRunStartedTime();
