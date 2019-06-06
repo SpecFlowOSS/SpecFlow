@@ -231,6 +231,57 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                             .Result.Message.Should().Be(expectedMessage);
         }
 
+        [Fact(DisplayName = @"BuildUndefinedResult should return a TestResult with status Undefined")]
+        public void BuildUndefinedResult_ValidParameters_ShouldReturnTestResultWithStatusUndefined()
+        {
+            // ARRANGE
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object), new TestAmbiguousMessageFactory());
+            const Status expectedStatus = Status.Undefined;
+
+            // ACT
+            var actualTestResult = testResultFactory.BuildUndefinedResult(10Lu, "Undefined test");
+
+            // ASSERT
+            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
+                            .Result.Status.Should().Be(expectedStatus);
+        }
+
+        [Fact(DisplayName = @"BuildUndefinedResult should return a TestResult with the passed nanoseconds duration")]
+        public void BuildUndefinedResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
+        {
+            // ARRANGE
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object), new TestAmbiguousMessageFactory());
+            const ulong expectedNanoseconds = 15Lu;
+
+            // ACT
+            var actualTestResult = testResultFactory.BuildUndefinedResult(expectedNanoseconds, "Undefined test");
+
+            // ASSERT
+            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
+                            .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
+        }
+
+        [Fact(DisplayName = @"BuildUndefinedResult should return a TestResult with the passed message")]
+        public void BuildUndefinedResult_Message_ShouldReturnTestResultWithMessage()
+        {
+            // ARRANGE
+            var errorProviderMock = GetErrorProviderMock();
+
+            var testResultFactory = new TestResultFactory(new TestErrorMessageFactory(), new TestPendingMessageFactory(errorProviderMock.Object), new TestAmbiguousMessageFactory());
+            const string expectedMessage = "This is a test message";
+
+            // ACT
+            var actualTestResult = testResultFactory.BuildUndefinedResult(10Lu, expectedMessage);
+
+            // ASSERT
+            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
+                            .Result.Message.Should().Be(expectedMessage);
+        }
+
         public Mock<IErrorProvider> GetErrorProviderMock()
         {
             var errorProviderMock = new Mock<IErrorProvider>();
