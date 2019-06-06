@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
-    public interface ICucumberMessageSenderValueMockSource
+    public interface IFieldValueProvider
     {
         DateTime GetTestRunStartedTime();
         DateTime GetTestCaseStartedTime();

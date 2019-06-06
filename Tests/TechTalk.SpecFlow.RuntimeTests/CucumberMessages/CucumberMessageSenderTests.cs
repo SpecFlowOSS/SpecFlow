@@ -22,9 +22,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
-            var cucumberMessageSenderValueMockSourceMock = GetCucumberMessageSenderValueMockSourceMock();
+            var fieldValueProviderMock = GetFieldValueProviderMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, cucumberMessageSenderValueMockSourceMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
             var scenarioInfo = new ScenarioInfo("Test", "Description", "Tag1");
 
             // ACT
@@ -45,9 +45,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
-            var cucumberMessageSenderValueMockSourceMock = GetCucumberMessageSenderValueMockSourceMock();
+            var fieldValueProviderMock = GetFieldValueProviderMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, cucumberMessageSenderValueMockSourceMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -69,9 +69,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
-            var cucumberMessageSenderValueMockSourceMock = GetCucumberMessageSenderValueMockSourceMock(testRunStartedTimeStamp: now);
+            var fieldValueProviderMock = GetFieldValueProviderMock(testRunStartedTimeStamp: now);
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, cucumberMessageSenderValueMockSourceMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -93,9 +93,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                    .Callback<Wrapper>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
-            var cucumberMessageSenderValueMockSourceMock = GetCucumberMessageSenderValueMockSourceMock();
+            var fieldValueProviderMock = GetFieldValueProviderMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, cucumberMessageSenderValueMockSourceMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -132,25 +132,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             return cucumberMessageFactoryMock;
         }
 
-        public Mock<ICucumberMessageSenderValueMockSource> GetCucumberMessageSenderValueMockSourceMock(
+        public Mock<IFieldValueProvider> GetFieldValueProviderMock(
             DateTime? testRunStartedTimeStamp = default,
             DateTime? testCaseStartedTimeStamp = default,
             Guid? testCaseStartedPickleId = default,
             DateTime? testCaseFinishedTimeStamp = default,
             Guid? testCaseFinishedPickleId = default)
         {
-            var cucumberMessageSenderValueMockSourceMock = new Mock<ICucumberMessageSenderValueMockSource>();
-            cucumberMessageSenderValueMockSourceMock.Setup(m => m.GetTestRunStartedTime())
+            var fieldValueProviderMock = new Mock<IFieldValueProvider>();
+            fieldValueProviderMock.Setup(m => m.GetTestRunStartedTime())
                                                     .Returns(() => testRunStartedTimeStamp ?? DateTime.UtcNow);
-            cucumberMessageSenderValueMockSourceMock.Setup(m => m.GetTestCaseStartedTime())
+            fieldValueProviderMock.Setup(m => m.GetTestCaseStartedTime())
                                                     .Returns(() => testCaseStartedTimeStamp ?? DateTime.UtcNow);
-            cucumberMessageSenderValueMockSourceMock.Setup(m => m.GetTestCaseStartedPickleId(It.IsAny<ScenarioInfo>()))
+            fieldValueProviderMock.Setup(m => m.GetTestCaseStartedPickleId(It.IsAny<ScenarioInfo>()))
                                                     .Returns(testCaseStartedPickleId ?? Guid.NewGuid());
-            cucumberMessageSenderValueMockSourceMock.Setup(m => m.GetTestCaseFinishedTime())
+            fieldValueProviderMock.Setup(m => m.GetTestCaseFinishedTime())
                                                     .Returns(() => testCaseFinishedTimeStamp ?? DateTime.UtcNow);
-            cucumberMessageSenderValueMockSourceMock.Setup(m => m.GetTestCaseFinishedPickleId(It.IsAny<ScenarioInfo>()))
+            fieldValueProviderMock.Setup(m => m.GetTestCaseFinishedPickleId(It.IsAny<ScenarioInfo>()))
                                                     .Returns(testCaseFinishedPickleId ?? Guid.NewGuid());
-            return cucumberMessageSenderValueMockSourceMock;
+            return fieldValueProviderMock;
         }
     }
 }

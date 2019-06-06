@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Time;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
-    public class CucumberMessageSenderValueMockSource : ICucumberMessageSenderValueMockSource
+    public class FieldValueProvider : IFieldValueProvider
     {
         private const string SpecFlowMessagesTestRunStartedTimeOverrideName = "SpecFlow_Messages_TestRunStartedTimeOverride";
         private const string SpecFlowMessagesTestCaseStartedTimeOverrideName = "SpecFlow_Messages_TestCaseStartedTimeOverride";
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private readonly IClock _clock;
         private readonly IPickleIdStore _pickleIdStore;
 
-        public CucumberMessageSenderValueMockSource(IEnvironmentWrapper environmentWrapper, IClock clock, IPickleIdStore pickleIdStore)
+        public FieldValueProvider(IEnvironmentWrapper environmentWrapper, IClock clock, IPickleIdStore pickleIdStore)
         {
             _environmentWrapper = environmentWrapper;
             _clock = clock;

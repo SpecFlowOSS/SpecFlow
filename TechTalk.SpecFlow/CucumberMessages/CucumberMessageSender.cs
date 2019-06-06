@@ -8,13 +8,13 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
         private readonly ICucumberMessageSink _cucumberMessageSink;
-        private readonly ICucumberMessageSenderValueMockSource _cucumberMessageSenderValueMockSource;
+        private readonly IFieldValueProvider _fieldValueProvider;
 
-        public CucumberMessageSender(ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink, ICucumberMessageSenderValueMockSource cucumberMessageSenderValueMockSource)
+        public CucumberMessageSender(ICucumberMessageFactory cucumberMessageFactory, ICucumberMessageSink cucumberMessageSink, IFieldValueProvider fieldValueProvider)
         {
             _cucumberMessageFactory = cucumberMessageFactory;
             _cucumberMessageSink = cucumberMessageSink;
-            _cucumberMessageSenderValueMockSource = cucumberMessageSenderValueMockSource;
+            _fieldValueProvider = fieldValueProvider;
         }
 
         public Guid GetPickleId(Func<Guid?> mockSource, Guid passedPickleId)
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestRunStarted()
         {
-            var nowDateAndTime = _cucumberMessageSenderValueMockSource.GetTestRunStartedTime();
+            var nowDateAndTime = _fieldValueProvider.GetTestRunStartedTime();
             var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(nowDateAndTime);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testRunStartedMessageResult);
             SendMessageOrThrowException(wrapper);
@@ -33,8 +33,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestCaseStarted(ScenarioInfo scenarioInfo)
         {
-            var actualPickleId = _cucumberMessageSenderValueMockSource.GetTestCaseStartedPickleId(scenarioInfo);
-            var nowDateAndTime = _cucumberMessageSenderValueMockSource.GetTestCaseStartedTime();
+            var actualPickleId = _fieldValueProvider.GetTestCaseStartedPickleId(scenarioInfo);
+            var nowDateAndTime = _fieldValueProvider.GetTestCaseStartedTime();
 
             var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(actualPickleId, nowDateAndTime);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseStartedMessageResult);
@@ -43,8 +43,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult)
         {
-            var actualPickleId = _cucumberMessageSenderValueMockSource.GetTestCaseFinishedPickleId(scenarioInfo);
-            var nowDateAndTime = _cucumberMessageSenderValueMockSource.GetTestCaseFinishedTime();
+            var actualPickleId = _fieldValueProvider.GetTestCaseFinishedPickleId(scenarioInfo);
+            var nowDateAndTime = _fieldValueProvider.GetTestCaseFinishedTime();
 
             var testCaseFinishedMessageResult = _cucumberMessageFactory.BuildTestCaseFinishedMessage(actualPickleId, nowDateAndTime, testResult);
             var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseFinishedMessageResult);
