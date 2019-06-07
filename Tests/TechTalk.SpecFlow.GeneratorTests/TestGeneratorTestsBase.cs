@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             TestUpToDateCheckerStub = new Mock<ITestUpToDateChecker>();
         }
 
-        protected FeatureFileInput CreateSimpleValidFeatureFileInput()
+        protected FeatureFileInput CreateSimpleValidFeatureFileInput(string projectRelativeFolderPath = null)
         {
             return CreateSimpleFeatureFileInput(@"
 Feature: Addition
@@ -60,12 +60,17 @@ Scenario: Add two numbers
 	And I have entered 70 into the calculator
 	When I press add
 	Then the result should be 120 on the screen
-");
+",
+projectRelativeFolderPath);
         }
 
-        protected FeatureFileInput CreateSimpleFeatureFileInput(string featureFileContent)
+        protected FeatureFileInput CreateSimpleFeatureFileInput(string featureFileContent, string projectRelativeFolderPath = null)
         {
-            return new FeatureFileInput(@"Dummy.feature") {FeatureFileContent = featureFileContent};
+            const string FeatureFileName = @"Dummy.feature";
+            string projectRelativeFilePath = projectRelativeFolderPath == null
+                ? FeatureFileName
+                : Path.Combine(projectRelativeFolderPath, FeatureFileName);
+            return new FeatureFileInput(projectRelativeFilePath) {FeatureFileContent = featureFileContent};
         }
 
         protected FeatureFileInput CreateSimpleInvalidFeatureFileInput()

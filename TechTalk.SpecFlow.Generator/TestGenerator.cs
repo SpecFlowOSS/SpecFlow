@@ -137,16 +137,17 @@ namespace TechTalk.SpecFlow.Generator
             if (!string.IsNullOrEmpty(featureFileInput.CustomNamespace))
                 return featureFileInput.CustomNamespace;
 
-            if (projectSettings == null || string.IsNullOrEmpty(projectSettings.DefaultNamespace))
-                return null;
-
-            string targetNamespace = projectSettings.DefaultNamespace;
+            string targetNamespace = projectSettings == null || string.IsNullOrEmpty(projectSettings.DefaultNamespace)
+                ? null
+                : projectSettings.DefaultNamespace;
 
             var directoryName = Path.GetDirectoryName(featureFileInput.ProjectRelativePath);
             string namespaceExtension = string.IsNullOrEmpty(directoryName) ? null :
                 string.Join(".", directoryName.TrimStart('\\', '/', '.').Split('\\', '/').Select(f => f.ToIdentifier()).ToArray());
             if (!string.IsNullOrEmpty(namespaceExtension))
-                targetNamespace += "." + namespaceExtension;
+                targetNamespace = targetNamespace == null
+                    ? namespaceExtension
+                    : targetNamespace + "." + namespaceExtension;
             return targetNamespace;
         }
 
