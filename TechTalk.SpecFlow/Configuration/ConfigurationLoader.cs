@@ -183,9 +183,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         private string GetSpecflowJsonFilePath()
         {
-            //var directory = Path.GetDirectoryName(typeof(ConfigurationLoader).Assembly.Location);
-            //var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var specflowJsonFile = Path.Combine(Environment.CurrentDirectory, "specflow.json"); //todo: check if this works in real project
+            var specflowJsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "specflow.json");
             return specflowJsonFile;
         }
     }
