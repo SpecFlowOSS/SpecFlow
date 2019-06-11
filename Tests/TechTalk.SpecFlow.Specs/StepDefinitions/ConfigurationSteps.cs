@@ -26,13 +26,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the app\.config is used for configuration")]
         public void ThenTheApp_ConfigIsUsedForConfiguration()
         {
-            _solutionDriver._compileResult.Output.Should().Contain("Using app.config");
+            _solutionDriver.CheckCompileOutputForString("Using app.config");
         }
 
         [Then(@"the specflow\.json is used for configuration")]
         public void ThenTheSpecflow_JsonIsUsedForConfiguration()
         {
-            _solutionDriver._compileResult.Output.Should().Contain("Using specflow.json");
+            _solutionDriver.CheckCompileOutputForString("Using specflow.json");
         }
 
         [Given(@"the feature language is '(.*)'")]
