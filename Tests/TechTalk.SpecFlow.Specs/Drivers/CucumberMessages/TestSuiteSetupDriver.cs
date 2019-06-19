@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
@@ -95,5 +96,80 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
 
             AddFeatureFiles(1);
         }
+
+        public void AddScenarioWithGivenStep(string step)
+        {
+            if (!_isProjectCreated)
+            {
+                _projectsDriver.CreateProject("C#");
+                _isProjectCreated = true;
+                return;
+            }
+
+            const string featureTitle = "Feature1";
+            var featureBuilder = new StringBuilder();
+            featureBuilder.AppendLine($"Feature: {featureTitle}");
+
+            featureBuilder.AppendLine("Scenario: scenario");
+            featureBuilder.AppendLine($"Given {step}");
+            featureBuilder.AppendLine();
+
+            _projectsDriver.AddFeatureFile(featureBuilder.ToString());
+
+            _isProjectCreated = true;
+        }
+
+        public void AddStepDefinitionsFromStringList(string stepDefinitionOrder)
+        {
+            if (!_isProjectCreated)
+            {
+                _projectsDriver.CreateProject("C#");
+                _isProjectCreated = true;
+                return;
+            }
+
+            var order = ParseOrderFromString(stepDefinitionOrder);
+            foreach (var stepDefinitionRow in order.StepDefinitionRows)
+            {
+                (string csharp, string vbnet) = GetStepDefinitionCodeForExecution(stepDefinitionRow.Execution);
+                _projectsDriver.AddStepBinding("Given", stepDefinitionRow.Name, csharp, vbnet);
+            }
+        }
+
+        public StepDefinitionOrder ParseOrderFromString(string stepDefinitionOrder)
+        {
+            // format: Step1Binding (pass), Step1Binding (pass)
+            // TODO
+            throw new NotImplementedException();
+        }
+
+        public (string csharp, string vbnet) GetStepDefinitionCodeForExecution(StepDefinitionRowExecution execution)
+        {
+            switch (execution)
+            {
+                case StepDefinitionRowExecution.Pass: return ("//pass", "'pass");
+                case StepDefinitionRowExecution.Fail: return (@"throw new global::System.Exception(""Expected failure"");", @"Throw New System.Exception(""Expected failure"")");
+                case StepDefinitionRowExecution.Pending: return (@"ScenarioContext.Current.Pending();", @"ScenarioContext.Current.Pending()");
+                default: throw new NotSupportedException($"Not supported {nameof(StepDefinitionRowExecution)}: {execution}");
+            }
+        }
+    }
+
+    public class StepDefinitionOrder
+    {
+        public List<StepDefinitionRow> StepDefinitionRows { get; set; } = new List<StepDefinitionRow>();
+    }
+
+    public class StepDefinitionRow
+    {
+        public StepDefinitionRowExecution Execution { get; set; }
+        public string Name { get; set; }
+    }
+
+    public enum StepDefinitionRowExecution
+    {
+        Pass,
+        Fail,
+        Pending
     }
 }

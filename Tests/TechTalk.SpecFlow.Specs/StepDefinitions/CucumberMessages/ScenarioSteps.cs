@@ -43,5 +43,17 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         {
             _testSuiteSetupDriver.AddNotMatchingStepDefinition();
         }
+
+        [Given(@"there is a scenario with the following steps: '(.*)'")]
+        public void GivenThereIsAScenarioWithTheFollowingSteps(string step)
+        {
+            _testSuiteSetupDriver.AddScenarioWithGivenStep(step);
+        }
+
+        [Given(@"with step definitions in the following order: '(.*)'")]
+        public void GivenWithStepDefinitionsInTheFollowingOrder(string stepDefinitionOrder)
+        {
+            _testSuiteSetupDriver.AddStepDefinitionsFromStringList(stepDefinitionOrder);
+        }
     }
 }
