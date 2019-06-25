@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         public void GivenTheCucumberImplementationIs(string cucumberImplementation)
         {
             _testSuiteSetupDriver.AddFeatureFiles(1);
+            _testSuiteSetupDriver.AddGenericWhenStepBinding();
         }
     }
 }

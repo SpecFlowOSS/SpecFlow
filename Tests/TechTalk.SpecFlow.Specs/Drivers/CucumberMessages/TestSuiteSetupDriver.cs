@@ -18,6 +18,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
         }
 
+        public void AddGenericWhenStepBinding()
+        {
+            _projectsDriver.AddStepBinding("When", ".*", "//pass", "'pass");
+        }
+
         public void AddFeatureFiles(int count)
         {
             if (count <= 0 && !_isProjectCreated)
@@ -103,7 +108,6 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             {
                 _projectsDriver.CreateProject("C#");
                 _isProjectCreated = true;
-                return;
             }
 
             const string featureTitle = "Feature1";
@@ -125,7 +129,6 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             {
                 _projectsDriver.CreateProject("C#");
                 _isProjectCreated = true;
-                return;
             }
 
             var order = ParseOrderFromString(stepDefinitionOrder);
