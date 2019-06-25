@@ -1,6 +1,7 @@
 ﻿using System;
 using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
@@ -13,14 +14,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         private readonly SolutionDriver _solutionDriver;
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
         private readonly TestCaseFinishedDriver _testCaseFinishedDriver;
+        private readonly AssertionsDriver _assertionsDriver;
 
-        public TestCaseFinishedSteps(TestSuiteInitializationDriver testSuiteInitializationDriver, TestSuiteSetupDriver testSuiteSetupDriver, SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecutionDriver, TestCaseFinishedDriver testCaseFinishedDriver)
+        public TestCaseFinishedSteps(TestSuiteInitializationDriver testSuiteInitializationDriver, TestSuiteSetupDriver testSuiteSetupDriver, SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecutionDriver, TestCaseFinishedDriver testCaseFinishedDriver, AssertionsDriver assertionsDriver)
         {
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
             _solutionDriver = solutionDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
             _testCaseFinishedDriver = testCaseFinishedDriver;
+            _assertionsDriver = assertionsDriver;
         }
 
         [When(@"the scenario is finished at '(.*)'")]
@@ -42,13 +45,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [Then(@"a TestCaseFinished message has been sent with the following attributes")]
         public void ThenATestCaseFinishedMessageHasBeenSentWithTheFollowingAttributes(Table table)
         {
-            _testCaseFinishedDriver.TestCaseFinishedMessageShouldHaveBeenSent(table);
+            _assertionsDriver.TestCaseFinishedMessageShouldHaveBeenSent(table);
         }
 
         [Then(@"a TestCaseFinished message has been sent with the following TestResult")]
         public void ThenATestCaseFinishedMessageHasBeenSentWithTheFollowingTestResult(Table table)
         {
-            _testCaseFinishedDriver.TestCaseFinishedMessageShouldHaveBeenSentWithTestResult(table);
+            _assertionsDriver.TestCaseFinishedMessageShouldHaveBeenSentWithTestResult(table);
         }
     }
 }

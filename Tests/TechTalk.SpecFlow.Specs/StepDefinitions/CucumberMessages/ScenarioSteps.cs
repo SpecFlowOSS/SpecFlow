@@ -1,5 +1,5 @@
 ﻿using System;
-using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
 {
