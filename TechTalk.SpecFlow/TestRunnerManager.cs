@@ -70,8 +70,6 @@ namespace TechTalk.SpecFlow
             BindingAssemblies = GetBindingAssemblies();
             BuildBindingRegistry(BindingAssemblies);
 
-            testRunner.OnTestRunStart();
-
             EventHandler domainUnload = delegate { OnDomainUnload(); };
             AppDomain.CurrentDomain.DomainUnload += domainUnload;
             AppDomain.CurrentDomain.ProcessExit += domainUnload;
