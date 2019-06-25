@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return UnitTestGeneratorTraits.RowTests;
         }
 
-        public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             // xUnit does not use an attribute for the TestFixture, all public classes are potential fixtures
         }
