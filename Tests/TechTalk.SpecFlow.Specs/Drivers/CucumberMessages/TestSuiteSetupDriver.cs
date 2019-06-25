@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages.InlineObjects;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
@@ -166,23 +166,5 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
                 default: throw new NotSupportedException($"Not supported {nameof(StepDefinitionRowExecution)}: {execution}");
             }
         }
-    }
-
-    public class StepDefinitionOrder
-    {
-        public List<StepDefinitionRow> StepDefinitionRows { get; set; } = new List<StepDefinitionRow>();
-    }
-
-    public class StepDefinitionRow
-    {
-        public StepDefinitionRowExecution Execution { get; set; }
-        public string Name { get; set; }
-    }
-
-    public enum StepDefinitionRowExecution
-    {
-        Pass,
-        Fail,
-        Pending
     }
 }
