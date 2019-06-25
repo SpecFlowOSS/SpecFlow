@@ -22,8 +22,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected const string COLLECTION_DEF = "Xunit.Collection";
         protected const string COLLECTION_TAG = "xunit:collection";
 
-        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
-            :base(codeDomHelper)
+        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
         }
@@ -111,14 +110,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     );
             }
         }
-                 public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             IEnumerable<string> collection = featureCategories.Where(f => f.StartsWith(COLLECTION_TAG, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (collection.Any())
             {
                 //Only one 'Xunit.Collection' can exist per class.
-                SetTestClassCollection(generationContext, collection.FirstOrDefault()); 
+                SetTestClassCollection(generationContext, collection.FirstOrDefault());
             }
+
             base.SetTestClassCategories(generationContext, featureCategories);
         }
 
