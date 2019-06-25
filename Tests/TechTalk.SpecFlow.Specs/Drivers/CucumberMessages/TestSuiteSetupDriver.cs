@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
@@ -141,9 +142,18 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
 
         public StepDefinitionOrder ParseOrderFromString(string stepDefinitionOrder)
         {
-            // format: Step1Binding (pass), Step1Binding (pass)
-            // TODO
-            throw new NotImplementedException();
+            var regex = new Regex(@"(?<BindingName>[A-Za-z0-9_]+) \((?<Result>pass|fail|pending)\)");
+            var matches = regex.Matches(stepDefinitionOrder).Cast<Match>();
+            var stepDefinitionRows = from m in matches
+                                     let bindingName = m.Groups["BindingName"].Value
+                                     let name = bindingName.EndsWith("Binding") ? bindingName.Substring(0, bindingName.Length - "Binding".Length) : bindingName
+                                     let resultString = m.Groups["Result"].Value
+                                     let result = (StepDefinitionRowExecution)Enum.Parse(typeof(StepDefinitionRowExecution), resultString, true)
+                                     select new StepDefinitionRow { Name = name, Execution = result };
+            return new StepDefinitionOrder
+            {
+                StepDefinitionRows = stepDefinitionRows.ToList()
+            };
         }
 
         public (string csharp, string vbnet) GetStepDefinitionCodeForExecution(StepDefinitionRowExecution execution)
