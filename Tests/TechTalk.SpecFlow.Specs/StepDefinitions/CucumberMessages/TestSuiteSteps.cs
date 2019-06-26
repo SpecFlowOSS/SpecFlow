@@ -1,4 +1,4 @@
-﻿using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
 {
@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         public void GivenTheCucumberImplementationIs(string cucumberImplementation)
         {
             _testSuiteSetupDriver.AddFeatureFiles(1);
+            _testSuiteSetupDriver.AddGenericWhenStepBinding();
         }
     }
 }

@@ -1,6 +1,20 @@
 ﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
+    <BuildDependsOn>
+      GenerateSpecFlowAssemblyHooksFileTask;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+    <CleanDependsOn>
+      $(CleanDependsOn)
+    </CleanDependsOn>
+    <RebuildDependsOn>
+      GenerateSpecFlowAssemblyHooksFileTask;
+      $(RebuildDependsOn)
+    </RebuildDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
 
     <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'" >netstandard2.0</_SpecFlow_xUnitGeneratorPlugin>
     <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'" >net471</_SpecFlow_xUnitGeneratorPlugin>
@@ -10,8 +24,16 @@
     <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net45</_SpecFlow_xUnitRuntimePlugin>
     <_SpecFlow_xUnitRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_xUnitRuntimePlugin)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</_SpecFlow_xUnitRuntimePluginPath>
 
+    <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+    <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
+
   </PropertyGroup>
 
+  <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true'">
+    <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
+      <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
+    </ItemGroup>
+  </Target>
 
   
 </Project>
