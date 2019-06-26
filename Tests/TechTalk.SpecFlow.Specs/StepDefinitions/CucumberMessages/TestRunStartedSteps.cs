@@ -14,16 +14,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         private readonly SolutionDriver _solutionDriver;
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
         private readonly TestSuiteInitializationDriver _testSuiteInitializationDriver;
-        private readonly AssertionsDriver _assertionsDriver;
+        private readonly MessageValidationDriver _messageValidationDriver;
 
-        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, TestRunStartedDriver testRunStartedDriver, SolutionDriver solutionDriver, TestSuiteSetupDriver testSuiteSetupDriver, TestSuiteInitializationDriver testSuiteInitializationDriver, AssertionsDriver assertionsDriver)
+        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, TestRunStartedDriver testRunStartedDriver, SolutionDriver solutionDriver, TestSuiteSetupDriver testSuiteSetupDriver, TestSuiteInitializationDriver testSuiteInitializationDriver, MessageValidationDriver messageValidationDriver)
         {
             _vsTestExecutionDriver = vsTestExecutionDriver;
             _testRunStartedDriver = testRunStartedDriver;
             _solutionDriver = solutionDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
-            _assertionsDriver = assertionsDriver;
+            _messageValidationDriver = messageValidationDriver;
         }
 
         [When(@"the test suite is executed")]
@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [Then(@"a TestRunStarted message has been sent with the following attributes")]
         public void ThenATestRunStartedMessageHasBeenSentWithTheFollowingAttributes(Table attributesTable)
         {
-            _assertionsDriver.TestRunStartedMessageShouldHaveBeenSent(attributesTable);
+            _messageValidationDriver.TestRunStartedMessageShouldHaveBeenSent(attributesTable);
         }
     }
 }
