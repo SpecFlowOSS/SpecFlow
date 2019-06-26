@@ -82,6 +82,9 @@
 
   <Target Name="IncludeCucumberMessagesSpecs" BeforeTargets="BeforeUpdateFeatureFilesInProject" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
     <Copy SourceFiles="@(CucumberMessagesSpecFlowFeatureFiles)" DestinationFolder="$(ProjectDir)/Features/CucumberMessages" />
+    <ItemGroup>
+      <SpecFlowFeatureFiles Include="$(ProjectDir)/Features/CucumberMessages/*.feature" />
+    </ItemGroup>
   </Target>
 
   <Target Name="PreBuild">
