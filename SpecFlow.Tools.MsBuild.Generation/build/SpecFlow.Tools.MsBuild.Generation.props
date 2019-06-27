@@ -1,7 +1,7 @@
 ﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
 
   <PropertyGroup>
-    <SpecFlow_CpsExtensionDesignTimeTargetsPath Condition="'$(SpecFlow_CpsExtensionDesignTimeTargetsPath)' == ''">$(MSBuildThisFileDirectory)CPS\BuildSystem\CpsExtension.DesignTime.targets</SpecFlow_CpsExtensionDesignTimeTargetsPath>
+    <SpecFlow_CpsExtensionDesignTimeTargetsPath Condition="'$(SpecFlow_CpsExtensionDesignTimeTargetsPath)' == ''">$(MSBuildThisFileDirectory)CPS\Buildsystem\CpsExtension.DesignTime.targets</SpecFlow_CpsExtensionDesignTimeTargetsPath>
   </PropertyGroup>
 
   <Import Project="$(SpecFlow_CpsExtensionDesignTimeTargetsPath)" Condition="'$(DesignTimeBuild)' == 'true' " />
