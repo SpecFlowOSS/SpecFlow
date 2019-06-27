@@ -12,31 +12,27 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly VSTestExecutionDriver _vstestExecutionDriver;
         private readonly ConfigurationDriver _configurationDriver;
         private readonly TestRunConfiguration _testRunConfiguration;
+        private readonly SolutionDriver _solutionDriver;
 
-        public ConfigurationSteps(VSTestExecutionDriver vstestExecutionDriver, ConfigurationDriver configurationDriver, TestRunConfiguration testRunConfiguration)
+        public ConfigurationSteps(VSTestExecutionDriver vstestExecutionDriver, ConfigurationDriver configurationDriver, TestRunConfiguration testRunConfiguration, SolutionDriver solutionDriver)
         {
             _vstestExecutionDriver = vstestExecutionDriver;
             _configurationDriver = configurationDriver;
             _testRunConfiguration = testRunConfiguration;
+            _solutionDriver = solutionDriver;
         }
+
 
         [Then(@"the app\.config is used for configuration")]
         public void ThenTheApp_ConfigIsUsedForConfiguration()
         {
-            if (_testRunConfiguration.UnitTestProvider == TestProjectGenerator.UnitTestProvider.MSTest)
-            {
-                _vstestExecutionDriver.LastTestExecutionResult.TestResults.Where(tr => tr.StdOut.Contains("Using app.config")).Should().NotBeEmpty();
-            }
-            else
-            {
-                _vstestExecutionDriver.LastTestExecutionResult.Output.Should().Contain("Using app.config");
-            }
+            _solutionDriver.CheckCompileOutputForString("Using app.config").Should().BeTrue();
         }
 
         [Then(@"the specflow\.json is used for configuration")]
         public void ThenTheSpecflow_JsonIsUsedForConfiguration()
         {
-            _vstestExecutionDriver.LastTestExecutionResult.Output.Should().Contain("Using specflow.json");
+            _solutionDriver.CheckCompileOutputForString("Using specflow.json").Should().BeTrue();
         }
 
         [Given(@"the feature language is '(.*)'")]
