@@ -27,12 +27,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper = codeDomHelper;
         }
 
-        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
-        {
-            SetTestClassCollection(generationContext, "xunit:collection(SpecFlowXUnitHooks)");
-
-            base.SetTestClass(generationContext, featureTitle, featureDescription);
-        }
 
         public override UnitTestGeneratorTraits GetTraits()
         {

@@ -1,13 +1,24 @@
-﻿using global::System;
+﻿using System.Diagnostics;
+using global::System;
 using global::Xunit;
 using global::TechTalk.SpecFlow;
 
-namespace TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.build
+
+[assembly: TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.Extensions.AssemblyFixture.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")]
+
+[assembly: TechTalk.SpecFlow.xUnit.SpecFlowPlugin.Extensions.AssemblyFixture.AssemblyFixture(typeof(TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.MyAssemblyFixture))]
+
+namespace TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin
 {
-    public class XUnitAssemblyHooksFixture : IDisposable
+
+    public class MyAssemblyFixture : IDisposable
     {
-        public XUnitAssemblyHooksFixture()
+        
+
+        public MyAssemblyFixture()
         {
+            Debugger.Launch();
+
             TestRunnerManager.GetTestRunner().OnTestRunStart();
         }
 
@@ -15,10 +26,5 @@ namespace TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.build
         {
             TestRunnerManager.OnTestRunEnd();
         }
-    }
-
-    [CollectionDefinition("SpecFlowXUnitHooks")]
-    public class XUnitAssemblyHooksCollectionDefinition : ICollectionFixture<XUnitAssemblyHooksFixture>
-    {
     }
 }

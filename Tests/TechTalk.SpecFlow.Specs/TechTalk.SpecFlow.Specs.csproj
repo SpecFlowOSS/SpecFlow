@@ -15,6 +15,8 @@
     <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
     <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>true</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
 
   </PropertyGroup>
   <ItemGroup>
@@ -96,6 +98,7 @@
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_PluginTFM)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
+
 
   <PropertyGroup>
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.0</_SpecFlow_TaskFolder>
