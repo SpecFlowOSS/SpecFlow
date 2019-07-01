@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly name="TechTalk.SpecFlow">
+  <member name="T:TechTalk.SpecFlow.BindingAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.GivenAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="M:TechTalk.SpecFlow.GivenAttribute.#ctor(System.String)">
+    <parameter name="regex">
+      <attribute ctor="M:JetBrains.Annotations.RegexPatternAttribute.#ctor"/>
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
+   </parameter>
+  </member>
+  <member name="M:TechTalk.SpecFlow.GivenAttribute.#ctor(System.String,System.String)">
+    <parameter name="regex">
+      <attribute ctor="M:JetBrains.Annotations.RegexPatternAttribute.#ctor"/>
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
+   </parameter>
+   <parameter name="culture">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
+   </parameter>
+  </member>
+  <member name="T:TechTalk.SpecFlow.WhenAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="M:TechTalk.SpecFlow.WhenAttribute.#ctor(System.String)">
+    <parameter name="regex">
+      <attribute ctor="M:JetBrains.Annotations.RegexPatternAttribute.#ctor"/>
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
+   </parameter>
+  </member>
+  <member name="T:TechTalk.SpecFlow.ThenAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="M:TechTalk.SpecFlow.ThenAttribute.#ctor(System.String)">
+    <parameter name="regex">
+      <attribute ctor="M:JetBrains.Annotations.RegexPatternAttribute.#ctor"/>
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
+   </parameter>
+  </member>
+</assembly>
