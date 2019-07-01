@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
@@ -15,8 +16,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
         private readonly TestSuiteInitializationDriver _testSuiteInitializationDriver;
         private readonly MessageValidationDriver _messageValidationDriver;
+        private readonly ScenarioContext _scenarioContext;
 
-        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, TestRunStartedDriver testRunStartedDriver, SolutionDriver solutionDriver, TestSuiteSetupDriver testSuiteSetupDriver, TestSuiteInitializationDriver testSuiteInitializationDriver, MessageValidationDriver messageValidationDriver)
+        public TestRunStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, TestRunStartedDriver testRunStartedDriver, SolutionDriver solutionDriver, TestSuiteSetupDriver testSuiteSetupDriver, TestSuiteInitializationDriver testSuiteInitializationDriver, MessageValidationDriver messageValidationDriver,
+            ScenarioContext scenarioContext)
         {
             _vsTestExecutionDriver = vsTestExecutionDriver;
             _testRunStartedDriver = testRunStartedDriver;
@@ -24,6 +27,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testSuiteSetupDriver = testSuiteSetupDriver;
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
             _messageValidationDriver = messageValidationDriver;
+            this._scenarioContext = scenarioContext;
         }
 
         [When(@"the test suite is executed")]
@@ -46,6 +50,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [Then(@"'(\d+)' TestRunStarted messages have been sent")]
         public void ThenATestRunStartedMessageHasBeenSent(int numberOfMessages)
         {
+            if (_scenarioContext.ScenarioInfo.Tags.Contains("SpecFlow"))
+            {
+                return;
+            }
+
             _testRunStartedDriver.TestRunStartedMessageShouldHaveBeenSent(numberOfMessages);
         }
 
