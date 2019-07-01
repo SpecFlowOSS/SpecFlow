@@ -35,7 +35,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
-                RootNamespace = "RootNamespace",
                 ProjectPath = "ProjectPath",
                 BuildEngine = new MockBuildEngine(_output),
                 CodeBehindGenerator = generatorMock.Object

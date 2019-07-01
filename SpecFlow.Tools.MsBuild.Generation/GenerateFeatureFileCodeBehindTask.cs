@@ -21,7 +21,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
         [Required]
         public string ProjectPath { get; set; }
 
-        [Required]
         public string RootNamespace { get; set; }
 
         public string ProjectFolder => Path.GetDirectoryName(ProjectPath);

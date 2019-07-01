@@ -46,7 +46,7 @@ Version number:
 
 ### Are the latest Visual Studio updates installed?
 - [ ]	Yes
-- [ ]	No
+- [ ]	No, I use Visual Studio version `<Major>.<Minor>.<Patch>` <!-- e.g. 16.1.0 -->
  
 ### .NET Framework:
 - [ ]	>= .NET 4.5

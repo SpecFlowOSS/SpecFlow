@@ -212,7 +212,7 @@ namespace TechTalk.SpecFlow
         {
             containerBuilder = containerBuilder ?? new ContainerBuilder();
 
-            var container = containerBuilder.CreateGlobalContainer();
+            var container = containerBuilder.CreateGlobalContainer(testAssembly);
             var testRunnerManager = container.Resolve<ITestRunnerManager>();
             testRunnerManager.Initialize(testAssembly);
             return testRunnerManager;

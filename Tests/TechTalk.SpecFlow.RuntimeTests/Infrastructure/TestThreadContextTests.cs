@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             // this basically tests the special registration in DefaultDependencyProvider
 
             var containerBuilder = new ContainerBuilder();
-            var testThreadContainer = containerBuilder.CreateTestThreadContainer(containerBuilder.CreateGlobalContainer());
+            var testThreadContainer = containerBuilder.CreateTestThreadContainer(containerBuilder.CreateGlobalContainer(typeof(TestThreadContextTests).Assembly));
             var contextManager = CreateContextManager(testThreadContainer);
             contextManager.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null));
             contextManager.InitializeScenarioContext(new ScenarioInfo("test scenario", "test_description"));
