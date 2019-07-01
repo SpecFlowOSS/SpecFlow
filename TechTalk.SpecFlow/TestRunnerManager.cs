@@ -18,6 +18,8 @@ namespace TechTalk.SpecFlow
         bool IsMultiThreaded { get; }
         ITestRunner GetTestRunner(int threadId);
         void Initialize(Assembly testAssembly);
+        void FireTestRunEnd();
+        void FireTestRunStart();
     }
 
     public class TestRunnerManager : ITestRunnerManager
@@ -30,7 +32,7 @@ namespace TechTalk.SpecFlow
         private readonly ITestTracer testTracer;
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
         private readonly object syncRoot = new object();
-        private bool isTestRunInitialized;
+        public bool IsTestRunInitialized { get; private set; }
         private object disposeLockObj = null;
 
         public Assembly TestAssembly { get; private set; }
@@ -55,10 +57,10 @@ namespace TechTalk.SpecFlow
 
             lock (this)
             {
-                if (!isTestRunInitialized)
+                if (!IsTestRunInitialized)
                 {
                     InitializeBindingRegistry(testRunner);
-                    isTestRunInitialized = true;
+                    IsTestRunInitialized = true;
                 }
             }
 
@@ -69,8 +71,6 @@ namespace TechTalk.SpecFlow
         {
             BindingAssemblies = GetBindingAssemblies();
             BuildBindingRegistry(BindingAssemblies);
-
-            testRunner.OnTestRunStart();
 
             EventHandler domainUnload = delegate { OnDomainUnload(); };
             AppDomain.CurrentDomain.DomainUnload += domainUnload;
@@ -101,12 +101,20 @@ namespace TechTalk.SpecFlow
             Dispose();
         }
 
-        private void FireTestRunEnd()
+        public void FireTestRunEnd()
         {
             // this method must not be called multiple times
             var onTestRunnerEndExecutionHost = testRunnerRegistry.Values.FirstOrDefault();
             if (onTestRunnerEndExecutionHost != null)
                 onTestRunnerEndExecutionHost.OnTestRunEnd();
+        }
+
+        public void FireTestRunStart()
+        {
+            // this method must not be called multiple times
+            var onTestRunnerEndExecutionHost = testRunnerRegistry.Values.FirstOrDefault();
+            if (onTestRunnerEndExecutionHost != null)
+                onTestRunnerEndExecutionHost.OnTestRunStart();
         }
 
         protected virtual ITestRunner CreateTestRunnerInstance()
@@ -140,7 +148,7 @@ namespace TechTalk.SpecFlow
             ITestRunner testRunner;
             if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
             {
-                lock(syncRoot)
+                lock (syncRoot)
                 {
                     if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
                     {
@@ -214,7 +222,17 @@ namespace TechTalk.SpecFlow
         {
             testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
             var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: false);
+            testRunnerManager?.FireTestRunEnd();
             testRunnerManager?.Dispose();
+        }
+
+        public static void OnTestRunStart(Assembly testAssembly = null)
+        {
+            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: true);
+            testRunnerManager.GetTestRunner(GetLogicalThreadId(null));
+
+            testRunnerManager?.FireTestRunStart();
         }
 
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
@@ -224,6 +242,7 @@ namespace TechTalk.SpecFlow
             var testRunnerManager = GetTestRunnerManager(testAssembly);
             return testRunnerManager.GetTestRunner(managedThreadId.Value);
         }
+
 
         private static int GetLogicalThreadId(int? managedThreadId)
         {

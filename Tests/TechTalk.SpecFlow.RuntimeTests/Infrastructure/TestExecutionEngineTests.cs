@@ -14,6 +14,7 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
+using TechTalk.SpecFlow.CucumberMessages;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -32,12 +33,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<ITestObjectResolver> testObjectResolverMock;
         private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
+        private Mock<ICucumberMessageSender> cucumberMessageSenderMock;
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
         private ObjectContainer testThreadContainer;
         private ObjectContainer featureContainer;
         private ObjectContainer scenarioContainer;
         private TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
+        private ITestPendingMessageFactory _testPendingMessageFactory;
+        private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -120,6 +124,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
             obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
+
+            cucumberMessageSenderMock = new Mock<ICucumberMessageSender>();
+            cucumberMessageSenderMock.Setup(m => m.SendTestRunStarted())
+                                     .Callback(() => { });
+
+            _testPendingMessageFactory = new TestPendingMessageFactory(errorProviderStub.Object);
+            _testUndefinedMessageFactory = new TestUndefinedMessageFactory(stepDefinitionSkeletonProviderMock.Object, errorProviderStub.Object, specFlowConfiguration);
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -131,15 +142,37 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 new Mock<IStepArgumentTypeConverter>().Object, 
                 specFlowConfiguration, 
                 bindingRegistryStub.Object,
-                new Mock<IUnitTestRuntimeProvider>().Object,
-                stepDefinitionSkeletonProviderMock.Object, 
+                new Mock<IUnitTestRuntimeProvider>().Object, 
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
+                cucumberMessageSenderMock.Object,
+                new TestResultFactory(new TestErrorMessageFactory(), _testPendingMessageFactory, new TestAmbiguousMessageFactory(), _testUndefinedMessageFactory),
+                _testPendingMessageFactory,
+                _testUndefinedMessageFactory,
                 testObjectResolverMock.Object,
                 testThreadContainer);
+        }
+
+        private Mock<IPickleIdStore> GetPickleIdStoreMock()
+        {
+            var dictionary = new Dictionary<ScenarioInfo, Guid>();
+            var pickleIdStoreMock = new Mock<IPickleIdStore>();
+            pickleIdStoreMock.Setup(m => m.GetPickleIdForScenario(It.IsAny<ScenarioInfo>()))
+                             .Returns<ScenarioInfo>(info =>
+                             {
+                                 if (dictionary.ContainsKey(info))
+                                 {
+                                     return dictionary[info];
+                                 }
+
+                                 var newGuid = Guid.NewGuid();
+                                 dictionary.Add(info, newGuid);
+                                 return newGuid;
+                             });
+            return pickleIdStoreMock;
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()

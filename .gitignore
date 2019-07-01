@@ -340,7 +340,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 _NCrunch*/
-[Tt]est[Rr]esult*
 *.pidb
 *.userprefs
 *.resharper
@@ -382,6 +381,7 @@ GitExtensions.settings.backup
 /Installer/NuGetPackages/SpecFlow.Tools.MsBuild.Generation/build/SpecFlow.Tools.MsBuild.Generation.props
 /Tests/TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests/Features/dummy.feature.cs
 *.feature.cs
+/Tests/TechTalk.SpecFlow.Specs/Features/CucumberMessages
 
 # Nerdbank.GitVersioning
 Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs

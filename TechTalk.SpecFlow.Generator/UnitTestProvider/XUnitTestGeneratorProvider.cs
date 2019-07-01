@@ -24,21 +24,21 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
 
+        public XUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
+        {
+            CodeDomHelper = codeDomHelper;
+        }
+
         protected CodeDomHelper CodeDomHelper { get; set; }
+
+        public bool GenerateParallelCodeForFeature { get; set; }
 
         public virtual UnitTestGeneratorTraits GetTraits()
         {
             return UnitTestGeneratorTraits.RowTests;
         }
 
-        public bool GenerateParallelCodeForFeature { get; set; }
-
-        public XUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
-        {
-            CodeDomHelper = codeDomHelper;
-        }
-
-        public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             // xUnit does not use an attribute for the TestFixture, all public classes are potential fixtures
         }
@@ -47,7 +47,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
             foreach (string str in featureCategories)
+            {
                 SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
+            }
         }
 
         public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
@@ -127,7 +129,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             //TODO: better handle "ignored"
             if (isIgnored)
+            {
                 return;
+            }
 
             var args = arguments.Select(
               arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
@@ -142,7 +146,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             foreach (string str in scenarioCategories)
+            {
                 SetProperty((CodeTypeMember)testMethod, "Category", str);
+            }
         }
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)

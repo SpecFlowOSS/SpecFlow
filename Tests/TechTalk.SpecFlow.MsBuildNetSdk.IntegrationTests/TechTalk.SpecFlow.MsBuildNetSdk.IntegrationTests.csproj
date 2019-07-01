@@ -59,5 +59,7 @@
   <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
   <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
 
+  <Import Project="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\build\SpecFlow.xUnit.targets" />
+
 
 </Project>
