@@ -1,18 +1,25 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports TechTalk.SpecFlow
+Imports System
+Imports System.Reflection
 
-Namespace TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.build
 
+<TestClass>
     Public NotInheritable Class MSTestAssemblyHooks
         <AssemblyInitialize>
-        Public Shared Sub AssemblyInitialize()
-            TestRunnerManager.GetTestRunner().OnTestRunStart()
+        Public Shared Sub AssemblyInitialize(testContext As TestContext)
+
+            Dim currentAssembly As Assembly = GetType(MSTestAssemblyHooks).Assembly
+
+            TestRunnerManager.OnTestRunStart(currentAssembly)
         End Sub
 
         <AssemblyCleanup>
         Public Shared Sub AssemblyCleanup()
-            TestRunnerManager.OnTestRunEnd()
+
+            Dim currentAssembly As Assembly = GetType(MSTestAssemblyHooks).Assembly
+
+            TestRunnerManager.OnTestRunEnd(currentAssembly)
         End Sub
 
     End Class
-End Namespace

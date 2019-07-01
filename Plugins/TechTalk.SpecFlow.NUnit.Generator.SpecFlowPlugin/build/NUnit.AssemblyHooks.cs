@@ -1,20 +1,23 @@
-﻿using global::NUnit.Framework;
+﻿using System.Diagnostics;
+using global::NUnit.Framework;
 using global::TechTalk.SpecFlow;
 
-namespace TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.build
+[SetUpFixture]
+public class NUnitAssemblyHooks
 {
-    public class NUnitAssemblyHooks
+    [OneTimeSetUp]
+    public void AssemblyInitialize()
     {
-        [OneTimeSetUp]
-        public static void AssemblyInitialize()
-        {
-            TestRunnerManager.GetTestRunner().OnTestRunStart();
-        }
+        var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
 
-        [OneTimeTearDown]
-        public static void AssemblyCleanup()
-        {
-            TestRunnerManager.OnTestRunEnd();
-        }
+        TestRunnerManager.OnTestRunStart(currentAssembly);
+    }
+
+    [OneTimeTearDown]
+    public void AssemblyCleanup()
+    {
+        var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
+
+        TestRunnerManager.OnTestRunEnd(currentAssembly);
     }
 }

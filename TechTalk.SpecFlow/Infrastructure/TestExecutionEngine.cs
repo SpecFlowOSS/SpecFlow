@@ -41,6 +41,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
 
         private bool _testRunnerEndExecuted = false;
+        private bool _testRunnerStartExecuted = false;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter,
             SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
@@ -74,6 +75,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void OnTestRunStart()
         {
+            if (_testRunnerStartExecuted)
+            {
+                return;
+            }
+
+            _testRunnerStartExecuted = true;
             _cucumberMessageSender.SendTestRunStarted();
             FireEvents(HookType.BeforeTestRun);
         }
@@ -81,7 +88,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         public virtual void OnTestRunEnd()
         {
             if (_testRunnerEndExecuted)
+            {
                 return;
+            }
 
             _testRunnerEndExecuted = true;
             FireEvents(HookType.AfterTestRun);

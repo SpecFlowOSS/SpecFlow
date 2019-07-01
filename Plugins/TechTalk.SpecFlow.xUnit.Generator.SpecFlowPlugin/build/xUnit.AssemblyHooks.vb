@@ -1,23 +1,13 @@
-﻿Imports System
-Imports Xunit
-Imports TechTalk.SpecFlow
+﻿Namespace InternalSpecFlow
 
-Namespace TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.build
+    Public Class XUnitAssemblyFixture
 
-    Public Class XUnitAssemblyHooksFixture
-        Implements IDisposable
+        Shared Sub New()
+            Dim currentAssembly As System.Reflection.Assembly = GetType(XUnitAssemblyFixture).Assembly
 
-        Public Sub New()
-            TestRunnerManager.GetTestRunner().OnTestRunStart()
-        End Sub
-
-        Public Sub Dispose()
-            TestRunnerManager.OnTestRunEnd()
+            Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(currentAssembly)
         End Sub
 
     End Class
 
-    Public Class XUnitAssemblyHooksCollectionDefinition
-        Implements ICollectionFixture(Of XUnitAssemblyHooksFixture)
-    End Class
 End Namespace

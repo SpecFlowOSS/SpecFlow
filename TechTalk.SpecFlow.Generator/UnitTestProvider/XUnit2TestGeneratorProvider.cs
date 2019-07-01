@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
-            SetTestClassCollection(generationContext, "xunit:collection(SpecFlowXUnitHooks)");
+            //SetTestClassCollection(generationContext, "xunit:collection(SpecFlowXUnitHooks)");
 
             base.SetTestClass(generationContext, featureTitle, featureDescription);
         }
@@ -87,6 +87,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
+
+            var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
+            //if (CodeDomHelper.TargetLanguage == CodeDomProviderLanguage.VB)
+            //{
+            //    typeName = "Global.XUnitAssemblyFixture";
+            //}
+
+            ctorMethod.Statements.Add(
+                new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
+                    new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
+
 
             base.SetTestConstructor(generationContext, ctorMethod);
         }

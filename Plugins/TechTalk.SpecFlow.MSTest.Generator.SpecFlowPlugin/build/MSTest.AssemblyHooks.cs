@@ -1,20 +1,23 @@
-﻿using global::Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics;
+using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
 
-namespace TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.build
+[TestClass]
+public class MSTestAssemblyHooks
 {
-    public class MSTestAssemblyHooks
+    [AssemblyInitialize]
+    public static void AssemblyInitialize(TestContext testContext)
     {
-        [AssemblyInitialize]
-        public static void AssemblyInitialize()
-        {
-            TestRunnerManager.GetTestRunner().OnTestRunStart();
-        }
+        var currentAssembly = typeof(MSTestAssemblyHooks).Assembly;
 
-        [AssemblyCleanup]
-        public static void AssemblyCleanup()
-        {
-            TestRunnerManager.OnTestRunEnd();
-        }
+        TestRunnerManager.OnTestRunStart(currentAssembly);
+    }
+
+    [AssemblyCleanup]
+    public static void AssemblyCleanup()
+    {
+        var currentAssembly = typeof(MSTestAssemblyHooks).Assembly;
+
+        TestRunnerManager.OnTestRunEnd(currentAssembly);
     }
 }

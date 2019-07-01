@@ -1,18 +1,22 @@
 ﻿Imports NUnit.Framework
 Imports TechTalk.SpecFlow
+Imports System
+Imports System.Reflection
 
-Namespace TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.build
+<SetUpFixture>
+Public NotInheritable Class NUnitAssemblyHooks
+    <OneTimeSetUp>
+    Public Shared Sub AssemblyInitialize()
+        Dim currentAssembly As Assembly = GetType(NUnitAssemblyHooks).Assembly
 
-    Public NotInheritable Class NUnitAssemblyHooks
-        <OneTimeSetUp>
-        Public Shared Sub AssemblyInitialize()
-            TestRunnerManager.GetTestRunner().OnTestRunStart()
-        End Sub
+        TestRunnerManager.OnTestRunStart(currentAssembly)
+    End Sub
 
-        <OneTimeTearDown>
-        Public Shared Sub AssemblyCleanup()
-            TestRunnerManager.OnTestRunEnd()
-        End Sub
+    <OneTimeTearDown>
+    Public Shared Sub AssemblyCleanup()
+        Dim currentAssembly As Assembly = GetType(NUnitAssemblyHooks).Assembly
 
-    End Class
-End Namespace
+        TestRunnerManager.OnTestRunEnd(currentAssembly)
+    End Sub
+
+End Class

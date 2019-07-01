@@ -2,23 +2,16 @@
 using global::Xunit;
 using global::TechTalk.SpecFlow;
 
-namespace TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.build
+namespace InternalSpecFlow
 {
-    public class XUnitAssemblyHooksFixture : IDisposable
+    public class XUnitAssemblyFixture
     {
-        public XUnitAssemblyHooksFixture()
+        static XUnitAssemblyFixture()
         {
-            TestRunnerManager.GetTestRunner().OnTestRunStart();
-        }
+            var currentAssembly = typeof(XUnitAssemblyFixture).Assembly;
 
-        public void Dispose()
-        {
-            TestRunnerManager.OnTestRunEnd();
+            TestRunnerManager.OnTestRunStart(currentAssembly);
         }
-    }
-
-    [CollectionDefinition("SpecFlowXUnitHooks")]
-    public class XUnitAssemblyHooksCollectionDefinition : ICollectionFixture<XUnitAssemblyHooksFixture>
-    {
     }
 }
+
