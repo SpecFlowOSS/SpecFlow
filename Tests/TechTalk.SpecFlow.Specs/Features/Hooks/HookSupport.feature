@@ -31,6 +31,34 @@ Examples: Cucumber compatibility
 	| Before |
 	| After  |
 
+Scenario Outline: Hooks should be executed if they take longer (>100ms)
+	Given a scenario 'Simple Scenario' as
+         """
+	     When I do something
+         """
+	And a long running hook 'HookFor<event>' for '<event>'
+	And all steps are bound and pass
+	When I execute the tests
+	Then the hook 'HookFor<event>' is executed once
+
+Examples: 
+	| event               |
+	| BeforeScenario      |
+	| AfterScenario       |
+	| BeforeFeature       |
+	| AfterFeature        |
+	| BeforeStep          |
+	| AfterStep           |
+	| BeforeScenarioBlock |
+	| AfterScenarioBlock  |
+	| BeforeTestRun       |
+	| AfterTestRun        |
+
+Examples: Cucumber compatibility
+	| event  |
+	| Before |
+	| After  |
+
 Scenario Outline: Should execute the hooks according to their semantics
 	Given there is a feature file in the project as
         """

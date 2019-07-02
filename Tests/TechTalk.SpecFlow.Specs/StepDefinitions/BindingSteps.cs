@@ -119,6 +119,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddHookBinding(eventType, methodName);
         }
 
+        [Given(@"a long running hook '(.*)' for '(.*)'")]
+        public void GivenALongRunningHookFor(string methodName, string eventType)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, code: "System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(250));");
+        }
+
+
         [Given(@"a hook '(.*)' for '([^']*)' with order '([^']*)'")]
         public void GivenAHookForWithOrder(string methodName, string eventType, int hookOrder)
         {
