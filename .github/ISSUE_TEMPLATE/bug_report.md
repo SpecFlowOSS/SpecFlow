@@ -26,15 +26,27 @@ about: Create a report to help us improve SpecFlow
 <!-- PLEASE INCLUDE THE VERSION NUMBER OF YOUR TEST RUNNER -->
 Version number:
 
+### Project Format of the SpecFlow project
+- [ ] Classic project format using `packages.config`
+- [ ] Classic project format using `<PackageReference>` tags
+- [ ] Sdk-style project format
+
+### .feature.cs files are generated using
+- [ ] `SpecFlow.Tools.MsBuild.Generation` NuGet package
+- [ ] `SpecFlowSingleFileGenerator` custom tool
 
 ### Visual Studio Version
+- [ ] VS 2019
 - [ ]	VS 2017
 - [ ]	VS 2015
-- [ ]	VS 2013
+
+### `Enable SpecFlowSingleFileGenerator Custom Tool` option in Visual Studio extension settings
+- [ ] Enabled
+- [ ] Disabled
 
 ### Are the latest Visual Studio updates installed?
 - [ ]	Yes
-- [ ]	No
+- [ ]	No, I use Visual Studio version `<Major>.<Minor>.<Patch>` <!-- e.g. 16.1.0 -->
  
 ### .NET Framework:
 - [ ]	>= .NET 4.5
@@ -49,8 +61,8 @@ Version number:
 - [ ]	TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
 - [ ]	Command line – PLEASE SPECIFY THE FULL COMMAND LINE
  
-### &lt;SpecFlow> Section in app.config
-<!-- PLEASE COPY THE ENTRIE <SpecFlow> SECTION IN YOUR .config FILE AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
+### &lt;SpecFlow> Section in app.config or content of specflow.json
+<!-- PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTRIE specflow.json AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
 ```
 
 ```

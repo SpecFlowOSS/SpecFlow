@@ -13,11 +13,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
     
     public class TestGeneratorBasicsTests : TestGeneratorTestsBase
     {
-        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings)
+        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings, string projectRelativeFolderPath = null)
         {
             var testGenerator = CreateTestGenerator(projectSettings);
 
-            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), defaultSettings);
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(projectRelativeFolderPath), defaultSettings);
             result.Success.Should().Be(true);
             return result.GeneratedTestCode;
         }
@@ -56,6 +56,38 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings);
             outputFile.Should().Contain(string.Format("SpecFlow Generator Version:{0}", TestGeneratorFactory.GeneratorVersion));
+        }
+
+        [Fact]
+        public void Should_include_namespace_declaration_using_default_namespace_when_file_in_project_root()
+        {
+            net35CSProjectSettings.DefaultNamespace = "Default.TestNamespace";
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings);
+            outputFile.Should().Contain(string.Format("namespace {0}", net35CSProjectSettings.DefaultNamespace));
+        }
+
+        [Fact]
+        public void Should_include_namespace_declaration_using_default_namespace_and_folder_path_when_file_in_subfolder()
+        {
+            net35CSProjectSettings.DefaultNamespace = "Default.TestNamespace";
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings, @"Folder1\Folder2");
+            outputFile.Should().Contain(string.Format("namespace {0}.Folder1.Folder2", net35CSProjectSettings.DefaultNamespace));
+        }
+
+        [Fact]
+        public void Should_include_namespace_declaration_using_fallback_namespace_when_default_namespace_not_set_and_file_in_project_root()
+        {
+            net35CSProjectSettings.DefaultNamespace = null;
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings);
+            outputFile.Should().Contain("namespace SpecFlow.GeneratedTests");
+        }
+
+        [Fact]
+        public void Should_include_namespace_declaration_using_folder_path_when_default_namespace_not_set_and_file_in_subfolder()
+        {
+            net35CSProjectSettings.DefaultNamespace = null;
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings, @"Folder1\Folder2");
+            outputFile.Should().Contain(string.Format("namespace Folder1.Folder2", net35CSProjectSettings.DefaultNamespace));
         }
 
         [Fact]

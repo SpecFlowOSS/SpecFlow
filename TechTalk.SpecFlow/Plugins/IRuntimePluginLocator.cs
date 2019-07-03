@@ -8,5 +8,6 @@ namespace TechTalk.SpecFlow.Plugins
     public interface IRuntimePluginLocator
     {
         IReadOnlyList<string> GetAllRuntimePlugins();
+        IReadOnlyList<string> GetAllRuntimePlugins(string testAssemblyLocation);
     }
 }

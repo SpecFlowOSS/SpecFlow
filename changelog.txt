@@ -1,4 +1,21 @@
-3.0 - 2018-??-??
+3.0 - 2019-06-27
+
+Fixes:
++ Changed search path for specflow.json config file from Environment.CurrentDirectory to AppDomain.CurrentDomain.BaseDirectory (project directory)
++ Changed tests regarding configuration to look for expected strings such as "Using specflow.json" in the solution output rather then the test results output
+
+3.0
+
+Fixes:
+ + Empty root namespaces now work when generating feature codebehind files with the MSBuild task
+
+3.0 - 2019-04-24
+
+Changes:
++ Adding the "AfterUpdateFeatureFile" target manually in the classic project format is not required anymore.
++ Adding "Custom Tool" back to the property page of a file https://github.com/techtalk/SpecFlow/issues/1508
+
+3.0 - 2019-03-28
 
 Breaking changes:
 + Registration of value retrievers and comparers changes from `RegisterValueComparer(___)` to `ValueComparers.Register(___)`

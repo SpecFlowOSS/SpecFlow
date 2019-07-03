@@ -10,30 +10,33 @@
     <summary>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber</tags>
     <dependencies>
       <group targetFramework="net45">
         <dependency id="Utf8Json" version="1.3.7" />
         <dependency id="System.ValueTuple" version="4.4.0" />
-        <dependency id="BoDi" version="1.4.0-alpha1" />
-        <dependency id="Gherkin" version="6.0.0-beta1"/>
+        <dependency id="BoDi" version="1.4.1" />
+        <dependency id="Gherkin" version="6.0.0"/>
+        <dependency id="Cucumber.Messages" version="1.0.0-beta.5" />
       </group>
 
       <group targetFramework="net471">
         <dependency id="Utf8Json" version="1.3.7" />
-        <dependency id="BoDi" version="1.4.0-alpha1" />
-        <dependency id="Gherkin" version="5.1.0"/>
+        <dependency id="BoDi" version="1.4.1" />
+        <dependency id="Gherkin" version="6.0.0"/>
+        <dependency id="Cucumber.Messages" version="1.0.0-beta.5" />
       </group>
 
       <group targetFramework="netstandard2.0">
         <dependency id="Utf8Json" version="1.3.7" />
         <dependency id="System.ValueTuple" version="4.4.0" />
         <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
-        <dependency id="BoDi" version="1.4.0-alpha1" />
-        <dependency id="Gherkin" version="6.0.0-beta1"/>
+        <dependency id="BoDi" version="1.4.1" />
+        <dependency id="Gherkin" version="6.0.0"/>
+        <dependency id="Cucumber.Messages" version="1.0.0-beta.5" />
       </group>
     </dependencies>
   </metadata>
@@ -41,12 +44,16 @@
   <files>
 
     <file src="bin\$config$\net45\TechTalk.SpecFlow.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="TechTalk.SpecFlow.ExternalAnnotations.xml" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
 
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="TechTalk.SpecFlow.ExternalAnnotations.xml" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     
     <file src="$SolutionDir$\Licenses\*" target="Licenses" />
     <file src="$SolutionDir$\*.txt" target="" />
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
 
   </files>
 

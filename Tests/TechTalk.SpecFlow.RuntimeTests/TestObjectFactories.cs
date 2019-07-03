@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider, Action<IObjectContainer> registerGlobalMocks, ContainerBuilder instance)
         {
-            var globalContainer = instance.CreateGlobalContainer(configurationProvider);
+            var globalContainer = instance.CreateGlobalContainer(typeof(TestObjectFactories).Assembly, configurationProvider);
             registerGlobalMocks?.Invoke(globalContainer);
             return globalContainer;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using BoDi;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using Xunit.Abstractions;
 
@@ -7,23 +8,41 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 {
     class XUnitTraceListener : AsyncTraceListener
     {
-        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly Lazy<IContextManager> _contextManager;
 
-        public XUnitTraceListener(ITraceListenerQueue traceListenerQueue, IObjectContainer container, ITestOutputHelper testOutputHelper) : base(traceListenerQueue, container)
+        public XUnitTraceListener(ITraceListenerQueue traceListenerQueue, IObjectContainer container) : base(traceListenerQueue, container)
         {
-            _testOutputHelper = testOutputHelper;
+            _contextManager = new Lazy<IContextManager>(container.Resolve<IContextManager>);
+        }
+
+        private ITestOutputHelper GetTestOutputHelper()
+        {
+            var scenarioContext = _contextManager.Value.ScenarioContext;
+            if (scenarioContext == null)
+                return null;
+
+            if (!scenarioContext.ScenarioContainer.IsRegistered<ITestOutputHelper>())
+                return null;
+
+            return scenarioContext.ScenarioContainer.Resolve<ITestOutputHelper>();
         }
 
         public override void WriteTestOutput(string message)
         {
-            _testOutputHelper.WriteLine(message);
-            base.WriteTestOutput(message);
+            var testOutputHelper = GetTestOutputHelper();
+            if (testOutputHelper != null)
+                testOutputHelper.WriteLine(message);
+            else
+                base.WriteTestOutput(message);
         }
 
         public override void WriteToolOutput(string message)
         {
-            _testOutputHelper.WriteLine("-> " + message);
-            base.WriteToolOutput(message);
+            var testOutputHelper = GetTestOutputHelper();
+            if (testOutputHelper != null)
+                testOutputHelper.WriteLine("-> " + message);
+            else
+                base.WriteToolOutput(message);
         }
     }
 }

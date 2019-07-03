@@ -36,6 +36,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Fact]
+        public void Should_parse_CSProj_New_csproj_file_correctly_when_RootNamespace_empty()
+        {
+            Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_New\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "sampleCsProjectfile", null, "sampleCsProjectfile");
+        }
+
+        [Fact]
         public void Should_parse_CSProj_NewComplex_csproj_file_correctly()
         {
             Should_parse_csproj_file_correctly(PathHelper.SanitizeDirectorySeparatorChar(@"Data\CSProj_NewComplex\sampleCsProjectfile.csproj"), GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");

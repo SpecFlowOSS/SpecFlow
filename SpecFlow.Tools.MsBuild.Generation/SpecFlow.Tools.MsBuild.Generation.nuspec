@@ -10,11 +10,11 @@
     <summary>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>$copyright$</copyright>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow msbuild</tags>
+    <copyright>$copyright$</copyright>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
     </dependencies>
@@ -27,5 +27,6 @@
     <file src="bin\$config$\netcoreapp2.0\*.deps.json" target="tasks\$SpecFlow_Core_Tools_TFM$" />
     
     <file src="$SolutionDir$\Licenses\**\*" target="licenses" />
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
   </files>
 </package>

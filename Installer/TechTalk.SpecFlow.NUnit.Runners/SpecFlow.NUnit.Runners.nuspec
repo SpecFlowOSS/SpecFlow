@@ -10,9 +10,9 @@
     <summary>Combined package to setup SpecFlow with NUnit easily for running the tests with the NUnit runners.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow nunit nunit.runners nunit-console</tags>
     <dependencies>
       <dependency id="SpecFlow.NUnit" version="[$version$]" />
@@ -22,6 +22,6 @@
   </metadata>
 
   <files>
-
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
   </files>
 </package>

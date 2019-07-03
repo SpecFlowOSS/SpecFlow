@@ -8,22 +8,31 @@ namespace TechTalk.SpecFlow.Plugins
     internal class RuntimePluginLocator : IRuntimePluginLocator
     {
         private readonly IRuntimePluginLocationMerger _runtimePluginLocationMerger;
-        private readonly string _pathToFolderWithSpecFlowAssembly;
+        private readonly ISpecFlowPath _specFlowPath;
 
-        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger)
+        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger, ISpecFlowPath specFlowPath)
         {
             _runtimePluginLocationMerger = runtimePluginLocationMerger;
-            _pathToFolderWithSpecFlowAssembly = Path.GetDirectoryName(typeof(RuntimePluginLocator).Assembly.Location);
+            _specFlowPath = specFlowPath;
         }
 
         public IReadOnlyList<string> GetAllRuntimePlugins()
         {
+            return GetAllRuntimePlugins(null);
+        }
+
+        public IReadOnlyList<string> GetAllRuntimePlugins(string testAssemblyLocation)
+        {
             var allRuntimePlugins = new List<string>();
 
             allRuntimePlugins.AddRange(SearchPluginsInFolder(Environment.CurrentDirectory));
-            allRuntimePlugins.AddRange(SearchPluginsInFolder(_pathToFolderWithSpecFlowAssembly));
+            string specFlowAssemblyFolder = Path.GetDirectoryName(_specFlowPath.GetPathToSpecFlowDll());
+            allRuntimePlugins.AddRange(SearchPluginsInFolder(specFlowAssemblyFolder));
 
-
+            if (testAssemblyLocation.IsNotNullOrWhiteSpace())
+            {
+                allRuntimePlugins.AddRange(SearchPluginsInFolder(testAssemblyLocation));
+            }
 
             return _runtimePluginLocationMerger.Merge(allRuntimePlugins.Distinct().ToList());
         }

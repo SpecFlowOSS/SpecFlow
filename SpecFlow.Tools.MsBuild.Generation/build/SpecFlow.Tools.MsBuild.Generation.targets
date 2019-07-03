@@ -1,6 +1,6 @@
 ﻿<Project>
 
-  <Import Project="TechTalk.SpecFlow.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
+  <Import Project="SpecFlow.Tools.MsBuild.Generation.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
@@ -20,6 +20,7 @@
     <BuildDependsOn>
       BeforeUpdateFeatureFilesInProject;
       UpdateFeatureFilesInProject;
+      IncludeCodeBehindFilesInProject;
       AfterUpdateFeatureFilesInProject;
       $(BuildDependsOn)
     </BuildDependsOn>
@@ -42,8 +43,8 @@
              AutoGen="true"
              DesignTime="true"
              Visible="true"
-             Condition="'$(EnableDefaultCompileItems)' == 'true'"
-    />
+             Condition="'$(EnableDefaultCompileItems)' == 'true'" />
+    
   </ItemGroup>
 
 
@@ -61,8 +62,7 @@
 
 
   <Target Name="UpdateFeatureFilesInProject"
-          DependsOnTargets="BeforeUpdateFeatureFilesInProject"
-          >
+          DependsOnTargets="BeforeUpdateFeatureFilesInProject">
 
     <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
 
@@ -121,7 +121,14 @@
 
   </Target>
 
-  <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
+  <Target Name="IncludeCodeBehindFilesInProject" DependsOnTargets="UpdateFeatureFilesInProject">
+    <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true'">
+      <Compile Include="@(SpecFlowGeneratedFiles)" Exclude="@(Compile)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="IncludeCodeBehindFilesInProject">
+    <!-- include any generated SpecFlow files in the compilation of the project if not included yet -->
   </Target>
 
   <Target Name="CleanFeatureFilesInProject" Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)' == 'true'">

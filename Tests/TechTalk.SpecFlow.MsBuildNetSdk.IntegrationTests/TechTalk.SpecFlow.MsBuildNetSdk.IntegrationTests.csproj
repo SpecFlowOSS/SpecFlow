@@ -4,7 +4,7 @@
     manual import sdk to be able to simulate nuget based imports
   -->
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-  <Import Project="../../macos.props" />
+  
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
@@ -58,6 +58,8 @@
   <!-- simulate nuget imports here-->
   <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
   <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+
+  <Import Project="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\build\SpecFlow.xUnit.targets" />
 
 
 </Project>

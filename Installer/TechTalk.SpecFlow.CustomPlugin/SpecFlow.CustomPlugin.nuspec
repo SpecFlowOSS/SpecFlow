@@ -10,9 +10,9 @@
     <summary>Package for writing custom generator extensions for SpecFlow.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <licenseUrl>http://go.specflow.org/license</licenseUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber generator</tags>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
@@ -42,6 +42,7 @@
     <file src="$SolutionDir$Licenses\Gherkin-LICENSE-MIT.txt" target="Licenses" />
     <file src="$SolutionDir$Licenses\BoDi-LICENSE-Apache2.txt" target="Licenses" />
 
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
   </files>
 
 </package>

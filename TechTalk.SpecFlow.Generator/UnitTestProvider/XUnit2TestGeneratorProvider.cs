@@ -11,21 +11,27 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnit2TestGeneratorProvider : XUnitTestGeneratorProvider
     {
-        private new const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
-        private const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
-        private const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
-        private const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
-        private const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
-        private const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
-        private const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
-        private const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        private const string COLLECTION_DEF = "Xunit.Collection";
-        private const string COLLECTION_TAG = "xunit:collection";
+        protected new const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
+        protected new const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
+        protected const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
+        protected const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
+        protected const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
+        protected const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
+        protected const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
+        protected const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
+        protected const string COLLECTION_DEF = "Xunit.Collection";
+        protected const string COLLECTION_TAG = "xunit:collection";
 
-        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
-            :base(codeDomHelper)
+        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
+        }
+
+        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        {
+            //SetTestClassCollection(generationContext, "xunit:collection(SpecFlowXUnitHooks)");
+
+            base.SetTestClass(generationContext, featureTitle, featureDescription);
         }
 
         public override UnitTestGeneratorTraits GetTraits()
@@ -82,6 +88,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
 
+            var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
+            //if (CodeDomHelper.TargetLanguage == CodeDomProviderLanguage.VB)
+            //{
+            //    typeName = "Global.XUnitAssemblyFixture";
+            //}
+
+            ctorMethod.Statements.Add(
+                new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
+                    new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
+
+
             base.SetTestConstructor(generationContext, ctorMethod);
         }
 
@@ -111,14 +128,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     );
             }
         }
-                 public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             IEnumerable<string> collection = featureCategories.Where(f => f.StartsWith(COLLECTION_TAG, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (collection.Any())
             {
                 //Only one 'Xunit.Collection' can exist per class.
-                SetTestClassCollection(generationContext, collection.FirstOrDefault()); 
+                SetTestClassCollection(generationContext, collection.FirstOrDefault());
             }
+
             base.SetTestClassCategories(generationContext, featureCategories);
         }
 
