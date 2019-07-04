@@ -48,6 +48,7 @@
 
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.xml" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="TechTalk.SpecFlow.ExternalAnnotations.xml" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     
     <file src="$SolutionDir$\Licenses\*" target="Licenses" />

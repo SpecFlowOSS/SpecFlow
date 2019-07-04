@@ -12,9 +12,9 @@ namespace TechTalk.SpecFlow.Bindings
     public static class AsyncHelpers
     {
         /// <summary>
-        /// Execute's an async Task<T> method which has a void return value synchronously
+        /// Execute's an async <see cref="Task{TResult}"/> method which has a void return value synchronously
         /// </summary>
-        /// <param name="task">Task<T> method to execute</param>
+        /// <param name="task"><see cref="Task{TResult}"/> method to execute</param>
         public static void RunSync(Func<Task> task)
         {
             var synch = new ExclusiveSynchronizationContext();
@@ -41,10 +41,10 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         /// <summary>
-        /// Execute's an async Task<T> method which has a T return type synchronously
+        /// Execute's an async <see cref="Task{TResult}"/> method which has a T return type synchronously
         /// </summary>
         /// <typeparam name="T">Return Type</typeparam>
-        /// <param name="task">Task<T> method to execute</param>
+        /// <param name="task"><see cref="Task{TResult}"/> method to execute</param>
         /// <returns></returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
