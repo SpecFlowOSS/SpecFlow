@@ -1,12 +1,20 @@
 ﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="TaskFolder;TaskAssembly">
-  
-  <ItemGroup>
-    <SpecFlowGeneratorPlugins Include="$(_SpecFlow_xUnitGeneratorPluginPath)" />
-    <None Include="$(_SpecFlow_xUnitRuntimePluginPath)" >
-      <Link>%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>False</Visible>
-    </None>
-  </ItemGroup>
+
+  <PropertyGroup>
+
+    <_SpecFlowXUnitGeneratorPluginPathBase>$(MSBuildThisFileDirectory)/</_SpecFlowXUnitGeneratorPluginPathBase>
+    <_SpecFlowXUnitGeneratorPluginPath Condition=" '$(MSBuildRuntimeType)' == 'Core'" >$(_SpecFlowXUnitGeneratorPluginPathBase)netstandard2.0/</_SpecFlowXUnitGeneratorPluginPath>
+    <_SpecFlowXUnitGeneratorPluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitGeneratorPluginPathBase)net471/</_SpecFlowXUnitGeneratorPluginPath>
+    <SpecFlowXUnitGeneratorPluginAssembly Condition="'$(SpecFlowXUnitGeneratorPluginAssembly)' == ''">$(_SpecFlowXUnitGeneratorPluginPath)TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</SpecFlowXUnitGeneratorPluginAssembly>
+
+    <_SpecFlowXUnitRuntimePluginPathBase>$(MSBuildThisFileDirectory)/</_SpecFlowXUnitRuntimePluginPathBase>
+    <_SpecFlowXUnitRuntimePluginPath Condition=" '$(MSBuildRuntimeType)' == 'Core'" >$(_SpecFlowXUnitRuntimePluginPathBase)netstandard2.0/</_SpecFlowXUnitRuntimePluginPath>
+    <_SpecFlowXUnitRuntimePluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitRuntimePluginPathBase)net471/</_SpecFlowXUnitRuntimePluginPath>
+    <SpecFlowXUnitRuntimePluginAssembly Condition="'$(SpecFlowXUnitRuntimePluginAssembly)' == ''">$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
+
+    <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+    <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
+
+  </PropertyGroup>
 
 </Project>

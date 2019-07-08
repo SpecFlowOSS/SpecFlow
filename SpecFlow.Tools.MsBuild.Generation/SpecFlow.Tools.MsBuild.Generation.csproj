@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Tools_TFM)</TargetFrameworks>
-    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <NuspecFile>$(MSBuildThisFileDirectory)SpecFlow.Tools.MsBuild.Generation.nuspec</NuspecFile>
@@ -72,7 +72,6 @@
       <HintPath>Microsoft.Build.Utilities.Core</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Xaml" />
   </ItemGroup>
 
   <ItemGroup>

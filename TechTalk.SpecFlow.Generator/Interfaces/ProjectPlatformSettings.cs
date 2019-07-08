@@ -33,10 +33,12 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         public ProjectPlatformSettings()
         {
             Language = GenerationTargetLanguage.CSharp;
+#pragma warning disable CS0618
             LanguageVersion = new Version(3, 0);
 
             Platform = GenerationTargetPlatform.DotNet;
             PlatformVersion = new Version(3, 5);
+#pragma warning restore CS0618
         }
     }
 }

@@ -24,6 +24,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string RootNamespace { get; set; }
 
         public string ProjectFolder => Path.GetDirectoryName(ProjectPath);
+
         public string OutputPath { get; set; }
 
         public ITaskItem[] FeatureFiles { get; set; }
@@ -35,6 +36,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public override bool Execute()
         {
+            Debugger.Launch();
+
             try
             {
                 try

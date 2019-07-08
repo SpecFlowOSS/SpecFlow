@@ -1,9 +1,9 @@
 ﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
 
   <PropertyGroup>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.0</_SpecFlow_TaskFolder>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net471</_SpecFlow_TaskFolder>
-    <_SpecFlow_TaskAssembly Condition=" '$(_SpecFlow_TaskAssembly)' == '' ">..\tasks\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
+    <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == '' AND '$(MSBuildRuntimeType)' == 'Core'">..\tasks\netcoreapp2.0\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
+    <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == ''">..\tasks\net471\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
+    <SpecFlowGeneratedCodePath Condition="'$(SpecFlowGeneratedCodePath)' == ''">$(IntermediateOutputPath)</SpecFlowGeneratedCodePath>
   </PropertyGroup>
 
   <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>
