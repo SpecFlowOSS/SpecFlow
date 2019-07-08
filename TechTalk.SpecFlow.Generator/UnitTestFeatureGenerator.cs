@@ -763,7 +763,7 @@ namespace TechTalk.SpecFlow.Generator
             if (_specFlowConfiguration.AllowDebugGeneratedFiles)
                 return;
 
-            codeDomHelper.BindTypeToSourceFile(testType, Path.GetFileName(sourceFile));
+            codeDomHelper.BindTypeToSourceFile(testType, sourceFile);
         }
 
         private void AddLineDirectiveHidden(CodeStatementCollection statements)
