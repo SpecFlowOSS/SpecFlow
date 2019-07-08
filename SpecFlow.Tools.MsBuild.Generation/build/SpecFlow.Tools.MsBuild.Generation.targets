@@ -25,7 +25,7 @@
     Condition="'$(SpecFlowGeneratedCodePath)' == ''">
 
     <PropertyGroup>
-      <SpecFlowGeneratedCodePath>$(IntermediateOutputPath)</SpecFlowGeneratedCodePath>
+      <SpecFlowGeneratedCodePath>$(IntermediateOutputPath)SpecFlowGeneratedSources\</SpecFlowGeneratedCodePath>
     </PropertyGroup>
     
   </Target>
@@ -39,6 +39,8 @@
     DependsOnTargets="$(GenerateSpecFlowCodeFilesDependsOn)"
     Inputs="@(SpecFlowFeature)"
     Outputs="@(SpecFlowFeature->'$(SpecFlowGeneratedCodePath)%(Identity)$(DefaultLanguageSourceExtension)')">
+
+    <Message Text="Generating sources at $(SpecFlowGeneratedCodePath)" Importance="low" />
         
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"

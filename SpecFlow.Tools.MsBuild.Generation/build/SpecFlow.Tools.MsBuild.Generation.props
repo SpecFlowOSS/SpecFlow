@@ -3,7 +3,6 @@
   <PropertyGroup>
     <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == '' AND '$(MSBuildRuntimeType)' == 'Core'">..\tasks\netcoreapp2.0\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
     <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == ''">..\tasks\net471\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
-    <SpecFlowGeneratedCodePath Condition="'$(SpecFlowGeneratedCodePath)' == ''">$(IntermediateOutputPath)</SpecFlowGeneratedCodePath>
   </PropertyGroup>
 
   <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>
