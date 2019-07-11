@@ -1,6 +1,5 @@
-﻿using TechTalk.SpecFlow.TestProjectGenerator;
+﻿using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -8,34 +7,24 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class ExecutionSteps
     {
         private readonly SolutionDriver _solutionDriver;
-        private readonly VSTestExecutionDriver _vsTestExecution;
-        private readonly TestRunConfiguration _testRunConfiguration;
+        private readonly ExecutionDriver _executionDriver;
 
-        public ExecutionSteps(SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecution, TestRunConfiguration testRunConfiguration)
+        public ExecutionSteps(SolutionDriver solutionDriver, ExecutionDriver executionDriver)
         {
             _solutionDriver = solutionDriver;
-            _vsTestExecution = vsTestExecution;
-            _testRunConfiguration = testRunConfiguration;
+            _executionDriver = executionDriver;
         }
 
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
-            _vsTestExecution.ExecuteTests();
+            _executionDriver.ExecuteTests();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
         public void WhenIExecuteTheTestsTaggedWithTag(string tag)
         {
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
-            if (_testRunConfiguration.UnitTestProvider == TestProjectGenerator.UnitTestProvider.xUnit)
-                _vsTestExecution.Filter = $"Category={tag}";
-            else
-                _vsTestExecution.Filter = $"TestCategory={tag}";
-            _vsTestExecution.ExecuteTests();
+            _executionDriver.ExecuteTestsWithTag(tag);
         }
 
         [Given(@"MSBuild is used for compiling")]
