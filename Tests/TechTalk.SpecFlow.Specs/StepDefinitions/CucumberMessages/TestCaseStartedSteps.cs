@@ -1,6 +1,6 @@
 ﻿using System;
+using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
-using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
@@ -9,30 +9,31 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
     [Binding]
     public class TestCaseStartedSteps
     {
-        private readonly VSTestExecutionDriver _vsTestExecutionDriver;
         private readonly TestCaseStartedDriver _testCaseStartedDriver;
-        private readonly SolutionDriver _solutionDriver;
         private readonly TestSuiteInitializationDriver _testSuiteInitializationDriver;
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
         private readonly MessageValidationDriver _messageValidationDriver;
+        private readonly ExecutionDriver _executionDriver;
 
-        public TestCaseStartedSteps(VSTestExecutionDriver vsTestExecutionDriver, TestCaseStartedDriver testCaseStartedDriver, SolutionDriver solutionDriver, TestSuiteInitializationDriver testSuiteInitializationDriver, TestSuiteSetupDriver testSuiteSetupDriver, MessageValidationDriver messageValidationDriver)
+        public TestCaseStartedSteps(
+            TestCaseStartedDriver testCaseStartedDriver,
+            TestSuiteInitializationDriver testSuiteInitializationDriver,
+            TestSuiteSetupDriver testSuiteSetupDriver,
+            MessageValidationDriver messageValidationDriver,
+            ExecutionDriver executionDriver)
         {
-            _vsTestExecutionDriver = vsTestExecutionDriver;
             _testCaseStartedDriver = testCaseStartedDriver;
-            _solutionDriver = solutionDriver;
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
             _messageValidationDriver = messageValidationDriver;
+            _executionDriver = executionDriver;
         }
 
         [When(@"the scenario is executed")]
         public void WhenTheScenarioIsExecuted()
         {
             _testSuiteSetupDriver.EnsureAProjectIsCreated();
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
-            _vsTestExecutionDriver.ExecuteTests();
+            _executionDriver.ExecuteTests();
         }
 
         [When(@"the scenario is started at '(.*)'")]
@@ -40,9 +41,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         {
             _testSuiteInitializationDriver.OverrideTestCaseStartedTime = startTime;
             _testSuiteSetupDriver.EnsureAProjectIsCreated();
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
-            _vsTestExecutionDriver.ExecuteTests();
+            _executionDriver.ExecuteTests();
         }
 
         [Then(@"'(\d+)' TestCaseStarted messages have been sent")]

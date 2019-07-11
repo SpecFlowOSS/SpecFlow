@@ -1,6 +1,6 @@
 ﻿using System;
+using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.CucumberMessages;
-using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
@@ -11,19 +11,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
     {
         private readonly TestSuiteInitializationDriver _testSuiteInitializationDriver;
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
-        private readonly SolutionDriver _solutionDriver;
-        private readonly VSTestExecutionDriver _vsTestExecutionDriver;
         private readonly TestCaseFinishedDriver _testCaseFinishedDriver;
         private readonly MessageValidationDriver _messageValidationDriver;
+        private readonly ExecutionDriver _executionDriver;
 
-        public TestCaseFinishedSteps(TestSuiteInitializationDriver testSuiteInitializationDriver, TestSuiteSetupDriver testSuiteSetupDriver, SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecutionDriver, TestCaseFinishedDriver testCaseFinishedDriver, MessageValidationDriver messageValidationDriver)
+        public TestCaseFinishedSteps(
+            TestSuiteInitializationDriver testSuiteInitializationDriver,
+            TestSuiteSetupDriver testSuiteSetupDriver,
+            TestCaseFinishedDriver testCaseFinishedDriver,
+            MessageValidationDriver messageValidationDriver,
+            ExecutionDriver executionDriver)
         {
             _testSuiteInitializationDriver = testSuiteInitializationDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
-            _solutionDriver = solutionDriver;
-            _vsTestExecutionDriver = vsTestExecutionDriver;
             _testCaseFinishedDriver = testCaseFinishedDriver;
             _messageValidationDriver = messageValidationDriver;
+            _executionDriver = executionDriver;
         }
 
         [When(@"the scenario is finished at '(.*)'")]
@@ -31,9 +34,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         {
             _testSuiteInitializationDriver.OverrideTestCaseFinishedTime = finishTime;
             _testSuiteSetupDriver.EnsureAProjectIsCreated();
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
-            _vsTestExecutionDriver.ExecuteTests();
+            _executionDriver.ExecuteTests();
         }
 
         [Then(@"(.*) TestCaseFinished messages have been sent")]
