@@ -1,5 +1,9 @@
 ﻿using System;
 
+#if NETSTANDARD
+using System.Runtime.InteropServices;
+#endif
+
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class SystemInformationProvider : ISystemInformationProvider
