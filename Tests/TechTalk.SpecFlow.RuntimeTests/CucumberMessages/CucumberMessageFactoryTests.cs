@@ -6,6 +6,9 @@ using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
 using Xunit;
 
+using static Io.Cucumber.Messages.TestResult.Types;
+using static Io.Cucumber.Messages.TestCaseStarted.Types;
+
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
     public class CucumberMessageFactoryTests
@@ -39,23 +42,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                              .Which.Result.Timestamp.ToDateTime().Should().Be(dateTime);
         }
 
-        [Fact(DisplayName = @"BuildTestRunResultMessage should return a TestRunResult message object with SpecFlow as used Cucumber implementation")]
-        public void BuildTestRunResultMessage_ValidParameters_ShouldReturnTestRunResultMessageObjectWithSpecFlowAsUsedCucumberImplementation()
-        {
-            // ARRANGE
-            const string expectedCucumberImplementation = @"SpecFlow";
-            var cucumberMessageFactory = new CucumberMessageFactory();
-            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
-
-            // ACT
-            var actualTestRunStartedMessageResult = cucumberMessageFactory.BuildTestRunStartedMessage(dateTime);
-
-            // ASSERT
-
-            actualTestRunStartedMessageResult.Should().BeAssignableTo<ISuccess<TestRunStarted>>()
-                                             .Which.Result.CucumberImplementation.Should().Be(expectedCucumberImplementation);
-        }
-
         [Theory(DisplayName = @"BuildTestCaseStarted should return a failure when a non-UTC date has been specified")]
         [InlineData(DateTimeKind.Local)]
         [InlineData(DateTimeKind.Unspecified)]
@@ -65,9 +51,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, dateTimeKind);
             var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
 
             // ASSERT
             result.Should().BeAssignableTo<IFailure>();
@@ -80,9 +73,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
             var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>().Which
@@ -96,12 +96,57 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
             var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>();
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseStarted should return a success when the platform information has been specified")]
+        public void BuildTestCaseStarted_PlatformInformation_ShouldReturnSuccess()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>()
+                  .Which.Result.Platform.Should().BeEquivalentTo(platform);
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseStarted should return a failure when the platform information is null")]
+        public void BuildTestCaseStarted_PlatformInformationIsNull_ShouldReturnFailue()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, null);
+
+            // ASSERT
+            result.Should().BeAssignableTo<IFailure>();
         }
 
         [Fact(DisplayName = @"BuildTestCaseFinished should return a message with the correct pickle ID")]
@@ -209,8 +254,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                   .Exception.Should().BeOfType<ArgumentNullException>();
         }
 
-        [Fact(DisplayName = @"BuildWrapperMessage should return a wrapper of type TestCaseFinished")]
-        public void BuildWrapperMessage_TestCaseFinishedSuccess_ShouldReturnWrapperOfTypeTestCaseFinished()
+        [Fact(DisplayName = @"BuildEnvelopeMessage should return an envelope of type TestCaseFinished")]
+        public void BuildEnvelopeMessage_TestCaseFinishedSuccess_ShouldReturnEnvelopeOfTypeTestCaseFinished()
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
@@ -223,15 +268,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             };
 
             // ACT
-            var result = cucumberMessageFactory.BuildWrapperMessage(new Success<TestCaseFinished>(testCaseFinished));
+            var result = cucumberMessageFactory.BuildEnvelopeMessage(new Success<TestCaseFinished>(testCaseFinished));
 
             // ASSERT
-            result.Should().BeAssignableTo<ISuccess<Wrapper>>().Which
-                  .Result.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestCaseFinished);
+            result.Should().BeAssignableTo<ISuccess<Envelope>>().Which
+                  .Result.MessageCase.Should().Be(Envelope.MessageOneofCase.TestCaseFinished);
         }
 
-        [Fact(DisplayName = @"BuildWrapperMessage should return a wrapper with the passed TestCaseFinished message")]
-        public void BuildWrapperMessage_TestCaseFinishedSuccess_ShouldReturnWrapperWithTestCaseFinishedMessage()
+        [Fact(DisplayName = @"BuildEnvelopeMessage should return an envelope with the passed TestCaseFinished message")]
+        public void BuildEnvelopeMessage_TestCaseFinishedSuccess_ShouldReturnEnvelopeWithTestCaseFinishedMessage()
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
@@ -244,10 +289,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             };
 
             // ACT
-            var result = cucumberMessageFactory.BuildWrapperMessage(new Success<TestCaseFinished>(testCaseFinished));
+            var result = cucumberMessageFactory.BuildEnvelopeMessage(new Success<TestCaseFinished>(testCaseFinished));
 
             // ASSERT
-            result.Should().BeAssignableTo<ISuccess<Wrapper>>().Which
+            result.Should().BeAssignableTo<ISuccess<Envelope>>().Which
                   .Result.TestCaseFinished.Should().Be(testCaseFinished);
         }
     }

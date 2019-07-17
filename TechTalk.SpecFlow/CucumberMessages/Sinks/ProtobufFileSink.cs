@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileSinkConfiguration = protobufFileSinkConfiguration;
         }
 
-        public void SendMessage(Wrapper message)
+        public void SendMessage(Envelope message)
         {
             string absoluteTargetFilePath = Path.GetFullPath(_protobufFileSinkConfiguration.TargetFilePath)
                                                 .Replace('\\', '_')

@@ -2,6 +2,8 @@
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
+using static Io.Cucumber.Messages.TestResult.Types;
+
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class TestResultFactory : ITestResultFactory

@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             _protobufFileNameResolver = protobufFileNameResolver;
         }
 
-        public IResult WriteMessage(Wrapper message)
+        public IResult WriteMessage(Envelope message)
         {
             var resolveTargetFilePathResult = _protobufFileNameResolver.Resolve(_protobufFileSinkConfiguration.TargetFilePath);
             if (!(resolveTargetFilePathResult is ISuccess<string> resolveTargetFilePathSuccess))
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.CucumberMessages.Sinks
             }
         }
 
-        private IResult WriteMessageToStream(Stream target, Wrapper message)
+        private IResult WriteMessageToStream(Stream target, Envelope message)
         {
             try
             {
