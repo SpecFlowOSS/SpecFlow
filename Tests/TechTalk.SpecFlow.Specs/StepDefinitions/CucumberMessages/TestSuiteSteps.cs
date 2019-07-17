@@ -27,8 +27,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testSuiteSetupDriver.AddFeatureFiles(featureFilesCount);
         }
 
-        [Given(@"the cucumber implementation is (.*)")]
-        public void GivenTheCucumberImplementationIs(string cucumberImplementation)
+        [Given(@"the cucumber implementation is '(.*)' in version '(.*)'")]
+        public void GivenTheCucumberImplementationIs(string cucumberImplementation, string version)
         {
             if (_scenarioContext.ScenarioInfo.Tags.Contains("SpecFlow"))
             {
