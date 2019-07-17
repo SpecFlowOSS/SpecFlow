@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public void WriteMessage_Message_ShouldReturnSuccessIfInitialized()
         {
             // ARRANGE
-            var message = new Wrapper { TestRunStarted = new TestRunStarted()};
+            var message = new Envelope { TestRunStarted = new TestRunStarted()};
             var protobufFileSinkConfiguration = GetProtobufFileSinkConfiguration();
             var binaryFileAccessorMock = GetBinaryFileAccessorMock();
             var protobufFileNameResolverMock = GetProtobufFileNameResolverMock();
@@ -35,12 +35,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
         public void WriteMessage_Message_ShouldWriteTheSpecifiedMessageToOutputStream()
         {
             // ARRANGE
-            var message = new Wrapper
+            var message = new Envelope
             {
                 TestRunStarted = new TestRunStarted
                 {
-                    Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
-                    CucumberImplementation = "SpecFlow"
+                    Timestamp = Timestamp.FromDateTime(DateTime.UtcNow)
                 }
             };
 

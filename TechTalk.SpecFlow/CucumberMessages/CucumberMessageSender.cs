@@ -21,8 +21,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             var nowDateAndTime = _fieldValueProvider.GetTestRunStartedTime();
             var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(nowDateAndTime);
-            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testRunStartedMessageResult);
-            SendMessageOrThrowException(wrapper);
+            var envelope = _cucumberMessageFactory.BuildEnvelopeMessage(testRunStartedMessageResult);
+            SendMessageOrThrowException(envelope);
         }
 
         public void SendTestCaseStarted(ScenarioInfo scenarioInfo)
@@ -30,9 +30,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var actualPickleId = _fieldValueProvider.GetTestCaseStartedPickleId(scenarioInfo);
             var nowDateAndTime = _fieldValueProvider.GetTestCaseStartedTime();
 
-            var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(actualPickleId, nowDateAndTime);
-            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseStartedMessageResult);
-            SendMessageOrThrowException(wrapper);
+
+
+            var testCaseStartedMessageResult = _cucumberMessageFactory.BuildTestCaseStartedMessage(actualPickleId, nowDateAndTime, null);
+            var envelope = _cucumberMessageFactory.BuildEnvelopeMessage(testCaseStartedMessageResult);
+            SendMessageOrThrowException(envelope);
         }
 
         public void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult)
@@ -41,21 +43,21 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var nowDateAndTime = _fieldValueProvider.GetTestCaseFinishedTime();
 
             var testCaseFinishedMessageResult = _cucumberMessageFactory.BuildTestCaseFinishedMessage(actualPickleId, nowDateAndTime, testResult);
-            var wrapper = _cucumberMessageFactory.BuildWrapperMessage(testCaseFinishedMessageResult);
-            SendMessageOrThrowException(wrapper);
+            var envelope = _cucumberMessageFactory.BuildEnvelopeMessage(testCaseFinishedMessageResult);
+            SendMessageOrThrowException(envelope);
         }
 
-        public void SendMessageOrThrowException(IResult<Wrapper> messageResult)
+        public void SendMessageOrThrowException(IResult<Envelope> messageResult)
         {
             switch (messageResult)
             {
-                case ISuccess<Wrapper> success:
+                case ISuccess<Envelope> success:
                     _cucumberMessageSink.SendMessage(success.Result);
                     break;
 
-                case WrappedFailure<Wrapper> failure: throw new InvalidOperationException($"The message could not be created. {failure}");
-                case ExceptionFailure<Wrapper> failure: throw failure.Exception;
-                case Failure<Wrapper> failure: throw new InvalidOperationException($"The message could not be created. {failure.Description}");
+                case WrappedFailure<Envelope> failure: throw new InvalidOperationException($"The message could not be created. {failure}");
+                case ExceptionFailure<Envelope> failure: throw failure.Exception;
+                case Failure<Envelope> failure: throw new InvalidOperationException($"The message could not be created. {failure.Description}");
                 default: throw new InvalidOperationException("The message could not be created.");
             }
         }

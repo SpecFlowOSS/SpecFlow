@@ -15,11 +15,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void SendTestCaseStarted_ValidParameters_ShouldSendTestRunStartedToSink()
         {
             // ARRANGE
-            Wrapper sentMessage = default;
+            Envelope sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
-                                   .Callback<Wrapper>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Envelope>()))
+                                   .Callback<Envelope>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
             var fieldValueProviderMock = GetFieldValueProviderMock();
@@ -31,18 +31,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestCaseStarted(scenarioInfo);
 
             // ASSERT
-            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestCaseStarted);
+            sentMessage.MessageCase.Should().Be(Envelope.MessageOneofCase.TestCaseStarted);
         }
 
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStated message to sink")]
         public void SendTestRunStarted_ShouldSendTestRunStartedToSink()
         {
             // ARRANGE
-            Wrapper sentMessage = default;
+            Envelope sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
-                                   .Callback<Wrapper>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Envelope>()))
+                                   .Callback<Envelope>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
             var fieldValueProviderMock = GetFieldValueProviderMock();
@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestRunStarted();
 
             // ASSERT
-            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
+            sentMessage.MessageCase.Should().Be(Envelope.MessageOneofCase.TestRunStarted);
         }
 
         [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStated message with correct time stamp to sink")]
@@ -62,11 +62,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var now = new DateTime(2019, 5, 9, 15, 46, 5, DateTimeKind.Utc);
 
-            Wrapper sentMessage = default;
+            Envelope sentMessage = default;
 
             var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
-                                   .Callback<Wrapper>(m => sentMessage = m);
+            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Envelope>()))
+                                   .Callback<Envelope>(m => sentMessage = m);
 
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
             var fieldValueProviderMock = GetFieldValueProviderMock(testRunStartedTimeStamp: now);
@@ -77,42 +77,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             cucumberMessageSender.SendTestRunStarted();
 
             // ASSERT
-            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
+            sentMessage.MessageCase.Should().Be(Envelope.MessageOneofCase.TestRunStarted);
             sentMessage.TestRunStarted.Timestamp.ToDateTime().Should().Be(now);
         }
 
-        [Fact(DisplayName = @"SendTestRunStarted should send a TestRunStarted message with SpecFlow as used Cucumber implementation to sink")]
-        public void SendTestRunStarted_ShouldSendTestRunStartedWithSpecFlowAsUsedCucumberImplementationToSink()
-        {
-            // ARRANGE
-            const string expectedCucumberImplementation = @"SpecFlow";
-            Wrapper sentMessage = default;
-
-            var cucumberMessageSinkMock = new Mock<ICucumberMessageSink>();
-            cucumberMessageSinkMock.Setup(m => m.SendMessage(It.IsAny<Wrapper>()))
-                                   .Callback<Wrapper>(m => sentMessage = m);
-
-            var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
-            var fieldValueProviderMock = GetFieldValueProviderMock();
-
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
-
-            // ACT
-            cucumberMessageSender.SendTestRunStarted();
-
-            // ASSERT
-            sentMessage.MessageCase.Should().Be(Wrapper.MessageOneofCase.TestRunStarted);
-            sentMessage.TestRunStarted.CucumberImplementation.Should().Be(expectedCucumberImplementation);
-        }
-
-        public Mock<ICucumberMessageFactory> GetCucumberMessageFactoryMock(string cucumberImplementation = "SpecFlow")
+        public Mock<ICucumberMessageFactory> GetCucumberMessageFactoryMock()
         {
             var cucumberMessageFactoryMock = new Mock<ICucumberMessageFactory>();
-            cucumberMessageFactoryMock.Setup(m => m.BuildWrapperMessage(It.IsAny<ISuccess<TestCaseStarted>>()))
-                                      .Returns<ISuccess<TestCaseStarted>>(r => Result<Wrapper>.Success(new Wrapper { TestCaseStarted = r.Result }));
+            cucumberMessageFactoryMock.Setup(m => m.BuildEnvelopeMessage(It.IsAny<ISuccess<TestCaseStarted>>()))
+                                      .Returns<ISuccess<TestCaseStarted>>(r => Result<Envelope>.Success(new Envelope { TestCaseStarted = r.Result }));
 
-            cucumberMessageFactoryMock.Setup(m => m.BuildWrapperMessage(It.IsAny<ISuccess<TestRunStarted>>()))
-                                      .Returns<ISuccess<TestRunStarted>>(r => Result<Wrapper>.Success(new Wrapper { TestRunStarted = r.Result }));
+            cucumberMessageFactoryMock.Setup(m => m.BuildEnvelopeMessage(It.IsAny<ISuccess<TestRunStarted>>()))
+                                      .Returns<ISuccess<TestRunStarted>>(r => Result<Envelope>.Success(new Envelope { TestRunStarted = r.Result }));
 
             cucumberMessageFactoryMock.Setup(m => m.BuildTestRunStartedMessage(It.IsAny<DateTime>()))
                                       .Returns<DateTime>(timeStamp => Result<TestRunStarted>.Success(
