@@ -48,9 +48,9 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             
         }
 
-        [When(@"the test suite was executed with a testThreadCount of '(.*)'")]
+        [When(@"the test suite is executed with a testThreadCount of '(.*)'")]
         [Scope(Tag = "SpecFlow")]
-        public void WhenTheTestSuiteWasExecutedWithATestThreadCountOf(int p0)
+        public void WhenTheTestSuiteIsExecutedWithATestThreadCountOf(int p0)
         {
             
         }
