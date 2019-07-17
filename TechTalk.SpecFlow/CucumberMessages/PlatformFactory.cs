@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             _specFlowVersionInformationProvider = specFlowVersionInformationProvider;
         }
 
-        public IResult<TestCaseStarted.Types.Platform> BuildFromSystemInformation()
+        public TestCaseStarted.Types.Platform BuildFromSystemInformation()
         {
             var platform = new TestCaseStarted.Types.Platform
             {
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 Version = _specFlowVersionInformationProvider.GetPackageVersion()
             };
 
-            return Result.Success(platform);
+            return platform;
         }
     }
 }
