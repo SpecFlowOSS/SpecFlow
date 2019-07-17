@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 Cpu = _systemInformationProvider.GetCpuArchitecture(),
                 Os = _systemInformationProvider.GetOperatingSystem(),
                 Implementation = "SpecFlow",
-                Version = _specFlowVersionInformationProvider.GetPackageVersion()
+                Version = _specFlowVersionInformationProvider.GetAssemblyVersion()
             };
 
             return platform;

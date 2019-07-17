@@ -2,6 +2,10 @@
 {
     public class SpecFlowVersionInformationProvider : ISpecFlowVersionInformationProvider
     {
-        public string GetPackageVersion() => VersionInfo.NuGetVersion;
+        public string GetAssemblyVersion()
+        {
+            var version = typeof(SpecFlowVersionInformationProvider).Assembly.GetName().Version;
+            return $"{version.Major}.{version.Minor}";
+        }
     }
 }

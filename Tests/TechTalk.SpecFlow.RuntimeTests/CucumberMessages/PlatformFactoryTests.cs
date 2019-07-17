@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public Mock<ISpecFlowVersionInformationProvider> GetSpecFlowVersionInformationProvider(string packageVersion = "3.1.0")
         {
             var specFlowVersionInformationProvider = new Mock<ISpecFlowVersionInformationProvider>();
-            specFlowVersionInformationProvider.Setup(m => m.GetPackageVersion())
+            specFlowVersionInformationProvider.Setup(m => m.GetAssemblyVersion())
                                               .Returns(packageVersion);
             return specFlowVersionInformationProvider;
         }

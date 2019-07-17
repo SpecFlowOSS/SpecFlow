@@ -2,6 +2,6 @@
 {
     public interface ISpecFlowVersionInformationProvider
     {
-        string GetPackageVersion();
+        string GetAssemblyVersion();
     }
 }
