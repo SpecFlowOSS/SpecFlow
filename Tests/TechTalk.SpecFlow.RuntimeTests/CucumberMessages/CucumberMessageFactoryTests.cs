@@ -7,6 +7,8 @@ using TechTalk.SpecFlow.CucumberMessages;
 using Xunit;
 
 using static Io.Cucumber.Messages.TestResult.Types;
+using static Io.Cucumber.Messages.TestCaseStarted.Types;
+
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
     public class CucumberMessageFactoryTests
@@ -49,9 +51,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, dateTimeKind);
             var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
 
             // ASSERT
             result.Should().BeAssignableTo<IFailure>();
@@ -64,9 +73,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
             var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>().Which
@@ -80,12 +96,57 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
             var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime);
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>();
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseStarted should return a success when the platform information has been specified")]
+        public void BuildTestCaseStarted_PlatformInformation_ShouldReturnSuccess()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+            var platform = new Platform
+            {
+                Cpu = "x64",
+                Implementation = "SpecFlow",
+                Os = "Windows",
+                Version = "3.1.0"
+            };
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, platform);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestCaseStarted>>()
+                  .Which.Result.Platform.Should().BeEquivalentTo(platform);
+        }
+
+        [Fact(DisplayName = @"BuildTestCaseStarted should return a failure when the platform information is null")]
+        public void BuildTestCaseStarted_PlatformInformationIsNull_ShouldReturnFailue()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+            var pickleId = Guid.NewGuid();
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestCaseStartedMessage(pickleId, dateTime, null);
+
+            // ASSERT
+            result.Should().BeAssignableTo<IFailure>();
         }
 
         [Fact(DisplayName = @"BuildTestCaseFinished should return a message with the correct pickle ID")]

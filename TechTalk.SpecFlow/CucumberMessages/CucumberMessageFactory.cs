@@ -3,12 +3,12 @@ using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
+using static Io.Cucumber.Messages.TestCaseStarted.Types;
+
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class CucumberMessageFactory : ICucumberMessageFactory
     {
-        private const string UsedCucumberImplementationString = @"SpecFlow";
-
         public string ConvertToPickleIdString(Guid id)
         {
             return $"{id:D}";
@@ -23,15 +23,19 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             var testRunStarted = new TestRunStarted
             {
-                Timestamp = Timestamp.FromDateTime(timeStamp),
-                CucumberImplementation = UsedCucumberImplementationString
+                Timestamp = Timestamp.FromDateTime(timeStamp)
             };
 
             return Result<TestRunStarted>.Success(testRunStarted);
         }
 
-        public IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp)
+        public IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp, Platform platform)
         {
+            if (platform is null)
+            {
+                return Result<TestCaseStarted>.Failure($"The {nameof(platform)} parameter must not be null");
+            }
+
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
                 return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
@@ -40,7 +44,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var testCaseStarted = new TestCaseStarted
             {
                 Timestamp = Timestamp.FromDateTime(timeStamp),
-                PickleId = ConvertToPickleIdString(pickleId)
+                PickleId = ConvertToPickleIdString(pickleId),
+                Platform = platform
             };
 
             return Result<TestCaseStarted>.Success(testCaseStarted);

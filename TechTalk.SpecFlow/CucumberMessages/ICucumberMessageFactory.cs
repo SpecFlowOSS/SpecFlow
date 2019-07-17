@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         IResult<TestRunStarted> BuildTestRunStartedMessage(DateTime timeStamp);
 
-        IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp);
+        IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp, TestCaseStarted.Types.Platform platform);
 
         IResult<TestCaseFinished> BuildTestCaseFinishedMessage(Guid pickleId, DateTime timeStamp, TestResult testResult);
 
