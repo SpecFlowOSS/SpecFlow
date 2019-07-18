@@ -74,10 +74,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             //TODO: better handle "ignored"
             if (isIgnored)
+            {
                 return;
+            }
 
-            var args = arguments.Select(
-                arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
+            var args = arguments.Select(arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
 
             args.Add(
                 new CodeAttributeArgument(
@@ -99,10 +100,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
 
             var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
-            //if (CodeDomHelper.TargetLanguage == CodeDomProviderLanguage.VB)
-            //{
-            //    typeName = "Global.XUnitAssemblyFixture";
-            //}
 
             ctorMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
@@ -116,29 +113,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
-            var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
+            var factAttr = testMethod.CustomAttributes
+                                     .OfType<CodeAttributeDeclaration>()
+                                     .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
 
-            if (factAttr != null)
-            {
-                // set [FactAttribute(Skip="reason")]
-                factAttr.Arguments.Add
-                    (
-                        new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
-                    );
-            }
+            // set [FactAttribute(Skip="reason")]
+            factAttr?.Arguments.Add(new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON)));
 
-            var theoryAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == THEORY_ATTRIBUTE);
+            var theoryAttr = testMethod.CustomAttributes
+                                       .OfType<CodeAttributeDeclaration>()
+                                       .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == THEORY_ATTRIBUTE);
 
-            if (theoryAttr != null)
-            {
-                // set [TheoryAttribute(Skip="reason")]
-                theoryAttr.Arguments.Add
-                    (
-                        new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
-                    );
-            }
+            // set [TheoryAttribute(Skip="reason")]
+            theoryAttr?.Arguments.Add(new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON)));
         }
         public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
@@ -197,7 +184,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             // xUnit uses IUseFixture<T> on the class
-
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
             generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
 
@@ -214,8 +200,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
 
             // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }
-            CodeConstructor ctorMethod = new CodeConstructor();
-            ctorMethod.Attributes = MemberAttributes.Public;
+            var ctorMethod = new CodeConstructor { Attributes = MemberAttributes.Public };
             _currentFixtureDataTypeDeclaration.Members.Add(ctorMethod);
             ctorMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -233,7 +218,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             // void IDisposable.Dispose() { <fixtureTearDownMethod>(); }
 
-            CodeMemberMethod disposeMethod = new CodeMemberMethod();
+            var disposeMethod = new CodeMemberMethod();
             disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
             disposeMethod.Name = "Dispose";
             _currentFixtureDataTypeDeclaration.Members.Add(disposeMethod);
@@ -256,7 +241,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             foreach (string str in scenarioCategories)
             {
-                SetProperty((CodeTypeMember)testMethod, "Category", str);
+                SetProperty(testMethod, "Category", str);
             }
         }
 
@@ -266,7 +251,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             // public <_currentTestTypeDeclaration>() { <memberMethod>(); }
 
-            CodeConstructor ctorMethod = new CodeConstructor();
+            var ctorMethod = new CodeConstructor();
             ctorMethod.Attributes = MemberAttributes.Public;
             generationContext.TestClass.Members.Add(ctorMethod);
 
@@ -281,7 +266,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             // void IDisposable.Dispose() { <memberMethod>(); }
 
-            CodeMemberMethod disposeMethod = new CodeMemberMethod();
+            var disposeMethod = new CodeMemberMethod();
             disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
             disposeMethod.Name = "Dispose";
             generationContext.TestClass.Members.Add(disposeMethod);
@@ -312,18 +297,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected virtual void IgnoreFeature(TestClassGenerationContext generationContext)
         {
-            var featureHasIgnoreTag = generationContext.Feature.Tags
-                                                       .Any(x => string.Equals(x.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
+            bool featureHasIgnoreTag = generationContext.Feature.Tags
+                                                        .Any(x => string.Equals(x.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
 
-            if (featureHasIgnoreTag)
+            if (!featureHasIgnoreTag)
             {
-                foreach (CodeTypeMember member in generationContext.TestClass.Members)
+                return;
+            }
+
+            foreach (CodeTypeMember member in generationContext.TestClass.Members)
+            {
+                if (member is CodeMemberMethod method && !IsTestMethodAlreadyIgnored(method))
                 {
-                    var method = member as CodeMemberMethod;
-                    if (method != null && !IsTestMethodAlreadyIgnored(method))
-                    {
-                        SetTestMethodIgnore(generationContext, method);
-                    }
+                    SetTestMethodIgnore(generationContext, method);
                 }
             }
         }
@@ -333,18 +319,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
                                      .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == factAttributeName);
 
-            var hasIgnoredFact = factAttr?.Arguments.OfType<CodeAttributeArgument>()
-                                         .Any(x =>
-                                                  string.Equals(x.Name, FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
+            var hasIgnoredFact = factAttr?.Arguments
+                                         .OfType<CodeAttributeArgument>()
+                                         .Any(x => string.Equals(x.Name, FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
 
-            var theoryAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
+            var theoryAttr = testMethod.CustomAttributes
+                                       .OfType<CodeAttributeDeclaration>()
                                        .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == theoryAttributeName);
 
-            var hasIgnoredTheory = theoryAttr?.Arguments.OfType<CodeAttributeArgument>()
-                                             .Any(x =>
-                                                      string.Equals(x.Name, THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
+            var hasIgnoredTheory = theoryAttr?.Arguments
+                                             .OfType<CodeAttributeArgument>()
+                                             .Any(x => string.Equals(x.Name, THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
 
-            var result = hasIgnoredFact.GetValueOrDefault() || hasIgnoredTheory.GetValueOrDefault();
+            bool result = hasIgnoredFact.GetValueOrDefault() || hasIgnoredTheory.GetValueOrDefault();
 
             return result;
         }
