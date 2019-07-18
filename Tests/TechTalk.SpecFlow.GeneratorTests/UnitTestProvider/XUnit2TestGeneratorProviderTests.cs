@@ -2,16 +2,14 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Xunit;
-using Microsoft.CSharp;
-using TechTalk.SpecFlow.Utils;
-using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using FluentAssertions;
-using TechTalk.SpecFlow.Generator;
+using Microsoft.CSharp;
 using TechTalk.SpecFlow.Generator.CodeDom;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Parser;
+using Xunit;
 
-namespace TechTalk.SpecFlow.GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
     
     public class XUnit2TestGeneratorProviderTests
@@ -84,17 +82,17 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Should_initialize_testOutputHelper_field_in_constructor()
         {
-            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowDocument document = parser.Parse(reader, null);
+                var document = parser.Parse(reader, null);
                 document.Should().NotBeNull();
                 
 
                 var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = provider.CreateUnitTestConverter();
-                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 code.Should().NotBeNull();
                 
@@ -114,16 +112,16 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Should_add_testOutputHelper_field_in_class()
         {
-            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowDocument document = parser.Parse(reader, null);
+                var document = parser.Parse(reader, null);
                 document.Should().NotBeNull();
 
                 var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = provider.CreateUnitTestConverter();
-                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
                 
                 code.Should().NotBeNull();
                 var loggerInstance = code.Class().Members.OfType<CodeMemberField>().First(m => m.Name == @"_testOutputHelper");
@@ -136,16 +134,16 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Fact]
         public void Should_register_testOutputHelper_on_scenario_setup()
         {
-            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowDocument document = parser.Parse(reader, null);
+                var document = parser.Parse(reader, null);
                 document.Should().NotBeNull();
 
                 var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = provider.CreateUnitTestConverter();
-                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 code.Should().NotBeNull();
                 var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioInitialize");

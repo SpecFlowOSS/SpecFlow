@@ -3,11 +3,11 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.CSharp;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using Xunit;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
+using Xunit;
 
-namespace TechTalk.SpecFlow.GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
     
     public class XUnitTestGeneratorProviderTests

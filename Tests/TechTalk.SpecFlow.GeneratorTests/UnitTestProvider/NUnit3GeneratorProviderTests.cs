@@ -1,23 +1,18 @@
 ﻿using System.CodeDom;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-
 using FluentAssertions;
-
-using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Utils;
+using Xunit;
 
-namespace TechTalk.SpecFlow.GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
     
     public class NUnit3GeneratorProviderTests
@@ -71,8 +66,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             CodeNamespace code;
             using (var reader = new StringReader(feature))
             {
-                SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-                SpecFlowDocument document = parser.Parse(reader, "test.feature");
+                var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+                var document = parser.Parse(reader, "test.feature");
 
                 var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
 
