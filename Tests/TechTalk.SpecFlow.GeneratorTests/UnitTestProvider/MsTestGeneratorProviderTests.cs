@@ -10,7 +10,6 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
-    
     public class MsTestGeneratorProviderTests
     {
         private const string TestDescriptionAttributeName = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";

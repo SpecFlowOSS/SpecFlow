@@ -14,7 +14,6 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
-    
     public class NUnit3GeneratorProviderTests
     {
         private const string SampleFeatureFile = @"
@@ -59,40 +58,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 .FirstOrDefault(a => a.Name == "NUnit.Framework.TestFixtureSetUpAttribute")
                 .Should()
                 .BeNull();
-        }
-
-        private static CodeNamespace GenerateCodeNamespaceFromFeature(string feature,bool parallelCode=false,string[] ignoreParallelTags=null)
-        {
-            CodeNamespace code;
-            using (var reader = new StringReader(feature))
-            {
-                var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-                var document = parser.Parse(reader, "test.feature");
-
-                var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
-
-                code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-            }
-
-            return code;
-        }
-
-        private static IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
-        {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
-            var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
-            specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
-            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
-                                                                      Enumerable.Empty<string>().ToArray();
-            container.RegisterInstanceAs(CreateTestGeneratorProvider());
-
-            var generator = container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());
-            return generator;
-        }
-
-        private static NUnit3TestGeneratorProvider CreateTestGeneratorProvider()
-        {
-            return new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
         }
 
         [Fact]
@@ -190,7 +155,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             attribute.Should().BeNull("Parallelizable attribute was found");
         }
 
-
         [Fact]
         public void ShouldProvideAReasonForIgnoringAFeature()
         {
@@ -223,6 +187,40 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 .As<string>()
                 .Should()
                 .NotBeNullOrWhiteSpace("No reason for ignoring the scenario was given");
+        }
+
+        private static CodeNamespace GenerateCodeNamespaceFromFeature(string feature,bool parallelCode=false,string[] ignoreParallelTags=null)
+        {
+            CodeNamespace code;
+            using (var reader = new StringReader(feature))
+            {
+                var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+                var document = parser.Parse(reader, "test.feature");
+
+                var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
+
+                code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+            }
+
+            return code;
+        }
+
+        private static IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
+        {
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<string>());
+            var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
+            specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
+            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
+                                                                    Enumerable.Empty<string>().ToArray();
+            container.RegisterInstanceAs(CreateTestGeneratorProvider());
+
+            var generator = container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());
+            return generator;
+        }
+
+        private static NUnit3TestGeneratorProvider CreateTestGeneratorProvider()
+        {
+            return new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
         }
     }
 }
