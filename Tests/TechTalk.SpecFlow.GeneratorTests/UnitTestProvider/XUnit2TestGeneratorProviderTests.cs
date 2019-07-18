@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
     public class XUnit2TestGeneratorProviderTests
     {
+        private const string XUnitInlineDataAttribute = "Xunit.InlineDataAttribute";
         private const string SampleFeatureFile = @"
             Feature: Sample feature file
 
@@ -21,7 +22,49 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 When I do something
                 Then something should happen";
 
-        
+        [Fact]
+        public void XUnit2TestGeneratorProvider_OnlyVariantName_ShouldSetDescriptionCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+              Feature: Sample feature file
+
+              @mytag
+              Scenario Outline: Simple Scenario Outline
+                  Given there is something
+                      """"""
+                        long string
+                      """"""
+                  When I do <what>
+                      | foo | bar |
+                      | 1   | 2   |
+                  Then something should happen
+              Examples:
+                  | what           |
+                  | something      |
+                  | something else |
+";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            code.Should().NotBeNull();
+            var inlineDataAttributes = code.Class()
+                                           .Members()
+                                           .Single(m => m.Name == "SimpleScenarioOutline")
+                                           .CustomAttributes()
+                                           .Where(a => a.Name == XUnitInlineDataAttribute)
+                                           .ToArray();
+
+            inlineDataAttributes.Should().Contain(attribute => attribute.ArgumentValues().First() as string == "something");
+            inlineDataAttributes.Should().Contain(attribute => attribute.ArgumentValues().First() as string == "something else");
+        }
+
         [Fact]
         public void Should_set_displayname_theory_attribute()
         {
@@ -115,6 +158,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
          * Based on w1ld's `Should_set_skip_attribute_for_theory`,
          * refactor as appropriate.
          */
+
         [Fact]
         public void Should_set_displayname_attribute()
         {
@@ -198,7 +242,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 ((CodeVariableReferenceExpression)(initOutputHelper.Right)).VariableName.Should().Be("testOutputHelper");
             }
         }
-        
+
         [Fact]
         public void Should_add_testOutputHelper_field_in_class()
         {
@@ -249,5 +293,15 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             }
         }
 
+        public SpecFlowDocument ParseDocumentFromString(string documentSource)
+        {
+            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+            using (var reader = new StringReader(documentSource))
+            {
+                var document = parser.Parse(reader, null);
+                document.Should().NotBeNull();
+                return document;
+            }
+        }
     }
 }
