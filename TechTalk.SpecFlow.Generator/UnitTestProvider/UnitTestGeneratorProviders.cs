@@ -7,7 +7,6 @@ namespace TechTalk.SpecFlow.Generator
     {
         partial void RegisterUnitTestGeneratorProviders(ObjectContainer container)
         {
-            container.RegisterTypeAs<NUnitTestGeneratorProvider, IUnitTestGeneratorProvider>("nunit.2");
             container.RegisterTypeAs<NUnit3TestGeneratorProvider, IUnitTestGeneratorProvider>("nunit");
             container.RegisterTypeAs<XUnitTestGeneratorProvider, IUnitTestGeneratorProvider>("xunit.1");
             container.RegisterTypeAs<XUnit2TestGeneratorProvider, IUnitTestGeneratorProvider>("xunit");
