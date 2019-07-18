@@ -8,15 +8,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class MsTestV2GeneratorProvider : MsTestGeneratorProvider
     {
-        private const string DONOTPARALLELIZE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelize";
-        private const string DONOTPARALLELIZE_TAG = "MsTest:donotparallelize";
-        private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
-        private const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
-        private const string WORKITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute";
-        private const string DEPLOYMENTITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute";
-        private const string OWNER_TAG = "owner:";
-        private const string WORKITEM_TAG = "workitem:";
-        private const string DEPLOYMENTITEM_TAG = "MsTest:deploymentitem:";
+        protected internal const string DONOTPARALLELIZE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelize";
+        protected internal const string DONOTPARALLELIZE_TAG = "MsTest:donotparallelize";
+        protected internal const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
+        protected internal const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
+        protected internal const string WORKITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute";
+        protected internal const string DEPLOYMENTITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute";
+        protected internal const string OWNER_TAG = "owner:";
+        protected internal const string WORKITEM_TAG = "workitem:";
+        protected internal const string DEPLOYMENTITEM_TAG = "MsTest:deploymentitem:";
 
         public MsTestV2GeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
         {

@@ -8,19 +8,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class NUnit3TestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        protected const string TESTFIXTURESETUP_ATTR_NUNIT3 = "NUnit.Framework.OneTimeSetUpAttribute";
-        protected const string TESTFIXTURETEARDOWN_ATTR_NUNIT3 = "NUnit.Framework.OneTimeTearDownAttribute";
-        protected const string PARALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
-        protected const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
-        protected const string TEST_ATTR = "NUnit.Framework.TestAttribute";
-        protected const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
-        protected const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
-        protected const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
-        protected const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
-        protected const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
-        protected const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
-        protected const string TESTCONTEXT_TYPE = "NUnit.Framework.TestContext";
-        protected const string TESTCONTEXT_INSTANCE = "NUnit.Framework.TestContext.CurrentContext";
+        protected internal const string TESTFIXTURESETUP_ATTR_NUNIT3 = "NUnit.Framework.OneTimeSetUpAttribute";
+        protected internal const string TESTFIXTURETEARDOWN_ATTR_NUNIT3 = "NUnit.Framework.OneTimeTearDownAttribute";
+        protected internal const string PARALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
+        protected internal const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
+        protected internal const string TEST_ATTR = "NUnit.Framework.TestAttribute";
+        protected internal const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
+        protected internal const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
+        protected internal const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
+        protected internal const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
+        protected internal const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
+        protected internal const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
+        protected internal const string TESTCONTEXT_TYPE = "NUnit.Framework.TestContext";
+        protected internal const string TESTCONTEXT_INSTANCE = "NUnit.Framework.TestContext.CurrentContext";
 
         public NUnit3TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
