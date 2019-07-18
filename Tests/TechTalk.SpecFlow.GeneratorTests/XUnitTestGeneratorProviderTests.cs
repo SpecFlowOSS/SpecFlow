@@ -16,10 +16,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_set_skip_attribute_for_theory()
         {
             // Arrange
-            var provider = new XUnitTestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider())); // TODO: what about XUnit2TestGeneratorProvider ?
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider())); // TODO: what about XUnit2TestGeneratorProvider ?
 
             // Act
-            var codeMemberMethod = new CodeMemberMethod()
+            var codeMemberMethod = new CodeMemberMethod
                                    {
                                        CustomAttributes =
                                            new CodeAttributeDeclarationCollection(
@@ -29,13 +29,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             // Assert
             var modifiedAttribute = codeMemberMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(a => a.Name == XUnitTestGeneratorProvider.THEORY_ATTRIBUTE);
+                .FirstOrDefault(a => a.Name == XUnit2TestGeneratorProvider.THEORY_ATTRIBUTE);
 
             modifiedAttribute.Should().NotBeNull();
 
             
             var attribute = modifiedAttribute.Arguments.OfType<CodeAttributeArgument>()
-                .FirstOrDefault(a => a.Name == XUnitTestGeneratorProvider.THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME);
+                .FirstOrDefault(a => a.Name == XUnit2TestGeneratorProvider.THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME);
 
             attribute.Should().NotBeNull();
             
@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var primitiveExpression = attribute.Value as CodePrimitiveExpression;
 
             primitiveExpression.Should().NotBeNull();
-            primitiveExpression.Value.Should().Be(XUnitTestGeneratorProvider.SKIP_REASON);
+            primitiveExpression.Value.Should().Be(XUnit2TestGeneratorProvider.SKIP_REASON);
         }
 
         /*
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_set_displayname_attribute()
         {
             // Arrange
-            var provider = new XUnitTestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider())); // TODO: what about XUnit2TestGeneratorProvider ?
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider())); // TODO: what about XUnit2TestGeneratorProvider ?
             var context = new Generator.TestClassGenerationContext(
                 unitTestGeneratorProvider: null,
                 document: new Parser.SpecFlowDocument(
