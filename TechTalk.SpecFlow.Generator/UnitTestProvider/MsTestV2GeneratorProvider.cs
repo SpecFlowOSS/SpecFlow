@@ -29,35 +29,35 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            IEnumerable<string> doNotParallelizeTags = featureCategories.Where(f => f.StartsWith(DONOTPARALLELIZE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var doNotParallelizeTags = featureCategories.Where(f => f.StartsWith(DONOTPARALLELIZE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
             if (doNotParallelizeTags.Any())
             {
-               generationContext.CustomData[DONOTPARALLELIZE_TAG] = String.Empty;
+               generationContext.CustomData[DONOTPARALLELIZE_TAG] = string.Empty;
             }
 
-            generationContext.CustomData["featureCategories"] = Enumerable.ToArray<string>(GetNonMSTestSpecificTags(featureCategories));
+            generationContext.CustomData["featureCategories"] = GetNonMSTestSpecificTags(featureCategories).ToArray();
 
-            IEnumerable<string> ownerTags = featureCategories.Where(t => t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var ownerTags = featureCategories.Where(t => t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
             if (ownerTags.Any())
             {
                 generationContext.CustomData[OWNER_TAG] = ownerTags.Select(t => t.Substring(OWNER_TAG.Length).Trim('\"')).FirstOrDefault();
             }
 
-            IEnumerable<string> workItemTags = featureCategories.Where(t => t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var workItemTags = featureCategories.Where(t => t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
             if (workItemTags.Any())
             {
                 int temp;
-                IEnumerable<string> workItemsAsStrings = workItemTags.Select(t => t.Substring(WORKITEM_TAG.Length).Trim('\"'));
+                var workItemsAsStrings = workItemTags.Select(t => t.Substring(WORKITEM_TAG.Length).Trim('\"'));
                 if (workItemsAsStrings.Any())
                 {
                     generationContext.CustomData[WORKITEM_TAG] = workItemsAsStrings.Where(t => int.TryParse(t, out temp)).Select(t => int.Parse(t));
                 }
             }
 
-            IEnumerable<string> deploymentItemTags = featureCategories.Where(t => t.StartsWith(DEPLOYMENTITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var deploymentItemTags = featureCategories.Where(t => t.StartsWith(DEPLOYMENTITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
             if (deploymentItemTags.Any())
             {
-                IEnumerable<string> deploymentItemsAsStrings = deploymentItemTags.Select(t => t.Substring(DEPLOYMENTITEM_TAG.Length));
+                var deploymentItemsAsStrings = deploymentItemTags.Select(t => t.Substring(DEPLOYMENTITEM_TAG.Length));
                 if (deploymentItemsAsStrings.Any())
                 {
                     generationContext.CustomData[DEPLOYMENTITEM_TAG] = deploymentItemsAsStrings;
@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             if (generationContext.CustomData.ContainsKey(OWNER_TAG))
             {
                 string ownerName = generationContext.CustomData[OWNER_TAG] as string;
-                if (!String.IsNullOrEmpty(ownerName))
+                if (!string.IsNullOrEmpty(ownerName))
                 {
                     CodeDomHelper.AddAttribute(testMethod, OWNER_ATTR, ownerName);
                 }
@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             if (generationContext.CustomData.ContainsKey(WORKITEM_TAG))
             {
-                IEnumerable<int> workItems = generationContext.CustomData[WORKITEM_TAG] as IEnumerable<int>;
+                var workItems = generationContext.CustomData[WORKITEM_TAG] as IEnumerable<int>;
                 foreach (int workItem in workItems)
                 {
                     CodeDomHelper.AddAttribute(testMethod, WORKITEM_ATTR, workItem);
@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             if (generationContext.CustomData.ContainsKey(DEPLOYMENTITEM_TAG))
             {
-                IEnumerable<string> deploymentItems = generationContext.CustomData[DEPLOYMENTITEM_TAG] as IEnumerable<string>;
+                var deploymentItems = generationContext.CustomData[DEPLOYMENTITEM_TAG] as IEnumerable<string>;
                 foreach (string deploymentItem in deploymentItems)
                 {
                     var outputDirProvided = deploymentItem.Split(':').Any();
@@ -117,7 +117,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
-            IEnumerable<string> doNotParallelizeTags = scenarioCategories.Where(s => s.StartsWith(DONOTPARALLELIZE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var scenarioCategoriesArray = scenarioCategories.ToArray();
+            var doNotParallelizeTags = scenarioCategoriesArray.Where(s => s.StartsWith(DONOTPARALLELIZE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
 
             if (doNotParallelizeTags.Any() && !generationContext.CustomData.ContainsKey(DONOTPARALLELIZE_TAG))
             {
@@ -126,42 +127,38 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             if (doNotParallelizeTags.Any() && generationContext.CustomData.ContainsKey(DONOTPARALLELIZE_TAG))
             {
-                scenarioCategories = scenarioCategories.Where(s => !s.StartsWith(DONOTPARALLELIZE_TAG)).ToList();
+                scenarioCategoriesArray = scenarioCategoriesArray.Where(s => !s.StartsWith(DONOTPARALLELIZE_TAG)).ToArray();
             }
 
-            IEnumerable<string> tags = scenarioCategories.ToList();
-
-            IEnumerable<string> ownerTags = tags.Where(t => t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var ownerTags = scenarioCategoriesArray.Where(t => t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
             if (ownerTags.Any())
             {
                 string ownerName = ownerTags.Select(t => t.Substring(OWNER_TAG.Length).Trim('\"')).FirstOrDefault();
-                if (!String.IsNullOrEmpty(ownerName))
+                if (!string.IsNullOrEmpty(ownerName))
                 {
                     CodeDomHelper.AddAttribute(testMethod, OWNER_ATTR, ownerName);
                 }
             }
 
-            IEnumerable<string> workItemTags = tags.Where(t => t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            var workItemTags = scenarioCategoriesArray.Where(t => t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
             if (workItemTags.Any())
             {
-                int temp;
-                IEnumerable<string> workItemsAsStrings = workItemTags.Select(t => t.Substring(WORKITEM_TAG.Length).Trim('\"'));
-                IEnumerable<int> workItems = workItemsAsStrings.Where(t => int.TryParse(t, out temp)).Select(t => int.Parse(t));
+                var workItemsAsStrings = workItemTags.Select(t => t.Substring(WORKITEM_TAG.Length).Trim('\"'));
+                var workItems = workItemsAsStrings.Where(t => int.TryParse(t, out _)).Select(int.Parse);
                 foreach (int workItem in workItems)
                 {
                     CodeDomHelper.AddAttribute(testMethod, WORKITEM_ATTR, workItem);
                 }
             }
 
-            CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, GetNonMSTestSpecificTags(tags));
+            CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, GetNonMSTestSpecificTags(scenarioCategoriesArray));
         }
 
         private IEnumerable<string> GetNonMSTestSpecificTags(IEnumerable<string> tags)
         {
-            return tags == null ? new string[0] : tags.Where(t =>
-                                                                 (!t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase))
-                                                                 && (!t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase))
-                                                                 && (!t.StartsWith(DEPLOYMENTITEM_TAG, StringComparison.InvariantCultureIgnoreCase)))
+            return tags == null ? new string[0] : tags.Where(t => !t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase))
+                                                      .Where(t => !t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase))
+                                                      .Where(t => !t.StartsWith(DEPLOYMENTITEM_TAG, StringComparison.InvariantCultureIgnoreCase))
                                                       .Select(t => t);
         }
     }
