@@ -112,7 +112,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 ";
 
         [Fact]
-        public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenOnlyVariantName()
+        public void MsTestGeneratorProvider_ExampleSetSingleColumn_ShouldSetDescriptionWithVariantNameFromFirstColumn()
         {
             // ARRANGE
             var document = ParseDocumentFromString(SampleFeatureFile);
@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsTheSame()
+        public void MsTestGeneratorProvider_ExamplesWithIdenticalFirstColumn_ShouldSetDescriptionCorrectly()
         {
             // ARRANGE
             var document = ParseDocumentFromString(SampleFeatureFileSameFirstColumn);
@@ -148,7 +148,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsDifferentAndMultipleColumns()
+        public void MsTestGeneratorProvider_ExamplesFirstColumnIsDifferentAndMultipleColumns_ShouldSetDescriptionCorrectly()
         {
             // ARRANGE
             var document = ParseDocumentFromString(SampleFeatureFileMultipleColumns);
@@ -166,7 +166,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenExampleSetIdentifierIsUsed()
+        public void MsTestGeneratorProvider_ExampleSetIdentifiers_ShouldSetDescriptionCorrectly()
         {
             // ARRANGE
             var document = ParseDocumentFromString(SampleFeatureFileWithMultipleExampleSets);
@@ -188,7 +188,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void MsTestGeneratorShouldInvokeFeatureSetupMethodWithGlobalNamespaceAlias()
+        public void MsTestGeneratorProvider_ShouldInvokeFeatureSetupMethodWithGlobalNamespaceAlias()
         {
             // ARRANGE
             var document = ParseDocumentFromString(SampleFeatureFileWithMultipleExampleSets);
