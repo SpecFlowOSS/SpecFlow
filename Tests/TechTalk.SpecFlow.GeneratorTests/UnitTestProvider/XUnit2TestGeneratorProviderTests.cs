@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 Then something should happen";
 
         [Fact]
-        public void XUnit2TestGeneratorProvider_OnlyVariantName_ShouldSetDescriptionCorrectly()
+        public void XUnit2TestGeneratorProvider_OnlyVariantName_ShouldSetInlineDataAttributesCorrectly()
         {
             // ARRANGE
             const string sampleFeatureFile = @"
@@ -53,7 +53,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
-            code.Should().NotBeNull();
             var inlineDataAttributes = code.Class()
                                            .Members()
                                            .Single(m => m.Name == "SimpleScenarioOutline")
@@ -61,8 +60,108 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                                            .Where(a => a.Name == XUnitInlineDataAttribute)
                                            .ToArray();
 
-            inlineDataAttributes.Should().Contain(attribute => attribute.ArgumentValues().First() as string == "something");
-            inlineDataAttributes.Should().Contain(attribute => attribute.ArgumentValues().First() as string == "something else");
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "something");
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "something else");
+        }
+
+        [Fact]
+        public void XUnit2TestGeneratorProvider_ExamplesFirstColumnIsDifferentAndMultipleColumns_ShouldSetDescriptionCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFileMultipleColumns = @"
+              Feature: Sample feature file
+              
+              Scenario: Simple scenario
+                  Given there is something
+                  When I do something
+                  Then something should happen
+              
+              @mytag
+              Scenario Outline: Simple Scenario Outline
+                  Given there is something
+                      """"""
+                        long string
+                      """"""
+                  When I do <what>
+                      | foo | bar |
+                      | 1   | 2   |
+                  Then something should happen
+              Examples:
+                  | what           | what else       |
+                  | something      | thing           |
+                  | something else | different thing |
+";
+
+            var document = ParseDocumentFromString(sampleFeatureFileMultipleColumns);
+            var sampleTestGeneratorProvider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var inlineDataAttributes = code.Class()
+                                           .Members()
+                                           .Single(m => m.Name == "SimpleScenarioOutline")
+                                           .CustomAttributes()
+                                           .Where(a => a.Name == XUnitInlineDataAttribute)
+                                           .ToArray();
+
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "something");
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "something else");
+        }
+
+        [Fact]
+        public void XUnit2TestGeneratorProvider_ExampleIdentifier_ShouldSetInlineDataAttributesCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFileWithMultipleExampleSets = @"
+              Feature: Sample feature file
+              
+              Scenario: Simple scenario
+                  Given there is something
+                  When I do something
+                  Then something should happen
+              
+              @mytag
+              Scenario Outline: Simple Scenario Outline
+                  Given there is something
+                      """"""
+                        long string
+                      """"""
+                  When I do <what>
+                      | foo | bar |
+                      | 1   | 2   |
+                  Then something should happen
+              Examples:
+                  | what           |
+                  | something      |
+                  | something else |
+              Examples:
+                  | what           |
+                  | another        |
+                  | and another    |
+";
+
+            var document = ParseDocumentFromString(sampleFeatureFileWithMultipleExampleSets);
+            var sampleTestGeneratorProvider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var inlineDataAttributes = code.Class()
+                                           .Members()
+                                           .Single(m => m.Name == "SimpleScenarioOutline")
+                                           .CustomAttributes()
+                                           .Where(a => a.Name == XUnitInlineDataAttribute)
+                                           .ToArray();
+
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "something");
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "something else");
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "another");
+            inlineDataAttributes.Should().ContainSingle(attribute => attribute.ArgumentValues().First() as string == "and another");
         }
 
         [Fact]
@@ -72,7 +171,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider()));
             var context = new Generator.TestClassGenerationContext(
                 unitTestGeneratorProvider: null,
-                document: new Parser.SpecFlowDocument(
+                document: new SpecFlowDocument(
                     feature: new SpecFlowFeature(
                         tags: null,
                         location: null,
@@ -107,9 +206,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             modifiedAttribute.Should().NotBeNull();
 
-            
-            var attribute = modifiedAttribute.Arguments.OfType<CodeAttributeArgument>()
-                .FirstOrDefault(a => a.Name == "DisplayName");
+
+            var attribute = modifiedAttribute.Arguments
+                                             .OfType<CodeAttributeArgument>()
+                                             .FirstOrDefault(a => a.Name == "DisplayName");
 
             attribute.Should().NotBeNull();
             
@@ -142,7 +242,8 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             modifiedAttribute.Should().NotBeNull();
 
 
-            var attribute = modifiedAttribute.Arguments.OfType<CodeAttributeArgument>()
+            var attribute = modifiedAttribute.Arguments
+                                             .OfType<CodeAttributeArgument>()
                                              .FirstOrDefault(a => a.Name == XUnit2TestGeneratorProvider.THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME);
 
             attribute.Should().NotBeNull();
@@ -153,6 +254,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             primitiveExpression.Should().NotBeNull();
             primitiveExpression.Value.Should().Be(XUnit2TestGeneratorProvider.SKIP_REASON);
         }
+
 
         /*
          * Based on w1ld's `Should_set_skip_attribute_for_theory`,
@@ -201,8 +303,9 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             modifiedAttribute.Should().NotBeNull();
 
-            var attribute = modifiedAttribute.Arguments.OfType<CodeAttributeArgument>()
-                .FirstOrDefault(a => a.Name == "DisplayName");
+            var attribute = modifiedAttribute.Arguments
+                                             .OfType<CodeAttributeArgument>()
+                                             .FirstOrDefault(a => a.Name == "DisplayName");
 
             attribute.Should().NotBeNull();
 
@@ -273,7 +376,8 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioInitialize");
             scenarioStartMethod.Statements.Count.Should().Be(2);
 
-            var expression = scenarioStartMethod.Statements[1].Should().BeOfType<CodeMethodInvokeExpression>().Which;
+            var expression = scenarioStartMethod.Statements[1].Should().BeOfType<CodeExpressionStatement>()
+                                                .Which.Expression.Should().BeOfType<CodeMethodInvokeExpression>().Which;
             expression.Parameters[0].Should().BeOfType<CodeVariableReferenceExpression>()
                       .Which.VariableName.Should().Be("_testOutputHelper");
 
