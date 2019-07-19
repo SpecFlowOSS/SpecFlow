@@ -66,7 +66,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void Should_set_displayname_theory_attribute()
+        public void XUnit2TestGeneratorProvider_ShouldSetDisplayNameForTheoryAttribute()
         {
             // Arrange
             var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider()));
@@ -121,10 +121,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void Should_set_skip_attribute_for_theory()
+        public void XUnit2TestGeneratorProvider_ShouldSetSkipAttributeForTheory()
         {
             // Arrange
-            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider())); // TODO: what about XUnit2TestGeneratorProvider ?
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider()));
 
             // Act
             var codeMemberMethod = new CodeMemberMethod
@@ -160,10 +160,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
          */
 
         [Fact]
-        public void Should_set_displayname_attribute()
+        public void XUnit2TestGeneratorProvider_ShouldSetDisplayNameForFactAttribute()
         {
             // Arrange
-            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider())); // TODO: what about XUnit2TestGeneratorProvider ?
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(new CSharpCodeProvider()));
             var context = new Generator.TestClassGenerationContext(
                 unitTestGeneratorProvider: null,
                 document: new Parser.SpecFlowDocument(
@@ -214,88 +214,80 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void Should_initialize_testOutputHelper_field_in_constructor()
+        public void XUnit2TestGeneratorProvider_ShouldInitializeTestOutputHelperFieldInConstructor()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFile))
-            {
-                var document = parser.Parse(reader, null);
-                document.Should().NotBeNull();
-                
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFile);
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = provider.CreateUnitTestConverter();
 
-                var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                var converter = provider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+            code.Should().NotBeNull();
+            
+            // ASSERT
+            var classConstructor = code.Class().Members().Single(m => m.Name == ".ctor");
+            classConstructor.Should().NotBeNull();
+            classConstructor.Parameters.Count.Should().Be(2);
+            classConstructor.Parameters[1].Type.BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
+            classConstructor.Parameters[1].Name.Should().Be("testOutputHelper");
 
-                code.Should().NotBeNull();
-                
-                var classContructor = code.Class().Members().Single(m => m.Name == ".ctor");
-                classContructor.Should().NotBeNull();
-                classContructor.Parameters.Count.Should().Be(2);
-                classContructor.Parameters[1].Type.BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
-                classContructor.Parameters[1].Name.Should().Be("testOutputHelper");
-
-                var initOutputHelper = classContructor.Statements.OfType<CodeAssignStatement>().First();
-                initOutputHelper.Should().NotBeNull();
-                ((CodeFieldReferenceExpression)(initOutputHelper.Left)).FieldName.Should().Be("_testOutputHelper");
-                ((CodeVariableReferenceExpression)(initOutputHelper.Right)).VariableName.Should().Be("testOutputHelper");
-            }
+            var initOutputHelper = classConstructor.Statements.OfType<CodeAssignStatement>().First();
+            initOutputHelper.Should().NotBeNull();
+            ((CodeFieldReferenceExpression)initOutputHelper.Left).FieldName.Should().Be("_testOutputHelper");
+            ((CodeVariableReferenceExpression)initOutputHelper.Right).VariableName.Should().Be("testOutputHelper");
         }
 
         [Fact]
-        public void Should_add_testOutputHelper_field_in_class()
+        public void XUnit2TestGeneratorProvider_Should_add_testOutputHelper_field_in_class()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFile))
-            {
-                var document = parser.Parse(reader, null);
-                document.Should().NotBeNull();
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFile);
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = provider.CreateUnitTestConverter();
 
-                var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
-
-                var converter = provider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-                
-                code.Should().NotBeNull();
-                var loggerInstance = code.Class().Members.OfType<CodeMemberField>().First(m => m.Name == @"_testOutputHelper");
-                loggerInstance.Type.BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
-                loggerInstance.Attributes.Should().Be(MemberAttributes.Private | MemberAttributes.Final);
-            }
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+            
+            // ASSERT
+            code.Should().NotBeNull();
+            var loggerInstance = code.Class().Members.OfType<CodeMemberField>().First(m => m.Name == @"_testOutputHelper");
+            loggerInstance.Type.BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
+            loggerInstance.Attributes.Should().Be(MemberAttributes.Private | MemberAttributes.Final);
         }
 
         [Fact]
-        public void Should_register_testOutputHelper_on_scenario_setup()
+        public void XUnit2TestGeneratorProvider_Should_register_testOutputHelper_on_scenario_setup()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFile))
-            {
-                var document = parser.Parse(reader, null);
-                document.Should().NotBeNull();
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFile);
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = provider.CreateUnitTestConverter();
 
-                var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                var converter = provider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+            // ASSERT
+            code.Should().NotBeNull();
+            var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioInitialize");
+            scenarioStartMethod.Statements.Count.Should().Be(2);
 
-                code.Should().NotBeNull();
-                var scenarioStartMethod = code.Class().Members().Single(m => m.Name == @"ScenarioInitialize");
+            var expression = scenarioStartMethod.Statements[1].Should().BeOfType<CodeMethodInvokeExpression>().Which;
+            expression.Parameters[0].Should().BeOfType<CodeVariableReferenceExpression>()
+                      .Which.VariableName.Should().Be("_testOutputHelper");
 
-                scenarioStartMethod.Statements.Count.Should().Be(2);
-                var expression = (scenarioStartMethod.Statements[1] as CodeExpressionStatement).Expression;
-                var method = (expression as CodeMethodInvokeExpression).Method;
-                (method.TargetObject as CodePropertyReferenceExpression).PropertyName.Should().Be("ScenarioContainer");
-                method.MethodName.Should().Be("RegisterInstanceAs");
-                method.TypeArguments.Should().NotBeNullOrEmpty();
-                method.TypeArguments[0].BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
-
-                ((expression as CodeMethodInvokeExpression).Parameters[0] as CodeVariableReferenceExpression).VariableName.Should().Be("_testOutputHelper");
-            }
+            var method = expression.Method;
+            method.TargetObject.Should().BeOfType<CodePropertyReferenceExpression>()
+                  .Which.PropertyName.Should().Be("ScenarioContainer");
+            method.MethodName.Should().Be("RegisterInstanceAs");
+            method.TypeArguments.Should().NotBeNullOrEmpty();
+            method.TypeArguments[0].BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
         }
 
-        public SpecFlowDocument ParseDocumentFromString(string documentSource)
+        public SpecFlowDocument ParseDocumentFromString(string documentSource, CultureInfo parserCultureInfo = null)
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+            var parser = new SpecFlowGherkinParser(parserCultureInfo ?? new CultureInfo("en-US"));
             using (var reader = new StringReader(documentSource))
             {
                 var document = parser.Parse(reader, null);
