@@ -114,126 +114,117 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenOnlyVariantName()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFile))
-            {
-                var document = parser.Parse(reader, null);
-                Assert.NotNull(document);
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFile);
+            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
-                var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-
-                Assert.NotNull(code);
-                var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
-                var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
-            }
+            // ASSERT
+            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
+            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
         }
 
         [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsTheSame()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFileSameFirstColumn))
-            {
-                var document = parser.Parse(reader, null);
-                Assert.NotNull(document);
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFileSameFirstColumn);
+            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
-                var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-
-                Assert.NotNull(code);
-                var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant0").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 0");
-                var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant1").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 1");
-            }
+            // ASSERT
+            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant0").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 0");
+            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant1").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 1");
         }
 
         [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsDifferentAndMultipleColumns()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFileMultipleColumns))
-            {
-                var document = parser.Parse(reader, null);
-                Assert.NotNull(document);
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFileMultipleColumns);
+            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
-                var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-
-                Assert.NotNull(code);
-                var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
-                var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
-            }
+            // ASSERT
+            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
+            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
         }
 
         [Fact]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenExampleSetIdentifierIsUsed()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFileWithMultipleExampleSets))
-            {
-                var document = parser.Parse(reader, null);
-                Assert.NotNull(document);
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFileWithMultipleExampleSets);
+            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
-                var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
-                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-
-                Assert.NotNull(code);
-                var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
-                var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
-                var descriptionAttributeForThirdScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_Another").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForThirdScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: another");
-                var descriptionAttributeForFourthScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_AndAnother").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-                descriptionAttributeForFourthScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: and another");
-            }
+            // ASSERT
+            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
+            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
+            var descriptionAttributeForThirdScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_Another").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForThirdScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: another");
+            var descriptionAttributeForFourthScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_AndAnother").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
+            descriptionAttributeForFourthScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: and another");
         }
 
         [Fact]
         public void MsTestGeneratorShouldInvokeFeatureSetupMethodWithGlobalNamespaceAlias()
         {
-            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-            using (var reader = new StringReader(SampleFeatureFileWithMultipleExampleSets))
+            // ARRANGE
+            var document = ParseDocumentFromString(SampleFeatureFileWithMultipleExampleSets);
+            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var featureSetupCall = code
+                .Class()
+                .Members()
+                .Single(m => m.Name == "TestInitialize")
+                .Statements
+                .OfType<CodeConditionStatement>()
+                .First()
+                .TrueStatements
+                .OfType<CodeExpressionStatement>()
+                .First()
+                .Expression
+                .As<CodeMethodInvokeExpression>();
+
+            featureSetupCall.Should().NotBeNull();
+            featureSetupCall.Method.MethodName.Should().Be("FeatureSetup");
+            featureSetupCall.Method.TargetObject.As<CodeTypeReferenceExpression>().Type.Options.Should().Be(CodeTypeReferenceOptions.GlobalReference);
+        }
+
+        public SpecFlowDocument ParseDocumentFromString(string documentSource, CultureInfo parserCultureInfo = null)
+        {
+            var parser = new SpecFlowGherkinParser(parserCultureInfo ?? new CultureInfo("en-US"));
+            using (var reader = new StringReader(documentSource))
             {
                 var document = parser.Parse(reader, null);
-                Assert.NotNull(document);
-
-                var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
-
-                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
-                var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-
-                Assert.NotNull(code);
-                var featureSetupCall = code
-                    .Class()
-                    .Members()
-                    .Single(m => m.Name == "TestInitialize")
-                    .Statements
-                    .OfType<CodeConditionStatement>()
-                    .First()
-                    .TrueStatements
-                    .OfType<CodeExpressionStatement>()
-                    .First()
-                    .Expression
-                    .As<CodeMethodInvokeExpression>();
-
-                featureSetupCall.Should().NotBeNull();
-                featureSetupCall.Method.MethodName.Should().Be("FeatureSetup");
-                featureSetupCall.Method.TargetObject.As<CodeTypeReferenceExpression>().Type.Options.Should().Be(CodeTypeReferenceOptions.GlobalReference);
+                document.Should().NotBeNull();
+                return document;
             }
         }
     }
