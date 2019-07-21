@@ -1,23 +1,40 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using System.Linq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Specs.MSBuild.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.MSBuild.StepDefinitions
 {
     [Binding]
     public class GenerationSteps
     {
+        private readonly ProjectDriver _projectDriver;
+
+        public GenerationSteps(ProjectDriver projectDriver)
+        {
+            _projectDriver = projectDriver;
+        }
+
         [Given(@"a project with no features")]
         public void GivenAProjectWithNoFeatures()
         {
-            throw new PendingStepException();
+            _projectDriver.CreateProject();
         }
         
         [Given(@"a project with these features")]
         public void GivenAProjectWithTheseFeatures(Table table)
         {
             var featureNames = table.Rows.Select(row => row[0]);
+
+            foreach (var title in featureNames)
+            {
+                _projectDriver.AddFeatureFile(
+                $@"Feature: Feature {Guid.NewGuid()}
+Scenario: {title}
+Given a step");
+            }
         }
         
         [Given(@"a project with these features which has been built successfully")]
@@ -29,7 +46,7 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.StepDefinitions
         [When(@"the project is built")]
         public void WhenTheProjectIsBuilt()
         {
-            throw new PendingStepException();
+            _projectDriver.BuildProject();
         }
         
         [When(@"the ""(.*)"" feature is removed")]
@@ -41,7 +58,7 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.StepDefinitions
         [Then(@"the project should be compiled without errors")]
         public void ThenTheProjectShouldBeCompiledWithoutErrors()
         {
-            throw new PendingStepException();
+            _projectDriver.BuiltSuccessfully.Should().BeTrue();
         }
         
         [Then(@"the project output should be a test suite for these features")]

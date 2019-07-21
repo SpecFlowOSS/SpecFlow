@@ -5,6 +5,23 @@
     <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == ''">..\tasks\net471\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateSpecFlowCodeFilesDependsOn>
+      EnsureLegacySpecFlowCodeGenerationIsDisabled;
+      DetermineSpecFlowGeneratedCodeLocation;
+      $(GenerateSpecFlowCodeFilesDependsOn)
+    </GenerateSpecFlowCodeFilesDependsOn>
+    <CleanSpecFlowGeneratedCodeFilesDependsOn>
+      DetermineSpecFlowGeneratedCodeLocation;
+      $(CleanSpecFlowGeneratedCodeFilesDependsOn)
+    </CleanSpecFlowGeneratedCodeFilesDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SpecFlowFeature Include="**/*.feature" />
+    <SpecFlowFeature Include="**/*.feature.xls" />
+  </ItemGroup>
+
   <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>
 
 </Project>

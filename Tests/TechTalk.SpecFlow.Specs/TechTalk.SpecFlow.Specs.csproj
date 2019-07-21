@@ -1,6 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Manually import the MSBuild generation properties to use the version in source. -->
   <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
+  <Import Project="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\build\SpecFlow.xUnit.props" />
+
+  <PropertyGroup>
+    <!-- Set up paths to use local built generation projects (select based on runtime). -->
+    <_SpecFlowTasksAssemblyPathBase>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\</_SpecFlowTasksAssemblyPathBase>
+    <_SpecFlowTasksAssemblyPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowTasksAssemblyPathBase)netcoreapp2.0\</_SpecFlowTasksAssemblyPath>
+    <_SpecFlowTasksAssemblyPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowTasksAssemblyPathBase)net471\</_SpecFlowTasksAssemblyPath>
+    <SpecFlowTasksAssembly>$(_SpecFlowTasksAssemblyPath)SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
+
+    <_SpecFlowXUnitGeneratorPluginPathBase>..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\</_SpecFlowXUnitGeneratorPluginPathBase>
+    <_SpecFlowXUnitGeneratorPluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitGeneratorPluginPathBase)netcoreapp2.0\</_SpecFlowXUnitGeneratorPluginPath>
+    <_SpecFlowXUnitGeneratorPluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitGeneratorPluginPathBase)net471\</_SpecFlowXUnitGeneratorPluginPath>
+    <SpecFlowXUnitGeneratorPluginAssembly>$(_SpecFlowXUnitGeneratorPluginPath)TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</SpecFlowXUnitGeneratorPluginAssembly>
+
+    <_SpecFlowXUnitRuntimePluginPathBase>..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\$(Configuration)\</_SpecFlowXUnitRuntimePluginPathBase>
+    <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)netcoreapp2.0\</_SpecFlowXUnitRuntimePluginPath>
+    <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net45\</_SpecFlowXUnitRuntimePluginPath>
+    <SpecFlowXUnitRuntimePluginAssembly>$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
+
+    <!-- Force projects to be resolved *before* generating source so we get up-to-date generation. -->
+    <GenerateSpecFlowCodeFilesDependsOn>ResolveReferences;$(GenerateSpecFlowCodeFilesDependsOn)</GenerateSpecFlowCodeFilesDependsOn>
+  </PropertyGroup>
 
   <PropertyGroup>
     <TargetFramework>$(SpecFlow_Specs_TFM)</TargetFramework>
@@ -12,7 +35,6 @@
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <Configurations>Debug;Release;Debug-XUnit;Debug-MSTest;Debug-NUnit</Configurations>
     <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
-    <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>true</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
 
   </PropertyGroup>
@@ -21,12 +43,12 @@
 
     <EmbeddedResource Include=".\Drivers\Templates\**\*" />
     <EmbeddedResource Include=".\TestFiles\**\*" />
-    
+
     <None Include="App.config" />
 
     <Compile Remove="NuGetPackageVersion.template.cs" />
     <None Include="NuGetPackageVersion.template.cs" />
-    <SpecFlowFeatureFiles Remove="TestFiles/**/*.feature" />
+    <SpecFlowFeature Remove="TestFiles/**/*.feature" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,128 +56,11 @@
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <CucumberMessagesSpecFlowFeatureFiles Include="..\..\ExternalRepositories\cucumber\cucumber-messages\specs\*.feature" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="TestFiles\and.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>and.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\asterisks.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>asterisks.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\background.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>background.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\background_withtitle.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>background_withtitle.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\but.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>but.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\comments.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>comments.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\dutch.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>dutch.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\featureheader.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>featureheader.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\french.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>french.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\full.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>full.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\german.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>german.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\givenwhenthenduplication.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>givenwhenthenduplication.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\hungarian.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>hungarian.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\mixedgivenwhenthen.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>mixedgivenwhenthen.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\multilineargument.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>multilineargument.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\multilinetitle.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>multilinetitle.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\scenariooutline.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>scenariooutline.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\simple.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>simple.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\swedish.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>swedish.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\tableargument.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>tableargument.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\taggedexamples.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>taggedexamples.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\tags.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>tags.feature</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestFiles\whitespaces.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>whitespaces.feature</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -213,193 +118,8 @@
 
 
   <ItemGroup>
-    <Compile Update="Features\Build systems.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Build systems.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Contexts\AccessingContexts.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AccessingContexts.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Contexts\ContextInjection.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ContextInjection.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Contexts\InjectoContextToHooks.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>InjectoContextToHooks.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Description.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Description.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\AsyncSupport.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AsyncSupport.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\BasicExecution.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BasicExecution.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\BindingCulture.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BindingCulture.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\CallingStepsFromStepDefinition.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CallingStepsFromStepDefinition.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\Configuration.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Configuration.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\ExecutionSmokeTests.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExecutionSmokeTests.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\ExternalSteps.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExternalSteps.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\IgnoredFeatures.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IgnoredFeatures.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\IgnoredScenarios.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IgnoredScenarios.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\InAppDomainParallelExecution.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>InAppDomainParallelExecution.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\ObsoleteSteps.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ObsoleteSteps.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\ScenarioOutlines.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScenarioOutlines.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\ScopedSteps.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScopedSteps.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\StepArguments.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StepArguments.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\StepArgumentTransformations.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StepArgumentTransformations.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\StepDefinitionsWithoutRegex.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StepDefinitionsWithoutRegex.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\TaggedExamples.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TaggedExamples.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Execution\Tracing.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Tracing.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Hooks\HookSupport.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HookSupport.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Hooks\OrderedHookSupport.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OrderedHookSupport.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Hooks\ScopedHooks.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScopedHooks.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\LanguageSupport.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>LanguageSupport.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Parser\DescriptionParser.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DescriptionParser.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Parser\ParserSmokeTests.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ParserSmokeTests.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\Parser\ParsingErrors.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ParsingErrors.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\RegressionTests\MsTest\GH1052.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>GH1052.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\RegressionTests\NUnit\GH1052.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>GH1052.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\SingleFileGenerator Checks.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SingleFileGenerator Checks.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\UnitTestProviderSpecific\MsTest\DeploymentItem.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DeploymentItem.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\UnitTestProviderSpecific\MsTest\TestContext.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TestContext.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Features\UnitTestProviderSpecific\XUnit\XUnit2Provider.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>XUnit2Provider.feature</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-
-  <ItemGroup>
     <None Update="Features\Build systems.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Build systems.feature.cs</LastGenOutput>
+      <Generator></Generator>
     </None>
     <None Update="Features\Contexts\AccessingContexts.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -635,21 +355,8 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.0</_SpecFlow_TaskFolder>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net471</_SpecFlow_TaskFolder>
-    <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
-  </PropertyGroup>
-
-  <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" /> <!-- has to be before the PropertyGroup change-->
-  <Import Project="$(MSBuildThisFileDirectory)..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\build\SpecFlow.xUnit.targets" />
-  <PropertyGroup>
-    <BuildDependsOn>
-      PreBuild;
-      $(BuildDependsOn)
-    </BuildDependsOn>
-  </PropertyGroup>
-
-  
+  <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->
+  <Import Project="..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+  <Import Project="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\build\SpecFlow.xUnit.targets" />
 
 </Project>

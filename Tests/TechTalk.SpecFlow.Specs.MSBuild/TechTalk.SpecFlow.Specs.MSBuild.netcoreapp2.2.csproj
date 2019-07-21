@@ -27,14 +27,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <!--<TargetFrameworks>net48;netcoreapp2.2</TargetFrameworks>-->
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>TechTalk.SpecFlow.Specs.MSBuild.netcoreapp2.2</AssemblyName>
+
+    <RootNamespace>TechTalk.SpecFlow.Specs.MSBuild</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.7.0" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461" />
+    <PackageReference Include="Microsoft.Build.Runtime" Version="15.8.166" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
@@ -48,18 +51,6 @@
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' != '.NETCoreApp' ">
-    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework\TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">
-    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.MSBuild.Support.NetCore\TechTalk.SpecFlow.Specs.MSBuild.Support.NetCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Features\Generation.feature" />
   </ItemGroup>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->

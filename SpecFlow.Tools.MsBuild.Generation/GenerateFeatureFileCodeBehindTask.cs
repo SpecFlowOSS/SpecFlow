@@ -36,8 +36,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         public override bool Execute()
         {
-            Debugger.Launch();
-
             try
             {
                 try

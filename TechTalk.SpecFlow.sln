@@ -90,7 +90,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AzurePipelines", "AzurePipe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Autofac.SpecFlowPlugin", "Plugins\SpecFlow.Autofac.SpecFlowPlugin\SpecFlow.Autofac.SpecFlowPlugin.csproj", "{EA16606D-6F1C-4A4D-B7A1-8A08B448CD86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.MSBuild", "Tests\TechTalk.SpecFlow.Specs.MSBuild\TechTalk.SpecFlow.Specs.MSBuild.csproj", "{0554A219-483E-4FDF-9E11-F332F7EEB99B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs.MSBuild", "Tests\TechTalk.SpecFlow.Specs.MSBuild\TechTalk.SpecFlow.Specs.MSBuild.csproj", "{0554A219-483E-4FDF-9E11-F332F7EEB99B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLib", "TestLib\TestLib.csproj", "{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework", "Tests\TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework\TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework.csproj", "{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.MSBuild.Support.NetCore", "Tests\TechTalk.SpecFlow.Specs.MSBuild.Support.NetCore\TechTalk.SpecFlow.Specs.MSBuild.Support.NetCore.csproj", "{46CBB375-0791-4585-9791-2D83AE8E7ED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -378,6 +384,42 @@ Global
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{BD594B98-5FD5-4DD6-AE5E-AC844EF69FDF}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -404,6 +446,8 @@ Global
 		{48E162BC-9431-450D-8353-66D396DCB5FE} = {577A0375-1436-446C-802B-3C75C8CEF94F}
 		{EA16606D-6F1C-4A4D-B7A1-8A08B448CD86} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{D8FA51DC-873A-4B5F-9B9F-F48D8021490D} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{46CBB375-0791-4585-9791-2D83AE8E7ED1} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}
