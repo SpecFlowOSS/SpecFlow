@@ -66,6 +66,7 @@ namespace TechTalk.SpecFlow
 
         public void SkipScenario()
         {
+            _executionEngine.OnScenarioSkipped();
         }
 
         public void OnTestRunEnd()

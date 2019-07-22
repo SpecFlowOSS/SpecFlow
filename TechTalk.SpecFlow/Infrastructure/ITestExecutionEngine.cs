@@ -18,6 +18,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         void OnAfterLastStep();
         void OnScenarioEnd();
 
+        void OnScenarioSkipped();
+
         void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg);
 
         void Pending();

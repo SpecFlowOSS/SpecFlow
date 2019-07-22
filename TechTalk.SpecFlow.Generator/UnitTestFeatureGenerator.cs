@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Generator
         private const string SCENARIO_START_NAME = "ScenarioStart";
         private const string SCENARIO_CLEANUP_NAME = "ScenarioCleanup";
         private const string TEST_INITIALIZE_NAME = "TestInitialize";
-        private const string TEST_CLEANUP_NAME = "ScenarioTearDown";
+        private const string TEST_CLEANUP_NAME = "TestTearDown";
         private const string TESTCLASS_INITIALIZE_NAME = "FeatureSetup";
         private const string TESTCLASS_CLEANUP_NAME = "FeatureTearDown";
         private const string BACKGROUND_NAME = "FeatureBackground";
@@ -587,7 +587,6 @@ namespace TechTalk.SpecFlow.Generator
                         tagsExpression)));
 
             GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
-            GenerateScenarioStartMethodCall(generationContext, testMethod);
 
             GenerateTestMethodBody(generationContext, scenario, testMethod, paramToIdentifier, feature);
 
@@ -602,6 +601,7 @@ namespace TechTalk.SpecFlow.Generator
             }
             else
             {
+                GenerateScenarioStartMethodCall(generationContext, testMethod);
                 GenerateMethodBodyForNotSkippedScenarios(generationContext, scenario, testMethod, paramToIdentifier);
             }
         }

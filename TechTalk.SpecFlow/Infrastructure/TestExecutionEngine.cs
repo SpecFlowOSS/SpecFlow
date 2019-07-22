@@ -213,8 +213,18 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioEnd()
         {
-            FireScenarioEvents(HookType.AfterScenario);
+            if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
+            {
+                FireScenarioEvents(HookType.AfterScenario);
+            }
+
             _contextManager.CleanupScenarioContext();
+        }
+
+        public void OnScenarioSkipped()
+        {
+            // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
+            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
         }
 
         public void Pending()
