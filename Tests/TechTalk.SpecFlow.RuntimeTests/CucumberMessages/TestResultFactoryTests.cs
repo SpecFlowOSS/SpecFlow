@@ -1,22 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using FluentAssertions;
 using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
-using TechTalk.SpecFlow.ErrorHandling;
 using Xunit;
-using static Io.Cucumber.Messages.TestResult.Types;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
     public class TestResultFactoryTests
     {
+        private ScenarioContext CreateScenarioContext(ScenarioExecutionStatus scenarioExecutionStatus)
+        {
+            return new ScenarioContext(null, new ScenarioInfo("",""), null)
+            {
+                ScenarioExecutionStatus = scenarioExecutionStatus
+            };
+        }
+
         [Fact(DisplayName = @"BuildFromScenarioContext should return a failure with an ArgumentNullException when null is passed")]
         public void BuildFromScenarioContext_Null_ShouldReturnFailureWithArgumentNullException()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = new TestResultFactory(new Mock<ITestResultPartsFactory>().Object);
 
             // ACT
             var actualTestResult = testResultFactory.BuildFromContext(null, null);
@@ -26,255 +34,57 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                             .Exception.Should().BeOfType<ArgumentNullException>();
         }
 
-        [Fact(DisplayName = @"BuildPassedResult should return a TestResult with status Passed")]
-        public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithStatusPassed()
+
+        private static Dictionary<ScenarioExecutionStatus, Expression<Action<ITestResultPartsFactory>>> _testCases = new Dictionary<ScenarioExecutionStatus, Expression<Action<ITestResultPartsFactory>>>()
+        {
+            { ScenarioExecutionStatus.OK, (factory => factory.BuildPassedResult(It.IsAny<ulong>()))},
+            { ScenarioExecutionStatus.BindingError, (factory => factory.BuildAmbiguousResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>()))},
+            { ScenarioExecutionStatus.StepDefinitionPending, (factory => factory.BuildPendingResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>()))},
+            { ScenarioExecutionStatus.TestError, (factory => factory.BuildFailedResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>()))},
+            { ScenarioExecutionStatus.UndefinedStep, (factory => factory.BuildUndefinedResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>(), It.IsAny<FeatureContext>()))},
+            { ScenarioExecutionStatus.Skipped, (factory => factory.BuildSkippedResult(It.IsAny<ulong>()))},
+        };
+
+        public static IEnumerable<object[]> GetTestCases
+        {
+            get
+            {
+                foreach (var func in _testCases)
+                {
+                    yield return new object[] {func.Key, func.Value};
+                }
+            }
+            
+        }
+
+        [Theory(DisplayName = "Correct method on TestResultPartsFactory is called for ScenarioExecutionStatus")]
+        [Xunit.MemberData(nameof(GetTestCases))]
+        
+        public void BuildFromContext_PassedScenario_TestResultPartFactoryBuildPassedResultIsCalled(ScenarioExecutionStatus scenarioExecutionStatus, Expression<Action<ITestResultPartsFactory>> expression)
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const Status expectedStatus = Status.Passed;
+            var testResultPartsFactoryMock = new Mock<ITestResultPartsFactory>();
+            var testResultFactory = new TestResultFactory(testResultPartsFactoryMock.Object);
 
             // ACT
-            var actualTestResult = testResultFactory.BuildPassedResult(10Lu);
+            var actualTestResult = testResultFactory.BuildFromContext(CreateScenarioContext(scenarioExecutionStatus), null);
 
             // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Status.Should().Be(expectedStatus);
+             testResultPartsFactoryMock.Verify(expression, Times.Once);
         }
 
-        [Fact(DisplayName = @"BuildPassedResult should return a TestResult with the passed nanoseconds duration")]
-        public void BuildPassedResult_Nanoseconds_ShouldReturnTestResultWithCorrectNanoseconds()
+        [Fact(DisplayName = "Correct method on TestResultPartsFactory is called for failed Scenario")]
+        public void BuildFromContext_FailedScenario_TestResultPartFactoryBuildPassedResultIsCalled()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const ulong expectedNanoseconds = 15Lu;
+            var testResultPartsFactoryMock = new Mock<ITestResultPartsFactory>();
+            var testResultFactory = new TestResultFactory(testResultPartsFactoryMock.Object);
 
             // ACT
-            var actualTestResult = testResultFactory.BuildPassedResult(expectedNanoseconds);
+            var actualTestResult = testResultFactory.BuildFromContext(CreateScenarioContext(ScenarioExecutionStatus.OK), null);
 
             // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
-        }
-
-        [Fact(DisplayName = @"BuildPassedResult should return a TestResult with empty message")]
-        public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithEmptyMessage()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const string expectedMessage = "";
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildPassedResult(10Lu);
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Message.Should().Be(expectedMessage);
-        }
-
-        [Fact(DisplayName = @"BuildFailedResult should return a TestResult with status Failed")]
-        public void BuildFailedResult_ValidParameters_ShouldReturnTestResultWithStatusFailed()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const Status expectedStatus = Status.Failed;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildFailedResult(10Lu, "Test Message");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Status.Should().Be(expectedStatus);
-        }
-
-        [Fact(DisplayName = @"BuildFailedResult should return a TestResult with the passed nanoseconds duration")]
-        public void BuildFailedResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const ulong expectedNanoseconds = 15Lu;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildFailedResult(expectedNanoseconds, "Test Message");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
-        }
-
-        [Fact(DisplayName = @"BuildFailedResult should return a TestResult with the passed message")]
-        public void BuildFailedResult_Message_ShouldReturnTestResultWithMessage()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const string expectedMessage = "This is a test message";
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildFailedResult(10Lu, expectedMessage);
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Message.Should().Be(expectedMessage);
-        }
-
-        [Fact(DisplayName = @"BuildPendingResult should return a TestResult with status Pending")]
-        public void BuildPendingMessage_ValidParameters_ShouldReturnTestResultWithStatusPending()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const Status expectedStatus = Status.Pending;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildPendingResult(10Lu, "Pending test");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Status.Should().Be(expectedStatus);
-        }
-
-        [Fact(DisplayName = @"BuildPendingResult should return a TestResult with the passed nanoseconds duration")]
-        public void BuildPendingResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const ulong expectedNanoseconds = 15Lu;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildPendingResult(expectedNanoseconds, "Pending test");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
-        }
-
-        [Fact(DisplayName = @"BuildPendingResult should return a TestResult with the passed message")]
-        public void BuildPendingResult_Message_ShouldReturnTestResultWithMessage()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const string expectedMessage = "This is a test message";
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildPendingResult(10Lu, expectedMessage);
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Message.Should().Be(expectedMessage);
-        }
-
-        [Fact(DisplayName = @"BuildAmbiguousResult should return a TestResult with status Ambiguous")]
-        public void BuildAmbiguousResult_ValidParameters_ShouldReturnTestResultWithStatusAmbiguous()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const Status expectedStatus = Status.Ambiguous;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildAmbiguousResult(10Lu, "Ambiguous test");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Status.Should().Be(expectedStatus);
-        }
-
-        [Fact(DisplayName = @"BuildAmbiguousResult should return a TestResult with the passed nanoseconds duration")]
-        public void BuildAmbiguousResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const ulong expectedNanoseconds = 15Lu;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildAmbiguousResult(expectedNanoseconds, "Ambiguous test");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
-        }
-
-        [Fact(DisplayName = @"BuildAmbiguousResult should return a TestResult with the passed message")]
-        public void BuildAmbiguousResult_Message_ShouldReturnTestResultWithMessage()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const string expectedMessage = "This is a test message";
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildAmbiguousResult(10Lu, expectedMessage);
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Message.Should().Be(expectedMessage);
-        }
-
-        [Fact(DisplayName = @"BuildUndefinedResult should return a TestResult with status Undefined")]
-        public void BuildUndefinedResult_ValidParameters_ShouldReturnTestResultWithStatusUndefined()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const Status expectedStatus = Status.Undefined;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildUndefinedResult(10Lu, "Undefined test");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Status.Should().Be(expectedStatus);
-        }
-
-        [Fact(DisplayName = @"BuildUndefinedResult should return a TestResult with the passed nanoseconds duration")]
-        public void BuildUndefinedResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const ulong expectedNanoseconds = 15Lu;
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildUndefinedResult(expectedNanoseconds, "Undefined test");
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
-        }
-
-        [Fact(DisplayName = @"BuildUndefinedResult should return a TestResult with the passed message")]
-        public void BuildUndefinedResult_Message_ShouldReturnTestResultWithMessage()
-        {
-            // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const string expectedMessage = "This is a test message";
-
-            // ACT
-            var actualTestResult = testResultFactory.BuildUndefinedResult(10Lu, expectedMessage);
-
-            // ASSERT
-            actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                            .Result.Message.Should().Be(expectedMessage);
-        }
-
-        public TestResultFactory GetTestResultFactory(Mock<IErrorProvider> errorProviderMock = null, Mock<ITestUndefinedMessageFactory> testUndefinedMessageFactoryMock = null)
-        {
-            var testResultFactory = new TestResultFactory(
-                new TestErrorMessageFactory(),
-                new TestPendingMessageFactory(errorProviderMock?.Object ?? GetErrorProviderMock().Object),
-                new TestAmbiguousMessageFactory(),
-                testUndefinedMessageFactoryMock?.Object ?? GetTestUndefinedMessageFactoryMock().Object);
-            return testResultFactory;
-        }
-
-        public Mock<IErrorProvider> GetErrorProviderMock()
-        {
-            var errorProviderMock = new Mock<IErrorProvider>();
-            errorProviderMock.Setup(m => m.GetPendingStepDefinitionError())
-                             .Returns(new PendingStepException());
-            return errorProviderMock;
-        }
-
-        public Mock<ITestUndefinedMessageFactory> GetTestUndefinedMessageFactoryMock()
-        {
-            var testUndefinedMessageFactoryMock = new Mock<ITestUndefinedMessageFactory>();
-            testUndefinedMessageFactoryMock.Setup(m => m.BuildFromContext(It.IsAny<ScenarioContext>(), It.IsAny<FeatureContext>()))
-                                           .Returns("Step definition not defined");
-            return testUndefinedMessageFactoryMock;
+            testResultPartsFactoryMock.Verify(m => m.BuildPassedResult(It.IsAny<ulong>()), Times.Once);
         }
     }
 }

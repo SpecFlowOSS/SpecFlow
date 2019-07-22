@@ -6,6 +6,7 @@
         StepDefinitionPending,
         UndefinedStep,
         BindingError,
-        TestError
+        TestError,
+        Skipped
     }
 }

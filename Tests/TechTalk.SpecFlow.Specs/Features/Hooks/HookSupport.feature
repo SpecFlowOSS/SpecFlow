@@ -108,8 +108,7 @@ Examples:
     | BeforeFeature       | 2     |
     | AfterFeature        | 2     |
     | BeforeTestRun       | 1     |
-#bug: nunit does not run the AfterTestRun event
-#	| AfterTestRun        | 1     |
+    | AfterTestRun        | 1     |
 
 Examples: Cucumber compatibility
     | event  | count |
