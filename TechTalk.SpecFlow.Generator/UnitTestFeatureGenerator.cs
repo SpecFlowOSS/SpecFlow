@@ -585,18 +585,62 @@ namespace TechTalk.SpecFlow.Generator
                         new CodePrimitiveExpression(scenario.Description),
                         tagsExpression)));
 
+            GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
+            GenerateScenarioStartMethodCall(generationContext, testMethod);
+
+            GenerateTestMethodBody(generationContext, scenario, testMethod, paramToIdentifier);
+
+            GenerateScenarioCleanupMethodCall(generationContext, testMethod);
+        }
+
+        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier)
+        {
+            if (IsIgnoredStepsContainer(scenario))
+            {
+                GenerateMethodBodyForSkippedScenario(testMethod);
+            }
+            else
+            {
+                GenerateMethodBodyForNotSkippedScenarios(generationContext, scenario, testMethod, paramToIdentifier);
+            }
+        }
+
+        internal bool IsIgnoredStepsContainer(StepsContainer stepsContainer)
+        {
+            return stepsContainer.GetTags().Any(t => t.Name is IGNORE_TAG);
+        }
+
+        internal void GenerateScenarioStartMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        {
+            testMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    generationContext.ScenarioStartMethod.Name));
+        }
+
+        internal void GenerateScenarioInitializeCall(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod)
+        {
             AddLineDirective(testMethod.Statements, scenario);
             testMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     new CodeThisReferenceExpression(),
                     generationContext.ScenarioInitializeMethod.Name,
                     new CodeVariableReferenceExpression("scenarioInfo")));
+        }
 
+        internal void GenerateScenarioCleanupMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        {
+            AddLineDirectiveHidden(testMethod.Statements);
+
+            // call scenario cleanup
             testMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     new CodeThisReferenceExpression(),
-                    generationContext.ScenarioStartMethod.Name));
+                    generationContext.ScenarioCleanupMethod.Name));
+        }
 
+        internal void GenerateMethodBodyForNotSkippedScenarios(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier)
+        {
             if (HasFeatureBackground(generationContext.Feature))
             {
                 AddLineDirective(testMethod.Statements, generationContext.Feature.Background);
@@ -610,18 +654,24 @@ namespace TechTalk.SpecFlow.Generator
             {
                 GenerateStep(testMethod, scenarioStep, paramToIdentifier);
             }
-
-            AddLineDirectiveHidden(testMethod.Statements);
-
-            // call scenario cleanup
-            testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.ScenarioCleanupMethod.Name));
         }
 
-        private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, StepsContainer scenarioDefinition, IEnumerable<Tag> additionalTags,
-            string variantName, string exampleSetIdentifier, bool rowTest = false)
+        internal void GenerateMethodBodyForSkippedScenario(CodeMemberMethod testMethod)
+        {
+            testMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeFieldReferenceExpression(null, TESTRUNNER_FIELD),
+                    nameof(TestRunner.SkipScenario)));
+        }
+
+        private void SetupTestMethod(
+            TestClassGenerationContext generationContext,
+            CodeMemberMethod testMethod,
+            StepsContainer scenarioDefinition,
+            IEnumerable<Tag> additionalTags,
+            string variantName,
+            string exampleSetIdentifier,
+            bool rowTest = false)
         {
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
@@ -782,7 +832,7 @@ namespace TechTalk.SpecFlow.Generator
             return GetSubstitutedString(docString == null ? null : docString.Content, paramToIdentifier);
         }
 
-        private class ParameterSubstitution : List<KeyValuePair<string, string>>
+        internal class ParameterSubstitution : List<KeyValuePair<string, string>>
         {
             public void Add(string parameter, string identifier)
             {
