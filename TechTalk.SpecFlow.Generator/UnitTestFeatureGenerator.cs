@@ -82,11 +82,11 @@ namespace TechTalk.SpecFlow.Generator
 
                 if (scenarioDefinition is ScenarioOutline scenarioOutline)
                 {
-                    GenerateScenarioOutlineTest(generationContext, scenarioOutline);
+                    GenerateScenarioOutlineTest(generationContext, scenarioOutline, feature);
                 }
                 else
                 {
-                    GenerateTest(generationContext, (Scenario)scenarioDefinition);
+                    GenerateTest(generationContext, (Scenario)scenarioDefinition, feature);
                 }
             }
 
@@ -367,7 +367,7 @@ namespace TechTalk.SpecFlow.Generator
             AddLineDirectiveHidden(backgroundMethod.Statements);
         }
 
-        private void GenerateScenarioOutlineTest(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline)
+        private void GenerateScenarioOutlineTest(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, SpecFlowFeature feature)
         {
             ValidateExampleSetConsistency(scenarioOutline);
 
@@ -383,7 +383,7 @@ namespace TechTalk.SpecFlow.Generator
             {
                 GenerateScenarioOutlineExamplesAsIndividualMethods(scenarioOutline, generationContext, scenarioOutlineTestMethod, paramToIdentifier);
             }
-            GenerateTestBody(generationContext, scenarioOutline, scenarioOutlineTestMethod, exampleTagsParam, paramToIdentifier);
+            GenerateTestBody(generationContext, scenarioOutline, scenarioOutlineTestMethod, feature, exampleTagsParam, paramToIdentifier);
         }
 
         private void GenerateScenarioOutlineExamplesAsIndividualMethods(
@@ -527,16 +527,17 @@ namespace TechTalk.SpecFlow.Generator
             return testMethod;
         }
 
-        private void GenerateTest(TestClassGenerationContext generationContext, Scenario scenario)
+        private void GenerateTest(TestClassGenerationContext generationContext, Scenario scenario, SpecFlowFeature feature)
         {
             var testMethod = CreateTestMethod(generationContext, scenario, null);
-            GenerateTestBody(generationContext, scenario, testMethod);
+            GenerateTestBody(generationContext, scenario, testMethod, feature);
         }
 
         private void GenerateTestBody(
             TestClassGenerationContext generationContext,
             StepsContainer scenario,
             CodeMemberMethod testMethod,
+            SpecFlowFeature feature,
             CodeExpression additionalTagsExpression = null,
             ParameterSubstitution paramToIdentifier = null)
         {
@@ -588,14 +589,14 @@ namespace TechTalk.SpecFlow.Generator
             GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
             GenerateScenarioStartMethodCall(generationContext, testMethod);
 
-            GenerateTestMethodBody(generationContext, scenario, testMethod, paramToIdentifier);
+            GenerateTestMethodBody(generationContext, scenario, testMethod, paramToIdentifier, feature);
 
             GenerateScenarioCleanupMethodCall(generationContext, testMethod);
         }
 
-        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier)
+        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier, SpecFlowFeature feature)
         {
-            if (IsIgnoredStepsContainer(scenario))
+            if (IsIgnoredFeature(feature) || IsIgnoredStepsContainer(scenario))
             {
                 GenerateMethodBodyForSkippedScenario(testMethod);
             }
@@ -603,6 +604,11 @@ namespace TechTalk.SpecFlow.Generator
             {
                 GenerateMethodBodyForNotSkippedScenarios(generationContext, scenario, testMethod, paramToIdentifier);
             }
+        }
+
+        internal bool IsIgnoredFeature(SpecFlowFeature specFlowFeature)
+        {
+            return specFlowFeature.Tags.Any(t => t.Name is IGNORE_TAG);
         }
 
         internal bool IsIgnoredStepsContainer(StepsContainer stepsContainer)

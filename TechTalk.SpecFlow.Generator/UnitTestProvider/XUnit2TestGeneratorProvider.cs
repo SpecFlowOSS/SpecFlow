@@ -160,8 +160,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            IgnoreFeature(generationContext);
-
             // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<ITestOutputHelper>(_testOutputHelper);
             generationContext.ScenarioInitializeMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -293,25 +291,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             // xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
             SetProperty(codeTypeMember, DESCRIPTION_PROPERTY_NAME, description);
-        }
-
-        protected virtual void IgnoreFeature(TestClassGenerationContext generationContext)
-        {
-            bool featureHasIgnoreTag = generationContext.Feature.Tags
-                                                        .Any(x => string.Equals(x.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
-
-            if (!featureHasIgnoreTag)
-            {
-                return;
-            }
-
-            foreach (CodeTypeMember member in generationContext.TestClass.Members)
-            {
-                if (member is CodeMemberMethod method && !IsTestMethodAlreadyIgnored(method))
-                {
-                    SetTestMethodIgnore(generationContext, method);
-                }
-            }
         }
 
         protected bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod, string factAttributeName, string theoryAttributeName)
