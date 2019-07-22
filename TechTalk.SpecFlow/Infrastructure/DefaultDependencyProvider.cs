@@ -74,6 +74,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
             container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
             container.RegisterTypeAs<TestResultFactory, ITestResultFactory>();
+            container.RegisterTypeAs<TestResultPartsFactory, ITestResultPartsFactory>();
             container.RegisterTypeAs<PlatformFactory, IPlatformFactory>();
             container.RegisterTypeAs<SystemInformationProvider, ISystemInformationProvider>();
             container.RegisterTypeAs<SpecFlowVersionInformationProvider, ISpecFlowVersionInformationProvider>();
