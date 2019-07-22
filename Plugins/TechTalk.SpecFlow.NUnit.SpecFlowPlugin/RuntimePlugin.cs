@@ -1,5 +1,4 @@
-﻿using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.NUnit.SpecFlowPlugin;
+﻿using TechTalk.SpecFlow.NUnit.SpecFlowPlugin;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.TestFramework;
 using TechTalk.SpecFlow.Tracing;
@@ -13,9 +12,15 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
     {
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
+            runtimePluginEvents.RegisterGlobalDependencies += RuntimePluginEventsOnRegisterGlobalDependencies;
             runtimePluginEvents.CustomizeGlobalDependencies += RuntimePluginEvents_CustomizeGlobalDependencies;
             runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
             unitTestProviderConfiguration.UseUnitTestProvider("nunit");
+        }
+
+        private void RuntimePluginEventsOnRegisterGlobalDependencies(object sender, RegisterGlobalDependenciesEventArgs e)
+        {
+            e.ObjectContainer.RegisterTypeAs<NUnitRuntimeProvider, IUnitTestRuntimeProvider>("nunit");
         }
 
         private void RuntimePluginEvents_CustomizeGlobalDependencies(object sender, CustomizeGlobalDependenciesEventArgs e)

@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         partial void RegisterUnitTestProviders(ObjectContainer container)
         {
-            container.RegisterTypeAs<NUnitRuntimeProvider, IUnitTestRuntimeProvider>("nunit");
+            
             container.RegisterTypeAs<XUnitRuntimeProvider, IUnitTestRuntimeProvider>("xunit");
             
         }
