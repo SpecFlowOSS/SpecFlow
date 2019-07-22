@@ -84,7 +84,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<PickleIdStoreDictionaryFactory, IPickleIdStoreDictionaryFactory>();
             container.RegisterTypeAs<FieldValueProvider, IFieldValueProvider>();
 
-            RegisterUnitTestProviders(container);
+            
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
