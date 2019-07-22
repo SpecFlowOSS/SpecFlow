@@ -64,6 +64,10 @@ namespace TechTalk.SpecFlow
             _executionEngine.OnScenarioEnd();
         }
 
+        public void SkipScenario()
+        {
+        }
+
         public void OnTestRunEnd()
         {
             _executionEngine.OnTestRunEnd();
