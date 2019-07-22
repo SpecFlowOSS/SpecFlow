@@ -1,4 +1,5 @@
 using TechTalk.SpecFlow.UnitTestProvider;
+using Xunit;
 
 namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 {
@@ -16,7 +17,8 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 
         public void TestIgnore(string message)
         {
-            throw new XUnitIgnoreTestException("Test ignored: " + message);
+            Skip.If(true, "Ignored Scenario");
+            //throw new XUnitIgnoreTestException("Test ignored: " + message);
         }
 
         public bool DelayedFixtureTearDown => false;

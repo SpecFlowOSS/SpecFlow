@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 {
     [Serializable]
     public class XUnitInconclusiveException : Exception
