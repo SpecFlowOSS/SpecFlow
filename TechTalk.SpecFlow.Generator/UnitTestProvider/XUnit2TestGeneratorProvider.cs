@@ -10,28 +10,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnit2TestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
-        protected internal const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
-        protected internal const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
-        protected internal const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
-        protected internal const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
-        protected internal const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
-        protected internal const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
-        protected internal const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
-        protected internal const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        protected internal const string COLLECTION_DEF = "Xunit.Collection";
-        protected internal const string COLLECTION_TAG = "xunit:collection";
-        protected internal const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
-        protected internal const string DESCRIPTION_PROPERTY_NAME = "Description";
-        protected internal const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
-        protected internal const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        protected internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        protected internal const string SKIP_REASON = "Ignored";
-        protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
-        protected internal const string CATEGORY_PROPERTY_NAME = "Category";
-        protected internal const string IGNORE_TAG = "@Ignore";
+        protected new const string THEORY_ATTRIBUTE = "Xunit.SkippableTheoryAttribute";
+        protected new const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
+        protected const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
+        protected const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
+        protected const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
+        protected const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
+        protected const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
+        protected const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
+        protected const string COLLECTION_DEF = "Xunit.Collection";
+        protected const string COLLECTION_TAG = "xunit:collection";
 
-        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
+        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
         }
