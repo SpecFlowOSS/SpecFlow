@@ -43,11 +43,25 @@ namespace TechTalk.SpecFlow.Infrastructure
         private bool _testRunnerEndExecuted = false;
         private bool _testRunnerStartExecuted = false;
 
-        public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter,
-            SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender, ITestResultFactory testResultFactory,
-            ITestPendingMessageFactory testPendingMessageFactory, ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
+        public TestExecutionEngine(
+            IStepFormatter stepFormatter,
+            ITestTracer testTracer,
+            IErrorProvider errorProvider,
+            IStepArgumentTypeConverter stepArgumentTypeConverter,
+            SpecFlowConfiguration specFlowConfiguration,
+            IBindingRegistry bindingRegistry,
+            IUnitTestRuntimeProvider unitTestRuntimeProvider,
+            IContextManager contextManager,
+            IStepDefinitionMatchService stepDefinitionMatchService,
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers,
+            IBindingInvoker bindingInvoker,
+            IObsoleteStepHandler obsoleteStepHandler,
+            ICucumberMessageSender cucumberMessageSender,
+            ITestResultFactory testResultFactory,
+            ITestPendingMessageFactory testPendingMessageFactory,
+            ITestUndefinedMessageFactory testUndefinedMessageFactory,
+            ITestObjectResolver testObjectResolver = null,
+            IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             _errorProvider = errorProvider;
             _bindingInvoker = bindingInvoker;
