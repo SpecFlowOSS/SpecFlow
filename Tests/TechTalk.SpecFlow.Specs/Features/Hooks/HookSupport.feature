@@ -114,7 +114,8 @@ Examples: Cucumber compatibility
     | event  | count |
     | Before | 3     |
     | After  | 3     |
-    
+
+
 Scenario Outline: For ignored Scenarios no Scenario Hooks are called
     Given there is a feature file in the project as
         """
@@ -140,7 +141,7 @@ Examples:
     | AfterScenarioBlock  | 0     |
     | BeforeScenario      | 0     |
     | AfterScenario       | 0     |
-    | BeforeFeature       | 0     |
-    | AfterFeature        | 0     |
+    | BeforeFeature       | 1     |
+    | AfterFeature        | 1     |
     | BeforeTestRun       | 1     |
     | AfterTestRun        | 1     |
