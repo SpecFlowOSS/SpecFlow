@@ -5,17 +5,17 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
-    public class TestResultFactoryTests_Failed : TestResultFactoryTestsBase
+    public class TestResultPartFactoryTestsFailed : TestResultPartFactoryTestsBase
     {
         [Fact(DisplayName = @"BuildFailedResult should return a TestResult with status Failed")]
         public void BuildFailedResult_ValidParameters_ShouldReturnTestResultWithStatusFailed()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: "Test Message");
             const TestResult.Types.Status expectedStatus = TestResult.Types.Status.Failed;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildFailedResult(10Lu, "Test Message");
+            var actualTestResult = testResultFactory.BuildFailedResult(10Lu, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -26,11 +26,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: "Test Message");
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildFailedResult(expectedNanoseconds, "Test Message");
+            var actualTestResult = testResultFactory.BuildFailedResult(expectedNanoseconds, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -41,11 +41,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildFailedResult_Message_ShouldReturnTestResultWithMessage()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
             const string expectedMessage = "This is a test message";
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: expectedMessage);
+            
 
             // ACT
-            var actualTestResult = testResultFactory.BuildFailedResult(10Lu, expectedMessage);
+            var actualTestResult = testResultFactory.BuildFailedResult(10Lu, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which

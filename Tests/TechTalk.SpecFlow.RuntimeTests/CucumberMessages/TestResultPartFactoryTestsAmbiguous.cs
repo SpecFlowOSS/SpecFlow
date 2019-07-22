@@ -5,17 +5,17 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
-    public class TestResultFactoryTests_Ambiguous : TestResultFactoryTestsBase
+    public class TestResultPartFactoryTestsAmbiguous : TestResultPartFactoryTestsBase
     {
         [Fact(DisplayName = @"BuildAmbiguousResult should return a TestResult with status Ambiguous")]
         public void BuildAmbiguousResult_ValidParameters_ShouldReturnTestResultWithStatusAmbiguous()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const TestResult.Types.Status expectedStatus = TestResult.Types.Status.Ambiguous;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildAmbiguousResult(10Lu, "Ambiguous test");
+            var actualTestResult = testResultFactory.BuildAmbiguousResult(10Lu, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -26,11 +26,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildAmbiguousResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildAmbiguousResult(expectedNanoseconds, "Ambiguous test");
+            var actualTestResult = testResultFactory.BuildAmbiguousResult(expectedNanoseconds, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -41,11 +41,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildAmbiguousResult_Message_ShouldReturnTestResultWithMessage()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
             const string expectedMessage = "This is a test message";
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: expectedMessage);
+            
 
             // ACT
-            var actualTestResult = testResultFactory.BuildAmbiguousResult(10Lu, expectedMessage);
+            var actualTestResult = testResultFactory.BuildAmbiguousResult(10Lu, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which

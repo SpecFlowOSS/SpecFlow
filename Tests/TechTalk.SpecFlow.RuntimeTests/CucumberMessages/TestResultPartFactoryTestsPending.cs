@@ -5,17 +5,17 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
-    public class TestResultFactoryTests_Pending :  TestResultFactoryTestsBase
+    public class TestResultPartFactoryTestsPending :  TestResultPartFactoryTestsBase
     {
         [Fact(DisplayName = @"BuildPendingResult should return a TestResult with status Pending")]
         public void BuildPendingMessage_ValidParameters_ShouldReturnTestResultWithStatusPending()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: "Pending test");
             const TestResult.Types.Status expectedStatus = TestResult.Types.Status.Pending;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildPendingResult(10Lu, "Pending test");
+            var actualTestResult = testResultFactory.BuildPendingResult(10Lu, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -26,11 +26,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPendingResult_Nanoseconds_ShouldReturnTestResultWithNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: "Pending test");
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildPendingResult(expectedNanoseconds, "Pending test");
+            var actualTestResult = testResultFactory.BuildPendingResult(expectedNanoseconds, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -41,11 +41,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPendingResult_Message_ShouldReturnTestResultWithMessage()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
             const string expectedMessage = "This is a test message";
+            var testResultFactory = GetTestResultPartFactory(expectedMessage: expectedMessage);
+            
 
             // ACT
-            var actualTestResult = testResultFactory.BuildPendingResult(10Lu, expectedMessage);
+            var actualTestResult = testResultFactory.BuildPendingResult(10Lu, null);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which

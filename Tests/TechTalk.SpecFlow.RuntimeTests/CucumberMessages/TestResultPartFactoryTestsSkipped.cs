@@ -5,17 +5,17 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
-    public class TestResultFactoryTests_Skipped : TestResultFactoryTestsBase
+    public class TestResultPartFactoryTestsSkipped : TestResultPartFactoryTestsBase
     {
         [Fact(DisplayName = @"BuildSkippedResult should return a TestResult with status skipped")]
         public void BuildSkippedResult_ValidParameters_ShouldReturnTestResultWithStatusSkipped()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const TestResult.Types.Status expectedStatus = TestResult.Types.Status.Skipped;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildSkippedResult(10Lu, "");
+            var actualTestResult = testResultFactory.BuildSkippedResult(10Lu);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -26,11 +26,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildSkippedResult_Nanoseconds_ShouldReturnTestResultWithCorrectNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
-            var actualTestResult = testResultFactory.BuildSkippedResult(expectedNanoseconds, "");
+            var actualTestResult = testResultFactory.BuildSkippedResult(expectedNanoseconds);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
@@ -41,15 +41,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildSkippedResult_ValidParameters_ShouldReturnTestResultWithEmptyMessage()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
-            const string expectedMessage = "";
-
+            var testResultFactory = GetTestResultPartFactory();
+            
             // ACT
-            var actualTestResult = testResultFactory.BuildSkippedResult(10Lu, expectedMessage);
+            var actualTestResult = testResultFactory.BuildSkippedResult(10Lu);
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                .Result.Message.Should().Be(expectedMessage);
+                .Result.Message.Should().BeEmpty();
         }
     }
 }

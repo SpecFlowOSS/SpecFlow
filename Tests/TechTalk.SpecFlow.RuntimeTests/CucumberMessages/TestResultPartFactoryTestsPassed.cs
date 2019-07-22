@@ -10,13 +10,13 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
-    public class TestResultFactoryTests_Passed : TestResultFactoryTestsBase
+    public class TestResultPartFactoryTestsPassed : TestResultPartFactoryTestsBase
     {
         [Fact(DisplayName = @"BuildPassedResult should return a TestResult with status Passed")]
         public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithStatusPassed()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const TestResult.Types.Status expectedStatus = TestResult.Types.Status.Passed;
 
             // ACT
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_Nanoseconds_ShouldReturnTestResultWithCorrectNanoseconds()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const ulong expectedNanoseconds = 15Lu;
 
             // ACT
@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         public void BuildPassedResult_ValidParameters_ShouldReturnTestResultWithEmptyMessage()
         {
             // ARRANGE
-            var testResultFactory = GetTestResultFactory();
+            var testResultFactory = GetTestResultPartFactory();
             const string expectedMessage = "";
 
             // ACT
