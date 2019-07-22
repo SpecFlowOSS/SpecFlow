@@ -188,6 +188,12 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return;
             }
 
+            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.Skipped)
+            {
+                _unitTestRuntimeProvider.TestIgnore("Scenario ignored using @Ignore tag");
+                return;
+            }
+
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
             {
                 string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
@@ -225,6 +231,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
             _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
+            _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.Skipped;
         }
 
         public void Pending()
