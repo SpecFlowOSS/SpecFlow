@@ -21,6 +21,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _executionDriver.ExecuteTests();
         }
 
+        [When(@"I execute the tests twice")]
+        public void WhenIExecuteTheTestsTwice()
+        {
+            _executionDriver.ExecuteTests();
+            _executionDriver.ExecuteTests();
+        }
+
+
+
         [When(@"I execute the tests tagged with '@(.+)'")]
         public void WhenIExecuteTheTestsTaggedWithTag(string tag)
         {
