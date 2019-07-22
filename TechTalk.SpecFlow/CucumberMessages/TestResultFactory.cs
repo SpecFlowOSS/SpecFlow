@@ -21,43 +21,43 @@ namespace TechTalk.SpecFlow.CucumberMessages
             _testUndefinedMessageFactory = testUndefinedMessageFactory;
         }
 
-        public ulong ConvertTicksToPositiveNanoseconds(long ticks)
+        internal ulong ConvertTicksToPositiveNanoseconds(long ticks)
         {
             ulong ticksOrZero = (ulong)Math.Min(ticks, 0);
             return ticksOrZero * 100;
         }
 
-        public IResult<TestResult> BuildPassedResult(ulong durationInNanoseconds)
+        internal IResult<TestResult> BuildPassedResult(ulong durationInNanoseconds)
         {
             return BuildTestResult(durationInNanoseconds, Status.Passed, "");
         }
 
-        public IResult<TestResult> BuildFailedResult(ulong durationInNanoseconds, string message)
+        internal IResult<TestResult> BuildFailedResult(ulong durationInNanoseconds, string message)
         {
             return BuildTestResult(durationInNanoseconds, Status.Failed, message);
         }
 
-        public IResult<TestResult> BuildAmbiguousResult(ulong durationInNanoseconds, string message)
+        internal IResult<TestResult> BuildAmbiguousResult(ulong durationInNanoseconds, string message)
         {
             return BuildTestResult(durationInNanoseconds, Status.Ambiguous, message);
         }
 
-        public IResult<TestResult> BuildPendingResult(ulong durationInNanoseconds, string message)
+        internal IResult<TestResult> BuildPendingResult(ulong durationInNanoseconds, string message)
         {
             return BuildTestResult(durationInNanoseconds, Status.Pending, message);
         }
 
-        public IResult<TestResult> BuildSkippedResult(ulong durationInNanoseconds, string message)
+        internal IResult<TestResult> BuildSkippedResult(ulong durationInNanoseconds, string message)
         {
             return BuildTestResult(durationInNanoseconds, Status.Skipped, message);
         }
 
-        public IResult<TestResult> BuildUndefinedResult(ulong durationInNanoseconds, string message)
+        internal IResult<TestResult> BuildUndefinedResult(ulong durationInNanoseconds, string message)
         {
             return BuildTestResult(durationInNanoseconds, Status.Undefined, message);
         }
 
-        public IResult<TestResult> BuildTestResult(ulong durationInNanoseconds, Status status, string message)
+        internal IResult<TestResult> BuildTestResult(ulong durationInNanoseconds, Status status, string message)
         {
             var testResult = new TestResult
             {
