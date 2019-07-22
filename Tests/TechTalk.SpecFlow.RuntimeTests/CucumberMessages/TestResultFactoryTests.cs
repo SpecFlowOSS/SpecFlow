@@ -42,6 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             { ScenarioExecutionStatus.StepDefinitionPending, (factory => factory.BuildPendingResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>()))},
             { ScenarioExecutionStatus.TestError, (factory => factory.BuildFailedResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>()))},
             { ScenarioExecutionStatus.UndefinedStep, (factory => factory.BuildUndefinedResult(It.IsAny<ulong>(), It.IsAny<ScenarioContext>(), It.IsAny<FeatureContext>()))},
+            { ScenarioExecutionStatus.Skipped, (factory => factory.BuildSkippedResult(It.IsAny<ulong>()))},
         };
 
         public static IEnumerable<object[]> GetTestCases

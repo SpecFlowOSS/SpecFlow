@@ -108,6 +108,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 case ScenarioExecutionStatus.StepDefinitionPending: return _testResultPartsFactory.BuildPendingResult(nanoseconds, scenarioContext);
                 case ScenarioExecutionStatus.BindingError: return _testResultPartsFactory.BuildAmbiguousResult(nanoseconds, scenarioContext);
                 case ScenarioExecutionStatus.UndefinedStep: return _testResultPartsFactory.BuildUndefinedResult(nanoseconds, scenarioContext, featureContext);
+                case ScenarioExecutionStatus.Skipped: return _testResultPartsFactory.BuildSkippedResult(nanoseconds);
                 default: return Result<TestResult>.Failure($"Status '{scenarioContext.ScenarioExecutionStatus}' is unknown or not supported.");
             }
         }
