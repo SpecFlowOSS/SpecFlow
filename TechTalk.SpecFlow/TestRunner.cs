@@ -5,28 +5,28 @@ namespace TechTalk.SpecFlow
 {
     public class TestRunner : ITestRunner
     {
-        private readonly ITestExecutionEngine executionEngine;
+        private readonly ITestExecutionEngine _executionEngine;
 
         public int ThreadId { get; private set; }
 
         public TestRunner(ITestExecutionEngine executionEngine)
         {
-            this.executionEngine = executionEngine;
+            _executionEngine = executionEngine;
         }
 
         public FeatureContext FeatureContext
         {
-            get { return executionEngine.FeatureContext; }
+            get { return _executionEngine.FeatureContext; }
         }
 
         public ScenarioContext ScenarioContext
         {
-            get { return executionEngine.ScenarioContext; }
+            get { return _executionEngine.ScenarioContext; }
         }
 
         public void OnTestRunStart()
         {
-            executionEngine.OnTestRunStart();
+            _executionEngine.OnTestRunStart();
         }
 
         public void InitializeTestRunner(int threadId)
@@ -36,67 +36,72 @@ namespace TechTalk.SpecFlow
 
         public void OnFeatureStart(FeatureInfo featureInfo)
         {
-            executionEngine.OnFeatureStart(featureInfo);
+            _executionEngine.OnFeatureStart(featureInfo);
         }
 
         public void OnFeatureEnd()
         {
-            executionEngine.OnFeatureEnd();
+            _executionEngine.OnFeatureEnd();
         }
 
         public void OnScenarioInitialize(ScenarioInfo scenarioInfo)
         {
-            executionEngine.OnScenarioInitialize(scenarioInfo);
+            _executionEngine.OnScenarioInitialize(scenarioInfo);
         }
 
         public void OnScenarioStart()
         {
-            executionEngine.OnScenarioStart();
+            _executionEngine.OnScenarioStart();
         }
 
         public void CollectScenarioErrors()
         {
-            executionEngine.OnAfterLastStep();
+            _executionEngine.OnAfterLastStep();
         }
 
         public void OnScenarioEnd()
         {
-            executionEngine.OnScenarioEnd();
+            _executionEngine.OnScenarioEnd();
+        }
+
+        public void SkipScenario()
+        {
+            _executionEngine.OnScenarioSkipped();
         }
 
         public void OnTestRunEnd()
         {
-            executionEngine.OnTestRunEnd();
+            _executionEngine.OnTestRunEnd();
         }
 
         public void Given(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.Given, keyword, text, multilineTextArg, tableArg);
+            _executionEngine.Step(StepDefinitionKeyword.Given, keyword, text, multilineTextArg, tableArg);
         }
 
         public void When(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.When, keyword, text, multilineTextArg, tableArg);
+            _executionEngine.Step(StepDefinitionKeyword.When, keyword, text, multilineTextArg, tableArg);
         }
 
         public void Then(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.Then, keyword, text, multilineTextArg, tableArg);
+            _executionEngine.Step(StepDefinitionKeyword.Then, keyword, text, multilineTextArg, tableArg);
         }
 
         public void And(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.And, keyword, text, multilineTextArg, tableArg);
+            _executionEngine.Step(StepDefinitionKeyword.And, keyword, text, multilineTextArg, tableArg);
         }
 
         public void But(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.But, keyword, text, multilineTextArg, tableArg);
+            _executionEngine.Step(StepDefinitionKeyword.But, keyword, text, multilineTextArg, tableArg);
         }
 
         public void Pending()
         {
-            executionEngine.Pending();
+            _executionEngine.Pending();
         }
     }
 }

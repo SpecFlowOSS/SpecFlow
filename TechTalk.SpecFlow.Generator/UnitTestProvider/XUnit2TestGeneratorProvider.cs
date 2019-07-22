@@ -4,42 +4,48 @@ using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
-using TechTalk.SpecFlow.Utils;
 using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-    public class XUnit2TestGeneratorProvider : XUnitTestGeneratorProvider
+    public class XUnit2TestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        protected new const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
-        protected new const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
-        protected const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
-        protected const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
-        protected const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
-        protected const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
-        protected const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
-        protected const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        protected const string COLLECTION_DEF = "Xunit.Collection";
-        protected const string COLLECTION_TAG = "xunit:collection";
+        private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
+        protected internal const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
+        protected internal const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
+        protected internal const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
+        protected internal const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
+        protected internal const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
+        protected internal const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
+        protected internal const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
+        protected internal const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
+        protected internal const string COLLECTION_DEF = "Xunit.Collection";
+        protected internal const string COLLECTION_TAG = "xunit:collection";
+        protected internal const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
+        protected internal const string DESCRIPTION_PROPERTY_NAME = "Description";
+        protected internal const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
+        protected internal const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        protected internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        protected internal const string SKIP_REASON = "Ignored";
+        protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
+        protected internal const string CATEGORY_PROPERTY_NAME = "Category";
+        protected internal const string IGNORE_TAG = "@Ignore";
 
-        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
+        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
         }
 
-        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
-            //SetTestClassCollection(generationContext, "xunit:collection(SpecFlowXUnitHooks)");
-
-            base.SetTestClass(generationContext, featureTitle, featureDescription);
         }
 
-        public override UnitTestGeneratorTraits GetTraits()
+        public virtual UnitTestGeneratorTraits GetTraits()
         {
             return UnitTestGeneratorTraits.RowTests | UnitTestGeneratorTraits.ParallelExecution;
         }
 
-        protected override CodeTypeReference CreateFixtureInterface(TestClassGenerationContext generationContext, CodeTypeReference fixtureDataType)
+        protected virtual CodeTypeReference CreateFixtureInterface(TestClassGenerationContext generationContext, CodeTypeReference fixtureDataType)
         {
             // Add a field for the ITestOutputHelper
             generationContext.TestClass.Members.Add(new CodeMemberField(OUTPUT_INTERFACE, OUTPUT_INTERFACE_FIELD_NAME));
@@ -50,9 +56,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return new CodeTypeReference(ICLASSFIXTURE_INTERFACE, fixtureDataType);
         }
 
-        public override bool ImplmentInterfaceExplicit => false;
+        public virtual bool ImplementInterfaceExplicit => false;
 
-        public override void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        protected CodeDomHelper CodeDomHelper { get; set; }
+
+        public bool GenerateParallelCodeForFeature { get; set; }
+
+        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, THEORY_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(scenarioTitle)));
 
@@ -60,15 +70,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetDescription(testMethod, scenarioTitle);
         }
 
-        public override void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments,
-            IEnumerable<string> tags, bool isIgnored)
+        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //TODO: better handle "ignored"
             if (isIgnored)
+            {
                 return;
+            }
 
-            var args = arguments.Select(
-                arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
+            var args = arguments.Select(arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
 
             args.Add(
                 new CodeAttributeArgument(
@@ -77,7 +87,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, INLINEDATA_ATTRIBUTE, args.ToArray());
         }
 
-        protected override void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod) {
+        protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod)
+        {
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
             ctorMethod.Parameters.Add(
@@ -89,46 +100,34 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
 
             var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
-            //if (CodeDomHelper.TargetLanguage == CodeDomProviderLanguage.VB)
-            //{
-            //    typeName = "Global.XUnitAssemblyFixture";
-            //}
 
             ctorMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
                     new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
 
-
-            base.SetTestConstructor(generationContext, ctorMethod);
+            ctorMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    generationContext.TestInitializeMethod.Name));
         }
 
-        public override void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
-            var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
+            var factAttr = testMethod.CustomAttributes
+                                     .OfType<CodeAttributeDeclaration>()
+                                     .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
 
-            if (factAttr != null)
-            {
-                // set [FactAttribute(Skip="reason")]
-                factAttr.Arguments.Add
-                    (
-                        new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
-                    );
-            }
+            // set [FactAttribute(Skip="reason")]
+            factAttr?.Arguments.Add(new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON)));
 
-            var theoryAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == THEORY_ATTRIBUTE);
+            var theoryAttr = testMethod.CustomAttributes
+                                       .OfType<CodeAttributeDeclaration>()
+                                       .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == THEORY_ATTRIBUTE);
 
-            if (theoryAttr != null)
-            {
-                // set [TheoryAttribute(Skip="reason")]
-                theoryAttr.Arguments.Add
-                    (
-                        new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
-                    );
-            }
+            // set [TheoryAttribute(Skip="reason")]
+            theoryAttr?.Arguments.Add(new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON)));
         }
-        public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             IEnumerable<string> collection = featureCategories.Where(f => f.StartsWith(COLLECTION_TAG, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (collection.Any())
@@ -137,7 +136,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetTestClassCollection(generationContext, collection.FirstOrDefault());
             }
 
-            base.SetTestClassCategories(generationContext, featureCategories);
+            // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
+            foreach (string str in featureCategories)
+            {
+                SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
+            }
         }
 
         public void SetTestClassCollection(TestClassGenerationContext generationContext, string collection)
@@ -150,15 +153,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
     
 
-        public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
         }
 
-        public override void FinalizeTestClass(TestClassGenerationContext generationContext)
+        public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            IgnoreFeature(generationContext);
-
             // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<ITestOutputHelper>(_testOutputHelper);
             generationContext.ScenarioInitializeMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -173,9 +174,150 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
         }
 
-        protected override bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod)
+        protected virtual bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod)
         {
             return IsTestMethodAlreadyIgnored(testMethod, FACT_ATTRIBUTE, THEORY_ATTRIBUTE);
+        }
+
+        public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
+        {
+            // xUnit uses IUseFixture<T> on the class
+            generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
+
+            _currentFixtureDataTypeDeclaration = CodeDomHelper.CreateGeneratedTypeDeclaration("FixtureData");
+            generationContext.TestClass.Members.Add(_currentFixtureDataTypeDeclaration);
+
+            var fixtureDataType =
+                CodeDomHelper.CreateNestedTypeReference(generationContext.TestClass, _currentFixtureDataTypeDeclaration.Name);
+
+            var useFixtureType = CreateFixtureInterface(generationContext, fixtureDataType);
+
+            CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
+
+            generationContext.TestClass.BaseTypes.Add(useFixtureType);
+
+            // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }
+            var ctorMethod = new CodeConstructor { Attributes = MemberAttributes.Public };
+            _currentFixtureDataTypeDeclaration.Members.Add(ctorMethod);
+            ctorMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
+                    generationContext.TestClassInitializeMethod.Name));
+        }
+
+        public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
+        {
+            // xUnit uses IUseFixture<T> on the class
+
+            generationContext.TestClassCleanupMethod.Attributes |= MemberAttributes.Static;
+
+            _currentFixtureDataTypeDeclaration.BaseTypes.Add(typeof(IDisposable));
+
+            // void IDisposable.Dispose() { <fixtureTearDownMethod>(); }
+
+            var disposeMethod = new CodeMemberMethod();
+            disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
+            disposeMethod.Name = "Dispose";
+            _currentFixtureDataTypeDeclaration.Members.Add(disposeMethod);
+
+            disposeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
+                    generationContext.TestClassCleanupMethod.Name));
+        }
+
+        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
+        {
+            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName",new CodePrimitiveExpression(friendlyTestName)));
+
+            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
+            SetDescription(testMethod, friendlyTestName);
+        }
+
+        public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        {
+            foreach (string str in scenarioCategories)
+            {
+                SetProperty(testMethod, "Category", str);
+            }
+        }
+
+        public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
+        {
+            // xUnit uses a parameterless constructor
+
+            // public <_currentTestTypeDeclaration>() { <memberMethod>(); }
+
+            var ctorMethod = new CodeConstructor();
+            ctorMethod.Attributes = MemberAttributes.Public;
+            generationContext.TestClass.Members.Add(ctorMethod);
+
+            SetTestConstructor(generationContext, ctorMethod);
+        }
+
+        public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
+        {
+            // xUnit supports test tear down through the IDisposable interface
+
+            generationContext.TestClass.BaseTypes.Add(typeof(IDisposable));
+
+            // void IDisposable.Dispose() { <memberMethod>(); }
+
+            var disposeMethod = new CodeMemberMethod();
+            disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
+            disposeMethod.Name = "Dispose";
+            generationContext.TestClass.Members.Add(disposeMethod);
+
+            disposeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    generationContext.TestCleanupMethod.Name));
+        }
+
+        public void SetTestClassIgnore(TestClassGenerationContext generationContext)
+        {
+            // The individual tests have to get Skip argument in their attributes
+            // xUnit does not provide a way to Skip a set of tests - https://xunit.github.io/docs/comparisons.html#attributes
+            // This is handled in FinalizeTestClass
+        }
+
+        protected void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
+        {
+            CodeDomHelper.AddAttribute(codeTypeMember, TRAIT_ATTRIBUTE, name, value);
+        }
+
+        protected void SetDescription(CodeTypeMember codeTypeMember, string description)
+        {
+            // xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
+            SetProperty(codeTypeMember, DESCRIPTION_PROPERTY_NAME, description);
+        }
+
+        protected bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod, string factAttributeName, string theoryAttributeName)
+        {
+            var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
+                                     .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == factAttributeName);
+
+            var hasIgnoredFact = factAttr?.Arguments
+                                         .OfType<CodeAttributeArgument>()
+                                         .Any(x => string.Equals(x.Name, FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
+
+            var theoryAttr = testMethod.CustomAttributes
+                                       .OfType<CodeAttributeDeclaration>()
+                                       .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == theoryAttributeName);
+
+            var hasIgnoredTheory = theoryAttr?.Arguments
+                                             .OfType<CodeAttributeArgument>()
+                                             .Any(x => string.Equals(x.Name, THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, StringComparison.InvariantCultureIgnoreCase));
+
+            bool result = hasIgnoredFact.GetValueOrDefault() || hasIgnoredTheory.GetValueOrDefault();
+
+            return result;
+        }
+
+        public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            // doing nothing since we support RowTest
         }
     }
 }
