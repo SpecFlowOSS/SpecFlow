@@ -16,16 +16,8 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 {
     public class NUnit3GeneratorProviderTests
     {
+        private const string NUnit3TestCaseAttributeName = @"NUnit.Framework.TestCaseAttribute";
         private const string SampleFeatureFile = @"
-            Feature: Sample feature file
-
-            Scenario: Simple scenario
-                Given there is something
-                When I do something
-                Then something should happen";
-
-        private const string SampleFeatureFileWithTags = @"
-            @tag1 @tag2 @tag3
             Feature: Sample feature file
 
             Scenario: Simple scenario
@@ -42,10 +34,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             @ignore
             Scenario: Ignored scenario";
-
-        private const string FeatureFileWithParallelizeIgnore = @"
-            @externalDependencies @externalDependencies2
-            Feature: Parallelized feature file";
 
         [Fact]
         public void NUnit3TestGeneratorProvider_ExampleSetSingleColumn_ShouldSetDescriptionWithVariantNameFromFirstColumn()
@@ -76,17 +64,16 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 ";
 
             var document = ParseDocumentFromString(sampleFeatureFile);
-            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
             var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
-            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
-            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "something");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "something else");
         }
 
         [Fact]
@@ -118,17 +105,22 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 ";
 
             var document = ParseDocumentFromString(sampleFeatureFileSameFirstColumn);
-            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
             var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
-            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant0").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 0");
-            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Variant1").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: Variant 1");
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline");
+
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName
+                                                                      && a.ArgumentValues().OfType<string>().ElementAt(0) == "something"
+                                                                      && a.ArgumentValues().OfType<string>().ElementAt(1) == "thing");
+
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName
+                                                                      && a.ArgumentValues().OfType<string>().ElementAt(0) == "something"
+                                                                      && a.ArgumentValues().OfType<string>().ElementAt(1) == "different thing");
         }
 
         [Fact]
@@ -159,18 +151,17 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                   | something else | different thing |
 ";
 
-        var document = ParseDocumentFromString(sampleFeatureFileMultipleColumns);
-            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var document = ParseDocumentFromString(sampleFeatureFileMultipleColumns);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
             var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
-            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
-            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "something");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "something else");
         }
 
         [Fact]
@@ -206,21 +197,18 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 ";
 
             var document = ParseDocumentFromString(sampleFeatureFileWithMultipleExampleSets);
-            var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
             var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
-            var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
-            var descriptionAttributeForSecondScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet0_SomethingElse").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForSecondScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something else");
-            var descriptionAttributeForThirdScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_Another").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForThirdScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: another");
-            var descriptionAttributeForFourthScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_AndAnother").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
-            descriptionAttributeForFourthScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: and another");
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "something");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "something else");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "another");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3TestCaseAttributeName && (string)a.ArgumentValues().First() == "and another");
         }
 
         [Fact]
@@ -302,11 +290,23 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         [Fact]
         public void NUnit3TestGeneratorProvider_ShouldAddParallelizableAttribute()
         {
-            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFileWithTags, true);
+            // ARRANGE
+            const string exampleFeatureFileWithTags = @"
+            @tag1 @tag2 @tag3
+            Feature: Sample feature file
 
+            Scenario: Simple scenario
+                Given there is something
+                When I do something
+                Then something should happen";
+
+            // ACT
+            var code = GenerateCodeNamespaceFromFeature(exampleFeatureFileWithTags, true);
+
+            // ASSERT
             var attributes = code.Class().CustomAttributes().ToArray();
-            var parallelAttributes = attributes.Where(a => a.Name == "NUnit.Framework.ParallelizableAttribute").ToList();
-            parallelAttributes.Should().HaveCount(1, "Only one Parallelizable attribute should be set");
+            attributes.Where(a => a.Name == "NUnit.Framework.ParallelizableAttribute")
+                      .Should().HaveCount(1, "Only one Parallelizable attribute should be set");
         }
 
         [Fact]
@@ -323,7 +323,11 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         [Fact]
         public void NUnit3TestGeneratorProvider_ShouldNotAddParallelizableAttribute()
         {
-            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParallelizeIgnore, true,new [] { "externalDependencies" });
+            const string featureFileWithParallelizeIgnore = @"
+            @externalDependencies @externalDependencies2
+            Feature: Parallelized feature file";
+
+            var code = GenerateCodeNamespaceFromFeature(featureFileWithParallelizeIgnore, true,new [] { "externalDependencies" });
 
             var attributes = code.Class().CustomAttributes().ToArray();
             var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
@@ -365,7 +369,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 .NotBeNullOrWhiteSpace("No reason for ignoring the scenario was given");
         }
 
-        public CodeNamespace GenerateCodeNamespaceFromFeature(string feature,bool parallelCode=false,string[] ignoreParallelTags=null)
+        public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] ignoreParallelTags = null)
         {
             CodeNamespace code;
             using (var reader = new StringReader(feature))
