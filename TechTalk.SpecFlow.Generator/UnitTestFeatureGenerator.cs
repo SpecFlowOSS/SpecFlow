@@ -608,12 +608,12 @@ namespace TechTalk.SpecFlow.Generator
 
         internal bool IsIgnoredFeature(SpecFlowFeature specFlowFeature)
         {
-            return specFlowFeature.Tags.Any(t => t.Name is IGNORE_TAG);
+            return specFlowFeature.Tags.Any(t => string.Equals(t.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
         }
 
         internal bool IsIgnoredStepsContainer(StepsContainer stepsContainer)
         {
-            return stepsContainer.GetTags().Any(t => t.Name is IGNORE_TAG);
+            return stepsContainer.GetTags().Any(t => string.Equals(t.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
         }
 
         internal void GenerateScenarioStartMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
