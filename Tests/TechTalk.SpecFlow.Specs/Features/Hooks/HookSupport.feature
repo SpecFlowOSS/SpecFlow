@@ -115,3 +115,33 @@ Examples: Cucumber compatibility
     | event  | count |
     | Before | 3     |
     | After  | 3     |
+    
+Scenario Outline: For ignored Scenarios no Scenario Hooks are called
+    Given there is a feature file in the project as
+        """
+        Feature: Feature 1
+        
+        @ignore
+        Scenario: Scenario 1
+            Given there is something
+            When I do something
+            Then something should happen
+        
+        """
+    And a hook 'HookFor<event>' for '<event>'
+    And all steps are bound and pass
+    When I execute the tests
+    Then the hook 'HookFor<event>' is executed <count> times
+
+Examples: 
+    | event               | count |
+    | BeforeStep          | 0     |
+    | AfterStep           | 0     |
+    | BeforeScenarioBlock | 0     |
+    | AfterScenarioBlock  | 0     |
+    | BeforeScenario      | 0     |
+    | AfterScenario       | 0     |
+    | BeforeFeature       | 0     |
+    | AfterFeature        | 0     |
+    | BeforeTestRun       | 1     |
+    | AfterTestRun        | 1     |
