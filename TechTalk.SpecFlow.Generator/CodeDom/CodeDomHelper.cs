@@ -250,5 +250,12 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                     throw new NotSupportedException();
             }
         }
+
+        public CodeMemberMethod CreateMethod(CodeTypeDeclaration type)
+        {
+            var method = new CodeMemberMethod();
+            type.Members.Add(method);
+            return method;
+        }
     }
 }
