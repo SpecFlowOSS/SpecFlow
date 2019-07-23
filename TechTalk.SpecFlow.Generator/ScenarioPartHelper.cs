@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Generator
     public class ScenarioPartHelper
     {
         private readonly LinePragmaHandler _linePragmaHandler;
-        private int _tableCounter = 0;
+        private int _tableCounter;
 
 
         public ScenarioPartHelper(LinePragmaHandler linePragmaHandler)
@@ -22,7 +22,9 @@ namespace TechTalk.SpecFlow.Generator
         public void SetupFeatureBackground(TestClassGenerationContext generationContext)
         {
             if (!generationContext.Feature.HasFeatureBackground())
+            {
                 return;
+            }
 
             var background = generationContext.Feature.Background;
 
@@ -34,7 +36,9 @@ namespace TechTalk.SpecFlow.Generator
             _linePragmaHandler.AddLineDirective(backgroundMethod.Statements, background);
 
             foreach (var step in background.Steps)
+            {
                 GenerateStep(backgroundMethod, step, null);
+            }
 
             _linePragmaHandler.AddLineDirectiveHidden(backgroundMethod.Statements);
         }
@@ -45,7 +49,7 @@ namespace TechTalk.SpecFlow.Generator
             var scenarioStep = AsSpecFlowStep(gherkinStep);
 
             //testRunner.Given("something");
-            var arguments = new List<CodeExpression> {GetSubstitutedString(scenarioStep.Text, paramToIdentifier) };
+            var arguments = new List<CodeExpression> {GetSubstitutedString(scenarioStep.Text, paramToIdentifier)};
             if (scenarioStep.Argument != null)
             {
                 _linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
@@ -136,21 +140,29 @@ namespace TechTalk.SpecFlow.Generator
         private CodeExpression GetSubstitutedString(string text, ParameterSubstitution paramToIdentifier)
         {
             if (text == null)
+            {
                 return new CodeCastExpression(typeof(string), new CodePrimitiveExpression(null));
+            }
+
             if (paramToIdentifier == null)
+            {
                 return new CodePrimitiveExpression(text);
+            }
 
             var paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
-            string formatText = text.Replace("{", "{{").Replace("}", "}}");
+            var formatText = text.Replace("{", "{{").Replace("}", "}}");
             var arguments = new List<string>();
 
             formatText = paramRe.Replace(formatText, match =>
             {
-                string param = match.Groups["param"].Value;
+                var param = match.Groups["param"].Value;
                 string id;
                 if (!paramToIdentifier.TryGetIdentifier(param, out id))
+                {
                     return match.Value;
-                int argIndex = arguments.IndexOf(id);
+                }
+
+                var argIndex = arguments.IndexOf(id);
                 if (argIndex < 0)
                 {
                     argIndex = arguments.Count;
@@ -161,9 +173,11 @@ namespace TechTalk.SpecFlow.Generator
             });
 
             if (arguments.Count == 0)
+            {
                 return new CodePrimitiveExpression(text);
+            }
 
-            var formatArguments = new List<CodeExpression> { new CodePrimitiveExpression(formatText) };
+            var formatArguments = new List<CodeExpression> {new CodePrimitiveExpression(formatText)};
             formatArguments.AddRange(arguments.Select(id => new CodeVariableReferenceExpression(id)));
 
             return new CodeMethodInvokeExpression(
@@ -171,7 +185,5 @@ namespace TechTalk.SpecFlow.Generator
                 "Format",
                 formatArguments.ToArray());
         }
-
-
     }
 }

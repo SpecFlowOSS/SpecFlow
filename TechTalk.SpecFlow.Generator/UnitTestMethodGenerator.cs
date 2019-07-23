@@ -14,11 +14,13 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class UnitTestMethodGenerator
     {
-        private readonly IUnitTestGeneratorProvider _unitTestGeneratorProvider;
-        private readonly IDecoratorRegistry _decoratorRegistry;
+        private const string IGNORE_TAG = "@Ignore";
+        private const string TESTRUNNER_FIELD = "testRunner";
         private readonly CodeDomHelper _codeDomHelper;
+        private readonly IDecoratorRegistry _decoratorRegistry;
         private readonly LinePragmaHandler _linePragmaHandler;
         private readonly ScenarioPartHelper _scenarioPartHelper;
+        private readonly IUnitTestGeneratorProvider _unitTestGeneratorProvider;
 
         public UnitTestMethodGenerator(IUnitTestGeneratorProvider unitTestGeneratorProvider, IDecoratorRegistry decoratorRegistry, CodeDomHelper codeDomHelper, LinePragmaHandler linePragmaHandler,
             ScenarioPartHelper scenarioPartHelper)
@@ -217,7 +219,8 @@ namespace TechTalk.SpecFlow.Generator
                     generationContext.ScenarioCleanupMethod.Name));
         }
 
-        internal void GenerateMethodBodyForNotSkippedScenarios(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier)
+        internal void GenerateMethodBodyForNotSkippedScenarios(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod,
+            ParameterSubstitution paramToIdentifier)
         {
             if (generationContext.Feature.HasFeatureBackground())
             {
@@ -242,27 +245,24 @@ namespace TechTalk.SpecFlow.Generator
                     nameof(TestRunner.SkipScenario)));
         }
 
-        private const string IGNORE_TAG = "@Ignore";
-        private const string TESTRUNNER_FIELD = "testRunner";
-
         private void GenerateScenarioOutlineExamplesAsIndividualMethods(
             ScenarioOutline scenarioOutline,
             TestClassGenerationContext generationContext,
             CodeMemberMethod scenarioOutlineTestMethod, ParameterSubstitution paramToIdentifier)
         {
-            int exampleSetIndex = 0;
+            var exampleSetIndex = 0;
             foreach (var exampleSet in scenarioOutline.Examples)
             {
-                bool useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.TableBody);
-                string exampleSetIdentifier = string.IsNullOrEmpty(exampleSet.Name)
+                var useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.TableBody);
+                var exampleSetIdentifier = string.IsNullOrEmpty(exampleSet.Name)
                     ? scenarioOutline.Examples.Count(es => string.IsNullOrEmpty(es.Name)) > 1
                         ? string.Format("ExampleSet {0}", exampleSetIndex).ToIdentifier()
                         : null
                     : exampleSet.Name.ToIdentifier();
 
-                foreach (var example in exampleSet.TableBody.Select((r, i) => new { Row = r, Index = i }))
+                foreach (var example in exampleSet.TableBody.Select((r, i) => new {Row = r, Index = i}))
                 {
-                    string variantName = useFirstColumnAsName ? example.Row.Cells.First().Value : string.Format("Variant {0}", example.Index);
+                    var variantName = useFirstColumnAsName ? example.Row.Cells.First().Value : string.Format("Variant {0}", example.Index);
                     GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenarioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row,
                         exampleSet.Tags, variantName);
                 }
@@ -273,7 +273,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void GenerateScenarioOutlineExamplesAsRowTests(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, CodeMemberMethod scenatioOutlineTestMethod)
         {
-            SetupTestMethod(generationContext, scenatioOutlineTestMethod, scenarioOutline, null, null, null, rowTest: true);
+            SetupTestMethod(generationContext, scenatioOutlineTestMethod, scenarioOutline, null, null, null, true);
 
             foreach (var examples in scenarioOutline.Examples)
             {
@@ -295,7 +295,6 @@ namespace TechTalk.SpecFlow.Generator
 
             return paramToIdentifier;
         }
-
 
 
         private bool CanUseFirstColumnAsName(IEnumerable<Gherkin.Ast.TableRow> tableBody)
@@ -369,9 +368,6 @@ namespace TechTalk.SpecFlow.Generator
         }
 
 
-
-
-
         private void SetupTestMethod(
             TestClassGenerationContext generationContext,
             CodeMemberMethod testMethod,
@@ -383,7 +379,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
-            string friendlyTestName = scenarioDefinition.Name;
+            var friendlyTestName = scenarioDefinition.Name;
             if (variantName != null)
             {
                 friendlyTestName = $"{scenarioDefinition.Name}: {variantName}";
@@ -408,13 +404,13 @@ namespace TechTalk.SpecFlow.Generator
 
         private static string GetTestMethodName(StepsContainer scenario, string variantName, string exampleSetIdentifier)
         {
-            string methodName = string.Format(GeneratorConstants.TEST_NAME_FORMAT, scenario.Name.ToIdentifier());
+            var methodName = string.Format(GeneratorConstants.TEST_NAME_FORMAT, scenario.Name.ToIdentifier());
             if (variantName == null)
             {
                 return methodName;
             }
 
-            string variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
+            var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
             methodName = string.IsNullOrEmpty(exampleSetIdentifier)
                 ? $"{methodName}_{variantNameIdentifier}"
                 : $"{methodName}_{exampleSetIdentifier}_{variantNameIdentifier}";
@@ -426,6 +422,5 @@ namespace TechTalk.SpecFlow.Generator
         {
             return tagLists.Where(tagList => tagList != null).SelectMany(tagList => tagList);
         }
-
     }
 }
