@@ -36,19 +36,24 @@ namespace TechTalk.SpecFlow.Generator
         {
             foreach (var scenarioDefinition in feature.ScenarioDefinitions)
             {
-                if (string.IsNullOrEmpty(scenarioDefinition.Name))
-                {
-                    throw new TestGeneratorException("The scenario must have a title specified.");
-                }
+                CreateUnitTest(feature, generationContext, scenarioDefinition);
+            }
+        }
 
-                if (scenarioDefinition is ScenarioOutline scenarioOutline)
-                {
-                    GenerateScenarioOutlineTest(generationContext, scenarioOutline, feature);
-                }
-                else
-                {
-                    GenerateTest(generationContext, (Scenario) scenarioDefinition, feature);
-                }
+        private void CreateUnitTest(SpecFlowFeature feature, TestClassGenerationContext generationContext, StepsContainer scenarioDefinition)
+        {
+            if (string.IsNullOrEmpty(scenarioDefinition.Name))
+            {
+                throw new TestGeneratorException("The scenario must have a title specified.");
+            }
+
+            if (scenarioDefinition is ScenarioOutline scenarioOutline)
+            {
+                GenerateScenarioOutlineTest(generationContext, scenarioOutline, feature);
+            }
+            else
+            {
+                GenerateTest(generationContext, (Scenario) scenarioDefinition, feature);
             }
         }
 
@@ -171,7 +176,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             if (IsIgnoredFeature(feature) || IsIgnoredStepsContainer(scenario))
             {
-                GenerateMethodBodyForSkippedScenario(testMethod);
+                AddTestRunnerSkipScenarioCall(testMethod);
             }
             else
             {
@@ -231,18 +236,28 @@ namespace TechTalk.SpecFlow.Generator
                         generationContext.FeatureBackgroundMethod.Name));
             }
 
+            //var ifStatement = new CodeConditionStatement(new CodeExpression(), new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) }, new CodeStatement[]{});
+
+            //testMethod.Statements.Add(ifStatement);
+
+
             foreach (var scenarioStep in scenario.Steps)
             {
                 _scenarioPartHelper.GenerateStep(testMethod, scenarioStep, paramToIdentifier);
             }
         }
 
-        internal void GenerateMethodBodyForSkippedScenario(CodeMemberMethod testMethod)
+        internal void AddTestRunnerSkipScenarioCall(CodeMemberMethod testMethod)
         {
             testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeFieldReferenceExpression(null, TESTRUNNER_FIELD),
-                    nameof(TestRunner.SkipScenario)));
+                CreateTestRunnerSkipScenarioCall());
+        }
+
+        private CodeMethodInvokeExpression CreateTestRunnerSkipScenarioCall()
+        {
+            return new CodeMethodInvokeExpression(
+                new CodeFieldReferenceExpression(null, TESTRUNNER_FIELD),
+                nameof(TestRunner.SkipScenario));
         }
 
         private void GenerateScenarioOutlineExamplesAsIndividualMethods(
@@ -251,20 +266,33 @@ namespace TechTalk.SpecFlow.Generator
             CodeMemberMethod scenarioOutlineTestMethod, ParameterSubstitution paramToIdentifier)
         {
             var exampleSetIndex = 0;
+
             foreach (var exampleSet in scenarioOutline.Examples)
             {
                 var useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.TableBody);
-                var exampleSetIdentifier = string.IsNullOrEmpty(exampleSet.Name)
-                    ? scenarioOutline.Examples.Count(es => string.IsNullOrEmpty(es.Name)) > 1
-                        ? string.Format("ExampleSet {0}", exampleSetIndex).ToIdentifier()
-                        : null
-                    : exampleSet.Name.ToIdentifier();
+                string exampleSetIdentifier;
+
+                if (string.IsNullOrEmpty(exampleSet.Name))
+                {
+                    if (scenarioOutline.Examples.Count(es => string.IsNullOrEmpty(es.Name)) > 1)
+                    {
+                        exampleSetIdentifier = $"ExampleSet {exampleSetIndex}".ToIdentifier();
+                    }
+                    else
+                    {
+                        exampleSetIdentifier = null;
+                    }
+                }
+                else
+                {
+                    exampleSetIdentifier = exampleSet.Name.ToIdentifier();
+                }
+
 
                 foreach (var example in exampleSet.TableBody.Select((r, i) => new {Row = r, Index = i}))
                 {
                     var variantName = useFirstColumnAsName ? example.Row.Cells.First().Value : string.Format("Variant {0}", example.Index);
-                    GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenarioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row,
-                        exampleSet.Tags, variantName);
+                    GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenarioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row, exampleSet.Tags, variantName);
                 }
 
                 exampleSetIndex++;
