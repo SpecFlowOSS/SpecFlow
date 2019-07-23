@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TechTalk.SpecFlow.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.UnitTestProvider
+namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 {
     public class MsTestRuntimeProvider : IUnitTestRuntimeProvider
     {

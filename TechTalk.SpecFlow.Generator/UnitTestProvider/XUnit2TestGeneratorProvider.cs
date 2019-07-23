@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string COLLECTION_TAG = "xunit:collection";
         protected internal const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
         protected internal const string DESCRIPTION_PROPERTY_NAME = "Description";
-        protected internal const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
+        protected internal const string FACT_ATTRIBUTE = "Xunit.SkippableFactAttribute";
         protected internal const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         protected internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         protected internal const string SKIP_REASON = "Ignored";

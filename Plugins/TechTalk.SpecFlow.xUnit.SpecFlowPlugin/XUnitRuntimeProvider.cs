@@ -17,8 +17,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 
         public void TestIgnore(string message)
         {
-            Skip.If(true, "Ignored Scenario");
-            //throw new XUnitIgnoreTestException("Test ignored: " + message);
+            Skip.If(true, message);
         }
 
         public bool DelayedFixtureTearDown => false;
