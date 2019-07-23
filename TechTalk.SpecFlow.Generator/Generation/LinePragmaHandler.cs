@@ -1,8 +1,10 @@
 ﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.IO;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.Generation
 {
@@ -55,6 +57,27 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 return;
 
             _codeDomHelper.AddSourceLinePragmaStatement(statements, location.Line, location.Column);
+        }
+
+        public CodeStatement CreateLineDirectiveHidden()
+        {
+            if (_specFlowConfiguration.AllowDebugGeneratedFiles)
+                return null;
+
+            return _codeDomHelper.CreateDisableSourceLinePragmaStatement();
+        }
+
+        public IEnumerable<CodeStatement> CreateLineDirective(Step scenarioStep)
+        {
+            return CreateLineDirective(scenarioStep.Location);
+        }
+
+        public IEnumerable<CodeStatement> CreateLineDirective(Location location)
+        {
+            if (location == null || _specFlowConfiguration.AllowDebugGeneratedFiles)
+                return new List<CodeStatement>();
+
+            return _codeDomHelper.CreateSourceLinePragmaStatement(location.Line, location.Column);
         }
     }
 }

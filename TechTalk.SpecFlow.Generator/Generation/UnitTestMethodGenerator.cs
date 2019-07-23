@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Tracing;
 
-namespace TechTalk.SpecFlow.Generator
+namespace TechTalk.SpecFlow.Generator.Generation
 {
     public class UnitTestMethodGenerator
     {
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.Generator
             }
             else
             {
-                GenerateTest(generationContext, (Scenario) scenarioDefinition, feature);
+                GenerateTest(generationContext, (Scenario)scenarioDefinition, feature);
             }
         }
 
@@ -157,6 +156,11 @@ namespace TechTalk.SpecFlow.Generator
                                     additionalTagsExpression)))));
             }
 
+
+            var tagVariable = new CodeVariableDeclarationStatement(typeof(string[]), "tagsOfScenario", tagsExpression);
+
+            testMethod.Statements.Add(tagVariable);
+
             testMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(typeof(ScenarioInfo), "scenarioInfo",
                     new CodeObjectCreateExpression(typeof(ScenarioInfo),
@@ -174,15 +178,10 @@ namespace TechTalk.SpecFlow.Generator
         internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier,
             SpecFlowFeature feature)
         {
-            if (IsIgnoredFeature(feature) || IsIgnoredStepsContainer(scenario))
-            {
-                AddTestRunnerSkipScenarioCall(testMethod);
-            }
-            else
-            {
-                GenerateScenarioStartMethodCall(generationContext, testMethod);
-                GenerateMethodBodyForNotSkippedScenarios(generationContext, scenario, testMethod, paramToIdentifier);
-            }
+
+            GenerateScenarioStartMethodCall(generationContext, testMethod);
+            GenerateMethodBodyForNotSkippedScenarios(generationContext, scenario, testMethod, paramToIdentifier);
+
         }
 
         internal bool IsIgnoredFeature(SpecFlowFeature specFlowFeature)
@@ -236,15 +235,44 @@ namespace TechTalk.SpecFlow.Generator
                         generationContext.FeatureBackgroundMethod.Name));
             }
 
-            //var ifStatement = new CodeConditionStatement(new CodeExpression(), new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) }, new CodeStatement[]{});
 
-            //testMethod.Statements.Add(ifStatement);
 
+            var trueStatements = new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) };
+            var falseStatements = new List<CodeStatement>();
 
             foreach (var scenarioStep in scenario.Steps)
             {
-                _scenarioPartHelper.GenerateStep(testMethod, scenarioStep, paramToIdentifier);
+                _scenarioPartHelper.GenerateStep(falseStatements, scenarioStep, paramToIdentifier);
             }
+
+            var isScenarioIgnoredVariable = new CodeVariableDeclarationStatement(typeof(bool), "isScenarioIgnored", new CodeDefaultValueExpression(new CodeTypeReference(typeof(bool))));
+            var isFeatureIgnoredVariable = new CodeVariableDeclarationStatement(typeof(bool), "isFeatureIgnored", new CodeDefaultValueExpression(new CodeTypeReference(typeof(bool))));
+            testMethod.Statements.Add(isScenarioIgnoredVariable);
+            testMethod.Statements.Add(isFeatureIgnoredVariable);
+
+
+            var tagsOfScenarioVariableReferenceExpression = new CodeVariableReferenceExpression("tagsOfScenario");
+            var isScenarioIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isScenarioIgnored");
+            var featureFileTagFieldReferenceExpression = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_featureTags");
+            var isFeatureIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isFeatureIgnored");
+
+            var ifIsNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(tagsOfScenarioVariableReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), new CodeAssignStatement(isScenarioIgnoredVariableReferenceExpression,
+                new CodeMethodInvokeExpression(tagsOfScenarioVariableReferenceExpression,
+                    "Where(__entry => __entry != null).Where(a => String.Equals(a, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any")));
+
+            
+            var ifIsFeatureTagsNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(featureFileTagFieldReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), new CodeAssignStatement(isFeatureIgnoredVariableReferenceExpression,
+                new CodeMethodInvokeExpression(featureFileTagFieldReferenceExpression,
+                    "Where(__entry => __entry != null).Where(a => String.Equals(a, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any")));
+
+
+            testMethod.Statements.Add(ifIsNullStatement);
+            testMethod.Statements.Add(ifIsFeatureTagsNullStatement);
+
+
+            var ifIsIgnoredStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(isScenarioIgnoredVariableReferenceExpression, CodeBinaryOperatorType.BooleanOr, isFeatureIgnoredVariableReferenceExpression ) , trueStatements, falseStatements.ToArray());
+
+            testMethod.Statements.Add(ifIsIgnoredStatement);
         }
 
         internal void AddTestRunnerSkipScenarioCall(CodeMemberMethod testMethod)
@@ -289,7 +317,7 @@ namespace TechTalk.SpecFlow.Generator
                 }
 
 
-                foreach (var example in exampleSet.TableBody.Select((r, i) => new {Row = r, Index = i}))
+                foreach (var example in exampleSet.TableBody.Select((r, i) => new { Row = r, Index = i }))
                 {
                     var variantName = useFirstColumnAsName ? example.Row.Cells.First().Value : string.Format("Variant {0}", example.Index);
                     GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenarioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row, exampleSet.Tags, variantName);

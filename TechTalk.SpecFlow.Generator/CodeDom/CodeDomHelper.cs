@@ -58,15 +58,26 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
 
         public void AddCommentStatement(CodeStatementCollection statements, string comment)
         {
+            var commentStatement = CreateCommentStatement(comment);
+            statements.Add(commentStatement);
+        }
+
+        private CodeStatement CreateCommentStatement(string comment)
+        {
             switch (TargetLanguage)
             {
                 case CodeDomProviderLanguage.CSharp:
-                    statements.Add(new CodeSnippetStatement("//" + comment));
-                    break;
+                    return new CodeSnippetStatement("//" + comment);
                 case CodeDomProviderLanguage.VB:
-                    statements.Add(new CodeSnippetStatement("'" + comment));
-                    break;
+                    return new CodeSnippetStatement("'" + comment);
             }
+
+            throw TargetLanguageNotSupportedException();
+        }
+
+        private NotImplementedException TargetLanguageNotSupportedException()
+        {
+            return new NotImplementedException($"{TargetLanguage} is not supported");
         }
 
         private bool isExternalSourceBlockOpen = false;
@@ -92,6 +103,14 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
 
         public void AddSourceLinePragmaStatement(CodeStatementCollection statements, int lineNo, int colNo)
         {
+            foreach (var codeStatement in CreateSourceLinePragmaStatement(lineNo, colNo))
+            {
+                statements.Add(codeStatement);
+            }
+        }
+
+        public IEnumerable<CodeStatement> CreateSourceLinePragmaStatement(int lineNo, int colNo)
+        {
             if (currentBoundSourceCodeFile == null)
                 throw new InvalidOperationException("The generated code was not bound to a file!");
 
@@ -100,34 +119,23 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                 case CodeDomProviderLanguage.VB:
                     if (isExternalSourceBlockOpen)
                     {
-                        AddDisableSourceLinePragmaStatement(statements);
+                        yield return CreateDisableSourceLinePragmaStatement();
                     }
-                    statements.Add(new CodeSnippetStatement(string.Format("#ExternalSource(\"{0}\",{1})", currentBoundSourceCodeFile, lineNo)));
+
+                    yield return new CodeSnippetStatement($"#ExternalSource(\"{currentBoundSourceCodeFile}\",{lineNo})");
                     isExternalSourceBlockOpen = true;
-                    AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
+                    yield return CreateCommentStatement($"#indentnext {colNo - 1}");
                     break;
                 case CodeDomProviderLanguage.CSharp:
-                    statements.Add(new CodeSnippetStatement(string.Format("#line {0}", lineNo)));
-                    AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
+                    yield return new CodeSnippetStatement($"#line {lineNo}");
+                    yield return CreateCommentStatement($"#indentnext {colNo - 1}");
                     break;
             }
         }
 
         public void AddDisableSourceLinePragmaStatement(CodeStatementCollection statements)
         {
-            switch (TargetLanguage)
-            {
-                case CodeDomProviderLanguage.VB:
-                    if (isExternalSourceBlockOpen)
-                    {
-                        statements.Add(new CodeSnippetStatement("#End ExternalSource"));
-                    }
-                    isExternalSourceBlockOpen = false;
-                    break;
-                case CodeDomProviderLanguage.CSharp:
-                    statements.Add(new CodeSnippetStatement("#line hidden"));
-                    break;
-            }
+            statements.Add(CreateDisableSourceLinePragmaStatement());
         }
 
         public CodeStatement GetStartRegionStatement(string regionText)
@@ -257,5 +265,28 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             type.Members.Add(method);
             return method;
         }
+
+        public CodeStatement CreateDisableSourceLinePragmaStatement()
+        {
+            switch (TargetLanguage)
+            {
+                case CodeDomProviderLanguage.VB:
+                    if (isExternalSourceBlockOpen)
+                    {
+                        return new CodeSnippetStatement("#End ExternalSource");
+                    }
+                    isExternalSourceBlockOpen = false;
+                    return null;
+                case CodeDomProviderLanguage.CSharp:
+                    return new CodeSnippetStatement("#line hidden");
+            }
+
+            throw TargetLanguageNotSupportedException();
+        }
+
+        //public void CreateSourceLinePragmaStatement(int locationLine, int locationColumn)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

@@ -5,14 +5,13 @@ using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Tracing;
 
-namespace TechTalk.SpecFlow.Generator
+namespace TechTalk.SpecFlow.Generator.Generation
 {
     public class UnitTestFeatureGenerator : IFeatureGenerator
     {
@@ -108,6 +107,8 @@ namespace TechTalk.SpecFlow.Generator
             var codeNamespace = new CodeNamespace(targetNamespace);
 
             codeNamespace.Imports.Add(new CodeNamespaceImport(GeneratorConstants.SPECFLOW_NAMESPACE));
+            codeNamespace.Imports.Add(new CodeNamespaceImport("System"));
+            codeNamespace.Imports.Add(new CodeNamespaceImport("System.Linq"));
             return codeNamespace;
         }
 
@@ -143,6 +144,11 @@ namespace TechTalk.SpecFlow.Generator
             {
                 _testGeneratorProvider.SetTestClassCategories(generationContext, featureCategories);
             }
+
+            var featureTagsField = new CodeMemberField(typeof(string[]), "_featureTags");
+            featureTagsField.InitExpression = _scenarioPartHelper.GetStringArrayExpression(generationContext.Feature.Tags);
+
+            generationContext.TestClass.Members.Add(featureTagsField);
         }
 
         private CodeMemberField DeclareTestRunnerMember(CodeTypeDeclaration type)

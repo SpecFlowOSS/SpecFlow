@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.Generator
+﻿namespace TechTalk.SpecFlow.Generator.Generation
 {
     public class GeneratorConstants
     {

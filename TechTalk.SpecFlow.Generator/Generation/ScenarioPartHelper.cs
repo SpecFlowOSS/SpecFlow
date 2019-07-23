@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gherkin.Ast;
-using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Parser;
 
-namespace TechTalk.SpecFlow.Generator
+namespace TechTalk.SpecFlow.Generator.Generation
 {
     public class ScenarioPartHelper
     {
@@ -35,15 +34,18 @@ namespace TechTalk.SpecFlow.Generator
 
             _linePragmaHandler.AddLineDirective(backgroundMethod.Statements, background);
 
+
+            var statements = new List<CodeStatement>();
             foreach (var step in background.Steps)
             {
-                GenerateStep(backgroundMethod, step, null);
+                GenerateStep(statements, step, null);
             }
+            backgroundMethod.Statements.AddRange(statements.ToArray());
 
             _linePragmaHandler.AddLineDirectiveHidden(backgroundMethod.Statements);
         }
 
-        public void GenerateStep(CodeMemberMethod testMethod, Step gherkinStep, ParameterSubstitution paramToIdentifier)
+        public void GenerateStep(List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
         {
             var testRunnerField = GetTestRunnerExpression();
             var scenarioStep = AsSpecFlowStep(gherkinStep);
@@ -52,19 +54,29 @@ namespace TechTalk.SpecFlow.Generator
             var arguments = new List<CodeExpression> {GetSubstitutedString(scenarioStep.Text, paramToIdentifier)};
             if (scenarioStep.Argument != null)
             {
-                _linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
+                var lineDirectiveHidden = _linePragmaHandler.CreateLineDirectiveHidden();
+                if (lineDirectiveHidden != null)
+                {
+                    statements.Add(lineDirectiveHidden);
+                }
+                
             }
 
             arguments.Add(GetDocStringArgExpression(scenarioStep.Argument as DocString, paramToIdentifier));
-            arguments.Add(GetTableArgExpression(scenarioStep.Argument as DataTable, testMethod.Statements, paramToIdentifier));
+            arguments.Add(GetTableArgExpression(scenarioStep.Argument as DataTable, statements, paramToIdentifier));
             arguments.Add(new CodePrimitiveExpression(scenarioStep.Keyword));
 
-            _linePragmaHandler.AddLineDirective(testMethod.Statements, scenarioStep);
-            testMethod.Statements.Add(
+            foreach (var codeStatement in _linePragmaHandler.CreateLineDirective(scenarioStep))
+            {
+                statements.Add(codeStatement);
+            }
+            
+            
+            statements.Add(new CodeExpressionStatement(
                 new CodeMethodInvokeExpression(
                     testRunnerField,
                     scenarioStep.StepKeyword.ToString(),
-                    arguments.ToArray()));
+                    arguments.ToArray())));
         }
 
         public CodeExpression GetStringArrayExpression(IEnumerable<Tag> tags)
@@ -88,7 +100,7 @@ namespace TechTalk.SpecFlow.Generator
             return specFlowStep;
         }
 
-        private CodeExpression GetTableArgExpression(DataTable tableArg, CodeStatementCollection statements, ParameterSubstitution paramToIdentifier)
+        private CodeExpression GetTableArgExpression(DataTable tableArg, List<CodeStatement> statements, ParameterSubstitution paramToIdentifier)
         {
             if (tableArg == null)
             {
@@ -112,11 +124,11 @@ namespace TechTalk.SpecFlow.Generator
             foreach (var row in body)
             {
                 //table0.AddRow(cells...);
-                statements.Add(
+                statements.Add(new CodeExpressionStatement(
                     new CodeMethodInvokeExpression(
                         tableVar,
                         "AddRow",
-                        GetStringArrayExpression(row.Cells.Select(c => c.Value), paramToIdentifier)));
+                        GetStringArrayExpression(row.Cells.Select(c => c.Value), paramToIdentifier))));
             }
 
             return tableVar;
