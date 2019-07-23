@@ -1,11 +1,8 @@
 ﻿using System;
 using System.CodeDom;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.Generation;
@@ -19,13 +16,13 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class UnitTestFeatureGenerator : IFeatureGenerator
     {
-        private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly CodeDomHelper _codeDomHelper;
         private readonly IDecoratorRegistry _decoratorRegistry;
-        private readonly IUnitTestGeneratorProvider _testGeneratorProvider;
-        private LinePragmaHandler _linePragmaHandler;
-        private readonly UnitTestMethodGenerator _unitTestMethodGenerator;
         private readonly ScenarioPartHelper _scenarioPartHelper;
+        private readonly SpecFlowConfiguration _specFlowConfiguration;
+        private readonly IUnitTestGeneratorProvider _testGeneratorProvider;
+        private readonly UnitTestMethodGenerator _unitTestMethodGenerator;
+        private readonly LinePragmaHandler _linePragmaHandler;
 
         public UnitTestFeatureGenerator(
             IUnitTestGeneratorProvider testGeneratorProvider,
@@ -40,7 +37,6 @@ namespace TechTalk.SpecFlow.Generator
             _linePragmaHandler = new LinePragmaHandler(_specFlowConfiguration, _codeDomHelper);
             _scenarioPartHelper = new ScenarioPartHelper(_linePragmaHandler);
             _unitTestMethodGenerator = new UnitTestMethodGenerator(testGeneratorProvider, decoratorRegistry, _codeDomHelper, _linePragmaHandler, _scenarioPartHelper);
-            
         }
 
         public string TestClassNameFormat { get; set; } = "{0}Feature";
@@ -71,8 +67,6 @@ namespace TechTalk.SpecFlow.Generator
             _testGeneratorProvider.FinalizeTestClass(generationContext);
             return codeNamespace;
         }
-
-   
 
 
         private TestClassGenerationContext CreateTestClassStructure(CodeNamespace codeNamespace, string testClassName, SpecFlowDocument document)
@@ -158,9 +152,6 @@ namespace TechTalk.SpecFlow.Generator
             return testRunnerField;
         }
 
-        
-
-     
 
         private void SetupTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
@@ -177,7 +168,7 @@ namespace TechTalk.SpecFlow.Generator
 
             var testRunnerParameters = _testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.ParallelExecution)
                 ? new CodeExpression[] { }
-                : new[] { new CodePrimitiveExpression(null), new CodePrimitiveExpression(0) };
+                : new[] {new CodePrimitiveExpression(null), new CodePrimitiveExpression(0)};
 
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(
@@ -207,9 +198,7 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeVariableReferenceExpression("featureInfo")));
         }
 
-        
 
-        
         private void SetupTestClassCleanupMethod(TestClassGenerationContext generationContext)
         {
             var testClassCleanupMethod = generationContext.TestClassCleanupMethod;
@@ -291,10 +280,5 @@ namespace TechTalk.SpecFlow.Generator
                     testRunnerField,
                     nameof(ITestExecutionEngine.OnScenarioStart)));
         }
-
-
-        
-       
-  
     }
 }
