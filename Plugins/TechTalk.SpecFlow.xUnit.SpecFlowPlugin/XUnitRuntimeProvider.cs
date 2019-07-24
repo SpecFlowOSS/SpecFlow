@@ -1,4 +1,7 @@
-namespace TechTalk.SpecFlow.UnitTestProvider
+using TechTalk.SpecFlow.UnitTestProvider;
+using Xunit;
+
+namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 {
     public class XUnitRuntimeProvider : IUnitTestRuntimeProvider
     {
@@ -14,12 +17,9 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 
         public void TestIgnore(string message)
         {
-            throw new XUnitIgnoreTestException("Test ignored: " + message);
+            Skip.If(true, message);
         }
 
-        public bool DelayedFixtureTearDown
-        {
-            get { return false; }
-        }
+        public bool DelayedFixtureTearDown => false;
     }
 }

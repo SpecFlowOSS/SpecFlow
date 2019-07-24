@@ -202,7 +202,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             // Assert
             var modifiedAttribute = codeMemberMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(a => a.Name == "Xunit.TheoryAttribute");
+                .FirstOrDefault(a => a.Name == "Xunit.SkippableTheoryAttribute");
 
             modifiedAttribute.Should().NotBeNull();
 
@@ -299,7 +299,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             // Assert
             var modifiedAttribute = codeMemberMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(a => a.Name == "Xunit.FactAttribute");
+                .FirstOrDefault(a => a.Name == "Xunit.SkippableFactAttribute");
 
             modifiedAttribute.Should().NotBeNull();
 

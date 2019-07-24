@@ -335,39 +335,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             attribute.Should().BeNull("Parallelizable attribute was found");
         }
 
-        [Fact]
-        public void NUnit3TestGeneratorProvider_ShouldProvideAReasonForIgnoringAFeature()
-        {
-            var code = GenerateCodeNamespaceFromFeature(IgnoredFeatureFile);
-
-            var attributes = code.Class().CustomAttributes().ToArray();
-            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.IgnoreAttribute");
-
-            attribute.Should().NotBeNull("Ignore attribute was not found");
-
-            attribute.ArgumentValues()
-                .Single()
-                .As<string>()
-                .Should()
-                .NotBeNullOrWhiteSpace("No reason for ignoring the feature was given");
-        }
-
-        [Fact]
-        public void NUnit3TestGeneratorProvider_ShouldProvideAReasonForIgnoringAScenario()
-        {
-            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithIgnoredScenario);
-
-            var attributes = code.Class().Members().ToArray().Single(m => m.Name == "IgnoredScenario").CustomAttributes().ToArray();
-            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.IgnoreAttribute");
-
-            attribute.Should().NotBeNull("Ignore attribute was not found");
-
-            attribute.ArgumentValues()
-                .Single()
-                .As<string>()
-                .Should()
-                .NotBeNullOrWhiteSpace("No reason for ignoring the scenario was given");
-        }
+       
 
         public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] ignoreParallelTags = null)
         {

@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     public class XUnit2TestGeneratorProvider : IUnitTestGeneratorProvider
     {
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
-        protected internal const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
+        protected internal const string THEORY_ATTRIBUTE = "Xunit.SkippableTheoryAttribute";
         protected internal const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
         protected internal const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
         protected internal const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
@@ -23,13 +23,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string COLLECTION_TAG = "xunit:collection";
         protected internal const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
         protected internal const string DESCRIPTION_PROPERTY_NAME = "Description";
-        protected internal const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
+        protected internal const string FACT_ATTRIBUTE = "Xunit.SkippableFactAttribute";
         protected internal const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         protected internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         protected internal const string SKIP_REASON = "Ignored";
         protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         protected internal const string CATEGORY_PROPERTY_NAME = "Category";
-        protected internal const string IGNORE_TAG = "@Ignore";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -149,9 +148,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //'-', and '_' are allowed.
             string collectionMatch = $@"(?<={COLLECTION_TAG}[(])[A-Za-z0-9\-_]+.*?(?=[)])";
             string description = Regex.Match(collection, collectionMatch, RegexOptions.IgnoreCase).Value;
-            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_DEF, description); 
+            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_DEF, description);
         }
-    
+
 
         public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
@@ -229,7 +228,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName",new CodePrimitiveExpression(friendlyTestName)));
+            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(friendlyTestName)));
 
             SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
             SetDescription(testMethod, friendlyTestName);
