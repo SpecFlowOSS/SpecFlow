@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     {
         private readonly IFeatureGenerator _defaultFeatureGenerator;
         private readonly KeyValuePair<Combination, IFeatureGenerator>[] _featureGenerators;
+        private readonly List<string> _unitTestProviderTags = new List<string> { "xunit", "mstest", "nunit3" };
 
         public MultiFeatureGenerator(IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> featureGenerators, IFeatureGenerator defaultFeatureGenerator)
         {
@@ -27,8 +28,6 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 }
             }
         }
-
-        private List<string> _unitTestProviderTags = new List<string>() { "xunit", "mstest", "nunit3" };
 
         public CodeNamespace GenerateUnitTestFixture(SpecFlowDocument specFlowDocument, string testClassName, string targetNamespace)
         {
