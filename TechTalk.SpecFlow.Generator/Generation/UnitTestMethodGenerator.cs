@@ -157,9 +157,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             }
 
 
-            var tagVariable = new CodeVariableDeclarationStatement(typeof(string[]), "tagsOfScenario", tagsExpression);
-
-            testMethod.Statements.Add(tagVariable);
+            AddVariableForTags(testMethod, tagsExpression);
 
             testMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(typeof(ScenarioInfo), "scenarioInfo",
@@ -173,6 +171,13 @@ namespace TechTalk.SpecFlow.Generator.Generation
             GenerateTestMethodBody(generationContext, scenario, testMethod, paramToIdentifier, feature);
 
             GenerateScenarioCleanupMethodCall(generationContext, testMethod);
+        }
+
+        private void AddVariableForTags(CodeMemberMethod testMethod, CodeExpression tagsExpression)
+        {
+            var tagVariable = new CodeVariableDeclarationStatement(typeof(string[]), "tagsOfScenario", tagsExpression);
+
+            testMethod.Statements.Add(tagVariable);
         }
 
         internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier,SpecFlowFeature feature)
@@ -222,11 +227,11 @@ namespace TechTalk.SpecFlow.Generator.Generation
             }
 
 
-            var ifIsNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(tagsOfScenarioVariableReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), new CodeAssignStatement(isScenarioIgnoredVariableReferenceExpression,
+            var ifIsNullStatement = new CodeConditionStatement(CreateCheckForNullExpression(tagsOfScenarioVariableReferenceExpression), new CodeAssignStatement(isScenarioIgnoredVariableReferenceExpression,
                 new CodeMethodInvokeExpression(tagsOfScenarioVariableReferenceExpression, ignoreLinqStatement)));
 
             
-            var ifIsFeatureTagsNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(featureFileTagFieldReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), new CodeAssignStatement(isFeatureIgnoredVariableReferenceExpression,
+            var ifIsFeatureTagsNullStatement = new CodeConditionStatement(CreateCheckForNullExpression(featureFileTagFieldReferenceExpression), new CodeAssignStatement(isFeatureIgnoredVariableReferenceExpression,
                 new CodeMethodInvokeExpression(featureFileTagFieldReferenceExpression, ignoreLinqStatement)));
 
 
@@ -234,12 +239,18 @@ namespace TechTalk.SpecFlow.Generator.Generation
             testMethod.Statements.Add(ifIsFeatureTagsNullStatement);
 
 
-            var ifIsIgnoredStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(isScenarioIgnoredVariableReferenceExpression, CodeBinaryOperatorType.BooleanOr, isFeatureIgnoredVariableReferenceExpression ) , statementsWhenScenarioIsIgnored, statementsWhenScenarioIsExecuted.ToArray());
+            var isScenarioOrFeatureIgnoredExpression = new CodeBinaryOperatorExpression(isScenarioIgnoredVariableReferenceExpression, CodeBinaryOperatorType.BooleanOr, isFeatureIgnoredVariableReferenceExpression );
+            var ifIsIgnoredStatement = new CodeConditionStatement(isScenarioOrFeatureIgnoredExpression , statementsWhenScenarioIsIgnored, statementsWhenScenarioIsExecuted.ToArray());
 
             testMethod.Statements.Add(ifIsIgnoredStatement);
         }
 
-      
+        private static CodeBinaryOperatorExpression CreateCheckForNullExpression(CodeExpression variableReferenceExpression)
+        {
+            return new CodeBinaryOperatorExpression(variableReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null));
+        }
+
+
         internal void GenerateScenarioInitializeCall(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod)
         {
             var statements = new List<CodeStatement>();

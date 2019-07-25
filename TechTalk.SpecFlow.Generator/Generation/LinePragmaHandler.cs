@@ -1,7 +1,5 @@
 ﻿using System.CodeDom;
-using System.Collections.Generic;
 using System.IO;
-using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 
@@ -25,17 +23,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 return;
 
             _codeDomHelper.BindTypeToSourceFile(testType, Path.GetFileName(sourceFile));
-        }
-
-
-
-
-        public IEnumerable<CodeStatement> CreateLineDirective(string filename, Location location)
-        {
-            if (location == null || _specFlowConfiguration.AllowDebugGeneratedFiles)
-                return new List<CodeStatement>();
-
-            return _codeDomHelper.CreateSourceLinePragmaStatement(filename, location.Line, location.Column);
         }
     }
 }
