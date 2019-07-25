@@ -119,7 +119,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyDotNetCore)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
+                                || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
                             {
                                 yield return featureGenerator;
                             }
@@ -149,7 +150,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         {
                             if (onlyDotNetCore)
                             {
-                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21)
+                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
+                                    || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
                                 {
                                     yield return featureGenerator;
                                 }
