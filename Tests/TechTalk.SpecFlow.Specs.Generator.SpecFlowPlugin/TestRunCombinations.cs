@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 {
-    class TestRunCombinations
+    public class TestRunCombinations
     {
         public const string TfmEnumValueNet452 = "Net452";
         public const string TfmEnumValueNetCore21 = "Netcoreapp21";
