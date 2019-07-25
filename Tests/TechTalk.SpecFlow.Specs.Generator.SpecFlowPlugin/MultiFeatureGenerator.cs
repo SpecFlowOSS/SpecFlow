@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (onlyFullframework)
                     {
-                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_FullFramework)
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNet452)
                         {
                             yield return featureGenerator;
                         }
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyDotNetCore)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_NetCore)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNetCore21)
                             {
                                 yield return featureGenerator;
                             }
@@ -140,7 +140,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyFullframework)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_FullFramework)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNet452)
                             {
                                 yield return featureGenerator;
                             }
@@ -149,7 +149,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         {
                             if (onlyDotNetCore)
                             {
-                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_NetCore)
+                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNetCore21)
                                 {
                                     yield return featureGenerator;
                                 }
