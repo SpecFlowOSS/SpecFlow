@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (onlyFullframework)
                     {
-                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNet452)
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet452)
                         {
                             yield return featureGenerator;
                         }
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyDotNetCore)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNetCore21)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21)
                             {
                                 yield return featureGenerator;
                             }
@@ -140,7 +140,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyFullframework)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNet452)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet452)
                             {
                                 yield return featureGenerator;
                             }
@@ -149,7 +149,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         {
                             if (onlyDotNetCore)
                             {
-                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmNetCore21)
+                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21)
                                 {
                                     yield return featureGenerator;
                                 }
