@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gherkin.Ast;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.Generation
 {
     public class ScenarioPartHelper
     {
-        private readonly LinePragmaHandler _linePragmaHandler;
+        private readonly SpecFlowConfiguration _specFlowConfiguration;
+        private readonly CodeDomHelper _codeDomHelper;
         private int _tableCounter;
 
 
-        public ScenarioPartHelper(LinePragmaHandler linePragmaHandler)
+        public ScenarioPartHelper(SpecFlowConfiguration specFlowConfiguration, CodeDomHelper codeDomHelper)
         {
-            _linePragmaHandler = linePragmaHandler;
+            _specFlowConfiguration = specFlowConfiguration;
+            _codeDomHelper = codeDomHelper;
         }
 
         public void SetupFeatureBackground(TestClassGenerationContext generationContext)
@@ -32,51 +36,45 @@ namespace TechTalk.SpecFlow.Generator.Generation
             backgroundMethod.Attributes = MemberAttributes.Public;
             backgroundMethod.Name = GeneratorConstants.BACKGROUND_NAME;
 
-            _linePragmaHandler.AddLineDirective(backgroundMethod.Statements, background);
-
-
+            
             var statements = new List<CodeStatement>();
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, background.Location))
+            {
+            }
+
             foreach (var step in background.Steps)
             {
-                GenerateStep(statements, step, null);
+                GenerateStep(generationContext, statements, step, null);
             }
             backgroundMethod.Statements.AddRange(statements.ToArray());
-
-            _linePragmaHandler.AddLineDirectiveHidden(backgroundMethod.Statements);
+            
         }
 
-        public void GenerateStep(List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
+        public void GenerateStep(TestClassGenerationContext generationContext, List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
         {
             var testRunnerField = GetTestRunnerExpression();
             var scenarioStep = AsSpecFlowStep(gherkinStep);
 
             //testRunner.Given("something");
-            var arguments = new List<CodeExpression> {GetSubstitutedString(scenarioStep.Text, paramToIdentifier)};
-            if (scenarioStep.Argument != null)
+            var arguments = new List<CodeExpression>
             {
-                var lineDirectiveHidden = _linePragmaHandler.CreateLineDirectiveHidden();
-                if (lineDirectiveHidden != null)
-                {
-                    statements.Add(lineDirectiveHidden);
-                }
-                
-            }
+                GetSubstitutedString(scenarioStep.Text, paramToIdentifier),
+                GetDocStringArgExpression(scenarioStep.Argument as DocString, paramToIdentifier),
+                GetTableArgExpression(scenarioStep.Argument as DataTable, statements, paramToIdentifier),
+                new CodePrimitiveExpression(scenarioStep.Keyword)
+            };
 
-            arguments.Add(GetDocStringArgExpression(scenarioStep.Argument as DocString, paramToIdentifier));
-            arguments.Add(GetTableArgExpression(scenarioStep.Argument as DataTable, statements, paramToIdentifier));
-            arguments.Add(new CodePrimitiveExpression(scenarioStep.Keyword));
 
-            foreach (var codeStatement in _linePragmaHandler.CreateLineDirective(scenarioStep))
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, gherkinStep.Location))
             {
-                statements.Add(codeStatement);
+                statements.Add(new CodeExpressionStatement(
+                    new CodeMethodInvokeExpression(
+                        testRunnerField,
+                        scenarioStep.StepKeyword.ToString(),
+                        arguments.ToArray())));
             }
             
-            
-            statements.Add(new CodeExpressionStatement(
-                new CodeMethodInvokeExpression(
-                    testRunnerField,
-                    scenarioStep.StepKeyword.ToString(),
-                    arguments.ToArray())));
+           
         }
 
         public CodeExpression GetStringArrayExpression(IEnumerable<Tag> tags)

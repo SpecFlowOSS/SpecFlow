@@ -34,8 +34,8 @@ namespace TechTalk.SpecFlow.Generator.Generation
             _specFlowConfiguration = specFlowConfiguration;
             _decoratorRegistry = decoratorRegistry;
             _linePragmaHandler = new LinePragmaHandler(_specFlowConfiguration, _codeDomHelper);
-            _scenarioPartHelper = new ScenarioPartHelper(_linePragmaHandler);
-            _unitTestMethodGenerator = new UnitTestMethodGenerator(testGeneratorProvider, decoratorRegistry, _codeDomHelper, _linePragmaHandler, _scenarioPartHelper);
+            _scenarioPartHelper = new ScenarioPartHelper(_specFlowConfiguration, _codeDomHelper);
+            _unitTestMethodGenerator = new UnitTestMethodGenerator(testGeneratorProvider, decoratorRegistry, _codeDomHelper, _scenarioPartHelper, _specFlowConfiguration);
         }
 
         public string TestClassNameFormat { get; set; } = "{0}Feature";

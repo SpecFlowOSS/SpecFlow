@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using Gherkin.Ast;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
@@ -17,18 +18,17 @@ namespace TechTalk.SpecFlow.Generator.Generation
         private const string TESTRUNNER_FIELD = "testRunner";
         private readonly CodeDomHelper _codeDomHelper;
         private readonly IDecoratorRegistry _decoratorRegistry;
-        private readonly LinePragmaHandler _linePragmaHandler;
         private readonly ScenarioPartHelper _scenarioPartHelper;
+        private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IUnitTestGeneratorProvider _unitTestGeneratorProvider;
 
-        public UnitTestMethodGenerator(IUnitTestGeneratorProvider unitTestGeneratorProvider, IDecoratorRegistry decoratorRegistry, CodeDomHelper codeDomHelper, LinePragmaHandler linePragmaHandler,
-            ScenarioPartHelper scenarioPartHelper)
+        public UnitTestMethodGenerator(IUnitTestGeneratorProvider unitTestGeneratorProvider, IDecoratorRegistry decoratorRegistry, CodeDomHelper codeDomHelper, ScenarioPartHelper scenarioPartHelper, SpecFlowConfiguration specFlowConfiguration)
         {
             _unitTestGeneratorProvider = unitTestGeneratorProvider;
             _decoratorRegistry = decoratorRegistry;
             _codeDomHelper = codeDomHelper;
-            _linePragmaHandler = linePragmaHandler;
             _scenarioPartHelper = scenarioPartHelper;
+            _specFlowConfiguration = specFlowConfiguration;
         }
 
         public void CreateUnitTests(SpecFlowFeature feature, TestClassGenerationContext generationContext)
@@ -175,74 +175,33 @@ namespace TechTalk.SpecFlow.Generator.Generation
             GenerateScenarioCleanupMethodCall(generationContext, testMethod);
         }
 
-        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier,
-            SpecFlowFeature feature)
+        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier,SpecFlowFeature feature)
         {
-
-            GenerateScenarioStartMethodCall(generationContext, testMethod);
-            GenerateMethodBodyForNotSkippedScenarios(generationContext, scenario, testMethod, paramToIdentifier);
-
-        }
-
-        internal bool IsIgnoredFeature(SpecFlowFeature specFlowFeature)
-        {
-            return specFlowFeature.Tags.Any(t => string.Equals(t.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        internal bool IsIgnoredStepsContainer(StepsContainer stepsContainer)
-        {
-            return stepsContainer.GetTags().Any(t => string.Equals(t.Name, IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        internal void GenerateScenarioStartMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
-        {
-            testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.ScenarioStartMethod.Name));
-        }
-
-        internal void GenerateScenarioInitializeCall(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod)
-        {
-            _linePragmaHandler.AddLineDirective(testMethod.Statements, scenario);
-            testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.ScenarioInitializeMethod.Name,
-                    new CodeVariableReferenceExpression("scenarioInfo")));
-        }
-
-        internal void GenerateScenarioCleanupMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
-        {
-            _linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
-
-            // call scenario cleanup
-            testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.ScenarioCleanupMethod.Name));
-        }
-
-        internal void GenerateMethodBodyForNotSkippedScenarios(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod,
-            ParameterSubstitution paramToIdentifier)
-        {
-            if (generationContext.Feature.HasFeatureBackground())
+            var statementsWhenScenarioIsIgnored = new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) };
+            var statementsWhenScenarioIsExecuted = new List<CodeStatement>
             {
-                _linePragmaHandler.AddLineDirective(testMethod.Statements, generationContext.Feature.Background);
-                testMethod.Statements.Add(
+                new CodeExpressionStatement(
                     new CodeMethodInvokeExpression(
                         new CodeThisReferenceExpression(),
-                        generationContext.FeatureBackgroundMethod.Name));
+                        generationContext.ScenarioStartMethod.Name))
+            };
+
+
+            if (generationContext.Feature.HasFeatureBackground())
+            {
+                using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statementsWhenScenarioIsExecuted, generationContext.Document.SourceFilePath, generationContext.Feature.Background.Location))
+                {
+                    statementsWhenScenarioIsExecuted.Add(new CodeExpressionStatement(
+                        new CodeMethodInvokeExpression(
+                            new CodeThisReferenceExpression(),
+                            generationContext.FeatureBackgroundMethod.Name)));
+                }
             }
 
 
-
-            var trueStatements = new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) };
-            var falseStatements = new List<CodeStatement>();
-
             foreach (var scenarioStep in scenario.Steps)
             {
-                _scenarioPartHelper.GenerateStep(falseStatements, scenarioStep, paramToIdentifier);
+                _scenarioPartHelper.GenerateStep(generationContext, statementsWhenScenarioIsExecuted, scenarioStep, paramToIdentifier);
             }
 
             var isScenarioIgnoredVariable = new CodeVariableDeclarationStatement(typeof(bool), "isScenarioIgnored", new CodeDefaultValueExpression(new CodeTypeReference(typeof(bool))));
@@ -256,31 +215,57 @@ namespace TechTalk.SpecFlow.Generator.Generation
             var featureFileTagFieldReferenceExpression = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_featureTags");
             var isFeatureIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isFeatureIgnored");
 
+            var ignoreLinqStatement = "Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any";
+            if (_codeDomHelper.TargetLanguage == CodeDomProviderLanguage.VB)
+            {
+                ignoreLinqStatement = "Where(Function(__entry) __entry IsNot Nothing).Where(Function(__entry) String.Equals(__entry, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any";
+            }
+
+
             var ifIsNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(tagsOfScenarioVariableReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), new CodeAssignStatement(isScenarioIgnoredVariableReferenceExpression,
-                new CodeMethodInvokeExpression(tagsOfScenarioVariableReferenceExpression,
-                    "Where(__entry => __entry != null).Where(a => String.Equals(a, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any")));
+                new CodeMethodInvokeExpression(tagsOfScenarioVariableReferenceExpression, ignoreLinqStatement)));
 
             
             var ifIsFeatureTagsNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(featureFileTagFieldReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), new CodeAssignStatement(isFeatureIgnoredVariableReferenceExpression,
-                new CodeMethodInvokeExpression(featureFileTagFieldReferenceExpression,
-                    "Where(__entry => __entry != null).Where(a => String.Equals(a, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any")));
+                new CodeMethodInvokeExpression(featureFileTagFieldReferenceExpression, ignoreLinqStatement)));
 
 
             testMethod.Statements.Add(ifIsNullStatement);
             testMethod.Statements.Add(ifIsFeatureTagsNullStatement);
 
 
-            var ifIsIgnoredStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(isScenarioIgnoredVariableReferenceExpression, CodeBinaryOperatorType.BooleanOr, isFeatureIgnoredVariableReferenceExpression ) , trueStatements, falseStatements.ToArray());
+            var ifIsIgnoredStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(isScenarioIgnoredVariableReferenceExpression, CodeBinaryOperatorType.BooleanOr, isFeatureIgnoredVariableReferenceExpression ) , statementsWhenScenarioIsIgnored, statementsWhenScenarioIsExecuted.ToArray());
 
             testMethod.Statements.Add(ifIsIgnoredStatement);
         }
 
-        internal void AddTestRunnerSkipScenarioCall(CodeMemberMethod testMethod)
+      
+        internal void GenerateScenarioInitializeCall(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod)
         {
-            testMethod.Statements.Add(
-                CreateTestRunnerSkipScenarioCall());
+            var statements = new List<CodeStatement>();
+
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, scenario.Location))
+            {
+                statements.Add(new CodeExpressionStatement(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        generationContext.ScenarioInitializeMethod.Name,
+                        new CodeVariableReferenceExpression("scenarioInfo"))));
+            }
+
+            testMethod.Statements.AddRange(statements.ToArray());
         }
 
+        internal void GenerateScenarioCleanupMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        {
+            // call scenario cleanup
+            testMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    generationContext.ScenarioCleanupMethod.Name));
+        }
+
+     
         private CodeMethodInvokeExpression CreateTestRunnerSkipScenarioCall()
         {
             return new CodeMethodInvokeExpression(
@@ -391,20 +376,29 @@ namespace TechTalk.SpecFlow.Generator.Generation
             string variantName)
         {
             var testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);
-            _linePragmaHandler.AddLineDirective(testMethod.Statements, scenarioOutline);
+            
 
             //call test implementation with the params
             var argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();
 
             argumentExpressions.Add(_scenarioPartHelper.GetStringArrayExpression(exampleSetTags));
 
-            testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    scenatioOutlineTestMethod.Name,
-                    argumentExpressions.ToArray()));
 
-            _linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
+            var statements = new List<CodeStatement>();
+
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, scenarioOutline.Location))
+            {
+                statements.Add(new CodeExpressionStatement(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        scenatioOutlineTestMethod.Name,
+                        argumentExpressions.ToArray())));
+            }
+
+
+            testMethod.Statements.AddRange(statements.ToArray());
+
+            //_linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
             var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells.ElementAt(paramIndex).Value)).ToList();
             _unitTestGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetTitle, variantName, arguments);
         }

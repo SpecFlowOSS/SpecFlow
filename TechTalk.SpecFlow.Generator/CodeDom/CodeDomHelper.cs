@@ -56,12 +56,6 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
         }
 
-        public void AddCommentStatement(CodeStatementCollection statements, string comment)
-        {
-            var commentStatement = CreateCommentStatement(comment);
-            statements.Add(commentStatement);
-        }
-
         private CodeStatement CreateCommentStatement(string comment)
         {
             switch (TargetLanguage)
@@ -80,13 +74,9 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             return new NotImplementedException($"{TargetLanguage} is not supported");
         }
 
-        private bool isExternalSourceBlockOpen = false;
-        private string currentBoundSourceCodeFile = null;
 
         public void BindTypeToSourceFile(CodeTypeDeclaration typeDeclaration, string fileName)
         {
-            currentBoundSourceCodeFile = fileName;
-
             switch (TargetLanguage)
             {
                 case CodeDomProviderLanguage.VB:
@@ -101,42 +91,6 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
         }
 
-        public void AddSourceLinePragmaStatement(CodeStatementCollection statements, int lineNo, int colNo)
-        {
-            foreach (var codeStatement in CreateSourceLinePragmaStatement(lineNo, colNo))
-            {
-                statements.Add(codeStatement);
-            }
-        }
-
-        public IEnumerable<CodeStatement> CreateSourceLinePragmaStatement(int lineNo, int colNo)
-        {
-            if (currentBoundSourceCodeFile == null)
-                throw new InvalidOperationException("The generated code was not bound to a file!");
-
-            switch (TargetLanguage)
-            {
-                case CodeDomProviderLanguage.VB:
-                    if (isExternalSourceBlockOpen)
-                    {
-                        yield return CreateDisableSourceLinePragmaStatement();
-                    }
-
-                    yield return new CodeSnippetStatement($"#ExternalSource(\"{currentBoundSourceCodeFile}\",{lineNo})");
-                    isExternalSourceBlockOpen = true;
-                    yield return CreateCommentStatement($"#indentnext {colNo - 1}");
-                    break;
-                case CodeDomProviderLanguage.CSharp:
-                    yield return new CodeSnippetStatement($"#line {lineNo}");
-                    yield return CreateCommentStatement($"#indentnext {colNo - 1}");
-                    break;
-            }
-        }
-
-        public void AddDisableSourceLinePragmaStatement(CodeStatementCollection statements)
-        {
-            statements.Add(CreateDisableSourceLinePragmaStatement());
-        }
 
         public CodeStatement GetStartRegionStatement(string regionText)
         {
@@ -271,12 +225,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             switch (TargetLanguage)
             {
                 case CodeDomProviderLanguage.VB:
-                    if (isExternalSourceBlockOpen)
-                    {
-                        return new CodeSnippetStatement("#End ExternalSource");
-                    }
-                    isExternalSourceBlockOpen = false;
-                    return null;
+                    return new CodeSnippetStatement("#End ExternalSource");
                 case CodeDomProviderLanguage.CSharp:
                     return new CodeSnippetStatement("#line hidden");
             }
@@ -284,9 +233,21 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             throw TargetLanguageNotSupportedException();
         }
 
-        //public void CreateSourceLinePragmaStatement(int locationLine, int locationColumn)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IEnumerable<CodeStatement> CreateSourceLinePragmaStatement(string filename, int lineNo, int colNo)
+        {
+            switch (TargetLanguage)
+            {
+                case CodeDomProviderLanguage.VB:
+                    yield return new CodeSnippetStatement($"#ExternalSource(\"{filename}\",{lineNo})");
+                    yield return CreateCommentStatement($"#indentnext {colNo - 1}");
+                    break;
+                case CodeDomProviderLanguage.CSharp:
+                    yield return new CodeSnippetStatement($"#line {lineNo}");
+                    yield return CreateCommentStatement($"#indentnext {colNo - 1}");
+                    break;
+            }
+        }
     }
 }
+
+
