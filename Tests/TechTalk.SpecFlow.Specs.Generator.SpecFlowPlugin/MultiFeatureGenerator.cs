@@ -4,6 +4,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Parser;
 
