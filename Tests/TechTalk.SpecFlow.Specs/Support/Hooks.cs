@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Specs.Support
         }
 
         [BeforeTestRun]
-        public static void BeforTestRun()
+        public static void BeforeTestRun()
         {
             var appConfigDriver = new AppConfigDriver();
             var folders = new Folders(appConfigDriver);
