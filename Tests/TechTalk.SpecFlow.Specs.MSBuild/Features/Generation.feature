@@ -3,14 +3,14 @@
 Scenario: No features
 Given a project with no features
 When the project is built
-Then the project should be compiled without errors
+Then the project should have been compiled without errors
 
 Scenario: Building a feature
 Given a project with these features
 | Feature |
 | Foo     |
 When the project is built
-Then the project should be compiled without errors
+Then the project should have been compiled without errors
 And the project output should be a test suite for these features
 | Feature |
 | Foo     |
@@ -21,7 +21,7 @@ Given a project with these features
 | Foo     |
 | Bar     |
 When the project is built
-Then the project should be compiled without errors
+Then the project should have been compiled without errors
 And the project output should be a test suite for these features
 | Feature |
 | Foo     |
@@ -33,7 +33,7 @@ Given a project with these features which has been built successfully
 | Foo     |
 | Bar     |
 When the project is built
-Then the project should be compiled without errors
+Then the project should have been compiled without errors
 And the project output should be a test suite for these features
 | Feature |
 | Foo     |
@@ -46,7 +46,7 @@ Given a project with these features which has been built successfully
 | Bar     |
 When the "Foo" feature is removed
 And the project is built
-Then the project should be compiled without errors
+Then the project should have been compiled without errors
 And the project output should be a test suite for these features
 | Feature |
 | Bar     |
