@@ -2,7 +2,7 @@ parameters:
   name: ''
   pool: ''
   nugetVersion: 4.6.2
-  sdkVersion: 3.0.100-preview3-010431
+  sdkVersion: 3.0.100-preview7-012821
   artifactFileName: ''
 
 jobs:
