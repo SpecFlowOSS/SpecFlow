@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -86,15 +87,26 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private BindingSourceAttribute CreateAttribute(Attribute attribute)
         {
             var attributeType = attribute.GetType();
-            var namedAttributeValues = attributeType.GetFields(BindingFlags.Instance | BindingFlags.Public).Where(
-                f => !f.IsSpecialName).Select(
-                    f => new {f.Name, Value = new BindingSourceAttributeValueProvider(f.GetValue(attribute))})
-                .Concat(
-                    attributeType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(
-                        p => !p.IsSpecialName && p.CanRead && p.GetIndexParameters().Length == 0).Select(
-                            p =>
-                            new {p.Name, Value = new BindingSourceAttributeValueProvider(p.GetValue(attribute, null))})
-                ).ToDictionary(na => na.Name, na => (IBindingSourceAttributeValueProvider)na.Value);
+
+            var fieldsNamedAttributeValues =
+                from field in attributeType.GetFields(BindingFlags.Instance | BindingFlags.Public)
+                where !field.IsSpecialName
+                let value = field.GetValue(attribute)
+                let bindingSourceAttributeValueProvider = new BindingSourceAttributeValueProvider(value)
+                select new { field.Name, Value = bindingSourceAttributeValueProvider };
+
+            var propertiesNamedAttributeValues =
+                from property in attributeType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                where !property.IsSpecialName
+                where property.CanRead
+                where property.GetIndexParameters().Length == 0
+                let value = property.GetValue(attribute, null)
+                let bindingSourceAttributeValueProvider = new BindingSourceAttributeValueProvider(value)
+                select new { property.Name, Value = bindingSourceAttributeValueProvider };
+
+            var namedAttributeValues =
+                fieldsNamedAttributeValues.Concat(propertiesNamedAttributeValues)
+                                          .ToDictionary(na => na.Name, na => (IBindingSourceAttributeValueProvider)na.Value);
 
             var mostComplexCtor = attributeType.GetConstructors(BindingFlags.Instance | BindingFlags.Public).OrderByDescending(ctor => ctor.GetParameters().Length).FirstOrDefault();
 
