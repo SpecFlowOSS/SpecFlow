@@ -110,10 +110,13 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
             IBindingSourceAttributeValueProvider result;
             var paramName = parameterInfo.Name;
-            if (namedAttributeValues.TryGetValue(paramName, out result))
-                return result;
-            if (namedAttributeValues.TryGetValue(paramName.Substring(0, 1).ToUpper() + paramName.Substring(1), out result))
-                return result;
+            if (!string.IsNullOrEmpty(paramName))
+            {
+                if (namedAttributeValues.TryGetValue(paramName, out result))
+                    return result;
+                if (namedAttributeValues.TryGetValue(paramName.Substring(0, 1).ToUpper() + paramName.Substring(1), out result))
+                    return result;
+            }
 
             return new BindingSourceAttributeValueProvider(null);
         }
