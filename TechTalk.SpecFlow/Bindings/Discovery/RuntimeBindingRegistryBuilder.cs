@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Reflection;
-using System.Text;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 
@@ -11,11 +9,13 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public class RuntimeBindingRegistryBuilder : IRuntimeBindingRegistryBuilder
     {
-        private readonly IRuntimeBindingSourceProcessor bindingSourceProcessor;
+        private readonly IRuntimeBindingSourceProcessor _bindingSourceProcessor;
+        private readonly ISpecFlowAttributesFilter _specFlowAttributesFilter;
 
-        public RuntimeBindingRegistryBuilder(IRuntimeBindingSourceProcessor bindingSourceProcessor)
+        public RuntimeBindingRegistryBuilder(IRuntimeBindingSourceProcessor bindingSourceProcessor, ISpecFlowAttributesFilter specFlowAttributesFilter)
         {
-            this.bindingSourceProcessor = bindingSourceProcessor;
+            this._bindingSourceProcessor = bindingSourceProcessor;
+            _specFlowAttributesFilter = specFlowAttributesFilter;
         }
 
         public void BuildBindingsFromAssembly(Assembly assembly)
@@ -28,28 +28,28 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public void BuildingCompleted()
         {
-            bindingSourceProcessor.BuildingCompleted();
+            _bindingSourceProcessor.BuildingCompleted();
         }
 
         //internal - for testing
         internal bool BuildBindingsFromType(Type type)
         {
 // ReSharper disable PossibleMultipleEnumeration
-            var filteredAttributes = type.GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
-            if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
+            var filteredAttributes = type.GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
+            if (!_bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
                 return false;
 
             var bindingSourceType = CreateBindingSourceType(type, filteredAttributes);
 
-            if (!bindingSourceProcessor.ProcessType(bindingSourceType))
+            if (!_bindingSourceProcessor.ProcessType(bindingSourceType))
                 return false;
 
             foreach (var methodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodInfo));
+                _bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodInfo));
             }
 
-            bindingSourceProcessor.ProcessTypeDone();
+            _bindingSourceProcessor.ProcessTypeDone();
             return true;
 // ReSharper restore PossibleMultipleEnumeration
         }
@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                            BindingMethod = new RuntimeBindingMethod(methodDefinition), 
                            IsPublic = methodDefinition.IsPublic,
                            IsStatic = methodDefinition.IsStatic,
-                           Attributes = GetAttributes(methodDefinition.GetCustomAttributes(true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
+                           Attributes = GetAttributes(methodDefinition.GetCustomAttributes(true).Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
                        };
         }
 
@@ -132,7 +132,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private BindingSourceAttribute[] GetAttributes(IEnumerable<Attribute> customAttributes)
         {
-            return customAttributes.Select(CreateAttribute).ToArray();
+            return _specFlowAttributesFilter.FilterForSpecFlowAttributes(customAttributes)
+                                            .Select(CreateAttribute)
+                                            .ToArray();
         }
     }
 }

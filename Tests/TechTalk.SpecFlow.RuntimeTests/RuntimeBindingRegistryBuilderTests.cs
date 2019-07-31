@@ -137,7 +137,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindBinding_WithDefaultOrder()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromType(typeof (ScopedHookExample));
 
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindBinding_WithSpecifiedPriorities()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromType(typeof (PrioritizedHookExample));
 
@@ -217,7 +217,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindExampleConverter()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
             Assert.Equal(1,
@@ -230,7 +230,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindScopedExampleConverter()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -249,7 +249,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindScopedHook_WithCtorArg()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -260,7 +260,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindScopedHook_WithMultipleCtorArg()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -271,7 +271,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void ShouldFindScopedHook_WithScopeAttribute()
         {
-            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
             builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
