@@ -2,7 +2,7 @@ parameters:
   name: ''
   pool: ''
   nugetVersion: 4.6.2
-  sdkVersion: 2.2.401
+  sdkVersion: 3.0.100-preview7-012821
   artifactFileName: ''
 
 jobs:
@@ -19,6 +19,12 @@ jobs:
     displayName: 'Use .NET Core'
     inputs:
       version: ${{ parameters.sdkVersion }}
+
+  - task: PowerShell@2
+    inputs:
+      targetType: Inline
+      pwsh: true
+      script: dotnet --info
 
 
   - task: PowerShell@2

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 
@@ -10,11 +9,13 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public class RuntimeBindingRegistryBuilder : IRuntimeBindingRegistryBuilder
     {
-        private readonly IRuntimeBindingSourceProcessor bindingSourceProcessor;
+        private readonly IRuntimeBindingSourceProcessor _bindingSourceProcessor;
+        private readonly ISpecFlowAttributesFilter _specFlowAttributesFilter;
 
-        public RuntimeBindingRegistryBuilder(IRuntimeBindingSourceProcessor bindingSourceProcessor)
+        public RuntimeBindingRegistryBuilder(IRuntimeBindingSourceProcessor bindingSourceProcessor, ISpecFlowAttributesFilter specFlowAttributesFilter)
         {
-            this.bindingSourceProcessor = bindingSourceProcessor;
+            this._bindingSourceProcessor = bindingSourceProcessor;
+            _specFlowAttributesFilter = specFlowAttributesFilter;
         }
 
         public void BuildBindingsFromAssembly(Assembly assembly)
@@ -27,28 +28,28 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public void BuildingCompleted()
         {
-            bindingSourceProcessor.BuildingCompleted();
+            _bindingSourceProcessor.BuildingCompleted();
         }
 
         //internal - for testing
         internal bool BuildBindingsFromType(Type type)
         {
 // ReSharper disable PossibleMultipleEnumeration
-            var filteredAttributes = type.GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
-            if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
+            var filteredAttributes = type.GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
+            if (!_bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
                 return false;
 
             var bindingSourceType = CreateBindingSourceType(type, filteredAttributes);
 
-            if (!bindingSourceProcessor.ProcessType(bindingSourceType))
+            if (!_bindingSourceProcessor.ProcessType(bindingSourceType))
                 return false;
 
             foreach (var methodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodInfo));
+                _bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodInfo));
             }
 
-            bindingSourceProcessor.ProcessTypeDone();
+            _bindingSourceProcessor.ProcessTypeDone();
             return true;
 // ReSharper restore PossibleMultipleEnumeration
         }
@@ -60,7 +61,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                            BindingMethod = new RuntimeBindingMethod(methodDefinition), 
                            IsPublic = methodDefinition.IsPublic,
                            IsStatic = methodDefinition.IsStatic,
-                           Attributes = GetAttributes(methodDefinition.GetCustomAttributes(true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
+                           Attributes = GetAttributes(methodDefinition.GetCustomAttributes(true).Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
                        };
         }
 
@@ -86,15 +87,26 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private BindingSourceAttribute CreateAttribute(Attribute attribute)
         {
             var attributeType = attribute.GetType();
-            var namedAttributeValues = attributeType.GetFields(BindingFlags.Instance | BindingFlags.Public).Where(
-                f => !f.IsSpecialName).Select(
-                    f => new {f.Name, Value = new BindingSourceAttributeValueProvider(f.GetValue(attribute))})
-                .Concat(
-                    attributeType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(
-                        p => !p.IsSpecialName && p.CanRead && p.GetIndexParameters().Length == 0).Select(
-                            p =>
-                            new {p.Name, Value = new BindingSourceAttributeValueProvider(p.GetValue(attribute, null))})
-                ).ToDictionary(na => na.Name, na => (IBindingSourceAttributeValueProvider)na.Value);
+
+            var fieldsNamedAttributeValues =
+                from field in attributeType.GetFields(BindingFlags.Instance | BindingFlags.Public)
+                where !field.IsSpecialName
+                let value = field.GetValue(attribute)
+                let bindingSourceAttributeValueProvider = new BindingSourceAttributeValueProvider(value)
+                select new { field.Name, Value = bindingSourceAttributeValueProvider };
+
+            var propertiesNamedAttributeValues =
+                from property in attributeType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                where !property.IsSpecialName
+                where property.CanRead
+                where property.GetIndexParameters().Length == 0
+                let value = property.GetValue(attribute, null)
+                let bindingSourceAttributeValueProvider = new BindingSourceAttributeValueProvider(value)
+                select new { property.Name, Value = bindingSourceAttributeValueProvider };
+
+            var namedAttributeValues =
+                fieldsNamedAttributeValues.Concat(propertiesNamedAttributeValues)
+                                          .ToDictionary(na => na.Name, na => (IBindingSourceAttributeValueProvider)na.Value);
 
             var mostComplexCtor = attributeType.GetConstructors(BindingFlags.Instance | BindingFlags.Public).OrderByDescending(ctor => ctor.GetParameters().Length).FirstOrDefault();
 
@@ -120,7 +132,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private BindingSourceAttribute[] GetAttributes(IEnumerable<Attribute> customAttributes)
         {
-            return customAttributes.Select(CreateAttribute).ToArray();
+            return _specFlowAttributesFilter.FilterForSpecFlowAttributes(customAttributes)
+                                            .Select(CreateAttribute)
+                                            .ToArray();
         }
     }
 }
