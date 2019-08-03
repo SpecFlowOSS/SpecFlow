@@ -8,11 +8,9 @@ using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.Generator.UnitTestConverter;
+using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -26,24 +24,24 @@ namespace TechTalk.SpecFlow.GeneratorTests
             Feature: Sample feature file that's got weird names
             
             Scenario: A doesn't come after B
-				Given there is something
-				When I do something
-				Then something should happen
+                Given there is something
+                When I do something
+                Then something should happen
 
             @mytag
-			Scenario Outline: Simple Scenario Outline that's got single quotes
-				Given there is something
+            Scenario Outline: Simple Scenario Outline that's got single quotes
+                Given there is something
                     """"""
                       long string
                     """"""
-				When I do <what>
+                When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-				Then something should happen
-			Examples: 
-				| what           |
-				| something      |
-				| something else |
+                Then something should happen
+            Examples: 
+                | what           |
+                | something      |
+                | something else |
 ";
 
         public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)

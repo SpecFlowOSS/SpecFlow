@@ -1,16 +1,14 @@
 ﻿using System;
 using System.IO;
 using Moq;
-using Xunit;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -56,10 +54,10 @@ Feature: Addition
 
 @mytag
 Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+    Given I have entered 50 into the calculator
+    And I have entered 70 into the calculator
+    When I press add
+    Then the result should be 120 on the screen
 ",
 projectRelativeFolderPath);
         }
@@ -78,7 +76,7 @@ projectRelativeFolderPath);
             return CreateSimpleFeatureFileInput(@"
 Feature: Addition
 Scenario: Add two numbers
-	Given I have entered 50 into the calculator
+    Given I have entered 50 into the calculator
     AndXXX the keyword is misspelled
 ");
         }
@@ -92,7 +90,7 @@ Scenario: Add two numbers
         {
             Configuration.SpecFlowConfiguration generatorSpecFlowConfiguration = ConfigurationLoader.GetDefault();
             CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorSpecFlowConfiguration, new DecoratorRegistryStub());
+            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnit3TestGeneratorProvider(codeDomHelper), codeDomHelper, generatorSpecFlowConfiguration, new DecoratorRegistryStub());
 
             var gherkinParserFactory = new SpecFlowGherkinParserFactory();
 

@@ -6,8 +6,8 @@
     <title>SpecFlow.xUnit</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
-    <description>Combined package to setup SpecFlow with xUnit easily.</description>
-    <summary>Combined package to setup SpecFlow with xUnit easily.</summary>
+    <description>Package to use SpecFlow with xUnit 2.4 and later</description>
+    <summary>Package to use SpecFlow with xUnit 2.4 and later</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
     <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
@@ -17,6 +17,7 @@
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
       <dependency id="xunit.core" version="2.4.0" />
+      <dependency id="Xunit.SkippableFact" version="1.3.12" />
     </dependencies>
   </metadata>
 

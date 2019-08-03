@@ -8,14 +8,14 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         IResult<TestRunStarted> BuildTestRunStartedMessage(DateTime timeStamp);
 
-        IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp);
+        IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp, TestCaseStarted.Types.Platform platform);
 
         IResult<TestCaseFinished> BuildTestCaseFinishedMessage(Guid pickleId, DateTime timeStamp, TestResult testResult);
 
-        IResult<Wrapper> BuildWrapperMessage(IResult<TestRunStarted> testRunStarted);
+        IResult<Envelope> BuildEnvelopeMessage(IResult<TestRunStarted> testRunStarted);
 
-        IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseStarted> testCaseStarted);
+        IResult<Envelope> BuildEnvelopeMessage(IResult<TestCaseStarted> testCaseStarted);
 
-        IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseFinished> testCaseFinished);
+        IResult<Envelope> BuildEnvelopeMessage(IResult<TestCaseFinished> testCaseFinished);
     }
 }

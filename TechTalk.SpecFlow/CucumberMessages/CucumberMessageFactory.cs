@@ -3,12 +3,12 @@ using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
+using static Io.Cucumber.Messages.TestCaseStarted.Types;
+
 namespace TechTalk.SpecFlow.CucumberMessages
 {
     public class CucumberMessageFactory : ICucumberMessageFactory
     {
-        private const string UsedCucumberImplementationString = @"SpecFlow";
-
         public string ConvertToPickleIdString(Guid id)
         {
             return $"{id:D}";
@@ -23,15 +23,19 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             var testRunStarted = new TestRunStarted
             {
-                Timestamp = Timestamp.FromDateTime(timeStamp),
-                CucumberImplementation = UsedCucumberImplementationString
+                Timestamp = Timestamp.FromDateTime(timeStamp)
             };
 
             return Result<TestRunStarted>.Success(testRunStarted);
         }
 
-        public IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp)
+        public IResult<TestCaseStarted> BuildTestCaseStartedMessage(Guid pickleId, DateTime timeStamp, Platform platform)
         {
+            if (platform is null)
+            {
+                return Result<TestCaseStarted>.Failure($"The {nameof(platform)} parameter must not be null");
+            }
+
             if (timeStamp.Kind != DateTimeKind.Utc)
             {
                 return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
@@ -40,7 +44,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var testCaseStarted = new TestCaseStarted
             {
                 Timestamp = Timestamp.FromDateTime(timeStamp),
-                PickleId = ConvertToPickleIdString(pickleId)
+                PickleId = ConvertToPickleIdString(pickleId),
+                Platform = platform
             };
 
             return Result<TestCaseStarted>.Success(testCaseStarted);
@@ -68,42 +73,42 @@ namespace TechTalk.SpecFlow.CucumberMessages
             return Result<TestCaseFinished>.Success(testCaseFinished);
         }
 
-        public IResult<Wrapper> BuildWrapperMessage(IResult<TestRunStarted> testRunStarted)
+        public IResult<Envelope> BuildEnvelopeMessage(IResult<TestRunStarted> testRunStarted)
         {
             switch (testRunStarted)
             {
                 case ISuccess<TestRunStarted> success:
-                    return Result<Wrapper>.Success(new Wrapper { TestRunStarted = success.Result });
+                    return Result<Envelope>.Success(new Envelope { TestRunStarted = success.Result });
                 case IFailure failure:
-                    return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an {nameof(ISuccess<TestRunStarted>)}.", failure);
+                    return Result<Envelope>.Failure($"{nameof(testRunStarted)} must be an {nameof(ISuccess<TestRunStarted>)}.", failure);
                 default:
-                    return Result<Wrapper>.Failure($"{nameof(testRunStarted)} must be an  {nameof(ISuccess<TestRunStarted>)}.");
+                    return Result<Envelope>.Failure($"{nameof(testRunStarted)} must be an  {nameof(ISuccess<TestRunStarted>)}.");
             }
         }
 
-        public IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseStarted> testCaseStarted)
+        public IResult<Envelope> BuildEnvelopeMessage(IResult<TestCaseStarted> testCaseStarted)
         {
             switch (testCaseStarted)
             {
                 case ISuccess<TestCaseStarted> success:
-                    return Result<Wrapper>.Success(new Wrapper { TestCaseStarted = success.Result });
+                    return Result<Envelope>.Success(new Envelope { TestCaseStarted = success.Result });
                 case IFailure failure:
-                    return Result<Wrapper>.Failure($"{nameof(testCaseStarted)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
+                    return Result<Envelope>.Failure($"{nameof(testCaseStarted)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
                 default:
-                    return Result<Wrapper>.Failure($"{nameof(testCaseStarted)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
+                    return Result<Envelope>.Failure($"{nameof(testCaseStarted)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
             }
         }
 
-        public IResult<Wrapper> BuildWrapperMessage(IResult<TestCaseFinished> testCaseFinished)
+        public IResult<Envelope> BuildEnvelopeMessage(IResult<TestCaseFinished> testCaseFinished)
         {
             switch (testCaseFinished)
             {
                 case ISuccess<TestCaseFinished> success:
-                    return Result<Wrapper>.Success(new Wrapper { TestCaseFinished = success.Result });
+                    return Result<Envelope>.Success(new Envelope { TestCaseFinished = success.Result });
                 case IFailure failure:
-                    return Result<Wrapper>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
+                    return Result<Envelope>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
                 default:
-                    return Result<Wrapper>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
+                    return Result<Envelope>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
             }
         }
     }

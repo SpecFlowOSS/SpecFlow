@@ -31,5 +31,8 @@ namespace TechTalk.SpecFlow.Parser
         {
             get; private set;
         }
+
+        public bool HasFeatureBackground() => Background != null;
+
     }
 }
