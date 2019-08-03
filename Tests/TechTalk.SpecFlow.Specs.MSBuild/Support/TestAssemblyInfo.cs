@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Specs.MSBuild.Support
 {
     public class TestAssemblyInfo
     {
         private static readonly string AnalyzerPath;
+
+        private static readonly Regex ScenarioPattern = new Regex(@"^\{(?<feature>.*)\}\:\{(?<scenario>.*)\}$");
 
         static TestAssemblyInfo()
         {
@@ -47,16 +51,17 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.Support
 
             using (var process = Process.Start(start))
             {
-                var features = new List<TestFeatureInfo>();
+                var features = new HashSet<string>();
 
                 while (!process.StandardOutput.EndOfStream)
                 {
                     var line = process.StandardOutput.ReadLine();
 
-                    features.Add(new TestFeatureInfo
+                    var match = ScenarioPattern.Match(line);
+                    if (match.Success)
                     {
-                        Title = line
-                    });
+                        features.Add(match.Groups["feature"].Value);
+                    }
                 }
 
                 process.WaitForExit();
@@ -66,7 +71,7 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.Support
                     throw new InvalidOperationException("Analyzer failed to process test assembly.");
                 }
 
-                return new TestAssemblyInfo(features);
+                return new TestAssemblyInfo(features.Select(f => new TestFeatureInfo { Title = f }).ToList());
             }
         }
     }
