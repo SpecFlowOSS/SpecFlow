@@ -50,10 +50,9 @@
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' != '.NETCoreApp' ">
-    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework\TechTalk.SpecFlow.Specs.MSBuild.Support.NetFramework.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.MSBuild.Analyzer\TechTalk.SpecFlow.Specs.MSBuild.Analyzer.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -64,23 +63,22 @@
 
     <PropertyGroup>
       <NuGetPackageVersionFile>$(IntermediateOutputPath)NuGetPackageVersion.cs</NuGetPackageVersionFile>
-      <NuGetPackageVersionClass>
-        <![CDATA[namespace TechTalk.SpecFlow.Specs.MSBuild.Support
+      <NuGetPackageVersionClass>namespace TechTalk.SpecFlow.Specs.MSBuild.Support
 {
     internal static class NuGetPackageVersion
     {
         public const string Version = "$(NuGetPackageVersion)"%3B
     }
-}]]></NuGetPackageVersionClass>
+}</NuGetPackageVersionClass>
     </PropertyGroup>
-    
+
     <WriteLinesToFile File="$(NuGetPackageVersionFile)" Lines="$(NuGetPackageVersionClass)" Overwrite="true" Encoding="UTF-8" />
 
     <ItemGroup>
       <Compile Remove="Support\NuGetPackageVersion.cs" />
       <Compile Include="$(NuGetPackageVersionFile)" />
     </ItemGroup>
-    
+
   </Target>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->

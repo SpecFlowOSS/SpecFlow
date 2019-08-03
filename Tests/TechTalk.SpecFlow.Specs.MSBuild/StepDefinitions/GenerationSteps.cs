@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using TechTalk.SpecFlow.Specs.MSBuild.Support;
+using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.MSBuild.StepDefinitions
@@ -11,11 +12,16 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.StepDefinitions
     {
         private readonly ProjectsDriver _projectsDriver;
         private readonly SolutionDriver _solutionDriver;
+        private readonly TestProjectFolders _testProjectFolders;
 
-        public GenerationSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver)
+        public GenerationSteps(
+            ProjectsDriver projectsDriver,
+            SolutionDriver solutionDriver,
+            TestProjectFolders testProjectFolders)
         {
             _projectsDriver = projectsDriver;
             _solutionDriver = solutionDriver;
+            _testProjectFolders = testProjectFolders;
         }
 
         [Given(@"a project with no features")]
@@ -64,11 +70,11 @@ Given a step");
         [Then(@"the project output should be a test suite for these features")]
         public void ThenTheProjectOutputShouldBeATestSuiteForTheseFeatures(Table table)
         {
-            //var featureNames = table.Rows.Select(row => row[0]);
+            var featureNames = table.Rows.Select(row => row[0]);
 
-            //var assembly = TestAssemblyInfo.Read(_projectDriver.OutputAssembly);
+            var assembly = TestAssemblyInfo.ReadTestAssembly(_testProjectFolders.CompiledAssemblyPath);
 
-            //assembly.Features.Should().BeEquivalentTo(featureNames.Select(f => new TestFeatureInfo { Title = f }));
+            assembly.Features.Should().BeEquivalentTo(featureNames.Select(f => new TestFeatureInfo { Title = f }));
         }
     }
 }

@@ -92,6 +92,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Autofac.SpecFlowPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs.MSBuild", "Tests\TechTalk.SpecFlow.Specs.MSBuild\TechTalk.SpecFlow.Specs.MSBuild.csproj", "{0554A219-483E-4FDF-9E11-F332F7EEB99B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.MSBuild.Analyzer", "Tests\TechTalk.SpecFlow.Specs.MSBuild.Analyzer\TechTalk.SpecFlow.Specs.MSBuild.Analyzer.csproj", "{AC07206A-3CF0-41D1-A432-9AE5A59809B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -378,6 +380,18 @@ Global
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -404,6 +418,7 @@ Global
 		{48E162BC-9431-450D-8353-66D396DCB5FE} = {577A0375-1436-446C-802B-3C75C8CEF94F}
 		{EA16606D-6F1C-4A4D-B7A1-8A08B448CD86} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{AC07206A-3CF0-41D1-A432-9AE5A59809B3} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}
