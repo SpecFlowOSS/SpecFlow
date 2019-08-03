@@ -1,3 +1,8 @@
+vNext
+
+New Features:
++ Removed generated code behind files (.feature.cs) from project items
+
 3.0 - 2019-06-27
 
 Fixes:
