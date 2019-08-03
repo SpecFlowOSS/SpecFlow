@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions.Common;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
-
 
 namespace TechTalk.SpecFlow.Specs.Support
 {
@@ -35,7 +27,7 @@ namespace TechTalk.SpecFlow.Specs.Support
         }
 
         [BeforeTestRun]
-        public static void BeforTestRun()
+        public static void BeforeTestRun()
         {
             var appConfigDriver = new AppConfigDriver();
             var folders = new Folders(appConfigDriver);

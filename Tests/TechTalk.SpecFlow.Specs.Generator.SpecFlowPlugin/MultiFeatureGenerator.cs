@@ -4,6 +4,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Parser;
 
@@ -13,6 +14,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     {
         private readonly IFeatureGenerator _defaultFeatureGenerator;
         private readonly KeyValuePair<Combination, IFeatureGenerator>[] _featureGenerators;
+        private readonly List<string> _unitTestProviderTags = new List<string> { "xunit", "mstest", "nunit3" };
 
         public MultiFeatureGenerator(IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> featureGenerators, IFeatureGenerator defaultFeatureGenerator)
         {
@@ -23,12 +25,10 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             {
                 if (featureGenerator.Value is UnitTestFeatureGenerator unitTestFeatureGenerator)
                 {
-                    unitTestFeatureGenerator.TestclassNameFormat += $"_{featureGenerator.Key.UnitTestProvider}_{featureGenerator.Key.TargetFramework}_{featureGenerator.Key.ProjectFormat}_{featureGenerator.Key.ProgrammingLanguage}";
+                    unitTestFeatureGenerator.TestClassNameFormat += $"_{featureGenerator.Key.UnitTestProvider}_{featureGenerator.Key.TargetFramework}_{featureGenerator.Key.ProjectFormat}_{featureGenerator.Key.ProgrammingLanguage}";
                 }
             }
         }
-
-        private List<string> _unitTestProviderTags = new List<string>() { "xunit", "mstest", "nunit3" };
 
         public CodeNamespace GenerateUnitTestFixture(SpecFlowDocument specFlowDocument, string testClassName, string targetNamespace)
         {
@@ -111,7 +111,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (onlyFullframework)
                     {
-                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_FullFramework)
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet452)
                         {
                             yield return featureGenerator;
                         }
@@ -120,7 +120,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyDotNetCore)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_NetCore)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
+                                || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
                             {
                                 yield return featureGenerator;
                             }
@@ -141,7 +142,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyFullframework)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_FullFramework)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet452)
                             {
                                 yield return featureGenerator;
                             }
@@ -150,7 +151,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         {
                             if (onlyDotNetCore)
                             {
-                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TFM_NetCore)
+                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
+                                    || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
                                 {
                                     yield return featureGenerator;
                                 }

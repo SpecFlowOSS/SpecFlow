@@ -20,6 +20,8 @@ namespace TechTalk.SpecFlow
         void CollectScenarioErrors();
         void OnScenarioEnd();
 
+        void SkipScenario();
+
         void Given(string text, string multilineTextArg, Table tableArg, string keyword = null);
         void When(string text, string multilineTextArg, Table tableArg, string keyword = null);
         void Then(string text, string multilineTextArg, Table tableArg, string keyword = null);

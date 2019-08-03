@@ -4,6 +4,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
 {
     public interface ICucumberMessageSink
     {
-        void SendMessage(Wrapper message);
+        void SendMessage(Envelope message);
     }
 }

@@ -27,3 +27,6 @@ Scenario: Use dotnet msbuild for compiling
 	Given dotnet msbuild is used for compiling
 
 	Then no compilation errors are reported
+
+
+

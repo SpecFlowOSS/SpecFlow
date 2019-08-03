@@ -39,4 +39,67 @@
       <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
    </parameter>
   </member>
+  <member name="T:TechTalk.SpecFlow.BeforeTestRunAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.AfterTestRunAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.BeforeFeatureAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.AfterFeatureAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.BeforeScenarioAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.BeforeAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.AfterScenarioAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.AfterAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.BeforeScenarioBlockAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.AfterScenarioBlockAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.BeforeStepAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.AfterStepAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.Assist.Attributes.TableAliasesAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="M:TechTalk.SpecFlow.Assist.Attributes.TableAliasesAttribute.#ctor(System.String[])">
+  </member>
+  <member name="T:TechTalk.SpecFlow.ScopeAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="T:TechTalk.SpecFlow.StepArgumentTransformationAttribute">
+    <attribute ctor="M:JetBrains.Annotations.MeansImplicitUseAttribute.#ctor" />
+  </member>
+  <member name="M:TechTalk.SpecFlow.StepArgumentTransformationAttribute.#ctor(System.String)">
+    <parameter name="regex">
+      <attribute ctor="M:JetBrains.Annotations.RegexPatternAttribute.#ctor"/>
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor"/>
+   </parameter>
+  </member>
+  <member name="M:TechTalk.SpecFlow.Plugins.RuntimePluginAttribute.#ctor(System.Type)">
+    <parameter name="pluginType">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor"/>
+   </parameter>
+  </member>
+  <member name="M:TechTalk.SpecFlow.Infrastructure.GeneratorPluginAttribute.#ctor(System.Type)">
+    <parameter name="pluginType">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor"/>
+   </parameter>
+  </member>
 </assembly>

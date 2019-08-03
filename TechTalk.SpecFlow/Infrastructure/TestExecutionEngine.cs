@@ -43,11 +43,25 @@ namespace TechTalk.SpecFlow.Infrastructure
         private bool _testRunnerEndExecuted = false;
         private bool _testRunnerStartExecuted = false;
 
-        public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter,
-            SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObsoleteStepHandler obsoleteStepHandler, ICucumberMessageSender cucumberMessageSender, ITestResultFactory testResultFactory,
-            ITestPendingMessageFactory testPendingMessageFactory, ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
+        public TestExecutionEngine(
+            IStepFormatter stepFormatter,
+            ITestTracer testTracer,
+            IErrorProvider errorProvider,
+            IStepArgumentTypeConverter stepArgumentTypeConverter,
+            SpecFlowConfiguration specFlowConfiguration,
+            IBindingRegistry bindingRegistry,
+            IUnitTestRuntimeProvider unitTestRuntimeProvider,
+            IContextManager contextManager,
+            IStepDefinitionMatchService stepDefinitionMatchService,
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers,
+            IBindingInvoker bindingInvoker,
+            IObsoleteStepHandler obsoleteStepHandler,
+            ICucumberMessageSender cucumberMessageSender,
+            ITestResultFactory testResultFactory,
+            ITestPendingMessageFactory testPendingMessageFactory,
+            ITestUndefinedMessageFactory testUndefinedMessageFactory,
+            ITestObjectResolver testObjectResolver = null,
+            IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             _errorProvider = errorProvider;
             _bindingInvoker = bindingInvoker;
@@ -174,6 +188,12 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return;
             }
 
+            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.Skipped)
+            {
+                _unitTestRuntimeProvider.TestIgnore("Scenario ignored using @Ignore tag");
+                return;
+            }
+
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
             {
                 string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
@@ -199,8 +219,19 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioEnd()
         {
-            FireScenarioEvents(HookType.AfterScenario);
+            if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
+            {
+                FireScenarioEvents(HookType.AfterScenario);
+            }
+
             _contextManager.CleanupScenarioContext();
+        }
+
+        public void OnScenarioSkipped()
+        {
+            // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
+            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
+            _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.Skipped;
         }
 
         public void Pending()

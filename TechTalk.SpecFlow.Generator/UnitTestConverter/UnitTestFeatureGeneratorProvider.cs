@@ -1,3 +1,4 @@
+using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter

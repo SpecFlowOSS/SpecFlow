@@ -8,6 +8,10 @@ namespace TechTalk.SpecFlow.CommonModels
         {
             return new Success();
         }
+        public static IResult<T> Success<T>(T result)
+        {
+            return new Success<T>(result);
+        }
 
         public static IResult Failure(string description)
         {

@@ -1,7 +1,7 @@
 ﻿namespace TechTalk.SpecFlow.Configuration
 {
     /// <summary>
-    /// Describes possibilities what to do when a test is marked with <see cref="ObsoleteAttribute"/>
+    /// Describes possibilities what to do when a test is marked with <see cref="System.ObsoleteAttribute"/>
     /// The default is <see cref="Warn"/> 
     /// </summary>
     public enum ObsoleteBehavior
