@@ -382,6 +382,3 @@ GitExtensions.settings.backup
 /Tests/TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests/Features/dummy.feature.cs
 *.feature.cs
 /Tests/TechTalk.SpecFlow.Specs/Features/CucumberMessages
-
-# Nerdbank.GitVersioning
-Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs

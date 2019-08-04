@@ -45,9 +45,6 @@
     <EmbeddedResource Include=".\TestFiles\**\*" />
 
     <None Include="App.config" />
-
-    <Compile Remove="NuGetPackageVersion.template.cs" />
-    <None Include="NuGetPackageVersion.template.cs" />
     <SpecFlowFeature Remove="TestFiles/**/*.feature" />
   </ItemGroup>
 
@@ -91,18 +88,28 @@
   </PropertyGroup>
 
 
-  <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" TextToReplace="NUGET_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
+  <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile">
+
+    <PropertyGroup>
+      <NuGetVersionInfoFile>$(IntermediateOutputPath)NuGetVersionInfo.cs</NuGetVersionInfoFile>
+    </PropertyGroup>
+    
+    <ReplaceTextInFileTask
+      InputFile="NuGetPackageVersion.cs"
+      OutputFile="$(NuGetVersionInfoFile)"
+      TextToReplace="NUGET_VERSION"
+      TextToReplaceWith="$(NuGetPackageVersion)" />
 
     <ItemGroup>
-      <Compile Include="$(ProjectDir)\\NuGetPackageVersion.cs" />
+      <Compile Remove="NuGetPackageVersion.cs" />
+      <Compile Include="$(NuGetVersionInfoFile)" />
     </ItemGroup>
   </Target>
 
   <Target Name="IncludeCucumberMessagesSpecs" BeforeTargets="BeforeUpdateFeatureFilesInProject" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
     <Copy SourceFiles="@(CucumberMessagesSpecFlowFeatureFiles)" DestinationFolder="Features/CucumberMessages" />
     <ItemGroup>
-      <SpecFlowFeatureFiles Include="Features/CucumberMessages/*.feature" />
+      <SpecFlowFeature Include="Features/CucumberMessages/*.feature" />
     </ItemGroup>
   </Target>
 
@@ -118,241 +125,65 @@
 
 
   <ItemGroup>
-    <None Update="Features\Build systems.feature">
-      <Generator></Generator>
-    </None>
-    <None Update="Features\Contexts\AccessingContexts.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AccessingContexts.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Contexts\ContextInjection.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ContextInjection.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Contexts\InjectoContextToHooks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>InjectoContextToHooks.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Description.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Description.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\AsyncSupport.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AsyncSupport.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\BasicExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BasicExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\BindingCulture.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BindingCulture.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\CallingStepsFromStepDefinition.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CallingStepsFromStepDefinition.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\Configuration.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Configuration.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\ExecutionSmokeTests.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ExecutionSmokeTests.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\ExternalSteps.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\IgnoredFeatures.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>IgnoredFeatures.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\IgnoredScenarios.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>IgnoredScenarios.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\InAppDomainParallelExecution.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>InAppDomainParallelExecution.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\ObsoleteSteps.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ObsoleteSteps.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\ScenarioOutlines.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ScenarioOutlines.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\ScopedSteps.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ScopedSteps.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\StepArguments.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StepArguments.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\StepArgumentTransformations.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StepArgumentTransformations.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\StepDefinitionsWithoutRegex.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StepDefinitionsWithoutRegex.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\TaggedExamples.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>TaggedExamples.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Execution\Tracing.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Tracing.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Hooks\HookSupport.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>HookSupport.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Hooks\OrderedHookSupport.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OrderedHookSupport.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Hooks\ScopedHooks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ScopedHooks.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\LanguageSupport.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>LanguageSupport.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Parser\DescriptionParser.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DescriptionParser.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Parser\ParserSmokeTests.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ParserSmokeTests.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\Parser\ParsingErrors.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ParsingErrors.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\RegressionTests\MsTest\GH1052.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GH1052.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\RegressionTests\NUnit\GH1052.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GH1052.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\SingleFileGenerator Checks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SingleFileGenerator Checks.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\UnitTestProviderSpecific\MsTest\DeploymentItem.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeploymentItem.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\UnitTestProviderSpecific\MsTest\TestContext.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>TestContext.feature.cs</LastGenOutput>
-    </None>
-    <None Update="Features\UnitTestProviderSpecific\XUnit\XUnit2Provider.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>XUnit2Provider.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\and.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>and.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\asterisks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>asterisks.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\background.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>background.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\background_withtitle.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>background_withtitle.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\but.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>but.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\comments.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>comments.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\dutch.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>dutch.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\featureheader.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>featureheader.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\french.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>french.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\full.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>full.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\german.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>german.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\givenwhenthenduplication.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>givenwhenthenduplication.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\hungarian.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>hungarian.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\mixedgivenwhenthen.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>mixedgivenwhenthen.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\multilineargument.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>multilineargument.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\multilinetitle.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>multilinetitle.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\scenariooutline.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>scenariooutline.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\simple.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>simple.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\swedish.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>swedish.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\tableargument.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>tableargument.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\taggedexamples.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>taggedexamples.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\tags.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>tags.feature.cs</LastGenOutput>
-    </None>
-    <None Update="TestFiles\whitespaces.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>whitespaces.feature.cs</LastGenOutput>
-    </None>
+    <None Update="Features\Build systems.feature" />
+    <None Update="Features\Contexts\AccessingContexts.feature"/>
+    <None Update="Features\Contexts\ContextInjection.feature"/>
+    <None Update="Features\Contexts\InjectoContextToHooks.feature"/>
+    <None Update="Features\Description.feature"/>
+    <None Update="Features\Execution\AsyncSupport.feature"/>
+    <None Update="Features\Execution\BasicExecution.feature"/>
+    <None Update="Features\Execution\BindingCulture.feature"/>
+    <None Update="Features\Execution\CallingStepsFromStepDefinition.feature"/>
+    <None Update="Features\Execution\Configuration.feature"/>
+    <None Update="Features\Execution\ExecutionSmokeTests.feature"/>
+    <None Update="Features\Execution\ExternalSteps.feature"/>
+    <None Update="Features\Execution\IgnoredFeatures.feature"/>
+    <None Update="Features\Execution\IgnoredScenarios.feature"/>
+    <None Update="Features\Execution\InAppDomainParallelExecution.feature"/>
+    <None Update="Features\Execution\ObsoleteSteps.feature"/>
+    <None Update="Features\Execution\ScenarioOutlines.feature"/>
+    <None Update="Features\Execution\ScopedSteps.feature"/>
+    <None Update="Features\Execution\StepArguments.feature"/>
+    <None Update="Features\Execution\StepArgumentTransformations.feature"/>
+    <None Update="Features\Execution\StepDefinitionsWithoutRegex.feature"/>
+    <None Update="Features\Execution\TaggedExamples.feature"/>
+    <None Update="Features\Execution\Tracing.feature"/>
+    <None Update="Features\Hooks\HookSupport.feature"/>
+    <None Update="Features\Hooks\OrderedHookSupport.feature"/>
+    <None Update="Features\Hooks\ScopedHooks.feature"/>
+    <None Update="Features\LanguageSupport.feature"/>
+    <None Update="Features\Parser\DescriptionParser.feature"/>
+    <None Update="Features\Parser\ParserSmokeTests.feature"/>
+    <None Update="Features\Parser\ParsingErrors.feature"/>
+    <None Update="Features\RegressionTests\MsTest\GH1052.feature"/>
+    <None Update="Features\RegressionTests\NUnit\GH1052.feature"/>
+    <None Update="Features\SingleFileGenerator Checks.feature"/>
+    <None Update="Features\UnitTestProviderSpecific\MsTest\DeploymentItem.feature"/>
+    <None Update="Features\UnitTestProviderSpecific\MsTest\TestContext.feature"/>
+    <None Update="Features\UnitTestProviderSpecific\XUnit\XUnit2Provider.feature"/>
+    <None Update="TestFiles\and.feature"/>
+    <None Update="TestFiles\asterisks.feature"/>
+    <None Update="TestFiles\background.feature"/>
+    <None Update="TestFiles\background_withtitle.feature"/>
+    <None Update="TestFiles\but.feature"/>
+    <None Update="TestFiles\comments.feature"/>
+    <None Update="TestFiles\dutch.feature"/>
+    <None Update="TestFiles\featureheader.feature"/>
+    <None Update="TestFiles\french.feature"/>
+    <None Update="TestFiles\full.feature"/>
+    <None Update="TestFiles\german.feature"/>
+    <None Update="TestFiles\givenwhenthenduplication.feature"/>
+    <None Update="TestFiles\hungarian.feature"/>
+    <None Update="TestFiles\mixedgivenwhenthen.feature"/>
+    <None Update="TestFiles\multilineargument.feature"/>
+    <None Update="TestFiles\multilinetitle.feature"/>
+    <None Update="TestFiles\scenariooutline.feature"/>
+    <None Update="TestFiles\simple.feature"/>
+    <None Update="TestFiles\swedish.feature"/>
+    <None Update="TestFiles\tableargument.feature"/>
+    <None Update="TestFiles\taggedexamples.feature"/>
+    <None Update="TestFiles\tags.feature" />
+    <None Update="TestFiles\whitespaces.feature" />
   </ItemGroup>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->

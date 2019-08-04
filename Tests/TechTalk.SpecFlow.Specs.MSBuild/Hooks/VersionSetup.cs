@@ -16,8 +16,8 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.Hooks
         [BeforeScenario]
         public void SetVersionInformation()
         {
-            _currentVersionDriver.NuGetVersion = NuGetPackageVersion.Version;
-            _currentVersionDriver.SpecFlowNuGetVersion = NuGetPackageVersion.Version;
+            _currentVersionDriver.NuGetVersion = NuGetPackageInfo.Version;
+            _currentVersionDriver.SpecFlowNuGetVersion = NuGetPackageInfo.Version;
         }
     }
 }

@@ -59,26 +59,28 @@
     <None Update="Features\Generation.feature" />
   </ItemGroup>
 
-  <Target Name="EmitNuGetPackageVersion" BeforeTargets="BeforeCompile" DependsOnTargets="GetBuildVersion">
+  <Target Name="EmitNuGetPackageInfo" DependsOnTargets="GetBuildVersion">
 
     <PropertyGroup>
-      <NuGetPackageVersionFile>$(IntermediateOutputPath)NuGetPackageVersion.cs</NuGetPackageVersionFile>
-      <NuGetPackageVersionClass>namespace TechTalk.SpecFlow.Specs.MSBuild.Support
+      <NuGetPackageInfoFile>$(IntermediateOutputPath)NuGetPackageInfo.cs</NuGetPackageInfoFile>
+      <NuGetPackageInfoClass>namespace TechTalk.SpecFlow.Specs.MSBuild.Support
 {
-    internal static class NuGetPackageVersion
+    internal static class NuGetPackageInfo
     {
         public const string Version = "$(NuGetPackageVersion)"%3B
     }
-}</NuGetPackageVersionClass>
+}</NuGetPackageInfoClass>
     </PropertyGroup>
 
-    <WriteLinesToFile File="$(NuGetPackageVersionFile)" Lines="$(NuGetPackageVersionClass)" Overwrite="true" Encoding="UTF-8" />
+    <WriteLinesToFile File="$(NuGetPackageInfoFile)" Lines="$(NuGetPackageInfoClass)" Overwrite="true" Encoding="UTF-8" />
+    
+  </Target>
 
+  <Target Name="AddNuGetPackageInfoToCompile" BeforeTargets="BeforeCompile" DependsOnTargets="EmitNuGetPackageInfo">
     <ItemGroup>
-      <Compile Remove="Support\NuGetPackageVersion.cs" />
-      <Compile Include="$(NuGetPackageVersionFile)" />
+      <Compile Include="$(NuGetPackageInfoFile)" />
+      <Compile Remove="Support\NuGetPackageInfo.cs" />
     </ItemGroup>
-
   </Target>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->

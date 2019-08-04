@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.Hooks
         private static void DeletePackageVersionFolders()
         {
 
-            var currentVersionDriver = new CurrentVersionDriver { NuGetVersion = NuGetPackageVersion.Version };
+            var currentVersionDriver = new CurrentVersionDriver { NuGetVersion = NuGetPackageInfo.Version };
 
             string[] packageNames = { "SpecFlow", "SpecFlow.CustomPlugin", "SpecFlow.MsTest", "SpecFlow.NUnit", "SpecFlow.NUnit.Runners", "SpecFlow.Tools.MsBuild.Generation", "SpecFlow.xUnit" };
 
