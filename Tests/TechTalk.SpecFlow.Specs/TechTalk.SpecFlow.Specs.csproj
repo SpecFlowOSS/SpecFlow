@@ -20,9 +20,6 @@
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)netcoreapp2.0\</_SpecFlowXUnitRuntimePluginPath>
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net45\</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly>$([System.IO.Path]::GetFullPath('$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll'))</SpecFlowXUnitRuntimePluginAssembly>
-
-    <!-- Force projects to be resolved *before* generating source so we get up-to-date generation. -->
-    <GenerateSpecFlowCodeFilesDependsOn>ResolveReferences;$(GenerateSpecFlowCodeFilesDependsOn)</GenerateSpecFlowCodeFilesDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -51,7 +48,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" />
   </ItemGroup>
