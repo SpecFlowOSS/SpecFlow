@@ -1,7 +1,10 @@
 ﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup>
+    <!-- Register the XUnit generator plugin with SpecFlow -->
     <SpecFlowGeneratorPlugins Include="$(SpecFlowXUnitGeneratorPluginAssembly)" />
+    
+    <!-- Ensure the XUnit runtime plugin is copied to the consuming project -->
     <None Include="$(SpecFlowXUnitRuntimePluginAssembly)" >
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -6,20 +6,20 @@
 
   <PropertyGroup>
     <!-- Set up paths to use local built generation projects (select based on runtime). -->
-    <_SpecFlowTasksAssemblyPathBase>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\</_SpecFlowTasksAssemblyPathBase>
+    <_SpecFlowTasksAssemblyPathBase>$(MSBuildThisFileDirectory)..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\</_SpecFlowTasksAssemblyPathBase>
     <_SpecFlowTasksAssemblyPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowTasksAssemblyPathBase)netcoreapp2.0\</_SpecFlowTasksAssemblyPath>
     <_SpecFlowTasksAssemblyPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowTasksAssemblyPathBase)net471\</_SpecFlowTasksAssemblyPath>
-    <SpecFlowTasksAssembly>$(_SpecFlowTasksAssemblyPath)SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
+    <SpecFlowTasksAssembly>$([System.IO.Path]::GetFullPath('$(_SpecFlowTasksAssemblyPath)SpecFlow.Tools.MsBuild.Generation.dll'))</SpecFlowTasksAssembly>
 
-    <_SpecFlowXUnitGeneratorPluginPathBase>..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\</_SpecFlowXUnitGeneratorPluginPathBase>
+    <_SpecFlowXUnitGeneratorPluginPathBase>$(MSBuildThisFileDirectory)..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\</_SpecFlowXUnitGeneratorPluginPathBase>
     <_SpecFlowXUnitGeneratorPluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitGeneratorPluginPathBase)netcoreapp2.0\</_SpecFlowXUnitGeneratorPluginPath>
     <_SpecFlowXUnitGeneratorPluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitGeneratorPluginPathBase)net471\</_SpecFlowXUnitGeneratorPluginPath>
-    <SpecFlowXUnitGeneratorPluginAssembly>$(_SpecFlowXUnitGeneratorPluginPath)TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</SpecFlowXUnitGeneratorPluginAssembly>
+    <SpecFlowXUnitGeneratorPluginAssembly>$([System.IO.Path]::GetFullPath('$(_SpecFlowXUnitGeneratorPluginPath)TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll'))</SpecFlowXUnitGeneratorPluginAssembly>
 
-    <_SpecFlowXUnitRuntimePluginPathBase>..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\$(Configuration)\</_SpecFlowXUnitRuntimePluginPathBase>
+    <_SpecFlowXUnitRuntimePluginPathBase>$(MSBuildThisFileDirectory)..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\bin\$(Configuration)\</_SpecFlowXUnitRuntimePluginPathBase>
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)netcoreapp2.0\</_SpecFlowXUnitRuntimePluginPath>
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net45\</_SpecFlowXUnitRuntimePluginPath>
-    <SpecFlowXUnitRuntimePluginAssembly>$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
+    <SpecFlowXUnitRuntimePluginAssembly>$([System.IO.Path]::GetFullPath('$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll'))</SpecFlowXUnitRuntimePluginAssembly>
 
     <!-- Force projects to be resolved *before* generating source so we get up-to-date generation. -->
     <GenerateSpecFlowCodeFilesDependsOn>ResolveReferences;$(GenerateSpecFlowCodeFilesDependsOn)</GenerateSpecFlowCodeFilesDependsOn>
@@ -87,13 +87,12 @@
     <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_PluginTFM>
   </PropertyGroup>
 
-
-  <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile">
+  <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="'$(NuGetPackageVersion)' != ''">
 
     <PropertyGroup>
       <NuGetVersionInfoFile>$(IntermediateOutputPath)NuGetVersionInfo.cs</NuGetVersionInfoFile>
     </PropertyGroup>
-    
+
     <ReplaceTextInFileTask
       InputFile="NuGetPackageVersion.cs"
       OutputFile="$(NuGetVersionInfoFile)"
@@ -114,76 +113,15 @@
   </Target>
 
   <Target Name="PreBuild">
-    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
-    <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" />
+    <ItemGroup>
+      <PreBuildProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
+      <PreBuildProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
+    </ItemGroup>
+    <MSBuild Projects="@(PreBuildProjectReference)" ContinueOnError="false" />
   </Target>
-
 
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_PluginTFM)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Update="Features\Build systems.feature" />
-    <None Update="Features\Contexts\AccessingContexts.feature"/>
-    <None Update="Features\Contexts\ContextInjection.feature"/>
-    <None Update="Features\Contexts\InjectoContextToHooks.feature"/>
-    <None Update="Features\Description.feature"/>
-    <None Update="Features\Execution\AsyncSupport.feature"/>
-    <None Update="Features\Execution\BasicExecution.feature"/>
-    <None Update="Features\Execution\BindingCulture.feature"/>
-    <None Update="Features\Execution\CallingStepsFromStepDefinition.feature"/>
-    <None Update="Features\Execution\Configuration.feature"/>
-    <None Update="Features\Execution\ExecutionSmokeTests.feature"/>
-    <None Update="Features\Execution\ExternalSteps.feature"/>
-    <None Update="Features\Execution\IgnoredFeatures.feature"/>
-    <None Update="Features\Execution\IgnoredScenarios.feature"/>
-    <None Update="Features\Execution\InAppDomainParallelExecution.feature"/>
-    <None Update="Features\Execution\ObsoleteSteps.feature"/>
-    <None Update="Features\Execution\ScenarioOutlines.feature"/>
-    <None Update="Features\Execution\ScopedSteps.feature"/>
-    <None Update="Features\Execution\StepArguments.feature"/>
-    <None Update="Features\Execution\StepArgumentTransformations.feature"/>
-    <None Update="Features\Execution\StepDefinitionsWithoutRegex.feature"/>
-    <None Update="Features\Execution\TaggedExamples.feature"/>
-    <None Update="Features\Execution\Tracing.feature"/>
-    <None Update="Features\Hooks\HookSupport.feature"/>
-    <None Update="Features\Hooks\OrderedHookSupport.feature"/>
-    <None Update="Features\Hooks\ScopedHooks.feature"/>
-    <None Update="Features\LanguageSupport.feature"/>
-    <None Update="Features\Parser\DescriptionParser.feature"/>
-    <None Update="Features\Parser\ParserSmokeTests.feature"/>
-    <None Update="Features\Parser\ParsingErrors.feature"/>
-    <None Update="Features\RegressionTests\MsTest\GH1052.feature"/>
-    <None Update="Features\RegressionTests\NUnit\GH1052.feature"/>
-    <None Update="Features\SingleFileGenerator Checks.feature"/>
-    <None Update="Features\UnitTestProviderSpecific\MsTest\DeploymentItem.feature"/>
-    <None Update="Features\UnitTestProviderSpecific\MsTest\TestContext.feature"/>
-    <None Update="Features\UnitTestProviderSpecific\XUnit\XUnit2Provider.feature"/>
-    <None Update="TestFiles\and.feature"/>
-    <None Update="TestFiles\asterisks.feature"/>
-    <None Update="TestFiles\background.feature"/>
-    <None Update="TestFiles\background_withtitle.feature"/>
-    <None Update="TestFiles\but.feature"/>
-    <None Update="TestFiles\comments.feature"/>
-    <None Update="TestFiles\dutch.feature"/>
-    <None Update="TestFiles\featureheader.feature"/>
-    <None Update="TestFiles\french.feature"/>
-    <None Update="TestFiles\full.feature"/>
-    <None Update="TestFiles\german.feature"/>
-    <None Update="TestFiles\givenwhenthenduplication.feature"/>
-    <None Update="TestFiles\hungarian.feature"/>
-    <None Update="TestFiles\mixedgivenwhenthen.feature"/>
-    <None Update="TestFiles\multilineargument.feature"/>
-    <None Update="TestFiles\multilinetitle.feature"/>
-    <None Update="TestFiles\scenariooutline.feature"/>
-    <None Update="TestFiles\simple.feature"/>
-    <None Update="TestFiles\swedish.feature"/>
-    <None Update="TestFiles\tableargument.feature"/>
-    <None Update="TestFiles\taggedexamples.feature"/>
-    <None Update="TestFiles\tags.feature" />
-    <None Update="TestFiles\whitespaces.feature" />
   </ItemGroup>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->
