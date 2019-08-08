@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Manuel Eiwen",
+    "classifications": ["SpecFlow", "SpecFlow+ Runner"],
+    "identity": "SpecFlowTemplates.DotNET.Project.SpecFlowPlusRunner",
+    "name": "Specflow+ Runner Template",
+    "shortName": "specflowproject_specflowplusrunner",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "Template",
+    "symbols": {
+        "targetFramework": {
+            "type": "parameter",
+            "defaultValue": "netcoreapp2.2",
+            "replaces": "$target$"
+        }
+    }
+}
