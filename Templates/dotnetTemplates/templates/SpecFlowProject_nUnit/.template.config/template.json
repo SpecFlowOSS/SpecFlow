@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Manuel Eiwen",
+    "classifications": ["SpecFlow", "NUnit"],
+    "identity": "SpecFlowTemplates.DotNET.Project.NUnit",
+    "name": "SpecFlow NUnit Template",
+    "shortName": "specflowproject_nunit",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "Template",
+    "symbols": {
+        "targetFramework": {
+            "type": "parameter",
+            "defaultValue": "netcoreapp2.2",
+            "replaces": "$target$"
+        }
+    }
+}
