@@ -5,15 +5,18 @@ namespace Template.Drivers
     public class Driver
     {
         
-        public void CreateBackground() {
+        public void CreateBackground() 
+        {
             throw new NotImplementedException();
         }
 
-        public void ExecuteAction() {
+        public void ExecuteAction() 
+        {
             throw new NotImplementedException();
         }
 
-        public void CheckCondition() {
+        public void CheckCondition() 
+        {
             throw new NotImplementedException();
         }
 
