@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Manuel Eiwen",
+    "classifications": ["SpecFlow", "MsTest"],
+    "identity": "SpecFlowTemplates.DotNET.Project.MsTest",
+    "name": "SpecFlow MsTest Template",
+    "shortName": "specflowproject_mstest",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "Template",
+    "symbols": {
+        "targetFramework": {
+            "type": "parameter",
+            "defaultValue": "netcoreapp2.2",
+            "replaces": "$target$"
+        }
+    }
+}
