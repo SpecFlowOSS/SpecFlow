@@ -20,9 +20,6 @@
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)netcoreapp2.0\</_SpecFlowXUnitRuntimePluginPath>
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net45\</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly>$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
-
-    <!-- Force projects to be resolved *before* generating source so we get up-to-date generation. -->
-    <GenerateSpecFlowCodeFilesDependsOn>ResolveReferences;$(GenerateSpecFlowCodeFilesDependsOn)</GenerateSpecFlowCodeFilesDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -46,9 +43,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" PreBuild="true" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" PreBuild="true" />
+    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs.MSBuild.Analyzer\TechTalk.SpecFlow.Specs.MSBuild.Analyzer.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -81,6 +78,13 @@
       <Compile Include="$(NuGetPackageInfoFile)" />
       <Compile Remove="Support\NuGetPackageInfo.cs" />
     </ItemGroup>
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="Build">
+    <ItemGroup>
+      <PreBuildProjectReference Include="@(ProjectReference)" Condition=" '%(ProjectReference.PreBuild)' == 'true' " />
+    </ItemGroup>
+    <MSBuild Projects="@(PreBuildProjectReference)" ContinueOnError="false" />
   </Target>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->

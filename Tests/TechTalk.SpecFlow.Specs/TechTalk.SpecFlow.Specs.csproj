@@ -46,8 +46,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" PreBuild="true" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" PreBuild="true" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
     <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" />
   </ItemGroup>
@@ -108,10 +110,9 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="PreBuild">
+  <Target Name="PreBuild" BeforeTargets="Build">
     <ItemGroup>
-      <PreBuildProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
-      <PreBuildProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
+      <PreBuildProjectReference Include="@(ProjectReference)" Condition=" '%(ProjectReference.PreBuild)' == 'true' " />
     </ItemGroup>
     <MSBuild Projects="@(PreBuildProjectReference)" ContinueOnError="false" />
   </Target>

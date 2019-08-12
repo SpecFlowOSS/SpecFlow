@@ -20,9 +20,6 @@
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)netcoreapp2.0\</_SpecFlowXUnitRuntimePluginPath>
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net45\</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly>$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
-    
-    <!-- Force projects to be resolved *before* generating source so we get up-to-date generation. -->
-    <GenerateSpecFlowCodeFilesDependsOn>ResolveReferences;$(GenerateSpecFlowCodeFilesDependsOn)</GenerateSpecFlowCodeFilesDependsOn>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -38,11 +35,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" PreBuild="true" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" PreBuild="true" />
+    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="Build">
+    <ItemGroup>
+      <PreBuildProjectReference Include="@(ProjectReference)" Condition=" '%(ProjectReference.PreBuild)' == 'true' " />
+    </ItemGroup>
+    <MSBuild Projects="@(PreBuildProjectReference)" ContinueOnError="false" />
+  </Target>
 
   <ItemGroup>
     <None Update="App.config">
