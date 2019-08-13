@@ -98,11 +98,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
 
-            var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
+            //var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
 
-            ctorMethod.Statements.Add(
-                new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
-                    new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
+            //ctorMethod.Statements.Add(
+            //    new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
+            //        new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
 
             ctorMethod.Statements.Add(
                 new CodeMethodInvokeExpression(

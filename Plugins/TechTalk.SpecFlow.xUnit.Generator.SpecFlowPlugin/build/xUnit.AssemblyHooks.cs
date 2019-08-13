@@ -4,7 +4,7 @@ using global::Xunit;
 using global::TechTalk.SpecFlow;
 using global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin;
 
-[assembly:AssemblyFixture(typeof(XUnitAssemblyFixture))]
+[assembly:AssemblyFixture(typeof(global::InternalSpecFlow.XUnitAssemblyFixture))]
 
 namespace InternalSpecFlow
 {
