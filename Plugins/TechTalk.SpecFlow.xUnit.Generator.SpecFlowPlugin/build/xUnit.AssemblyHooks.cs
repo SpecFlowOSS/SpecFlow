@@ -1,26 +1,20 @@
-﻿using global::System.Reflection;
-using global::System;
-using global::Xunit;
-using global::TechTalk.SpecFlow;
-using global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin;
-
-[assembly:AssemblyFixture(typeof(global::InternalSpecFlow.XUnitAssemblyFixture))]
+[assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::InternalSpecFlow.XUnitAssemblyFixture))]
 
 namespace InternalSpecFlow
 {
-    public class XUnitAssemblyFixture : IDisposable
+    public class XUnitAssemblyFixture : global::System.IDisposable
     {
-        private readonly Assembly _currentAssembly;
+        private readonly global::System.Reflection.Assembly _currentAssembly;
 
         public XUnitAssemblyFixture()
         {
             _currentAssembly = typeof(XUnitAssemblyFixture).Assembly;
-            TestRunnerManager.OnTestRunStart(_currentAssembly);
+            global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly);
         }
 
         public void Dispose()
         {
-            TestRunnerManager.OnTestRunEnd(_currentAssembly);
+            global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly);
         }
     }
 }
