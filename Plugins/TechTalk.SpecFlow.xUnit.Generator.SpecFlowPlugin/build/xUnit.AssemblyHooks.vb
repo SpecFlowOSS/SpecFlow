@@ -1,4 +1,4 @@
-﻿<Assembly: Global.TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(GetType(Global.InternalSpecFlow.XUnitAssemblyFixture))>
+﻿<Assembly: Global.TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(GetType(InternalSpecFlow.XUnitAssemblyFixture))>
 
 Namespace InternalSpecFlow
 
@@ -8,12 +8,12 @@ Namespace InternalSpecFlow
         Private ReadOnly _currentAssembly As Global.System.Reflection.Assembly
 
         Public Sub New()
-            _currentAssembly = GetType(Global.InternalSpecFlow.XUnitAssemblyFixture).Assembly
+            _currentAssembly = GetType(XUnitAssemblyFixture).Assembly
             Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly)
         End Sub
 
 
-        Public Sub Dispose()
+        Public Sub Dispose() Implements Global.System.IDisposable.Dispose
             Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly)
         End Sub
     End Class
