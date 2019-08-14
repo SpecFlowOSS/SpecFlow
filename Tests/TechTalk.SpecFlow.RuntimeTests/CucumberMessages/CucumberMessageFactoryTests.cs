@@ -297,7 +297,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         }
 
         [Fact(DisplayName = @"BuildTestRunFinishedMessage should return a TestRunFinished message")]
-        public void BuildTestRunFinished_ValidParameters_ShouldReturnTestRunFinishedMessage()
+        public void BuildTestRunFinished_Success_ShouldReturnTestRunFinishedMessage()
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
@@ -307,6 +307,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestRunFinished>>();
+        }
+
+        [Theory(DisplayName = @"BuildTestRunFinishedMessage should return a TestRunFinished message with the specified success value")]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void BuildTestRunFinished_SuccessValue_ShouldReturnTestRunFinishedMessageWithSpecifiedSuccessValue(bool inputSuccess, bool expectedSuccess)
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(inputSuccess);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestRunFinished>>().Which
+                  .Result.Success.Should().Be(expectedSuccess);
         }
     }
 }
