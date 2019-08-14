@@ -295,5 +295,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             result.Should().BeAssignableTo<ISuccess<Envelope>>().Which
                   .Result.TestCaseFinished.Should().Be(testCaseFinished);
         }
+
+        [Fact(DisplayName = @"BuildTestRunFinishedMessage should return a TestRunFinished message")]
+        public void BuildTestRunFinished_ValidParameters_ShouldReturnTestRunFinishedMessage()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(true);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestRunFinished>>();
+        }
     }
 }

@@ -73,6 +73,16 @@ namespace TechTalk.SpecFlow.CucumberMessages
             return Result<TestCaseFinished>.Success(testCaseFinished);
         }
 
+        public IResult<TestRunFinished> BuildTestRunFinishedMessage(bool isSuccess)
+        {
+            var testRunFinished = new TestRunFinished
+            {
+                Success = isSuccess
+            };
+
+            return Result.Success(testRunFinished);
+        }
+
         public IResult<Envelope> BuildEnvelopeMessage(IResult<TestRunStarted> testRunStarted)
         {
             switch (testRunStarted)
