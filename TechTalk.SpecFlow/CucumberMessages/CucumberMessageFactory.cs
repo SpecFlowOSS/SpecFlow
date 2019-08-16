@@ -73,11 +73,17 @@ namespace TechTalk.SpecFlow.CucumberMessages
             return Result<TestCaseFinished>.Success(testCaseFinished);
         }
 
-        public IResult<TestRunFinished> BuildTestRunFinishedMessage(bool isSuccess)
+        public IResult<TestRunFinished> BuildTestRunFinishedMessage(bool isSuccess, DateTime timeStamp)
         {
+            if (timeStamp.Kind != DateTimeKind.Utc)
+            {
+                return Result<TestRunFinished>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
+            }
+
             var testRunFinished = new TestRunFinished
             {
-                Success = isSuccess
+                Success = isSuccess,
+                Timestamp = Timestamp.FromDateTime(timeStamp)
             };
 
             return Result.Success(testRunFinished);

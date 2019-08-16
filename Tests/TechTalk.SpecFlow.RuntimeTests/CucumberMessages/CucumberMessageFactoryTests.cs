@@ -301,9 +301,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(true);
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(true, dateTime);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestRunFinished>>();
@@ -316,13 +317,59 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
 
             // ACT
-            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(inputSuccess);
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(inputSuccess, dateTime);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess<TestRunFinished>>().Which
                   .Result.Success.Should().Be(expectedSuccess);
+        }
+
+        [Theory]
+        [InlineData(DateTimeKind.Local)]
+        [InlineData(DateTimeKind.Unspecified)]
+        public void BuildTestRunFinished_DateTimeWithInvalidKind_ShouldReturnFailure(DateTimeKind dateTimeKind)
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, dateTimeKind);
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(true, dateTime);
+
+            // ASSERT
+            result.Should().BeAssignableTo<IFailure<TestRunFinished>>();
+        }
+
+        [Fact]
+        public void BuildTestRunFinished_UtcDateTime_ShouldReturnSuccess()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(true, dateTime);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestRunFinished>>();
+        }
+
+        [Fact]
+        public void BuildTestRunFinished_UtcDateTime_ShouldReturnSuccessWithSpecifiedTimeStamp()
+        {
+            // ARRANGE
+            var cucumberMessageFactory = new CucumberMessageFactory();
+            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+
+            // ACT
+            var result = cucumberMessageFactory.BuildTestRunFinishedMessage(true, dateTime);
+
+            // ASSERT
+            result.Should().BeAssignableTo<ISuccess<TestRunFinished>>()
+                  .Which.Result.Timestamp.ToDateTime().Should().Be(dateTime);
         }
     }
 }

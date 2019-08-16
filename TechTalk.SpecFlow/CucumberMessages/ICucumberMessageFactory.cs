@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         IResult<TestCaseFinished> BuildTestCaseFinishedMessage(Guid pickleId, DateTime timeStamp, TestResult testResult);
 
-        IResult<TestRunFinished> BuildTestRunFinishedMessage(bool isSuccess);
+        IResult<TestRunFinished> BuildTestRunFinishedMessage(bool isSuccess, DateTime timeStamp);
 
         IResult<Envelope> BuildEnvelopeMessage(IResult<TestRunStarted> testRunStarted);
 
