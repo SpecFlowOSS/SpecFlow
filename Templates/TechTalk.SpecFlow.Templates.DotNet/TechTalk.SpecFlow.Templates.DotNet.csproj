@@ -2,18 +2,18 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0</PackageVersion>
-    <PackageId>SpecFlow.Templates.DotNET</PackageId>
-    <Title>SpecFlow Templates</Title>
-    <Authors>Manuel Eiwen</Authors>
+    <PackageId>SpecFlow.Templates.DotNet</PackageId>
+    <Title>SpecFlow Templates for dotnet new</Title>
+    <Authors>TechTalk;Manuel Eiwen</Authors>
     <Description>Templates for projects using different unit test providers and Templates for SpecFlow files.</Description>
-    <PackageTags>dotnet-new;templates;contoso</PackageTags>
+    <PackageTags>specflow;bdd;gherkin;cucumber;dotnet-new;templates</PackageTags>
 
     <TargetFramework>netstandard2.0</TargetFramework>
 
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
