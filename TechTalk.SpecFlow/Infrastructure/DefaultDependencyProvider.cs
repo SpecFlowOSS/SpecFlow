@@ -91,6 +91,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             testThreadContainer.RegisterTypeAs<TestRunner, ITestRunner>();
             testThreadContainer.RegisterTypeAs<ContextManager, IContextManager>();
             testThreadContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+            testThreadContainer.RegisterTypeAs<NonStrictTestRunResultSuccessCalculator, ITestRunResultSuccessCalculator>();
+            testThreadContainer.RegisterTypeAs<TestRunResultCollector, ITestRunResultCollector>();
 
             // needs to invoke methods so requires the context manager
             testThreadContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();

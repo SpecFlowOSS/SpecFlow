@@ -10,13 +10,20 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private readonly IPlatformFactory _platformFactory;
         private readonly ICucumberMessageSink _cucumberMessageSink;
         private readonly IFieldValueProvider _fieldValueProvider;
+        private readonly ITestRunResultSuccessCalculator _testRunResultSuccessCalculator;
 
-        public CucumberMessageSender(ICucumberMessageFactory cucumberMessageFactory, IPlatformFactory platformFactory, ICucumberMessageSink cucumberMessageSink, IFieldValueProvider fieldValueProvider)
+        public CucumberMessageSender(
+            ICucumberMessageFactory cucumberMessageFactory,
+            IPlatformFactory platformFactory,
+            ICucumberMessageSink cucumberMessageSink,
+            IFieldValueProvider fieldValueProvider,
+            ITestRunResultSuccessCalculator testRunResultSuccessCalculator)
         {
-            _cucumberMessageFactory = cucumberMessageFactory;
+            _cucumberMessageFactory = cucumberMessageFactory ?? throw new ArgumentNullException(nameof(cucumberMessageFactory));
             _platformFactory = platformFactory;
             _cucumberMessageSink = cucumberMessageSink;
             _fieldValueProvider = fieldValueProvider;
+            _testRunResultSuccessCalculator = testRunResultSuccessCalculator;
         }
 
         public void SendTestRunStarted()
@@ -46,6 +53,16 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             var testCaseFinishedMessageResult = _cucumberMessageFactory.BuildTestCaseFinishedMessage(actualPickleId, nowDateAndTime, testResult);
             var envelope = _cucumberMessageFactory.BuildEnvelopeMessage(testCaseFinishedMessageResult);
+            SendMessageOrThrowException(envelope);
+        }
+
+        public void SendTestRunFinished(TestRunResult testRunResult)
+        {
+            var nowDateAndTime = _fieldValueProvider.GetTestRunFinishedTime();
+            bool isSuccess = _testRunResultSuccessCalculator.IsSuccess(testRunResult);
+
+            var testRunFinishedMessage = _cucumberMessageFactory.BuildTestRunFinishedMessage(isSuccess, nowDateAndTime);
+            var envelope = _cucumberMessageFactory.BuildEnvelopeMessage(testRunFinishedMessage);
             SendMessageOrThrowException(envelope);
         }
 

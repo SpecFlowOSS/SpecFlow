@@ -10,5 +10,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         void SendTestCaseStarted(ScenarioInfo scenarioInfo);
 
         void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult);
+
+        void SendTestRunFinished(TestRunResult testRunResult);
     }
 }
