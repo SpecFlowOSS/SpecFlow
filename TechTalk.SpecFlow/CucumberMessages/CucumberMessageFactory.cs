@@ -122,9 +122,22 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 case ISuccess<TestCaseFinished> success:
                     return Result<Envelope>.Success(new Envelope { TestCaseFinished = success.Result });
                 case IFailure failure:
-                    return Result<Envelope>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.", failure);
+                    return Result<Envelope>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseFinished>)}.", failure);
                 default:
-                    return Result<Envelope>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseStarted>)}.");
+                    return Result<Envelope>.Failure($"{nameof(testCaseFinished)} must be an {nameof(ISuccess<TestCaseFinished>)}.");
+            }
+        }
+
+        public IResult<Envelope> BuildEnvelopeMessage(IResult<TestRunFinished> testRunFinished)
+        {
+            switch (testRunFinished)
+            {
+                case ISuccess<TestRunFinished> success:
+                    return Result<Envelope>.Success(new Envelope { TestRunFinished = success.Result });
+                case IFailure failure:
+                    return Result<Envelope>.Failure($"{nameof(testRunFinished)} must be an {nameof(ISuccess<TestRunFinished>)}.", failure);
+                default:
+                    return Result<Envelope>.Failure($"{nameof(testRunFinished)} must be an {nameof(ISuccess<TestRunFinished>)}.");
             }
         }
     }

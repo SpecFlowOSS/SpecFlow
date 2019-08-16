@@ -19,5 +19,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         IResult<Envelope> BuildEnvelopeMessage(IResult<TestCaseStarted> testCaseStarted);
 
         IResult<Envelope> BuildEnvelopeMessage(IResult<TestCaseFinished> testCaseFinished);
+
+        IResult<Envelope> BuildEnvelopeMessage(IResult<TestRunFinished> testRunFinished);
     }
 }
