@@ -1,0 +1,12 @@
+{
+    "symbolInfo": {
+        "unitTestProvider": {
+            "longName": "test-provider",
+            "shortName": "p"
+        },
+        "targetFramework": {
+            "longName": "target-framework",
+            "shortName": "f"
+        }
+    }
+}
