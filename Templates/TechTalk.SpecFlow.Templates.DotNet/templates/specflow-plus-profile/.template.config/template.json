@@ -8,5 +8,6 @@
     "tags": {
         "language": "C#",
         "type": "item"
-    }
+    },
+    "sourceName": "$rootProject$"
 }
