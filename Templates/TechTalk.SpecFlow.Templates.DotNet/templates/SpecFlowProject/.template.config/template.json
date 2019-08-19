@@ -13,13 +13,26 @@
     "symbols": {
         "targetFramework": {
             "type": "parameter",
+            "description": "Target Framework",
+            "datatype": "choice",
             "defaultValue": "netcoreapp2.2",
-            "replaces": "$target$"
+            "replaces": "$target$",
+            "choices": [
+                {
+                    "choice": "netcoreapp2.2",
+                    "description": ".NET Core 2.2"
+                },
+                {
+                    "choice": "net472",
+                    "description": ".NET Framework 4.7.2"
+                }
+            ]
         },
         "unitTestProvider": {
             "type": "parameter",
+            "description": "Provider for Unit Tests",
             "datatype": "choice",
-            "isRequired": true,
+            "defaultValue": "specflowplusrunner",
             "choices": [
                 {
                     "choice": "specflowplusrunner",
