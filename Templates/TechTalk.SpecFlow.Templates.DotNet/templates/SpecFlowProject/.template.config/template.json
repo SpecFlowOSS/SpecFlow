@@ -52,10 +52,10 @@
                 }
             ]
         },
-        "nugetPackages": {
+        "SpecFlowNugetPackages": {
             "type": "generated",
             "generator": "switch",
-            "replaces": "$nugetPackages$",
+            "replaces": "$SpecFlowNugetPackages$",
             "parameters": {
                 "evaluator": "C++",
                 "datatype": "string",
@@ -66,15 +66,38 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.0.225\" />\n    <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
+                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.0.225\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
-                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.0.225\" />\n    <PackageReference Include=\"MSTest.TestFramework\" Version=\"1.4.0\" />\n    <PackageReference Include=\"MSTest.TestAdapter\" Version=\"1.4.0\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.0.225\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.0.225\" />\n    <PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.0.225\" />\n    <PackageReference Include=\"NUnit\" Version=\"3.12.0\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.0.225\" />"
+                    }
+                ]
+            }
+        },
+        "AdditionalNugetPackages": {
+            "type": "generated",
+            "generator": "switch",
+            "replaces": "$additionalNugetPackages$",
+            "parameters": {
+                "evaluator": "C++",
+                "datatype": "string",
+                "cases": [
+                    {
+                        "condition": "(unitTestProvider == 'xunit')",
+                        "value": "<PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
+                    },
+                    {
+                        "condition": "(unitTestProvider == 'mstest')",
+                        "value": "<PackageReference Include=\"MSTest.TestAdapter\" Version=\"1.4.0\" />"
+                    },
+                    {
+                        "condition": "(unitTestProvider == 'nunit')",
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.0.225\" />"
                     }
                 ]
             }
