@@ -1,0 +1,70 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Manuel Eiwen",
+    "classifications": ["SpecFlow", "Project"],
+    "identity": "SpecFlowTemplates.DotNET.Project",
+    "name": "SpecFlow Project Template",
+    "shortName": "specflowproject",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourceName": "Template",
+    "symbols": {
+        "targetFramework": {
+            "type": "parameter",
+            "defaultValue": "netcoreapp2.2",
+            "replaces": "$target$"
+        },
+        "unitTestProvider": {
+            "type": "parameter",
+            "datatype": "choice",
+            "isRequired": true,
+            "choices": [
+                {
+                    "choice": "specflowplusrunner",
+                    "description": "SpecFlow+ Runner Test Provider"
+                },
+                {
+                    "choice": "xunit",
+                    "description": "xUnit Test Provider"
+                },
+                {
+                    "choice": "nunit",
+                    "description": "NUnit Test Provider"
+                },
+                {
+                    "choice": "mstest",
+                    "description": "MSTest Test Provider"
+                }
+            ]
+        },
+        "nugetPackages": {
+            "type": "generated",
+            "generator": "switch",
+            "replaces": "$nugetPackages$",
+            "parameters": {
+                "evaluator": "C++",
+                "datatype": "string",
+                "cases": [
+                    {
+                        "condition": "(unitTestProvider == 'specflowplusrunner')",
+                        "value": "<PackageReference Include=\"SpecRun.SpecFlow.3-0-0\" Version=\"3.0.377\" />"
+                    },
+                    {
+                        "condition": "(unitTestProvider == 'xunit')",
+                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.0.225\" />\n    <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
+                    },
+                    {
+                        "condition": "(unitTestProvider == 'mstest')",
+                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.0.225\" />\n    <PackageReference Include=\"MSTest.TestFramework\" Version=\"1.4.0\" />\n    <PackageReference Include=\"MSTest.TestAdapter\" Version=\"1.4.0\" />"
+                    },
+                    {
+                        "condition": "(unitTestProvider == 'nunit')",
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.0.225\" />\n    <PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.0.225\" />\n    <PackageReference Include=\"NUnit\" Version=\"3.12.0\" />"
+                    }
+                ]
+            }
+        }
+    }
+}
