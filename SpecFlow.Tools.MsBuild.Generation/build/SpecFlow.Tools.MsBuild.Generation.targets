@@ -49,7 +49,7 @@
     
     <ItemGroup>
       <SpecFlowGeneratedCodeFile Include="$(SpecFlowGeneratedCodePath)**/*.feature$(DefaultLanguageSourceExtension)" />
-      <SpecFlowGeneratedCodeFile Include="$(SpecFlowGeneratedCodePath)**/*.feature.xls$(DefaultLanguageSourceExtension)" />
+      <SpecFlowGeneratedCodeFile Include="$(SpecFlowGeneratedCodePath)**/*.feature.xlsx$(DefaultLanguageSourceExtension)" />
     </ItemGroup>
     
     <Delete Files="@(SpecFlowGeneratedCodeFile)" ContinueOnError="true" />

@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <SpecFlowFeature Include="**/*.feature" />
-    <SpecFlowFeature Include="**/*.feature.xls" />
+    <SpecFlowFeature Include="**/*.feature.xlsx" />
   </ItemGroup>
 
   <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>
