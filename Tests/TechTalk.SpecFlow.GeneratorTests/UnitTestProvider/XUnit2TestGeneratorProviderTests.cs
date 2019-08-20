@@ -332,9 +332,9 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             // ASSERT
             var classConstructor = code.Class().Members().Single(m => m.Name == ".ctor");
             classConstructor.Should().NotBeNull();
-            classConstructor.Parameters.Count.Should().Be(2);
-            classConstructor.Parameters[1].Type.BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
-            classConstructor.Parameters[1].Name.Should().Be("testOutputHelper");
+            classConstructor.Parameters.Count.Should().Be(3);
+            classConstructor.Parameters[2].Type.BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
+            classConstructor.Parameters[2].Name.Should().Be("testOutputHelper");
 
             var initOutputHelper = classConstructor.Statements.OfType<CodeAssignStatement>().First();
             initOutputHelper.Should().NotBeNull();
