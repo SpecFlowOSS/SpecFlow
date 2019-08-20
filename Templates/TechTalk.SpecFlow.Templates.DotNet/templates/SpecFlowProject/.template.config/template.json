@@ -20,6 +20,10 @@
             "choices": [
                 {
                     "choice": "netcoreapp3",
+                    "description": ".NET Core 3"
+                },
+                {
+                    "choice": "netcoreapp2.2",
                     "description": ".NET Core 2.2"
                 },
                 {
