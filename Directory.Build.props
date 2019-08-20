@@ -1,5 +1,5 @@
 <Project>
-  <Import Project="macos.props" />
+
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
@@ -11,6 +11,10 @@
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" Version="2.1.65" PrivateAssets="all"/>
     <None Include="$(SolutionDir)/LICENSE.txt" Pack="true" PackagePath=""/>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0-preview.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <PropertyGroup>

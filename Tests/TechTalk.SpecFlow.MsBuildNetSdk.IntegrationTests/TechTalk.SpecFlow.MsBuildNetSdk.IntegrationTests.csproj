@@ -50,6 +50,10 @@
     <SpecFlowGeneratorPlugins Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\net471\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\" />
+  </ItemGroup>
+
   <Target Name="PreBuild">
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" />
   </Target>
