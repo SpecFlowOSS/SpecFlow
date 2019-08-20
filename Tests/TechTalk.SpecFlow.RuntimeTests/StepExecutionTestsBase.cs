@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using BoDi;
 using Moq;
 using TechTalk.SpecFlow.Bindings;
@@ -9,11 +10,12 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
+using Xunit;
 
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    public class StepExecutionTestsBase
+    public class StepExecutionTestsBase : IAsyncLifetime
     {
         protected CultureInfo FeatureLanguage;
         protected Mock<IStepArgumentTypeConverter> StepArgumentTypeConverterStub;
@@ -83,14 +85,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected virtual CultureInfo GetBindingCulture()
         {
             return new CultureInfo("en-US");
-        }        
+        }
 
-        public StepExecutionTestsBase()
+        public async Task InitializeAsync()
         {
-            TestRunnerManager.Reset();
-
-            
-            
+            await TestRunnerManager.ResetAsync();
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
             FeatureLanguage = GetFeatureLanguage();
@@ -169,6 +168,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected ScenarioExecutionStatus GetLastTestStatus()
         {
             return ContextManagerStub.ScenarioContext.ScenarioExecutionStatus;
+        }
+
+        public async Task DisposeAsync()
+        {
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BoDi;
 using Moq;
 using Xunit;
@@ -27,43 +28,43 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void GivenIsDelegatedToObjectContainerCurrentTestRunner()
+        public async Task GivenIsDelegatedToObjectContainerCurrentTestRunner()
         {
-            steps.Given(Text, MultilineTextArg, table);
+            await steps.GivenAsync(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.Given(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.GivenAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
-        public void WhenIsDelegatedToObjectContainerCurrentTestRunner()
+        public async Task WhenIsDelegatedToObjectContainerCurrentTestRunner()
         {
-            steps.When(Text, MultilineTextArg, table);
+            await steps.WhenAsync(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.When(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.WhenAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
-        public void ThenIsDelegatedToObjectContainerCurrentTestRunner()
+        public async Task ThenIsDelegatedToObjectContainerCurrentTestRunner()
         {
-            steps.Then(Text, MultilineTextArg, table);
+            await steps.ThenAsync(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.Then(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.ThenAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
-        public void ButIsDelegatedToObjectContainerCurrentTestRunner()
+        public async Task ButIsDelegatedToObjectContainerCurrentTestRunner()
         {
-            steps.But(Text, MultilineTextArg, table);
+            await steps.ButAsync(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.But(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.ButAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
-        public void AndIsDelegatedToObjectContainerCurrentTestRunner()
+        public async Task AndIsDelegatedToObjectContainerCurrentTestRunner()
         {
-            steps.And(Text, MultilineTextArg, table);
+            await steps.AndAsync(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.And(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.AndAsync(Text, MultilineTextArg, table, null));
         }
 
         public class StepsTestableHelper : Steps

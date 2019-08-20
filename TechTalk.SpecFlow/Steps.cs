@@ -1,4 +1,5 @@
-﻿using BoDi;
+﻿using System.Threading.Tasks;
+using BoDi;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
@@ -68,112 +69,112 @@ namespace TechTalk.SpecFlow
         }
 
         #region Given
-        public void Given(string step)
+        public async Task GivenAsync(string step)
         {
-            Given(step, null, null);
+            await GivenAsync(step, null, null);
         }
 
-        public void Given(string step, Table tableArg)
+        public async Task GivenAsync(string step, Table tableArg)
         {
-            Given(step, null, tableArg);
+            await GivenAsync(step, null, tableArg);
         }
 
-        public void Given(string step, string multilineTextArg)
+        public async Task GivenAsync(string step, string multilineTextArg)
         {
-            Given(step, multilineTextArg, null);
+            await GivenAsync(step, multilineTextArg, null);
         }
 
-        public void Given(string step, string multilineTextArg, Table tableArg)
+        public async Task GivenAsync(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.Given(step, multilineTextArg, tableArg, null);
+            await TestRunner.GivenAsync(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
         #region When
-        public void When(string step)
+        public async Task WhenAsync(string step)
         {
-            When(step, null, null);
+            await WhenAsync(step, null, null);
         }
 
-        public void When(string step, Table tableArg)
+        public async Task WhenAsync(string step, Table tableArg)
         {
-            When(step, null, tableArg);
+            await WhenAsync(step, null, tableArg);
         }
 
-        public void When(string step, string multilineTextArg)
+        public async Task WhenAsync(string step, string multilineTextArg)
         {
-            When(step, multilineTextArg, null);
+            await WhenAsync(step, multilineTextArg, null);
         }
 
-        public void When(string step, string multilineTextArg, Table tableArg)
+        public async Task WhenAsync(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.When(step, multilineTextArg, tableArg, null);
+            await TestRunner.WhenAsync(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
         #region Then
-        public void Then(string step)
+        public async Task ThenAsync(string step)
         {
-            Then(step, null, null);
+            await ThenAsync(step, null, null);
         }
 
-        public void Then(string step, Table tableArg)
+        public async Task ThenAsync(string step, Table tableArg)
         {
-            Then(step, null, tableArg);
+            await ThenAsync(step, null, tableArg);
         }
 
-        public void Then(string step, string multilineTextArg)
+        public async Task ThenAsync(string step, string multilineTextArg)
         {
-            Then(step, multilineTextArg, null);
+            await ThenAsync(step, multilineTextArg, null);
         }
 
-        public void Then(string step, string multilineTextArg, Table tableArg)
+        public async Task ThenAsync(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.Then(step, multilineTextArg, tableArg, null);
+            await TestRunner.ThenAsync(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
         #region But
-        public void But(string step)
+        public async Task ButAsync(string step)
         {
-            But(step, null, null);
+            await ButAsync(step, null, null);
         }
 
-        public void But(string step, Table tableArg)
+        public async Task ButAsync(string step, Table tableArg)
         {
-            But(step, null, tableArg);
+            await ButAsync(step, null, tableArg);
         }
 
-        public void But(string step, string multilineTextArg)
+        public async Task ButAsync(string step, string multilineTextArg)
         {
-            But(step, multilineTextArg, null);
+            await ButAsync(step, multilineTextArg, null);
         }
 
-        public void But(string step, string multilineTextArg, Table tableArg)
+        public async Task ButAsync(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.But(step, multilineTextArg, tableArg, null);
+            await TestRunner.ButAsync(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
         #region And
-        public void And(string step)
+        public async Task AndAsync(string step)
         {
-            And(step, null, null);
+            await AndAsync(step, null, null);
         }
 
-        public void And(string step, Table tableArg)
+        public async Task AndAsync(string step, Table tableArg)
         {
-            And(step, null, tableArg);
+            await AndAsync(step, null, tableArg);
         }
 
-        public void And(string step, string multilineTextArg)
+        public async Task AndAsync(string step, string multilineTextArg)
         {
-            And(step, multilineTextArg, null);
+            await AndAsync(step, multilineTextArg, null);
         }
 
-        public void And(string step, string multilineTextArg, Table tableArg)
+        public async Task AndAsync(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.And(step, multilineTextArg, tableArg, null);
+            await TestRunner.AndAsync(step, multilineTextArg, tableArg, null);
         }
         #endregion
     }

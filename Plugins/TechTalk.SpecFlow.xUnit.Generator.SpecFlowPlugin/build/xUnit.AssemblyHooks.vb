@@ -1,12 +1,14 @@
-﻿Namespace InternalSpecFlow
+﻿Imports System.Threading.Tasks
+Imports TechTalk.SpecFlow
+
+Namespace InternalSpecFlow
 
     Public Class XUnitAssemblyFixture
 
-        Shared Sub New()
-            Dim currentAssembly As System.Reflection.Assembly = GetType(XUnitAssemblyFixture).Assembly
-
-            Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(currentAssembly)
-        End Sub
+        Public Shared Async Function InitializeAsync(ByVal testClassId As String) As Task
+            Dim currentAssembly = GetType(XUnitAssemblyFixture).Assembly
+            Await TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly)
+        End Function
 
     End Class
 

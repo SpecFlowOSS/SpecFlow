@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.TestProjectGenerator;
+﻿using System.Threading.Tasks;
+using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
@@ -32,12 +33,24 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public void ExecuteTests()
         {
+            PrepareTestExecution();
+
+            _vsTestExecutionDriver.ExecuteTests();
+        }
+
+        private void PrepareTestExecution()
+        {
             _solutionDriver.DefaultProject.Build();
 
             _solutionDriver.CompileSolution(BuildTool.MSBuild);
             _solutionDriver.CheckSolutionShouldHaveCompiled();
+        }
 
-            _vsTestExecutionDriver.ExecuteTests();
+        public async Task ExecuteTestsAsync()
+        {
+            PrepareTestExecution();
+
+            await _vsTestExecutionDriver.ExecuteTestsAsync();
         }
     }
 }

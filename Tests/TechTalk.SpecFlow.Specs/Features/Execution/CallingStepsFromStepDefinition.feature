@@ -18,10 +18,10 @@ Scenario Outline: Other step definition can be called when derive from Steps bas
 			}
 
 			[<step type>(@"I have entered (\d+) and (\d+) into the calculator")]
-		    public void GivenIHaveEntered(int n1, int n2)
+		    public async Task GivenIHaveEntered(int n1, int n2)
 			{
-				<step type>(string.Format("I have entered {0} into the calculator", n1));
-				<step type>(string.Format("I have entered {0} into the calculator", n2));
+				<step type>Async(string.Format("I have entered {0} into the calculator", n1));
+				<step type>Async(string.Format("I have entered {0} into the calculator", n2));
 			}
 		 }	
          """
@@ -67,10 +67,10 @@ Scenario: When I call other steps of a different type it shouldn't change the ty
 			}
 
 			[Given(@"I called some steps of different types")]
-		    public void GivenIHaveCalledStepsOfDifferentTypes()
+		    public async Task GivenIHaveCalledStepsOfDifferentTypes()
 			{
-				Given("I have a given step");
-				When("I call a step of a different type");
+				await GivenAsync("I have a given step");
+				await WhenAsync("I call a step of a different type");
 			}
 		 }	
          """
@@ -118,10 +118,10 @@ Scenario: When I call other steps of a different types in a hierarchy it shouldn
 			}
 
 			[Given(@"I called some steps of different types")]
-		    public void GenericStepName6()
+		    public async Task GenericStepName6()
 			{
-				Given("I have a given step");
-				When("I call a step of a different type");
+				await GivenAsync("I have a given step");
+				await WhenAsync("I call a step of a different type");
 			}
 
 			[When(@"I have a when step")]
@@ -131,9 +131,9 @@ Scenario: When I call other steps of a different types in a hierarchy it shouldn
 			}
 
 			[When(@"this step is called")]
-		    public void GenericStepName2()
+		    public async Task GenericStepName2()
 			{
-				Then("this calls anotherStep");
+				await ThenAsync("this calls anotherStep");
 			}
 
 			[Then(@"this calls anotherStep")]
@@ -149,10 +149,10 @@ Scenario: When I call other steps of a different types in a hierarchy it shouldn
 			}
 
 			[When(@"it calls a step which calls other steps")]
-		    public void GenericStepName4()
+		    public async Task GenericStepName4()
 			{
-				When("this step is called");
-				Given("then this step is called");
+				await WhenAsync("this step is called");
+				await GivenAsync("then this step is called");
 			}
 
 			[Then(@"it should still find this step")]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
 using Moq;
@@ -91,7 +92,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void UserConverterShouldConvertStringToUser()
+        public async Task UserConverterShouldConvertStringToUser()
         {
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
@@ -99,16 +100,17 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             stepTransformationBinding.Regex.IsMatch("user xyz").Should().BeTrue();
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
-            TimeSpan duration;
-            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new BindingDelegateInvoker());
+
+            var (result, _) = await invoker.InvokeBindingAsync(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object);
+            
             Assert.NotNull(result);
             result.Should().BeOfType<User>();
             ((User) result).Name.Should().Be("xyz");
         }
 
         [Fact]
-        public void TypeToTypeConverterShouldConvertStringToStringUsingRegex()
+        public async Task TypeToTypeConverterShouldConvertStringToStringUsingRegex()
         {
             TypeToTypeConverter stepTransformationInstance = new TypeToTypeConverter();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("StringToStringConvertRegex");
@@ -116,39 +118,39 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("string xyz"));
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
-            TimeSpan duration;
-            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new BindingDelegateInvoker());
+
+            var (result, _) = await invoker.InvokeBindingAsync(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object);
             Assert.NotNull(result);
             result.GetType().Should().Be<string>();
             result.Should().Be("prefix xyz");
         }
 
         [Fact]
-        public void TypeToTypeConverterShouldConvertStringToString()
+        public async Task TypeToTypeConverterShouldConvertStringToString()
         {
             TypeToTypeConverter stepTransformationInstance = new TypeToTypeConverter();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("StringToStringConvert");
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
-            TimeSpan duration;
-            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new BindingDelegateInvoker());
+
+            var (result, _) = await invoker.InvokeBindingAsync(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object);
             Assert.NotNull(result);
             result.GetType().Should().Be<string>();
             result.Should().Be("prefix xyz");
         }
 
         [Fact]
-        public void TypeToTypeConverterShouldConvertTableToTable()
+        public async Task TypeToTypeConverterShouldConvertTableToTable()
         {
             TypeToTypeConverter stepTransformationInstance = new TypeToTypeConverter();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("TableToTableConvert");
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
 
-            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
-            TimeSpan duration;
-            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { new Table("h1") }, new Mock<ITestTracer>().Object, out duration);
+            var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new BindingDelegateInvoker());
+
+            var (result, _) = await invoker.InvokeBindingAsync(stepTransformationBinding, contextManagerStub.Object, new object[] { new Table("h1") }, new Mock<ITestTracer>().Object);
             Assert.NotNull(result);
 
             result.GetType().Should().Be<Table>();
@@ -156,20 +158,20 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
+        public async Task StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
             var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
             stepTransformations.Add(stepTransformationBinding);
-            TimeSpan duration;
+
             var resultUser = new User();
-            methodBindingInvokerStub.Setup(i => i.InvokeBinding(stepTransformationBinding, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), out duration))
-                .Returns(resultUser);
+            methodBindingInvokerStub.Setup(i => i.InvokeBindingAsync(stepTransformationBinding, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>()))
+                .ReturnsAsync((resultUser, new TimeSpan()));
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
-            var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US"));
+            var result = await stepArgumentTypeConverter.ConvertAsync("user xyz", typeof(User), new CultureInfo("en-US"));
             result.Should().Be(resultUser);
         }
 
@@ -179,7 +181,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void ShouldUseStepArgumentTransformationToConvertTable()
+        public async Task ShouldUseStepArgumentTransformationToConvertTable()
         {
             var table = new Table("Name");
             
@@ -187,15 +189,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("CreateUsers"));
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
             stepTransformations.Add(stepTransformationBinding);
-            TimeSpan duration;
+
             var resultUsers = new User[3];
-            methodBindingInvokerStub.Setup(i => i.InvokeBinding(stepTransformationBinding, It.IsAny<IContextManager>(), new object[] { table }, It.IsAny<ITestTracer>(), out duration))
-                .Returns(resultUsers);
+            methodBindingInvokerStub.Setup(i => i.InvokeBindingAsync(stepTransformationBinding, It.IsAny<IContextManager>(), new object[] { table }, It.IsAny<ITestTracer>()))
+                .ReturnsAsync((resultUsers, new TimeSpan()));
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
 
-            var result = stepArgumentTypeConverter.Convert(table, typeof(IEnumerable<User>), new CultureInfo("en-US"));
+            var result = await stepArgumentTypeConverter.ConvertAsync(table, typeof(IEnumerable<User>), new CultureInfo("en-US"));
 
             result.Should().NotBeNull();
             result.Should().Be(resultUsers);

@@ -160,7 +160,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             // Since both TestThreadContext and ContextManager are in the same container (test thread container)
             // their lifetime is the same, so we do not need the swop infrastructure like for the other contexts.
-            // We just neet to initliaze it during contstructuion time.
+            // We just need to initialize it during construction time.
             var testThreadContext = testThreadContainer.Resolve<TestThreadContext>();
             this.TestThreadContext = testThreadContext;
         }

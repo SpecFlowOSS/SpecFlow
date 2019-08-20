@@ -17,18 +17,18 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class BindingInvoker : IBindingInvoker
     {
-        protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        protected readonly SpecFlowConfiguration specFlowConfiguration;
         protected readonly IErrorProvider errorProvider;
-        protected readonly ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker;
+        protected readonly IBindingDelegateInvoker BindingDelegateInvoker;
 
-        public BindingInvoker(Configuration.SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker)
+        public BindingInvoker(SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, IBindingDelegateInvoker bindingDelegateInvoker)
         {
             this.specFlowConfiguration = specFlowConfiguration;
             this.errorProvider = errorProvider;
-            this.synchronousBindingDelegateInvoker = synchronousBindingDelegateInvoker;
+            BindingDelegateInvoker = bindingDelegateInvoker;
         }
 
-        public virtual object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        public virtual async Task<(object result, TimeSpan duration)> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer)
         {
             MethodInfo methodInfo;
             Delegate bindingAction;
@@ -46,8 +46,7 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
 
-                    result = synchronousBindingDelegateInvoker
-                        .InvokeDelegateSynchronously(bindingAction, invokeArgs);
+                    result = await BindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs);
 
                     stopwatch.Stop();
                 }
@@ -57,8 +56,7 @@ namespace TechTalk.SpecFlow.Bindings
                     testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }
 
-                duration = stopwatch.Elapsed;
-                return result;
+                return (result, stopwatch.Elapsed);
             }
             catch (ArgumentException ex)
             {
@@ -163,11 +161,11 @@ namespace TechTalk.SpecFlow.Bindings
 
 
         #region extended action types
-        static readonly Type[] actionTypes = new[] { typeof(Action), 
+        static readonly Type[] actionTypes = { typeof(Action), 
                                                      typeof(Action<>),                          typeof(Action<,>),                          typeof(Action<,,>),                         typeof(Action<,,,>),                            typeof(ExtendedAction<,,,,>), 
                                                      typeof(ExtendedAction<,,,,,>),             typeof(ExtendedAction<,,,,,,>),             typeof(ExtendedAction<,,,,,,,>),            typeof(ExtendedAction<,,,,,,,,>),               typeof(ExtendedAction<,,,,,,,,,>),
                                                      typeof(ExtendedAction<,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,,>),       typeof(ExtendedAction<,,,,,,,,,,,,,>),          typeof(ExtendedAction<,,,,,,,,,,,,,,>),
-                                                     typeof(ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,,>),
+                                                     typeof(ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,,>)
                                                    };
 
         public delegate void ExtendedAction<T1, T2, T3, T4, T5>                                                                         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
@@ -202,11 +200,11 @@ namespace TechTalk.SpecFlow.Bindings
         #endregion   
         
         #region extended func types
-        static readonly Type[] funcTypes = new[] { typeof(Func<>), 
+        static readonly Type[] funcTypes = { typeof(Func<>), 
                                                    typeof(Func<,>),                         typeof(Func<,,>),                           typeof(Func<,,,>),                          typeof(Func<,,,,>),                         typeof(ExtendedFunc<,,,,,>), 
                                                    typeof(ExtendedFunc<,,,,,,>),            typeof(ExtendedFunc<,,,,,,,>),              typeof(ExtendedFunc<,,,,,,,,>),             typeof(ExtendedFunc<,,,,,,,,,>),            typeof(ExtendedFunc<,,,,,,,,,,>),
                                                    typeof(ExtendedFunc<,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,>),         typeof(ExtendedFunc<,,,,,,,,,,,,,>),        typeof(ExtendedFunc<,,,,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,,,,>),
-                                                   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>),
+                                                   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>)
                                                  };
 
         public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, TResult>                                                                           (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);

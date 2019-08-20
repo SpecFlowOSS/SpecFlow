@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and are pending")]
         public void GivenAllStepsAreBoundAndArePending(ScenarioBlock scenarioBlock)
         {
-            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "ScenarioContext.Current.Pending();", "ScenarioContext.Current.Pending()");
+            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "_scenarioContext.Pending();", "_scenarioContext.Pending()");
         }
 
         [Given(@"the following step definition in the project '(.*)'")]
@@ -117,6 +117,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
             _projectsDriver.AddHookBinding(eventType, methodName);
+        }
+
+        [Given(@"an async hook '(.*)' for '([^']*)' including locking")]
+        public void GivenAnAsyncEventBindingIncludingLockingFor(string methodName, string eventType)
+        {
+            _projectsDriver.AddAsyncHookBindingIncludingLocking(eventType, methodName);
         }
 
         [Given(@"a long running hook '(.*)' for '(.*)'")]

@@ -2,21 +2,20 @@
 Imports TechTalk.SpecFlow
 Imports System
 Imports System.Reflection
+Imports System.Threading.Tasks
 
 <SetUpFixture>
 Public NotInheritable Class NUnitAssemblyHooks
     <OneTimeSetUp>
-    Public Shared Sub AssemblyInitialize()
-        Dim currentAssembly As Assembly = GetType(NUnitAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunStart(currentAssembly)
-    End Sub
+    Public Async Function AssemblyInitializeAsync() As Task
+        Dim currentAssembly = GetType(NUnitAssemblyHooks).Assembly
+        Await TestRunnerManager.OnTestRunStartAsync(NameOf(NUnitAssemblyHooks), currentAssembly)
+    End Function
 
     <OneTimeTearDown>
-    Public Shared Sub AssemblyCleanup()
-        Dim currentAssembly As Assembly = GetType(NUnitAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly)
-    End Sub
+    Public Async Function AssemblyCleanupAsync() As Task
+        Dim currentAssembly = GetType(NUnitAssemblyHooks).Assembly
+        Await TestRunnerManager.OnTestRunEndAsync(currentAssembly)
+    End Function
 
 End Class

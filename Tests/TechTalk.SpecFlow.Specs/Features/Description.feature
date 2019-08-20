@@ -9,10 +9,17 @@ Scenario: Check Scenario description is not empty
 		[Binding]
 		public class DescriptionTestsBinding
 		{
+		    private readonly ScenarioContext _scenarioContext;
+
+			public DescriptionTestsBinding(ScenarioContext scenarioContext)
+			{
+				_scenarioContext = scenarioContext;
+			}
+
 			[Then(@"Check ""(.*)"" match with scenario description in context")]
 			public void ThenCheckMatchWithScenarioDescriptionInContext(string desc)
 			{
-				var testValue = ScenarioContext.Current.ScenarioInfo.Description;
+				var testValue = _scenarioContext.ScenarioInfo.Description;
 				if (testValue != desc) throw new Exception("Scenario Description is incorrectly parsed"); 						 
 			}
 		}
@@ -41,10 +48,17 @@ Scenario: Check Scenario description is null if empty
 		[Binding]
 		public class DescriptionTestsBinding
 		{	
+		    private readonly ScenarioContext _scenarioContext;
+
+			public DescriptionTestsBinding(ScenarioContext scenarioContext)
+			{
+				_scenarioContext = scenarioContext;
+			}
+
 			[Then(@"Check that scenario description is null in context")]
 			public void ThenCheckThatScenarioDescriptionIsNullInContext()
 			{
-				var testValue = ScenarioContext.Current.ScenarioInfo.Description;
+				var testValue = _scenarioContext.ScenarioInfo.Description;
 				if (testValue != null) throw new Exception("Scenario Description is incorrectly parsed"); 						 
 			}
 		}

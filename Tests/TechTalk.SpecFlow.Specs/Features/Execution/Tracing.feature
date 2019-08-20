@@ -37,10 +37,10 @@ Scenario: ReflectionTypeLoaderException in a step binding
 		}
 		"""
 	When I execute the tests
-	Then the execution log should contain text '-> error: Type Loader exceptions:'
-	And the execution log should contain text '-> error: LoaderException: System.Exception: crash'
-	And the execution log should contain text '-> error: LoaderException: System.Exception: boom'
-	And the execution log should contain text '-> error: LoaderException: System.Exception: bang'
+	Then the execution log should contain text 'error: Type Loader exceptions:'
+	And the execution log should contain text 'error: LoaderException: System.Exception: crash'
+	And the execution log should contain text 'error: LoaderException: System.Exception: boom'
+	And the execution log should contain text 'error: LoaderException: System.Exception: bang'
 
 Scenario: ReflectionTypeLoaderException in a static constructor
 	Given the following class
@@ -75,7 +75,7 @@ Scenario: ReflectionTypeLoaderException in a static constructor
 		}
 		"""
 	When I execute the tests
-	Then the execution log should contain text '-> error: Type Loader exceptions:'
-	And the execution log should contain text '-> error: LoaderException: System.Exception: crash'
-	And the execution log should contain text '-> error: LoaderException: System.Exception: boom'
-	And the execution log should contain text '-> error: LoaderException: System.Exception: bang'
+	Then the execution log should contain text 'error: Type Loader exceptions:'
+	And the execution log should contain text 'error: LoaderException: System.Exception: crash'
+	And the execution log should contain text 'error: LoaderException: System.Exception: boom'
+	And the execution log should contain text 'error: LoaderException: System.Exception: bang'

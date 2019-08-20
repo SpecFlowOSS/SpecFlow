@@ -1,23 +1,24 @@
 ﻿using System.Diagnostics;
 using global::NUnit.Framework;
 using global::TechTalk.SpecFlow;
+using System.Threading.Tasks;
 
 [SetUpFixture]
 public class NUnitAssemblyHooks
 {
     [OneTimeSetUp]
-    public void AssemblyInitialize()
+    public async Task AssemblyInitializeAsync()
     {
         var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
 
-        TestRunnerManager.OnTestRunStart(currentAssembly);
+        await TestRunnerManager.OnTestRunStartAsync(nameof(NUnitAssemblyHooks), currentAssembly);
     }
 
     [OneTimeTearDown]
-    public void AssemblyCleanup()
+    public async Task AssemblyCleanupAsync()
     {
         var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
 
-        TestRunnerManager.OnTestRunEnd(currentAssembly);
+        await TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }

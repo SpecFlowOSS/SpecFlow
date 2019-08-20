@@ -1,3 +1,8 @@
+3.0 - 2019-06-10
+
+Changes:
++ Async bindings fixed https://github.com/techtalk/SpecFlow/issues/1598
+
 3.0 - 2019-06-27
 
 Fixes:

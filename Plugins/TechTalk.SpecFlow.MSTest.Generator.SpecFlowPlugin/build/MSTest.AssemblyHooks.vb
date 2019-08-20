@@ -2,24 +2,20 @@
 Imports TechTalk.SpecFlow
 Imports System
 Imports System.Reflection
+Imports System.Threading.Tasks
 
 
 <TestClass>
     Public NotInheritable Class MSTestAssemblyHooks
-        <AssemblyInitialize>
-        Public Shared Sub AssemblyInitialize(testContext As TestContext)
+    <AssemblyInitialize>
+    Public Shared Async Function AssemblyInitializeAsync(ByVal testContext As TestContext) As Task
+        Dim currentAssembly = GetType(MSTestAssemblyHooks).Assembly
+        Await TestRunnerManager.OnTestRunStartAsync(NameOf(MSTestAssemblyHooks), currentAssembly)
+    End Function
 
-            Dim currentAssembly As Assembly = GetType(MSTestAssemblyHooks).Assembly
-
-            TestRunnerManager.OnTestRunStart(currentAssembly)
-        End Sub
-
-        <AssemblyCleanup>
-        Public Shared Sub AssemblyCleanup()
-
-            Dim currentAssembly As Assembly = GetType(MSTestAssemblyHooks).Assembly
-
-            TestRunnerManager.OnTestRunEnd(currentAssembly)
-        End Sub
-
-    End Class
+    <AssemblyCleanup>
+    Public Shared Async Function AssemblyCleanupAsync() As Task
+        Dim currentAssembly = GetType(MSTestAssemblyHooks).Assembly
+        Await TestRunnerManager.OnTestRunEndAsync(currentAssembly)
+    End Function
+End Class

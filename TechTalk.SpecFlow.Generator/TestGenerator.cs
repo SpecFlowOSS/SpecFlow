@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -99,8 +100,14 @@ namespace TechTalk.SpecFlow.Generator
 
                 outputWriter.Flush();
                 var generatedTestCode = outputWriter.ToString();
-                return FixVBNetGlobalNamespace(generatedTestCode);
+                
+                return FixVb(generatedTestCode);
             }
+        }
+
+        private string FixVb(string generatedTestCode)
+        {
+            return FixVBNetAsyncMethodDeclarations(FixVBNetGlobalNamespace(generatedTestCode));
         }
 
         private string FixVBNetGlobalNamespace(string generatedTestCode)
@@ -108,6 +115,20 @@ namespace TechTalk.SpecFlow.Generator
             return generatedTestCode
                     .Replace("Global.GlobalVBNetNamespace", "Global")
                     .Replace("GlobalVBNetNamespace", "Global");
+        }
+
+        /// <summary>
+        /// This is a workaround to allow async/await calls in VB.NET. Works in cooperation with CodeDomHelper.MarkCodeMemberMethodAsAsync() method
+        /// </summary>
+        private string FixVBNetAsyncMethodDeclarations(string generatedTestCode)
+        {
+            var functionRegex = new Regex(@"^([^\n]*)Function[ ]*([^(\n]*)(\([^\n]*\)[ ]*As) async([^\n]*)$", RegexOptions.Multiline);
+            var subRegex = new Regex(@"^([^\n]*)Sub[ ]*([^(\n]*)(\([^\n]*\)[ ]*As) async([^\n]*)$", RegexOptions.Multiline);
+
+            var result = functionRegex.Replace(generatedTestCode, "$1 Async Function $2$3$4");
+            result = subRegex.Replace(result, "$1 Async Sub $2$3$4");
+
+            return result;
         }
 
         private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput)

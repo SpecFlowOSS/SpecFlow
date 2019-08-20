@@ -216,7 +216,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         {
             var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile);
 
-            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureSetup");
+            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureSetupAsync");
 
             featureSetupMethod.CustomAttributes()
                 .FirstOrDefault(a => a.Name == "NUnit.Framework.TestFixtureSetUpAttribute")
@@ -229,7 +229,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         {
             var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile);
 
-            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureSetup");
+            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureSetupAsync");
 
             // Assert that we do use the NUnit3 attribute
             featureSetupMethod.CustomAttributes()
@@ -243,7 +243,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         {
             var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile);
 
-            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureTearDown");
+            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureTearDownAsync");
 
             featureSetupMethod.CustomAttributes()
                 .FirstOrDefault(a => a.Name == "NUnit.Framework.TestFixtureTearDownAttribute")
@@ -256,7 +256,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         {
             var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile);
 
-            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureTearDown");
+            var featureSetupMethod = code.Class().Members().Single(m => m.Name == "FeatureTearDownAsync");
 
             // Assert that we do use the NUnit3 attribute
             featureSetupMethod.CustomAttributes()

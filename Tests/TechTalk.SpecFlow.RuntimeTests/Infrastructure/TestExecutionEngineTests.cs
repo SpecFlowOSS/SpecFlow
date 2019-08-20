@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using BoDi;
 using Moq;
 using Xunit;
@@ -207,9 +208,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private void RegisterFailingStepDefinition()
         {
             var stepDefStub = RegisterStepDefinition();
-            TimeSpan duration;
-            methodBindingInvokerMock.Setup(i => i.InvokeBinding(stepDefStub.Object, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out duration))
-                .Throws(new Exception("simulated error"));
+            methodBindingInvokerMock.Setup(i => i.InvokeBindingAsync(stepDefStub.Object, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object))
+                .ThrowsAsync(new Exception("simulated error"));
         }
 
         private Mock<IHookBinding> CreateHookMock(List<IHookBinding> hookList)
@@ -231,56 +231,52 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         private void AssertHooksWasCalledWithParam(Mock<IHookBinding> hookMock, object paramObj)
         {
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object,
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object,
                 It.Is((object[] args) => args != null && args.Length > 0 && args.Any(arg => arg == paramObj)),
-                testTracerStub.Object, out duration), Times.Once());
+                testTracerStub.Object), Times.Once());
         }
 
         [Fact]
-        public void Should_execute_before_step()
+        public async Task Should_execute_before_step()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateHookMock(beforeStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object), Times.Once());
         }
 
         [Fact]
-        public void Should_execute_after_step()
+        public async Task Should_execute_after_step()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object), Times.Once());
         }
 
         [Fact]
-        public void Should_not_execute_step_when_there_was_an_error_earlier()
+        public async Task Should_not_execute_step_when_there_was_an_error_earlier()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             var stepDefMock = RegisterStepDefinition();
 
             scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(stepDefMock.Object, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), out duration), Times.Never());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(stepDefMock.Object, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>()), Times.Never());
         }
 
         [Fact]
-        public void Should_not_execute_step_hooks_when_there_was_an_error_earlier()
+        public async Task Should_not_execute_step_hooks_when_there_was_an_error_earlier()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
@@ -290,29 +286,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeStepMock = CreateHookMock(beforeStepEvents);
             var afterStepMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(beforeStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(beforeStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object), Times.Never());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object), Times.Never());
         }
 
         [Fact]
-        public void Should_execute_after_step_when_step_definition_failed()
+        public async Task Should_execute_after_step_when_step_definition_failed()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
             var hookMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration));
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object));
         }
 
         [Fact]
-        public void Should_call_step_error_handlers()
+        public async Task Should_call_step_error_handlers()
         {
             var stepErrorHandlerMock = new Mock<IStepErrorHandler>();
             stepErrorHandlers.Add("eh1", stepErrorHandlerMock.Object);
@@ -320,14 +314,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             stepErrorHandlerMock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
         }
 
 
         [Fact]
-        public void Should_call_multiple_step_error_handlers()
+        public async Task Should_call_multiple_step_error_handlers()
         {
             var stepErrorHandler1Mock = new Mock<IStepErrorHandler>();
             var stepErrorHandler2Mock = new Mock<IStepErrorHandler>();
@@ -337,14 +331,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             stepErrorHandler1Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
             stepErrorHandler2Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
         }
 
         [Fact]
-        public void Should_be_able_to_swallow_error_in_step_error_handlers()
+        public async Task Should_be_able_to_swallow_error_in_step_error_handlers()
         {
             var stepErrorHandlerStub = new Mock<IStepErrorHandler>();
             stepErrorHandlers.Add("eh1", stepErrorHandlerStub.Object);
@@ -355,13 +349,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.OK);
         }
 
         [Fact]
-        public void Step_error_handlers_should_not_swallow_error_by_default()
+        public async Task Step_error_handlers_should_not_swallow_error_by_default()
         {
             var stepErrorHandlerStub = new Mock<IStepErrorHandler>();
             stepErrorHandlers.Add("eh1", stepErrorHandlerStub.Object);
@@ -369,25 +363,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.TestError);
         }
 
         [Fact]
-        public void Should_cleanup_step_context_after_scenario_block_hook_error()
+        public async Task Should_cleanup_step_context_after_scenario_block_hook_error()
         {
-            TimeSpan duration;
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateHookMock(beforeScenarioBlockEvents);
-            methodBindingInvokerMock.Setup(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration))
-                .Throws(new Exception("simulated error"));
+            methodBindingInvokerMock.Setup(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object))
+                .ThrowsAsync(new Exception("simulated error"));
 
             try
             {
-                testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+                await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
                 Assert.True(false, "execution of the step should have failed because of the exeption thrown by the before scenario block hook");
             }
@@ -395,75 +388,74 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
             }
 
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object), Times.Once());
             contextManagerStub.Verify(cm => cm.CleanupStepContext());
         }
 
         [Fact]
-        public void Should_not_execute_afterstep_when_step_is_undefined()
+        public async Task Should_not_execute_afterstep_when_step_is_undefined()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterUndefinedStepDefinition();
 
             var afterStepMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "undefined", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "undefined", null, null);
 
-            TimeSpan duration;
-            methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
+            methodBindingInvokerMock.Verify(i => i.InvokeBindingAsync(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object), Times.Never());
         }
 
-        public void Should_resolve_FeautreContext_hook_parameter()
+        public async Task Should_resolve_FeautreContext_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateParametrizedHookMock(beforeFeatureEvents, typeof(FeatureContext));
 
-            testExecutionEngine.OnFeatureStart(featureInfo);
+            await testExecutionEngine.OnFeatureStartAsync(featureInfo);
             AssertHooksWasCalledWithParam(hookMock, contextManagerStub.Object.FeatureContext);
         }
 
         [Fact]
-        public void Should_resolve_custom_class_hook_parameter()
+        public async Task Should_resolve_custom_class_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateParametrizedHookMock(beforeFeatureEvents, typeof(DummyClass));
 
-            testExecutionEngine.OnFeatureStart(featureInfo);
+            await testExecutionEngine.OnFeatureStartAsync(featureInfo);
             AssertHooksWasCalledWithParam(hookMock, DummyClass.LastInstance);
         }
 
         [Fact]
-        public void Should_resolve_container_hook_parameter()
+        public async Task Should_resolve_container_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateParametrizedHookMock(beforeTestRunEvents, typeof(IObjectContainer));
 
-            testExecutionEngine.OnTestRunStart();
+            await testExecutionEngine.OnTestRunStartAsync();
 
             AssertHooksWasCalledWithParam(hookMock, testThreadContainer);
         }
 
         [Fact]
-        public void Should_resolve_multiple_hook_parameter()
+        public async Task Should_resolve_multiple_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
             var hookMock = CreateParametrizedHookMock(beforeFeatureEvents, typeof(DummyClass), typeof(FeatureContext));
 
-            testExecutionEngine.OnFeatureStart(featureInfo);
+            await testExecutionEngine.OnFeatureStartAsync(featureInfo);
             AssertHooksWasCalledWithParam(hookMock, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(hookMock, contextManagerStub.Object.FeatureContext);
         }
 
         [Fact]
-        public void Should_resolve_BeforeAfterTestRun_hook_parameter_from_test_thread_container()
+        public async Task Should_resolve_BeforeAfterTestRun_hook_parameter_from_test_thread_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
@@ -471,8 +463,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeHook = CreateParametrizedHookMock(beforeTestRunEvents, typeof(DummyClass));
             var afterHook = CreateParametrizedHookMock(afterTestRunEvents, typeof(DummyClass));
 
-            testExecutionEngine.OnTestRunStart();
-            testExecutionEngine.OnTestRunEnd();
+            await testExecutionEngine.OnTestRunStartAsync();
+            await testExecutionEngine.OnTestRunEndAsync();
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
@@ -481,7 +473,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         [Fact]
-        public void Should_resolve_BeforeAfterScenario_hook_parameter_from_scenario_container()
+        public async Task Should_resolve_BeforeAfterScenario_hook_parameter_from_scenario_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
@@ -490,8 +482,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var afterHook = CreateParametrizedHookMock(afterScenarioEvents, typeof(DummyClass));
 
             testExecutionEngine.OnScenarioInitialize(scenarioInfo);
-            testExecutionEngine.OnScenarioStart();
-            testExecutionEngine.OnScenarioEnd();
+            await testExecutionEngine.OnScenarioStartAsync();
+            await testExecutionEngine.OnScenarioEndAsync();
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
@@ -500,7 +492,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         [Fact]
-        public void Should_be_possible_to_register_instance_in_scenario_container_before_firing_scenario_events()
+        public async Task Should_be_possible_to_register_instance_in_scenario_container_before_firing_scenario_events()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             var instanceToAddBeforeScenarioEventFiring = new AnotherDummyClass();
@@ -508,22 +500,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             // Setup binding method mock so it attempts to resolve an instance from the scenario container.
             // If this fails, then the instance was not registered before the method was invoked.
-            TimeSpan dummyOutTimeSpan;
             AnotherDummyClass actualInstance = null;
-            methodBindingInvokerMock.Setup(s => s.InvokeBinding(It.IsAny<IBinding>(), It.IsAny<IContextManager>(), 
-                    It.IsAny<object[]>(),It.IsAny<ITestTracer>(), out dummyOutTimeSpan))
-                .Callback(() => actualInstance = testExecutionEngine.ScenarioContext.ScenarioContainer.Resolve<AnotherDummyClass>());
+            methodBindingInvokerMock.Setup(s => s.InvokeBindingAsync(It.IsAny<IBinding>(), It.IsAny<IContextManager>(), 
+                    It.IsAny<object[]>(),It.IsAny<ITestTracer>()))
+                .Callback(() => actualInstance = testExecutionEngine.ScenarioContext.ScenarioContainer.Resolve<AnotherDummyClass>())
+                .ReturnsAsync((null, new TimeSpan()));
 
             testExecutionEngine.OnScenarioInitialize(scenarioInfo);
             testExecutionEngine.ScenarioContext.ScenarioContainer.RegisterInstanceAs(instanceToAddBeforeScenarioEventFiring);
-            testExecutionEngine.OnScenarioStart();
+            await testExecutionEngine.OnScenarioStartAsync();
             actualInstance.Should().BeSameAs(instanceToAddBeforeScenarioEventFiring);
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
         }
 
         [Fact]
-        public void Should_resolve_BeforeAfterScenarioBlock_hook_parameter_from_scenario_container()
+        public async Task Should_resolve_BeforeAfterScenarioBlock_hook_parameter_from_scenario_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
@@ -531,8 +523,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeHook = CreateParametrizedHookMock(beforeScenarioBlockEvents, typeof(DummyClass));
             var afterHook = CreateParametrizedHookMock(afterScenarioBlockEvents, typeof(DummyClass));
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-            testExecutionEngine.OnAfterLastStep();
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.OnAfterLastStepAsync();
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
@@ -541,7 +533,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         [Fact]
-        public void Should_resolve_BeforeAfterStep_hook_parameter_from_scenario_container()
+        public async Task Should_resolve_BeforeAfterStep_hook_parameter_from_scenario_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
@@ -549,7 +541,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeHook = CreateParametrizedHookMock(beforeStepEvents, typeof(DummyClass));
             var afterHook = CreateParametrizedHookMock(afterStepEvents, typeof(DummyClass));
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
@@ -558,7 +550,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         [Fact]
-        public void Should_resolve_BeforeAfterFeature_hook_parameter_from_feature_container()
+        public async Task Should_resolve_BeforeAfterFeature_hook_parameter_from_feature_container()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
@@ -566,8 +558,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeHook = CreateParametrizedHookMock(beforeFeatureEvents, typeof(DummyClass));
             var afterHook = CreateParametrizedHookMock(afterFeatureEvents, typeof(DummyClass));
 
-            testExecutionEngine.OnFeatureStart(featureInfo);
-            testExecutionEngine.OnFeatureEnd();
+            await testExecutionEngine.OnFeatureStartAsync(featureInfo);
+            await testExecutionEngine.OnFeatureEndAsync();
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
