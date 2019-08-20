@@ -20,6 +20,11 @@
   <ItemGroup>
     <SpecFlowFeature Include="**/*.feature" />
     <SpecFlowFeature Include="**/*.feature.xlsx" />
+    
+    <!-- Support for Visual Studio Incremental Build
+        https://github.com/techtalk/SpecFlow/issues/1319
+     -->
+    <UpToDateCheckInput Include="@(SpecFlowFeature)" />
   </ItemGroup>
 
   <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>
