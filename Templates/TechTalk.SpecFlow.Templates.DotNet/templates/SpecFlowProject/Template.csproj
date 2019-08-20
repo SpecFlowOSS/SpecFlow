@@ -8,9 +8,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="SpecFlow" Version="3.0.225" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.0.225" />
-    <PackageReference Include="SpecFlow.MsTest" Version="3.0.225" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    $SpecFlowNugetPackages$
+    $additionalNugetPackages$
   </ItemGroup>
 
 </Project>
