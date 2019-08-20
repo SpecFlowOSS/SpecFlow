@@ -7,8 +7,8 @@ resources:
 
 
 jobs:
- - template: build.yml  
-   parameters:
+- template: build.yml  
+  parameters:
     name: macOS
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-macOS.zip'
     pool:
@@ -21,9 +21,9 @@ jobs:
     pool:
       name: 'Hosted Windows 2019 with VS2019'
 
- - template: build.yml  
-   parameters:
-     name: Linux
-     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
-     pool:
-       name: 'Hosted Ubuntu 1604'
+- template: build.yml  
+  parameters:
+    name: Linux
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    pool:
+      name: 'Hosted Ubuntu 1604'
