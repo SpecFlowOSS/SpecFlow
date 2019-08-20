@@ -1,7 +1,7 @@
 parameters:
   name: ''
   pool: ''
-  nugetVersion: 4.6.2
+  nugetVersion: 5.1.0
   sdkVersion: 3.0.100-preview8-013656
   artifactFileName: ''
 
