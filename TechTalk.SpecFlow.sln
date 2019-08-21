@@ -91,7 +91,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AzurePipelines", "AzurePipe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Autofac.SpecFlowPlugin", "Plugins\SpecFlow.Autofac.SpecFlowPlugin\SpecFlow.Autofac.SpecFlowPlugin.csproj", "{EA16606D-6F1C-4A4D-B7A1-8A08B448CD86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetTemplates", "Templates\dotnetTemplates\dotnetTemplates.csproj", "{B7F589EB-524F-4BAD-9419-6576F6527670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Templates.DotNet", "Templates\TechTalk.SpecFlow.Templates.DotNet\TechTalk.SpecFlow.Templates.DotNet.csproj", "{B7F589EB-524F-4BAD-9419-6576F6527670}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{05275A0B-57E4-484C-B181-227697C7B89A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs.MSBuild", "Tests\TechTalk.SpecFlow.Specs.MSBuild\TechTalk.SpecFlow.Specs.MSBuild.csproj", "{0554A219-483E-4FDF-9E11-F332F7EEB99B}"
 EndProject
@@ -434,6 +436,7 @@ Global
 		{EA16606D-6F1C-4A4D-B7A1-8A08B448CD86} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
 		{0554A219-483E-4FDF-9E11-F332F7EEB99B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{AC07206A-3CF0-41D1-A432-9AE5A59809B3} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{B7F589EB-524F-4BAD-9419-6576F6527670} = {05275A0B-57E4-484C-B181-227697C7B89A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}

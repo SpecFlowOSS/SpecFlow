@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Manuel Eiwen",
+    "classifications": ["SpecFlow Plus", "Profile"],
+    "identity": "SpecFlowTemplates.DotNET.Item.SpecFlowPlusProfile",
+    "name": "SpecFlow Plus Profile",
+    "shortName": "specflow-plus-profile",
+    "tags": {
+        "language": "C#",
+        "type": "item"
+    },
+    "sourceName": "$rootProject$"
+}
