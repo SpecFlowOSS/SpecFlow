@@ -45,11 +45,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
 
             //ACT
-            var result = runtimePluginLocationMerger.Merge(new string[] { "C:\\temp\\Plugin.SpecFlowPlugin.dll", "C:\\anotherFolder\\Plugin.SpecFlowPlugin.dll" });
-
+            //var result = runtimePluginLocationMerger.Merge(new string[] { "C:\\temp\\Plugin.SpecFlowPlugin.dll", "C:\\anotherFolder\\Plugin.SpecFlowPlugin.dll" });
+            var result = runtimePluginLocationMerger.Merge(new string[] { "/temp/Plugin.SpecFlowPlugin.dll", "/anotherFolder/Plugin.SpecFlowPlugin.dll" });
 
             //ASSERT
-            result.Should().Contain("C:\\temp\\Plugin.SpecFlowPlugin.dll");
+            result.Should().Contain("/temp/Plugin.SpecFlowPlugin.dll");
             result.Should().HaveCount(1);
         }
 
