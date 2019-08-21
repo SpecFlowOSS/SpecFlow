@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageId>SpecFlow.Templates.DotNet</PackageId>
+    <Title>SpecFlow Templates for dotnet new</Title>
+    <Authors>TechTalk;Manuel Eiwen</Authors>
+    <Description>Templates for projects using different unit test providers and Templates for SpecFlow files.</Description>
+    <PackageTags>specflow;bdd;gherkin;cucumber;dotnet-new;templates</PackageTags>
+
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
+    <Compile Remove="**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="templates\specflow-feature\Template.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Template.feature</DependentUpon>
+    </Content>
+    <Content Update="templates\SpecFlowProject_MsTest\Features\Template.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Template.feature</DependentUpon>
+    </Content>
+    <Content Update="templates\SpecFlowProject_nUnit\Features\Template.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Template.feature</DependentUpon>
+    </Content>
+    <Content Update="templates\SpecFlowProject_SpecFlowPlusRunner\Features\Template.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Template.feature</DependentUpon>
+    </Content>
+    <Content Update="templates\SpecFlowProject_xUnit\Features\Template.feature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Template.feature</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+</Project>

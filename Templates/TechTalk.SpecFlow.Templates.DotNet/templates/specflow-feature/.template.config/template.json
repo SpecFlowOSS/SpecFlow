@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Manuel Eiwen",
+    "classifications": ["SpecFlow", "Feature"],
+    "identity": "SpecFlowTemplates.DotNET.Item.SpecFlowFeature",
+    "name": "SpecFlow Feature File",
+    "shortName": "specflow-feature",
+    "tags": {
+        "language": "C#",
+        "type": "item"
+    }
+}
