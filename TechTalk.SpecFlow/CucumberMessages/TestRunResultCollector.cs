@@ -42,11 +42,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var groups = _collectedResults.GroupBy(kv => kv.Value.Status, kv => (kv.Key, kv.Value))
                                           .ToArray();
 
-            int passedCount = groups.Single(g => g.Key == TestResult.Types.Status.Passed).Count();
-            int failedCount = groups.Single(g => g.Key == TestResult.Types.Status.Failed).Count();
-            int skippedCount = groups.Single(g => g.Key == TestResult.Types.Status.Skipped).Count();
-            int ambiguousCount = groups.Single(g => g.Key == TestResult.Types.Status.Ambiguous).Count();
-            int undefinedCount = groups.Single(g => g.Key == TestResult.Types.Status.Undefined).Count();
+            int passedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Passed)?.Count() ?? 0;
+            int failedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Failed)?.Count() ?? 0;
+            int skippedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Skipped)?.Count() ?? 0;
+            int ambiguousCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Ambiguous)?.Count() ?? 0;
+            int undefinedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Undefined)?.Count() ?? 0;
 
             var testRunResult = new TestRunResult(
                 _collectedResults.Count,

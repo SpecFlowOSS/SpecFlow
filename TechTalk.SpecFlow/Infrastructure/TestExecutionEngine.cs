@@ -42,7 +42,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
 
         private bool _testRunnerEndExecuted = false;
+        private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
+        
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -105,12 +107,16 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void OnTestRunEnd()
         {
-            if (_testRunnerEndExecuted)
+            lock (_testRunnerEndExecutedLock)
             {
-                return;
+                if (_testRunnerEndExecuted)
+                {
+                    return;
+                }
+
+                _testRunnerEndExecuted = true;
             }
 
-            _testRunnerEndExecuted = true;
             var testRunResultResult = _testRunResultCollector.StopCollecting();
 
             if (testRunResultResult is ISuccess<TestRunResult> success)
