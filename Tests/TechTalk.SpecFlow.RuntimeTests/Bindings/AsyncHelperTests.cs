@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             }
             catch (Exception ex)
             {
-                ex.StackTrace.Should().StartWith($"  at {GetType().FullName}.{nameof(AsyncMethodThrowsException)}");
+                ex.StackTrace.TrimStart().Should().StartWith($"at {GetType().FullName}.{nameof(AsyncMethodThrowsException)}");
             }
         }
 
@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             }
             catch (Exception ex)
             {
-                ex.StackTrace.Should().StartWith($"  at {GetType().FullName}.{nameof(AsyncMethodReturnValueThrowsException)}");
+                ex.StackTrace.TrimStart().Should().StartWith($"at {GetType().FullName}.{nameof(AsyncMethodReturnValueThrowsException)}");
             }
         }
 
