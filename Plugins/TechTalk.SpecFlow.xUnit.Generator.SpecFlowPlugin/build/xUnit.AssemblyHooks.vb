@@ -1,4 +1,5 @@
-﻿<Assembly: Global.TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(GetType(InternalSpecFlow.XUnitAssemblyFixture))>
+﻿<Assembly: Global.Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")>
+<Assembly: Global.TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(GetType(InternalSpecFlow.XUnitAssemblyFixture))>
 
 Namespace InternalSpecFlow
 
