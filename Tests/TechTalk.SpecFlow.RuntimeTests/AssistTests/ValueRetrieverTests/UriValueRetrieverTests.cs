@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [InlineData("techtalk/SpecFlow")]
         public void Retrieves_relative_URI_Unix(string expectedUri)
         {
-            Skip.If(Environment.OSVersion.Platform == PlatformID.Win32NT);
+            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX);
 
             var retriever = new UriValueRetriever();
 
