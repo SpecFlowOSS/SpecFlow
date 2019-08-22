@@ -33,8 +33,8 @@
     <Configurations>Debug;Release;Debug-XUnit;Debug-MSTest;Debug-NUnit</Configurations>
     <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
-
   </PropertyGroup>
+  
   <ItemGroup>
     <Compile Remove=".\TestFiles\**\*" />
 
@@ -46,6 +46,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.csproj" ReferenceOutputAssembly="False" />
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.NUnit.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.csproj" ReferenceOutputAssembly="False" />
     <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" PreBuild="true" />
@@ -80,22 +84,13 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.0</_SpecFlow_PluginTFM>
-    <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_PluginTFM>
-  </PropertyGroup>
-
   <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="'$(NuGetPackageVersion)' != ''">
 
     <PropertyGroup>
       <NuGetVersionInfoFile>$(IntermediateOutputPath)NuGetVersionInfo.cs</NuGetVersionInfoFile>
     </PropertyGroup>
 
-    <ReplaceTextInFileTask
-      InputFile="NuGetPackageVersion.cs"
-      OutputFile="$(NuGetVersionInfoFile)"
-      TextToReplace="NUGET_VERSION"
-      TextToReplaceWith="$(NuGetPackageVersion)" />
+    <ReplaceTextInFileTask InputFile="NuGetPackageVersion.cs" OutputFile="$(NuGetVersionInfoFile)" TextToReplace="NUGET_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
 
     <ItemGroup>
       <Compile Remove="NuGetPackageVersion.cs" />
@@ -116,6 +111,11 @@
     </ItemGroup>
     <MSBuild Projects="@(PreBuildProjectReference)" ContinueOnError="false" />
   </Target>
+
+  <PropertyGroup>
+    <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.0</_SpecFlow_PluginTFM>
+    <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_PluginTFM>
+  </PropertyGroup>
 
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_PluginTFM)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
