@@ -1,13 +1,22 @@
-﻿Namespace InternalSpecFlow
+﻿<Assembly: Global.Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")>
+<Assembly: Global.TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(GetType(InternalSpecFlow.XUnitAssemblyFixture))>
+
+Namespace InternalSpecFlow
 
     Public Class XUnitAssemblyFixture
+        Implements Global.System.IDisposable
 
-        Shared Sub New()
-            Dim currentAssembly As System.Reflection.Assembly = GetType(XUnitAssemblyFixture).Assembly
+        Private ReadOnly _currentAssembly As Global.System.Reflection.Assembly
 
-            Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(currentAssembly)
+        Public Sub New()
+            _currentAssembly = GetType(XUnitAssemblyFixture).Assembly
+            Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly)
         End Sub
 
+
+        Public Sub Dispose() Implements Global.System.IDisposable.Dispose
+            Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly)
+        End Sub
     End Class
 
 End Namespace

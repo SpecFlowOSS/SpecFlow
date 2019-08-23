@@ -88,8 +88,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod)
         {
+            var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
+            ctorMethod.Parameters.Add(
+                new CodeParameterDeclarationExpression(typeName, "assemblyFixture"));
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
 
@@ -98,11 +101,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
 
-            var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
-
-            ctorMethod.Statements.Add(
-                new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
-                    new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
+            //ctorMethod.Statements.Add(
+            //    new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
+            //        new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
 
             ctorMethod.Statements.Add(
                 new CodeMethodInvokeExpression(

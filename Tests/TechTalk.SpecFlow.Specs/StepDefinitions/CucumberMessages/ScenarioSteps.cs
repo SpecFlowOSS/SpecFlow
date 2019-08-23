@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         [Given(@"there are two step definitions with identical bindings")]
         public void GivenThereAreTwoStepDefinitionsWithIdenticalRegex()
         {
-            _testSuiteSetupDriver.AddDuplicateStepDefinition();
+            _testSuiteSetupDriver.AddDuplicateStepDefinition("When", "the step pass in .*");
         }
 
         [Given(@"there are no matching step definitions")]
