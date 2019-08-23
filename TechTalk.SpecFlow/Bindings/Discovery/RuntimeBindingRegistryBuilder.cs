@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public RuntimeBindingRegistryBuilder(IRuntimeBindingSourceProcessor bindingSourceProcessor, ISpecFlowAttributesFilter specFlowAttributesFilter)
         {
-            this._bindingSourceProcessor = bindingSourceProcessor;
+            _bindingSourceProcessor = bindingSourceProcessor;
             _specFlowAttributesFilter = specFlowAttributesFilter;
         }
 

@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Specs.Support
             _currentVersionDriver = currentVersionDriver;
         }
 
-        [BeforeScenario()]
+        [BeforeScenario]
         public void BeforeScenario()
         {
             _currentVersionDriver.NuGetVersion = NuGetPackageVersion.Version;
