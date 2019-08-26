@@ -48,6 +48,11 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 onlyDotNetCore = HasFeatureTag(specFlowFeature, "@dotnetcore");
             }
 
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                onlyFullframework = false;
+                onlyDotNetCore = true;
+            }
 
             var tagsOfFeature = specFlowFeature.Tags.Select(t => t.Name);
             var unitTestProviders = tagsOfFeature.Where(t => _unitTestProviderTags.Where(utpt => string.Compare(t, "@" + utpt, StringComparison.CurrentCultureIgnoreCase) == 0).Any());

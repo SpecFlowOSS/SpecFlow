@@ -20,7 +20,7 @@ if ($IsWindows){
   Write-Host $msbuildPath
 }
 if ($IsLinux) {
-  $additionalOptions = "/p:EnableSourceControlManagerQueries=false /p:EnableSourceLink=false p:DeterministicSourcePaths=false"
+  $additionalOptions = "/p:EnableSourceControlManagerQueries=false /p:EnableSourceLink=false /p:DeterministicSourcePaths=false"
 }
 
 & $msbuildPath /Restore ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false $additionalOptions
