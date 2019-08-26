@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private const string SpecFlowMessagesTestCaseStartedPickleIdOverrideName = "SpecFlow_Messages_TestCaseStartedPickleIdOverride";
         private const string SpecFlowMessagesTestCaseFinishedTimeOverrideName = "SpecFlow_Messages_TestCaseFinishedTimeOverride";
         private const string SpecFlowMessagesTestCaseFinishedPickleIdOverrideName = "SpecFlow_Messages_TestCaseFinishedPickleIdOverride";
+        private const string SpecFlowMessagesTestRunFinishedTimeOverrideName = "SpecFlow_Messages_TestRunFinishedTimeOverride";
         private readonly IEnvironmentWrapper _environmentWrapper;
         private readonly IClock _clock;
         private readonly IPickleIdStore _pickleIdStore;
@@ -82,6 +83,17 @@ namespace TechTalk.SpecFlow.CucumberMessages
             }
 
             return _pickleIdStore.GetPickleIdForScenario(scenarioInfo);
+        }
+
+        public DateTime GetTestRunFinishedTime()
+        {
+            if (_environmentWrapper.GetEnvironmentVariable(SpecFlowMessagesTestRunFinishedTimeOverrideName) is ISuccess<string> success
+                && TryParseUniversalDateTime(success.Result, out var dateTime))
+            {
+                return dateTime;
+            }
+
+            return _clock.GetNowDateAndTime();
         }
     }
 }

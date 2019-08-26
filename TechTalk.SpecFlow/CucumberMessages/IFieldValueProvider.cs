@@ -9,5 +9,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
         Guid GetTestCaseStartedPickleId(ScenarioInfo scenarioInfo);
         DateTime GetTestCaseFinishedTime();
         Guid GetTestCaseFinishedPickleId(ScenarioInfo scenarioInfo);
+        DateTime GetTestRunFinishedTime();
     }
 }

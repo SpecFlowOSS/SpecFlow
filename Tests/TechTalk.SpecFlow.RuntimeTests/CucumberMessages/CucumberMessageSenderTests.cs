@@ -24,8 +24,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
             var fieldValueProviderMock = GetFieldValueProviderMock();
             var platformFactoryMock = GetPlatformFactoryMock();
+            var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object);
             var scenarioInfo = new ScenarioInfo("Test", "Description", "Tag1");
 
             // ACT
@@ -33,6 +34,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             // ASSERT
             sentMessage.MessageCase.Should().Be(Envelope.MessageOneofCase.TestCaseStarted);
+        }
+
+        public Mock<ITestRunResultSuccessCalculator> GetTestRunResultSuccessCalculatorMock(bool isSuccess = true)
+        {
+            var testRunResultSuccessCalculatorMock = new Mock<ITestRunResultSuccessCalculator>();
+            testRunResultSuccessCalculatorMock.Setup(m => m.IsSuccess(It.IsAny<TestRunResult>()))
+                                          .Returns(isSuccess);
+            return testRunResultSuccessCalculatorMock;
         }
 
         public Mock<IPlatformFactory> GetPlatformFactoryMock()
@@ -63,8 +72,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
             var fieldValueProviderMock = GetFieldValueProviderMock();
             var platformFactoryMock = GetPlatformFactoryMock();
+            var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -88,8 +98,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var cucumberMessageFactoryMock = GetCucumberMessageFactoryMock();
             var fieldValueProviderMock = GetFieldValueProviderMock(testRunStartedTimeStamp: now);
             var platformFactoryMock = GetPlatformFactoryMock();
+            var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object);
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
