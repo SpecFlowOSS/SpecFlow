@@ -83,7 +83,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<PickleIdStoreDictionaryFactory, IPickleIdStoreDictionaryFactory>();
             container.RegisterTypeAs<FieldValueProvider, IFieldValueProvider>();
 
-            
+            container.RegisterTypeAs<NonStrictTestRunResultSuccessCalculator, ITestRunResultSuccessCalculator>();
+            container.RegisterTypeAs<TestRunResultCollector, ITestRunResultCollector>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
@@ -91,6 +92,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             testThreadContainer.RegisterTypeAs<TestRunner, ITestRunner>();
             testThreadContainer.RegisterTypeAs<ContextManager, IContextManager>();
             testThreadContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+            
+            
 
             // needs to invoke methods so requires the context manager
             testThreadContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();

@@ -1,5 +1,8 @@
 ﻿using System;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages.RowObjects;
+using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
 {
@@ -7,10 +10,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
     public class ScenarioSteps
     {
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
+        private readonly ProjectsDriver _projectsDriver;
 
-        public ScenarioSteps(TestSuiteSetupDriver testSuiteSetupDriver)
+        public ScenarioSteps(TestSuiteSetupDriver testSuiteSetupDriver, ProjectsDriver projectsDriver)
         {
             _testSuiteSetupDriver = testSuiteSetupDriver;
+            _projectsDriver = projectsDriver;
         }
 
         [Given(@"there are '(\d+)' scenarios")]
@@ -61,6 +66,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
         public void GivenThereIsAnIgnoredScenarioWithTheFollowingSteps(string step)
         {
             _testSuiteSetupDriver.AddScenarioWithGivenStep(step, "@ignore");
+        }
+
+        [Given(@"there are following scenarios:")]
+        public void GivenThereAreFollowingScenarios(Table table)
+        {
+            var createScenarioWithResultRows = table.CreateInstance<CreateScenarioWithResultRow>();
+
+            _testSuiteSetupDriver.AddScenarios(createScenarioWithResultRows);
+
         }
 
     }

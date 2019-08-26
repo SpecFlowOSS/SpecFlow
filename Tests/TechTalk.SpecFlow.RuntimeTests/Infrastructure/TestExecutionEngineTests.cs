@@ -152,6 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 new TestResultFactory(new TestResultPartsFactory(new TestErrorMessageFactory(), _testPendingMessageFactory, new TestAmbiguousMessageFactory(), _testUndefinedMessageFactory)),
                 _testPendingMessageFactory,
                 _testUndefinedMessageFactory,
+                new Mock<ITestRunResultCollector>().Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
