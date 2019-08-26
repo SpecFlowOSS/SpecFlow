@@ -46,5 +46,12 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
             var platformRow = values.CreateInstance<PlatformRow>();
             _testCaseStartedDriver.TestCaseStartedMessageShouldHaveBeenSentWithPlatformInformation(platformRow);
         }
+
+        public void TestRunFinishedMessageShouldHaveBeenSent(Table values)
+        {
+            var testRunFinishedRow = values.CreateInstance<TestRunFinishedRow>();
+            _testRunStartedDriver.TestRunFinishedMessageShouldHaveBeenSent(testRunFinishedRow);
+
+        }
     }
 }

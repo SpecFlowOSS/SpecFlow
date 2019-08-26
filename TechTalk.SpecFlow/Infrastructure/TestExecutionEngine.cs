@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly ITestResultFactory _testResultFactory;
         private readonly ITestPendingMessageFactory _testPendingMessageFactory;
         private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
+        private readonly ITestRunResultCollector _testRunResultCollector;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
@@ -41,7 +42,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
 
         private bool _testRunnerEndExecuted = false;
+        private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
+        
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -60,6 +63,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             ITestResultFactory testResultFactory,
             ITestPendingMessageFactory testPendingMessageFactory,
             ITestUndefinedMessageFactory testUndefinedMessageFactory,
+            ITestRunResultCollector testRunResultCollector,
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -81,6 +85,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testResultFactory = testResultFactory;
             _testPendingMessageFactory = testPendingMessageFactory;
             _testUndefinedMessageFactory = testUndefinedMessageFactory;
+            _testRunResultCollector = testRunResultCollector;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -96,17 +101,29 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             _testRunnerStartExecuted = true;
             _cucumberMessageSender.SendTestRunStarted();
+            _testRunResultCollector.StartCollecting();
             FireEvents(HookType.BeforeTestRun);
         }
 
         public virtual void OnTestRunEnd()
         {
-            if (_testRunnerEndExecuted)
+            lock (_testRunnerEndExecutedLock)
             {
-                return;
+                if (_testRunnerEndExecuted)
+                {
+                    return;
+                }
+
+                _testRunnerEndExecuted = true;
             }
 
-            _testRunnerEndExecuted = true;
+            var testRunResultResult = _testRunResultCollector.StopCollecting();
+
+            if (testRunResultResult is ISuccess<TestRunResult> success)
+            {
+                _cucumberMessageSender.SendTestRunFinished(success.Result);
+            }
+
             FireEvents(HookType.AfterTestRun);
         }
 
@@ -176,6 +193,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 case ISuccess<TestResult> success:
                     _cucumberMessageSender.SendTestCaseFinished(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
+                    _testRunResultCollector.CollectTestResultForScenario(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
                     break;
 
                 case IFailure failure:
