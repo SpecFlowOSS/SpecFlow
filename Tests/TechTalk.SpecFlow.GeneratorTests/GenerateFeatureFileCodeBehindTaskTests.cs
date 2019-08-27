@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using SpecFlow.Tools.MsBuild.Generation;
 using Xunit;
@@ -16,7 +17,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             string generatedCodeBehindName,
             string expected)
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Win32NT);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             // ARRANGE
             var filePathGenerator = new FilePathGenerator();
@@ -37,7 +38,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             string generatedCodeBehindName,
             string expected)
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             // ARRANGE
             var filePathGenerator = new FilePathGenerator();

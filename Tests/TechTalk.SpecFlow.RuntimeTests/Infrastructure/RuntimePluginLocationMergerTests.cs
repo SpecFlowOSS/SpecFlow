@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using TechTalk.SpecFlow.Plugins;
 using Xunit;
@@ -25,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SkippableFact]
         public void Merge_SingleEntry_ThisIsReturned_Windows()
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Win32NT);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             //ARRANGE
             var runtimePluginLocationMerger = new RuntimePluginLocationMerger();
@@ -43,7 +44,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SkippableFact]
         public void Merge_SingleEntry_ThisIsReturned_Unix()
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             //ARRANGE
             var runtimePluginLocationMerger = new RuntimePluginLocationMerger();
@@ -62,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SkippableFact]
         public void Merge_SamePluginDifferentPath_FirstEntryIsReturned_Windows()
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Win32NT);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             //ARRANGE
             var runtimePluginLocationMerger = new RuntimePluginLocationMerger();
@@ -79,7 +80,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SkippableFact]
         public void Merge_SamePluginDifferentPath_FirstEntryIsReturned_Unix()
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             //ARRANGE
             var runtimePluginLocationMerger = new RuntimePluginLocationMerger();
@@ -96,7 +97,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SkippableFact]
         public void Merge_DifferendPluginSamePath_BothAreReturned_Windows()
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Win32NT);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             //ARRANGE
             var runtimePluginLocationMerger = new RuntimePluginLocationMerger();
@@ -116,7 +117,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SkippableFact]
         public void Merge_DifferendPluginSamePath_BothAreReturned_Unix()
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             //ARRANGE
             var runtimePluginLocationMerger = new RuntimePluginLocationMerger();

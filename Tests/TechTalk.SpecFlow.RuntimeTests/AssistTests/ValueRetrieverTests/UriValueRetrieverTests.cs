@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -38,7 +39,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [InlineData("techtalk/SpecFlow")]
         public void Retrieves_relative_URI_Windows(string expectedUri)
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Win32NT);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             var retriever = new UriValueRetriever();
 
@@ -52,7 +53,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [InlineData("techtalk/SpecFlow")]
         public void Retrieves_relative_URI_Unix(string expectedUri)
         {
-            Skip.IfNot(Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX);
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             var retriever = new UriValueRetriever();
 

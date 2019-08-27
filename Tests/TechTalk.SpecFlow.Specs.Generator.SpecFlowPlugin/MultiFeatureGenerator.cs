@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -48,7 +49,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 onlyDotNetCore = HasFeatureTag(specFlowFeature, "@dotnetcore");
             }
 
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 onlyFullframework = false;
                 onlyDotNetCore = true;
