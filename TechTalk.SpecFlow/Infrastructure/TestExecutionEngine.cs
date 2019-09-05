@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testRunnerEndExecuted = true;
             }
 
-            var testRunResultResult = _testRunResultCollector.StopCollecting();
+            var testRunResultResult = _testRunResultCollector.GetCurrentResult();
 
             if (testRunResultResult is ISuccess<TestRunResult> success)
             {
