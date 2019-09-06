@@ -11,6 +11,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private readonly IDictionary<ScenarioInfo, TestResult> _collectedResults = new Dictionary<ScenarioInfo, TestResult>();
         public bool IsStarted { get; private set; }
 
+        private readonly object _lock = new object();
+
         public void StartCollecting()
         {
             if (IsStarted)
@@ -28,7 +30,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 throw new InvalidOperationException("Result collection has not been started.");
             }
 
-            _collectedResults.Add(scenarioInfo, testResult);
+
+            lock (_lock)
+            {
+                _collectedResults.Add(scenarioInfo, testResult);
+            }
         }
 
         public IResult<TestRunResult> GetCurrentResult()
@@ -39,8 +45,12 @@ namespace TechTalk.SpecFlow.CucumberMessages
             }
 
 
-            var groups = _collectedResults.GroupBy(kv => kv.Value.Status, kv => (kv.Key, kv.Value))
-                .ToArray();
+            IGrouping<TestResult.Types.Status, (ScenarioInfo Key, TestResult Value)>[] groups;
+            lock (_lock)
+            {
+                groups = _collectedResults.GroupBy(kv => kv.Value.Status, kv => (kv.Key, kv.Value))
+                                          .ToArray();
+            }
 
             var passedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Passed)?.Count() ?? 0;
             var failedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Failed)?.Count() ?? 0;
