@@ -59,3 +59,8 @@ jobs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
       artifactType: container
       ArtifactName: 'SpecFlow.CI-BuildResult'
+
+  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@19
+    displayName: 'WhiteSource Bolt'
+    inputs:
+      advance: true 
