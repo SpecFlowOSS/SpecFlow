@@ -4,12 +4,12 @@
 
     <_SpecFlowXUnitGeneratorPluginPathBase>$(MSBuildThisFileDirectory)/</_SpecFlowXUnitGeneratorPluginPathBase>
     <_SpecFlowXUnitGeneratorPluginPath Condition=" '$(MSBuildRuntimeType)' == 'Core'" >$(_SpecFlowXUnitGeneratorPluginPathBase)netstandard2.0/</_SpecFlowXUnitGeneratorPluginPath>
-    <_SpecFlowXUnitGeneratorPluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitGeneratorPluginPathBase)net45/</_SpecFlowXUnitGeneratorPluginPath>
+    <_SpecFlowXUnitGeneratorPluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitGeneratorPluginPathBase)net471/</_SpecFlowXUnitGeneratorPluginPath>
     <SpecFlowXUnitGeneratorPluginAssembly Condition="'$(SpecFlowXUnitGeneratorPluginAssembly)' == ''">$(_SpecFlowXUnitGeneratorPluginPath)TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</SpecFlowXUnitGeneratorPluginAssembly>
 
     <_SpecFlowXUnitRuntimePluginPathBase>$(MSBuildThisFileDirectory)../lib/</_SpecFlowXUnitRuntimePluginPathBase>
     <_SpecFlowXUnitRuntimePluginPath Condition=" '$(MSBuildRuntimeType)' == 'Core'" >$(_SpecFlowXUnitRuntimePluginPathBase)netstandard2.0/</_SpecFlowXUnitRuntimePluginPath>
-    <_SpecFlowXUnitRuntimePluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitRuntimePluginPathBase)net471/</_SpecFlowXUnitRuntimePluginPath>
+    <_SpecFlowXUnitRuntimePluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitRuntimePluginPathBase)net452/</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly Condition="'$(SpecFlowXUnitRuntimePluginAssembly)' == ''">$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
 
     <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>

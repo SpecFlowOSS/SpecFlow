@@ -1,8 +1,8 @@
 ﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
 
   <PropertyGroup>
-    <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == '' AND '$(MSBuildRuntimeType)' == 'Core'">..\tasks\netcoreapp2.0\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
-    <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == ''">..\tasks\net471\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
+    <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == '' AND '$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)..\tasks\netcoreapp2.0\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
+    <SpecFlowTasksAssembly Condition="'$(SpecFlowTasksAssembly)' == ''">$(MSBuildThisFileDirectory)..\tasks\net471\SpecFlow.Tools.MsBuild.Generation.dll</SpecFlowTasksAssembly>
   </PropertyGroup>
 
   <PropertyGroup>
