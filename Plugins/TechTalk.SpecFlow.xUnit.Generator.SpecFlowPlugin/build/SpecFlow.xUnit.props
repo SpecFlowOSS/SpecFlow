@@ -12,7 +12,6 @@
     <_SpecFlowXUnitRuntimePluginPath Condition=" '$(MSBuildRuntimeType)' != 'Core'" >$(_SpecFlowXUnitRuntimePluginPathBase)net452/</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly Condition="'$(SpecFlowXUnitRuntimePluginAssembly)' == ''">$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
 
-    <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
     <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
 
   </PropertyGroup>

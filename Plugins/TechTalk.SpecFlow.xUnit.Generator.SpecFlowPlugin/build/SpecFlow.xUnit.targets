@@ -11,14 +11,18 @@
       <Visible>False</Visible>
     </None>
   </ItemGroup>
-  
+
   <Target
     Name="AddXUnitAssemblyHooks"
     Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true'"
     BeforeTargets="BeforeCompile">
+
+    <PropertyGroup>
+      <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+    </PropertyGroup>
     
     <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
-      <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)$(DefaultLanguageSourceExtension)"/>
+      <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
     </ItemGroup>
   </Target>
   
