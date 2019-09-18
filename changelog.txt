@@ -12,7 +12,7 @@ Fixes:
 
 Changes:
 + SpecFlow.xUnit has a dependency on Xunit.SkippableFact
-
++ Added support for TypeConverter attributes.
 
 3.0 - 2019-06-27
 
