@@ -1,10 +1,18 @@
-3.0 - 2019-07-29
+3.1 
+
+Features:
++ first set of cucumber-messages are implemented
+  - TestRunStarted
+  - TestCaseStarted
+  - TestCaseFinished
+  - TestRunFinished
+
+Fixes: 
++ AfterTestRun hook can take longer than 100ms on .NET Core
 
 Changes:
++ SpecFlow.xUnit has a dependency on Xunit.SkippableFact
 + Added support for TypeConverter attributes.
-
-Changes:
-+ Adding the "AfterUpdateFeatureFile" target manually in the classic project format is not required anymore.
 
 3.0 - 2019-06-27
 

@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testRunnerEndExecuted = true;
             }
 
-            var testRunResultResult = _testRunResultCollector.StopCollecting();
+            var testRunResultResult = _testRunResultCollector.GetCurrentResult();
 
             if (testRunResultResult is ISuccess<TestRunResult> success)
             {
@@ -312,7 +312,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected IObjectContainer TestThreadContainer { get; }
 
-        public void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        public virtual void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
         {
             var currentContainer = GetHookContainer(hookType);
             var arguments = ResolveArguments(hookBinding, currentContainer);
@@ -538,7 +538,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         #region Given-When-Then
 
-        public void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
+        public virtual void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
         {
             StepDefinitionType stepDefinitionType = stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But
                 ? GetCurrentBindingType()
