@@ -1,0 +1,26 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildDependsOn>
+      CopySpecFlowJsonToOutput;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+    <CleanDependsOn>
+      $(CleanDependsOn)
+    </CleanDependsOn>
+    <RebuildDependsOn>
+      CopySpecFlowJsonToOutput;
+      $(RebuildDependsOn)
+    </RebuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CopySpecFlowJsonToOutput" >
+
+    <ItemGroup>
+      <None Condition="'%(None.Filename)' == 'specflow.json'" >
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>true</Visible>
+      </None>
+    </ItemGroup>
+
+  </Target>
+</Project>
