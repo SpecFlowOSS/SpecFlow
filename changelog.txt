@@ -13,11 +13,7 @@ Fixes:
 Changes:
 + SpecFlow.xUnit has a dependency on Xunit.SkippableFact
 + Added support for TypeConverter attributes.
-+ All Steps.Given methods are now obsolete; these methods will be removed in SpecFlow 3.2
-+ All Steps.When methods are now obsolete; these methods will be removed in SpecFlow 3.2
-+ All Steps.Then methods are now obsolete; these methods will be removed in SpecFlow 3.2
-+ All Steps.But methods are now obsolete; these methods will be removed in SpecFlow 3.2
-+ All Steps.And methods are now obsolete; these methods will be removed in SpecFlow 3.2
++ All Steps.Given, Steps.When, Steps.Then, Steps.But and Steps.And methods are obsolete; these methods will be removed in SpecFlow 3.2. For more details refer to https://github.com/techtalk/SpecFlow/issues/1733
 
 3.0 - 2019-06-27
 
