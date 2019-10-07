@@ -4,10 +4,13 @@ using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 using static Io.Cucumber.Messages.TestResult.Types;
 using static Io.Cucumber.Messages.TestCaseStarted.Types;
+using Duration = Io.Cucumber.Messages.Duration;
+using Timestamp = Io.Cucumber.Messages.Timestamp;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 {
@@ -158,7 +161,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var pickleId = Guid.NewGuid();
             var testResult = new TestResult
             {
-                DurationNanoseconds = 1000,
+                Duration = new Duration(){},
                 Message = "",
                 Status = Status.Passed
             };
@@ -177,10 +180,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
             var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
+
+
             var pickleId = Guid.NewGuid();
             var testResult = new TestResult
             {
-                DurationNanoseconds = 1000,
+                Duration = new Duration(),
                 Message = "",
                 Status = Status.Passed
             };
@@ -204,7 +209,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var pickleId = Guid.NewGuid();
             var testResult = new TestResult
             {
-                DurationNanoseconds = 1000,
+                Duration = new Duration(),
                 Message = "",
                 Status = Status.Passed
             };
@@ -225,7 +230,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var pickleId = Guid.NewGuid();
             var testResult = new TestResult
             {
-                DurationNanoseconds = 1000,
+                Duration = new Duration() { },
                 Message = "",
                 Status = Status.Passed
             };
@@ -259,12 +264,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
-            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
             var testCaseFinished = new TestCaseFinished
             {
                 PickleId = Guid.NewGuid().ToString(),
                 TestResult = new TestResult(),
-                Timestamp = Timestamp.FromDateTime(dateTime)
+                Timestamp = new Timestamp()
             };
 
             // ACT
@@ -280,12 +284,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
         {
             // ARRANGE
             var cucumberMessageFactory = new CucumberMessageFactory();
-            var dateTime = new DateTime(2019, 5, 9, 14, 27, 48, DateTimeKind.Utc);
             var testCaseFinished = new TestCaseFinished
             {
                 PickleId = Guid.NewGuid().ToString(),
                 TestResult = new TestResult(),
-                Timestamp = Timestamp.FromDateTime(dateTime)
+                Timestamp = new Timestamp()
             };
 
             // ACT

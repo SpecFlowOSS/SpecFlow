@@ -55,12 +55,30 @@ namespace TechTalk.SpecFlow.CucumberMessages
         {
             var testResult = new TestResult
             {
-                DurationNanoseconds = durationInNanoseconds,
+                Duration = durationInNanoseconds.ToCucumberMessagesDuration(),
                 Status = status,
                 Message = message ?? ""
             };
 
             return Result<TestResult>.Success(testResult);
+        }
+    }
+
+
+    static class ULongExtensions
+    {
+        public static Duration ToCucumberMessagesDuration(this ulong durationInNanoseconds)
+        {
+            ulong seconds = durationInNanoseconds / 1_000_000_000;
+            ulong nanos = durationInNanoseconds - (seconds * 1_000_000_000);
+
+
+            return new Duration()
+            {
+                Seconds = (long)seconds,
+                Nanos = (int)nanos
+            };
+
         }
     }
 }
