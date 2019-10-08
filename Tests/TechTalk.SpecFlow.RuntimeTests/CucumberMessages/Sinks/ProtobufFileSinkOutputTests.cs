@@ -39,7 +39,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             {
                 TestRunStarted = new TestRunStarted
                 {
-                    Timestamp = Timestamp.FromDateTime(DateTime.UtcNow)
                 }
             };
 

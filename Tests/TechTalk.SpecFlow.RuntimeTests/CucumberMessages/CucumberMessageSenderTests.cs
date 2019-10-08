@@ -5,6 +5,7 @@ using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
@@ -123,7 +124,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                       .Returns<DateTime>(timeStamp => Result<TestRunStarted>.Success(
                                           new TestRunStarted
                                           {
-                                              Timestamp = Timestamp.FromDateTime(timeStamp)
+                                              Timestamp = timeStamp.ToCucumberMessagesTimestamp()
                                           }));
 
             cucumberMessageFactoryMock.Setup(m => m.BuildTestCaseStartedMessage(It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<TestCaseStarted.Types.Platform>()))
@@ -131,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                           new TestCaseStarted
                                           {
                                               PickleId = $"{id:D}",
-                                              Timestamp = Timestamp.FromDateTime(timeStamp),
+                                              Timestamp = timeStamp.ToCucumberMessagesTimestamp(),
                                               Platform = platform
                                           }));
             return cucumberMessageFactoryMock;
