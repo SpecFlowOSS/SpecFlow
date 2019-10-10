@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
             string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            CucumberMessagesConfiguration cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
             if (jsonConfig.Language != null)
             {
@@ -87,6 +88,19 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 }
             }
 
+            if (jsonConfig.CucumberMessages != null)
+            {
+                cucumberMessagesConfiguration.Enabled = jsonConfig.CucumberMessages.Enabled;
+
+                if (jsonConfig.CucumberMessages.Sinks != null)
+                {
+                    foreach (var cucumberMessageSinkElement in jsonConfig.CucumberMessages.Sinks)
+                    {
+                        cucumberMessagesConfiguration.Sinks.Add(new CucumberMessagesSink(cucumberMessageSinkElement.Type, cucumberMessageSinkElement.Path));
+                    }
+                }
+            }
+
             return new SpecFlowConfiguration(ConfigSource.Json,
                                             containerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
@@ -103,7 +117,9 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             allowRowTests,
                                             markFeaturesParallelizable,
                                             skipParallelizableMarkerForTags,
-                                            obsoleteBehavior);
+                                            obsoleteBehavior,
+                                            cucumberMessagesConfiguration
+                                            );
         }
     }
 }

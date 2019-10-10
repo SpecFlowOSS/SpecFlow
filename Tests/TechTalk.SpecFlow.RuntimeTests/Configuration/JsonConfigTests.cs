@@ -35,6 +35,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""traceTimings"": false,
               ""minTracedDuration"": ""0:0:0.1"",
               ""listener"": ""TechTalk.SpecFlow.Tracing.DefaultListener, TechTalk.SpecFlow""
+            },
+            ""cucumber-messages"":
+            {
+                ""enabled"": false,
+                ""sinks"":
+                [
+                    { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" },
+                    { ""type"": ""file"", ""path"": ""testrun.cm"" },
+                    { ""type"": ""file"", ""path"": ""%temp%\testrun.cm"" }
+                ]
             }
         }")]
 
@@ -356,5 +366,107 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies[1].Should().Be("testEntry2");
         }
 
+        [Fact]
+        public void Check_CucumberMessages_Enabled_True()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                    ""enabled"": true
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Enabled_False()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                    ""enabled"": false
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_EmptyList()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                    ""enabled"": false,
+                                    ""sinks"":
+                                    [
+                                    ]
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Sinks.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_ListOneEntry()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                    ""enabled"": false,
+                                    ""sinks"":
+                                    [
+                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" }
+                                    ]
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(1);
+        }
+
+        [Fact] public void Check_CucumberMessages_Sinks_ListMultipleEntry()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                    ""enabled"": false,
+                                    ""sinks"":
+                                    [
+                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" },
+                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" },
+                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" }
+                                    ]
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(3);
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_DataOfEntry()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                    ""enabled"": false,
+                                    ""sinks"":
+                                    [
+                                        { ""type"": ""file"", ""path"": ""C:\\temp\\testrun.cm"" }
+                                    ]
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            var cucumberMessagesSink = runtimeConfig.CucumberMessagesConfiguration.Sinks.First();
+
+            cucumberMessagesSink.Type.Should().Be("file");
+            cucumberMessagesSink.Path.Should().Be(@"C:\temp\testrun.cm");
+        }
     }
 }

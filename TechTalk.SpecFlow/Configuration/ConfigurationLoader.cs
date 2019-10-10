@@ -150,7 +150,8 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowRowTests,
                 DefaultMarkFeaturesParallelizable,
                 DefaultSkipParallelizableMarkerForTags,
-                DefaultObsoleteBehavior
+                DefaultObsoleteBehavior,
+                new CucumberMessagesConfiguration()
                 );
         }
 
