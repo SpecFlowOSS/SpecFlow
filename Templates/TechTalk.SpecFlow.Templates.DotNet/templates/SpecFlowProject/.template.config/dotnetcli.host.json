@@ -2,7 +2,7 @@
     "symbolInfo": {
         "unitTestProvider": {
             "longName": "unittestprovider",
-            "shortName": "u"
+            "shortName": "t"
         },
         "targetFramework": {
             "longName": "framework",
