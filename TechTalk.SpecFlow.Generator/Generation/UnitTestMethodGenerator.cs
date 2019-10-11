@@ -345,6 +345,26 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 paramToIdentifier.Add(param.Value, param.Value.ToIdentifierCamelCase());
             }
 
+            //fix empty parameters
+            var emptyStrings = paramToIdentifier.Where(kv => kv.Value == "").ToArray();
+            foreach (var item in emptyStrings)
+            {
+                paramToIdentifier.Remove(item);
+                paramToIdentifier.Add(item.Key, "_");
+            }
+
+            //fix duplicated parameter names
+            for (int i = 0; i < paramToIdentifier.Count; i++)
+            {
+                int suffix = 1;
+                while (paramToIdentifier.Take(i).Count(kv => kv.Value == paramToIdentifier[i].Value) > 0)
+                {
+                    paramToIdentifier[i] = new KeyValuePair<string, string>(paramToIdentifier[i].Key, paramToIdentifier[i].Value + suffix);
+                    suffix++;
+                }
+            }
+
+
             return paramToIdentifier;
         }
 

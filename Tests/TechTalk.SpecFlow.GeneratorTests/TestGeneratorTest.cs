@@ -37,11 +37,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-                Then something should happen
+                Then something should happen with <i> <%> <i, %>
             Examples: 
-                | what           |
-                | something      |
-                | something else |
+                | what           | %  | i  | i, %|
+                | something      | 11 |.23 | 23  |
+                | something else | 22 |.56 | 56  |
 ";
 
         public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
@@ -75,7 +75,17 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 // make sure name space is changed
                 Assert.Equal(code.Name, SimpleTestGeneratorProvider.DefaultNameSpace);
 
-                Assert.Equal(code.Types[0].Name, "SampleFeatureFileThatsGotWeirdNamesFeature");
+                Assert.Equal("SampleFeatureFileThatsGotWeirdNamesFeature", code.Types[0].Name);
+
+                foreach (var method in code.Types[0].Members.OfType<CodeMemberMethod>())
+                {
+                    var parameterNames = method.Parameters.Cast<CodeParameterDeclarationExpression>().Select(v => v.Name).ToArray();
+                    parameterNames.GroupBy(v => v).Where(kv => kv.Count() > 1).Should().BeEmpty("All parameters should be unique");
+                    foreach (var parameter in parameterNames)
+                    {
+                        parameter.Should().NotBeNullOrWhiteSpace();
+                    }
+                }
             }
         }
 
