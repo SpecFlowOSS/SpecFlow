@@ -68,4 +68,5 @@
 &#xD;
 //ACT&#xD;
 &#xD;
-//ASSERT</s:String></wpf:ResourceDictionary>
+//ASSERT</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=protobuf/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
