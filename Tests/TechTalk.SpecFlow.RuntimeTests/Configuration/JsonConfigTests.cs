@@ -10,9 +10,9 @@ using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 {
-    
+
     public class JsonConfigTests
-    {            
+    {
         [Theory]
         [InlineData(@"{
             ""language"": {
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void CanLoadConfigFromString(string configString)
         {
             var configurationLoader = new JsonConfigurationLoader();
-            
+
             configurationLoader.LoadJson(ConfigurationLoader.GetDefault(), configString);
         }
 
@@ -61,11 +61,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             string config = @"{
                                 ""language"": { ""feature"": ""de"" }
                             }";
-            
+
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.FeatureLanguage.TwoLetterISOLanguageName.Should().Be("de");
-        }       
+        }
 
         [Fact]
         public void CheckBindingCulture()
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""bindingCulture"": { ""name"": ""de"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""runtime"": { ""stopAtFirstError"": false }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Pending"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -128,7 +128,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Error"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -142,7 +142,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""runtime"": { ""missingOrPendingStepsOutcome"": ""Ignore"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -170,7 +170,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""traceSuccessfulSteps"": true }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -184,7 +184,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""traceSuccessfulSteps"": false }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -198,7 +198,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""traceTimings"": true }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -212,7 +212,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""traceTimings"": false }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -226,7 +226,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""minTracedDuration"": ""0:0:0:1.0"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -240,7 +240,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""listener"": ""TraceListener"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -254,7 +254,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""RegexAttribute"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -268,7 +268,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""MethodNamePascalCase"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -282,7 +282,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""MethodNameRegex"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -296,7 +296,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                 ""trace"": { ""stepDefinitionSkeletonStyle"": ""MethodNameUnderscores"" }
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -311,7 +311,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                  ]
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -324,7 +324,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             string config = @"{
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -339,7 +339,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                    [ {""assembly"": ""testEntry""} ]
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
@@ -357,13 +357,38 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                                   ]
                             }";
 
-            
+
 
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.AdditionalStepAssemblies.Count.Should().Be(2);
             runtimeConfig.AdditionalStepAssemblies[0].Should().Be("testEntry1");
             runtimeConfig.AdditionalStepAssemblies[1].Should().Be("testEntry2");
+        }
+
+
+        [Fact]
+        public void Check_CucumberMessages_NotConfigured_EnabledIsFalse()
+        {
+            string config = @"{
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void Check_CucumberMessages_EmptyTag_EnabledIsFalse()
+        {
+            string config = @"{
+                                ""cucumber-messages"":
+                                {
+                                }
+                            }";
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
         }
 
         [Fact]
@@ -429,7 +454,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(1);
         }
 
-        [Fact] public void Check_CucumberMessages_Sinks_ListMultipleEntry()
+        [Fact]
+        public void Check_CucumberMessages_Sinks_ListMultipleEntry()
         {
             string config = @"{
                                 ""cucumber-messages"":

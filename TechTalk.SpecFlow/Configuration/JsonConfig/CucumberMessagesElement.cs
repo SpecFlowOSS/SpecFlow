@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
     public class CucumberMessagesElement
     {
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [DataMember(Name = "enabled")]
         public bool Enabled { get; set; }
 
