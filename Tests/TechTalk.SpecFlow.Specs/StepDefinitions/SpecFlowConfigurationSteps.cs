@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [Given(@"the specflow configuration is")]
-        public void GivenTheSpecflowConfigurationIs(string specFlowSection)
+        public void GivenTheSpecFlowConfigurationIs(string specFlowSection)
         {
             _xmlConfigurationLoaderDriver.AddFromXmlSpecFlowSection(specFlowSection);
         }
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [Given(@"SpecFlow is configured in the specflow\.json")]
-        public void GivenSpecFlowIsConfiguredInTheSpecflow_Json()
+        public void GivenSpecFlowIsConfiguredInTheSpecFlowJson()
         {
             _configurationDriver.SetConfigurationFormat(ConfigurationFormat.Json);
         }
@@ -44,19 +44,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"obsoleteBehavior configuration value is set to (.*)")]
         public void GivenObsoleteBehaviorConfigurationValueIsSetTo(string obsoleteBehaviorValue)
         {
-       //     var configText = $@"<specFlow>
-			    //<runtime obsoleteBehavior=""{obsoleteBehaviorValue}"" />
-       //         </specFlow >";
+//          var configText = $@"<specFlow>
+//          <runtime obsoleteBehavior=""{obsoleteBehaviorValue}"" />
+//          </specFlow >";
 
-       //     GivenTheSpecflowConfigurationIs(configText);
+//          GivenTheSpecflowConfigurationIs(configText);
             _configurationDriver.SetRuntimeObsoleteBehavior(obsoleteBehaviorValue);
         }
-
-        [StepArgumentTransformation(@"enabled")]
-        public bool ConvertEnabled() { return true; }
-
-        [StepArgumentTransformation(@"disabled")]
-        public bool ConvertDisabled() { return false; }
 
         [Given(@"row testing is (.+)")]
         public void GivenRowTestingIsRowTest(bool enabled)
