@@ -346,7 +346,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             }
 
             //fix empty parameters
-            var emptyStrings = paramToIdentifier.Where(kv => kv.Value == "").ToArray();
+            var emptyStrings = paramToIdentifier.Where(kv => kv.Value == string.Empty).ToArray();
             foreach (var item in emptyStrings)
             {
                 paramToIdentifier.Remove(item);
