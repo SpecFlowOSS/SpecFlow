@@ -1,7 +1,6 @@
 ﻿using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi._1_Memory;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -9,18 +8,33 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class SpecFlowConfigurationSteps
     {
         private readonly ConfigurationDriver _configurationDriver;
-        private readonly XmlConfigurationLoaderDriver _xmlConfigurationLoaderDriver;
+        private readonly XmlConfigurationParserDriver _xmlConfigurationParserDriver;
+        private readonly JsonConfigurationLoaderDriver _jsonConfigurationLoaderDriver;
+        private readonly ConfigurationLoaderDriver _configurationLoaderDriver;
 
-        public SpecFlowConfigurationSteps(ConfigurationDriver configurationDriver, XmlConfigurationLoaderDriver xmlConfigurationLoaderDriver)
+        public SpecFlowConfigurationSteps(
+            ConfigurationDriver configurationDriver,
+            XmlConfigurationParserDriver xmlConfigurationParserDriver,
+            JsonConfigurationLoaderDriver jsonConfigurationLoaderDriver,
+            ConfigurationLoaderDriver configurationLoaderDriver)
         {
             _configurationDriver = configurationDriver;
-            _xmlConfigurationLoaderDriver = xmlConfigurationLoaderDriver;
+            _xmlConfigurationParserDriver = xmlConfigurationParserDriver;
+            _jsonConfigurationLoaderDriver = jsonConfigurationLoaderDriver;
+            _configurationLoaderDriver = configurationLoaderDriver;
+        }
+
+        [Given(@"there is a project with this specflow\.json configuration")]
+        public void GivenThereIsAProjectWithThisSpecFlowJsonConfiguration(string specFlowJson)
+        {
+            _jsonConfigurationLoaderDriver.AddSpecFlowJson(specFlowJson);
         }
 
         [Given(@"the specflow configuration is")]
         public void GivenTheSpecFlowConfigurationIs(string specFlowSection)
         {
-            _xmlConfigurationLoaderDriver.AddFromXmlSpecFlowSection(specFlowSection);
+            var specFlowConfiguration = _xmlConfigurationParserDriver.ParseSpecFlowSection(specFlowSection);
+            _configurationLoaderDriver.SetFromSpecFlowConfiguration(specFlowConfiguration);
         }
 
         [Given(@"the project is configured to use the (.+) provider")]

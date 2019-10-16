@@ -27,12 +27,12 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public List<ICucumberMessageSink> GetMessageSinksFromConfiguration()
         {
-            if (_specFlowConfiguration?.CucumberMessagesConfiguration?.Enabled == false)
+            if (_specFlowConfiguration?.CucumberMessagesConfiguration?.Enabled != true)
             {
                 return new List<ICucumberMessageSink>();
             }
 
-            if (_specFlowConfiguration?.CucumberMessagesConfiguration?.Sinks?.Any() == false)
+            if (_specFlowConfiguration?.CucumberMessagesConfiguration?.Sinks?.Any() != true)
             {
                 var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages");
                 return new List<ICucumberMessageSink>() {new ProtobufFileSink(new ProtobufFileSinkOutput(_binaryFileAccessor, protobufFileSinkConfiguration, _protobufFileNameResolver), protobufFileSinkConfiguration)};
