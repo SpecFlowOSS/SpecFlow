@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
             if (_specFlowConfiguration?.CucumberMessagesConfiguration?.Sinks?.Any() != true)
             {
-                var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages");
+                var protobufFileSinkConfiguration = new ProtobufFileSinkConfiguration("cucumbermessages/messages");
                 return new List<ICucumberMessageSink>() {new ProtobufFileSink(new ProtobufFileSinkOutput(_binaryFileAccessor, protobufFileSinkConfiguration, _protobufFileNameResolver), protobufFileSinkConfiguration)};
             }
 

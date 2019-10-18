@@ -30,7 +30,7 @@ Scenario: Disabled configuration creates no output file
   Then no Cucumber-Messages file is created
 
 Scenario: Enabled configuration with no sinks configured create default output file
-  The default Cucumber-Messages file is created at `cucumbermessages\messages`
+  The default Cucumber-Messages file is created at `cucumbermessages\messages` relative to the output directory
   
   Given there is a project with this specflow.json configuration
     """
