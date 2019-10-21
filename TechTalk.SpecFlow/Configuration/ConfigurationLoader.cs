@@ -54,15 +54,6 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static ObsoleteBehavior DefaultObsoleteBehavior => ConfigDefaults.ObsoleteBehavior;
 
-        public static CucumberMessagesConfiguration DefaultCucumberMessagesConfiguration { get; } = new CucumberMessagesConfiguration
-        {
-            Enabled = false,
-            Sinks =
-            {
-                new CucumberMessagesSink("file", "cucumbermessages/messages")
-            }
-        };
-
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
         public bool HasJsonConfig
