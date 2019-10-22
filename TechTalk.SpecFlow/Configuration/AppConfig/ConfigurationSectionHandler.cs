@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["stepAssemblies"] = value; }
         }
         
-        static public ConfigurationSectionHandler CreateFromXml(string xmlContent)
+        public static ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
             section.Init();
@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.Configuration
             return section;
         }
 
-        static public ConfigurationSectionHandler CreateFromXml(XmlNode xmlContent)
+        public static ConfigurationSectionHandler CreateFromXml(XmlNode xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
             section.Init();

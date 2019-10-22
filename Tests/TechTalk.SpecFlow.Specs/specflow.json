@@ -1,0 +1,8 @@
+﻿{
+    "generator": {
+        "allowDebugGeneratedFiles": true
+    },
+    "cucumber-messages": {
+        "enabled": true 
+    } 
+}

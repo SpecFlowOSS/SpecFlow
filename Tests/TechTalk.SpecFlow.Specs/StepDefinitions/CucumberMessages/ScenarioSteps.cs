@@ -61,7 +61,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _testSuiteSetupDriver.AddStepDefinitionsFromStringList(stepDefinitionOrder);
         }
 
-
         [Given(@"there is an ignored scenario with the following steps: '(.*)'")]
         public void GivenThereIsAnIgnoredScenarioWithTheFollowingSteps(string step)
         {

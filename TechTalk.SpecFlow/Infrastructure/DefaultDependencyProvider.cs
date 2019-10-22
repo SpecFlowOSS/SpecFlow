@@ -64,8 +64,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestUndefinedMessageFactory, ITestUndefinedMessageFactory>();
             container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
             container.RegisterTypeAs<ProtobufFileNameResolver, IProtobufFileNameResolver>();
-            container.RegisterTypeAs<ProtobufFileSink, ICucumberMessageSink>();
-            container.RegisterInstanceAs(new ProtobufFileSinkConfiguration("CucumberMessageQueue/messages"));
+            container.RegisterTypeAs<SinkProvider, ISinkProvider>();
             container.RegisterTypeAs<DefaultTestRunContext, ITestRunContext>();
 
             container.RegisterTypeAs<SpecFlowPath, ISpecFlowPath>();

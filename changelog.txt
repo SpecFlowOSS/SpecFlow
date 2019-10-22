@@ -6,6 +6,8 @@ Features:
   - TestCaseStarted
   - TestCaseFinished
   - TestRunFinished
++ cucumber-messages can be enabled via specflow.json
++ file sinks for cucumber-messages can be configured
 
 Fixes: 
 + AfterTestRun hook can take longer than 100ms on .NET Core
