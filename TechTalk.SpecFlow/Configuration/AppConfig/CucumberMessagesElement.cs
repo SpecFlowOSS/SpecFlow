@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
         }
 
         [ConfigurationProperty("sinks", IsDefaultCollection = false, IsRequired = false)]
-        [ConfigurationCollection(typeof(CucumberMessagesSinkCollection))]
+        [ConfigurationCollection(typeof(CucumberMessagesSinkCollection), AddItemName = "sink")]
         public CucumberMessagesSinkCollection Sinks
         {
             get => (CucumberMessagesSinkCollection) this["sinks"];
