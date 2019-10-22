@@ -1,4 +1,5 @@
-﻿Feature: Cucumber-Messages Configuration via app.config
+﻿@fullframework
+Feature: Cucumber-Messages Configuration via app.config
 
   Cucumber-messages can be configured in the SpecFlow section of the app.config file to enable/disable messages
   and configure alternative output sinks
