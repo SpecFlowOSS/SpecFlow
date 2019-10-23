@@ -11,6 +11,7 @@ Features:
 
 Fixes: 
 + AfterTestRun hook can take longer than 100ms on .NET Core
++ Adjust parameter names generation in scenario outlines https://github.com/techtalk/SpecFlow/issues/1694
 
 Changes:
 + SpecFlow.xUnit has a dependency on Xunit.SkippableFact
