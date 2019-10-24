@@ -12,8 +12,8 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (LanguageConfigElement)this["language"]; }
             set { this["language"] = value; }
-        }  
-        
+        }
+
         [ConfigurationProperty("bindingCulture", IsRequired = false)]
         public BindingCultureConfigElement BindingCulture
         {
@@ -49,7 +49,14 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (StepAssemblyCollection)this["stepAssemblies"]; }
             set { this["stepAssemblies"] = value; }
         }
-        
+
+        [ConfigurationProperty("cucumber-messages", IsRequired = false)]
+        public CucumberMessagesElement CucumberMessages
+        {
+            get => (CucumberMessagesElement)this["cucumber-messages"];
+            set => this["cucumber-messages"] = value;
+        }
+
         public static ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();

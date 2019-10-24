@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             return new MemoryStream();
         }
 
-        public ProtobufFileSinkConfiguration GetProtobufFileSinkConfiguration(string targetFilePath = "CucumberMessageQueue")
+        public ProtobufFileSinkConfiguration GetProtobufFileSinkConfiguration(string targetFilePath = "cucumbermessages")
         {
             return new ProtobufFileSinkConfiguration(targetFilePath);
         }

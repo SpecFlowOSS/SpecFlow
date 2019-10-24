@@ -46,6 +46,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _testSuiteSetupDriver.AddSpecFlowJsonFromString(specFlowJson);
         }
 
+        [Given(@"there is a project with this app\.config configuration")]
+        public void GivenThereIsAProjectWithThisApp_ConfigConfiguration(string multilineText)
+        {
+            _testSuiteSetupDriver.AddAppConfigFromString(multilineText);
+        }
+
+
         [Given(@"the specflow configuration is")]
         public void GivenTheSpecFlowConfigurationIs(string specFlowSection)
         {
