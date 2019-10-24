@@ -42,10 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Configuration\Cucumber-Messages Json Configuration - Copy.feature.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MSBuild.AdditionalTasks" Version="*" />
     <PackageReference Include="Gherkin" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
@@ -108,13 +104,6 @@
     </None>
   </ItemGroup>
 
-
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="Features\Configuration\Cucumber-Messages App.Config Configuration.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-  </ItemGroup>
 
   <PropertyGroup>
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.0</_SpecFlow_TaskFolder>
