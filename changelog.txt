@@ -15,6 +15,7 @@ Features:
 Fixes: 
 + AfterTestRun hook can take longer than 100ms on .NET Core https://github.com/techtalk/SpecFlow/issues/1348
 + Adjust parameter names generation in scenario outlines https://github.com/techtalk/SpecFlow/issues/1694
++ specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761
 + specflow.json is copied to output directory automatically https://github.com/techtalk/SpecFlow/issues/1315
 
 

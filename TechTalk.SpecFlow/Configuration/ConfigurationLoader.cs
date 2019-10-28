@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using BoDi;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration.AppConfig;
@@ -173,8 +174,16 @@ namespace TechTalk.SpecFlow.Configuration
 
         private string GetSpecflowJsonFilePath()
         {
-            var specflowJsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "specflow.json");
-            return specflowJsonFile;
+            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "specflow.json");
+
+            if (File.Exists(specflowJsonFileInAppDomainBaseDirectory))
+            {
+                return specflowJsonFileInAppDomainBaseDirectory;
+            }
+
+            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, "specflow.json");
+
+            return specflowJsonFileInCurrentDirectory;
         }
     }
 }
