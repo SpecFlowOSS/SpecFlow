@@ -17,6 +17,8 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public class ConfigurationLoader : IConfigurationLoader
     {
+        private const string JsonConfigurationFileName = "specflow.json";
+
         private readonly AppConfigConfigurationLoader _appConfigConfigurationLoader;
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
@@ -174,16 +176,29 @@ namespace TechTalk.SpecFlow.Configuration
 
         private string GetSpecflowJsonFilePath()
         {
-            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "specflow.json");
+            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, JsonConfigurationFileName);
 
             if (File.Exists(specflowJsonFileInAppDomainBaseDirectory))
             {
                 return specflowJsonFileInAppDomainBaseDirectory;
             }
 
-            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, "specflow.json");
+            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, JsonConfigurationFileName);
 
-            return specflowJsonFileInCurrentDirectory;
+            if (File.Exists(specflowJsonFileInCurrentDirectory))
+            {
+                return specflowJsonFileInCurrentDirectory;
+            }
+
+
+            var specflowJsonFileTwoDirectoriesUp = Path.Combine(Environment.CurrentDirectory, "..", "..", JsonConfigurationFileName);
+
+            if (File.Exists(specflowJsonFileTwoDirectoriesUp))
+            {
+                return specflowJsonFileTwoDirectoriesUp;
+            }
+
+            return null;
         }
     }
 }
