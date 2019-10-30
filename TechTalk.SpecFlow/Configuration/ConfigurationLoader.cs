@@ -183,6 +183,13 @@ namespace TechTalk.SpecFlow.Configuration
                 return specflowJsonFileInAppDomainBaseDirectory;
             }
 
+            var specflowJsonFileTwoDirectoriesUp = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", JsonConfigurationFileName);
+
+            if (File.Exists(specflowJsonFileTwoDirectoriesUp))
+            {
+                return specflowJsonFileTwoDirectoriesUp;
+            }
+
             var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, JsonConfigurationFileName);
 
             if (File.Exists(specflowJsonFileInCurrentDirectory))
@@ -191,12 +198,7 @@ namespace TechTalk.SpecFlow.Configuration
             }
 
 
-            var specflowJsonFileTwoDirectoriesUp = Path.Combine(Environment.CurrentDirectory, "..", "..", JsonConfigurationFileName);
-
-            if (File.Exists(specflowJsonFileTwoDirectoriesUp))
-            {
-                return specflowJsonFileTwoDirectoriesUp;
-            }
+          
 
             return null;
         }
