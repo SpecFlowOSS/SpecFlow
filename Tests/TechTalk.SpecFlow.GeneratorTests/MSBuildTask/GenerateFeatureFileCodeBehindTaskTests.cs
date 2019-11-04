@@ -4,6 +4,7 @@ using Microsoft.Build.Utilities;
 using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
 using System.Collections.Generic;
+using BoDi;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,9 +26,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
+                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -35,7 +34,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 BuildEngine = new MockBuildEngine(_output),
                 CodeBehindGenerator = generatorMock.Object
             };
@@ -54,9 +53,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
+                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -65,7 +62,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 FeatureFiles = new TaskItem[0],
                 GeneratorPlugins = new TaskItem[0],
                 BuildEngine = new MockBuildEngine(_output),
@@ -86,9 +83,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
+                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -97,7 +92,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 GeneratorPlugins = new TaskItem[0],
                 BuildEngine = new MockBuildEngine(_output),
                 CodeBehindGenerator = generatorMock.Object
@@ -117,9 +112,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
+                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -128,7 +121,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 FeatureFiles = new TaskItem[0],
                 BuildEngine = new MockBuildEngine(_output),
                 CodeBehindGenerator = generatorMock.Object

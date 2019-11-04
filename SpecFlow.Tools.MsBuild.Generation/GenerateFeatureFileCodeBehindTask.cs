@@ -6,6 +6,7 @@ using System.Linq;
 using System.Resources;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
@@ -32,6 +33,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         [Output]
         public ITaskItem[] GeneratedFiles { get; private set; }
+
 
         public override bool Execute()
         {
@@ -63,15 +65,17 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
 
-                var generatedFiles = generator.GenerateFilesForProject(
-                    ProjectPath,
-                    RootNamespace,
-                    featureFiles,
-                    generatorPlugins,
-                    ProjectFolder,
-                    OutputPath);
+                var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(ProjectPath), RootNamespace);
+                using (var container = ContainerProvider.GetContainer(specFlowProject.ProjectSettings, generatorPlugins))
+                {
+                    var generatedFiles = generator.GenerateFilesForProject(
+                        container,
+                        featureFiles,
+                        ProjectFolder,
+                        OutputPath);
 
-                GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+                    GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+                }
 
                 return !Log.HasLoggedErrors;
             }

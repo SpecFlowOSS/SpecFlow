@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using BoDi;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
@@ -12,17 +13,10 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private SpecFlowProject _specFlowProject;
         private ITestGenerator _testGenerator;
 
-        public void InitializeProject(string projectPath, string rootNamespace, IEnumerable<string> generatorPlugins)
+        public void InitializeProject(IObjectContainer container)
         {
-            _specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectPath), rootNamespace);
-
-            var projectSettings = _specFlowProject.ProjectSettings;
-
-            var testGeneratorFactory = new TestGeneratorFactory();
-
-            _testGenerator = testGeneratorFactory.CreateGenerator(projectSettings, generatorPlugins);
+            _testGenerator = container.Resolve<ITestGenerator>();
         }
-
 
         public TestFileGeneratorResult GenerateCodeBehindFile(string featureFile)
         {
@@ -38,5 +32,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
         {
             _testGenerator?.Dispose();
         }
+
     }
 }

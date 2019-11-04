@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BoDi;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Utils;
 
@@ -11,7 +9,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
     public class FeatureFileCodeBehindGenerator : IFeatureFileCodeBehindGenerator
     {
         private readonly FilePathGenerator _filePathGenerator;
-        
+
         public FeatureFileCodeBehindGenerator(TaskLoggingHelper log)
         {
             Log = log ?? throw new ArgumentNullException(nameof(log));
@@ -21,16 +19,14 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public TaskLoggingHelper Log { get; }
 
         public IEnumerable<string> GenerateFilesForProject(
-            string projectPath,
-            string rootNamespace,
+            IObjectContainer container,
             List<string> featureFiles,
-            List<string> generatorPlugins,
             string projectFolder,
             string outputPath)
         {
             using (var featureCodeBehindGenerator = new FeatureCodeBehindGenerator())
             {
-                featureCodeBehindGenerator.InitializeProject(projectPath, rootNamespace, generatorPlugins);
+                featureCodeBehindGenerator.InitializeProject(container);
 
                 var codeBehindWriter = new CodeBehindWriter(null);
 
@@ -59,6 +55,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                                 0,
                                 error.Message);
                         }
+
                         continue;
                     }
 
