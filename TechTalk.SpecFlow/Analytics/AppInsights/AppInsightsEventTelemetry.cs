@@ -41,7 +41,8 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
                         { "UnitTestProvider", analyticsEvent.UnitTestProvider },
                         { "IsBuildServer", analyticsEvent.IsBuildServer.ToString() },
                         { "HashedAssemblyName", analyticsEvent.HashedAssemblyName },
-                        { "ProjectTargetFrameworks", analyticsEvent.ProjectTargetFrameworks },
+                        { "TargetFrameworks", analyticsEvent.TargetFrameworks },
+                        { "TargetFrameworkMoniker", analyticsEvent.TargetFrameworkMoniker },
                     }
                 }
             };

@@ -7,6 +7,7 @@
         string MSBuildVersion { get; set; }
         string AssemblyName { get; set; }
         string TargetFrameworks { get; set; }
+        string TargetFrameworkMoniker { get; set; }
         string ProjectGuid { get; set; }
     }
 }

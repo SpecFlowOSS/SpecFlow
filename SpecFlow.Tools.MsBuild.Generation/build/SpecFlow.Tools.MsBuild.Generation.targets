@@ -102,6 +102,7 @@
       MSBuildVersion="$(MSBuildVersion)"
       AssemblyName="$(AssemblyName)"
       TargetFrameworks="$(SpecFlow_TargetFrameworks)"
+      TargetFrameworkMoniker="$(TargetFrameworkMoniker)"
       ProjectGuid="$(ProjectGuid)"
       >
 

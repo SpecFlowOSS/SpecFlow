@@ -39,6 +39,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string MSBuildVersion { get; set; }
         public string AssemblyName { get; set; }
         public string TargetFrameworks { get; set; }
+        public string TargetFrameworkMoniker { get; set; }
         public string ProjectGuid { get; set; }
 
         public override bool Execute()

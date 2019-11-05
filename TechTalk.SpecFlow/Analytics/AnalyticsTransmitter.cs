@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Analytics
                     return;
                 }
                 var compilingEvent = CreateEvent(task);
-
+                
                 _analyticsTransmitterSink.TransmitEvent(compilingEvent);
             }
             catch (Exception)
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Analytics
 
             var compiledEvent = new SpecFlowProjectCompilingEvent(DateTime.UtcNow, userId,
                 task.Platform, specFlowVersion, unittestProvider, isBuildServer,
-                hashedAssemblyName, task.TargetFrameworks, task.MSBuildVersion, task.ProjectGuid);
+                hashedAssemblyName, task.TargetFrameworks, task.TargetFrameworkMoniker, task.MSBuildVersion, task.ProjectGuid);
             return compiledEvent;
         }
 

@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Analytics
         string UnitTestProvider { get; }
         bool IsBuildServer { get; }
         string HashedAssemblyName { get;}
-        string ProjectTargetFrameworks { get; }
+        string TargetFrameworks { get; }
+        string TargetFrameworkMoniker { get; }
     }
 }

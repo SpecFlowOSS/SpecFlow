@@ -13,9 +13,10 @@ namespace TechTalk.SpecFlow.Analytics
         public string UnitTestProvider { get; }
         public bool IsBuildServer { get; }
         public string HashedAssemblyName { get; }
-        public string ProjectTargetFrameworks { get; }
+        public string TargetFrameworks { get; }
+        public string TargetFrameworkMoniker { get; }
 
-        protected SpecFlowAnalyticsEventBase(DateTime utcDate, string userId, string platform, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, string projectTargetFrameworks)
+        protected SpecFlowAnalyticsEventBase(DateTime utcDate, string userId, string platform, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, string targetFrameworks, string targetFrameworkMoniker)
         {
             UtcDate = utcDate;
             UserId = userId;
@@ -24,7 +25,8 @@ namespace TechTalk.SpecFlow.Analytics
             UnitTestProvider = unitTestProvider;
             IsBuildServer = isBuildServer;
             HashedAssemblyName = hashedAssemblyName;
-            ProjectTargetFrameworks = projectTargetFrameworks;
+            TargetFrameworks = targetFrameworks;
+            TargetFrameworkMoniker = targetFrameworkMoniker;
         }
     }
 }
