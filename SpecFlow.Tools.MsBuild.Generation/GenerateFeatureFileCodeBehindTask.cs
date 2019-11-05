@@ -34,6 +34,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
         [Output]
         public ITaskItem[] GeneratedFiles { get; private set; }
 
+        public string Platform { get; set; }
+        public string BuildServerMode { get; set; }
+        public string MSBuildVersion { get; set; }
+        public string AssemblyName { get; set; }
+        public string TargetFrameworks { get; set; }
+        public string ProjectGuid { get; set; }
 
         public override bool Execute()
         {

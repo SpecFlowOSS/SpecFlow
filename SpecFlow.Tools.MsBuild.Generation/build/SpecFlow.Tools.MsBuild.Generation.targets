@@ -75,12 +75,35 @@
       <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">Features.Generated</SpecFlowCodeBehindOutputPath>
     </PropertyGroup> -->
 
+    <PropertyGroup Condition="'$(TargetFramework)' != ''">
+      <SpecFlow_TargetFrameworks>$(TargetFramework)</SpecFlow_TargetFrameworks>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFrameworks)' != ''">
+      <SpecFlow_TargetFrameworks>$(TargetFrameworks)</SpecFlow_TargetFrameworks>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TF_BUILD)' != '' OR '$(TEAMCITY_VERSION)' != ''">
+      <SpecFlow_BuildServerMode>true</SpecFlow_BuildServerMode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(OSPlatform)' == ''">
+      <OSPlatform Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">Windows</OSPlatform>
+      <OSPlatform Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))">Linux</OSPlatform>
+      <OSPlatform Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))">OSX</OSPlatform>
+    </PropertyGroup>
+
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
       FeatureFiles="@(SpecFlowFeatureFiles)"
       RootNamespace="$(RootNamespace)"
-      GeneratorPlugins="@(SpecFlowGeneratorPlugins)" >
+      GeneratorPlugins="@(SpecFlowGeneratorPlugins)" 
+      
+      Platform="$(OSPlatform)"
+      BuildServerMode="$(SpecFlow_BuildServerMode)"
+      MSBuildVersion="$(MSBuildVersion)"
+      AssemblyName="$(AssemblyName)"
+      TargetFrameworks="$(SpecFlow_TargetFrameworks)"
+      ProjectGuid="$(ProjectGuid)"
+      >
 
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>
