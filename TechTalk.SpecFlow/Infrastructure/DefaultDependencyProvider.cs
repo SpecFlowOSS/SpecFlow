@@ -91,6 +91,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<FileService, IFileService>();
             container.RegisterTypeAs<DirectoryService, IDirectoryService>();
 
+            container.RegisterTypeAs<EnvironmentSpecFlowTelemetryChecker, IEnvironmentSpecFlowTelemetryChecker>();
             container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
             container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
         }

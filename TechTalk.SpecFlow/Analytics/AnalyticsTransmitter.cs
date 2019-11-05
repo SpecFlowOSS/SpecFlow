@@ -11,6 +11,7 @@ namespace TechTalk.SpecFlow.Analytics
     {
         private readonly IAnalyticsTransmitterSink _analyticsTransmitterSink;
         private readonly IUserUniqueIdStore _userUniqueIdStore;
+        private readonly IEnvironmentSpecFlowTelemetryChecker _environmentSpecFlowTelemetryChecker;
         private readonly string _unitTestProvider;
 
         public AnalyticsTransmitter(IObjectContainer container)
@@ -18,13 +19,17 @@ namespace TechTalk.SpecFlow.Analytics
             _unitTestProvider = container.Resolve<UnitTestProviderConfiguration>().UnitTestProvider;
             _analyticsTransmitterSink = container.Resolve<IAnalyticsTransmitterSink>();
             _userUniqueIdStore = container.Resolve<IUserUniqueIdStore>();
+            _environmentSpecFlowTelemetryChecker = container.Resolve<IEnvironmentSpecFlowTelemetryChecker>();
         }
 
         public void TransmitSpecflowProjectCompilingEvent(IMsBuildTask task)
         {
             try
             {
-                //todo: check if telemetry is enabled
+                if (!_environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled())
+                {
+                    return;
+                }
                 var compilingEvent = CreateEvent(task);
 
                 _analyticsTransmitterSink.TransmitEvent(compilingEvent);
