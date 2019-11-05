@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using BoDi;
+using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Analytics
@@ -9,12 +10,14 @@ namespace TechTalk.SpecFlow.Analytics
     public class AnalyticsTransmitter : IAnalyticsTransmitter
     {
         private readonly IAnalyticsTransmitterSink _analyticsTransmitterSink;
+        private readonly IUserUniqueIdStore _userUniqueIdStore;
         private readonly string _unitTestProvider;
 
         public AnalyticsTransmitter(IObjectContainer container)
         {
             _unitTestProvider = container.Resolve<UnitTestProviderConfiguration>().UnitTestProvider;
             _analyticsTransmitterSink = container.Resolve<IAnalyticsTransmitterSink>();
+            _userUniqueIdStore = container.Resolve<IUserUniqueIdStore>();
         }
 
         public void TransmitSpecflowProjectCompilingEvent(IMsBuildTask task)
@@ -34,8 +37,7 @@ namespace TechTalk.SpecFlow.Analytics
 
         private SpecFlowProjectCompilingEvent CreateEvent(IMsBuildTask task)
         {
-            //todo: use userId retrieving from VS Extension
-            var userId = "getuserId";
+            var userId = _userUniqueIdStore.GetUserId();
 
             var unittestProvider = _unitTestProvider;
             var specFlowVersion = GetSpecFlowVersion();
