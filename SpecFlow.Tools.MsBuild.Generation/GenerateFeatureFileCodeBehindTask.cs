@@ -6,11 +6,12 @@ using System.Linq;
 using System.Resources;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
-    public class GenerateFeatureFileCodeBehindTask : Task
+    public class GenerateFeatureFileCodeBehindTask : Task, IMsBuildTask
     {
         public GenerateFeatureFileCodeBehindTask()
         {
@@ -79,6 +80,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
                         featureFiles,
                         ProjectFolder,
                         OutputPath);
+
+                    var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
+                    analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(this);
 
                     GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
                 }

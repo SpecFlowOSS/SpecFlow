@@ -1,4 +1,5 @@
 ﻿using BoDi;
+using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
@@ -84,6 +85,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<NonStrictTestRunResultSuccessCalculator, ITestRunResultSuccessCalculator>();
             container.RegisterTypeAs<TestRunResultCollector, ITestRunResultCollector>();
+
+            container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
+            container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)

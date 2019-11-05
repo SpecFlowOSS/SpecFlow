@@ -1,4 +1,5 @@
 using BoDi;
+using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Generation;
@@ -43,6 +44,9 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
             container.RegisterTypeAs<SpecFlowGherkinParserFactory, IGherkinParserFactory>();
+
+            container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
+            container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
 
             RegisterUnitTestGeneratorProviders(container);
         }
