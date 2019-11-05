@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Analytics
         public string MSBuildVersion { get; }
         public string ProjectGuid { get; set; }
 
-        public SpecFlowProjectCompilingEvent(DateTime utcDate, string userId, string platform, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, IEnumerable<string> projectTargetFrameworks, string msBuildVersion, string projectGuid) : base(utcDate, userId, platform, specFlowVersion, unitTestProvider, isBuildServer, hashedAssemblyName, projectTargetFrameworks)
+        public SpecFlowProjectCompilingEvent(DateTime utcDate, string userId, string platform, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, string projectTargetFrameworks, string msBuildVersion, string projectGuid) : base(utcDate, userId, platform, specFlowVersion, unitTestProvider, isBuildServer, hashedAssemblyName, projectTargetFrameworks)
         {
             MSBuildVersion = msBuildVersion;
             ProjectGuid = projectGuid;

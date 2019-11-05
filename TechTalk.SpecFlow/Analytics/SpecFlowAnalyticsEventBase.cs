@@ -13,9 +13,9 @@ namespace TechTalk.SpecFlow.Analytics
         public string UnitTestProvider { get; }
         public bool IsBuildServer { get; }
         public string HashedAssemblyName { get; }
-        public IEnumerable<string> ProjectTargetFrameworks { get; }
+        public string ProjectTargetFrameworks { get; }
 
-        protected SpecFlowAnalyticsEventBase(DateTime utcDate, string userId, string platform, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, IEnumerable<string> projectTargetFrameworks)
+        protected SpecFlowAnalyticsEventBase(DateTime utcDate, string userId, string platform, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, string projectTargetFrameworks)
         {
             UtcDate = utcDate;
             UserId = userId;
