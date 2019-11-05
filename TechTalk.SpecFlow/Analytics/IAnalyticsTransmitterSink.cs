@@ -1,7 +1,9 @@
-﻿namespace TechTalk.SpecFlow.Analytics
+﻿using System.Threading.Tasks;
+
+namespace TechTalk.SpecFlow.Analytics
 {
     public interface IAnalyticsTransmitterSink
     {
-        void TransmitEvent(IAnalyticsEvent analyticsEvent);
+        Task TransmitEvent(IAnalyticsEvent analyticsEvent);
     }
 }

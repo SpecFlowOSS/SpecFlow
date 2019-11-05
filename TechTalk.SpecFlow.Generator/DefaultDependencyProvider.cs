@@ -1,5 +1,6 @@
 using BoDi;
 using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Analytics.AppInsights;
 using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -53,6 +54,7 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<EnvironmentSpecFlowTelemetryChecker, IEnvironmentSpecFlowTelemetryChecker>();
             container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
             container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
+            container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
 
             RegisterUnitTestGeneratorProviders(container);
         }

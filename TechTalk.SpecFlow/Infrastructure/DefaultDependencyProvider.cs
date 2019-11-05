@@ -1,5 +1,6 @@
 ﻿using BoDi;
 using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Analytics.AppInsights;
 using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
@@ -94,6 +95,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<EnvironmentSpecFlowTelemetryChecker, IEnvironmentSpecFlowTelemetryChecker>();
             container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
             container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
+            container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)

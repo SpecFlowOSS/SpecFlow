@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.35" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="BoDi" Version="1.4.1" />
     <PackageReference Include="Utf8Json" Version="1.3.7" />
