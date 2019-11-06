@@ -3,7 +3,7 @@ using global::NUnit.Framework;
 using global::TechTalk.SpecFlow;
 
 [SetUpFixture]
-public class NUnitAssemblyHooks
+internal class NUnitAssemblyHooks
 {
     [OneTimeSetUp]
     public void AssemblyInitialize()
