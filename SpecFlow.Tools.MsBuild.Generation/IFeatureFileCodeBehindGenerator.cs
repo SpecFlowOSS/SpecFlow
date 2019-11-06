@@ -5,7 +5,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 {
     public interface IFeatureFileCodeBehindGenerator
     {
-        IEnumerable<string> GenerateFilesForProject(IObjectContainer container, List<string> featureFiles, string projectFolder, string outputPath);
+        IEnumerable<string> GenerateFilesForProject(List<string> featureFiles, string projectFolder, string outputPath);
 
     }
 }

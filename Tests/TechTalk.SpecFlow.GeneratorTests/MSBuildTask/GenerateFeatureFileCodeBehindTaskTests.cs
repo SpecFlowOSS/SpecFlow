@@ -26,7 +26,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -53,7 +52,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -83,7 +81,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
@@ -112,7 +109,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<IObjectContainer>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))

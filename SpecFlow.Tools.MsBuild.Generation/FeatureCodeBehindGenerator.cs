@@ -10,12 +10,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class FeatureCodeBehindGenerator : IDisposable
     {
-        private SpecFlowProject _specFlowProject;
-        private ITestGenerator _testGenerator;
+        private readonly ITestGenerator _testGenerator;
 
-        public void InitializeProject(IObjectContainer container)
+        public FeatureCodeBehindGenerator(ITestGenerator testGenerator)
         {
-            _testGenerator = container.Resolve<ITestGenerator>();
+            _testGenerator = testGenerator;
         }
 
         public TestFileGeneratorResult GenerateCodeBehindFile(string featureFile)

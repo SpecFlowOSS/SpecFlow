@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using BoDi;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Analytics;
@@ -12,11 +13,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Task, IMsBuildTask
     {
-        public GenerateFeatureFileCodeBehindTask()
-        {
-            CodeBehindGenerator = new FeatureFileCodeBehindGenerator(Log);
-        }
-
         public IFeatureFileCodeBehindGenerator CodeBehindGenerator { get; set; }
 
         [Required]
@@ -64,8 +60,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-                var generator = CodeBehindGenerator ?? new FeatureFileCodeBehindGenerator(Log);
-
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
 
                 var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
@@ -73,10 +67,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
 
                 var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(ProjectPath), RootNamespace);
-                using (var container = ContainerProvider.GetContainer(specFlowProject.ProjectSettings, generatorPlugins))
+                using (var container = GeneratorContainerBuilder.CreateContainer(specFlowProject.ProjectSettings.ConfigurationHolder, specFlowProject.ProjectSettings, generatorPlugins))
                 {
-                    var generatedFiles = generator.GenerateFilesForProject(
-                        container,
+                    RegisterGenerationSpecific(container);
+
+                    var generatedFiles = CodeBehindGenerator.GenerateFilesForProject(
                         featureFiles,
                         ProjectFolder,
                         OutputPath);
@@ -112,15 +107,26 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
         }
 
+        private void RegisterGenerationSpecific(IObjectContainer container)
+        {
+            container.RegisterInstanceAs(Log);
+
+            if (CodeBehindGenerator is null)
+            {
+                container.RegisterTypeAs<FeatureFileCodeBehindGenerator, IFeatureFileCodeBehindGenerator>();
+            }
+            else
+            {
+                container.RegisterInstanceAs(CodeBehindGenerator);
+            }
+        }
+
         private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             Log.LogWithNameTag(Log.LogMessage, args.Name);
-            
 
             return null;
         }
 
     }
-
-
 }
