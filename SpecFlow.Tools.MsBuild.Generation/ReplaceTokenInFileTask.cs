@@ -18,6 +18,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
             {
                 var fileContent = File.ReadAllText(InputFile);
                 var replacedContent = fileContent.Replace(TextToReplace, TextToReplaceWith);
+                var dir = Path.GetDirectoryName(OutputFile);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
 
                 File.WriteAllText(OutputFile, replacedContent);
 
