@@ -6,14 +6,17 @@ using System.Linq;
 using BoDi;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using SpecFlow.Tools.MsBuild.Generation.Analytics;
 using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
-    public class GenerateFeatureFileCodeBehindTask : Task, IMsBuildTask
+    public class GenerateFeatureFileCodeBehindTask : Task
     {
         public IFeatureFileCodeBehindGenerator CodeBehindGenerator { get; set; }
+        public IAnalyticsTransmitter AnalyticsTransmitter { get; set; }
 
         [Required]
         public string ProjectPath { get; set; }
@@ -69,17 +72,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(ProjectPath), RootNamespace);
                 using (var container = GeneratorContainerBuilder.CreateContainer(specFlowProject.ProjectSettings.ConfigurationHolder, specFlowProject.ProjectSettings, generatorPlugins))
                 {
-                    RegisterGenerationSpecific(container);
+                    RegisterGenerationAndAnalyticsSpecific(container);
 
-                    var generatedFiles = CodeBehindGenerator.GenerateFilesForProject(
-                        featureFiles,
-                        ProjectFolder,
-                        OutputPath);
+                    GeneratedFiles = GenerateCodeBehindFilesForProject(container, featureFiles);
 
-                    var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
-                    analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(this);
-
-                    GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+                    TransmitProjectCompilingEvent(container);
                 }
 
                 return !Log.HasLoggedErrors;
@@ -107,9 +104,30 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
         }
 
-        private void RegisterGenerationSpecific(IObjectContainer container)
+        private ITaskItem[] GenerateCodeBehindFilesForProject(IObjectContainer container, List<string> featureFiles)
+        {
+            var generator = container.Resolve<IFeatureFileCodeBehindGenerator>();
+            var generatedFiles = generator.GenerateFilesForProject(
+                featureFiles,
+                ProjectFolder,
+                OutputPath);
+
+            return generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+        }
+
+        private void TransmitProjectCompilingEvent(IObjectContainer container)
+        {
+            var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
+            var eventProvider = container.Resolve<IAnalyticsEventProvider>();
+
+            var projectCompilingEvent = eventProvider.CreateProjectCompilingEvent(Platform, BuildServerMode, MSBuildVersion, AssemblyName, TargetFrameworks, TargetFrameworkMoniker, ProjectGuid);
+            analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(projectCompilingEvent);
+        }
+
+        private void RegisterGenerationAndAnalyticsSpecific(IObjectContainer container)
         {
             container.RegisterInstanceAs(Log);
+            container.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
 
             if (CodeBehindGenerator is null)
             {
@@ -118,6 +136,15 @@ namespace SpecFlow.Tools.MsBuild.Generation
             else
             {
                 container.RegisterInstanceAs(CodeBehindGenerator);
+            }
+
+            if (AnalyticsTransmitter is null)
+            {
+                container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
+            }
+            else
+            {
+                container.RegisterInstanceAs(AnalyticsTransmitter);
             }
         }
 
