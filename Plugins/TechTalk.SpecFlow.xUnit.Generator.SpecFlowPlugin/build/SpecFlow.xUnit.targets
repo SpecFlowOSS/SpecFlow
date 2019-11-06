@@ -30,10 +30,11 @@
   </PropertyGroup>
 
   <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true'">
+    <ReplaceTokenInFileTask Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'" InputFile="$(GeneratedSpecFlowAssemblyHooksFile)" OutputFile="$(ProjectDir)\\obj\\xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)" TextToReplace="PROJECT_ROOT_NAMESPACE" TextToReplaceWith="$(RootNamespace.Replace('.', '_'))" />
     <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
-      <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
+      <Compile Include="$(ProjectDir)\\obj\\xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)"/>
     </ItemGroup>
   </Target>
 
-  
+
 </Project>

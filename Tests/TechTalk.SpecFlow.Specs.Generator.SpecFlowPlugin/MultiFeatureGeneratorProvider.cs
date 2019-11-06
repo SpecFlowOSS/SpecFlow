@@ -2,6 +2,7 @@
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Parser;
 
@@ -19,11 +20,11 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
             foreach (var combination in TestRunCombinations.List)
             {
-                var combinationFeatureGenerator = new CombinationFeatureGenerator(container.Resolve<CodeDomHelper>(), container.Resolve<SpecFlowConfiguration>(), container.Resolve<IDecoratorRegistry>(), combination);
+                var combinationFeatureGenerator = new CombinationFeatureGenerator(container.Resolve<CodeDomHelper>(), container.Resolve<SpecFlowConfiguration>(), container.Resolve<IDecoratorRegistry>(), combination, container.Resolve<ProjectSettings>());
                 featureGenerators.Add(new KeyValuePair<Combination, IFeatureGenerator>(combination, combinationFeatureGenerator));
             }
 
-            _multiFeatureGenerator = new MultiFeatureGenerator(featureGenerators, new CombinationFeatureGenerator(container.Resolve<CodeDomHelper>(), container.Resolve<SpecFlowConfiguration>(), container.Resolve<IDecoratorRegistry>(), null));
+            _multiFeatureGenerator = new MultiFeatureGenerator(featureGenerators, new CombinationFeatureGenerator(container.Resolve<CodeDomHelper>(), container.Resolve<SpecFlowConfiguration>(), container.Resolve<IDecoratorRegistry>(), null, container.Resolve<ProjectSettings>()));
         }
 
 
