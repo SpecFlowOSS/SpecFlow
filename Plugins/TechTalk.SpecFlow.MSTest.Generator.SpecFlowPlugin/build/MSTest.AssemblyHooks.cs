@@ -3,7 +3,7 @@ using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
 
 [TestClass]
-public class MSTestAssemblyHooks
+internal class MSTestAssemblyHooks
 {
     [AssemblyInitialize]
     public static void AssemblyInitialize(TestContext testContext)
