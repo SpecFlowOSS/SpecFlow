@@ -128,7 +128,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Should_TryToSendAnalytics()
         {
             //ARRANGE
-            var analyticsEventProviderMock = new Mock<IAnalyticsEventProvider>();
             var analyticsTransmitterMock = GetAnalyticsTransmitterMock();
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
@@ -143,9 +142,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 
             //ASSERT
             result.Should().BeTrue();
-            analyticsEventProviderMock.Verify(ev => ev.CreateProjectCompilingEvent(It.IsAny<string>(), It.IsAny<string>(), 
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), 
-                Times.Once);
             analyticsTransmitterMock.Verify(sink => sink.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()), Times.Once);
         }
     }
