@@ -5,6 +5,7 @@ using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
 using System.Collections.Generic;
 using BoDi;
+using SpecFlow.Tools.MsBuild.Generation.Analytics;
 using TechTalk.SpecFlow.Analytics;
 using Xunit;
 using Xunit.Abstractions;
@@ -121,6 +122,31 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 
             //ASSERT
             result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_TryToSendAnalytics()
+        {
+            //ARRANGE
+            var analyticsEventProviderMock = new Mock<IAnalyticsEventProvider>();
+            var analyticsTransmitterMock = GetAnalyticsTransmitterMock();
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
+            {
+                ProjectPath = "ProjectPath.csproj",
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = analyticsTransmitterMock.Object
+            };
+
+            //ACT
+            var result = generateFeatureFileCodeBehindTask.Execute();
+
+            //ASSERT
+            result.Should().BeTrue();
+            analyticsEventProviderMock.Verify(ev => ev.CreateProjectCompilingEvent(It.IsAny<string>(), It.IsAny<string>(), 
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), 
+                Times.Once);
+            analyticsTransmitterMock.Verify(sink => sink.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()), Times.Once);
         }
     }
 }
