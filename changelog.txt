@@ -17,6 +17,7 @@ Fixes:
 + Adjust parameter names generation in scenario outlines https://github.com/techtalk/SpecFlow/issues/1694
 + specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761
 + specflow.json is copied to output directory automatically https://github.com/techtalk/SpecFlow/issues/1315
++ A scenario with an "Examples" block should be treated as a Scenario Outline according to Gherkin v6
 
 
 Changes:
