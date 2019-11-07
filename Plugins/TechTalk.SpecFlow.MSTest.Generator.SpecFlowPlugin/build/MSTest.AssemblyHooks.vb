@@ -5,11 +5,11 @@ Imports System.Reflection
 
 
 <TestClass>
-Friend NotInheritable Class MSTestAssemblyHooks
+Friend NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     <AssemblyInitialize>
     Public Shared Sub AssemblyInitialize(testContext As TestContext)
 
-        Dim currentAssembly As Assembly = GetType(MSTestAssemblyHooks).Assembly
+        Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
 
         TestRunnerManager.OnTestRunStart(currentAssembly)
     End Sub
@@ -17,7 +17,7 @@ Friend NotInheritable Class MSTestAssemblyHooks
     <AssemblyCleanup>
     Public Shared Sub AssemblyCleanup()
 
-        Dim currentAssembly As Assembly = GetType(MSTestAssemblyHooks).Assembly
+        Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
 
         TestRunnerManager.OnTestRunEnd(currentAssembly)
     End Sub
