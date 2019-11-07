@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public bool IsAssignableTo(IBindingType baseType)
         {
-            return Type.IsAssignableToFixed(baseType);
+            return Type.IsAssignableTo(baseType);
         }
 
         public override string ToString()
