@@ -12,20 +12,6 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             return string.Format("{2}.{0}({1})", bindingMethod.Name, string.Join(", ", bindingMethod.Parameters.Select(p => p.Type.Name).ToArray()), bindingMethod.Type.Name);
         }
 
-        public static bool IsAssignableTo(this IBindingType baseType, Type type)
-        {
-            if (baseType is RuntimeBindingType)
-                return type.IsAssignableFrom(((RuntimeBindingType)baseType).Type); //TODO: this is wrong! IsAssignableFrom have to be used in baseType.IsAssignableFrom(derivedType) form!
-
-            if (type.FullName == baseType.FullName)
-                return true;
-
-            if (type.BaseType != null && IsAssignableTo(baseType, type.BaseType))
-                return true;
-
-            return type.GetInterfaces().Any(_if => IsAssignableTo(baseType, _if));
-        }
-
         public static bool IsAssignableToFixed(this Type type, IBindingType baseType)
         {
             if (baseType is RuntimeBindingType runtimeBindingType)

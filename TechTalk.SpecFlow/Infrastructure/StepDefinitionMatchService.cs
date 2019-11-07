@@ -49,8 +49,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private bool CanConvertArg(object value, IBindingType typeToConvertTo, CultureInfo bindingCulture)
         {
-            //TODO: fix IsAssignableTo usage
-            if (typeToConvertTo.IsAssignableTo(value.GetType()))
+            if (value.GetType().IsAssignableToFixed(typeToConvertTo))
                 return true;
 
             return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, bindingCulture);
