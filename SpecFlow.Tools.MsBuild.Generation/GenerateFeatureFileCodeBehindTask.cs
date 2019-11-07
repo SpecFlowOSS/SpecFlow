@@ -115,11 +115,18 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         private void TransmitProjectCompilingEvent(IObjectContainer container)
         {
-            var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
-            var eventProvider = container.Resolve<IAnalyticsEventProvider>();
+            try
+            {
+                var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
+                var eventProvider = container.Resolve<IAnalyticsEventProvider>();
 
-            var projectCompilingEvent = eventProvider.CreateProjectCompilingEvent(MSBuildVersion, AssemblyName, TargetFrameworks, TargetFramework, ProjectGuid);
-            analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(projectCompilingEvent);
+                var projectCompilingEvent = eventProvider.CreateProjectCompilingEvent(MSBuildVersion, AssemblyName, TargetFrameworks, TargetFramework, ProjectGuid);
+                analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(projectCompilingEvent);
+            }
+            catch (Exception)
+            {
+                // catch all exceptions since we do not want to break the build simply because event creation failed
+            }
         }
 
         private void RegisterGenerationAndAnalyticsSpecific(IObjectContainer container)
