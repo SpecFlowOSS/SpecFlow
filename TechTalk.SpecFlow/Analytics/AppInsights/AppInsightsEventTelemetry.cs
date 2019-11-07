@@ -5,6 +5,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
 {
     /// <summary>
     /// For property names, check: https://github.com/microsoft/ApplicationInsights-Home/tree/master/EndpointSpecs/Schemas/Bond
+    /// For tags, check: https://github.com/microsoft/ApplicationInsights-Home/blob/master/EndpointSpecs/Schemas/Bond/ContextTagKeys.bond
     /// </summary>
     public class AppInsightsEventTelemetry
     {
@@ -20,11 +21,20 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
         [DataMember(Name = "data")]
         public TelemetryData TelemetryData { get; set; }
 
+        [DataMember(Name = "tags")]
+        public Dictionary<string, string> TelemetryTags { get; set; }
+
         public AppInsightsEventTelemetry(IAnalyticsEvent analyticsEvent)
         {
             DataTypeName = $"Microsoft.ApplicationInsights.{InstrumentationKey}.Event";
 
             EventDateTime = analyticsEvent.UtcDate.ToString("O");
+
+            TelemetryTags = new Dictionary<string, string>()
+            {
+                { "ai.user.id", analyticsEvent.UserId },
+                { "ai.user.accountId", analyticsEvent.UserId }
+            };
 
             TelemetryData = new TelemetryData
             {
