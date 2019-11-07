@@ -35,7 +35,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 
             sut.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>());
 
-            environmentTelemetryChecker.Verify(telemetryChecker => telemetryChecker.IsSpecFlowTelemetryEnabled(), Times.Once);
             analyticsTransmitterSink.Verify(sink => sink.TransmitEvent(It.IsAny<IAnalyticsEvent>()), Times.Never);
         }
 
