@@ -18,20 +18,39 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
             _unitTestProvider = unitTestProviderConfiguration.UnitTestProvider;
         }
 
-        public SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion, string assemblyName, string targetFrameworks, string targetFrameworkMoniker, string projectGuid)
+        public SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion, string assemblyName, string targetFrameworks, string targetFramework, string projectGuid)
         {
             var userId = _userUniqueIdStore.GetUserId();
-
             var unittestProvider = _unitTestProvider;
             var specFlowVersion = GetSpecFlowVersion();
             var isBuildServer = IsBuildServerMode();
             var hashedAssemblyName = ToSha256(assemblyName);
+            var platform = GetOSPlatform();
+            var platformDescription = RuntimeInformation.OSDescription;
 
             var compiledEvent = new SpecFlowProjectCompilingEvent(DateTime.UtcNow, userId,
-                platform, specFlowVersion, unittestProvider, isBuildServer,
-                hashedAssemblyName, targetFrameworks, targetFrameworkMoniker, msbuildVersion, 
+                platform, platformDescription, specFlowVersion, unittestProvider, isBuildServer,
+                hashedAssemblyName, targetFrameworks, targetFramework, msbuildVersion, 
                 projectGuid);
             return compiledEvent;
+        }
+
+        private string GetOSPlatform()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Windows";
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return "Linux";
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "OSX";
+            }
+
+            return "Platform cannot be identified";
         }
 
         private bool IsBuildServerMode()
@@ -45,15 +64,6 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
         private string GetSpecFlowVersion()
         {
             return ThisAssembly.AssemblyInformationalVersion;
-        }
-
-        private bool GetIsBuildServerMode(string buildServerMode)
-        {
-            if (string.IsNullOrEmpty(buildServerMode))
-            {
-                return false;
-            }
-            return bool.Parse(buildServerMode);
         }
 
         private string ToSha256(string inputString)

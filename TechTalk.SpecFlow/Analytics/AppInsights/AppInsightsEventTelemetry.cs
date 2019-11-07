@@ -47,12 +47,13 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
                         { "UtcDate", analyticsEvent.UtcDate.ToString("O") },
                         { "UserId", analyticsEvent.UserId },
                         { "Platform", analyticsEvent.Platform },
+                        { "PlatformDescription", analyticsEvent.PlatformDescription },
                         { "SpecFlowVersion", analyticsEvent.SpecFlowVersion },
                         { "UnitTestProvider", analyticsEvent.UnitTestProvider },
                         { "IsBuildServer", analyticsEvent.IsBuildServer.ToString() },
                         { "HashedAssemblyName", analyticsEvent.HashedAssemblyName },
                         { "TargetFrameworks", analyticsEvent.TargetFrameworks },
-                        { "TargetFrameworkMoniker", analyticsEvent.TargetFrameworkMoniker },
+                        { "TargetFramework", analyticsEvent.TargetFramework },
                     }
                 }
             };

@@ -5,6 +5,6 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
     public interface IAnalyticsEventProvider
     {
         SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion, 
-            string assemblyName, string targetFrameworks, string targetFrameworkMoniker, string projectGuid);
+            string assemblyName, string targetFrameworks, string targetFramework, string projectGuid);
     }
 }

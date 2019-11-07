@@ -9,11 +9,12 @@ namespace TechTalk.SpecFlow.Analytics
         DateTime UtcDate { get; }
         string UserId { get; }
         string Platform { get; }
+        string PlatformDescription { get; }
         string SpecFlowVersion { get; }
         string UnitTestProvider { get; }
         bool IsBuildServer { get; }
         string HashedAssemblyName { get;}
         string TargetFrameworks { get; }
-        string TargetFrameworkMoniker { get; }
+        string TargetFramework { get; }
     }
 }
