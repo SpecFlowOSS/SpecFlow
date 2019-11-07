@@ -81,14 +81,6 @@
     <PropertyGroup Condition="'$(TargetFrameworks)' != ''">
       <SpecFlow_TargetFrameworks>$(TargetFrameworks)</SpecFlow_TargetFrameworks>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TF_BUILD)' != '' OR '$(TEAMCITY_VERSION)' != ''">
-      <SpecFlow_BuildServerMode>true</SpecFlow_BuildServerMode>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(OSPlatform)' == ''">
-      <OSPlatform Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">Windows</OSPlatform>
-      <OSPlatform Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))">Linux</OSPlatform>
-      <OSPlatform Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))">OSX</OSPlatform>
-    </PropertyGroup>
 
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
@@ -97,8 +89,6 @@
       RootNamespace="$(RootNamespace)"
       GeneratorPlugins="@(SpecFlowGeneratorPlugins)" 
       
-      Platform="$(OSPlatform)"
-      BuildServerMode="$(SpecFlow_BuildServerMode)"
       MSBuildVersion="$(MSBuildVersion)"
       AssemblyName="$(AssemblyName)"
       TargetFrameworks="$(SpecFlow_TargetFrameworks)"

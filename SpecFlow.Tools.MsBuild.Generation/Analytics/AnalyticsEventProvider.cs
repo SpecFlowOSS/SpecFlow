@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Analytics.UserId;
@@ -18,13 +18,13 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
             _unitTestProvider = unitTestProviderConfiguration.UnitTestProvider;
         }
 
-        public SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string platform, string buildServerMode, string msbuildVersion, string assemblyName, string targetFrameworks, string targetFrameworkMoniker, string projectGuid)
+        public SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion, string assemblyName, string targetFrameworks, string targetFrameworkMoniker, string projectGuid)
         {
             var userId = _userUniqueIdStore.GetUserId();
 
             var unittestProvider = _unitTestProvider;
             var specFlowVersion = GetSpecFlowVersion();
-            var isBuildServer = GetIsBuildServerMode(buildServerMode);
+            var isBuildServer = IsBuildServerMode();
             var hashedAssemblyName = ToSha256(assemblyName);
 
             var compiledEvent = new SpecFlowProjectCompilingEvent(DateTime.UtcNow, userId,
@@ -34,10 +34,17 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
             return compiledEvent;
         }
 
+        private bool IsBuildServerMode()
+        {
+            var isRunByTfs = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TF_BUILD"));
+            var isRunByTeamCity = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
+
+            return isRunByTfs || isRunByTeamCity;
+        }
+
         private string GetSpecFlowVersion()
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            return version.ToString(2);
+            return ThisAssembly.AssemblyInformationalVersion;
         }
 
         private bool GetIsBuildServerMode(string buildServerMode)

@@ -32,9 +32,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         [Output]
         public ITaskItem[] GeneratedFiles { get; private set; }
-
-        public string Platform { get; set; }
-        public string BuildServerMode { get; set; }
+        
         public string MSBuildVersion { get; set; }
         public string AssemblyName { get; set; }
         public string TargetFrameworks { get; set; }
@@ -120,7 +118,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
             var eventProvider = container.Resolve<IAnalyticsEventProvider>();
 
-            var projectCompilingEvent = eventProvider.CreateProjectCompilingEvent(Platform, BuildServerMode, MSBuildVersion, AssemblyName, TargetFrameworks, TargetFrameworkMoniker, ProjectGuid);
+            var projectCompilingEvent = eventProvider.CreateProjectCompilingEvent(MSBuildVersion, AssemblyName, TargetFrameworks, TargetFrameworkMoniker, ProjectGuid);
             analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(projectCompilingEvent);
         }
 
