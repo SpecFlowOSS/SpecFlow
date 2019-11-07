@@ -9,24 +9,23 @@ namespace TechTalk.SpecFlow.Analytics
     {
         private readonly IAppInsightsEventSerializer _appInsightsEventSerializer;
         private readonly Uri _appInsightsDataCollectionEndPoint = new Uri("https://dc.services.visualstudio.com/v2/track");
+        private readonly HttpClient _httpClient;
 
-        public HttpClientAnalyticsTransmitterSink(IAppInsightsEventSerializer appInsightsEventSerializer)
+        public HttpClientAnalyticsTransmitterSink(IAppInsightsEventSerializer appInsightsEventSerializer, HttpClientWrapper httpClientWrapper)
         {
             _appInsightsEventSerializer = appInsightsEventSerializer;
+            _httpClient = httpClientWrapper.HttpClient;
         }
 
         public async Task TransmitEvent(IAnalyticsEvent analyticsEvent)
         {
             try
             {
-                using (var httpClient = new HttpClient())
-                {
-                    var serializedEventTelemetry = _appInsightsEventSerializer.SerializeAnalyticsEvent(analyticsEvent);
+                var serializedEventTelemetry = _appInsightsEventSerializer.SerializeAnalyticsEvent(analyticsEvent);
 
-                    using (var httpContent = new ByteArrayContent(serializedEventTelemetry))
-                    {
-                        await httpClient.PostAsync(_appInsightsDataCollectionEndPoint, httpContent);
-                    }
+                using (var httpContent = new ByteArrayContent(serializedEventTelemetry))
+                {
+                    await _httpClient.PostAsync(_appInsightsDataCollectionEndPoint, httpContent);
                 }
             }
             catch (Exception)

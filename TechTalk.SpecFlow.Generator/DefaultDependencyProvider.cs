@@ -55,6 +55,7 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
             container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
             container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
+            container.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
 
             RegisterUnitTestGeneratorProviders(container);
         }

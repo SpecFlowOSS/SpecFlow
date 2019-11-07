@@ -96,6 +96,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
             container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
             container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
+            container.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
