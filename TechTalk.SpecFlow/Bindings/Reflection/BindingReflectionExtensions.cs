@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         public static bool IsAssignableTo(this IBindingType baseType, Type type)
         {
             if (baseType is RuntimeBindingType)
-                return type.IsAssignableFrom(((RuntimeBindingType)baseType).Type);
+                return type.IsAssignableFrom(((RuntimeBindingType)baseType).Type); //TODO: this is wrong! IsAssignableFrom have to be used in baseType.IsAssignableFrom(derivedType) form!
 
             if (type.FullName == baseType.FullName)
                 return true;
@@ -24,6 +24,31 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
                 return true;
 
             return type.GetInterfaces().Any(_if => IsAssignableTo(baseType, _if));
+        }
+
+        public static bool IsAssignableToFixed(this Type type, IBindingType baseType)
+        {
+            if (baseType is RuntimeBindingType runtimeBindingType)
+                return runtimeBindingType.Type.IsAssignableFrom(type);
+
+            if (type.FullName == baseType.FullName)
+                return true;
+
+            if (type.BaseType != null && IsAssignableToFixed(type.BaseType, baseType))
+                return true;
+
+            return type.GetInterfaces().Any(_if => IsAssignableToFixed(_if, baseType));
+        }
+
+        public static bool IsAssignableFrom(this Type baseType, IBindingType type)
+        {
+            if (type is IPolymorphicBindingType polymorphicBindingType)
+                return polymorphicBindingType.IsAssignableTo(new RuntimeBindingType(baseType));
+
+            if (type.FullName == baseType.FullName)
+                return true;
+
+            return false;
         }
 
         public static bool MethodEquals(this IBindingMethod method1, IBindingMethod method2)
