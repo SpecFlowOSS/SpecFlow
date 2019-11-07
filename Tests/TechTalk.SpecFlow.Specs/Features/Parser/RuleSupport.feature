@@ -1,4 +1,4 @@
-﻿@wipgn
+﻿@gherkin6
 Feature: Rule Support
 
 The (optional) Rule keyword has been added in Gherkin v6.  
