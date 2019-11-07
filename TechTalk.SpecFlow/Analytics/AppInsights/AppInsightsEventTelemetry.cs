@@ -24,6 +24,8 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
         [DataMember(Name = "tags")]
         public Dictionary<string, string> TelemetryTags { get; set; }
 
+        private const string DefaultValue = "undefined";
+
         public AppInsightsEventTelemetry(IAnalyticsEvent analyticsEvent)
         {
             DataTypeName = $"Microsoft.ApplicationInsights.{InstrumentationKey}.Event";
@@ -49,9 +51,9 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
                         { "Platform", analyticsEvent.Platform },
                         { "PlatformDescription", analyticsEvent.PlatformDescription },
                         { "SpecFlowVersion", analyticsEvent.SpecFlowVersion },
-                        { "UnitTestProvider", analyticsEvent.UnitTestProvider },
+                        { "UnitTestProvider", analyticsEvent.UnitTestProvider ?? DefaultValue },
                         { "IsBuildServer", analyticsEvent.IsBuildServer.ToString() },
-                        { "HashedAssemblyName", analyticsEvent.HashedAssemblyName },
+                        { "HashedAssemblyName", analyticsEvent.HashedAssemblyName ?? DefaultValue },
                         { "TargetFrameworks", analyticsEvent.TargetFrameworks },
                         { "TargetFramework", analyticsEvent.TargetFramework },
                     }
@@ -61,7 +63,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
             if (analyticsEvent is SpecFlowProjectCompilingEvent specFlowProjectCompiledEvent)
             {
                 TelemetryData.TelemetryDataItem.Properties.Add("MSBuildVersion", specFlowProjectCompiledEvent.MSBuildVersion);
-                TelemetryData.TelemetryDataItem.Properties.Add("ProjectGuid", specFlowProjectCompiledEvent.ProjectGuid);
+                TelemetryData.TelemetryDataItem.Properties.Add("ProjectGuid", specFlowProjectCompiledEvent.ProjectGuid ?? DefaultValue);
             }
         }
     }

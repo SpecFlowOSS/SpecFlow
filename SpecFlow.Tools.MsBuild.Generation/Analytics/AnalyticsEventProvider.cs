@@ -30,7 +30,7 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
 
             var compiledEvent = new SpecFlowProjectCompilingEvent(DateTime.UtcNow, userId,
                 platform, platformDescription, specFlowVersion, unittestProvider, isBuildServer,
-                hashedAssemblyName, targetFrameworks, targetFramework, msbuildVersion, 
+                hashedAssemblyName, targetFrameworks, targetFramework, msbuildVersion,
                 projectGuid);
             return compiledEvent;
         }
@@ -70,7 +70,7 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
         {
             if (string.IsNullOrEmpty(inputString))
             {
-                return string.Empty;
+                return null;
             }
             var crypt = new System.Security.Cryptography.SHA256Managed();
             var stringBuilder = new StringBuilder();
