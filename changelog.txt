@@ -11,6 +11,7 @@ Features:
 
 + cucumber-messages can be enabled via specflow.json and app.config
 + file sinks for cucumber-messages can be configured
++ Support discovering step definitions from attributes that are derived from Given,When,Then or StepDefinition attributes (related to https://github.com/techtalk/SpecFlow/issues/1745)
 
 Fixes: 
 + AfterTestRun hook can take longer than 100ms on .NET Core https://github.com/techtalk/SpecFlow/issues/1348
@@ -18,6 +19,7 @@ Fixes:
 + specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761
 + specflow.json is copied to output directory automatically https://github.com/techtalk/SpecFlow/issues/1315
 + A scenario with an "Examples" block should be treated as a Scenario Outline according to Gherkin v6
++ step definition method with "object" parameter type might not match
 
 
 Changes:

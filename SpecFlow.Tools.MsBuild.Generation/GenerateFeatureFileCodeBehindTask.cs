@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Resources;
+using BoDi;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using SpecFlow.Tools.MsBuild.Generation.Analytics;
+using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Task
     {
-        public GenerateFeatureFileCodeBehindTask()
-        {
-            CodeBehindGenerator = new FeatureFileCodeBehindGenerator(Log);
-        }
-
         public IFeatureFileCodeBehindGenerator CodeBehindGenerator { get; set; }
+        public IAnalyticsTransmitter AnalyticsTransmitter { get; set; }
 
         [Required]
         public string ProjectPath { get; set; }
@@ -32,6 +32,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
         [Output]
         public ITaskItem[] GeneratedFiles { get; private set; }
+        
+        public string MSBuildVersion { get; set; }
+        public string AssemblyName { get; set; }
+        public string TargetFrameworks { get; set; }
+        public string TargetFramework { get; set; }
+        public string ProjectGuid { get; set; }
 
         public override bool Execute()
         {
@@ -55,23 +61,21 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-                var generator = CodeBehindGenerator ?? new FeatureFileCodeBehindGenerator(Log);
-
                 Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
 
                 var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
 
                 var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
 
-                var generatedFiles = generator.GenerateFilesForProject(
-                    ProjectPath,
-                    RootNamespace,
-                    featureFiles,
-                    generatorPlugins,
-                    ProjectFolder,
-                    OutputPath);
+                var specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(ProjectPath), RootNamespace);
+                using (var container = GeneratorContainerBuilder.CreateContainer(specFlowProject.ProjectSettings.ConfigurationHolder, specFlowProject.ProjectSettings, generatorPlugins))
+                {
+                    RegisterGenerationAndAnalyticsSpecific(container);
 
-                GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+                    GeneratedFiles = GenerateCodeBehindFilesForProject(container, featureFiles);
+
+                    TransmitProjectCompilingEvent(container);
+                }
 
                 return !Log.HasLoggedErrors;
             }
@@ -98,15 +102,63 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
         }
 
+        private ITaskItem[] GenerateCodeBehindFilesForProject(IObjectContainer container, List<string> featureFiles)
+        {
+            var generator = container.Resolve<IFeatureFileCodeBehindGenerator>();
+            var generatedFiles = generator.GenerateFilesForProject(
+                featureFiles,
+                ProjectFolder,
+                OutputPath);
+
+            return generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
+        }
+
+        private void TransmitProjectCompilingEvent(IObjectContainer container)
+        {
+            try
+            {
+                var analyticsTransmitter = container.Resolve<IAnalyticsTransmitter>();
+                var eventProvider = container.Resolve<IAnalyticsEventProvider>();
+
+                var projectCompilingEvent = eventProvider.CreateProjectCompilingEvent(MSBuildVersion, AssemblyName, TargetFrameworks, TargetFramework, ProjectGuid);
+                analyticsTransmitter.TransmitSpecflowProjectCompilingEvent(projectCompilingEvent);
+            }
+            catch (Exception)
+            {
+                // catch all exceptions since we do not want to break the build simply because event creation failed
+            }
+        }
+
+        private void RegisterGenerationAndAnalyticsSpecific(IObjectContainer container)
+        {
+            container.RegisterInstanceAs(Log);
+            container.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
+
+            if (CodeBehindGenerator is null)
+            {
+                container.RegisterTypeAs<FeatureFileCodeBehindGenerator, IFeatureFileCodeBehindGenerator>();
+            }
+            else
+            {
+                container.RegisterInstanceAs(CodeBehindGenerator);
+            }
+
+            if (AnalyticsTransmitter is null)
+            {
+                container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
+            }
+            else
+            {
+                container.RegisterInstanceAs(AnalyticsTransmitter);
+            }
+        }
+
         private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             Log.LogWithNameTag(Log.LogMessage, args.Name);
-            
 
             return null;
         }
 
     }
-
-
 }

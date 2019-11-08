@@ -4,6 +4,9 @@ using Microsoft.Build.Utilities;
 using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
 using System.Collections.Generic;
+using BoDi;
+using SpecFlow.Tools.MsBuild.Generation.Analytics;
+using TechTalk.SpecFlow.Analytics;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -18,26 +21,36 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             _output = output;
         }
 
-        [Fact]
-        public void Execute_OnlyRequiredPropertiesAreSet_ShouldWork()
+        private Mock<IFeatureFileCodeBehindGenerator> GetFeatureFileCodeBehindGeneratorMock()
         {
-            //ARRANGE
             var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
             generatorMock
                 .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
                     It.IsAny<List<string>>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
                 .Returns(new List<string>());
+            return generatorMock;
+        }
 
+        private Mock<IAnalyticsTransmitter> GetAnalyticsTransmitterMock()
+        {
+            var analyticsTransmitterMock = new Mock<IAnalyticsTransmitter>();
+            analyticsTransmitterMock.Setup(at => at.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()))
+                .Callback(() => { });
+            return analyticsTransmitterMock;
+        }
+
+        [Fact]
+        public void Execute_OnlyRequiredPropertiesAreSet_ShouldWork()
+        {
+            //ARRANGE
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 BuildEngine = new MockBuildEngine(_output),
-                CodeBehindGenerator = generatorMock.Object
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = GetAnalyticsTransmitterMock().Object
             };
 
             //ACT
@@ -51,25 +64,15 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_AllPropertiesAreSet_ShouldWork()
         {
             //ARRANGE
-            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
-            generatorMock
-                .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
-                    It.IsAny<List<string>>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()))
-                .Returns(new List<string>());
-
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 FeatureFiles = new TaskItem[0],
                 GeneratorPlugins = new TaskItem[0],
                 BuildEngine = new MockBuildEngine(_output),
-                CodeBehindGenerator = generatorMock.Object
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = GetAnalyticsTransmitterMock().Object
             };
 
             //ACT
@@ -83,24 +86,14 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_FeatureFilesNotSet_ShouldWork()
         {
             //ARRANGE
-            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
-            generatorMock
-                .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
-                    It.IsAny<List<string>>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()))
-                .Returns(new List<string>());
-
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 GeneratorPlugins = new TaskItem[0],
                 BuildEngine = new MockBuildEngine(_output),
-                CodeBehindGenerator = generatorMock.Object
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = GetAnalyticsTransmitterMock().Object
             };
 
             //ACT
@@ -114,24 +107,14 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         public void Execute_GeneratorPluginsNotSet_ShouldWork()
         {
             //ARRANGE
-            var generatorMock = new Mock<IFeatureFileCodeBehindGenerator>();
-            generatorMock
-                .Setup(m => m.GenerateFilesForProject(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<List<string>>(),
-                    It.IsAny<List<string>>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()))
-                .Returns(new List<string>());
-
             var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
             {
                 RootNamespace = "RootNamespace",
-                ProjectPath = "ProjectPath",
+                ProjectPath = "ProjectPath.csproj",
                 FeatureFiles = new TaskItem[0],
                 BuildEngine = new MockBuildEngine(_output),
-                CodeBehindGenerator = generatorMock.Object
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = GetAnalyticsTransmitterMock().Object
             };
 
             //ACT
@@ -139,6 +122,27 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
 
             //ASSERT
             result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_TryToSendAnalytics()
+        {
+            //ARRANGE
+            var analyticsTransmitterMock = GetAnalyticsTransmitterMock();
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
+            {
+                ProjectPath = "ProjectPath.csproj",
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = analyticsTransmitterMock.Object
+            };
+
+            //ACT
+            var result = generateFeatureFileCodeBehindTask.Execute();
+
+            //ASSERT
+            result.Should().BeTrue();
+            analyticsTransmitterMock.Verify(sink => sink.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()), Times.Once);
         }
     }
 }
