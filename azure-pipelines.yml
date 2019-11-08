@@ -18,6 +18,7 @@ jobs:
   parameters:
     name: Windows
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     pool:
       name: 'Hosted Windows 2019 with VS2019'
 
