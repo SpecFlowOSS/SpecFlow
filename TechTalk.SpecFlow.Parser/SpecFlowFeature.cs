@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gherkin.Ast;
 
@@ -13,7 +14,12 @@ namespace TechTalk.SpecFlow.Parser
 
             if (Children != null)
             {
-                ScenarioDefinitions = Children.Where(child => child is StepsContainer).Cast<StepsContainer>().Where(child => !(child is Background)).ToList();
+                Func<IEnumerable<IHasLocation>, IEnumerable<StepsContainer>> getScenarioDefinitions =
+                    items => items.OfType<StepsContainer>().Where(child => !(child is Background));
+                ScenarioDefinitions = 
+                    getScenarioDefinitions(Children)
+                        .Concat(Children.OfType<Rule>().SelectMany(rule => getScenarioDefinitions(rule.Children)))
+                        .ToList();
 
                 var background = Children.SingleOrDefault(child => child is Background);
 

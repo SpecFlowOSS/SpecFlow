@@ -11,6 +11,7 @@ Features:
 
 + cucumber-messages can be enabled via specflow.json and app.config
 + file sinks for cucumber-messages can be configured
++ support for Gherkin v6 "Rule" keyword
 + Support discovering step definitions from attributes that are derived from Given,When,Then or StepDefinition attributes (related to https://github.com/techtalk/SpecFlow/issues/1745)
 
 Fixes: 
