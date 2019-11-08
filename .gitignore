@@ -389,3 +389,6 @@ GitExtensions.settings.backup
 
 # Nerdbank.GitVersioning
 Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs
+
+#Analytics
+AppInsightsInstrumentationKey.cs

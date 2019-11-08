@@ -28,6 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.35" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="BoDi" Version="1.4.1" />
     <PackageReference Include="Utf8Json" Version="1.3.7" />
@@ -45,5 +47,22 @@
   <PropertyGroup Condition="'$(TargetFramework)'=='$(SpecFlow_Core_Runtime_TFM)'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AppInsightsInstrumentationKey)' == ''">
+    <!-- This is only the testing instance's instrumentation key -->
+    <AppInsightsInstrumentationKey>27cfb992-6c29-4bc8-8093-78d95e275b3a</AppInsightsInstrumentationKey>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" />
+    <None Include="Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" />
+  </ItemGroup>
+
+  <Target Name="RunTokenReplace" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
+    <ReplaceTextInFileTask InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" TextToReplace="&lt;InstrumentationKeyGoesHere&gt;" TextToReplaceWith="$(AppInsightsInstrumentationKey)" />
+    <ItemGroup>
+      <Compile Include="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" />
+    </ItemGroup>
+  </Target>
 
 </Project>
