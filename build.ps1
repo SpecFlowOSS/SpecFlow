@@ -1,8 +1,11 @@
 param (
- [string]$Configuration = "Debug"
+ [string]$Configuration = "Debug",
+ [string]$appInsightsInstrumentationKey = ""
 )
 
 $msbuildPath = "msbuild"
+
+Write-Host ($appInsightsInstrumentationKey -eq "")
 
 if ($IsWindows){
   $vswherePath = [System.Environment]::ExpandEnvironmentVariables("%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe")
@@ -19,4 +22,8 @@ if ($IsWindows){
   Write-Host $msbuildPath
 }
 
-& $msbuildPath /Restore ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false
+if ($appInsightsInstrumentationKey) {
+  $extraArgs = "-property:AppInsightsInstrumentationKey=$appInsightsInstrumentationKey"
+}
+
+& $msbuildPath /Restore ./TechTalk.SpecFlow.sln /property:Configuration=$Configuration /binaryLogger:msbuild.$Configuration.binlog /nodeReuse:false $extraArgs

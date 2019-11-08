@@ -4,6 +4,7 @@ parameters:
   nugetVersion: 4.6.2
   sdkVersion: 3.0.100
   artifactFileName: ''
+  appInsightsInstrumentationKey: ''
 
 jobs:
 - job: ${{ parameters.name }}
@@ -31,7 +32,7 @@ jobs:
     inputs: 
       filePath: build.ps1
       workingDirectory: ./
-      arguments: Debug
+      arguments: Debug -appInsightsInstrumentationKey ${{ parameters.appInsightsInstrumentationKey }}
       pwsh: true
 
     displayName: 'restore & build Debug'
@@ -40,7 +41,7 @@ jobs:
     inputs: 
       filePath: build.ps1
       workingDirectory: ./
-      arguments: Release
+      arguments: Release -appInsightsInstrumentationKey ${{ parameters.appInsightsInstrumentationKey }}
       pwsh: true
 
     displayName: 'restore & build Release'
