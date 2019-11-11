@@ -13,8 +13,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
     public class ScenarioOutlineParserTests
     {
         [Fact]
-        public void Parser_throws_meaningful_exception_when_Examples_are_missing_in_Scenario_Outline()
+        public void Parser_doesnt_throw_exception_when_Examples_are_missing_in_Scenario_Outline()
         {
+            // this is accepted by Gherkin v6 and treated as Scenario
             var feature = @"Feature: Missing
                             Scenario Outline: No Examples";
 
@@ -22,8 +23,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(feature), null);
 
-            act.Should().Throw<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'No Examples' has no examples defined")
-                .And.Location.Line.Should().Be(2);
+            act.Should().NotThrow();
         }
 
         [Fact]
@@ -63,8 +63,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Fact]
-        public void Parser_throws_meaningful_exception_when_Examples_are_missing_in_multiple_Scenario_Outlines()
+        public void Parser_doesnt_throw_exception_when_Examples_are_missing_in_multiple_Scenario_Outlines()
         {
+            // these are accepted by Gherkin v6 and treated as Scenarios
             var feature = @"Feature: Missing
                             Scenario Outline: No Examples
                             Scenario Outline: Still no Examples";
@@ -73,10 +74,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             Action act = () => parser.Parse(new StringReader(feature), null);
 
-            var expectedErrors = new List<SemanticParserException> { new SemanticParserException("Scenario Outline 'No Examples' has no examples defined", new Location(2, 29)),
-                new SemanticParserException("Scenario Outline 'Still no Examples' has no examples defined", new Location(3, 29))};
-
-            act.Should().Throw<CompositeParserException>().And.Errors.Should().BeEquivalentTo(expectedErrors);
+            act.Should().NotThrow();
         }
 
         [Fact]
