@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Text;
-using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.UnitTestProvider;
+using System.Runtime.InteropServices;
 
-namespace SpecFlow.Tools.MsBuild.Generation.Analytics
+namespace TechTalk.SpecFlow.Analytics
 {
     public class AnalyticsEventProvider : IAnalyticsEventProvider
     {
@@ -21,7 +21,7 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
         public SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion, string assemblyName, string targetFrameworks, string targetFramework, string projectGuid)
         {
             var userId = _userUniqueIdStore.GetUserId();
-            var unittestProvider = _unitTestProvider;
+            var unitTestProvider = _unitTestProvider;
             var specFlowVersion = GetSpecFlowVersion();
             var isBuildServer = IsBuildServerMode();
             var hashedAssemblyName = ToSha256(assemblyName);
@@ -29,10 +29,28 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
             var platformDescription = RuntimeInformation.OSDescription;
 
             var compiledEvent = new SpecFlowProjectCompilingEvent(DateTime.UtcNow, userId,
-                platform, platformDescription, specFlowVersion, unittestProvider, isBuildServer,
+                platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer,
                 hashedAssemblyName, targetFrameworks, targetFramework, msbuildVersion,
                 projectGuid);
             return compiledEvent;
+        }
+
+        public SpecFlowProjectRunningEvent CreateProjectRunningEvent(string testAssemblyName)
+        {
+            var userId = _userUniqueIdStore.GetUserId();
+            var unitTestProvider = _unitTestProvider;
+            var specFlowVersion = GetSpecFlowVersion();
+            var isBuildServer = IsBuildServerMode();
+            var targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
+            
+            var hashedAssemblyName = ToSha256(testAssemblyName);
+            var platform = GetOSPlatform();
+            var platformDescription = RuntimeInformation.OSDescription;
+
+            var runningEvent = new SpecFlowProjectRunningEvent(DateTime.UtcNow, userId,
+                platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer,
+                hashedAssemblyName, null, targetFramework);
+            return runningEvent;
         }
 
         private string GetOSPlatform()
@@ -80,6 +98,16 @@ namespace SpecFlow.Tools.MsBuild.Generation.Analytics
                 stringBuilder.Append(theByte.ToString("x2"));
             }
             return stringBuilder.ToString();
+        }
+
+        private string GetNetCoreVersion()
+        {
+            var assembly = typeof(System.Runtime.GCSettings).GetTypeInfo().Assembly;
+            var assemblyPath = assembly.CodeBase.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+            int netCoreAppIndex = Array.IndexOf(assemblyPath, "Microsoft.NETCore.App");
+            if (netCoreAppIndex > 0 && netCoreAppIndex < assemblyPath.Length - 2)
+                return assemblyPath[netCoreAppIndex + 1];
+            return null;
         }
     }
 }

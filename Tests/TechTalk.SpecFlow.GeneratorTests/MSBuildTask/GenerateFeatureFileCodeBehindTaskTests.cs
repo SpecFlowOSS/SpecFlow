@@ -5,7 +5,6 @@ using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
 using System.Collections.Generic;
 using BoDi;
-using SpecFlow.Tools.MsBuild.Generation.Analytics;
 using TechTalk.SpecFlow.Analytics;
 using Xunit;
 using Xunit.Abstractions;

@@ -6,7 +6,6 @@ using System.Linq;
 using BoDi;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using SpecFlow.Tools.MsBuild.Generation.Analytics;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Project;
