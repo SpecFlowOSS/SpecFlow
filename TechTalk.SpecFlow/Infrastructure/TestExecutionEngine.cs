@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using BoDi;
 using Io.Cucumber.Messages;
+using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.CommonModels;
@@ -37,6 +38,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly ITestObjectResolver _testObjectResolver;
         private readonly ITestTracer _testTracer;
         private readonly IUnitTestRuntimeProvider _unitTestRuntimeProvider;
+        private readonly IAnalyticsEventProvider _analyticsEventProvider;
+        private readonly IAnalyticsTransmitter _analyticsTransmitter;
         private CultureInfo _defaultBindingCulture = CultureInfo.CurrentCulture;
 
         private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
@@ -63,7 +66,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             ITestResultFactory testResultFactory,
             ITestPendingMessageFactory testPendingMessageFactory,
             ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestRunResultCollector testRunResultCollector,
+            ITestRunResultCollector testRunResultCollector, 
+            IAnalyticsEventProvider analyticsEventProvider, 
+            IAnalyticsTransmitter analyticsTransmitter, 
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -86,6 +91,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testPendingMessageFactory = testPendingMessageFactory;
             _testUndefinedMessageFactory = testUndefinedMessageFactory;
             _testRunResultCollector = testRunResultCollector;
+            _analyticsEventProvider = analyticsEventProvider;
+            _analyticsTransmitter = analyticsTransmitter;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -97,6 +104,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (_testRunnerStartExecuted)
             {
                 return;
+            }
+            
+            try
+            {
+                var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent();
+                _analyticsTransmitter.TransmitSpecflowProjectRunningEvent(projectRunningEvent);
+            }
+            catch (Exception)
+            {
+                // catch all exceptions since we do not want to break anything
             }
 
             _testRunnerStartExecuted = true;
