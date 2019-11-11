@@ -1,4 +1,7 @@
 using BoDi;
+using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Analytics.AppInsights;
+using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Generation;
@@ -42,6 +45,16 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
             container.RegisterTypeAs<SpecFlowGherkinParserFactory, IGherkinParserFactory>();
+
+            container.RegisterTypeAs<FileUserIdStore, IUserUniqueIdStore>();
+            container.RegisterTypeAs<FileService, IFileService>();
+            container.RegisterTypeAs<DirectoryService, IDirectoryService>();
+
+            container.RegisterTypeAs<EnvironmentSpecFlowTelemetryChecker, IEnvironmentSpecFlowTelemetryChecker>();
+            container.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
+            container.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
+            container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
+            container.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
 
             RegisterUnitTestGeneratorProviders(container);
         }

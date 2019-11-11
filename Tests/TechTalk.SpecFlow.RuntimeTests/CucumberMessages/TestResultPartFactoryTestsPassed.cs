@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
@@ -39,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
 
             // ASSERT
             actualTestResult.Should().BeAssignableTo<ISuccess<TestResult>>().Which
-                .Result.DurationNanoseconds.Should().Be(expectedNanoseconds);
+                .Result.Duration.ToNanoseconds().Should().Be(expectedNanoseconds);
         }
 
         [Fact(DisplayName = @"BuildPassedResult should return a TestResult with empty message")]

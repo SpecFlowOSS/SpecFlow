@@ -2,6 +2,10 @@
 
   <Import Project="SpecFlow.Tools.MsBuild.Generation.props" Condition="'$(_SpecFlowPropsImported)'==''"/>
 
+  <PropertyGroup>
+    <_SpecFlow_Tools_MsBuild_Generation_Imported>true</_SpecFlow_Tools_MsBuild_Generation_Imported>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(BuildServerMode)' == ''">
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'!='true'">true</BuildServerMode>
@@ -44,7 +48,7 @@
              DesignTime="true"
              Visible="true"
              Condition="'$(EnableDefaultCompileItems)' == 'true'" />
-    
+
   </ItemGroup>
 
 
@@ -75,12 +79,30 @@
       <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">Features.Generated</SpecFlowCodeBehindOutputPath>
     </PropertyGroup> -->
 
+    <PropertyGroup Condition="'$(TargetFrameworkVersion)' != ''">
+      <SpecFlow_TargetFramework>$(TargetFrameworkVersion)</SpecFlow_TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFramework)' != ''">
+      <SpecFlow_TargetFramework>$(TargetFramework)</SpecFlow_TargetFramework>
+      <SpecFlow_TargetFrameworks>$(TargetFramework)</SpecFlow_TargetFrameworks>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFrameworks)' != ''">
+      <SpecFlow_TargetFrameworks>$(TargetFrameworks)</SpecFlow_TargetFrameworks>
+    </PropertyGroup>
+
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
       FeatureFiles="@(SpecFlowFeatureFiles)"
       RootNamespace="$(RootNamespace)"
-      GeneratorPlugins="@(SpecFlowGeneratorPlugins)" >
+      GeneratorPlugins="@(SpecFlowGeneratorPlugins)" 
+      
+      MSBuildVersion="$(MSBuildVersion)"
+      AssemblyName="$(AssemblyName)"
+      TargetFrameworks="$(SpecFlow_TargetFrameworks)"
+      TargetFramework="$(SpecFlow_TargetFramework)"
+      ProjectGuid="$(ProjectGuid)"
+      >
 
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />
     </GenerateFeatureFileCodeBehindTask>

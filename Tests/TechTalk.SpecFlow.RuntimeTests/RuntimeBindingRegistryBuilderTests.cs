@@ -134,6 +134,63 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
         }
 
+        [Binding]
+        public class BindingClassWithStepDefinitionAttributes
+        {
+            [Given("I have done something")]
+            public void GivenIHaveDoneSomething()
+            {
+            }
+
+            [When("I do something")]
+            public void WhenIDoSomething()
+            {
+            }
+
+            [Then("something should happen")]
+            public void ThenSomethingShouldHappen()
+            {
+            }
+        }
+
+        [Binding]
+        public class BindingClassWithTranslatedStepDefinitionAttributes
+        {
+            public class AngenommenAttribute : GivenAttribute
+            {
+                public AngenommenAttribute(string regex) : base(regex, "de-DE")
+                {
+                }
+            }
+            public class WennAttribute : WhenAttribute
+            {
+                public WennAttribute(string regex) : base(regex, "de-DE")
+                {
+                }
+            }
+            public class DannAttribute : ThenAttribute
+            {
+                public DannAttribute(string regex) : base(regex, "de-DE")
+                {
+                }
+            }
+
+            [Angenommen("mache ich was")]
+            public void AngenommenMacheIchWas()
+            {
+            }
+
+            [Wenn("ich etwas mache")]
+            public void WennIchEtwasMache()
+            {
+            }
+
+            [Dann("sollte etwas passieren")]
+            public void DannSollteEtwasPassieren()
+            {
+            }
+        }
+
         [Fact]
         public void ShouldFindBinding_WithDefaultOrder()
         {
@@ -277,6 +334,32 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.Equal(1,
                 bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag1BeforeScenario" && s.IsScoped));
+        }
+
+        [Fact]
+        public void ShouldFindStepDefinitionsWithStepDefinitionAttributes()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
+
+            builder.BuildBindingsFromType(typeof(BindingClassWithStepDefinitionAttributes));
+
+            Assert.Equal(3, bindingSourceProcessorStub.StepDefinitionBindings.Count);
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.When));
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Then));
+        }
+
+        [Fact]
+        public void ShouldFindStepDefinitionsWithTranslatedAttributes()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
+
+            builder.BuildBindingsFromType(typeof(BindingClassWithTranslatedStepDefinitionAttributes));
+
+            Assert.Equal(3, bindingSourceProcessorStub.StepDefinitionBindings.Count);
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.When));
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Then));
         }
     }
 }

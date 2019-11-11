@@ -9,6 +9,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         void CollectTestResultForScenario(ScenarioInfo scenarioInfo, TestResult testResult);
 
-        IResult<TestRunResult> StopCollecting();
+        IResult<TestRunResult> GetCurrentResult();
     }
 }

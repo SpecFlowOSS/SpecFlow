@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using FluentAssertions;
 using Moq;
@@ -108,5 +110,35 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var result = _stepArgumentTypeConverter.Convert("1", typeof (Guid), _enUSCulture);
             result.Should().Be(new Guid("10000000-0000-0000-0000-000000000000"));
         }
+        
+        [Fact]
+        public void ShouldUseATypeConverterWhenAvailable()
+        {
+            var originalValue = new DateTimeOffset(2019, 7, 29, 0, 0, 0, TimeSpan.Zero);
+            var result = _stepArgumentTypeConverter.Convert(originalValue, typeof (TestClass), _enUSCulture);
+            result.Should().BeOfType(typeof(TestClass));
+            result.As<TestClass>().Time.Should().Be(originalValue);
+        }
+
+        [TypeConverter(typeof(TessClassTypeConverter))]
+        class TestClass
+        {
+            public DateTimeOffset Time { get; set; }
+            
+            class TessClassTypeConverter : TypeConverter
+            {
+                public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+                {
+                    return sourceType == typeof(DateTimeOffset);
+                }
+
+                public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+                {
+                    return new TestClass { Time = (DateTimeOffset) value };
+                }
+            }
+        }
+
+   
     }
 }

@@ -2,7 +2,7 @@
 
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.3</LangVersion>
    
     <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
     <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>

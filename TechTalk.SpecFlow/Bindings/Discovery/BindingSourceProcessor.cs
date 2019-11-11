@@ -75,10 +75,10 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private bool IsStepDefinitionAttribute(BindingSourceAttribute attribute)
         {
             return
-                attribute.AttributeType.TypeEquals(typeof(GivenAttribute)) ||
-                attribute.AttributeType.TypeEquals(typeof(WhenAttribute)) ||
-                attribute.AttributeType.TypeEquals(typeof(ThenAttribute)) ||
-                attribute.AttributeType.TypeEquals(typeof(StepDefinitionAttribute));
+                typeof(GivenAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(WhenAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(ThenAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(StepDefinitionAttribute).IsAssignableFrom(attribute.AttributeType);
         }
 
         private bool IsHookAttribute(BindingSourceAttribute attribute)
@@ -301,13 +301,13 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private IEnumerable<StepDefinitionType> GetStepDefinitionTypes(BindingSourceAttribute stepDefinitionAttribute)
         {
-            if (stepDefinitionAttribute.AttributeType.TypeEquals(typeof(GivenAttribute)))
+            if (typeof(GivenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
                 return new[] { StepDefinitionType.Given };
-            if (stepDefinitionAttribute.AttributeType.TypeEquals(typeof(WhenAttribute)))
+            if (typeof(WhenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
                 return new[] { StepDefinitionType.When };
-            if (stepDefinitionAttribute.AttributeType.TypeEquals(typeof(ThenAttribute)))
+            if (typeof(ThenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
                 return new[] { StepDefinitionType.Then };
-            if (stepDefinitionAttribute.AttributeType.TypeEquals(typeof(StepDefinitionAttribute)))
+            if (typeof(StepDefinitionAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
                 return new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then };
 
             return new StepDefinitionType[0];

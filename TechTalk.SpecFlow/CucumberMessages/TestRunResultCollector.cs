@@ -11,14 +11,15 @@ namespace TechTalk.SpecFlow.CucumberMessages
         private readonly IDictionary<ScenarioInfo, TestResult> _collectedResults = new Dictionary<ScenarioInfo, TestResult>();
         public bool IsStarted { get; private set; }
 
+        private readonly object _lock = new object();
+
         public void StartCollecting()
         {
             if (IsStarted)
             {
-                throw new InvalidOperationException("Result collection has already been started.");
+                return;
             }
 
-            _collectedResults.Clear();
             IsStarted = true;
         }
 
@@ -29,24 +30,33 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 throw new InvalidOperationException("Result collection has not been started.");
             }
 
-            _collectedResults.Add(scenarioInfo, testResult);
+
+            lock (_lock)
+            {
+                _collectedResults.Add(scenarioInfo, testResult);
+            }
         }
 
-        public IResult<TestRunResult> StopCollecting()
+        public IResult<TestRunResult> GetCurrentResult()
         {
             if (!IsStarted)
             {
-                return Result<TestRunResult>.Failure(new InvalidOperationException("Result collection has not been started."));
+                return Result<TestRunResult>.Failure("Result collection has not been started");
             }
 
-            var groups = _collectedResults.GroupBy(kv => kv.Value.Status, kv => (kv.Key, kv.Value))
-                                          .ToArray();
 
-            int passedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Passed)?.Count() ?? 0;
-            int failedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Failed)?.Count() ?? 0;
-            int skippedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Skipped)?.Count() ?? 0;
-            int ambiguousCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Ambiguous)?.Count() ?? 0;
-            int undefinedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Undefined)?.Count() ?? 0;
+            IGrouping<TestResult.Types.Status, (ScenarioInfo Key, TestResult Value)>[] groups;
+            lock (_lock)
+            {
+                groups = _collectedResults.GroupBy(kv => kv.Value.Status, kv => (kv.Key, kv.Value))
+                                          .ToArray();
+            }
+
+            var passedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Passed)?.Count() ?? 0;
+            var failedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Failed)?.Count() ?? 0;
+            var skippedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Skipped)?.Count() ?? 0;
+            var ambiguousCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Ambiguous)?.Count() ?? 0;
+            var undefinedCount = groups.SingleOrDefault(g => g.Key == TestResult.Types.Status.Undefined)?.Count() ?? 0;
 
             var testRunResult = new TestRunResult(
                 _collectedResults.Count,
@@ -55,9 +65,6 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 skippedCount,
                 ambiguousCount,
                 undefinedCount);
-
-            IsStarted = false;
-            _collectedResults.Clear();
 
             return Result.Success(testRunResult);
         }
