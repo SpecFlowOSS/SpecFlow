@@ -15,6 +15,16 @@ namespace TechTalk.SpecFlow.Analytics
 
         public void TransmitSpecflowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent)
         {
+            TransmitEvent(projectCompilingEvent);
+        }
+
+        public void TransmitSpecflowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent)
+        {
+            TransmitEvent(projectRunningEvent);
+        }
+
+        private void TransmitEvent(IAnalyticsEvent analyticsEvent)
+        {
             try
             {
                 if (!_environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled())
@@ -22,13 +32,12 @@ namespace TechTalk.SpecFlow.Analytics
                     return;
                 }
 
-                _analyticsTransmitterSink.TransmitEvent(projectCompilingEvent);
+                _analyticsTransmitterSink.TransmitEvent(analyticsEvent);
             }
             catch (Exception)
             {
                 //nope
             }
         }
-        
     }
 }
