@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using BoDi;
 using Moq;
 using Xunit;
@@ -45,6 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
         private Mock<IAnalyticsEventProvider> _analyticsEventProvider;
         private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
+        private Mock<ITestRunnerManager> _testRunnerManager;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -139,6 +141,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             _analyticsTransmitter = new Mock<IAnalyticsTransmitter>();
             _analyticsTransmitter.Setup(at => at.TransmitSpecflowProjectRunningEvent(It.IsAny<SpecFlowProjectRunningEvent>()))
                 .Callback(() => { });
+
+            _testRunnerManager = new Mock<ITestRunnerManager>();
+            _testRunnerManager.Setup(trm => trm.TestAssembly).Returns(Assembly.GetCallingAssembly);
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -163,6 +168,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 new Mock<ITestRunResultCollector>().Object,
                 _analyticsEventProvider.Object,
                 _analyticsTransmitter.Object,
+                _testRunnerManager.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }

@@ -5,6 +5,6 @@
         SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion,
             string assemblyName, string targetFrameworks, string targetFramework, string projectGuid);
 
-        SpecFlowProjectRunningEvent CreateProjectRunningEvent();
+        SpecFlowProjectRunningEvent CreateProjectRunningEvent(string testAssemblyName);
     }
 }

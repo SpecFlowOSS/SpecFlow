@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.UnitTestProvider;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 namespace TechTalk.SpecFlow.Analytics
 {
     public class AnalyticsEventProvider : IAnalyticsEventProvider
     {
         private readonly IUserUniqueIdStore _userUniqueIdStore;
-        private readonly ITestRunnerManager _testRunnerManager;
         private readonly string _unitTestProvider;
 
-        public AnalyticsEventProvider(IUserUniqueIdStore userUniqueIdStore, UnitTestProviderConfiguration unitTestProviderConfiguration, ITestRunnerManager testRunnerManager)
+        public AnalyticsEventProvider(IUserUniqueIdStore userUniqueIdStore, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
             _userUniqueIdStore = userUniqueIdStore;
-            _testRunnerManager = testRunnerManager;
             _unitTestProvider = unitTestProviderConfiguration.UnitTestProvider;
         }
 
@@ -39,17 +35,15 @@ namespace TechTalk.SpecFlow.Analytics
             return compiledEvent;
         }
 
-        public SpecFlowProjectRunningEvent CreateProjectRunningEvent()
+        public SpecFlowProjectRunningEvent CreateProjectRunningEvent(string testAssemblyName)
         {
             var userId = _userUniqueIdStore.GetUserId();
             var unitTestProvider = _unitTestProvider;
             var specFlowVersion = GetSpecFlowVersion();
             var isBuildServer = IsBuildServerMode();
-            var assembly = _testRunnerManager.TestAssembly;
-            var assemblyName = assembly.GetName().Name;
             var targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
             
-            var hashedAssemblyName = ToSha256(assemblyName);
+            var hashedAssemblyName = ToSha256(testAssemblyName);
             var platform = GetOSPlatform();
             var platformDescription = RuntimeInformation.OSDescription;
 
