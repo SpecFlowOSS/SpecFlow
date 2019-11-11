@@ -12,11 +12,13 @@ namespace TechTalk.SpecFlow.Analytics
     public class AnalyticsEventProvider : IAnalyticsEventProvider
     {
         private readonly IUserUniqueIdStore _userUniqueIdStore;
+        private readonly ITestRunnerManager _testRunnerManager;
         private readonly string _unitTestProvider;
 
-        public AnalyticsEventProvider(IUserUniqueIdStore userUniqueIdStore, UnitTestProviderConfiguration unitTestProviderConfiguration)
+        public AnalyticsEventProvider(IUserUniqueIdStore userUniqueIdStore, UnitTestProviderConfiguration unitTestProviderConfiguration, ITestRunnerManager testRunnerManager)
         {
             _userUniqueIdStore = userUniqueIdStore;
+            _testRunnerManager = testRunnerManager;
             _unitTestProvider = unitTestProviderConfiguration.UnitTestProvider;
         }
 
@@ -43,7 +45,7 @@ namespace TechTalk.SpecFlow.Analytics
             var unitTestProvider = _unitTestProvider;
             var specFlowVersion = GetSpecFlowVersion();
             var isBuildServer = IsBuildServerMode();
-            var assembly = Assembly.GetCallingAssembly();
+            var assembly = _testRunnerManager.TestAssembly;
             var assemblyName = assembly.GetName().Name;
             var targetFrameworkName = (assembly.GetCustomAttributes(typeof(TargetFrameworkAttribute))
                 .FirstOrDefault() as TargetFrameworkAttribute)?.FrameworkName;
