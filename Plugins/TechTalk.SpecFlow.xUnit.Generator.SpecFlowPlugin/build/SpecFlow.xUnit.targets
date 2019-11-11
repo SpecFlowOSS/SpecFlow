@@ -24,16 +24,17 @@
     <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net452</_SpecFlow_xUnitRuntimePlugin>
     <_SpecFlow_xUnitRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_xUnitRuntimePlugin)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</_SpecFlow_xUnitRuntimePluginPath>
 
-    <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+    <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
     <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
-
+    <GeneratedSpecFlowAssemblyHooksFile>$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
   </PropertyGroup>
 
-  <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true'">
+  <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true' AND '$(_SpecFlow_Tools_MsBuild_Generation_Imported)' == 'true'">
+    <ReplaceTokenInFileTask Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'" InputFile="$(SourceSpecFlowAssemblyHooksFile)" OutputFile="$(GeneratedSpecFlowAssemblyHooksFile)" TextToReplace="PROJECT_ROOT_NAMESPACE" TextToReplaceWith="$(RootNamespace.Replace('.', '_'))" />
     <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
       <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
     </ItemGroup>
   </Target>
 
-  
+
 </Project>

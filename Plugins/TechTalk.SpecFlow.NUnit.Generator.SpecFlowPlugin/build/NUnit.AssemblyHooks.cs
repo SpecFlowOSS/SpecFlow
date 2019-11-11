@@ -3,12 +3,12 @@ using global::NUnit.Framework;
 using global::TechTalk.SpecFlow;
 
 [SetUpFixture]
-public class NUnitAssemblyHooks
+internal class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 {
     [OneTimeSetUp]
     public void AssemblyInitialize()
     {
-        var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
+        var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
 
         TestRunnerManager.OnTestRunStart(currentAssembly);
     }
@@ -16,7 +16,7 @@ public class NUnitAssemblyHooks
     [OneTimeTearDown]
     public void AssemblyCleanup()
     {
-        var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
+        var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
 
         TestRunnerManager.OnTestRunEnd(currentAssembly);
     }
