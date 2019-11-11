@@ -30,7 +30,7 @@
     <GeneratedSpecFlowAssemblyHooksFile>$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))NUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
   </PropertyGroup>
 
-  <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true'">
+  <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true' AND '$(_SpecFlow_Tools_MsBuild_Generation_Imported)' == 'true'">
     <ReplaceTokenInFileTask Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'" InputFile="$(SourceSpecFlowAssemblyHooksFile)" OutputFile="$(GeneratedSpecFlowAssemblyHooksFile)" TextToReplace="PROJECT_ROOT_NAMESPACE" TextToReplaceWith="$(RootNamespace.Replace('.', '_'))" />
     <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
       <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
