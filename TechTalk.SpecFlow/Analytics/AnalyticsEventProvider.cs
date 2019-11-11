@@ -47,16 +47,15 @@ namespace TechTalk.SpecFlow.Analytics
             var isBuildServer = IsBuildServerMode();
             var assembly = _testRunnerManager.TestAssembly;
             var assemblyName = assembly.GetName().Name;
-            var targetFrameworkName = (assembly.GetCustomAttributes(typeof(TargetFrameworkAttribute))
-                .FirstOrDefault() as TargetFrameworkAttribute)?.FrameworkName;
-
+            var targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
+            
             var hashedAssemblyName = ToSha256(assemblyName);
             var platform = GetOSPlatform();
             var platformDescription = RuntimeInformation.OSDescription;
 
             var runningEvent = new SpecFlowProjectRunningEvent(DateTime.UtcNow, userId,
                 platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer,
-                hashedAssemblyName, null, targetFrameworkName);
+                hashedAssemblyName, null, targetFramework);
             return runningEvent;
         }
 
@@ -105,6 +104,16 @@ namespace TechTalk.SpecFlow.Analytics
                 stringBuilder.Append(theByte.ToString("x2"));
             }
             return stringBuilder.ToString();
+        }
+
+        private string GetNetCoreVersion()
+        {
+            var assembly = typeof(System.Runtime.GCSettings).GetTypeInfo().Assembly;
+            var assemblyPath = assembly.CodeBase.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+            int netCoreAppIndex = Array.IndexOf(assemblyPath, "Microsoft.NETCore.App");
+            if (netCoreAppIndex > 0 && netCoreAppIndex < assemblyPath.Length - 2)
+                return assemblyPath[netCoreAppIndex + 1];
+            return null;
         }
     }
 }
