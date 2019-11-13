@@ -27,7 +27,7 @@ if ($IsLinux) {
 }
 
 if ($appInsightsInstrumentationKey) {
-  $additionalOptions = "$($additionalOptions) -property:AppInsightsInstrumentationKey=$($appInsightsInstrumentationKey)"
+  $additionalOptions = "$($additionalOptions) -p:AppInsightsInstrumentationKey=$($appInsightsInstrumentationKey)"
 }
 
-& $msbuildPath -restore ./TechTalk.SpecFlow.sln -property:Configuration=$Configuration -binaryLogger:msbuild.$Configuration.binlog -nodeReuse:false $additionalOptions
+& dotnet build ./TechTalk.SpecFlow.sln -p:Configuration=$Configuration /bl:msbuild.$Configuration.binlog /nodeReuse:false -v n $additionalOptions
