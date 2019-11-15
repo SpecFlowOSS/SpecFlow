@@ -56,6 +56,8 @@
 
     <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
 
+    <file src="SpecFlow.targets" target="build\SpecFlow.targets" />
+
   </files>
 
 </package>
