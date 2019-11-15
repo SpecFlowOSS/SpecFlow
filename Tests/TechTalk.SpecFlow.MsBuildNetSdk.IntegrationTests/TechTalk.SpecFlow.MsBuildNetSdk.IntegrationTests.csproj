@@ -47,7 +47,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SpecFlowGeneratorPlugins Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\net471\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
+    <SpecFlowGeneratorPlugins Include="../../Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/bin/$(Configuration)/net471/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
 
   <ItemGroup>

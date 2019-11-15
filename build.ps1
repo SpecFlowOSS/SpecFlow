@@ -30,4 +30,4 @@ if ($appInsightsInstrumentationKey) {
   $additionalOptions = "$($additionalOptions) -p:AppInsightsInstrumentationKey=$($appInsightsInstrumentationKey)"
 }
 
-& dotnet build ./TechTalk.SpecFlow.sln /m:1 -p:Configuration=$Configuration /bl:msbuild.$Configuration.binlog /nodeReuse:false -v n --force $additionalOptions
+& dotnet build ./TechTalk.SpecFlow.sln -p:Configuration=$Configuration /bl:msbuild.$Configuration.binlog /nodeReuse:false -v n --no-incremental $additionalOptions
