@@ -16,8 +16,8 @@ RUN git clean -fdx
 # build project
 # RUN pwsh /src/build.ps1
 
-RUN pwsh /src/build.ps1 \
-    && ls /src/SpecFlow.Tools.MsBuild.Generation/bin/Debug/netcoreapp2.0 -la
+RUN pwsh /src/build.ps1
 
 #CMD /bin/sh
-CMD dotnet test /src/*.sln -v n --no-build --logger "trx;LogFileName=TestResults.trx"
+# CMD dotnet test /src/*.sln -v n --no-build --logger "trx;LogFileName=TestResults.trx"
+CMD dotnet test ./Tests/TechTalk.SpecFlow.Specs/TechTalk.SpecFlow.Specs.csproj -v n --no-build --logger "trx;LogFileName=TestResults.trx" --filter "BasicScenarioExecutionFeature"
