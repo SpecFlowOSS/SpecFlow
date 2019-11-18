@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"is a compilation error")]
         public void ThenIsACompilationError()
         {
-            _solutionDriver.CheckSolutionShouldHaseCompileError();
+            _solutionDriver.CheckSolutionShouldHaveCompileError();
         }
 
     }
