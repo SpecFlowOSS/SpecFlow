@@ -32,7 +32,7 @@ jobs:
     inputs: 
       filePath: build.ps1
       workingDirectory: ./
-      arguments: Debug -appInsightsInstrumentationKey ${{ parameters.appInsightsInstrumentationKey }}
+      arguments: Debug -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
 
     displayName: 'restore & build Debug'
@@ -41,7 +41,7 @@ jobs:
     inputs: 
       filePath: build.ps1
       workingDirectory: ./
-      arguments: Release -appInsightsInstrumentationKey ${{ parameters.appInsightsInstrumentationKey }}
+      arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
 
     displayName: 'restore & build Release'
