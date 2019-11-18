@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"the feature files in the project are generated")]
         public void WhenTheFeatureFilesInTheProjectAreGenerated()
         {
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
+            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
         }
 
         [Then(@"no generation error is reported")]

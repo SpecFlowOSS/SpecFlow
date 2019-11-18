@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"the project is compiled")]
         public void WhenTheProjectIsCompiled()
         {
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
+            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
         }
 
         [Then(@"no compilation errors are reported")]
