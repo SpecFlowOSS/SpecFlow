@@ -33,9 +33,8 @@ Scenario: Should be able to execute a simple pending scenario
         | 1     | 1       |
 
 
-Scenario: Two runs without change work
+Scenario: Building the same project multiple times without changes should be possible
     Given all steps are bound and pass
-    When I execute the tests twice
-    Then the execution summary should contain
-        | Total | Succeeded |
-        | 1     | 1         |
+    When the solution is built twice
+    And I execute the tests
+    Then the tests were executed successfully
