@@ -5,23 +5,23 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class GeneratorSteps : Steps
     {
-        private readonly SolutionDriver _solutionDriver;
+        private readonly CompilationDriver _compilationDriver;
 
-        public GeneratorSteps(SolutionDriver solutionDriver)
+        public GeneratorSteps(CompilationDriver compilationDriver)
         {
-            _solutionDriver = solutionDriver;
+            _compilationDriver = compilationDriver;
         }
 
         [When(@"the feature files in the project are generated")]
         public void WhenTheFeatureFilesInTheProjectAreGenerated()
         {
-            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
+            _compilationDriver.CompileSolution();
         }
 
         [Then(@"no generation error is reported")]
         public void ThenNoGenerationErrorIsReported()
         {
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+            _compilationDriver.CheckSolutionShouldHaveCompiled();
         }
     }
 }

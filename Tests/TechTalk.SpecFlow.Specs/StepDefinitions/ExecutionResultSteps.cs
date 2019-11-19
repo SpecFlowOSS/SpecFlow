@@ -25,6 +25,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _testProjectFolders = testProjectFolders;
         }
 
+        [Then(@"the tests were executed successfully")]
         [Then(@"all tests should pass")]
         [Then(@"the scenario should pass")]
         public void ThenAllTestsShouldPass()

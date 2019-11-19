@@ -7,11 +7,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly ProjectsDriver _projectsDriver;
         private readonly SolutionDriver _solutionDriver;
+        private readonly CompilationDriver _compilationDriver;
 
-        public ProjectSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver)
+        public ProjectSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver, CompilationDriver compilationDriver)
         {
             _projectsDriver = projectsDriver;
             _solutionDriver = solutionDriver;
+            _compilationDriver = compilationDriver;
         }
 
         [Given(@"there is a SpecFlow project")]
@@ -23,7 +25,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"it is using SpecFlow\.Tools\.MSBuild\.Generator")]
         public void GivenItIsUsingSpecFlow_Tools_MSBuild_Generator()
         {
-            
         }
 
 
@@ -43,20 +44,19 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"the project is compiled")]
         public void WhenTheProjectIsCompiled()
         {
-            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
+            _compilationDriver.CompileSolution();
         }
 
         [Then(@"no compilation errors are reported")]
         public void ThenNoCompilationErrorsAreReported()
         {
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+            _compilationDriver.CheckSolutionShouldHaveCompiled();
         }
 
         [Then(@"is a compilation error")]
         public void ThenIsACompilationError()
         {
-            _solutionDriver.CheckSolutionShouldHaveCompileError();
+            _compilationDriver.CheckSolutionShouldHaveCompileError();
         }
-
     }
 }

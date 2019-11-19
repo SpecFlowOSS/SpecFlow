@@ -1,5 +1,4 @@
-﻿
-using TechTalk.SpecFlow.TestProjectGenerator.Driver;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -7,12 +6,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class MultipleSpecsProjectsSteps
     {
         private readonly ProjectsDriver _projectsDriver;
-        private readonly SolutionDriver _solutionDriver;
+        private readonly CompilationDriver _compilationDriver;
 
-        public MultipleSpecsProjectsSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver)
+        public MultipleSpecsProjectsSteps(ProjectsDriver projectsDriver, CompilationDriver compilationDriver)
         {
             _projectsDriver = projectsDriver;
-            _solutionDriver = solutionDriver;
+            _compilationDriver = compilationDriver;
         }
 
         [Given("I have (Specs.Project.[A-Z]) and (Specs.Project.[A-Z]) using the same unit test provider")]
@@ -31,13 +30,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I build the solution using (\w+) with treat warnings as errors enabled")]
         public void WhenIBuildWithTreatWarningsAsErrorsEnabled(BuildTool buildTool)
         {
-            _solutionDriver.CompileSolution(buildTool, true);
+            _compilationDriver.CompileSolution(buildTool, true);
         }
 
         [Then(@"the build should succeed")]
         public void ThenTheBuildShouldSucceed()
         {
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+            _compilationDriver.CheckSolutionShouldHaveCompiled();
         }
 
     }
