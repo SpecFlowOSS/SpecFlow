@@ -6,14 +6,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class ProjectSteps
     {
         private readonly ProjectsDriver _projectsDriver;
-        private readonly SolutionDriver _solutionDriver;
         private readonly CompilationDriver _compilationDriver;
+        private readonly CompilationResultDriver _compilationResultDriver;
 
-        public ProjectSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver, CompilationDriver compilationDriver)
+        public ProjectSteps(ProjectsDriver projectsDriver, CompilationDriver compilationDriver, CompilationResultDriver compilationResultDriver)
         {
             _projectsDriver = projectsDriver;
-            _solutionDriver = solutionDriver;
             _compilationDriver = compilationDriver;
+            _compilationResultDriver = compilationResultDriver;
         }
 
         [Given(@"there is a SpecFlow project")]
@@ -50,13 +50,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"no compilation errors are reported")]
         public void ThenNoCompilationErrorsAreReported()
         {
-            _compilationDriver.CheckSolutionShouldHaveCompiled();
+            _compilationResultDriver.CheckSolutionShouldHaveCompiled();
         }
 
         [Then(@"is a compilation error")]
         public void ThenIsACompilationError()
         {
-            _compilationDriver.CheckSolutionShouldHaveCompileError();
+            _compilationResultDriver.CheckSolutionShouldHaveCompileError();
         }
     }
 }

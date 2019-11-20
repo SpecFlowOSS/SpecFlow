@@ -6,10 +6,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class GeneratorSteps : Steps
     {
         private readonly CompilationDriver _compilationDriver;
+        private readonly CompilationResultDriver _compilationResultDriver;
 
-        public GeneratorSteps(CompilationDriver compilationDriver)
+        public GeneratorSteps(CompilationDriver compilationDriver, CompilationResultDriver compilationResultDriver)
         {
             _compilationDriver = compilationDriver;
+            _compilationResultDriver = compilationResultDriver;
         }
 
         [When(@"the feature files in the project are generated")]
@@ -21,7 +23,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"no generation error is reported")]
         public void ThenNoGenerationErrorIsReported()
         {
-            _compilationDriver.CheckSolutionShouldHaveCompiled();
+            _compilationResultDriver.CheckSolutionShouldHaveCompiled();
         }
     }
 }

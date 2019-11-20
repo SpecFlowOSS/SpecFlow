@@ -7,11 +7,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly ProjectsDriver _projectsDriver;
         private readonly CompilationDriver _compilationDriver;
+        private readonly CompilationResultDriver _compilationResultDriver;
 
-        public MultipleSpecsProjectsSteps(ProjectsDriver projectsDriver, CompilationDriver compilationDriver)
+        public MultipleSpecsProjectsSteps(ProjectsDriver projectsDriver, CompilationDriver compilationDriver, CompilationResultDriver compilationResultDriver)
         {
             _projectsDriver = projectsDriver;
             _compilationDriver = compilationDriver;
+            _compilationResultDriver = compilationResultDriver;
         }
 
         [Given("I have (Specs.Project.[A-Z]) and (Specs.Project.[A-Z]) using the same unit test provider")]
@@ -36,8 +38,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the build should succeed")]
         public void ThenTheBuildShouldSucceed()
         {
-            _compilationDriver.CheckSolutionShouldHaveCompiled();
+            _compilationResultDriver.CheckSolutionShouldHaveCompiled();
         }
-
     }
 }
