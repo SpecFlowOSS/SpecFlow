@@ -12,14 +12,15 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="build\NUnit.AssemblyHooks.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="build\NUnit.AssemblyHooks.cs" />
+    <Compile Remove="build\NUnit.AssemblyHooks.template.cs" />
+    <Compile Remove="build\NUnit.AssemblyHooks.template.vb" />
+    <None Include="build\NUnit.AssemblyHooks.template.cs" />
+    <None Include="build\NUnit.AssemblyHooks.template.vb" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+    <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.35" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,4 +29,14 @@
     <ProjectReference Include="..\TechTalk.SpecFlow.NUnit.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.csproj" />
   </ItemGroup>
 
+  <Target Name="WriteAssemblyHooksVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' or '$(BuildingProject)' == 'true'">
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
+
+    <ItemGroup>
+      <None Include="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.cs" />
+      <None Include="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.vb" />
+    </ItemGroup>
+  </Target>
+  
 </Project>

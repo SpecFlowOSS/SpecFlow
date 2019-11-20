@@ -21,7 +21,7 @@
   </metadata>
 
   <files>
-    <file src="build\**\*" target="build" />
+    <file src="build\**\*" exclude="build\*.template.*" target="build" />
     <file src="bin\$config$\net471\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />

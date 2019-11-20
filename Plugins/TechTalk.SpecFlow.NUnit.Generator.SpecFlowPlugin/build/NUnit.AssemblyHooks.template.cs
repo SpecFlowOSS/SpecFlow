@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.CodeDom.Compiler;
 using global::NUnit.Framework;
 using global::TechTalk.SpecFlow;
 
+[GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 [SetUpFixture]
 public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 {

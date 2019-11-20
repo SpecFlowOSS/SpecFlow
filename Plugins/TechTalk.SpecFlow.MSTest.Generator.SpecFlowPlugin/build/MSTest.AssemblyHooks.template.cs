@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.CodeDom.Compiler;
 using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
 
+[GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 [TestClass]
 public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 {

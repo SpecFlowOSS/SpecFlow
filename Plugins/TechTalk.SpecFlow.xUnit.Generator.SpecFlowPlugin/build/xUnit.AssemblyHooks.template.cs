@@ -1,6 +1,9 @@
-﻿[assembly: global::Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")]
+﻿using System.CodeDom.Compiler;
+
+[assembly: global::Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")]
 [assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture))]
 
+[GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IDisposable
 {
     private readonly global::System.Reflection.Assembly _currentAssembly;
