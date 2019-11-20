@@ -126,8 +126,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyDotNetCore)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
-                                || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
+                            if (ShouldCompileForNetCore21(featureGenerator.Key)
+                                || ShouldCompileForNetCore30(featureGenerator.Key))
                             {
                                 yield return featureGenerator;
                             }
@@ -157,8 +157,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         {
                             if (onlyDotNetCore)
                             {
-                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
-                                    || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
+                                if (ShouldCompileForNetCore21(featureGenerator.Key)
+                                    || ShouldCompileForNetCore30(featureGenerator.Key))
                                 {
                                     yield return featureGenerator;
                                 }
@@ -171,6 +171,16 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     }
                 }
             }
+        }
+        public bool ShouldCompileForNetCore21(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
+                   && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        }
+
+        public bool ShouldCompileForNetCore30(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30;
         }
 
         private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)
