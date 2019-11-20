@@ -13,7 +13,7 @@ if ($IsLinux) {
 }
 
 if ($appInsightsInstrumentationKey) {
-  $additionalOptions = "$($additionalOptions) `"-property:AppInsightsInstrumentationKey=$($appInsightsInstrumentationKey)`""
+  $additionalOptions = "$($additionalOptions) -property:AppInsightsInstrumentationKey=`"$($appInsightsInstrumentationKey)`""
 }
 
 Write-Host "dotnet build ./TechTalk.SpecFlow.sln -property:Configuration=$Configuration -bl:msbuild.$Configuration.binlog -nodeReuse:false -v n --no-incremental $additionalOptions"
