@@ -137,7 +137,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             };
 
             //ACT
-            var result = generateFeatureFileCodeBehindTask.Execute();
+            bool result = generateFeatureFileCodeBehindTask.Execute();
 
             //ASSERT
             result.Should().BeTrue();
