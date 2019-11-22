@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private IObjectContainer CreateDefaultContainer(SpecFlowConfigurationHolder configurationHolder)
         {
-            return GeneratorContainerBuilder.CreateContainer(configurationHolder, new ProjectSettings(), Enumerable.Empty<string>());
+            return new GeneratorContainerBuilder().CreateContainer(configurationHolder, new ProjectSettings(), Enumerable.Empty<string>());
         }
 
         class TestDefaultDependencyProvider : DefaultDependencyProvider
