@@ -1,8 +1,10 @@
+using TechTalk.SpecFlow.CommonModels;
+
 namespace TechTalk.SpecFlow.Analytics
 {
     public interface IAnalyticsTransmitter
     {
-        void TransmitSpecflowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent);
-        void TransmitSpecflowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent);
+        IResult TransmitSpecFlowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent);
+        IResult TransmitSpecFlowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent);
     }
 }

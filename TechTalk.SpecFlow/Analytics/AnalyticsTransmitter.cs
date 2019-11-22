@@ -1,4 +1,4 @@
-using System;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.Analytics
 {
@@ -13,31 +13,24 @@ namespace TechTalk.SpecFlow.Analytics
             _environmentSpecFlowTelemetryChecker = environmentSpecFlowTelemetryChecker;
         }
 
-        public void TransmitSpecflowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent)
+        public IResult TransmitSpecFlowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent)
         {
-            TransmitEvent(projectCompilingEvent);
+            return TransmitEvent(projectCompilingEvent);
         }
 
-        public void TransmitSpecflowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent)
+        public IResult TransmitSpecFlowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent)
         {
-            TransmitEvent(projectRunningEvent);
+            return TransmitEvent(projectRunningEvent);
         }
 
-        private void TransmitEvent(IAnalyticsEvent analyticsEvent)
+        public IResult TransmitEvent(IAnalyticsEvent analyticsEvent)
         {
-            try
+            if (!_environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled())
             {
-                if (!_environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled())
-                {
-                    return;
-                }
+                return Result.Success();
+            }
 
-                _analyticsTransmitterSink.TransmitEvent(analyticsEvent);
-            }
-            catch (Exception)
-            {
-                //nope
-            }
+            return _analyticsTransmitterSink.TransmitEvent(analyticsEvent);
         }
     }
 }
