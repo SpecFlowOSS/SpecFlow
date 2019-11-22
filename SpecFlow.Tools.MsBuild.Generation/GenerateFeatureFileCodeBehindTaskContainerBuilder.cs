@@ -1,6 +1,8 @@
 using BoDi;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Analytics.AppInsights;
+using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
@@ -28,9 +30,19 @@ namespace SpecFlow.Tools.MsBuild.Generation
             objectContainer.RegisterTypeAs<ProcessInfoDumper, IProcessInfoDumper>();
             objectContainer.RegisterTypeAs<AssemblyResolveLoggerFactory, IAssemblyResolveLoggerFactory>();
             objectContainer.RegisterTypeAs<GenerateFeatureFileCodeBehindTaskExecutor, IGenerateFeatureFileCodeBehindTaskExecutor>();
-            objectContainer.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
             objectContainer.RegisterTypeAs<MSBuildTaskAnalyticsTransmitter, IMSBuildTaskAnalyticsTransmitter>();
             objectContainer.RegisterTypeAs<ExceptionTaskLogger, IExceptionTaskLogger>();
+
+            objectContainer.RegisterTypeAs<FileUserIdStore, IUserUniqueIdStore>();
+            objectContainer.RegisterTypeAs<FileService, IFileService>();
+            objectContainer.RegisterTypeAs<DirectoryService, IDirectoryService>();
+
+            objectContainer.RegisterTypeAs<EnvironmentSpecFlowTelemetryChecker, IEnvironmentSpecFlowTelemetryChecker>();
+            objectContainer.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
+            objectContainer.RegisterTypeAs<HttpClientAnalyticsTransmitterSink, IAnalyticsTransmitterSink>();
+            objectContainer.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
+            objectContainer.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
+            objectContainer.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
 
             if (generateFeatureFileCodeBehindTaskConfiguration.OverrideAnalyticsTransmitter is null)
             {

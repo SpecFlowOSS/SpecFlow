@@ -120,27 +120,5 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             //ASSERT
             result.Should().BeTrue();
         }
-
-        [Fact]
-        public void Should_TryToSendAnalytics()
-        {
-            //ARRANGE
-            var analyticsTransmitterMock = GetAnalyticsTransmitterMock();
-            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
-            {
-                ProjectPath = "ProjectPath.csproj",
-                BuildEngine = new MockBuildEngine(_output),
-                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
-                AnalyticsTransmitter = analyticsTransmitterMock.Object
-            };
-
-            var analyticsEventProviderMock = new Mock<IAnalyticsEventProvider>();
-
-            //ACT
-            generateFeatureFileCodeBehindTask.TransmitProjectCompilingEvent(analyticsTransmitterMock.Object, analyticsEventProviderMock.Object);
-
-            //ASSERT
-            analyticsTransmitterMock.Verify(sink => sink.TransmitSpecFlowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()), Times.Once);
-        }
     }
 }
