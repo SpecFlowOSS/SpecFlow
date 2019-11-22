@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
@@ -135,11 +134,12 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
                 AnalyticsTransmitter = analyticsTransmitterMock.Object
             };
 
+            var analyticsEventProviderMock = new Mock<IAnalyticsEventProvider>();
+
             //ACT
-            bool result = generateFeatureFileCodeBehindTask.Execute();
+            generateFeatureFileCodeBehindTask.TransmitProjectCompilingEvent(analyticsTransmitterMock.Object, analyticsEventProviderMock.Object);
 
             //ASSERT
-            result.Should().BeTrue();
             analyticsTransmitterMock.Verify(sink => sink.TransmitSpecFlowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()), Times.Once);
         }
     }

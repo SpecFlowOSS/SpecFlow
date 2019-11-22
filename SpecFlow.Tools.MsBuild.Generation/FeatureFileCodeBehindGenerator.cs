@@ -20,7 +20,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public TaskLoggingHelper Log { get; }
 
         public IEnumerable<string> GenerateFilesForProject(
-            List<string> featureFiles,
+            IReadOnlyCollection<string> featureFiles,
             string projectFolder,
             string outputPath)
         {
