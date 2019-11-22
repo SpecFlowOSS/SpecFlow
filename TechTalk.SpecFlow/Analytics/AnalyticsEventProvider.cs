@@ -57,9 +57,17 @@ namespace TechTalk.SpecFlow.Analytics
             string platform = GetOSPlatform();
             string platformDescription = RuntimeInformation.OSDescription;
 
-            var runningEvent = new SpecFlowProjectRunningEvent(DateTime.UtcNow, userId,
-                platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer,
-                hashedAssemblyName, null, targetFramework);
+            var runningEvent = new SpecFlowProjectRunningEvent(
+                DateTime.UtcNow,
+                userId,
+                platform,
+                platformDescription,
+                specFlowVersion,
+                unitTestProvider,
+                isBuildServer,
+                hashedAssemblyName,
+                null,
+                targetFramework);
             return runningEvent;
         }
 

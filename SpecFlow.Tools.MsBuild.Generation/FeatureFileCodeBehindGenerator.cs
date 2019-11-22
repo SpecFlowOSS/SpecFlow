@@ -31,9 +31,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 yield break;
             }
 
-            foreach (var featureFile in featureFiles)
+            foreach (string featureFile in featureFiles)
             {
-                var featureFileItemSpec = featureFile;
+                string featureFileItemSpec = featureFile;
                 var generatorResult = _featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec);
 
                 if (!generatorResult.Success)
@@ -55,13 +55,13 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     continue;
                 }
 
-                var targetFilePath = _filePathGenerator.GenerateFilePath(
+                string targetFilePath = _filePathGenerator.GenerateFilePath(
                     projectFolder,
                     outputPath,
                     featureFile,
                     generatorResult.Filename);
 
-                var resultedFile = codeBehindWriter.WriteCodeBehindFile(targetFilePath, featureFile, generatorResult);
+                string resultedFile = codeBehindWriter.WriteCodeBehindFile(targetFilePath, featureFile, generatorResult);
 
                 yield return FileSystemHelper.GetRelativePath(resultedFile, projectFolder);
             }
