@@ -9,6 +9,7 @@ about: Create a report to help us improve SpecFlow
 
 <!-- PLEASE CHECK THE OPTIONS THAT APPLY TO YOU BY ADDING AN 'x' TO THE CORRESPONDING CHECKBOX ('[ ]') -->
 ### SpecFlow Version:
+- [ ] 3.1
 - [ ] 3.0
 - [ ] 2.4
 - [ ] 2.3
