@@ -5,7 +5,7 @@ Imports System.Reflection
 
 
 <TestClass>
-Friend NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
+Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     <AssemblyInitialize>
     Public Shared Sub AssemblyInitialize(testContext As TestContext)
 

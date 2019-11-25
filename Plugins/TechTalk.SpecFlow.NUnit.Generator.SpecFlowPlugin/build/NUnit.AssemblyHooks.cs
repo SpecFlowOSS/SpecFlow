@@ -3,7 +3,7 @@ using global::NUnit.Framework;
 using global::TechTalk.SpecFlow;
 
 [SetUpFixture]
-internal class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
+public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 {
     [OneTimeSetUp]
     public void AssemblyInitialize()

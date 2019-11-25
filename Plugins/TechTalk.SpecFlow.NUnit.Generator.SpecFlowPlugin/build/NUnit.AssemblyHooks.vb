@@ -4,7 +4,7 @@ Imports System
 Imports System.Reflection
 
 <SetUpFixture>
-Friend NotInheritable Class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
+Public NotInheritable Class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
     <OneTimeSetUp>
     Public Shared Sub AssemblyInitialize()
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly
