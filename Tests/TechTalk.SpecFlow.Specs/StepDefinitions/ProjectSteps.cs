@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"there is a SpecFlow project")]
         public void GivenThereIsASpecFlowProject()
         {
-            _projectsDriver.CreateProject("C#");
+            _projectsDriver.CreateSpecFlowProject("C#");
         }
 
         [Given(@"it is using SpecFlow\.Tools\.MSBuild\.Generator")]
