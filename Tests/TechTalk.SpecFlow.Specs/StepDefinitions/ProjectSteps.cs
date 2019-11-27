@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.CreateProject(language);
         }
 
-        [When(@"the project is compiled")]
+        [When(@"I compile the solution")]
         public void WhenTheProjectIsCompiled()
         {
             _compilationDriver.CompileSolution();
