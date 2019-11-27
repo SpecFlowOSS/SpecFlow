@@ -15,10 +15,11 @@ jobs:
     inputs:
       versionSpec: ${{ parameters.nugetVersion }}
 
-
-  - task: DotNetCoreInstaller@0
-    displayName: 'Use .NET Core'
+  
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK'
     inputs:
+      packageType: sdk
       version: ${{ parameters.sdkVersion }}
 
   - task: PowerShell@2
