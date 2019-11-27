@@ -1,5 +1,5 @@
 ﻿Feature: LanguageSupport
-	
+
 
 Scenario Outline: single Scenario
     Given I have a '<Language>' test project
