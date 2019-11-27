@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddProjectReference(referencedProjectName, targetProjectName);
         }
 
-        [When(@"I build the solution using (\w+) with treat warnings as errors enabled")]
+        [When(@"I build the solution using '([\w ]+)' with treat warnings as errors enabled")]
         public void WhenIBuildWithTreatWarningsAsErrorsEnabled(BuildTool buildTool)
         {
             _compilationDriver.CompileSolution(buildTool, true);
