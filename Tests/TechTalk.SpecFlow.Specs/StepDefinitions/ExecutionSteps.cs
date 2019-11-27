@@ -33,22 +33,17 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _executionDriver.ExecuteTestsWithTag(tag);
         }
 
-        [Given(@"MSBuild is used for compiling")]
-        public void GivenMSBuildIsUsedForCompiling()
+        [Given(@"'(dotnet msbuild|dotnet build|MSBuild)' is used for compiling")]
+        public void GivenIsUsedForCompiling(BuildTool buildTool)
         {
-            _compilationDriver.CompileSolution(BuildTool.MSBuild);
+            _compilationDriver.SetBuildTool(buildTool);
         }
 
-        [Given(@"dotnet build is used for compiling")]
-        public void GivenDotnetBuildIsUsedForCompiling()
+        [When(@"I build the solution using '(dotnet msbuild|dotnet build|MSBuild)'")]
+        [When(@"I compile the solution using '(dotnet msbuild|dotnet build|MSBuild)'")]
+        public void WhenIBuildTheSolutionUsing(BuildTool buildTool)
         {
-            _compilationDriver.CompileSolution(BuildTool.DotnetBuild);
-        }
-
-        [Given(@"dotnet msbuild is used for compiling")]
-        public void GivenDotnetMsbuildIsUsedForCompiling()
-        {
-            _compilationDriver.CompileSolution(BuildTool.DotnetMSBuild);
+            _compilationDriver.CompileSolution(buildTool);
         }
 
         [When(@"the solution is built (once|twice|\d+ times)")]
