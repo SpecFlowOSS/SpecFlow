@@ -6,6 +6,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.CommonModels;
+using TechTalk.SpecFlow.Generator;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {

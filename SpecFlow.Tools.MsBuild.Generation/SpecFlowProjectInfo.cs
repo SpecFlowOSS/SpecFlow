@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TechTalk.SpecFlow.Generator;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {

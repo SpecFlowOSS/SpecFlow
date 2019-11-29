@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
@@ -18,7 +19,7 @@ namespace TechTalk.SpecFlow.Generator
     {
         internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
 
-        public IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings, IEnumerable<string> generatorPlugins, IObjectContainer parentObjectContainer = null)
+        public IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings, IEnumerable<GeneratorPluginInfo> generatorPluginInfos, IObjectContainer parentObjectContainer = null)
         {
             var container = new ObjectContainer(parentObjectContainer);
             container.RegisterInstanceAs(projectSettings);
@@ -32,7 +33,7 @@ namespace TechTalk.SpecFlow.Generator
             var specFlowConfiguration = new SpecFlowProjectConfiguration();
             specFlowConfiguration.SpecFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration.SpecFlowConfiguration, configurationHolder);
 
-            LoadPlugins(container, generatorPluginEvents, unitTestProviderConfiguration, generatorPlugins);
+            LoadPlugins(container, generatorPluginEvents, unitTestProviderConfiguration, generatorPluginInfos.Select(p => p.PathToGeneratorPluginAssembly));
             
             generatorPluginEvents.RaiseRegisterDependencies(container);
             generatorPluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);

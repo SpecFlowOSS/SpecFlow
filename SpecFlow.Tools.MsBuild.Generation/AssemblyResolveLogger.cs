@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
@@ -18,7 +19,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             Dispose(false);
         }
 
-        public System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        public Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             _taskLoggingWrapper.LogMessage(args.Name);
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Generator;
@@ -24,7 +23,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             IReadOnlyCollection<GeneratorPluginInfo> generatorPluginInfos,
             IObjectContainer rootObjectContainer)
         {
-            var objectContainer = _generatorContainerBuilder.CreateContainer(specFlowConfigurationHolder, projectSettings, generatorPluginInfos.Select(p => p.PathToGeneratorPluginAssembly), rootObjectContainer);
+            var objectContainer = _generatorContainerBuilder.CreateContainer(specFlowConfigurationHolder, projectSettings, generatorPluginInfos, rootObjectContainer);
 
             objectContainer.RegisterTypeAs<ProjectCodeBehindGenerator, IProjectCodeBehindGenerator>();
             objectContainer.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();

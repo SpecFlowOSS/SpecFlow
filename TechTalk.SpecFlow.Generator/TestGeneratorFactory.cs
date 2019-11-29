@@ -14,9 +14,9 @@ namespace TechTalk.SpecFlow.Generator
             return GeneratorVersion;
         }
 
-        public ITestGenerator CreateGenerator(ProjectSettings projectSettings, IEnumerable<string> generatorPlugins)
+        public ITestGenerator CreateGenerator(ProjectSettings projectSettings, IEnumerable<GeneratorPluginInfo> generatorPluginInfos)
         {
-            var container = new GeneratorContainerBuilder().CreateContainer(projectSettings.ConfigurationHolder, projectSettings, generatorPlugins);
+            var container = new GeneratorContainerBuilder().CreateContainer(projectSettings.ConfigurationHolder, projectSettings, generatorPluginInfos);
             return container.Resolve<ITestGenerator>();
         }
     }

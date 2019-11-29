@@ -1,4 +1,4 @@
-namespace SpecFlow.Tools.MsBuild.Generation
+namespace TechTalk.SpecFlow.Generator
 {
     public class GeneratorPluginInfo
     {
