@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.Analytics
@@ -13,24 +14,24 @@ namespace TechTalk.SpecFlow.Analytics
             _environmentSpecFlowTelemetryChecker = environmentSpecFlowTelemetryChecker;
         }
 
-        public IResult TransmitSpecFlowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent)
+        public async Task<IResult> TransmitSpecFlowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent)
         {
-            return TransmitEvent(projectCompilingEvent);
+            return await TransmitEvent(projectCompilingEvent);
         }
 
-        public IResult TransmitSpecFlowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent)
+        public async Task<IResult> TransmitSpecFlowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent)
         {
-            return TransmitEvent(projectRunningEvent);
+            return await TransmitEvent(projectRunningEvent);
         }
 
-        public IResult TransmitEvent(IAnalyticsEvent analyticsEvent)
+        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent)
         {
             if (!_environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled())
             {
                 return Result.Success();
             }
 
-            return _analyticsTransmitterSink.TransmitEvent(analyticsEvent);
+            return await _analyticsTransmitterSink.TransmitEvent(analyticsEvent);
         }
     }
 }

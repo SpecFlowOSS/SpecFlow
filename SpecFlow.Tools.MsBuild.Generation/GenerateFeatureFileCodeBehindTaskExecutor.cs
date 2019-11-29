@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BoDi;
 using Microsoft.Build.Framework;
 using TechTalk.SpecFlow.CommonModels;
@@ -54,14 +55,9 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 try
                 {
+                    Task.Run(_msbuildTaskAnalyticsTransmitter.TryTransmitProjectCompilingEvent);
+
                     var returnValue = projectCodeBehindGenerator.GenerateCodeBehindFilesForProject();
-
-                    var transmissionResult = _msbuildTaskAnalyticsTransmitter.TryTransmitProjectCompilingEvent();
-
-                    if (transmissionResult is IFailure failure)
-                    {
-                        _taskLoggingWrapper.LogMessageWithLowImportance($"Could not transmit analytics: {failure}");
-                    }
 
                     if (_taskLoggingWrapper.HasLoggedErrors())
                     {

@@ -1,9 +1,9 @@
-using TechTalk.SpecFlow.CommonModels;
+using System.Threading.Tasks;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
     public interface IMSBuildTaskAnalyticsTransmitter
     {
-        IResult TryTransmitProjectCompilingEvent();
+        Task TryTransmitProjectCompilingEvent();
     }
 }

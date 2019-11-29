@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.CommonModels;
 
@@ -10,34 +11,42 @@ namespace SpecFlow.Tools.MsBuild.Generation
         private readonly IMSBuildInformationProvider _msBuildInformationProvider;
         private readonly SpecFlowProjectInfo _specFlowProjectInfo;
         private readonly IAnalyticsTransmitter _analyticsTransmitter;
+        private readonly ITaskLoggingWrapper _taskLoggingWrapper;
 
         public MSBuildTaskAnalyticsTransmitter(
             IAnalyticsEventProvider analyticsEventProvider,
             IMSBuildInformationProvider msBuildInformationProvider,
             SpecFlowProjectInfo specFlowProjectInfo,
-            IAnalyticsTransmitter analyticsTransmitter)
+            IAnalyticsTransmitter analyticsTransmitter,
+            ITaskLoggingWrapper taskLoggingWrapper)
         {
             _analyticsEventProvider = analyticsEventProvider;
             _msBuildInformationProvider = msBuildInformationProvider;
             _specFlowProjectInfo = specFlowProjectInfo;
             _analyticsTransmitter = analyticsTransmitter;
+            _taskLoggingWrapper = taskLoggingWrapper;
         }
 
-        public IResult TryTransmitProjectCompilingEvent()
+        public async Task TryTransmitProjectCompilingEvent()
         {
             try
             {
-                return TransmitProjectCompilingEvent();
+                var transmissionResult = await TransmitProjectCompilingEvent();
+
+                if (transmissionResult is IFailure failure)
+                {
+                    _taskLoggingWrapper.LogMessageWithLowImportance($"Could not transmit analytics: {failure}");
+                }
             }
             catch (Exception exc)
             {
                 // catch all exceptions since we do not want to break the build simply because event creation failed
                 // but still return an error containing the exception to at least log it
-                return Result.Failure(exc);
+                _taskLoggingWrapper.LogMessageWithLowImportance($"Could not transmit analytics: {exc}");
             }
         }
 
-        public IResult TransmitProjectCompilingEvent()
+        public async Task<IResult> TransmitProjectCompilingEvent()
         {
             var projectCompilingEvent = _analyticsEventProvider.CreateProjectCompilingEvent(
                 _msBuildInformationProvider.GetMSBuildVersion(),
@@ -45,7 +54,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 _specFlowProjectInfo.TargetFrameworks,
                 _specFlowProjectInfo.CurrentTargetFramework,
                 _specFlowProjectInfo.ProjectGuid);
-            return _analyticsTransmitter.TransmitSpecFlowProjectCompilingEvent(projectCompilingEvent);
+            return await _analyticsTransmitter.TransmitSpecFlowProjectCompilingEvent(projectCompilingEvent);
         }
     }
 }

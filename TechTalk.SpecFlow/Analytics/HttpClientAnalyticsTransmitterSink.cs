@@ -18,11 +18,11 @@ namespace TechTalk.SpecFlow.Analytics
             _httpClient = httpClientWrapper.HttpClient;
         }
 
-        public IResult TransmitEvent(IAnalyticsEvent analyticsEvent)
+        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent)
         {
             try
             {
-                TransmitEventAsync(analyticsEvent).ConfigureAwait(false);
+                await TransmitEventAsync(analyticsEvent);
                 return Result.Success();
             }
             catch (Exception e)
