@@ -18,7 +18,7 @@ Scenario Outline: Steps with parameters
 		 """
 			[When]
 			public void When_WHO_does_something(string who)
-			{{                                                                                                                                                 
+			{{
                 global::Log.LogStep(); 
 				if (who != "Joe") throw new Exception("invalid parameter: " + who);
 			}}
@@ -42,7 +42,7 @@ Scenario: Steps with parameters referred by index
 		 """
 			[When]
 			public void When_P0_does_P1_with(string who, string what)
-			{{                                                                                                                                             
+			{{
                 global::Log.LogStep();  
 			}}
 		 """
@@ -60,7 +60,7 @@ Scenario: Supports punctuation
 		 """
 			[When]
 			public void When_WHO_the_man_does_something_with(string who, Table table)
-			{{                                                                                                                                                             
+			{{
                 global::Log.LogStep(); 
 			}}
 		 """
@@ -102,8 +102,8 @@ Scenario Outline: Pascal case methods
 	And the following step definitions
 		 """
 			[When]
-			public void <method>(string howMuch)    
-			{{                                                                             
+			public void <method>(string howMuch)
+			{{
                 global::Log.LogStep(); 
 			}}
 		 """
@@ -117,23 +117,23 @@ Examples:
 
 @fsharp
 Scenario Outline: F# method name can be used as a regex
-    Given there is a SpecFlow project
-	And there is an external F# class library project 'ExternalSteps'
-	And the following step definition in the project 'ExternalSteps'
-        """
-		let [<When>] <method> = LocalApp.Log.LogStep @"<method>"
-        """
-	And there is a reference between the SpecFlow project and the 'ExternalSteps' project
-	And a scenario 'Simple Scenario' as
+	Given there is a SpecFlow project
+		And there is an external F# class library project 'ExternalSteps'
+		And the following step definition in the project 'ExternalSteps'
+			"""
+			let [<When>] <method> = LocalApp.Log.LogStep @"<method>"
+			"""
+		And there is a reference between the SpecFlow project and the 'ExternalSteps' project
+		And a scenario 'Simple Scenario' as
          """
          When I do something really important
          """
-	And the specflow configuration is     
+	And the specflow configuration is
         """
-		<specFlow>                             
-			<stepAssemblies>                         
-				<stepAssembly assembly="ExternalSteps" />    
-			</stepAssemblies>                 
+		<specFlow>
+			<stepAssemblies>
+				<stepAssembly assembly="ExternalSteps" />
+			</stepAssemblies>
 		</specFlow>
         """
 	When I execute the tests

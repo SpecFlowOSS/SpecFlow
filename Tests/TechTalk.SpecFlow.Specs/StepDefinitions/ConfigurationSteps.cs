@@ -1,38 +1,29 @@
-﻿using System.Linq;
-using FluentAssertions;
-using TechTalk.SpecFlow.TestProjectGenerator;
-using TechTalk.SpecFlow.TestProjectGenerator.Driver;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
+﻿using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ConfigurationSteps
     {
-        private readonly VSTestExecutionDriver _vstestExecutionDriver;
         private readonly ConfigurationDriver _configurationDriver;
-        private readonly TestRunConfiguration _testRunConfiguration;
-        private readonly SolutionDriver _solutionDriver;
+        private readonly CompilationResultDriver _compilationResultDriver;
 
-        public ConfigurationSteps(VSTestExecutionDriver vstestExecutionDriver, ConfigurationDriver configurationDriver, TestRunConfiguration testRunConfiguration, SolutionDriver solutionDriver)
+        public ConfigurationSteps(ConfigurationDriver configurationDriver, CompilationResultDriver compilationResultDriver)
         {
-            _vstestExecutionDriver = vstestExecutionDriver;
             _configurationDriver = configurationDriver;
-            _testRunConfiguration = testRunConfiguration;
-            _solutionDriver = solutionDriver;
+            _compilationResultDriver = compilationResultDriver;
         }
-
 
         [Then(@"the app\.config is used for configuration")]
         public void ThenTheApp_ConfigIsUsedForConfiguration()
         {
-            _solutionDriver.CheckCompileOutputForString("Using app.config").Should().BeTrue();
+            _compilationResultDriver.CheckSolutionShouldUseAppConfig();
         }
 
         [Then(@"the specflow\.json is used for configuration")]
-        public void ThenTheSpecflow_JsonIsUsedForConfiguration()
+        public void ThenTheSpecFlow_JsonIsUsedForConfiguration()
         {
-            _solutionDriver.CheckCompileOutputForString("Using specflow.json").Should().BeTrue();
+            _compilationResultDriver.CheckSolutionShouldUseSpecFlowJson();
         }
 
         [Given(@"the feature language is '(.*)'")]

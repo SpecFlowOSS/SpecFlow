@@ -113,7 +113,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
                 var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
-                _analyticsTransmitter.TransmitSpecflowProjectRunningEvent(projectRunningEvent);
+                _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
             }
             catch (Exception)
             {

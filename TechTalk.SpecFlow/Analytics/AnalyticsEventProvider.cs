@@ -20,36 +20,54 @@ namespace TechTalk.SpecFlow.Analytics
 
         public SpecFlowProjectCompilingEvent CreateProjectCompilingEvent(string msbuildVersion, string assemblyName, string targetFrameworks, string targetFramework, string projectGuid)
         {
-            var userId = _userUniqueIdStore.GetUserId();
-            var unitTestProvider = _unitTestProvider;
-            var specFlowVersion = GetSpecFlowVersion();
-            var isBuildServer = IsBuildServerMode();
-            var hashedAssemblyName = ToSha256(assemblyName);
-            var platform = GetOSPlatform();
-            var platformDescription = RuntimeInformation.OSDescription;
+            string userId = _userUniqueIdStore.GetUserId();
+            string unitTestProvider = _unitTestProvider;
+            string specFlowVersion = GetSpecFlowVersion();
+            bool isBuildServer = IsBuildServerMode();
+            string hashedAssemblyName = ToSha256(assemblyName);
+            string platform = GetOSPlatform();
+            string platformDescription = RuntimeInformation.OSDescription;
 
-            var compiledEvent = new SpecFlowProjectCompilingEvent(DateTime.UtcNow, userId,
-                platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer,
-                hashedAssemblyName, targetFrameworks, targetFramework, msbuildVersion,
+            var compiledEvent = new SpecFlowProjectCompilingEvent(
+                DateTime.UtcNow,
+                userId,
+                platform,
+                platformDescription,
+                specFlowVersion,
+                unitTestProvider,
+                isBuildServer,
+                hashedAssemblyName,
+                targetFrameworks,
+                targetFramework,
+                msbuildVersion,
                 projectGuid);
+
             return compiledEvent;
         }
 
         public SpecFlowProjectRunningEvent CreateProjectRunningEvent(string testAssemblyName)
         {
-            var userId = _userUniqueIdStore.GetUserId();
-            var unitTestProvider = _unitTestProvider;
-            var specFlowVersion = GetSpecFlowVersion();
-            var isBuildServer = IsBuildServerMode();
-            var targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
+            string userId = _userUniqueIdStore.GetUserId();
+            string unitTestProvider = _unitTestProvider;
+            string specFlowVersion = GetSpecFlowVersion();
+            bool isBuildServer = IsBuildServerMode();
+            string targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
             
-            var hashedAssemblyName = ToSha256(testAssemblyName);
-            var platform = GetOSPlatform();
-            var platformDescription = RuntimeInformation.OSDescription;
+            string hashedAssemblyName = ToSha256(testAssemblyName);
+            string platform = GetOSPlatform();
+            string platformDescription = RuntimeInformation.OSDescription;
 
-            var runningEvent = new SpecFlowProjectRunningEvent(DateTime.UtcNow, userId,
-                platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer,
-                hashedAssemblyName, null, targetFramework);
+            var runningEvent = new SpecFlowProjectRunningEvent(
+                DateTime.UtcNow,
+                userId,
+                platform,
+                platformDescription,
+                specFlowVersion,
+                unitTestProvider,
+                isBuildServer,
+                hashedAssemblyName,
+                null,
+                targetFramework);
             return runningEvent;
         }
 
@@ -59,22 +77,24 @@ namespace TechTalk.SpecFlow.Analytics
             {
                 return "Windows";
             }
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return "Linux";
             }
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return "OSX";
             }
 
-            return "Platform cannot be identified";
+            throw new InvalidOperationException("Platform cannot be identified");
         }
 
         private bool IsBuildServerMode()
         {
-            var isRunByTfs = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TF_BUILD"));
-            var isRunByTeamCity = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
+            bool isRunByTfs = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TF_BUILD"));
+            bool isRunByTeamCity = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
 
             return isRunByTfs || isRunByTeamCity;
         }
@@ -90,6 +110,7 @@ namespace TechTalk.SpecFlow.Analytics
             {
                 return null;
             }
+
             var crypt = new System.Security.Cryptography.SHA256Managed();
             var stringBuilder = new StringBuilder();
             var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(inputString));
@@ -97,6 +118,7 @@ namespace TechTalk.SpecFlow.Analytics
             {
                 stringBuilder.Append(theByte.ToString("x2"));
             }
+
             return stringBuilder.ToString();
         }
 
@@ -106,7 +128,10 @@ namespace TechTalk.SpecFlow.Analytics
             var assemblyPath = assembly.CodeBase.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
             int netCoreAppIndex = Array.IndexOf(assemblyPath, "Microsoft.NETCore.App");
             if (netCoreAppIndex > 0 && netCoreAppIndex < assemblyPath.Length - 2)
+            {
                 return assemblyPath[netCoreAppIndex + 1];
+            }
+
             return null;
         }
     }

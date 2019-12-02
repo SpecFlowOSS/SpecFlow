@@ -5,14 +5,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 {
     public class ExecutionDriver
     {
-        private readonly SolutionDriver _solutionDriver;
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
+        private readonly CompilationDriver _compilationDriver;
         private readonly TestRunConfiguration _testRunConfiguration;
 
-        public ExecutionDriver(SolutionDriver solutionDriver, VSTestExecutionDriver vsTestExecutionDriver, TestRunConfiguration testRunConfiguration)
+        public ExecutionDriver(VSTestExecutionDriver vsTestExecutionDriver, CompilationDriver compilationDriver, TestRunConfiguration testRunConfiguration)
         {
-            _solutionDriver = solutionDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
+            _compilationDriver = compilationDriver;
             _testRunConfiguration = testRunConfiguration;
         }
 
@@ -32,12 +32,20 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public void ExecuteTests()
         {
-            _solutionDriver.DefaultProject.Build();
+            ExecuteTestsTimes(1);
+        }
 
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+        public void ExecuteTestsTimes(uint times)
+        {
+            if (!_compilationDriver.HasTriedToCompile)
+            {
+                _compilationDriver.CompileSolution();
+            }
 
-            _vsTestExecutionDriver.ExecuteTests();
+            for (uint currentTime = 0; currentTime < times; currentTime++)
+            {
+                _vsTestExecutionDriver.ExecuteTests();
+            }
         }
     }
 }

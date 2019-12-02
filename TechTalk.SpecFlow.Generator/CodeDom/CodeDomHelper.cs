@@ -44,13 +44,14 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
         public void SetTypeReferenceAsInterface(CodeTypeReference typeReference)
         {
             // this hack is necessary for VB.NET code generation
-
             if (TargetLanguage == CodeDomProviderLanguage.VB)
             {
-                var isInterfaceField = typeReference.GetType().GetField("isInterface",
-                    BindingFlags.Instance | BindingFlags.NonPublic);
+                var typeReferenceType = typeReference.GetType();
+                var isInterfaceField = typeReferenceType.GetField("_isInterface", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (isInterfaceField == null)
+                {
                     throw new InvalidOperationException("CodeDom version does not support VB.NET generation.");
+                }
 
                 isInterfaceField.SetValue(typeReference, true);
             }
