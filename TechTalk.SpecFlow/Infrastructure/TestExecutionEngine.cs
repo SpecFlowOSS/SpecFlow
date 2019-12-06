@@ -304,6 +304,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             FireScenarioEvents(HookType.AfterStep);
         }
 
+        protected virtual void OnSkipStep()
+        {
+            FireScenarioEvents(HookType.OnSkipStep);
+        }
+
+
         #region Step/event execution
 
         protected virtual void FireScenarioEvents(HookType bindingEvent)
@@ -402,6 +408,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (isStepSkipped)
                 {
                     _testTracer.TraceStepSkipped();
+                    OnSkipStep();
                 }
                 else
                 {

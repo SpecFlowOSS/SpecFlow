@@ -284,7 +284,8 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                 hookType == HookType.BeforeScenarioBlock ||
                 hookType == HookType.AfterScenarioBlock ||
                 hookType == HookType.BeforeStep ||
-                hookType == HookType.AfterStep;
+                hookType == HookType.AfterStep ||
+                hookType == HookType.OnSkipStep;
         }
 
         protected virtual bool ValidateStepArgumentTransformation(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepArgumentTransformationAttribute)

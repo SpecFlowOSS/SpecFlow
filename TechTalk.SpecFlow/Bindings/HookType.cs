@@ -11,6 +11,7 @@ namespace TechTalk.SpecFlow.Bindings
         BeforeScenarioBlock,
         AfterScenarioBlock,
         BeforeStep,
-        AfterStep
+        AfterStep,
+        OnSkipStep
     }
 }

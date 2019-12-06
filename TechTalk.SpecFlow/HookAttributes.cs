@@ -101,4 +101,9 @@ namespace TechTalk.SpecFlow
     {
         public AfterStepAttribute(params string[] tags) : base(HookType.AfterStep, tags) { }
     }
+
+    public class OnSkipStepAttribute : HookAttribute
+    {
+        public OnSkipStepAttribute(params string[] tags) : base(HookType.OnSkipStep, tags) { }
+    }
 }
