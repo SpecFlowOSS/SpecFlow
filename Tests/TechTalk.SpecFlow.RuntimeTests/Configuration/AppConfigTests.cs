@@ -328,5 +328,129 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies[1].Should().Be("testEntry2");
         }
 
+
+        [Fact]
+        public void Check_CucumberMessages_NotConfigured_EnabledIsFalse()
+        {
+            string config = @"<specflow>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+        }
+
+
+        [Fact]
+        public void Check_CucumberMessages_EmptyTag_EnabledIsFalse()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages />
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Enabled_True()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages enabled=""true""/>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Enabled_False()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages enabled=""false""/>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_EmptyList()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages enabled=""false"">
+                                    <sinks>
+                                    </sinks>
+                                </cucumber-messages>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Sinks.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_ListOneEntry()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages enabled=""false"">
+                                    <sinks>
+                                        <sink type=""file"" path=""C:\temp\testrun.cm"" />
+                                    </sinks>
+                                </cucumber-messages>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(1);
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_ListMultipleEntry()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages enabled=""false"">
+                                    <sinks>
+                                        <sink type=""file"" path=""C:\temp\testrun1.cm"" />
+                                        <sink type=""file"" path=""C:\temp\testrun2.cm"" />
+                                        <sink type=""file"" path=""C:\temp\testrun3.cm"" />
+                                    </sinks>
+                                </cucumber-messages>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(3);
+        }
+
+        [Fact]
+        public void Check_CucumberMessages_Sinks_DataOfEntry()
+        {
+            string config = @"<specflow>
+                                <cucumber-messages enabled=""false"">
+                                    <sinks>
+                                        <sink type=""file"" path=""C:\temp\testrun.cm"" />
+                                    </sinks>
+                                </cucumber-messages>
+                            </specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+            var cucumberMessagesSink = runtimeConfig.CucumberMessagesConfiguration.Sinks.First();
+
+            cucumberMessagesSink.Type.Should().Be("file");
+            cucumberMessagesSink.Path.Should().Be(@"C:\temp\testrun.cm");
+        }
     }
 }

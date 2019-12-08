@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using BoDi;
 using Moq;
 using Xunit;
@@ -14,6 +15,7 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
+using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.CucumberMessages;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -42,6 +44,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
         private ITestPendingMessageFactory _testPendingMessageFactory;
         private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
+        private Mock<IAnalyticsEventProvider> _analyticsEventProvider;
+        private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
+        private Mock<ITestRunnerManager> _testRunnerManager;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -131,6 +136,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             _testPendingMessageFactory = new TestPendingMessageFactory(errorProviderStub.Object);
             _testUndefinedMessageFactory = new TestUndefinedMessageFactory(stepDefinitionSkeletonProviderMock.Object, errorProviderStub.Object, specFlowConfiguration);
+
+            _analyticsEventProvider = new Mock<IAnalyticsEventProvider>();
+            _analyticsTransmitter = new Mock<IAnalyticsTransmitter>();
+            _analyticsTransmitter.Setup(at => at.TransmitSpecFlowProjectRunningEvent(It.IsAny<SpecFlowProjectRunningEvent>()))
+                .Callback(() => { });
+
+            _testRunnerManager = new Mock<ITestRunnerManager>();
+            _testRunnerManager.Setup(trm => trm.TestAssembly).Returns(Assembly.GetCallingAssembly);
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -153,6 +166,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 _testPendingMessageFactory,
                 _testUndefinedMessageFactory,
                 new Mock<ITestRunResultCollector>().Object,
+                _analyticsEventProvider.Object,
+                _analyticsTransmitter.Object,
+                _testRunnerManager.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
@@ -574,6 +590,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
             testObjectResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), featureContainer),
                 Times.Exactly(2));
+        }
+
+        [Fact]
+        public void Should_TryToSend_ProjectRunningEvent()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnTestRunStart();
+
+            _analyticsTransmitter.Verify(at => at.TransmitSpecFlowProjectRunningEvent(It.IsAny<SpecFlowProjectRunningEvent>()), Times.Once);
         }
     }
 }

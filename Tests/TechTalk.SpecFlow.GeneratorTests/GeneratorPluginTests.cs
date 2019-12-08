@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
-using Moq;
 using Xunit;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.UnitTestProvider;
 using DefaultDependencyProvider = TechTalk.SpecFlow.Generator.DefaultDependencyProvider;
 
@@ -49,9 +40,6 @@ namespace TechTalk.SpecFlow.GeneratorTests
             
             var specFlowProjectConfiguration = new SpecFlowProjectConfiguration();
             generatorPluginEvents.RaiseConfigurationDefaults(specFlowProjectConfiguration);
-
-
-
 
             specFlowProjectConfiguration.SpecFlowConfiguration.StopAtFirstError.Should().BeTrue();
         }
@@ -91,38 +79,38 @@ namespace TechTalk.SpecFlow.GeneratorTests
         //    pluginMock.Verify(p => p.Initialize(It.IsAny<GeneratorPluginEvents>(), It.Is<GeneratorPluginParameters>(pp => pp.Parameters == "foo, bar"), It.IsAny<UnitTestProviderConfiguration>()));
         //}
 
-        private SpecFlowConfigurationHolder GetConfigWithPlugin()
-        {
-            return new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
-                  <plugins>
-                    <add name=""MyCompany.MyPlugin"" />
-                  </plugins>
-                </specFlow>"));
-        }
+        //private SpecFlowConfigurationHolder GetConfigWithPlugin()
+        //{
+        //    return new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"<specFlow>
+        //          <plugins>
+        //            <add name=""MyCompany.MyPlugin"" />
+        //          </plugins>
+        //        </specFlow>"));
+        //}
 
-        private IObjectContainer CreateDefaultContainer(SpecFlowConfigurationHolder configurationHolder)
-        {
-            return GeneratorContainerBuilder.CreateContainer(configurationHolder, new ProjectSettings(), Enumerable.Empty<string>());
-        }
+        //private IObjectContainer CreateDefaultContainer(SpecFlowConfigurationHolder configurationHolder)
+        //{
+        //    return new GeneratorContainerBuilder().CreateContainer(configurationHolder, new ProjectSettings(), Enumerable.Empty<GeneratorPluginInfo>());
+        //}
 
-        class TestDefaultDependencyProvider : DefaultDependencyProvider
-        {
-            private readonly IGeneratorPlugin pluginToReturn;
+        //class TestDefaultDependencyProvider : DefaultDependencyProvider
+        //{
+        //    private readonly IGeneratorPlugin pluginToReturn;
 
-            public TestDefaultDependencyProvider(IGeneratorPlugin pluginToReturn)
-            {
-                this.pluginToReturn = pluginToReturn;
-            }
+        //    public TestDefaultDependencyProvider(IGeneratorPlugin pluginToReturn)
+        //    {
+        //        this.pluginToReturn = pluginToReturn;
+        //    }
 
-            public override void RegisterDefaults(ObjectContainer container)
-            {
-                base.RegisterDefaults(container);
+        //    public override void RegisterDefaults(ObjectContainer container)
+        //    {
+        //        base.RegisterDefaults(container);
 
-                var pluginLoaderStub = new Mock<IGeneratorPluginLoader>();
-                pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<PluginDescriptor>())).Returns(pluginToReturn);
-                container.RegisterInstanceAs<IGeneratorPluginLoader>(pluginLoaderStub.Object);
-            }
-        }
+        //        var pluginLoaderStub = new Mock<IGeneratorPluginLoader>();
+        //        pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<PluginDescriptor>())).Returns(pluginToReturn);
+        //        container.RegisterInstanceAs<IGeneratorPluginLoader>(pluginLoaderStub.Object);
+        //    }
+        //}
 
         public interface ICustomDependency
         {

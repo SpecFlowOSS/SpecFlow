@@ -1,6 +1,7 @@
 ﻿using System.CodeDom;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.CodeDom;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
@@ -9,7 +10,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     {
         private readonly Combination _combination;
 
-        public CustomXUnitGeneratorProvider(CodeDomHelper codeDomHelper, Combination combination) : base(codeDomHelper)
+        public CustomXUnitGeneratorProvider(CodeDomHelper codeDomHelper, Combination combination, ProjectSettings projectSettings) : base(codeDomHelper, projectSettings)
         {
             _combination = combination;
         }

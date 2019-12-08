@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BoDi;
@@ -9,11 +9,9 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
-using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
@@ -21,27 +19,29 @@ namespace TechTalk.SpecFlow.Generator
     {
         internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
 
-        public static IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings, IEnumerable<string> generatorPlugins)
+        public IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings, IEnumerable<GeneratorPluginInfo> generatorPluginInfos, IObjectContainer parentObjectContainer = null)
         {
-            var container = new ObjectContainer();
+            var container = new ObjectContainer(parentObjectContainer);
             container.RegisterInstanceAs(projectSettings);
 
             RegisterDefaults(container);
 
             var configurationProvider = container.Resolve<IGeneratorConfigurationProvider>();
             var generatorPluginEvents = container.Resolve<GeneratorPluginEvents>();
-            var unitTestProviderConfigration = container.Resolve<UnitTestProviderConfiguration>();
+            var unitTestProviderConfiguration = container.Resolve<UnitTestProviderConfiguration>();
 
             var specFlowConfiguration = new SpecFlowProjectConfiguration();
             specFlowConfiguration.SpecFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration.SpecFlowConfiguration, configurationHolder);
 
-            LoadPlugins(container, generatorPluginEvents, unitTestProviderConfigration, generatorPlugins);
+            LoadPlugins(container, generatorPluginEvents, unitTestProviderConfiguration, generatorPluginInfos.Select(p => p.PathToGeneratorPluginAssembly));
             
             generatorPluginEvents.RaiseRegisterDependencies(container);
             generatorPluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
-            
+
             if (specFlowConfiguration.SpecFlowConfiguration.GeneratorCustomDependencies != null)
+            {
                 container.RegisterFromConfiguration(specFlowConfiguration.SpecFlowConfiguration.GeneratorCustomDependencies);
+            }
 
             container.RegisterInstanceAs(specFlowConfiguration);
             container.RegisterInstanceAs(specFlowConfiguration.SpecFlowConfiguration);
@@ -51,47 +51,57 @@ namespace TechTalk.SpecFlow.Generator
 
             container.RegisterInstanceAs(container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language));
 
-            if (unitTestProviderConfigration != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(unitTestProviderConfigration.UnitTestProvider ?? ConfigDefaults.UnitTestProviderName));
+            if (unitTestProviderConfiguration != null)
+            {
+                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(unitTestProviderConfiguration.UnitTestProvider ?? ConfigDefaults.UnitTestProviderName));
+            }
 
             generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
 
             container.Resolve<IConfigurationLoader>().TraceConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration.SpecFlowConfiguration);
 
-
             return container;
         }
 
-        private static void LoadPlugins(ObjectContainer container, GeneratorPluginEvents generatorPluginEvents, UnitTestProviderConfiguration unitTestProviderConfigration, IEnumerable<string> generatorPlugins)
+        private void LoadPlugins(
+            ObjectContainer container,
+            GeneratorPluginEvents generatorPluginEvents,
+            UnitTestProviderConfiguration unitTestProviderConfiguration,
+            IEnumerable<string> generatorPlugins)
         {
             // initialize plugins that were registered from code
             foreach (var generatorPlugin in container.Resolve<IDictionary<string, IGeneratorPlugin>>().Values)
             {
                 // these plugins cannot have parameters
-                generatorPlugin.Initialize(generatorPluginEvents, new GeneratorPluginParameters(), unitTestProviderConfigration);
+                generatorPlugin.Initialize(generatorPluginEvents, new GeneratorPluginParameters(), unitTestProviderConfiguration);
             }
+
             var pluginLoader = container.Resolve<IGeneratorPluginLoader>();
 
-            foreach (var generatorPlugin in generatorPlugins)
+            foreach (string generatorPlugin in generatorPlugins)
             {
                 //todo: should set the parameters, and do not pass empty
                 var pluginDescriptor = new PluginDescriptor(Path.GetFileNameWithoutExtension(generatorPlugin), generatorPlugin, PluginType.Generator, string.Empty); 
-                LoadPlugin(pluginDescriptor, pluginLoader, generatorPluginEvents, unitTestProviderConfigration);
+                LoadPlugin(pluginDescriptor, pluginLoader, generatorPluginEvents, unitTestProviderConfiguration);
             }
         }
 
-        private static void LoadPlugin(PluginDescriptor pluginDescriptor, IGeneratorPluginLoader pluginLoader, GeneratorPluginEvents generatorPluginEvents,
-            UnitTestProviderConfiguration unitTestProviderConfigration)
+        private void LoadPlugin(
+            PluginDescriptor pluginDescriptor,
+            IGeneratorPluginLoader pluginLoader,
+            GeneratorPluginEvents generatorPluginEvents,
+            UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
             var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
             var generatorPluginParameters = new GeneratorPluginParameters
             {
                 Parameters = pluginDescriptor.Parameters
             };
-            plugin.Initialize(generatorPluginEvents, generatorPluginParameters, unitTestProviderConfigration);
+
+            plugin.Initialize(generatorPluginEvents, generatorPluginParameters, unitTestProviderConfiguration);
         }
 
-        private static void RegisterDefaults(ObjectContainer container)
+        private void RegisterDefaults(ObjectContainer container)
         {
             DefaultDependencyProvider.RegisterDefaults(container);
         }

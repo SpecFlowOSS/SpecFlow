@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected override void RegisterDefaults(ObjectContainer container)
         {
             base.RegisterDefaults(container);
-            container.RegisterInstanceAs(GetUnitTestRuntimeProviderMock().Object, "NUnit");
+            container.RegisterInstanceAs(GetUnitTestRuntimeProviderMock().Object, "nunit");
         }
     }
 }

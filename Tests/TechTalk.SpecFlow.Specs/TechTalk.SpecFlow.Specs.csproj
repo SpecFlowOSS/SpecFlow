@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>$(SpecFlow_Specs_TFM)</TargetFramework>
+    <TargetFrameworks>$(SpecFlow_Specs_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
     <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
@@ -68,7 +68,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.2" />
     <PackageReference Include="Moq" Version="4.10.0" />
-    <PackageReference Include="RhinoMocks" Version="3.6.1" />
+    <!--<PackageReference Include="RhinoMocks" Version="3.6.1" />-->
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -119,6 +119,13 @@
 
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_PluginTFM)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Update="specflow.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <!-- Manually import the MSBuild generation and XUnit build components to use the version in source. -->

@@ -13,7 +13,7 @@ You need to clone the repository with submodules, because the code for the SpecF
 ### MSBUILDDISABLENODEREUSE
 
 You have to set MSBUILDDISABLENODEREUSE to 1.
-Reason for this is, that SpecFlow has a MSBuild Task that is used in the TechTalk.SpecFlow.Specs project. Because of the using of the task and MSBuild reuses processes, the file is loaded by MSBuild and will then lock the file and break the next build.
+Reason for this is, that SpecFlow has an MSBuild Task that is used in the TechTalk.SpecFlow.Specs project. Because of the using of the task and MSBuild reuses processes, the file is loaded by MSBuild and will then lock the file and break the next build.
 
 This environment variable controls the behaviour if MSBuild reuses processes. Setting to 1 disables this behaviour.
 

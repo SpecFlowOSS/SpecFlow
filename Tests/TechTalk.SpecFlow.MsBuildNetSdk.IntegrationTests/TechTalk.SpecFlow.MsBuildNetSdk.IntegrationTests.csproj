@@ -20,10 +20,12 @@
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' == 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)netcoreapp2.0\</_SpecFlowXUnitRuntimePluginPath>
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net452\</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly>$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
+    
   </PropertyGroup>
   
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,6 +41,7 @@
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" PreBuild="true" />
     <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj" />
+    <ProjectReference Include="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="Build">

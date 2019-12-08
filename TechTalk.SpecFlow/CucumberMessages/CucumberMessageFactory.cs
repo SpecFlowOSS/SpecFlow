@@ -4,6 +4,7 @@ using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
 using static Io.Cucumber.Messages.TestCaseStarted.Types;
+using Timestamp = Io.Cucumber.Messages.Timestamp;
 
 namespace TechTalk.SpecFlow.CucumberMessages
 {
@@ -21,9 +22,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
                 return Result<TestRunStarted>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
 
+            
+
             var testRunStarted = new TestRunStarted
             {
-                Timestamp = Timestamp.FromDateTime(timeStamp)
+                Timestamp = timeStamp.ToCucumberMessagesTimestamp()
             };
 
             return Result<TestRunStarted>.Success(testRunStarted);
@@ -40,10 +43,10 @@ namespace TechTalk.SpecFlow.CucumberMessages
             {
                 return Result<TestCaseStarted>.Failure($"{nameof(timeStamp)} must be an UTC {nameof(DateTime)}. It is {timeStamp.Kind}");
             }
-
+            
             var testCaseStarted = new TestCaseStarted
             {
-                Timestamp = Timestamp.FromDateTime(timeStamp),
+                Timestamp = timeStamp.ToCucumberMessagesTimestamp(),
                 PickleId = ConvertToPickleIdString(pickleId),
                 Platform = platform
             };
@@ -66,7 +69,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var testCaseFinished = new TestCaseFinished
             {
                 PickleId = ConvertToPickleIdString(pickleId),
-                Timestamp = Timestamp.FromDateTime(timeStamp),
+                Timestamp = timeStamp.ToCucumberMessagesTimestamp(),
                 TestResult = testResult
             };
 
@@ -83,7 +86,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             var testRunFinished = new TestRunFinished
             {
                 Success = isSuccess,
-                Timestamp = Timestamp.FromDateTime(timeStamp)
+                Timestamp = timeStamp.ToCucumberMessagesTimestamp()
             };
 
             return Result.Success(testRunFinished);

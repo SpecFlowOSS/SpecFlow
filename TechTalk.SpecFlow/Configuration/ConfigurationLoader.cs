@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using BoDi;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration.AppConfig;
@@ -14,19 +15,10 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    public interface IConfigurationLoader
-    {
-        SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, ISpecFlowConfigurationHolder specFlowConfigurationHolder);
-
-        SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration);
-
-        SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection);
-
-        void TraceConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration);
-    }
-
     public class ConfigurationLoader : IConfigurationLoader
     {
+        private const string JsonConfigurationFileName = "specflow.json";
+
         private readonly AppConfigConfigurationLoader _appConfigConfigurationLoader;
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
@@ -150,7 +142,8 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowRowTests,
                 DefaultMarkFeaturesParallelizable,
                 DefaultSkipParallelizableMarkerForTags,
-                DefaultObsoleteBehavior
+                DefaultObsoleteBehavior,
+                new CucumberMessagesConfiguration()
                 );
         }
 
@@ -183,8 +176,31 @@ namespace TechTalk.SpecFlow.Configuration
 
         private string GetSpecflowJsonFilePath()
         {
-            var specflowJsonFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "specflow.json");
-            return specflowJsonFile;
+            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, JsonConfigurationFileName);
+
+            if (File.Exists(specflowJsonFileInAppDomainBaseDirectory))
+            {
+                return specflowJsonFileInAppDomainBaseDirectory;
+            }
+
+            var specflowJsonFileTwoDirectoriesUp = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", JsonConfigurationFileName);
+
+            if (File.Exists(specflowJsonFileTwoDirectoriesUp))
+            {
+                return specflowJsonFileTwoDirectoriesUp;
+            }
+
+            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, JsonConfigurationFileName);
+
+            if (File.Exists(specflowJsonFileInCurrentDirectory))
+            {
+                return specflowJsonFileInCurrentDirectory;
+            }
+
+
+          
+
+            return null;
         }
     }
 }

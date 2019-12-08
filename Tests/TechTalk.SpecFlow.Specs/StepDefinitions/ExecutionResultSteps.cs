@@ -7,7 +7,6 @@ using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
-using TechTalk.SpecFlow.TestProjectGenerator.NewApi;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -17,14 +16,17 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly HooksDriver _hooksDriver;
         private readonly VSTestExecutionDriver _vsTestExecutionDriver;
         private readonly TestProjectFolders _testProjectFolders;
+        private readonly TestRunLogDriver _testRunLogDriver;
 
-        public ExecutionResultSteps(HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver, TestProjectFolders testProjectFolders)
+        public ExecutionResultSteps(HooksDriver hooksDriver, VSTestExecutionDriver vsTestExecutionDriver, TestProjectFolders testProjectFolders, TestRunLogDriver testRunLogDriver)
         {
             _hooksDriver = hooksDriver;
             _vsTestExecutionDriver = vsTestExecutionDriver;
             _testProjectFolders = testProjectFolders;
+            _testRunLogDriver = testRunLogDriver;
         }
 
+        [Then(@"the tests were executed successfully")]
         [Then(@"all tests should pass")]
         [Then(@"the scenario should pass")]
         public void ThenAllTestsShouldPass()
@@ -80,22 +82,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the log file '(.*)' should contain text '(.*)'")]
         public void ThenTheLogFileShouldContainText(string logFilePath, string text)
         {
-            var logContent = File.ReadAllText(GetPath(logFilePath));
-            logContent.Should().Contain(text);
+            _testRunLogDriver.CheckLogContainsText(text, logFilePath);
         }
 
         [Then(@"the log file '(.*)' should contain the text '(.*)' (\d+) times")]
-        public void ThenTheLogFileShouldContainTheTextTimes(string logFilePath, string text, int times)
+        public void ThenTheLogFileShouldContainTheTextTimes(string logFilePath, string regexString, int times)
         {
-            var logContent = File.ReadAllText(GetPath(logFilePath));
-            logContent.Should().NotBeNullOrEmpty("no trace log is generated");
-
-            var regex = new Regex(text, RegexOptions.Multiline);
-            if (times > 0)
-                regex.Match(logContent).Success.Should().BeTrue(text + " was not found in the logs");
-
-            if (times != int.MaxValue) 
-                 regex.Matches(logContent).Count.Should().Be(times, logContent);
+            _testRunLogDriver.CheckLogMatchesRegexTimes(regexString, times, logFilePath);
         }
 
         private string GetPath(string logFilePath)
@@ -103,7 +96,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             string filePath = Path.Combine(_testProjectFolders.ProjectFolder, logFilePath);
             return filePath;
         }
-
 
         [Then(@"every scenario has it's individual context id")]
         public void ThenEveryScenarioHasItSIndividualContextId()
@@ -119,6 +111,5 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
                 distinctContextIdLines.Count().Should().Be(1);
             }
         }
-
     }
 }

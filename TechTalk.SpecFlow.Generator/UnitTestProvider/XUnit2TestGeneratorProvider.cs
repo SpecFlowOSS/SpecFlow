@@ -1,16 +1,20 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnit2TestGeneratorProvider : IUnitTestGeneratorProvider
     {
+        private readonly ProjectSettings _projectSettings;
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
+        private readonly CodeTypeReference _objectCodeTypeReference = new CodeTypeReference(typeof(object));
         protected internal const string THEORY_ATTRIBUTE = "Xunit.SkippableTheoryAttribute";
         protected internal const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
         protected internal const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
@@ -30,9 +34,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         protected internal const string CATEGORY_PROPERTY_NAME = "Category";
 
-        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
+        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
         {
             CodeDomHelper = codeDomHelper;
+            _projectSettings = projectSettings;
         }
 
         public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
@@ -88,7 +93,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod)
         {
-            var typeName = "InternalSpecFlow.XUnitAssemblyFixture";
+            var typeName = $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
             ctorMethod.Parameters.Add(
@@ -195,6 +200,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
 
+            generationContext.TestClass.BaseTypes.Add(_objectCodeTypeReference);
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
 
             // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }

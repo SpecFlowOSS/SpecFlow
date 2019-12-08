@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -122,7 +123,30 @@ namespace TechTalk.SpecFlow.Bindings
             if (typeToConvertTo == typeof(Guid) || typeToConvertTo == typeof(Guid?))
                 return new GuidValueRetriever().GetValue(value as string);
 
-            return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
+            return TryConvertWithTypeConverter(typeToConvertTo, value, cultureInfo, out var convertedValue) 
+                ? convertedValue : 
+                System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
+        }
+
+        private static bool TryConvertWithTypeConverter(Type typeToConvertTo, object value, CultureInfo cultureInfo, out object result)
+        {
+            var typeConverter = TypeDescriptor.GetConverter(typeToConvertTo);
+            
+            if (typeConverter.CanConvertFrom(value.GetType()))
+            {
+                try
+                {
+                    result = typeConverter.ConvertFrom(null, cultureInfo, value);
+                    return true;
+                }
+                catch
+                {
+                    // Ignore any exceptions.
+                }
+            }
+
+            result = null;
+            return false;
         }
 
         public static object ConvertToAnEnum(Type enumType, string value)

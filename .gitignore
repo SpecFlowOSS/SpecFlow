@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# VS Code
+.code/
+.ionide/
+
 # User-specific files
 *.suo
 *.user
@@ -382,3 +386,9 @@ GitExtensions.settings.backup
 /Tests/TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests/Features/dummy.feature.cs
 *.feature.cs
 /Tests/TechTalk.SpecFlow.Specs/Features/CucumberMessages
+
+# Nerdbank.GitVersioning
+Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs
+
+#Analytics
+AppInsightsInstrumentationKey.cs

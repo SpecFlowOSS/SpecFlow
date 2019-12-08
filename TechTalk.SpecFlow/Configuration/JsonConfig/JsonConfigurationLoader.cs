@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using BoDi;
-using TechTalk.SpecFlow.BindingSkeletons;
 using Utf8Json;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
@@ -11,26 +8,30 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
     {
         public SpecFlowConfiguration LoadJson(SpecFlowConfiguration specFlowConfiguration, string jsonContent)
         {
-            if (String.IsNullOrWhiteSpace(jsonContent)) throw new ArgumentNullException(nameof(jsonContent));
+            if (string.IsNullOrWhiteSpace(jsonContent))
+            {
+                throw new ArgumentNullException(nameof(jsonContent));
+            }
 
             var jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonContent);
 
-            ContainerRegistrationCollection containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
-            ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
-            CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
-            CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
+            var containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
+            var generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
+            var featureLanguage = specFlowConfiguration.FeatureLanguage;
+            var bindingCulture = specFlowConfiguration.BindingCulture;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
-            MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
+            var missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
             bool traceTimings = specFlowConfiguration.TraceTimings;
-            TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
-            StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
-            List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
+            var minTracedDuration = specFlowConfiguration.MinTracedDuration;
+            var stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
+            var additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
-            string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
-            ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            var skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
+            var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            var cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
             if (jsonConfig.Language != null)
             {
@@ -87,23 +88,39 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 }
             }
 
-            return new SpecFlowConfiguration(ConfigSource.Json,
-                                            containerRegistrationCollection,
-                                            generatorContainerRegistrationCollection,
-                                            featureLanguage,
-                                            bindingCulture,
-                                            stopAtFirstError,
-                                            missingOrPendingStepsOutcome,
-                                            traceSuccessfulSteps,
-                                            traceTimings,
-                                            minTracedDuration,
-                                            stepDefinitionSkeletonStyle,
-                                            additionalStepAssemblies,
-                                            allowDebugGeneratedFiles,
-                                            allowRowTests,
-                                            markFeaturesParallelizable,
-                                            skipParallelizableMarkerForTags,
-                                            obsoleteBehavior);
+            if (jsonConfig.CucumberMessages != null)
+            {
+                cucumberMessagesConfiguration.Enabled = jsonConfig.CucumberMessages.Enabled;
+
+                if (jsonConfig.CucumberMessages.Sinks != null)
+                {
+                    foreach (var cucumberMessageSinkElement in jsonConfig.CucumberMessages.Sinks)
+                    {
+                        cucumberMessagesConfiguration.Sinks.Add(new CucumberMessagesSink(cucumberMessageSinkElement.Type, cucumberMessageSinkElement.Path));
+                    }
+                }
+            }
+
+            return new SpecFlowConfiguration(
+                ConfigSource.Json,
+                containerRegistrationCollection,
+                generatorContainerRegistrationCollection,
+                featureLanguage,
+                bindingCulture,
+                stopAtFirstError,
+                missingOrPendingStepsOutcome,
+                traceSuccessfulSteps,
+                traceTimings,
+                minTracedDuration,
+                stepDefinitionSkeletonStyle,
+                additionalStepAssemblies,
+                allowDebugGeneratedFiles,
+                allowRowTests,
+                markFeaturesParallelizable,
+                skipParallelizableMarkerForTags,
+                obsoleteBehavior,
+                cucumberMessagesConfiguration
+            );
         }
     }
 }
