@@ -14,6 +14,9 @@
 
     <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
 
+    <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
+    <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+
   </PropertyGroup>
 
 </Project>

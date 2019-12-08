@@ -14,16 +14,16 @@
 
   <Target
     Name="AddXUnitAssemblyHooks"
-    Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true'"
+    Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true' AND '$(_SpecFlow_Tools_MsBuild_Generation_Imported)' == 'true'"
     BeforeTargets="BeforeCompile">
 
-    <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
-    <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
-    <GeneratedSpecFlowAssemblyHooksFile>$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
-  </PropertyGroup>
-
-  <Target Name="GenerateSpecFlowAssemblyHooksFileTask" Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true' AND '$(_SpecFlow_Tools_MsBuild_Generation_Imported)' == 'true'">
-    <ReplaceTokenInFileTask Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'" InputFile="$(SourceSpecFlowAssemblyHooksFile)" OutputFile="$(GeneratedSpecFlowAssemblyHooksFile)" TextToReplace="PROJECT_ROOT_NAMESPACE" TextToReplaceWith="$(RootNamespace.Replace('.', '_'))" />
+    <ReplaceTokenInFileTask
+      Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'"
+      InputFile="$(SourceSpecFlowAssemblyHooksFile)"
+      OutputFile="$(GeneratedSpecFlowAssemblyHooksFile)"
+      TextToReplace="PROJECT_ROOT_NAMESPACE"
+      TextToReplaceWith="$(RootNamespace.Replace('.', '_'))" />
+    
     <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
       <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
     </ItemGroup>
