@@ -40,9 +40,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return new BindingMethod(new BindingType("dummy", "dummy", "dummy"), name, new IBindingParameter[0], null);
         }
 
-        private static BindingMethod CreateBindingMethodWithStrignParam(string name = "dummy")
+        private static BindingMethod CreateBindingMethodWithStringParam(string name = "dummy")
         {
             return new BindingMethod(new BindingType("dummy", "dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(string)), "param1") }, null);
+        }
+
+        private static BindingMethod CreateBindingMethodWithDataTableParam(string name = "dummy")
+        {
+            return new BindingMethod(new BindingType("dummy", "dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(Table)), "param1") }, null);
+        }
+
+        private static BindingMethod CreateBindingMethodWithObjectParam(string name = "dummy")
+        {
+            return new BindingMethod(new BindingType("dummy", "dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(object)), "param1") }, null);
         }
 
         private StepInstance CreateSimpleWhen(string text = "I do something")
@@ -84,7 +94,52 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_with_parameters()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStrignParam(), null));
+            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStringParam(), null));
+
+            var sut = CreateSUT();
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+
+            result.Success.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_GetBestMatch_succeed_when_proper_match_with_parameters_even_if_there_is_a_DataTable_overload()
+        {
+            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStringParam(), null));
+            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethodWithDataTableParam(), null));
+
+            var sut = CreateSUT();
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+
+            result.Success.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Should_GetBestMatch_succeed_when_proper_match_with_object_parameters()
+        {
+            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithObjectParam(), null));
+
+            var sut = CreateSUT();
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+
+            result.Success.Should().BeTrue();
+        }
+
+
+        [Fact]
+        public void Should_GetBestMatch_succeed_when_proper_match_with_object_parameters_even_if_there_is_a_DataTable_overload()
+        {
+            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithObjectParam(), null));
+            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethodWithDataTableParam(), null));
 
             var sut = CreateSUT();
 

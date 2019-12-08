@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Configuration
         public const string FeatureLanguage = "en-US";
         public const string ToolLanguage = "";
 
-        public const string UnitTestProviderName = "NUnit";
+        public const string UnitTestProviderName = "nunit";
 
         public const bool DetectAmbiguousMatches = true;
         public const bool StopAtFirstError = false;

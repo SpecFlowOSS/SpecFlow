@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using BoDi;
 using Io.Cucumber.Messages;
+using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.CommonModels;
@@ -37,6 +38,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly ITestObjectResolver _testObjectResolver;
         private readonly ITestTracer _testTracer;
         private readonly IUnitTestRuntimeProvider _unitTestRuntimeProvider;
+        private readonly IAnalyticsEventProvider _analyticsEventProvider;
+        private readonly IAnalyticsTransmitter _analyticsTransmitter;
+        private readonly ITestRunnerManager _testRunnerManager;
         private CultureInfo _defaultBindingCulture = CultureInfo.CurrentCulture;
 
         private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
@@ -63,7 +67,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             ITestResultFactory testResultFactory,
             ITestPendingMessageFactory testPendingMessageFactory,
             ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestRunResultCollector testRunResultCollector,
+            ITestRunResultCollector testRunResultCollector, 
+            IAnalyticsEventProvider analyticsEventProvider, 
+            IAnalyticsTransmitter analyticsTransmitter, 
+            ITestRunnerManager testRunnerManager,
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -86,6 +93,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testPendingMessageFactory = testPendingMessageFactory;
             _testUndefinedMessageFactory = testUndefinedMessageFactory;
             _testRunResultCollector = testRunResultCollector;
+            _analyticsEventProvider = analyticsEventProvider;
+            _analyticsTransmitter = analyticsTransmitter;
+            _testRunnerManager = testRunnerManager;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -97,6 +107,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (_testRunnerStartExecuted)
             {
                 return;
+            }
+
+            try
+            {
+                var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
+                var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
+                _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
+            }
+            catch (Exception)
+            {
+                // catch all exceptions since we do not want to break anything
             }
 
             _testRunnerStartExecuted = true;
@@ -117,7 +138,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testRunnerEndExecuted = true;
             }
 
-            var testRunResultResult = _testRunResultCollector.StopCollecting();
+            var testRunResultResult = _testRunResultCollector.GetCurrentResult();
 
             if (testRunResultResult is ISuccess<TestRunResult> success)
             {
@@ -127,7 +148,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             FireEvents(HookType.AfterTestRun);
         }
 
-        public void OnFeatureStart(FeatureInfo featureInfo)
+        public virtual void OnFeatureStart(FeatureInfo featureInfo)
         {
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we automatically close 
@@ -145,7 +166,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             FireEvents(HookType.BeforeFeature);
         }
 
-        public void OnFeatureEnd()
+        public virtual void OnFeatureEnd()
         {
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we ignore the 
@@ -166,18 +187,18 @@ namespace TechTalk.SpecFlow.Infrastructure
             _contextManager.CleanupFeatureContext();
         }
 
-        public void OnScenarioInitialize(ScenarioInfo scenarioInfo)
+        public virtual void OnScenarioInitialize(ScenarioInfo scenarioInfo)
         {
             _contextManager.InitializeScenarioContext(scenarioInfo);
         }
 
-        public void OnScenarioStart()
+        public virtual void OnScenarioStart()
         {
             _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             FireScenarioEvents(HookType.BeforeScenario);
         }
 
-        public void OnAfterLastStep()
+        public virtual void OnAfterLastStep()
         {
             HandleBlockSwitch(ScenarioBlock.None);
 
@@ -235,7 +256,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw _contextManager.ScenarioContext.TestError;
         }
 
-        public void OnScenarioEnd()
+        public virtual void OnScenarioEnd()
         {
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
             {
@@ -245,14 +266,14 @@ namespace TechTalk.SpecFlow.Infrastructure
             _contextManager.CleanupScenarioContext();
         }
 
-        public void OnScenarioSkipped()
+        public virtual void OnScenarioSkipped()
         {
             // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
             _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.Skipped;
         }
 
-        public void Pending()
+        public virtual void Pending()
         {
             throw _errorProvider.GetPendingStepDefinitionError();
         }
@@ -312,7 +333,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected IObjectContainer TestThreadContainer { get; }
 
-        public void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        public virtual void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
         {
             var currentContainer = GetHookContainer(hookType);
             var arguments = ResolveArguments(hookBinding, currentContainer);
@@ -538,7 +559,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         #region Given-When-Then
 
-        public void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
+        public virtual void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
         {
             StepDefinitionType stepDefinitionType = stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But
                 ? GetCurrentBindingType()

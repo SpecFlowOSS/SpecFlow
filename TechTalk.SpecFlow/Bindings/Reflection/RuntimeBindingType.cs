@@ -2,7 +2,7 @@ using System;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
 {
-    public class RuntimeBindingType : IBindingType
+    public class RuntimeBindingType : IPolymorphicBindingType
     {
         public readonly Type Type;
 
@@ -15,6 +15,11 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         public RuntimeBindingType(Type type)
         {
             this.Type = type;
+        }
+
+        public bool IsAssignableTo(IBindingType baseType)
+        {
+            return Type.IsAssignableTo(baseType);
         }
 
         public override string ToString()

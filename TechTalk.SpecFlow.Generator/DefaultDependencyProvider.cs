@@ -25,7 +25,6 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
             container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
 
-            container.RegisterTypeAs<GeneratorPluginLocator, IGeneratorPluginLocator>();
             container.RegisterTypeAs<GeneratorPluginLoader, IGeneratorPluginLoader>();
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
 

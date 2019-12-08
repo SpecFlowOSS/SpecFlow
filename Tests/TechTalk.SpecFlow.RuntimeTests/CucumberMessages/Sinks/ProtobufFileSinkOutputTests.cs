@@ -39,7 +39,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             {
                 TestRunStarted = new TestRunStarted
                 {
-                    Timestamp = Timestamp.FromDateTime(DateTime.UtcNow)
                 }
             };
 
@@ -83,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages.Sinks
             return new MemoryStream();
         }
 
-        public ProtobufFileSinkConfiguration GetProtobufFileSinkConfiguration(string targetFilePath = "CucumberMessageQueue")
+        public ProtobufFileSinkConfiguration GetProtobufFileSinkConfiguration(string targetFilePath = "cucumbermessages")
         {
             return new ProtobufFileSinkConfiguration(targetFilePath);
         }

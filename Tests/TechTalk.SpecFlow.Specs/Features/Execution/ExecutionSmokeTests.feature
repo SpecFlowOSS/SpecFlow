@@ -24,7 +24,7 @@ Examples:
 Scenario Outline: Generated classes from test files can be compiled
 	Given I have a '<Language>' test project
 	And all test files are inluded in the project
-	When the project is compiled
+	When I compile the solution
 	Then no compilation errors are reported
 
 Examples: 

@@ -1,9 +1,10 @@
 parameters:
   name: ''
   pool: ''
-  nugetVersion: 4.6.2
-  sdkVersion: 3.0.100-preview7-012821
+  nugetVersion: 5.1.0
+  sdkVersion: 3.0.100
   artifactFileName: ''
+  appInsightsInstrumentationKey: ''
 
 jobs:
 - job: ${{ parameters.name }}
@@ -14,10 +15,11 @@ jobs:
     inputs:
       versionSpec: ${{ parameters.nugetVersion }}
 
-
-  - task: DotNetCoreInstaller@0
-    displayName: 'Use .NET Core'
+  
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core SDK'
     inputs:
+      packageType: sdk
       version: ${{ parameters.sdkVersion }}
 
   - task: PowerShell@2
@@ -31,7 +33,7 @@ jobs:
     inputs: 
       filePath: build.ps1
       workingDirectory: ./
-      arguments: Debug
+      arguments: Debug -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
 
     displayName: 'restore & build Debug'
@@ -40,7 +42,7 @@ jobs:
     inputs: 
       filePath: build.ps1
       workingDirectory: ./
-      arguments: Release
+      arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
 
     displayName: 'restore & build Release'
@@ -59,3 +61,8 @@ jobs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
       artifactType: container
       ArtifactName: 'SpecFlow.CI-BuildResult'
+
+  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@19
+    displayName: 'WhiteSource Bolt'
+    inputs:
+      advance: true 

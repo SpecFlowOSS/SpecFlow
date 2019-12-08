@@ -12,18 +12,29 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             return string.Format("{2}.{0}({1})", bindingMethod.Name, string.Join(", ", bindingMethod.Parameters.Select(p => p.Type.Name).ToArray()), bindingMethod.Type.Name);
         }
 
-        public static bool IsAssignableTo(this IBindingType baseType, Type type)
+        public static bool IsAssignableTo(this Type type, IBindingType baseType)
         {
-            if (baseType is RuntimeBindingType)
-                return type.IsAssignableFrom(((RuntimeBindingType)baseType).Type);
+            if (baseType is RuntimeBindingType runtimeBindingType)
+                return runtimeBindingType.Type.IsAssignableFrom(type);
 
             if (type.FullName == baseType.FullName)
                 return true;
 
-            if (type.BaseType != null && IsAssignableTo(baseType, type.BaseType))
+            if (type.BaseType != null && IsAssignableTo(type.BaseType, baseType))
                 return true;
 
-            return type.GetInterfaces().Any(_if => IsAssignableTo(baseType, _if));
+            return type.GetInterfaces().Any(_if => IsAssignableTo(_if, baseType));
+        }
+
+        public static bool IsAssignableFrom(this Type baseType, IBindingType type)
+        {
+            if (type is IPolymorphicBindingType polymorphicBindingType)
+                return polymorphicBindingType.IsAssignableTo(new RuntimeBindingType(baseType));
+
+            if (type.FullName == baseType.FullName)
+                return true;
+
+            return false;
         }
 
         public static bool MethodEquals(this IBindingMethod method1, IBindingMethod method2)

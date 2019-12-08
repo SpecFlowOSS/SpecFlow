@@ -6,13 +6,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class ExecutionSteps
     {
-        private readonly SolutionDriver _solutionDriver;
         private readonly ExecutionDriver _executionDriver;
+        private readonly CompilationDriver _compilationDriver;
 
-        public ExecutionSteps(SolutionDriver solutionDriver, ExecutionDriver executionDriver)
+        public ExecutionSteps(ExecutionDriver executionDriver, CompilationDriver compilationDriver)
         {
-            _solutionDriver = solutionDriver;
             _executionDriver = executionDriver;
+            _compilationDriver = compilationDriver;
         }
 
         [When(@"I execute the tests")]
@@ -21,14 +21,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _executionDriver.ExecuteTests();
         }
 
-        [When(@"I execute the tests twice")]
-        public void WhenIExecuteTheTestsTwice()
+        [When(@"I execute the tests (once|twice|\d+ times)")]
+        public void WhenIExecuteTheTestsTwice(uint times)
         {
-            _executionDriver.ExecuteTests();
-            _executionDriver.ExecuteTests();
+            _executionDriver.ExecuteTestsTimes(times);
         }
-
-
 
         [When(@"I execute the tests tagged with '@(.+)'")]
         public void WhenIExecuteTheTestsTaggedWithTag(string tag)
@@ -36,24 +33,23 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _executionDriver.ExecuteTestsWithTag(tag);
         }
 
-        [Given(@"MSBuild is used for compiling")]
-        public void GivenMSBuildIsUsedForCompiling()
+        [Given(@"'(dotnet msbuild|dotnet build|MSBuild)' is used for compiling")]
+        public void GivenIsUsedForCompiling(BuildTool buildTool)
         {
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
+            _compilationDriver.SetBuildTool(buildTool);
         }
 
-        [Given(@"dotnet build is used for compiling")]
-        public void GivenDotnetBuildIsUsedForCompiling()
+        [When(@"I build the solution using '(dotnet msbuild|dotnet build|MSBuild)'")]
+        [When(@"I compile the solution using '(dotnet msbuild|dotnet build|MSBuild)'")]
+        public void WhenIBuildTheSolutionUsing(BuildTool buildTool)
         {
-            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
+            _compilationDriver.CompileSolution(buildTool);
         }
 
-        [Given(@"dotnet msbuild is used for compiling")]
-        public void GivenDotnetMsbuildIsUsedForCompiling()
+        [When(@"the solution is built (once|twice|\d+ times)")]
+        public void WhenTheSolutionIsBuiltTwice(uint times)
         {
-            _solutionDriver.CompileSolution(BuildTool.DotnetMSBuild);
+            _compilationDriver.CompileSolutionTimes(times);
         }
-
-
     }
 }

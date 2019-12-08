@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
@@ -26,7 +28,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var platformFactoryMock = GetPlatformFactoryMock();
             var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object);
+            var sinkProviderMock = new Mock<ISinkProvider>();
+            sinkProviderMock.Setup(m => m.GetMessageSinksFromConfiguration()).Returns(new List<ICucumberMessageSink>() {cucumberMessageSinkMock.Object});
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object, sinkProviderMock.Object);
             var scenarioInfo = new ScenarioInfo("Test", "Description", "Tag1");
 
             // ACT
@@ -74,7 +78,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var platformFactoryMock = GetPlatformFactoryMock();
             var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object);
+            var sinkProviderMock = new Mock<ISinkProvider>();
+            sinkProviderMock.Setup(m => m.GetMessageSinksFromConfiguration()).Returns(new List<ICucumberMessageSink>() { cucumberMessageSinkMock.Object });
+
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object, sinkProviderMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -100,7 +107,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var platformFactoryMock = GetPlatformFactoryMock();
             var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
-            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, cucumberMessageSinkMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object);
+            var sinkProviderMock = new Mock<ISinkProvider>();
+            sinkProviderMock.Setup(m => m.GetMessageSinksFromConfiguration()).Returns(new List<ICucumberMessageSink>() { cucumberMessageSinkMock.Object });
+
+            var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object, sinkProviderMock.Object);
 
             // ACT
             cucumberMessageSender.SendTestRunStarted();
@@ -123,7 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                       .Returns<DateTime>(timeStamp => Result<TestRunStarted>.Success(
                                           new TestRunStarted
                                           {
-                                              Timestamp = Timestamp.FromDateTime(timeStamp)
+                                              Timestamp = timeStamp.ToCucumberMessagesTimestamp()
                                           }));
 
             cucumberMessageFactoryMock.Setup(m => m.BuildTestCaseStartedMessage(It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<TestCaseStarted.Types.Platform>()))
@@ -131,7 +141,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
                                           new TestCaseStarted
                                           {
                                               PickleId = $"{id:D}",
-                                              Timestamp = Timestamp.FromDateTime(timeStamp),
+                                              Timestamp = timeStamp.ToCucumberMessagesTimestamp(),
                                               Platform = platform
                                           }));
             return cucumberMessageFactoryMock;

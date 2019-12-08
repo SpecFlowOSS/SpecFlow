@@ -68,10 +68,8 @@ namespace TechTalk.SpecFlow.Parser
             protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
             {
                 ResetBlock();
-                var token = node.GetItems<AstNode>(RuleType.Scenario).Single().GetItems<Token>(RuleType._ScenarioLine).Single();
-                
 
-                if (token.MatchedGherkinDialect.ScenarioOutlineKeywords.Contains(keyword))
+                if (examples != null && examples.Length > 0)
                 {
                     return new ScenarioOutline(tags, location, keyword, name, description, steps, examples);
                 }
@@ -98,12 +96,6 @@ namespace TechTalk.SpecFlow.Parser
             {
                 return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments, sourceFilePath);
             }
-
-            //protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
-            //{
-            //    ResetBlock();
-            //    return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples, node);
-            //}
 
             protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps, AstNode node)
             {

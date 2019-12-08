@@ -1,3 +1,34 @@
+3.1 
+
+Features:
++ first set of cucumber-messages are implemented 
+  - TestRunStarted
+  - TestCaseStarted
+  - TestCaseFinished
+  - TestRunFinished
+
+  Documentation: <https://specflow.org/documentation/Cucumber-Messages/>
+
++ cucumber-messages can be enabled via specflow.json and app.config
++ file sinks for cucumber-messages can be configured
++ support for Gherkin v6 "Rule" keyword
++ Support discovering step definitions from attributes that are derived from Given,When,Then or StepDefinition attributes (related to https://github.com/techtalk/SpecFlow/issues/1745)
+
+Fixes: 
++ AfterTestRun hook can take longer than 100ms on .NET Core https://github.com/techtalk/SpecFlow/issues/1348
++ Adjust parameter names generation in scenario outlines https://github.com/techtalk/SpecFlow/issues/1694
++ specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761
++ specflow.json is copied to output directory automatically https://github.com/techtalk/SpecFlow/issues/1315
++ A scenario with an "Examples" block should be treated as a Scenario Outline according to Gherkin v6
++ step definition method with "object" parameter type might not match
+
+
+Changes:
++ Ignored Scenarios are skipped at runtime
+    + SpecFlow.xUnit has a dependency on Xunit.SkippableFact
++ Added support for TypeConverter attributes.
++ All Steps.Given, Steps.When, Steps.Then, Steps.But and Steps.And methods are obsolete; these methods will be removed in SpecFlow 3.2. For more details refer to https://github.com/techtalk/SpecFlow/issues/1733
+
 3.0 - 2019-06-27
 
 Fixes:

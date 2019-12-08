@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Plugins
             Assembly assembly;
             try
             {
-                assembly = Assembly.LoadFrom(pluginAssemblyName);
+                assembly = LoadAssembly(pluginAssemblyName);
             }
             catch(Exception ex)
             {
@@ -44,5 +44,10 @@ namespace TechTalk.SpecFlow.Plugins
 
             return plugin;
         }       
+
+        protected virtual Assembly LoadAssembly(string pluginAssemblyName)
+        {
+            return Assembly.LoadFrom(pluginAssemblyName);
+        }
     }
 }

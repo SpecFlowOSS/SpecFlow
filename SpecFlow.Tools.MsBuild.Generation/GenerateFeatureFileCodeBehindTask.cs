@@ -1,22 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Resources;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.CommonModels;
+using TechTalk.SpecFlow.Generator;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
     public class GenerateFeatureFileCodeBehindTask : Task
     {
-        public GenerateFeatureFileCodeBehindTask()
-        {
-            CodeBehindGenerator = new FeatureFileCodeBehindGenerator(Log);
-        }
-
         public IFeatureFileCodeBehindGenerator CodeBehindGenerator { get; set; }
+        public IAnalyticsTransmitter AnalyticsTransmitter { get; set; }
 
         [Required]
         public string ProjectPath { get; set; }
@@ -33,80 +30,38 @@ namespace SpecFlow.Tools.MsBuild.Generation
         [Output]
         public ITaskItem[] GeneratedFiles { get; private set; }
 
+        public string MSBuildVersion { get; set; }
+        public string AssemblyName { get; set; }
+        public string TargetFrameworks { get; set; }
+        public string TargetFramework { get; set; }
+        public string ProjectGuid { get; set; }
+
         public override bool Execute()
         {
-            try
+            var generateFeatureFileCodeBehindTaskContainerBuilder = new GenerateFeatureFileCodeBehindTaskContainerBuilder();
+            var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).Select(p => new GeneratorPluginInfo(p)).ToArray() ?? Array.Empty<GeneratorPluginInfo>();
+            var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToArray() ?? Array.Empty<string>();
+            var msbuildInformationProvider = new MSBuildInformationProvider(MSBuildVersion);
+            var generateFeatureFileCodeBehindTaskConfiguration = new GenerateFeatureFileCodeBehindTaskConfiguration(AnalyticsTransmitter, CodeBehindGenerator);
+            var generateFeatureFileCodeBehindTaskInfo = new SpecFlowProjectInfo(generatorPlugins, featureFiles, ProjectPath, ProjectFolder, ProjectGuid, AssemblyName, OutputPath, RootNamespace, TargetFrameworks, TargetFramework);
+
+            using (var taskRootContainer = generateFeatureFileCodeBehindTaskContainerBuilder.BuildRootContainer(Log, generateFeatureFileCodeBehindTaskInfo, msbuildInformationProvider, generateFeatureFileCodeBehindTaskConfiguration))
             {
-                try
+                var assemblyResolveLoggerFactory = taskRootContainer.Resolve<IAssemblyResolveLoggerFactory>();
+                using (assemblyResolveLoggerFactory.Build())
                 {
-                    var currentProcess = Process.GetCurrentProcess();
+                    var taskExecutor = taskRootContainer.Resolve<IGenerateFeatureFileCodeBehindTaskExecutor>();
+                    var executeResult = taskExecutor.Execute();
 
-                    Log.LogWithNameTag(Log.LogMessage, $"process: {currentProcess.ProcessName}, pid: {currentProcess.Id}, CD: {Environment.CurrentDirectory}");
-
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                    if (!(executeResult is ISuccess<IReadOnlyCollection<ITaskItem>> success))
                     {
-                        Log.LogWithNameTag(Log.LogMessage, "  " + assembly.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.LogWithNameTag(Log.LogMessage, $"Error when dumping process info: {e}");
-                }
-
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-
-                var generator = CodeBehindGenerator ?? new FeatureFileCodeBehindGenerator(Log);
-
-                Log.LogWithNameTag(Log.LogMessage, "Starting GenerateFeatureFileCodeBehind");
-
-                var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).ToList() ?? new List<string>();
-
-                var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToList() ?? new List<string>();
-
-                var generatedFiles = generator.GenerateFilesForProject(
-                    ProjectPath,
-                    RootNamespace,
-                    featureFiles,
-                    generatorPlugins,
-                    ProjectFolder,
-                    OutputPath);
-
-                GeneratedFiles = generatedFiles.Select(file => new TaskItem { ItemSpec = file }).ToArray();
-
-                return !Log.HasLoggedErrors;
-            }
-            catch (Exception e)
-            {
-                if (e.InnerException != null)
-                {
-                    if (e.InnerException is FileLoadException fle)
-                    {
-                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException Filename: {fle.FileName}");
-                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException FusionLog: {fle.FusionLog}");
-                        Log?.LogWithNameTag(Log.LogError, $"FileLoadException Message: {fle.Message}");
+                        return false;
                     }
 
-                    Log?.LogWithNameTag(Log.LogError, e.InnerException.ToString());
+                    GeneratedFiles = success.Result.ToArray();
+                    return true;
                 }
-
-                Log?.LogWithNameTag(Log.LogError, e.ToString());
-                return false;
-            }
-            finally
-            {
-                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             }
         }
-
-        private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Log.LogWithNameTag(Log.LogMessage, args.Name);
-            
-
-            return null;
-        }
-
     }
-
-
 }

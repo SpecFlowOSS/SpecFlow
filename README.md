@@ -11,7 +11,7 @@ For questions please send them to the [Discussion group](http://groups.google.co
 For issues/bugs please use the [issue tracker on GitHub](https://github.com/techtalk/SpecFlow/issues).
 
 ## Build status
-Continuous integration: [![Build status](https://specflow.visualstudio.com/SpecFlow/_apis/build/status/SpecFlow.CI)](https://specflow.visualstudio.com/SpecFlow/_build/latest?definitionId=2)
+Continuous integration: [![Build Status](https://dev.azure.com/specflow/SpecFlow/_apis/build/status/SpecFlow.CI?branchName=master)](https://dev.azure.com/specflow/SpecFlow/_build/latest?definitionId=2&branchName=master)
 
 ## Deployment status
 

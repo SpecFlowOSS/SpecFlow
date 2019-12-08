@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 
@@ -8,22 +9,22 @@ namespace TechTalk.SpecFlow.CucumberMessages
     {
         private readonly ICucumberMessageFactory _cucumberMessageFactory;
         private readonly IPlatformFactory _platformFactory;
-        private readonly ICucumberMessageSink _cucumberMessageSink;
         private readonly IFieldValueProvider _fieldValueProvider;
         private readonly ITestRunResultSuccessCalculator _testRunResultSuccessCalculator;
+
+        private readonly List<ICucumberMessageSink> _cucumberMessageSinks;
 
         public CucumberMessageSender(
             ICucumberMessageFactory cucumberMessageFactory,
             IPlatformFactory platformFactory,
-            ICucumberMessageSink cucumberMessageSink,
             IFieldValueProvider fieldValueProvider,
-            ITestRunResultSuccessCalculator testRunResultSuccessCalculator)
+            ITestRunResultSuccessCalculator testRunResultSuccessCalculator, ISinkProvider sinkProvider)
         {
             _cucumberMessageFactory = cucumberMessageFactory ?? throw new ArgumentNullException(nameof(cucumberMessageFactory));
             _platformFactory = platformFactory;
-            _cucumberMessageSink = cucumberMessageSink;
             _fieldValueProvider = fieldValueProvider;
             _testRunResultSuccessCalculator = testRunResultSuccessCalculator;
+            _cucumberMessageSinks = sinkProvider.GetMessageSinksFromConfiguration();
         }
 
         public void SendTestRunStarted()
@@ -71,7 +72,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
             switch (messageResult)
             {
                 case ISuccess<Envelope> success:
-                    _cucumberMessageSink.SendMessage(success.Result);
+
+                    foreach (var cucumberMessageSink in _cucumberMessageSinks)
+                    {
+                        cucumberMessageSink.SendMessage(success.Result);
+                    }
                     break;
 
                 case WrappedFailure<Envelope> failure: throw new InvalidOperationException($"The message could not be created. {failure}");
