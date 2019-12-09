@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
         }
 
-        public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
         }
