@@ -43,3 +43,6 @@ Plugin- Developer- Gitter channel: [![Gitter](https://badges.gitter.im/techtalk/
 ## Copyright
 
 Copyright (c) TechTalk. See [LICENSE](http://go.specflow.org/license) for details.
+
+
+
