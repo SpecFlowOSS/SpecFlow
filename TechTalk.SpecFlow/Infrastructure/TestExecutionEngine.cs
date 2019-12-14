@@ -303,6 +303,16 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             FireScenarioEvents(HookType.AfterStep);
         }
+        protected virtual void OnSkipStep(BindingMatch bindingMatch)
+        {
+            _testTracer.TraceStepSkipped();
+
+            var skippedStepHandlers = ScenarioContext.Where(element => element.Value is ISkippedStepHandler).Select(keyValuePair => keyValuePair.Value as ISkippedStepHandler);
+            foreach (var skippedStepHandler in skippedStepHandlers)
+            {
+                skippedStepHandler.Handle(bindingMatch);
+            }
+        }
 
         #region Step/event execution
 
@@ -401,7 +411,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                 if (isStepSkipped)
                 {
-                    _testTracer.TraceStepSkipped();
+                    OnSkipStep(match);
                 }
                 else
                 {
