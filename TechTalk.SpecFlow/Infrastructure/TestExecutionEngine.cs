@@ -307,7 +307,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             _testTracer.TraceStepSkipped();
 
-            var skippedStepHandlers = ScenarioContext.Where(element => element.Value is ISkippedStepHandler).Select(keyValuePair => keyValuePair.Value as ISkippedStepHandler);
+            var skippedStepHandlers = ScenarioContext.ScenarioContainer.ResolveAll<ISkippedStepHandler>();
             foreach (var skippedStepHandler in skippedStepHandlers)
             {
                 skippedStepHandler.Handle(bindingMatch);
