@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Runtime.InteropServices;
+using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -32,11 +34,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             actual.AbsoluteUri.Should().Be(expectedUri);
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData("/techtalk/SpecFlow")]
         [InlineData("techtalk/SpecFlow")]
-        public void Retrieves_relative_URI(string expectedUri)
+        public void Retrieves_relative_URI_Windows(string expectedUri)
         {
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
+            var retriever = new UriValueRetriever();
+
+            var actual = retriever.GetValue(expectedUri);
+
+            actual.IsAbsoluteUri.Should().BeFalse();
+            actual.OriginalString.Should().Be(expectedUri);
+        }
+
+        [SkippableTheory]
+        [InlineData("techtalk/SpecFlow")]
+        public void Retrieves_relative_URI_Unix(string expectedUri)
+        {
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
+
             var retriever = new UriValueRetriever();
 
             var actual = retriever.GetValue(expectedUri);

@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
-using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Moq;
 using SpecFlow.Tools.MsBuild.Generation;
 using System.Collections.Generic;
-using BoDi;
 using TechTalk.SpecFlow.Analytics;
 using Xunit;
 using Xunit.Abstractions;
@@ -35,7 +33,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         private Mock<IAnalyticsTransmitter> GetAnalyticsTransmitterMock()
         {
             var analyticsTransmitterMock = new Mock<IAnalyticsTransmitter>();
-            analyticsTransmitterMock.Setup(at => at.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()))
+            analyticsTransmitterMock.Setup(at => at.TransmitSpecFlowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()))
                 .Callback(() => { });
             return analyticsTransmitterMock;
         }
@@ -53,7 +51,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             };
 
             //ACT
-            var result = generateFeatureFileCodeBehindTask.Execute();
+            bool result = generateFeatureFileCodeBehindTask.Execute();
 
             //ASSERT
             result.Should().BeTrue();
@@ -75,7 +73,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             };
 
             //ACT
-            var result = generateFeatureFileCodeBehindTask.Execute();
+            bool result = generateFeatureFileCodeBehindTask.Execute();
 
             //ASSERT
             result.Should().BeTrue();
@@ -96,7 +94,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             };
 
             //ACT
-            var result = generateFeatureFileCodeBehindTask.Execute();
+            bool result = generateFeatureFileCodeBehindTask.Execute();
 
             //ASSERT
             result.Should().BeTrue();
@@ -117,31 +115,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
             };
 
             //ACT
-            var result = generateFeatureFileCodeBehindTask.Execute();
+            bool result = generateFeatureFileCodeBehindTask.Execute();
 
             //ASSERT
             result.Should().BeTrue();
-        }
-
-        [Fact]
-        public void Should_TryToSendAnalytics()
-        {
-            //ARRANGE
-            var analyticsTransmitterMock = GetAnalyticsTransmitterMock();
-            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
-            {
-                ProjectPath = "ProjectPath.csproj",
-                BuildEngine = new MockBuildEngine(_output),
-                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
-                AnalyticsTransmitter = analyticsTransmitterMock.Object
-            };
-
-            //ACT
-            var result = generateFeatureFileCodeBehindTask.Execute();
-
-            //ASSERT
-            result.Should().BeTrue();
-            analyticsTransmitterMock.Verify(sink => sink.TransmitSpecflowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()), Times.Once);
         }
     }
 }

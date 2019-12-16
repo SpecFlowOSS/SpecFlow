@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Generator;
@@ -9,24 +8,23 @@ using TechTalk.SpecFlow.Generator.Helpers;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
-    
     public class MsBuildProjectReaderTests
     {
         private void Should_parse_csproj_file_correctly(string csprojPath, string language, string assemblyName, string rootNamespace, string projectName)
         {
-            var directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath);
-            var projectFilePath = Path.Combine(directoryName, csprojPath);
-            var specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath, rootNamespace);
+            string directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath);
+            string projectFilePath = Path.Combine(directoryName, csprojPath);
+            var specFlowProjectFile = new MSBuildProjectReader().LoadSpecFlowProjectFromMsBuild(projectFilePath, rootNamespace);
 
 
-            specflowProjectfile.ProjectSettings.DefaultNamespace.Should().Be(rootNamespace);
-            specflowProjectfile.ProjectSettings.ProjectName.Should().Be(projectName);
+            specFlowProjectFile.ProjectSettings.DefaultNamespace.Should().Be(rootNamespace);
+            specFlowProjectFile.ProjectSettings.ProjectName.Should().Be(projectName);
 
-            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be(language);
+            specFlowProjectFile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be(language);
 
-            specflowProjectfile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
-            specflowProjectfile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();
-            specflowProjectfile.Configuration.SpecFlowConfiguration.FeatureLanguage.Name.Should().Be("en-US");
+            specFlowProjectFile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
+            specFlowProjectFile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();
+            specFlowProjectFile.Configuration.SpecFlowConfiguration.FeatureLanguage.Name.Should().Be("en-US");
         }
 
         [Fact]

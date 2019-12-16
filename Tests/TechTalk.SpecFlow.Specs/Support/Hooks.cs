@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.TestProjectGenerator;
 using TechTalk.SpecFlow.TestProjectGenerator.Helpers;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Specs.Support
 {
@@ -10,12 +12,24 @@ namespace TechTalk.SpecFlow.Specs.Support
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly CurrentVersionDriver _currentVersionDriver;
+        private readonly RuntimeInformationProvider _runtimeInformationProvider;
+        private readonly IUnitTestRuntimeProvider _unitTestRuntimeProvider;
 
-
-        public Hooks(ScenarioContext scenarioContext, CurrentVersionDriver currentVersionDriver)
+        public Hooks(ScenarioContext scenarioContext, CurrentVersionDriver currentVersionDriver, RuntimeInformationProvider runtimeInformationProvider, IUnitTestRuntimeProvider unitTestRuntimeProvider)
         {
             _scenarioContext = scenarioContext;
             _currentVersionDriver = currentVersionDriver;
+            _runtimeInformationProvider = runtimeInformationProvider;
+            _unitTestRuntimeProvider = unitTestRuntimeProvider;
+        }
+
+        [BeforeScenario("WindowsOnly")]
+        public void SkipWindowsOnlyScenarioIfNotOnWindows()
+        {
+            if (!_runtimeInformationProvider.IsOperatingSystemWindows())
+            {
+                _unitTestRuntimeProvider.TestIgnore("Test must be run on a Windows host system.");
+            }
         }
 
         [BeforeScenario]

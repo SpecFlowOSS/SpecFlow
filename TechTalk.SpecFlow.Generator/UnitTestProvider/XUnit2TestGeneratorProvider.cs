@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
@@ -13,6 +14,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         private readonly ProjectSettings _projectSettings;
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
+        private readonly CodeTypeReference _objectCodeTypeReference = new CodeTypeReference(typeof(object));
         protected internal const string THEORY_ATTRIBUTE = "Xunit.SkippableTheoryAttribute";
         protected internal const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
         protected internal const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
@@ -198,6 +200,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
 
+            generationContext.TestClass.BaseTypes.Add(_objectCodeTypeReference);
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
 
             // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }

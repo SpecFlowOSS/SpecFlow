@@ -6,24 +6,25 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class ProjectSteps
     {
         private readonly ProjectsDriver _projectsDriver;
-        private readonly SolutionDriver _solutionDriver;
+        private readonly CompilationDriver _compilationDriver;
+        private readonly CompilationResultDriver _compilationResultDriver;
 
-        public ProjectSteps(ProjectsDriver projectsDriver, SolutionDriver solutionDriver)
+        public ProjectSteps(ProjectsDriver projectsDriver, CompilationDriver compilationDriver, CompilationResultDriver compilationResultDriver)
         {
             _projectsDriver = projectsDriver;
-            _solutionDriver = solutionDriver;
+            _compilationDriver = compilationDriver;
+            _compilationResultDriver = compilationResultDriver;
         }
 
         [Given(@"there is a SpecFlow project")]
         public void GivenThereIsASpecFlowProject()
         {
-            _projectsDriver.CreateProject("C#");
+            _projectsDriver.CreateSpecFlowProject("C#");
         }
 
         [Given(@"it is using SpecFlow\.Tools\.MSBuild\.Generator")]
         public void GivenItIsUsingSpecFlow_Tools_MSBuild_Generator()
         {
-            
         }
 
 
@@ -40,23 +41,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.CreateProject(language);
         }
 
-        [When(@"the project is compiled")]
+        [When(@"I compile the solution")]
         public void WhenTheProjectIsCompiled()
         {
-            _solutionDriver.CompileSolution(BuildTool.MSBuild);
+            _compilationDriver.CompileSolution();
         }
 
         [Then(@"no compilation errors are reported")]
         public void ThenNoCompilationErrorsAreReported()
         {
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+            _compilationResultDriver.CheckSolutionShouldHaveCompiled();
         }
 
         [Then(@"is a compilation error")]
         public void ThenIsACompilationError()
         {
-            _solutionDriver.CheckSolutionShouldHaseCompileError();
+            _compilationResultDriver.CheckSolutionShouldHaveCompileError();
         }
-
     }
 }

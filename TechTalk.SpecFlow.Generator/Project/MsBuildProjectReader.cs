@@ -3,9 +3,9 @@ using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
-    public class MsBuildProjectReader
+    public class MSBuildProjectReader : IMSBuildProjectReader
     {
-        public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath, string rootNamespace)
+        public SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath, string rootNamespace)
         {
             var configurationProvider = new GeneratorConfigurationProvider(new ConfigurationLoader());
             var projectReader = new ProjectReader(configurationProvider, new ProjectLanguageReader());

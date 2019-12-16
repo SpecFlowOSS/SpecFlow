@@ -42,7 +42,7 @@ Scenario: Enabled configuration with no sinks configured create default output f
     }
     """
   When the test suite is executed
-  Then the Cucumber-Messages file 'cucumbermessages\messages' is created
+  Then the Cucumber-Messages file 'cucumbermessages/messages' is created
 
 Scenario: Configured sinks are respected
   Given there is a project with this specflow.json configuration

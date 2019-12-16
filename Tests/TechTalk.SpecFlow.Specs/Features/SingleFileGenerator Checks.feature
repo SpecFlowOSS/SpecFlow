@@ -7,6 +7,6 @@ Scenario: Build Error when using the SingleFileGenerator and SpecFlow.Tools.MSBu
 	And it is using SpecFlow.Tools.MSBuild.Generator
 	And has a feature file with the SingleFileGenerator configured
 
-	When the project is compiled
+	When I compile the solution
 
 	Then is a compilation error

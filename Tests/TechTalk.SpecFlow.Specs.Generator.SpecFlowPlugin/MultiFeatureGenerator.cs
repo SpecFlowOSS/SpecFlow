@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -48,6 +49,11 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 onlyDotNetCore = HasFeatureTag(specFlowFeature, "@dotnetcore");
             }
 
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                onlyFullframework = false;
+                onlyDotNetCore = true;
+            }
 
             var tagsOfFeature = specFlowFeature.Tags.Select(t => t.Name);
             var unitTestProviders = tagsOfFeature.Where(t => _unitTestProviderTags.Where(utpt => string.Compare(t, "@" + utpt, StringComparison.CurrentCultureIgnoreCase) == 0).Any());
@@ -120,8 +126,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyDotNetCore)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
-                                || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
+                            if (ShouldCompileForNetCore21(featureGenerator.Key)
+                                || ShouldCompileForNetCore30(featureGenerator.Key))
                             {
                                 yield return featureGenerator;
                             }
@@ -151,8 +157,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         {
                             if (onlyDotNetCore)
                             {
-                                if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
-                                    || featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30)
+                                if (ShouldCompileForNetCore21(featureGenerator.Key)
+                                    || ShouldCompileForNetCore30(featureGenerator.Key))
                                 {
                                     yield return featureGenerator;
                                 }
@@ -165,6 +171,16 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     }
                 }
             }
+        }
+        public bool ShouldCompileForNetCore21(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore21
+                   && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        }
+
+        public bool ShouldCompileForNetCore30(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30;
         }
 
         private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)

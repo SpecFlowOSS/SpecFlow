@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using TechTalk.SpecFlow.CommonModels;
 
 namespace TechTalk.SpecFlow.Analytics
 {
     public interface IAnalyticsTransmitterSink
     {
-        Task TransmitEvent(IAnalyticsEvent analyticsEvent);
+        Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent);
     }
 }
