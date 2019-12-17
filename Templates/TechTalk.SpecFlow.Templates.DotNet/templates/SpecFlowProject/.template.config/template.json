@@ -15,11 +15,11 @@
             "type": "parameter",
             "description": "Target Framework",
             "datatype": "choice",
-            "defaultValue": "netcoreapp3.0",
+            "defaultValue": "netcoreapp3.1",
             "replaces": "$target$",
             "choices": [
                 {
-                    "choice": "netcoreapp3.0",
+                    "choice": "netcoreapp3.1",
                     "description": ".NET Core 3"
                 },
                 {
