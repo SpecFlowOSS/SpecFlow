@@ -4,6 +4,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public interface ISkippedStepHandler
     {
-        void Handle(BindingMatch bindingMatch);
+        void Handle(ScenarioContext scenarioContext);
     }
 }
