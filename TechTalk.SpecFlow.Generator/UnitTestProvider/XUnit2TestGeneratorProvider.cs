@@ -1,10 +1,8 @@
-using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
-using TechTalk.SpecFlow.Utils;
 using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -19,8 +17,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
         private const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
         private const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        private const string COLLECTION_DEF = "Xunit.Collection";
         private const string COLLECTION_TAG = "xunit:collection";
+        private static readonly Regex _collectionNameRegex =
+            new Regex($@"{COLLECTION_TAG}\(""([^""']+?)""\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private const string COLLECTION_FIXTURE_CLASS_FULL_NAME_TAG = "xunit:collectionFixtureClassFullName";
+        private static readonly Regex _collectionFixtureClassFullNameRegex =
+            new Regex($@"{COLLECTION_FIXTURE_CLASS_FULL_NAME_TAG}\(""([\w.]+?)""\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private const string COLLECTION_FIXTURE_FIELD_NAME = "_collectionFixture";
+        private string _collectionFixtureClassFullName;
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
             :base(codeDomHelper)
@@ -74,13 +79,27 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected override void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod) {
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
+
             ctorMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
-
             ctorMethod.Statements.Add(
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
+
+            if (_collectionFixtureClassFullName != null)
+            {
+                const string CollectionFixtureParameterName = "collectionFixture";
+                const string CollectionFixtureFieldName = "_collectionFixture";
+
+                ctorMethod.Parameters.Add(
+                    new CodeParameterDeclarationExpression(_collectionFixtureClassFullName, CollectionFixtureParameterName));
+                generationContext.TestClass.Members.Add(new CodeMemberField(_collectionFixtureClassFullName, CollectionFixtureFieldName));
+                ctorMethod.Statements.Add(
+                    new CodeAssignStatement(
+                        new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), CollectionFixtureFieldName),
+                        new CodeVariableReferenceExpression(CollectionFixtureParameterName)));
+            }
 
             base.SetTestConstructor(generationContext, ctorMethod);
         }
@@ -111,30 +130,49 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     );
             }
         }
-                 public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        
+        public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            IEnumerable<string> collection = featureCategories.Where(f => f.StartsWith(COLLECTION_TAG, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            if (collection.Any())
+            var categories = featureCategories.ToArray();
+            SetTestClassCollectionIfNeeded(generationContext, categories);
+            base.SetTestClassCategories(generationContext, categories);
+        }
+
+        private void SetTestClassCollectionIfNeeded(TestClassGenerationContext generationContext, string[] categories)
+        {
+            var collectionName = FindTagSingleValue(categories, _collectionNameRegex);
+            var collectionFixtureClassFullName = FindTagSingleValue(categories, _collectionFixtureClassFullNameRegex);
+            if (collectionName == null && collectionFixtureClassFullName == null)
             {
-                //Only one 'Xunit.Collection' can exist per class.
-                SetTestClassCollection(generationContext, collection.FirstOrDefault()); 
+                return;
             }
-            base.SetTestClassCategories(generationContext, featureCategories);
+
+            if (collectionName != null && collectionFixtureClassFullName != null)
+            {
+                throw new TestGeneratorException(
+                    $"It's not allowed to specify both {COLLECTION_TAG} and {COLLECTION_FIXTURE_CLASS_FULL_NAME_TAG} tags for a feature.");
+            }
+
+            if (collectionName != null)
+            {
+                CodeDomHelper.AddAttribute(
+                    generationContext.TestClass,
+                    COLLECTION_ATTRIBUTE,
+                    new CodeAttributeArgument(new CodePrimitiveExpression(collectionName)));
+                return;
+            }
+
+            _collectionFixtureClassFullName = collectionFixtureClassFullName;
         }
 
-        public void SetTestClassCollection(TestClassGenerationContext generationContext, string collection)
-        {
-            //No spaces. 
-            //'-', and '_' are allowed.
-            string collectionMatch = $@"(?<={COLLECTION_TAG}[(])[A-Za-z0-9\-_]+.*?(?=[)])";
-            string description = Regex.Match(collection, collectionMatch, RegexOptions.IgnoreCase).Value;
-            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_DEF, description); 
-        }
-    
 
-        public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        private static string FindTagSingleValue(string[] categories, Regex tagMatcher)
         {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
+            return categories
+                   .Select(category => tagMatcher.Match(category))
+                   .Where(match => match.Success)
+                   .Select(match => match.Value)
+                   .SingleOrDefault();
         }
 
         public override void FinalizeTestClass(TestClassGenerationContext generationContext)
@@ -143,16 +181,28 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<ITestOutputHelper>(_testOutputHelper);
             generationContext.ScenarioInitializeMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeMethodReferenceExpression(
+                RegisterInstanceInContainer(generationContext, OUTPUT_INTERFACE, OUTPUT_INTERFACE_FIELD_NAME));
+
+            if (_collectionFixtureClassFullName != null)
+            {
+                // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<CollectionFixture>(_collectionFixture);
+                generationContext.ScenarioInitializeMethod.Statements.Add(
+                    RegisterInstanceInContainer(generationContext, _collectionFixtureClassFullName, COLLECTION_FIXTURE_FIELD_NAME));
+            }
+        }
+
+        private static CodeMethodInvokeExpression RegisterInstanceInContainer(TestClassGenerationContext generationContext, string type, string fieldName)
+        {
+            return new CodeMethodInvokeExpression(
+                new CodeMethodReferenceExpression(
+                    new CodePropertyReferenceExpression(
                         new CodePropertyReferenceExpression(
-                            new CodePropertyReferenceExpression(
-                                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
-                                nameof(ScenarioContext)),
-                            nameof(ScenarioContext.ScenarioContainer)),
-                        nameof(IObjectContainer.RegisterInstanceAs),
-                        new CodeTypeReference(OUTPUT_INTERFACE)),
-                    new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
+                            new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
+                            nameof(ScenarioContext)),
+                        nameof(ScenarioContext.ScenarioContainer)),
+                    nameof(IObjectContainer.RegisterInstanceAs),
+                    new CodeTypeReference(type)),
+                new CodeVariableReferenceExpression(fieldName));
         }
 
         protected override bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod)
