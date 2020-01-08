@@ -80,6 +80,50 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         }
 
         [Fact]
+        public void Execute_RootNamespaceEmpty_ShouldWork()
+        {
+            //ARRANGE
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
+            {
+                RootNamespace = "",
+                ProjectPath = "ProjectPath.csproj",
+                FeatureFiles = new TaskItem[0],
+                GeneratorPlugins = new TaskItem[0],
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = GetAnalyticsTransmitterMock().Object
+            };
+
+            //ACT
+            bool result = generateFeatureFileCodeBehindTask.Execute();
+
+            //ASSERT
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Execute_RootNamespaceNull_ShouldWork()
+        {
+            //ARRANGE
+            var generateFeatureFileCodeBehindTask = new GenerateFeatureFileCodeBehindTask
+            {
+                RootNamespace = null,
+                ProjectPath = "ProjectPath.csproj",
+                FeatureFiles = new TaskItem[0],
+                GeneratorPlugins = new TaskItem[0],
+                BuildEngine = new MockBuildEngine(_output),
+                CodeBehindGenerator = GetFeatureFileCodeBehindGeneratorMock().Object,
+                AnalyticsTransmitter = GetAnalyticsTransmitterMock().Object
+            };
+
+            //ACT
+            bool result = generateFeatureFileCodeBehindTask.Execute();
+
+            //ASSERT
+            result.Should().BeTrue();
+        }
+
+        [Fact]
         public void Execute_FeatureFilesNotSet_ShouldWork()
         {
             //ARRANGE
