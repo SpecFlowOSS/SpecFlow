@@ -14,13 +14,15 @@ namespace TechTalk.SpecFlow.Specs.Support
         private readonly CurrentVersionDriver _currentVersionDriver;
         private readonly RuntimeInformationProvider _runtimeInformationProvider;
         private readonly IUnitTestRuntimeProvider _unitTestRuntimeProvider;
+        private readonly TestProjectFolders _testProjectFolders;
 
-        public Hooks(ScenarioContext scenarioContext, CurrentVersionDriver currentVersionDriver, RuntimeInformationProvider runtimeInformationProvider, IUnitTestRuntimeProvider unitTestRuntimeProvider)
+        public Hooks(ScenarioContext scenarioContext, CurrentVersionDriver currentVersionDriver, RuntimeInformationProvider runtimeInformationProvider, IUnitTestRuntimeProvider unitTestRuntimeProvider, TestProjectFolders testProjectFolders)
         {
             _scenarioContext = scenarioContext;
             _currentVersionDriver = currentVersionDriver;
             _runtimeInformationProvider = runtimeInformationProvider;
             _unitTestRuntimeProvider = unitTestRuntimeProvider;
+            _testProjectFolders = testProjectFolders;
         }
 
         [BeforeScenario("WindowsOnly")]
@@ -38,6 +40,22 @@ namespace TechTalk.SpecFlow.Specs.Support
             _currentVersionDriver.NuGetVersion = NuGetPackageVersion.Version;
             _currentVersionDriver.SpecFlowNuGetVersion = NuGetPackageVersion.Version;
             _scenarioContext.ScenarioContainer.RegisterTypeAs<OutputConnector, IOutputWriter>();
+        }
+
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            if (_scenarioContext.TestError == null && _testProjectFolders.IsPathToSolutionFileSet)
+            {
+                try
+                {
+                    FileSystemHelper.DeleteFolder(_testProjectFolders.PathToSolutionDirectory);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
         }
 
         [BeforeTestRun]

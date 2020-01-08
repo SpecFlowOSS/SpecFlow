@@ -127,7 +127,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         if (onlyDotNetCore)
                         {
                             if (ShouldCompileForNetCore21(featureGenerator.Key)
-                                || ShouldCompileForNetCore30(featureGenerator.Key))
+                                || ShouldCompileForNetCore31(featureGenerator.Key))
                             {
                                 yield return featureGenerator;
                             }
@@ -158,7 +158,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                             if (onlyDotNetCore)
                             {
                                 if (ShouldCompileForNetCore21(featureGenerator.Key)
-                                    || ShouldCompileForNetCore30(featureGenerator.Key))
+                                    || ShouldCompileForNetCore31(featureGenerator.Key))
                                 {
                                     yield return featureGenerator;
                                 }
@@ -178,9 +178,9 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                    && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         }
 
-        public bool ShouldCompileForNetCore30(Combination combination)
+        public bool ShouldCompileForNetCore31(Combination combination)
         {
-            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore30;
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore31;
         }
 
         private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)
