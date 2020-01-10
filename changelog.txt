@@ -1,3 +1,8 @@
+3.1 - 2020-01-09
+
+Features:
++ Added ISkippedStepHandler interface for registering custom callback handler objects that will be used when a Step is skipped
+
 3.1 - 2020-01-08
 
 Fixes:
