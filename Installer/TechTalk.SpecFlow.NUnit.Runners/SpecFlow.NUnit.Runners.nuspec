@@ -4,8 +4,8 @@
     <id>SpecFlow.NUnit.Runners</id>
     <version>$version$</version>
     <title>SpecFlow.NUnit.Runners</title>
-    <authors>TechTalk</authors>
-    <owners>TechTalk</owners>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
     <description>Combined package to setup SpecFlow with NUnit easily for running the tests with the NUnit runners.</description>
     <summary>Combined package to setup SpecFlow with NUnit easily for running the tests with the NUnit runners.</summary>
     <language>en-US</language>

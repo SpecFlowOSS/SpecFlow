@@ -3,9 +3,11 @@
 
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-   
+
     <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
     <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>
+    <SpecFlow_Authors>SpecFlow Team</SpecFlow_Authors>
+    <SpecFlow_Owners>SpecFlow Team</SpecFlow_Owners>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +20,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Authors>TechTalk</Authors>
+    <Authors>$(SpecFlow_Authors)</Authors>
     <Company>TechTalk</Company>
     <Product />
     <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>

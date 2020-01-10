@@ -4,8 +4,8 @@
     <id>SpecFlow.Autofac</id>
     <version>$version$</version>
     <title>SpecFlow Autofac integration plugin</title>
-    <authors>Gaspar Nagy, Spec Solutions, SpecFlow</authors>
-    <owners>Gaspar Nagy, Spec Solutions, SpecFlow</owners>
+    <authors>Gaspar Nagy, Spec Solutions, $author$</authors>
+    <owners>Gaspar Nagy, Spec Solutions, $owner$</owners>
     <description>SpecFlow plugin that enables to use Autofac for resolving test dependencies.</description>
     <summary>SpecFlow plugin that enables to use Autofac for resolving test dependencies.</summary>
     <language>en-US</language>

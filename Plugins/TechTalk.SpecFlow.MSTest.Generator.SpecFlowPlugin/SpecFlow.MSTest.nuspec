@@ -4,8 +4,8 @@
     <id>SpecFlow.MsTest</id>
     <version>$version$</version>
     <title>SpecFlow.MsTest</title>
-    <authors>TechTalk</authors>
-    <owners>TechTalk</owners>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
     <description>Package to setup SpecFlow for use with MsTest v2.</description>
     <summary>Package to setup SpecFlow for use with MsTest v2.</summary>
     <language>en-US</language>

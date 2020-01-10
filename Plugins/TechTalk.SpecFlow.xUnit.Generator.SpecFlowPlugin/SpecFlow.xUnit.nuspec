@@ -4,8 +4,8 @@
     <id>SpecFlow.xUnit</id>
     <version>$version$</version>
     <title>SpecFlow.xUnit</title>
-    <authors>TechTalk</authors>
-    <owners>TechTalk</owners>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
     <description>Package to use SpecFlow with xUnit 2.4 and later</description>
     <summary>Package to use SpecFlow with xUnit 2.4 and later</summary>
     <language>en-US</language>

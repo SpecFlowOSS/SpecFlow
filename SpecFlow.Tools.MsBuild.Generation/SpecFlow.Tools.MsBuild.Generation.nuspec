@@ -4,8 +4,8 @@
     <id>SpecFlow.Tools.MsBuild.Generation</id>
     <version>$version$</version>
     <title>SpecFlow.Tools.MsBuild.Generation</title>
-    <authors>TechTalk</authors>
-    <owners>TechTalk</owners>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
     <description>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</description>
     <summary>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</summary>
     <language>en-US</language>
