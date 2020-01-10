@@ -14,6 +14,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber</tags>
+    <copyright>$copyright$</copyright>
     <dependencies>
       <group targetFramework="net45">
         <dependency id="Utf8Json" version="1.3.7" />
