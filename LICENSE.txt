@@ -1,12 +1,12 @@
 SpecFlow Licence (New BSD License)
 
-Copyright (c) 2009, TechTalk
+Copyright (c) Tricentis
 
 Disclaimer:
- * The initial codebase of Specflow was written by TechTalk employees. 
+ * The initial codebase of Specflow was written by SpecFlow Team members. 
    No 3rd party code was included.
  * No code of customer projects was used to create this project.
- * TechTalk had the full rights to publish the initial codebase.
+ * Tricentis has the full ownership of the initial codebase.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
