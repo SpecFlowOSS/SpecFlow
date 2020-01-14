@@ -20,7 +20,7 @@
 
   <PropertyGroup>
     <Authors>$(SpecFlow_Authors)</Authors>
-    <Company>TechTalk</Company>
+    <Company>Tricentis</Company>
     <Product />
     <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>
     <PackageIconUrl>http://go.specflow.org/specflow-nuget-icon</PackageIconUrl>

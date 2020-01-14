@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("TechTalk")]
+[assembly: AssemblyCompany("Tricentis")]
 [assembly: AssemblyProduct("SpecFlow")]
 [assembly: AssemblyCopyright("Copyright © SpecFlow Team")]
 [assembly: AssemblyTrademark("")]
