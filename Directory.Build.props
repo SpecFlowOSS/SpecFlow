@@ -24,7 +24,7 @@
     <Product />
     <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>
     <PackageIconUrl>http://go.specflow.org/specflow-nuget-icon</PackageIconUrl>
-    <RepositoryUrl>https://github.com/techtalk/SpecFlow</RepositoryUrl>
+    <RepositoryUrl>https://github.com/SpecFlowOSS/SpecFlow</RepositoryUrl>
     <PackageTags>specflow bdd gherkin cucumber</PackageTags>
     <Description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today."</Description>
     <Copyright>$(SpecFlow_Copyright)</Copyright>
