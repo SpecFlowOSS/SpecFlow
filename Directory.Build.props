@@ -3,9 +3,10 @@
 
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-   
-    <TechTalk_Year>$([System.DateTime]::get_Now().get_Year())</TechTalk_Year>
-    <TechTalkCopyright>Copyright © 2009-$(TechTalk_Year) TechTalk</TechTalkCopyright>
+    
+    <SpecFlow_Copyright>Copyright © SpecFlow Team</SpecFlow_Copyright>
+    <SpecFlow_Authors>SpecFlow Team</SpecFlow_Authors>
+    <SpecFlow_Owners>SpecFlow Team</SpecFlow_Owners>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,15 +19,15 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Authors>TechTalk</Authors>
-    <Company>TechTalk</Company>
+    <Authors>$(SpecFlow_Authors)</Authors>
+    <Company>Tricentis</Company>
     <Product />
     <PackageProjectUrl>http://www.specflow.org</PackageProjectUrl>
     <PackageIconUrl>http://go.specflow.org/specflow-nuget-icon</PackageIconUrl>
-    <RepositoryUrl>https://github.com/techtalk/SpecFlow</RepositoryUrl>
+    <RepositoryUrl>https://github.com/SpecFlowOSS/SpecFlow</RepositoryUrl>
     <PackageTags>specflow bdd gherkin cucumber</PackageTags>
     <Description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today."</Description>
-    <Copyright>$(TechTalkCopyright)</Copyright>
+    <Copyright>$(SpecFlow_Copyright)</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 

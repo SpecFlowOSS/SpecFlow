@@ -4,8 +4,8 @@
     <id>SpecFlow.CustomPlugin</id>
     <version>$version$</version>
     <title>SpecFlow.CustomPlugin</title>
-    <authors>TechTalk</authors>
-    <owners>TechTalk</owners>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
     <description>Package for writing custom generator extensions for SpecFlow.</description>
     <summary>Package for writing custom generator extensions for SpecFlow.</summary>
     <language>en-US</language>
@@ -14,6 +14,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber generator</tags>
+    <copyright>$copyright$</copyright>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
       <dependency id="System.Threading.Tasks.Dataflow" version="4.9.0" />
