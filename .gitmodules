@@ -1,6 +1,6 @@
 [submodule "ExternalRepositories/SpecFlow.TestProjectGenerator"]
 	path = ExternalRepositories/SpecFlow.TestProjectGenerator
-	url = https://github.com/techtalk/SpecFlow.TestProjectGenerator.git
+	url = https://github.com/SpecFlowOSS/SpecFlow.TestProjectGenerator.git
 [submodule "ExternalRepositories/cucumber"]
 	path = ExternalRepositories/cucumber
-	url = https://github.com/techtalk/cucumber.git
+	url = https://github.com/SpecFlowOSS/cucumber.git
