@@ -17,6 +17,11 @@
     Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == 'true' AND '$(_SpecFlow_Tools_MsBuild_Generation_Imported)' == 'true'"
     BeforeTargets="BeforeCompile">
 
+    <PropertyGroup>
+      <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
+      <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+    </PropertyGroup>
+    
     <ReplaceTokenInFileTask
       Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'"
       InputFile="$(SourceSpecFlowAssemblyHooksFile)"

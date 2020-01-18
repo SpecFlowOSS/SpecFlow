@@ -1,4 +1,8 @@
 ﻿<Project>
+  
+  <PropertyGroup>
+    <_SpecFlow_Tools_MsBuild_Generation_Imported>true</_SpecFlow_Tools_MsBuild_Generation_Imported>
+  </PropertyGroup>
 
   <!--
   Determines the location at which to write generated code files.
