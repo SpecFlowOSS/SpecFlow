@@ -4,8 +4,8 @@
     <id>SpecFlow.NUnit</id>
     <version>$version$</version>
     <title>SpecFlow.NUnit</title>
-    <authors>TechTalk</authors>
-    <owners>TechTalk</owners>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
     <description>Package to use SpecFlow with NUnit 3.11 and later</description>
     <summary>Package to use SpecFlow with NUnit 3.11 and later</summary>
     <language>en-US</language>
@@ -14,6 +14,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <tags>specflow nunit</tags>
+    <copyright>$copyright$</copyright>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
       <dependency id="NUnit" version="3.11.0" />

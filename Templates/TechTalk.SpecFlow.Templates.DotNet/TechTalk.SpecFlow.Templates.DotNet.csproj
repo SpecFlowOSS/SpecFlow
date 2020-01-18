@@ -4,7 +4,7 @@
     <PackageType>Template</PackageType>
     <PackageId>SpecFlow.Templates.DotNet</PackageId>
     <Title>SpecFlow Templates for dotnet new</Title>
-    <Authors>TechTalk;Manuel Eiwen</Authors>
+    <Authors>$author$;Manuel Eiwen</Authors>
     <Description>Templates for projects using different unit test providers and Templates for SpecFlow files.</Description>
     <PackageTags>specflow;bdd;gherkin;cucumber;dotnet-new;templates</PackageTags>
 

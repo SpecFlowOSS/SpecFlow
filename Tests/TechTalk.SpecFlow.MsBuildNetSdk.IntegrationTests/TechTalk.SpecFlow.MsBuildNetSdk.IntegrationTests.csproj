@@ -21,10 +21,7 @@
     <_SpecFlowXUnitRuntimePluginPath Condition="'$(MSBuildRuntimeType)' != 'Core'">$(_SpecFlowXUnitRuntimePluginPathBase)net452\</_SpecFlowXUnitRuntimePluginPath>
     <SpecFlowXUnitRuntimePluginAssembly>$(_SpecFlowXUnitRuntimePluginPath)TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</SpecFlowXUnitRuntimePluginAssembly>
     
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>$(SpecFlow_Core_Specs_TFM)</TargetFramework>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 

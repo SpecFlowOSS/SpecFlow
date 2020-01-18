@@ -20,6 +20,9 @@
     <PropertyGroup>
       <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
       <GeneratedSpecFlowAssemblyHooksFile Condition="'$(GeneratedSpecFlowAssemblyHooksFile)' == ''">$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+      <_SpecFlow_EffectiveRootNamespace Condition="'$(RootNamespace)' != ''">$(RootNamespace)</_SpecFlow_EffectiveRootNamespace>
+      <_SpecFlow_EffectiveRootNamespace Condition="'$(RootNamespace)' == ''">SpecFlow.GeneratedTests</_SpecFlow_EffectiveRootNamespace>
+
     </PropertyGroup>
     
     <ReplaceTokenInFileTask
@@ -27,7 +30,7 @@
       InputFile="$(SourceSpecFlowAssemblyHooksFile)"
       OutputFile="$(GeneratedSpecFlowAssemblyHooksFile)"
       TextToReplace="PROJECT_ROOT_NAMESPACE"
-      TextToReplaceWith="$(RootNamespace.Replace('.', '_'))" />
+      TextToReplaceWith="$(_SpecFlow_EffectiveRootNamespace.Replace('.', '_'))" />
     
     <ItemGroup Condition="'$(Language)' == 'VB' or '$(Language)' == 'C#'">
       <Compile Include="$(GeneratedSpecFlowAssemblyHooksFile)"/>
