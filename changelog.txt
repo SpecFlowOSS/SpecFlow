@@ -1,3 +1,18 @@
+3.1 - 2020-01-09
+
+Features:
++ Added ISkippedStepHandler interface for registering custom callback handler objects that will be used when a Step is skipped
+
+3.1 - 2020-01-08
+
+Fixes:
++ Support for empty RootNamespace broken in 3.1 https://github.com/techtalk/SpecFlow/issues/1846
+
+3.1 - 2019-12-19
+
+Features:
++ .NET Core 3.1 Support
+
 3.1 
 
 Features:
