@@ -12,17 +12,20 @@ namespace TechTalk.SpecFlow.Specs.MSBuild.StepDefinitions
     [Binding]
     public class GenerationSteps
     {
+        private readonly CompilationDriver _compilationDriver;
         private readonly ProjectsDriver _projectsDriver;
         private readonly ProjectsEditingDriver _projectsEditingDriver;
         private readonly SolutionDriver _solutionDriver;
         private readonly TestProjectFolders _testProjectFolders;
 
         public GenerationSteps(
+            CompilationDriver compilationDriver,
             ProjectsDriver projectsDriver,
             ProjectsEditingDriver projectsEditingDriver,
             SolutionDriver solutionDriver,
             TestProjectFolders testProjectFolders)
         {
+            _compilationDriver = compilationDriver;
             _projectsDriver = projectsDriver;
             _projectsEditingDriver = projectsEditingDriver;
             _solutionDriver = solutionDriver;
@@ -62,14 +65,13 @@ Scenario: Test Scenario
 Given a step");
             }
 
-            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+            _compilationDriver.CompileSolution(BuildTool.DotnetBuild);
         }
         
         [When(@"the project is built")]
         public void WhenTheProjectIsBuilt()
         {
-            _solutionDriver.CompileSolution(BuildTool.DotnetBuild);
+            _compilationDriver.CompileSolution(BuildTool.DotnetBuild);
         }
         
         [When(@"the ""(.*)"" feature is removed")]
@@ -81,7 +83,7 @@ Given a step");
         [Then(@"the project should have been compiled without errors")]
         public void ThenTheProjectShouldHaveBeenCompiledWithoutErrors()
         {
-            _solutionDriver.CheckSolutionShouldHaveCompiled();
+            //_solutionDriver.CheckSolutionShouldHaveCompiled();
         }
         
         [Then(@"the project output should be a test suite for these features")]
