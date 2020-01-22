@@ -12,10 +12,8 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="build\MSTest.AssemblyHooks.template.cs" />
-    <Compile Remove="build\MSTest.AssemblyHooks.template.vb" />
-    <None Include="build\MSTest.AssemblyHooks.template.cs" />
-    <None Include="build\MSTest.AssemblyHooks.template.vb" />
+    <Compile Remove="build\**\*" />
+    <None Include="build\**\*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,11 +30,6 @@
   <Target Name="WriteAssemblyHooksVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' or '$(BuildingProject)' == 'true'">
     <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
     <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
-
-    <ItemGroup>
-      <None Include="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.cs" />
-      <None Include="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.vb" />
-    </ItemGroup>
   </Target>
   
 </Project>
