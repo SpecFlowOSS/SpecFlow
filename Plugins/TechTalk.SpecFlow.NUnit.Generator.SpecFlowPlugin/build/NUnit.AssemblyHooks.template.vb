@@ -1,8 +1,10 @@
 ﻿Imports NUnit.Framework
 Imports TechTalk.SpecFlow
 Imports System
+Imports System.CodeDom.Compiler
 Imports System.Reflection
 
+<GeneratedCode("SpecFlow", "SPECFLOW_VERSION")>
 <SetUpFixture>
 Public NotInheritable Class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
     <OneTimeSetUp>
