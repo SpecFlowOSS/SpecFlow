@@ -12,8 +12,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string TESTFIXTURETEARDOWN_ATTR_NUNIT3 = "NUnit.Framework.OneTimeTearDownAttribute";
         protected internal const string PARALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
         protected internal const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
+        protected internal const string TESTFIXTURENAME_PROPERTY_NAME = "TestName";
         protected internal const string TEST_ATTR = "NUnit.Framework.TestAttribute";
         protected internal const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
+        protected internal const string TESTCASENAME_PROPERTY_NAME = "TestName";
         protected internal const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
         protected internal const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
         protected internal const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
@@ -63,8 +65,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
-            CodeDomHelper.AddAttribute(generationContext.TestClass, DESCRIPTION_ATTR, featureTitle);
+            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR, new CodeAttributeArgument(TESTFIXTURENAME_PROPERTY_NAME, new CodePrimitiveExpression(featureTitle)));
+            CodeDomHelper.AddAttribute(generationContext.TestClass, DESCRIPTION_ATTR, featureDescription);
         }
 
         public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
@@ -100,7 +102,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
+            CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, new CodeAttributeArgument(TESTCASENAME_PROPERTY_NAME, new CodePrimitiveExpression(friendlyTestName)));
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
         }
 
