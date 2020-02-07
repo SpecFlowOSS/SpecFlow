@@ -188,9 +188,9 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             return codeAttributeDeclaration;
         }
 
-        public CodeAttributeDeclaration AddAttribute(CodeTypeMember codeTypeMember, string attrType, params CodeAttributeArgument[] attrArgumets)
+        public CodeAttributeDeclaration AddAttribute(CodeTypeMember codeTypeMember, string attrType, params CodeAttributeArgument[] attrArguments)
         {
-            var codeAttributeDeclaration = new CodeAttributeDeclaration(attrType, attrArgumets);
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(attrType, attrArguments);
             codeTypeMember.CustomAttributes.Add(codeAttributeDeclaration);
             return codeAttributeDeclaration;
         }
