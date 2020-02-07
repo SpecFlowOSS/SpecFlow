@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             testDescription = string.IsNullOrEmpty(testDescription) ? friendlyTestName : testDescription;
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, new CodeAttributeArgument(TESTCASENAME_PROPERTY_NAME, new CodePrimitiveExpression(friendlyTestName)));
-            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
+            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, testDescription);
         }
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
