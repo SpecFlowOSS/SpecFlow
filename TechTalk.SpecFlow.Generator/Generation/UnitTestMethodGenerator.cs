@@ -468,11 +468,11 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             if (rowTest)
             {
-                _unitTestGeneratorProvider.SetRowTest(generationContext, testMethod, friendlyTestName);
+                _unitTestGeneratorProvider.SetRowTest(generationContext, testMethod, friendlyTestName, scenarioDefinition.Description);
             }
             else
             {
-                _unitTestGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName);
+                _unitTestGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName, scenarioDefinition.Description);
             }
 
             _decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenarioDefinition.GetTags(), additionalTags), out var scenarioCategories);

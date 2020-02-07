@@ -65,7 +65,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
         }
 
-        public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
+        public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName, string testDescription = null)
         {
             if (generationContext.CustomData.ContainsKey(DONOTPARALLELIZE_TAG))
             {
