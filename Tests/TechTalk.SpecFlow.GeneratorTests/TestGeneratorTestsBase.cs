@@ -99,5 +99,27 @@ Scenario: Add two numbers
 
             return new TestGenerator(generatorSpecFlowConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, generatorRegistryStub.Object, codeDomHelper, gherkinParserFactory);
         }
+
+        protected FeatureFileInput CreateScenarioOutlineValidFeatureFileInput(string projectRelativeFolderPath = null)
+        {
+            return CreateSimpleFeatureFileInput(@"
+Feature: Addition
+Feature Description
+
+@mytag
+Scenario Outline: Add two numbers
+Scenario Description
+    Given I have entered <first> into the calculator
+    And I have entered <second> into the calculator
+    When I press add
+    Then the result should be <result> on the screen
+Examples: ExName
+This is desc
+    | first | second | result |
+    | 10    | 10     | 20     |
+    | 50    | 70     | 120    |
+",
+projectRelativeFolderPath);
+        }
     }
 }

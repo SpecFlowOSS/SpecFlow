@@ -108,6 +108,23 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Fact]
+        public void Should_generate_row_test_cases_from_feature_file_specified_by_path()
+        {
+            using (var tempFile = new TempFile(".feature"))
+            {
+                tempFile.SetContent(CreateScenarioOutlineValidFeatureFileInput().FeatureFileContent);
+
+                ProjectSettings projectSettings = new ProjectSettings { ProjectFolder = tempFile.FolderName, ProjectPlatformSettings = net35CSSettings };
+                var testGenerator = CreateTestGenerator(projectSettings);
+
+                var result = testGenerator.GenerateTestFile(
+                    new FeatureFileInput(tempFile.FileName),
+                    defaultSettings);
+                result.Success.Should().Be(true);
+            }
+        }
+
+        [Fact]
         public void Should_return_detected_version()
         {
             Version version = new Version();
