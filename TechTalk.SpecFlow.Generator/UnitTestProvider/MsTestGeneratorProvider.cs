@@ -192,7 +192,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             throw new NotSupportedException();
         }
 
-        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //MsTest does not support row tests... :(
             throw new NotSupportedException();

@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod);
 
         void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string scenarioDescription = null);
-        void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored);
+        void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored);
         void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments);
     }
 }

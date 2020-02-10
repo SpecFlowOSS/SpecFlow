@@ -332,7 +332,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 foreach (var row in examples.TableBody)
                 {
                     var arguments = row.Cells.Select(c => c.Value);
-                    _unitTestGeneratorProvider.SetRow(generationContext, scenatioOutlineTestMethod, arguments, GetNonIgnoreTags(examples.Tags), HasIgnoreTag(examples.Tags));
+                    _unitTestGeneratorProvider.SetRow(generationContext, scenatioOutlineTestMethod, scenarioOutline.Name, arguments, GetNonIgnoreTags(examples.Tags), HasIgnoreTag(examples.Tags));
                 }
             }
         }

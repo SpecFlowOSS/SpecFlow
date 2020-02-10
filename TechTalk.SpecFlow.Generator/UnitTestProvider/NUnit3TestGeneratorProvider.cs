@@ -101,11 +101,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(generationContext.TestCleanupMethod, TESTTEARDOWN_ATTR);
         }
 
+        private void SetTestDescription(CodeMemberMethod testMethod, string description)
+        {
+            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, description);
+        }
+
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName, string testDescription = null)
         {
             testDescription = string.IsNullOrEmpty(testDescription) ? friendlyTestName : testDescription;
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, new CodeAttributeArgument(TESTCASENAME_PROPERTY_NAME, new CodePrimitiveExpression(friendlyTestName)));
-            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, testDescription);
+            SetTestDescription(testMethod, testDescription);
         }
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
@@ -115,13 +120,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string scenarioDescription = null)
         {
-            SetTestMethod(generationContext, testMethod, scenarioTitle, scenarioDescription);
+            scenarioDescription = string.IsNullOrEmpty(scenarioDescription) ? scenarioTitle : scenarioDescription;
+            SetTestDescription(testMethod, scenarioDescription);
         }
 
-        public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             var args = arguments.Select(
                 arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
+
+
 
             // addressing ReSharper bug: TestCase attribute with empty string[] param causes inconclusive result - https://github.com/techtalk/SpecFlow/issues/116
             bool hasExampleTags = tags.Any();
@@ -141,7 +149,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             if (isIgnored)
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));
-
+            
+            args.Add(new CodeAttributeArgument(TESTFIXTURENAME_PROPERTY_NAME, new CodePrimitiveExpression(scenarioTitle)));
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
 
