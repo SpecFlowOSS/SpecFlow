@@ -150,7 +150,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             if (isIgnored)
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));
             
-            args.Add(new CodeAttributeArgument(TESTFIXTURENAME_PROPERTY_NAME, new CodePrimitiveExpression(scenarioTitle)));
+            args.Add(new CodeAttributeArgument(TESTCASENAME_PROPERTY_NAME, new CodePrimitiveExpression(scenarioTitle)));
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
 
