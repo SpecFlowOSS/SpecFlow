@@ -66,10 +66,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
             var testNameArgument = fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
 
-            var primitiveExpression = testNameArgument.Value as CodePrimitiveExpression;
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression.Should().NotBeNull();
-            primitiveExpression.Value.Should().Be("Sample feature file");
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Sample feature file");
         }
 
         [Fact]
@@ -102,10 +102,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
             var testNameArgument = fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
 
-            var primitiveExpression = testNameArgument.Value as CodePrimitiveExpression;
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression.Should().NotBeNull();
-            primitiveExpression.Value.Should().Be("Sample feature file");
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Sample feature file");
         }
 
 
@@ -137,10 +137,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             caseAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
             var testNameArgument = caseAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
 
-            var primitiveExpression = testNameArgument.Value as CodePrimitiveExpression;
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression.Should().NotBeNull();
-            primitiveExpression.Value.Should().Be("Simple scenario");
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Simple scenario");
         }
 
         [Fact]
@@ -174,10 +174,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             caseAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
             var testNameArgument = caseAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
 
-            var primitiveExpression = testNameArgument.Value as CodePrimitiveExpression;
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression.Should().NotBeNull();
-            primitiveExpression.Value.Should().Be("Simple scenario");
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Simple scenario");
         }
 
         [Fact]
@@ -220,17 +220,17 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             var caseAttributes = testMethod.CustomAttributes().OfType<CodeAttributeDeclaration>().Where(a => a.Name == NUnit3TestCaseAttributeName).ToList();
 
-            var testNameArgument0 = caseAttributes[0].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
-            var primitiveExpression0 = testNameArgument0.Value as CodePrimitiveExpression;
+            var testCase1NameArgument = caseAttributes[0].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase1NameArgumentValueExpression = testCase1NameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression0.Should().NotBeNull();
-            primitiveExpression0.Value.Should().Be("Simple Scenario Outline");
+            testCase1NameArgumentValueExpression.Should().NotBeNull();
+            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
 
-            var testNameArgument1 = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
-            var primitiveExpression1 = testNameArgument1.Value as CodePrimitiveExpression;
+            var testCase2NameArgument = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase2NameArgumentValueExpression = testCase2NameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression1.Should().NotBeNull();
-            primitiveExpression1.Value.Should().Be("Simple Scenario Outline");
+            testCase2NameArgumentValueExpression.Should().NotBeNull();
+            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
         }
 
         [Fact]
@@ -274,17 +274,17 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             var caseAttributes = testMethod.CustomAttributes().OfType<CodeAttributeDeclaration>().Where(a => a.Name == NUnit3TestCaseAttributeName).ToList();
 
-            var testNameArgument0 = caseAttributes[0].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
-            var primitiveExpression0 = testNameArgument0.Value as CodePrimitiveExpression;
+            var testCase1NameArgument = caseAttributes[0].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase1NameArgumentValueExpression = testCase1NameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression0.Should().NotBeNull();
-            primitiveExpression0.Value.Should().Be("Simple Scenario Outline");
+            testCase1NameArgumentValueExpression.Should().NotBeNull();
+            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
 
-            var testNameArgument1 = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
-            var primitiveExpression1 = testNameArgument1.Value as CodePrimitiveExpression;
+            var testCase2NameArgument = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase2NameArgumentValueExpression = testCase2NameArgument.Value as CodePrimitiveExpression;
 
-            primitiveExpression1.Should().NotBeNull();
-            primitiveExpression1.Value.Should().Be("Simple Scenario Outline");
+            testCase2NameArgumentValueExpression.Should().NotBeNull();
+            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
         }
 
 
