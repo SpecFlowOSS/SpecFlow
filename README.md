@@ -44,4 +44,3 @@ Plugin- Developer- Gitter channel: [![Gitter](https://badges.gitter.im/techtalk/
 
 Copyright (c) SpecFlow Team. See [LICENSE](http://go.specflow.org/license) for details.
 
-
