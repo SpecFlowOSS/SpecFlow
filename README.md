@@ -14,6 +14,8 @@ For issues/bugs please use the [issue tracker on GitHub](https://github.com/tech
 ## Build status
 Continuous integration: [![Build Status](https://dev.azure.com/specflow/SpecFlow/_apis/build/status/SpecFlow.CI?branchName=master)](https://dev.azure.com/specflow/SpecFlow/_build/latest?definitionId=2&branchName=master)
 
+
+
 ## Deployment status
 
 Unit Tests: ![Unit Tests](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/1)
