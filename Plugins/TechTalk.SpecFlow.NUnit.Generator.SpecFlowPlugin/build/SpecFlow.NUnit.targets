@@ -27,7 +27,7 @@
 
     <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)NUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
     <GenerateSpecFlowAssemblyHooksFile Condition="'$(GenerateSpecFlowAssemblyHooksFile)' == ''">true</GenerateSpecFlowAssemblyHooksFile>
-    <GeneratedSpecFlowAssemblyHooksFile>$(ProjectDir)$([MSBuild]::Unescape('$(IntermediateOutputPath)'))NUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
+    <GeneratedSpecFlowAssemblyHooksFile>$([System.IO.Path]::Combine($(ProjectDir),$([MSBuild]::Unescape('$(IntermediateOutputPath)'))))NUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</GeneratedSpecFlowAssemblyHooksFile>
     <_SpecFlow_EffectiveRootNamespace Condition="'$(RootNamespace)' != ''">$(RootNamespace)</_SpecFlow_EffectiveRootNamespace>
     <_SpecFlow_EffectiveRootNamespace Condition="'$(RootNamespace)' == ''">SpecFlow.GeneratedTests</_SpecFlow_EffectiveRootNamespace>
   </PropertyGroup>
