@@ -224,13 +224,13 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var testCase1NameArgumentValueExpression = testCase1NameArgument.Value as CodePrimitiveExpression;
 
             testCase1NameArgumentValueExpression.Should().NotBeNull();
-            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
+            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something)");
 
             var testCase2NameArgument = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
             var testCase2NameArgumentValueExpression = testCase2NameArgument.Value as CodePrimitiveExpression;
 
             testCase2NameArgumentValueExpression.Should().NotBeNull();
-            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
+            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something else)");
         }
 
         [Fact]
@@ -278,13 +278,13 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var testCase1NameArgumentValueExpression = testCase1NameArgument.Value as CodePrimitiveExpression;
 
             testCase1NameArgumentValueExpression.Should().NotBeNull();
-            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
+            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something)");
 
             var testCase2NameArgument = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
             var testCase2NameArgumentValueExpression = testCase2NameArgument.Value as CodePrimitiveExpression;
 
             testCase2NameArgumentValueExpression.Should().NotBeNull();
-            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline");
+            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something else)");
         }
 
 
