@@ -17,6 +17,8 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
     public class NUnit3GeneratorProviderTests
     {
         private const string NUnit3TestCaseAttributeName = @"NUnit.Framework.TestCaseAttribute";
+        private const string NUnit3DescriptionAttribute = @"NUnit.Framework.DescriptionAttribute";
+        private const string NUnit3TestFixtureAttribute = @"NUnit.Framework.TestFixtureAttribute";
         private const string SampleFeatureFile = @"
             Feature: Sample feature file
 
@@ -34,6 +36,257 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             @ignore
             Scenario: Ignored scenario";
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_EmptyFeatureDescriptionShouldSetCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something
+                When I do something
+                Then something should happen";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            var testClass = code.Class();
+
+            // ASSERT
+            testClass.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3DescriptionAttribute && a.ArgumentValues().Any(v => v.ToString().Trim() == "Sample feature file"));
+
+            var fixtureAttribute = testClass.CustomAttributes().OfType<CodeAttributeDeclaration>().FirstOrDefault(a => a.Name == NUnit3TestFixtureAttribute);
+
+            fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
+            var testNameArgument = fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
+
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Sample feature file");
+        }
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_FeatureDescriptionShouldSetCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+            Feature: Sample feature file
+            FeatureDescription
+
+            Scenario: Simple scenario
+                Given there is something
+                When I do something
+                Then something should happen";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            var testClass = code.Class();
+
+            // ASSERT
+            testClass.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3DescriptionAttribute && a.ArgumentValues().Any(v=>v.ToString().Trim() == "FeatureDescription"));
+
+            var fixtureAttribute = testClass.CustomAttributes().OfType<CodeAttributeDeclaration>().FirstOrDefault(a => a.Name == NUnit3TestFixtureAttribute);
+
+            fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
+            var testNameArgument = fixtureAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
+
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Sample feature file");
+        }
+
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_EmptyScenarioDescriptionShouldSetCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something
+                When I do something
+                Then something should happen";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenario");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3DescriptionAttribute && a.ArgumentValues().Any(v => v.ToString().Trim() == "Simple scenario"));
+
+            var caseAttribute = testMethod.CustomAttributes().OfType<CodeAttributeDeclaration>().FirstOrDefault(a => a.Name == NUnit3TestCaseAttributeName);
+
+            caseAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
+            var testNameArgument = caseAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
+
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Simple scenario");
+        }
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_ScenarioDescriptionShouldSetCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                ScenarioDescription
+                Given there is something
+                When I do something
+                Then something should happen";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            var testClass = code.Class();
+
+            // ASSERT
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenario");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3DescriptionAttribute && a.ArgumentValues().Any(v => v.ToString().Trim() == "ScenarioDescription"));
+
+            var caseAttribute = testMethod.CustomAttributes().OfType<CodeAttributeDeclaration>().FirstOrDefault(a => a.Name == NUnit3TestCaseAttributeName);
+
+            caseAttribute.Arguments.OfType<CodeAttributeArgument>().Should().ContainSingle(a => a.Name == "TestName");
+            var testNameArgument = caseAttribute.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+
+            var testNameArgumentValueExpression = testNameArgument.Value as CodePrimitiveExpression;
+
+            testNameArgumentValueExpression.Should().NotBeNull();
+            testNameArgumentValueExpression.Value.Should().Be("Simple scenario");
+        }
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_ScenarioOutlineWithEmptyDescriptionShouldSetCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+              Feature: Sample feature file
+              
+              Scenario: Simple scenario
+                  Given there is something
+                  When I do something
+                  Then something should happen
+              
+              @mytag
+              Scenario Outline: Simple Scenario Outline
+                  Given there is something
+                      """"""
+                        long string
+                      """"""
+                  When I do <what>
+                      | foo | bar |
+                      | 1   | 2   |
+                  Then something should happen
+              Examples:
+                  | what           |
+                  | something      |
+                  | something else |
+";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3DescriptionAttribute && a.ArgumentValues().Any(v => v.ToString().Trim() == "Simple Scenario Outline"));
+
+            var caseAttributes = testMethod.CustomAttributes().OfType<CodeAttributeDeclaration>().Where(a => a.Name == NUnit3TestCaseAttributeName).ToList();
+
+            var testCase1NameArgument = caseAttributes[0].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase1NameArgumentValueExpression = testCase1NameArgument.Value as CodePrimitiveExpression;
+
+            testCase1NameArgumentValueExpression.Should().NotBeNull();
+            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something)");
+
+            var testCase2NameArgument = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase2NameArgumentValueExpression = testCase2NameArgument.Value as CodePrimitiveExpression;
+
+            testCase2NameArgumentValueExpression.Should().NotBeNull();
+            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something else)");
+        }
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_ScenarioOutlineDescriptionShouldSetCorrectly()
+        {
+            // ARRANGE
+            const string sampleFeatureFile = @"
+              Feature: Sample feature file
+              
+              Scenario: Simple scenario
+                  Given there is something
+                  When I do something
+                  Then something should happen
+              
+              @mytag
+              Scenario Outline: Simple Scenario Outline
+              ScenarioOutlineDescription
+                  Given there is something
+                      """"""
+                        long string
+                      """"""
+                  When I do <what>
+                      | foo | bar |
+                      | 1   | 2   |
+                  Then something should happen
+              Examples:
+                  | what           |
+                  | something      |
+                  | something else |
+";
+
+            var document = ParseDocumentFromString(sampleFeatureFile);
+            var sampleTestGeneratorProvider = new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            var testMethod = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline");
+            testMethod.CustomAttributes().Should().ContainSingle(a => a.Name == NUnit3DescriptionAttribute && a.ArgumentValues().Any(v => v.ToString().Trim() == "ScenarioOutlineDescription"));
+
+            var caseAttributes = testMethod.CustomAttributes().OfType<CodeAttributeDeclaration>().Where(a => a.Name == NUnit3TestCaseAttributeName).ToList();
+
+            var testCase1NameArgument = caseAttributes[0].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase1NameArgumentValueExpression = testCase1NameArgument.Value as CodePrimitiveExpression;
+
+            testCase1NameArgumentValueExpression.Should().NotBeNull();
+            testCase1NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something)");
+
+            var testCase2NameArgument = caseAttributes[1].Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(a => a.Name == "TestName");
+            var testCase2NameArgumentValueExpression = testCase2NameArgument.Value as CodePrimitiveExpression;
+
+            testCase2NameArgumentValueExpression.Should().NotBeNull();
+            testCase2NameArgumentValueExpression.Value.Should().Be("Simple Scenario Outline(something else)");
+        }
+
 
         [Fact]
         public void NUnit3TestGeneratorProvider_ExampleSetSingleColumn_ShouldSetDescriptionWithVariantNameFromFirstColumn()

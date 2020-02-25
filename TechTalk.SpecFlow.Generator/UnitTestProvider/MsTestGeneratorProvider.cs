@@ -164,10 +164,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
+        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName, string testDescription = null)
         {
+            testDescription = string.IsNullOrEmpty(testDescription) ? friendlyTestName : testDescription;
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
-            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
+            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, testDescription);
 
             //as in mstest, you cannot mark classes with the description attribute, we
             //just apply it for each test method as a property
@@ -185,13 +186,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string scenarioDescription = null)
         {
             //MsTest does not support row tests... :(
             throw new NotSupportedException();
         }
 
-        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //MsTest does not support row tests... :(
             throw new NotSupportedException();

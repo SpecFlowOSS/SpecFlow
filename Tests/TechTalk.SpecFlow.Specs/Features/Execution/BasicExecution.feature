@@ -4,7 +4,11 @@ Background:
     Given there is a feature file in the project as
         """
             Feature: Simple Feature
+            Feature Description
+            
             Scenario: Simple Scenario
+                Scenario Description
+                
                 Given there is something
                 When I do something
                 Then something should happen
