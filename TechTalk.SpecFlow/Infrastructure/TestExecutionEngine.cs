@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private bool _testRunnerEndExecuted = false;
         private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
-        
+
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -67,9 +67,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             ITestResultFactory testResultFactory,
             ITestPendingMessageFactory testPendingMessageFactory,
             ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestRunResultCollector testRunResultCollector, 
-            IAnalyticsEventProvider analyticsEventProvider, 
-            IAnalyticsTransmitter analyticsTransmitter, 
+            ITestRunResultCollector testRunResultCollector,
+            IAnalyticsEventProvider analyticsEventProvider,
+            IAnalyticsTransmitter analyticsTransmitter,
             ITestRunnerManager testRunnerManager,
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
@@ -208,6 +208,9 @@ namespace TechTalk.SpecFlow.Infrastructure
                 var duration = _contextManager.ScenarioContext.Stopwatch.Elapsed;
                 _testTracer.TraceDuration(duration, "Scenario: " + _contextManager.ScenarioContext.ScenarioInfo.Title);
             }
+
+            //hook is intentionally called here in order to not affect scenario execution time.
+            FireScenarioEvents(HookType.AfterLastStep);
 
             var testResultResult = _testResultFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
             switch (testResultResult)
@@ -526,7 +529,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 throw new ArgumentNullException(nameof(_contextManager));
             }
-            
+
             if (_contextManager.ScenarioContext == null)
             {
                 throw new ArgumentNullException(nameof(_contextManager.ScenarioContext));

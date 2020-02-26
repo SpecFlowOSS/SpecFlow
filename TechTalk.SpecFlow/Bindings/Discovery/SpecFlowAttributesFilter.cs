@@ -27,7 +27,8 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             typeof(BeforeScenarioBlockAttribute),
             typeof(AfterScenarioBlockAttribute),
             typeof(BeforeAttribute),
-            typeof(AfterAttribute)
+            typeof(AfterAttribute),
+            typeof(AfterLastStepAttribute)
         };
 
         public IEnumerable<Attribute> FilterForSpecFlowAttributes(IEnumerable<Attribute> customAttributes)

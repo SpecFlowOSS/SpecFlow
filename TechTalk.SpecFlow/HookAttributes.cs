@@ -101,4 +101,14 @@ namespace TechTalk.SpecFlow
     {
         public AfterStepAttribute(params string[] tags) : base(HookType.AfterStep, tags) { }
     }
+
+    /// <summary>
+    /// Specifies a hook that will be executed after last step in scenario but before AfterScenarioAttribute <see cref="AfterScenarioAttribute"/>
+    /// This may be useful in some cases due to the fact that when AfterScenarioAttribute will be called, scenario execution state is considered completed.
+    /// As for this hook scenario state won't yet be completed but all steps will be already executed.
+    /// </summary>
+    public class AfterLastStepAttribute : HookAttribute
+    {
+        public AfterLastStepAttribute(params string[] tags) : base(HookType.AfterLastStep, tags) { }
+    }
 }
