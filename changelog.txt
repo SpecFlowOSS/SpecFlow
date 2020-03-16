@@ -1,7 +1,8 @@
-3.1 - 2020-02-11
+Changes since 3.1.86
 
 Fixes:
 + Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225
++ Import MSBuild Tasks only once (fixes https://github.com/SpecFlowOSS/SpecFlow/issues/1699)
 
 3.1 - 2020-01-09
 
