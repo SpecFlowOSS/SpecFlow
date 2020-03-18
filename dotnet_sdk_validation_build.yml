@@ -17,7 +17,7 @@ jobs:
     name: SDK_3_1_102
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
-    nugetVersion: 3.1.102
+    sdkVersion: 3.1.102
     pool:
       vmImage: 'windows-latest'
 
@@ -26,7 +26,7 @@ jobs:
     name: SDK_3_1_200
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
-    nugetVersion: 3.1.200
+    sdkVersion: 3.1.200
     pool:
       vmImage: 'windows-latest'
 
@@ -35,6 +35,6 @@ jobs:
     name: SDK_5_0_100_preview_1
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
-    nugetVersion: 5.0.100-preview.1
+    sdkVersion: 5.0.100-preview.1
     pool:
       vmImage: 'windows-latest'     
