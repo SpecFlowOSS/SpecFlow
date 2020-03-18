@@ -5,6 +5,7 @@ parameters:
   sdkVersion: 3.1.100
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
+  publishArtifacts: true
 
 jobs:
 - job: ${{ parameters.name }}
@@ -13,7 +14,7 @@ jobs:
   - checkout: self
     submodules: true 
     clean: true
-    
+
   - task: NuGetToolInstaller@0
     displayName: 'Use NuGet'
     inputs:
@@ -53,6 +54,7 @@ jobs:
 
   - task: ArchiveFiles@2
     displayName: 'Archive $(Build.SourcesDirectory)'
+    condition: ${{ parameters.publishArtifacts}}
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)'
 
@@ -61,6 +63,7 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
+    condition: ${{ parameters.publishArtifacts}}
     inputs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
       artifactType: container

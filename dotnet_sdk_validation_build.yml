@@ -18,6 +18,7 @@ jobs:
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     sdkVersion: 3.1.102
+    publishArtifacts: false
     pool:
       vmImage: 'windows-latest'
 
@@ -27,6 +28,7 @@ jobs:
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     sdkVersion: 3.1.200
+    publishArtifacts: false
     pool:
       vmImage: 'windows-latest'
 
@@ -35,6 +37,7 @@ jobs:
     name: SDK_5_0_100_preview_1
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
-    sdkVersion: 5.0.100-preview.1
+    sdkVersion: 5.0.100-preview.1.20155.7
+    publishArtifacts: false
     pool:
       vmImage: 'windows-latest'     
