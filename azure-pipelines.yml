@@ -3,6 +3,7 @@ name: $(GitAssemblyInformationalVersion)
 
 resources:
 - repo: self
+  submodules: true 
   clean: true
 
 
