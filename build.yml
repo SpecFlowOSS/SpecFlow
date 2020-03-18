@@ -26,6 +26,7 @@ jobs:
     inputs:
       packageType: sdk
       version: ${{ parameters.sdkVersion }}
+      includePreviewVersions: true
 
   - task: PowerShell@2
     inputs:
