@@ -32,7 +32,7 @@ jobs:
 
 - template: build.yml  
   parameters:
-    name: SDK_5_0_100_preview.1
+    name: SDK_5_0_100_preview_1
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 5.0.100-preview.1
