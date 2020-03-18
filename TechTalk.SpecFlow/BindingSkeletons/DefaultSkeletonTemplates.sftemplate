@@ -7,6 +7,12 @@ namespace {namespace}
     [Binding]
     public class {className}
     {
+        private readonly ScenarioContext _scenarioContext;
+
+        public {className}(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
 {bindings}
     }
 }
@@ -14,13 +20,13 @@ namespace {namespace}
 [{attribute}(@"{regex}")]
 public void {methodName}({parameters})
 {
-    ScenarioContext.Current.Pending();
+    _scenarioContext.Pending();
 }
 >>>CSharp/StepDefinition
 [{attribute}]
 public void {methodName}({parameters})
 {
-    ScenarioContext.Current.Pending();
+    _scenarioContext .Pending();
 }
 >>>VB/StepDefinitionClass
 Imports System
