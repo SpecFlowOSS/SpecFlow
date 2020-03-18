@@ -1,0 +1,40 @@
+name: $(GitAssemblyInformationalVersion)
+
+resources:
+- repo: self
+  clean: true
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+
+jobs:
+- template: build.yml  
+  parameters:
+    name: .NET Core SDK 3.1.102
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    nugetVersion: 3.1.102
+    pool:
+      name: 'windows-2019'
+
+- template: build.yml  
+  parameters:
+    name: .NET Core SDK 3.1.200
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    nugetVersion: 3.1.200
+    pool:
+      name: 'windows-2019'
+
+- template: build.yml  
+  parameters:
+    name: .NET Core SDK 5.0.100-preview.1
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    nugetVersion: 5.0.100-preview.1
+    pool:
+      name: 'windows-2019'     
