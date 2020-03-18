@@ -10,6 +10,10 @@ jobs:
 - job: ${{ parameters.name }}
   pool: ${{ parameters.pool }}
   steps:
+  - checkout: self
+    submodules: true 
+    clean: true
+    
   - task: NuGetToolInstaller@0
     displayName: 'Use NuGet'
     inputs:
