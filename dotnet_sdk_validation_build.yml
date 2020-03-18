@@ -1,0 +1,45 @@
+name: $(GitAssemblyInformationalVersion)
+
+resources:
+- repo: self
+  clean: true
+
+trigger: none
+pr: none
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+
+jobs:
+- template: build.yml  
+  parameters:
+    name: SDK_3_1_102
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    sdkVersion: 3.1.102
+    publishArtifacts: false
+    pool:
+      vmImage: 'windows-latest'
+
+- template: build.yml  
+  parameters:
+    name: SDK_3_1_200
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    sdkVersion: 3.1.x
+    publishArtifacts: false
+    pool:
+      vmImage: 'windows-latest'
+
+- template: build.yml  
+  parameters:
+    name: SDK_5_0_100_preview_1
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    sdkVersion: 5.x
+    publishArtifacts: false
+    pool:
+      vmImage: 'windows-latest'     
