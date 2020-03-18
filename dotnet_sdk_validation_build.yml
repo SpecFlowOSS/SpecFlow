@@ -19,7 +19,7 @@ jobs:
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 3.1.102
     pool:
-      name: 'windows-2019'
+      vmImage: 'windows-latest'
 
 - template: build.yml  
   parameters:
@@ -28,7 +28,7 @@ jobs:
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 3.1.200
     pool:
-      name: 'windows-2019'
+      vmImage: 'windows-latest'
 
 - template: build.yml  
   parameters:
@@ -37,4 +37,4 @@ jobs:
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 5.0.100-preview.1
     pool:
-      name: 'windows-2019'     
+      vmImage: 'windows-latest'     
