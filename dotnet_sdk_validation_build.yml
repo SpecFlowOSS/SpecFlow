@@ -14,7 +14,7 @@ schedules:
 jobs:
 - template: build.yml  
   parameters:
-    name: .NET Core SDK 3_1_102
+    name: DotNET Core SDK 3_1_102
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 3.1.102
@@ -23,7 +23,7 @@ jobs:
 
 - template: build.yml  
   parameters:
-    name: .NET Core SDK 3_1_200
+    name: DotNET Core SDK 3_1_200
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 3.1.200
@@ -32,7 +32,7 @@ jobs:
 
 - template: build.yml  
   parameters:
-    name: .NET Core SDK 5_0_100_preview.1
+    name: DotNET Core SDK 5_0_100_preview.1
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     nugetVersion: 5.0.100-preview.1
