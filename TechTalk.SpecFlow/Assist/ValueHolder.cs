@@ -27,16 +27,13 @@ namespace TechTalk.SpecFlow.Assist
         {
             return GetEnumerator();
         }
-    }
 
-    internal static class ValueHolder
-    {
-        public static ValueHolder<T> Empty<T>()
+        public static ValueHolder<T> Empty()
         {
             return new ValueHolder<T>();
         }
 
-        public static ValueHolder<T> WithValue<T>(T value)
+        public static ValueHolder<T> WithValue(T value)
         {
             return new ValueHolder<T>(value);
         }

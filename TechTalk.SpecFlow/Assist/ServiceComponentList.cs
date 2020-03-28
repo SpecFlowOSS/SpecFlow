@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Assist
             {
                 if (defaultComponent.Contains(component))
                 {
-                    defaultComponent = ValueHolder.Empty<T>();
+                    defaultComponent = ValueHolder<T>.Empty();
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void SetDefault(T newComponent)
         {
-            defaultComponent = ValueHolder.WithValue(newComponent);
+            defaultComponent = ValueHolder<T>.WithValue(newComponent);
         }
 
         public void SetDefault<TImpl>() where TImpl : T, new()
@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void ClearDefault()
         {
-            defaultComponent = ValueHolder.Empty<T>();
+            defaultComponent = ValueHolder<T>.Empty();
         }
 
         public void Clear()

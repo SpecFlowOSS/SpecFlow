@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class SByteValueRetriever : NonNullableValueRetriever<sbyte>
+    public class SByteValueRetriever : StructRetriever<sbyte>
     {
-        public override sbyte GetValue(string value)
+        protected override sbyte GetNonEmptyValue(string value)
         {
             sbyte.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out sbyte returnValue);
             return returnValue;

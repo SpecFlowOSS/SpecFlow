@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class ByteValueRetriever : NonNullableValueRetriever<byte>
+    public class ByteValueRetriever : StructRetriever<byte>
     {
-        public override byte GetValue(string value)
+        protected override byte GetNonEmptyValue(string value)
         {
             byte.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out byte returnValue);
             return returnValue;

@@ -8,12 +8,7 @@ namespace TechTalk.SpecFlow.Assist
         public ServiceComponentList<IValueComparer> ValueComparers { get; private set; }
         public ServiceComponentList<IValueRetriever> ValueRetrievers { get; private set; }
 
-        public static Service Instance { get; internal set; }
-
-        static Service()
-        {
-            Instance = new Service();
-        }
+        public static Service Instance { get; internal set; } = new Service();
 
         public Service()
         {

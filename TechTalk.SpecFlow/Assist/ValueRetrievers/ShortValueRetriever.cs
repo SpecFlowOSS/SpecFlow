@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class ShortValueRetriever : NonNullableValueRetriever<short>
+    public class ShortValueRetriever : StructRetriever<short>
     {
-        public override short GetValue(string value)
+        protected override short GetNonEmptyValue(string value)
         {
             short.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out short returnValue);
             return returnValue;

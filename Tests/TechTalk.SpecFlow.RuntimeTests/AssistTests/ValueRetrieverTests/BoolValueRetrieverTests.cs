@@ -1,55 +1,61 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using FluentAssertions;
 using Xunit;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    
     public class BoolValueRetrieverTests
     {
-        [Fact]
-        public void Returns_true_when_the_value_is_True()
+        private const string IrrelevantKey = "Irrelevant";
+        private readonly Type IrrelevantType = typeof(object);
+
+        [Theory]
+        [InlineData(typeof(bool), true)]
+        [InlineData(typeof(bool?), true)]
+        [InlineData(typeof(int), false)]
+        public void CanRetrieve(Type type, bool expectation)
         {
             var retriever = new BoolValueRetriever();
-            retriever.GetValue("True").Should().BeTrue();
+            var result = retriever.CanRetrieve(new KeyValuePair<string, string>(IrrelevantKey, IrrelevantKey), IrrelevantType, type);
+            result.Should().Be(expectation);
         }
 
-        [Fact]
-        public void Returns_false_when_the_value_is_False()
+        [Theory]
+        [InlineData("True", true)]
+        [InlineData("true", true)]
+        [InlineData("1", true)]
+        [InlineData("False", false)]
+        [InlineData("false", false)]
+        [InlineData("0", false)]
+        [InlineData("sssssdfsd", false)]
+        [InlineData("this is false", false)]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        public void Retrieve_correct_value(string value, bool expectation)
         {
             var retriever = new BoolValueRetriever();
-            retriever.GetValue("False").Should().BeFalse();
+            var result = (bool)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(bool));
+            result.Should().Be(expectation);
         }
 
-        [Fact]
-        public void Returns_true_when_the_value_is_true()
+        [Theory]
+        [InlineData("True", true)]
+        [InlineData("true", true)]
+        [InlineData("1", true)]
+        [InlineData("False", false)]
+        [InlineData("false", false)]
+        [InlineData("0", false)]
+        [InlineData("sssssdfsd", false)]
+        [InlineData("this is false", false)]
+        [InlineData(null, null)]
+        [InlineData("", null)]
+        public void Retrieve_correct_nullable_value(string value, bool? expectation)
         {
             var retriever = new BoolValueRetriever();
-            retriever.GetValue("true").Should().BeTrue();
-        }
-
-        [Fact]
-        public void Returns_true_when_the_value_is_1()
-        {
-            var retriever = new BoolValueRetriever();
-            retriever.GetValue("1").Should().BeTrue();
-        }
-
-        [Fact]
-        public void Returns_false_when_the_value_is_0()
-        {
-            var retriever = new BoolValueRetriever();
-            retriever.GetValue("0").Should().BeFalse();
-        }
-
-        [Fact]
-        public void Returns_false_for_data_that_is_not_bool()
-        {
-            var retriever = new BoolValueRetriever();
-            retriever.GetValue("sssssdfsd").Should().BeFalse();
-            retriever.GetValue(null).Should().BeFalse();
-            retriever.GetValue("").Should().BeFalse();
-            retriever.GetValue("this is false").Should().BeFalse();
+            var result = (bool?)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(bool?));
+            result.Should().Be(expectation);
         }
     }
 }

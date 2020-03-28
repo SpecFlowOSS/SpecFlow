@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,11 +9,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         private static readonly char[] Separators = { ',', ';' };
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            var valueType = GetActualValueType(propertyType);
-            return valueType != null;
-        }
+        public abstract bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType);
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
@@ -20,31 +17,49 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             if (valueType == null)
                 return null;
 
-            var values = new object[0];
-            if (!string.IsNullOrWhiteSpace(keyValuePair.Value))
+            int count;
+            IEnumerable items;
+            if (string.IsNullOrWhiteSpace(keyValuePair.Value))
             {
-                values = keyValuePair.Value
-                    .Split(Separators)
-                    .Select(x => x.Trim())
-                    .Select(x =>
-                    {
-                        var kvPair = new KeyValuePair<string, string>(keyValuePair.Key, x);
-                        var retriever = GetValueRetriever(kvPair, targetType, valueType);
-                        return retriever?.Retrieve(kvPair, targetType, valueType);
-                    })
-                    .ToArray();
+                count = 0;
+                items = Enumerable.Empty<object>();
+            }
+            else
+            {
+                var strings = keyValuePair.Value.Split(Separators);
+                count = strings.Length;
+                items = GetItems(strings, keyValuePair, targetType, valueType);
             }
 
-            return BuildInstance(values, valueType);
+            return BuildInstance(count, items, valueType);
+        }
+
+        private IEnumerable GetItems(string[] strings, KeyValuePair<string, string> keyValuePair, Type targetType, Type itemType)
+        {
+            IValueRetriever retriever = null;
+            foreach (var splitValue in strings)
+            {
+                var itemKeyValuePair = new KeyValuePair<string, string>(keyValuePair.Key, splitValue.Trim());
+                retriever = retriever ?? GetValueRetriever(itemKeyValuePair, targetType, itemType);
+                yield return retriever?.Retrieve(itemKeyValuePair, targetType, itemType);
+            }
         }
 
         protected abstract Type GetActualValueType(Type propertyType);
 
-        protected abstract object BuildInstance(object[] values, Type valueType);
+        protected abstract object BuildInstance(int count, IEnumerable values, Type valueType);
 
         private IValueRetriever GetValueRetriever(KeyValuePair<string, string> keyValuePair, Type targetType, Type valueType)
         {
-            return Service.Instance.ValueRetrievers.FirstOrDefault(x => x.CanRetrieve(keyValuePair, targetType, valueType));
+            foreach (var retriever in Service.Instance.ValueRetrievers)
+            {
+                if (retriever.CanRetrieve(keyValuePair, targetType, valueType))
+                {
+                    return retriever;
+                }
+            }
+
+            return null;
         }
     }
 }
