@@ -332,7 +332,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 foreach (var row in examples.TableBody)
                 {
                     var arguments = row.Cells.Select(c => c.Value);
-                    _unitTestGeneratorProvider.SetRow(generationContext, scenatioOutlineTestMethod, scenarioOutline.Name, arguments, GetNonIgnoreTags(examples.Tags), HasIgnoreTag(examples.Tags));
+                    _unitTestGeneratorProvider.SetRow(generationContext, scenatioOutlineTestMethod, arguments, GetNonIgnoreTags(examples.Tags), HasIgnoreTag(examples.Tags));
                 }
             }
         }
@@ -468,11 +468,11 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             if (rowTest)
             {
-                _unitTestGeneratorProvider.SetRowTest(generationContext, testMethod, friendlyTestName, scenarioDefinition.Description);
+                _unitTestGeneratorProvider.SetRowTest(generationContext, testMethod, friendlyTestName);
             }
             else
             {
-                _unitTestGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName, scenarioDefinition.Description);
+                _unitTestGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName);
             }
 
             _decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenarioDefinition.GetTags(), additionalTags), out var scenarioCategories);
