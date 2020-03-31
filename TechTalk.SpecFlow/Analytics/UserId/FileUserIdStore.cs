@@ -5,7 +5,9 @@ namespace TechTalk.SpecFlow.Analytics.UserId
 {
     public class FileUserIdStore : IUserUniqueIdStore
     {
-        public static readonly string UserIdFilePath = Environment.ExpandEnvironmentVariables(@"%APPDATA%\SpecFlow\userid");
+        private static readonly string appDataFolder = Environment.GetFolderPath(
+                                                                    Environment.SpecialFolder.ApplicationData);
+        public static readonly string UserIdFilePath = Path.Combine(appDataFolder, "SpecFlow", "userid");
 
         private readonly Lazy<string> _lazyUniqueUserId;
         private readonly IFileService _fileService;
