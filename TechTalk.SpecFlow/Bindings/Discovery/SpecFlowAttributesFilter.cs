@@ -10,11 +10,8 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private readonly IReadOnlyCollection<Type> _validAttributeTypes = new[]
         {
             typeof(BindingAttribute),
-            typeof(GivenAttribute),
-            typeof(WhenAttribute),
-            typeof(ThenAttribute),
             typeof(HookAttribute),
-            typeof(StepDefinitionAttribute),
+            typeof(StepDefinitionBaseAttribute),
             typeof(StepArgumentTransformationAttribute),
             typeof(TableAliasesAttribute),
             typeof(ScopeAttribute),

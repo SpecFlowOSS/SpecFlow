@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class StepDefinitionBaseAttribute : Attribute
     {
-        internal StepDefinitionType[] Types { get; private set; }
+        public StepDefinitionType[] Types { get; private set; }
         public string Regex { get; set; }
 
         /// <summary>

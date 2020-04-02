@@ -74,11 +74,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private bool IsStepDefinitionAttribute(BindingSourceAttribute attribute)
         {
-            return
-                typeof(GivenAttribute).IsAssignableFrom(attribute.AttributeType) ||
-                typeof(WhenAttribute).IsAssignableFrom(attribute.AttributeType) ||
-                typeof(ThenAttribute).IsAssignableFrom(attribute.AttributeType) ||
-                typeof(StepDefinitionAttribute).IsAssignableFrom(attribute.AttributeType);
+            return typeof(StepDefinitionBaseAttribute).IsAssignableFrom(attribute.AttributeType);
         }
 
         private bool IsHookAttribute(BindingSourceAttribute attribute)
@@ -301,16 +297,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private IEnumerable<StepDefinitionType> GetStepDefinitionTypes(BindingSourceAttribute stepDefinitionAttribute)
         {
-            if (typeof(GivenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
-                return new[] { StepDefinitionType.Given };
-            if (typeof(WhenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
-                return new[] { StepDefinitionType.When };
-            if (typeof(ThenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
-                return new[] { StepDefinitionType.Then };
-            if (typeof(StepDefinitionAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
-                return new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then };
-
-            return new StepDefinitionType[0];
+            return stepDefinitionAttribute.NamedAttributeValues["Types"].GetValue<IEnumerable<StepDefinitionType>>();
         }
 
         private void ApplyForScope(BindingScope[] scopes, Action<BindingScope> action)

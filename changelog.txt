@@ -1,10 +1,14 @@
 Changes since 3.1.97
 
+Features:
++ Allow the use of custom subclasses of StepDefinitionBaseAttribute.
+
 Fixes for Development:
 + Changed unit tests to ignore custom user overrides to data formatting in en-US locale
 
 API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
+
 
 Changes since 3.1.89
 
