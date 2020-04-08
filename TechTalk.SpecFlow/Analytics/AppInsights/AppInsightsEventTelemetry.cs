@@ -53,6 +53,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
                         { "SpecFlowVersion", analyticsEvent.SpecFlowVersion },
                         { "UnitTestProvider", analyticsEvent.UnitTestProvider ?? DefaultValue },
                         { "IsBuildServer", analyticsEvent.IsBuildServer.ToString() },
+                        { "IsDockerContainer", analyticsEvent.IsDockerContainer.ToString() },
                         { "HashedAssemblyName", analyticsEvent.HashedAssemblyName ?? DefaultValue },
                         { "TargetFrameworks", analyticsEvent.TargetFrameworks },
                         { "TargetFramework", analyticsEvent.TargetFramework },
