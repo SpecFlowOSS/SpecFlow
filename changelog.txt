@@ -22,6 +22,7 @@ Fixes:
 + Save generated files with UTF8-BOM encoding.
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 + Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
++ Empty value for nullable enum should not throw an exception
 
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
