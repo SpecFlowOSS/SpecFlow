@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
         public void Returns_a_long_when_passed_a_long_value()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
             var retriever = new LongValueRetriever();
 
             retriever.GetValue("1").Should().Be(1);
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 	    [Fact]
 	    public void Returns_a_zero_when_passed_an_invalid_long_and_culture_is_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new LongValueRetriever();
 		    retriever.GetValue("1,234,567,890,123,456,789").Should().Be(0);

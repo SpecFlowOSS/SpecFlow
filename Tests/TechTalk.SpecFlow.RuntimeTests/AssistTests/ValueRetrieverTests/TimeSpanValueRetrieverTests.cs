@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
         public void Returns_a_timespan_when_passed_a_parsable_string_representation_of_a_timespan()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
 
             var retriever = new TimeSpanValueRetriever();
             retriever.GetValue("20:00:00").Should().Be(System.TimeSpan.Parse("20:00:00"));
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
         public void Returns_a_timespan_when_passed_a_parsable_string_representation_of_a_timespan_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var retriever = new TimeSpanValueRetriever();
             retriever.GetValue("6:12:14:45,3448").Should().Be(System.TimeSpan.Parse("6.12:14:45.3448000"));

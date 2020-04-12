@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
 	    public void Returns_the_date_and_time_represents_a_valid_date_if_culture_is_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new DateTimeOffsetValueRetriever();
 			var date1 = new DateTime(2011, 5, 1);

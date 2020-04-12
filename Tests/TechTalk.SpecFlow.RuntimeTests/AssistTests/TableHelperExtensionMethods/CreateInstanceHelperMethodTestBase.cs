@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
         public CreateInstanceHelperMethodTestBase()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public virtual void Sets_datetime_values()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US"); //CurrentCulture is sometimes reset to de-AT, no idea why
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false); //CurrentCulture is sometimes reset to de-AT, no idea why
 
             var table = new Table("Field", "Value");
             table.AddRow("BirthDate", "12/31/2010");
