@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         private Mock<ISkeletonTemplateProvider> templateProviderMock;
         private Mock<IStepTextAnalyzer> stepTextAnalyzerMock;
         private AnalyzedStepText analizeResult;
-        private readonly CultureInfo bindingCulture = new CultureInfo("en-US");
+        private readonly CultureInfo bindingCulture = new CultureInfo("en-US", false);
 
         public StepDefinitionSkeletonProviderTests()
         {
@@ -35,21 +35,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
         private StepInstance CreateSimpleWhen(string text = "I do something")
         {
-            var result = new StepInstance(StepDefinitionType.When, StepDefinitionKeyword.When, "When ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US")));
+            var result = new StepInstance(StepDefinitionType.When, StepDefinitionKeyword.When, "When ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US", false)));
             analizeResult.TextParts.Add(text);
             return result;
         }
 
         private StepInstance CreateSimpleGiven(string text = "I had something")
         {
-            var result = new StepInstance(StepDefinitionType.Given, StepDefinitionKeyword.Given, "Given ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US")));
+            var result = new StepInstance(StepDefinitionType.Given, StepDefinitionKeyword.Given, "Given ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US", false)));
             analizeResult.TextParts.Add(text);
             return result;
         }
 
         private StepInstance CreateSimpleThen(string text = "I have something")
         {
-            var result = new StepInstance(StepDefinitionType.Then, StepDefinitionKeyword.Then, "Then ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US")));
+            var result = new StepInstance(StepDefinitionType.Then, StepDefinitionKeyword.Then, "Then ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US", false)));
             analizeResult.TextParts.Add(text);
             return result;
         }

@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             testObjectResolverMock.Setup(bir => bir.ResolveBindingInstance(It.IsAny<Type>(), It.IsAny<IObjectContainer>()))
                 .Returns((Type t, IObjectContainer container) => defaultTestObjectResolver.ResolveBindingInstance(t, container));
 
-            var culture = new CultureInfo("en-US");
+            var culture = new CultureInfo("en-US", false);
             contextManagerStub = new Mock<IContextManager>();
             scenarioInfo = new ScenarioInfo("scenario_title", "scenario_description");
             scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, testObjectResolverMock.Object);

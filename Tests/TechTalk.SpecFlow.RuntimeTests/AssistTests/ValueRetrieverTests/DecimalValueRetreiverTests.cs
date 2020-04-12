@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
 	    public void Returns_the_decimal_value_when_passed_a_decimal_string_if_culture_if_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new DecimalValueRetriever();
 		    retriever.GetValue("0").Should().Be(0M);

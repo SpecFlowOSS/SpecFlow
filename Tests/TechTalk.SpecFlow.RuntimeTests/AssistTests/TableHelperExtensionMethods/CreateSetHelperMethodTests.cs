@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
     {
         public CreateSetHelperMethodTests()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
         }
 
         private static Table CreatePersonTableHeaders()
@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public void Sets_datetime_on_the_instance_when_type_is_datetime_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var table = CreatePersonTableHeaders();
             table.AddRow("", "", "28/4/2009", "3", "", "");
@@ -194,7 +194,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public void Sets_decimals_on_the_instance_when_type_is_decimal_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var table = new Table("Salary", "NullableDecimal");
             table.AddRow("4,193", "7,28");
@@ -268,7 +268,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public void Sets_doubles_on_the_instance_when_type_is_double_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var table = new Table("Double", "NullableDouble");
             table.AddRow("4,193", "7,28");
@@ -294,7 +294,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public void Sets_bytes_on_the_instance_when_type_is_byte_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var table = new Table("Byte", "NullableByte");
             table.AddRow("4,000", "7,000");
@@ -320,7 +320,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public void Sets_sbytes_on_the_instance_when_type_is_sbyte_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var table = new Table("SByte", "NullableSByte");
             table.AddRow("4,0", "5,0");
@@ -346,7 +346,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Fact]
         public void Sets_floats_on_the_instance_when_type_is_float_and_culture_is_fr_FR()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
             var table = new Table("Float", "NullableFloat");
             table.AddRow("2,698", "8,954");

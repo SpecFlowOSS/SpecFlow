@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
 		public UIntValueRetrieverTests()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
 		}
 
         [Fact]
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 	    [Fact]
 	    public void Returns_an_unsigned_integer_when_passed_an_unsigned_integer_value_if_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new UIntValueRetriever();
 		    retriever.GetValue("1").Should().Be(1);

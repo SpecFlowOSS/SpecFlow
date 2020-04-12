@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
     {
         public DateTimeValueComparerTests()
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
         }
 
         [Fact]
@@ -67,9 +67,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Returns_false_when_the_expected_value_is_not_a_valid_datetime()
         {
             var comparer = new DateTimeValueComparer();
-            comparer.Compare("x", new DateTime(2020, 1, 1))
+            comparer.Compare("x", new DateTime(2010, 1, 1))
                 .Should().BeFalse();
-            comparer.Compare("January1", new DateTime(2020, 1, 1))
+            comparer.Compare("January1", new DateTime(2010, 1, 1))
                 .Should().BeFalse();
         }
 
