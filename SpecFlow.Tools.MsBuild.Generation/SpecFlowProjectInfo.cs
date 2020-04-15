@@ -48,5 +48,19 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string TargetFrameworks { get; }
 
         public string CurrentTargetFramework { get; }
+        public override string ToString()
+        {
+            return $"GeneratorPlugins: '{string.Join(", ", GeneratorPlugins)}', "
+                   + $"FeatureFiles: '{string.Join(", ", FeatureFiles)}', "
+                   + $"ProjectPath: '{ProjectPath}', "
+                   + $"ProjectFolder: '{ProjectFolder}', "
+                   + $"ProjectGuid: '{ProjectGuid}', "
+                   + $"ProjectAssemblyName: '{ProjectAssemblyName}', "
+                   + $"OutputPath: '{OutputPath}', "
+                   + $"RootNamespace: '{RootNamespace}', "
+                   + $"TargetFrameworks: '{TargetFrameworks}', "
+                   + $"CurrentTargetFramework: '{CurrentTargetFramework}', "
+                   ;
+        }
     }
 }

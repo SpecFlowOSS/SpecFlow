@@ -45,5 +45,12 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
 
             ProjectRelativePath = projectRelativePath;
         }
+
+        public override string ToString()
+        {
+            return $"ProjectRelativePath: '{ProjectRelativePath}', "
+                   + $"CustomNamespace: '{CustomNamespace}', "
+                   + $"GeneratedTestProjectRelativePath: '{GeneratedTestProjectRelativePath}'";
+        }
     }
 }

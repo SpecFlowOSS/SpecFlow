@@ -41,9 +41,12 @@ namespace SpecFlow.Tools.MsBuild.Generation
             var generateFeatureFileCodeBehindTaskContainerBuilder = new GenerateFeatureFileCodeBehindTaskContainerBuilder();
             var generatorPlugins = GeneratorPlugins?.Select(gp => gp.ItemSpec).Select(p => new GeneratorPluginInfo(p)).ToArray() ?? Array.Empty<GeneratorPluginInfo>();
             var featureFiles = FeatureFiles?.Select(i => i.ItemSpec).ToArray() ?? Array.Empty<string>();
+            Log.LogMessage(MessageImportance.High, $"[SpecFlow] FeatureFiles from BuildTask: {string.Join(", ", featureFiles)}");
+
             var msbuildInformationProvider = new MSBuildInformationProvider(MSBuildVersion);
             var generateFeatureFileCodeBehindTaskConfiguration = new GenerateFeatureFileCodeBehindTaskConfiguration(AnalyticsTransmitter, CodeBehindGenerator);
             var generateFeatureFileCodeBehindTaskInfo = new SpecFlowProjectInfo(generatorPlugins, featureFiles, ProjectPath, ProjectFolder, ProjectGuid, AssemblyName, OutputPath, RootNamespace, TargetFrameworks, TargetFramework);
+            Log.LogMessage(MessageImportance.High, $"[SpecFlow] ProjectInfo: {generateFeatureFileCodeBehindTaskInfo.ToString()}");
 
             using (var taskRootContainer = generateFeatureFileCodeBehindTaskContainerBuilder.BuildRootContainer(Log, generateFeatureFileCodeBehindTaskInfo, msbuildInformationProvider, generateFeatureFileCodeBehindTaskConfiguration))
             {

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BoDi;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
@@ -17,10 +20,15 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _testGenerator = testGenerator;
         }
 
-        public TestFileGeneratorResult GenerateCodeBehindFile(string featureFile)
+        public TestFileGeneratorResult GenerateCodeBehindFile(string featureFile, TaskLoggingHelper log)
         {
+            log.LogMessage(MessageImportance.High, $"[SpecFlow] FeatureFile: {featureFile}");
+
             var featureFileInput = new FeatureFileInput(featureFile);
+            log.LogMessage(MessageImportance.High, $"[SpecFlow] FeatureFileInfo: {featureFileInput.ToString()}");
+
             var generatedFeatureFileName = Path.GetFileName(_testGenerator.GetTestFullPath(featureFileInput));
+            log.LogMessage(MessageImportance.High, $"[SpecFlow] GeneratedFeatureFileName: {generatedFeatureFileName}");
 
             var testGeneratorResult = _testGenerator.GenerateTestFile(featureFileInput, new GenerationSettings());
 
