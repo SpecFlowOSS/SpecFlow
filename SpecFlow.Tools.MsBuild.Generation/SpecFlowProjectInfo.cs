@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using TechTalk.SpecFlow.Generator;
 
 namespace SpecFlow.Tools.MsBuild.Generation
@@ -18,7 +20,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
             string currentTargetFramework)
         {
             GeneratorPlugins = generatorPlugins;
-            FeatureFiles = featureFiles;
+            FeatureFiles = RemoveFilesWithInvalidChars(featureFiles);
+            //FeatureFiles = featureFiles;
             ProjectFolder = projectFolder;
             OutputPath = outputPath;
             RootNamespace = rootNamespace;
@@ -48,6 +51,21 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string TargetFrameworks { get; }
 
         public string CurrentTargetFramework { get; }
+
+        private IReadOnlyCollection<string> RemoveFilesWithInvalidChars(IEnumerable<string> featureFilePaths)
+        {
+            return featureFilePaths.Where(p => !InvalidFileName(p)).ToList();
+        }
+
+        private bool InvalidFileName(string featureFilePath)
+        {
+            var featureFileName = Path.GetFileName(featureFilePath);
+            var invalidCharacters = Path.GetInvalidFileNameChars();
+
+            return !string.IsNullOrEmpty(featureFileName) &&
+                   featureFileName.Any(s => invalidCharacters.Contains(s));
+        }
+
         public override string ToString()
         {
             return $"GeneratorPlugins: '{string.Join(", ", GeneratorPlugins)}', "
