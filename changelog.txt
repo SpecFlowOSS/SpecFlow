@@ -5,6 +5,9 @@ Fixes:
 + Save generated files with UTF8-BOM encoding.
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 
+Features:
++ Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
+
 Changes since 3.1.86
 
 Fixes:

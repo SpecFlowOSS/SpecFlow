@@ -10,14 +10,14 @@ namespace TechTalk.SpecFlow.Assist
 {
     internal static class TEHelpers
     {
-        internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
+        internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table, InstanceCreationOptions creationOptions)
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
-            LoadInstanceWithKeyValuePairs(table, instance);
+            LoadInstanceWithKeyValuePairs(table, instance, creationOptions);
             return instance;
         }
 
-        internal static T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
+        internal static T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table, InstanceCreationOptions creationOptions)
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
@@ -27,6 +27,8 @@ namespace TechTalk.SpecFlow.Assist
 
             var constructorParameters = constructor.GetParameters();
             var parameterValues = new object[constructorParameters.Length];
+
+            var members = new List<string>(constructorParameters.Length);
             for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
             {
                 var parameter = constructorParameters[parameterIndex];
@@ -35,10 +37,15 @@ namespace TechTalk.SpecFlow.Assist
                               where string.Equals(m.MemberName, parameterName, StringComparison.OrdinalIgnoreCase)
                               select m).FirstOrDefault();
                 if (member != null)
+                {
+                    members.Add(member.MemberName);
                     parameterValues[parameterIndex] = member.GetValue();
+                }
                 else if (parameter.HasDefaultValue)
                     parameterValues[parameterIndex] = parameter.DefaultValue;
             }
+
+            VerifyAllColumn(table, creationOptions, members);
             return (T)constructor.Invoke(parameterValues);
         }
 
@@ -87,12 +94,29 @@ namespace TechTalk.SpecFlow.Assist
             return name.Replace("_", string.Empty).ToIdentifier();
         }
 
-        internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
+        internal static void LoadInstanceWithKeyValuePairs(Table table, object instance, InstanceCreationOptions creationOptions)
         {
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
+            var memberHandlers = membersThatNeedToBeSet.ToList();
+            var memberNames = memberHandlers.Select(h => h.MemberName);
 
-            membersThatNeedToBeSet.ToList()
-                                  .ForEach(x => x.Setter(instance, x.GetValue()));
+            VerifyAllColumn(table, creationOptions, memberNames);
+
+            memberHandlers.ForEach(x => x.Setter(instance, x.GetValue()));
+        }
+
+        private static void VerifyAllColumn(Table table, InstanceCreationOptions creationOptions, IEnumerable<string> memberNames)
+        {
+            if (creationOptions?.VerifyAllColumnsBound == true)
+            {
+                var memberNameKeys = new HashSet<string>(memberNames);
+                var allIds = table.Rows.Select(r => r.Id()).ToList();
+                var missing = allIds.Where(m => !memberNameKeys.Contains(m)).ToList();
+                if (missing.Any())
+                {
+                    throw new ColumnCouldNotBeBoundException(missing);
+                }
+            }
         }
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
