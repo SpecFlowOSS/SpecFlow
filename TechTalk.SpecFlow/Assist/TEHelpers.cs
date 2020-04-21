@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Assist
             }
         }
 
-        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
+        internal static IList<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
             var properties = (from property in type.GetProperties()
                               from row in table.Rows
