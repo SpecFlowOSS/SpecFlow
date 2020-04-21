@@ -47,8 +47,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private bool _testRunnerEndExecuted = false;
         private object _testRunnerEndExecutedLock = new object();
-        private bool _testRunnerStartExecuted = false;
-        
+        private static volatile bool _testRunnerStartExecuted = false;
+        private static object _testRunnerStartExecutedLock = new object();
+
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -104,26 +105,31 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void OnTestRunStart()
         {
-            if (_testRunnerStartExecuted)
+            if (!TestExecutionEngine._testRunnerStartExecuted)
             {
-                return;
-            }
+                lock (TestExecutionEngine._testRunnerStartExecutedLock)
+                {
+                    if (!TestExecutionEngine._testRunnerStartExecuted)
+                    {
+                        try
+                        {
+                            var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
+                            var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
+                            _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
+                        }
+                        catch (Exception)
+                        {
+                            // catch all exceptions since we do not want to break anything
+                        }
 
-            try
-            {
-                var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
-                var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
-                _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
-            }
-            catch (Exception)
-            {
-                // catch all exceptions since we do not want to break anything
-            }
+                        _cucumberMessageSender.SendTestRunStarted();
+                        _testRunResultCollector.StartCollecting();
+                        FireEvents(HookType.BeforeTestRun);
 
-            _testRunnerStartExecuted = true;
-            _cucumberMessageSender.SendTestRunStarted();
-            _testRunResultCollector.StartCollecting();
-            FireEvents(HookType.BeforeTestRun);
+                        TestExecutionEngine._testRunnerStartExecuted = true;
+                    }
+                }
+            }
         }
 
         public virtual void OnTestRunEnd()
