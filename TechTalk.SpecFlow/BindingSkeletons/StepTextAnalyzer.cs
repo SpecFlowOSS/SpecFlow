@@ -107,24 +107,20 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return quotesRe.Matches(stepText)
                            .Cast<Match>()
                            .Select(m => (Capture)m.Groups["param"])
-                           .Select(c => new CaptureWithContext(c, ParameterType.Text));
+                           .ToCaptureWithContext(ParameterType.Text);
         }
 
         private static readonly Regex intRe = new Regex(@"-?\d+");
 
         private IEnumerable<CaptureWithContext> RecognizeIntegers(string stepText)
         {
-            return intRe.Matches(stepText)
-                        .Cast<Capture>()
-                        .Select(c => new CaptureWithContext(c, ParameterType.Int));
+            return intRe.Matches(stepText).ToCaptureWithContext(ParameterType.Int);
         }
 
         private IEnumerable<CaptureWithContext> RecognizeDecimals(string stepText, CultureInfo bindingCulture)
         {
             Regex decimalRe = new Regex(string.Format(@"-?\d+{0}\d+", bindingCulture.NumberFormat.NumberDecimalSeparator));
-            return decimalRe.Matches(stepText)
-                            .Cast<Capture>()
-                            .Select(c => new CaptureWithContext(c, ParameterType.Decimal));
+            return decimalRe.Matches(stepText).ToCaptureWithContext(ParameterType.Decimal);
         }
 
         private static readonly Regex dateRe = new Regex(string.Join("|", GetDateFormats()));
@@ -147,31 +143,40 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         private IEnumerable<CaptureWithContext> RecognizeDates(string stepText)
         {
-            return dateRe.Matches(stepText)
-                         .Cast<Capture>()
-                         .Select(c => new CaptureWithContext(c, ParameterType.Date));
+            return dateRe.Matches(stepText).ToCaptureWithContext(ParameterType.Date);
         }
+    }
 
-        private class CaptureWithContext
+    internal static class MatchCollectionExtensions
+    {
+        public static IEnumerable<CaptureWithContext> ToCaptureWithContext(this MatchCollection collection, ParameterType parameterType)
         {
-
-            public Capture Capture { get; }
-
-            public ParameterType ParameterType { get; }
-
-            public CaptureWithContext(Capture capture, ParameterType parameterType)
-            {
-                Capture = capture;
-                ParameterType = parameterType;
-            }
+            return collection.Cast<Capture>().ToCaptureWithContext(parameterType);
         }
-
-        private enum ParameterType
+        public static IEnumerable<CaptureWithContext> ToCaptureWithContext(this IEnumerable<Capture> collection, ParameterType parameterType)
         {
-            Text,
-            Int,
-            Decimal,
-            Date
+            return collection.Select(c => new CaptureWithContext(c, parameterType));
         }
+    }
+
+    internal class CaptureWithContext
+    {
+        public Capture Capture { get; }
+
+        public ParameterType ParameterType { get; }
+
+        public CaptureWithContext(Capture capture, ParameterType parameterType)
+        {
+            Capture = capture;
+            ParameterType = parameterType;
+        }
+    }
+
+    internal enum ParameterType
+    {
+        Text,
+        Int,
+        Decimal,
+        Date
     }
 }
