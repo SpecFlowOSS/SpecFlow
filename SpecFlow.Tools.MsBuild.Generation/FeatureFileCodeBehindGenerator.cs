@@ -34,7 +34,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             foreach (var featureFile in featureFiles)
             {
                 string featureFileItemSpec = featureFile;
-                var generatorResult = _featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec, Log);
+                var generatorResult = _featureCodeBehindGenerator.GenerateCodeBehindFile(featureFileItemSpec);
 
                 if (!generatorResult.Success)
                 {

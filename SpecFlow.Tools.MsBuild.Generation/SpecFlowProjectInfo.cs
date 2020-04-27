@@ -65,20 +65,5 @@ namespace SpecFlow.Tools.MsBuild.Generation
             return !string.IsNullOrEmpty(featureFileName) &&
                    featureFileName.Any(s => invalidCharacters.Contains(s));
         }
-
-        public override string ToString()
-        {
-            return $"GeneratorPlugins: '{string.Join(", ", GeneratorPlugins)}', "
-                   + $"FeatureFiles: '{string.Join(", ", FeatureFiles)}', "
-                   + $"ProjectPath: '{ProjectPath}', "
-                   + $"ProjectFolder: '{ProjectFolder}', "
-                   + $"ProjectGuid: '{ProjectGuid}', "
-                   + $"ProjectAssemblyName: '{ProjectAssemblyName}', "
-                   + $"OutputPath: '{OutputPath}', "
-                   + $"RootNamespace: '{RootNamespace}', "
-                   + $"TargetFrameworks: '{TargetFrameworks}', "
-                   + $"CurrentTargetFramework: '{CurrentTargetFramework}', "
-                   ;
-        }
     }
 }

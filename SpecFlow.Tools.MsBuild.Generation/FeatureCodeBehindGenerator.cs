@@ -20,15 +20,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _testGenerator = testGenerator;
         }
 
-        public TestFileGeneratorResult GenerateCodeBehindFile(string featureFile, TaskLoggingHelper log)
+        public TestFileGeneratorResult GenerateCodeBehindFile(string featureFile)
         {
-            log.LogMessage(MessageImportance.High, $"[SpecFlow] FeatureFile: {featureFile}");
-
             var featureFileInput = new FeatureFileInput(featureFile);
-            log.LogMessage(MessageImportance.High, $"[SpecFlow] FeatureFileInfo: {featureFileInput.ToString()}");
 
             var generatedFeatureFileName = Path.GetFileName(_testGenerator.GetTestFullPath(featureFileInput));
-            log.LogMessage(MessageImportance.High, $"[SpecFlow] GeneratedFeatureFileName: {generatedFeatureFileName}");
 
             var testGeneratorResult = _testGenerator.GenerateTestFile(featureFileInput, new GenerationSettings());
 
