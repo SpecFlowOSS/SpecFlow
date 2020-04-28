@@ -4,6 +4,7 @@ Fixes:
 + Update the default C# skeleton template to use context injection instead of the deprecated ScenarioContext.Current
 + Save generated files with UTF8-BOM encoding.
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
++ Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
 
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
