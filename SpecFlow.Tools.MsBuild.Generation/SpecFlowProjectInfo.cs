@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
