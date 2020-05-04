@@ -66,19 +66,19 @@
                 "cases": [
                     {
                         "condition": "(unitTestProvider == 'specflowplusrunner')",
-                        "value": "<PackageReference Include=\"SpecRun.SpecFlow.3-0-0\" Version=\"3.0.377\" />"
+                        "value": "<PackageReference Include=\"SpecRun.SpecFlow.3-1-0\" Version=\"3.1.48\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.0.225\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.1.80\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
-                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.0.225\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.1.80\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.0.225\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.1.80\" />"
                     }
                 ]
             }
@@ -101,7 +101,7 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.0.225\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.1.80\" />"
                     }
                 ]
             }

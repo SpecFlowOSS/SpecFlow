@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Analytics
             string unitTestProvider = _unitTestProvider;
             string specFlowVersion = GetSpecFlowVersion();
             bool isBuildServer = IsBuildServerMode();
+            bool isDockerContainer = IsRunningInDockerContainer();
             string hashedAssemblyName = ToSha256(assemblyName);
             string platform = GetOSPlatform();
             string platformDescription = RuntimeInformation.OSDescription;
@@ -40,7 +41,8 @@ namespace TechTalk.SpecFlow.Analytics
                 targetFrameworks,
                 targetFramework,
                 msbuildVersion,
-                projectGuid);
+                projectGuid,
+                isDockerContainer);
 
             return compiledEvent;
         }
@@ -52,6 +54,7 @@ namespace TechTalk.SpecFlow.Analytics
             string specFlowVersion = GetSpecFlowVersion();
             bool isBuildServer = IsBuildServerMode();
             string targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
+            bool isDockerContainer = IsRunningInDockerContainer();
             
             string hashedAssemblyName = ToSha256(testAssemblyName);
             string platform = GetOSPlatform();
@@ -67,7 +70,8 @@ namespace TechTalk.SpecFlow.Analytics
                 isBuildServer,
                 hashedAssemblyName,
                 null,
-                targetFramework);
+                targetFramework,
+                isDockerContainer);
             return runningEvent;
         }
 
@@ -97,6 +101,11 @@ namespace TechTalk.SpecFlow.Analytics
             bool isRunByTeamCity = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("TEAMCITY_VERSION"));
 
             return isRunByTfs || isRunByTeamCity;
+        }
+
+        private bool IsRunningInDockerContainer()
+        {
+            return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
         }
 
         private string GetSpecFlowVersion()

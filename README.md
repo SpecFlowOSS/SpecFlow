@@ -1,6 +1,6 @@
 # SpecFlow - Cucumber for .NET
 
-SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification language and integrates to Visual Studio. It provides efficient testing solution for the .NET-related platforms, like .NET Dekstop Framework, .NET Core and Mono.
+SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification language and integrates to Visual Studio. It provides efficient testing solution for the .NET-related platforms, like .NET Desktop Framework, .NET Core and Mono.
 
 - Project website: [http://www.specflow.org](http://www.specflow.org)
 - Documentation: [http://www.specflow.org/documentation/](http://www.specflow.org/documentation/)

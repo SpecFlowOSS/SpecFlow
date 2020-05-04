@@ -72,6 +72,6 @@
     <_SpecFlow_TaskAssembly Condition=" '$(_SpecFlow_TaskAssembly)' == '' ">..\tasks\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
   </PropertyGroup>
 
-  <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks"/>
+  <Import Project="SpecFlow.Tools.MsBuild.Generation.tasks" Condition="'$(_SpecFlowTasksImported)' =='' " />
 
 </Project>

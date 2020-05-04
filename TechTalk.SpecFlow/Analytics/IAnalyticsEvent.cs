@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Analytics
         string SpecFlowVersion { get; }
         string UnitTestProvider { get; }
         bool IsBuildServer { get; }
+        bool IsDockerContainer { get; }
         string HashedAssemblyName { get;}
         string TargetFrameworks { get; }
         string TargetFramework { get; }

@@ -90,6 +90,7 @@
   <Target Name="PreBuild">
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Core_Tools_TFM)"/>
     <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Core_Tools_TFM)"/>
+    <MSBuild Projects="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Core_Generator_TFM)"/>
   </Target>
 
 

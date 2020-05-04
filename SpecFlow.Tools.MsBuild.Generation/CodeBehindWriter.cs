@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Utils;
 
@@ -31,7 +32,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             {
                 if (!FileSystemHelper.FileCompareContent(outputPath, testFileGeneratorResult.GeneratedTestCode))
                 {
-                    File.WriteAllText(outputPath, testFileGeneratorResult.GeneratedTestCode);
+                    File.WriteAllText(outputPath, testFileGeneratorResult.GeneratedTestCode, Encoding.UTF8);
                 }
             }
             else
@@ -41,7 +42,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                     Directory.CreateDirectory(directoryPath);
                 }
 
-                File.WriteAllText(outputPath, testFileGeneratorResult.GeneratedTestCode);
+                File.WriteAllText(outputPath, testFileGeneratorResult.GeneratedTestCode, Encoding.UTF8);
             }
 
             return outputPath;
