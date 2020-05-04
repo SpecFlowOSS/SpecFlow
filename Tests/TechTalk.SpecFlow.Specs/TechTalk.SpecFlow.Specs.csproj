@@ -67,7 +67,7 @@
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
-    <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.0</_SpecFlow_PluginTFM>
+    <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.1</_SpecFlow_PluginTFM>
     <_SpecFlow_PluginTFM Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_PluginTFM>
   </PropertyGroup>
 
@@ -107,7 +107,7 @@
 
 
   <PropertyGroup>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.0</_SpecFlow_TaskFolder>
+    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.1</_SpecFlow_TaskFolder>
     <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net471</_SpecFlow_TaskFolder>
     <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
   </PropertyGroup>
