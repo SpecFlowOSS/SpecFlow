@@ -54,7 +54,7 @@
   </Target>
 
   <ItemGroup>
-    <SpecFlowGeneratorPlugins Include="../../Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/bin/$(Configuration)/$(SpecFlow_Core_Generator_TFM)/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
+    <SpecFlowGeneratorPlugins Include="../../Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/bin/$(Configuration)/$(_SpecFlow_PluginTFM)/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
   
   <PropertyGroup>
