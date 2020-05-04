@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     public class TraceListenerQueueTests
     {
-        [Theory(DisplayName ="EnqueueMessage n times should yield messages synchronously", Skip = "flacky test")]
+        [Theory(DisplayName ="EnqueueMessage n times should yield messages synchronously")]
         [InlineData(2)]
         [InlineData(32)]
         [InlineData(128)]
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             // ARRANGE
             var countdown = new CountdownEvent(times);
             var semaphore = new SemaphoreSlim(1, 1);
-            var testOutputList = new List<string>();
+            var testOutputList = new ConcurrentBag<string>();
 
             bool failureOnSemaphoreEntering = false;
 
