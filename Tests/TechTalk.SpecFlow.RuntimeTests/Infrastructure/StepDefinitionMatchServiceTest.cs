@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         private Mock<IBindingRegistry> bindingRegistryMock;
         private Mock<IStepArgumentTypeConverter> stepArgumentTypeConverterMock;
-        private readonly CultureInfo bindingCulture = new CultureInfo("en-US");
+        private readonly CultureInfo bindingCulture = new CultureInfo("en-US", false);
         private List<IStepDefinitionBinding> whenStepDefinitions;
             
         public StepDefinitionMatchServiceTest()
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private StepInstance CreateSimpleWhen(string text = "I do something")
         {
             var result = new StepInstance(StepDefinitionType.When, StepDefinitionKeyword.When, "When ", text, null, null, 
-                new StepContext("MyFeature", "MyScenario", new string[0], new CultureInfo("en-US")));
+                new StepContext("MyFeature", "MyScenario", new string[0], new CultureInfo("en-US", false)));
             return result;
         }
 

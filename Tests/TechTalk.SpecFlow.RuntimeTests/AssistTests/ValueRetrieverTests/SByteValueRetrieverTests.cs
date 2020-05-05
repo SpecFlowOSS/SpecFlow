@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
 	    public void Returns_a_signed_byte_when_passed_a_signed_byte_value_if_culture_is_fr_Fr()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new SByteValueRetriever();
 		    retriever.GetValue("30,0").Should().Be(30);

@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
 		public IntValueRetrieverTests()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
 		}
 
         [Fact]
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
 	    public void Returns_an_integer_when_passed_an_integer_value_if_culture_if_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new IntValueRetriever();
 		    retriever.GetValue("1").Should().Be(1);
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 	    [Fact]
 	    public void Returns_a_zero_when_passed_an_invalid_int_if_culture_is_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new IntValueRetriever();
 		    retriever.GetValue("1,234,567,890").Should().Be(0);

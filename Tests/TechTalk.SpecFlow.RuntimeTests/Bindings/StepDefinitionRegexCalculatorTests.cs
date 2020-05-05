@@ -295,7 +295,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [InlineData("Given_ich_Knopf_drücke")]
         public void LocalizedKeywordCanBeUsedIfFeatureLanguageIsConfigured(string methodName)
         {
-            specFlowConfiguration.FeatureLanguage = new CultureInfo("de-AT");
+            specFlowConfiguration.FeatureLanguage = new CultureInfo("de-AT", false);
             var sut = CreateSut();
 
             var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given,
@@ -310,7 +310,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [InlineData("Given_я_не_авторизован")]
         public void Issue715(string methodName)
         {
-            specFlowConfiguration.FeatureLanguage = new CultureInfo("ru");
+            specFlowConfiguration.FeatureLanguage = new CultureInfo("ru", false);
             var sut = CreateSut();
 
             var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given,

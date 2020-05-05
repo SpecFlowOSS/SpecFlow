@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
     
     public class StepTextAnalyzerTests
     {
-        private readonly CultureInfo bindingCulture = new CultureInfo("en-US");
+        private readonly CultureInfo bindingCulture = new CultureInfo("en-US", false);
 
         [Fact]
         public void Should_not_change_simple_step()

@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
         public UShortValueRetrieverTests()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
 	    public void Returns_an_unsigned_short_when_passed_an_unsigned_short_value_if_culture_is_fr_FR()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new UShortValueRetriever();
 		    retriever.GetValue("1").Should().Be(1);

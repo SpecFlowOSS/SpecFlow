@@ -169,7 +169,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
-            var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US"));
+            var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US", false));
             result.Should().Be(resultUser);
         }
 
@@ -195,7 +195,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
 
-            var result = stepArgumentTypeConverter.Convert(table, typeof(IEnumerable<User>), new CultureInfo("en-US"));
+            var result = stepArgumentTypeConverter.Convert(table, typeof(IEnumerable<User>), new CultureInfo("en-US", false));
 
             result.Should().NotBeNull();
             result.Should().Be(resultUsers);
