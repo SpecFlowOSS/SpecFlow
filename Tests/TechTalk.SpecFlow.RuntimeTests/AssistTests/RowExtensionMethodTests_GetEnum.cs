@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             getNotDefinedEnum.ShouldThrow<InvalidOperationException>().WithMessage("No enum with value NotDefined found in type Person");
         }
 
-        [Test]
+        [Fact]
         public void GetDiscreteEnum_should_return_enum_of_my_specified_type()
         {
             var table = new Table("Header Not Representing Property Of Any Class");
@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             discreteEnum.Should().Be(Colors.Red);
         }
 
-        [Test]
+        [Fact]
         public void GetDiscreteEnum_throws_exception_when_the_value_is_not_defined_in_enum()
         {
             var table = new Table("Header Not Representing Property Of Any Class");
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             getDiscreteEnum.ShouldThrow<InvalidOperationException>().WithMessage("No enum with value NotDefined found in enum Colors");
         }
 
-        [Test]
+        [Fact]
         public void GetDiscreteEnum_should_return_not_default_enum_if_value_matched()
         {
             var table = new Table("Header Not Representing Property Of Any Class");
@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             discreteEnum.Should().Be(Colors.Red);
         }
 
-        [Test]
+        [Fact]
         public void GetDiscreteEnum_should_return_default_enum_if_value_is_not_defined_in_enum()
         {
             var table = new Table("Header Not Representing Property Of Any Class");
