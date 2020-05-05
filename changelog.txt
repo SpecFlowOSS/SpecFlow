@@ -5,8 +5,6 @@ Fixes:
 + Save generated files with UTF8-BOM encoding.
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 
-Features:
-+ Recognize dates when generating steps - no datetimes yet
 
 Changes since 3.1.86
 
