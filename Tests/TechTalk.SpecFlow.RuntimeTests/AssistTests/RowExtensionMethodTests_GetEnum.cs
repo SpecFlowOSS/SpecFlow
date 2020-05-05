@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             Action getNotDefinedEnum = () => table.Rows.First().GetEnum<Person>("Sex");
 
-            getNotDefinedEnum.ShouldThrow<InvalidOperationException>().WithMessage("No enum with value NotDefined found in type Person");
+            getNotDefinedEnum.Should().Throw<InvalidOperationException>().WithMessage("No enum with value NotDefined found in type Person");
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             Action getDiscreteEnum = () => table.Rows[0].GetDiscreteEnum<Colors>("Header Not Representing Property Of Any Class");
 
-            getDiscreteEnum.ShouldThrow<InvalidOperationException>().WithMessage("No enum with value NotDefined found in enum Colors");
+            getDiscreteEnum.Should().Throw<InvalidOperationException>().WithMessage("No enum with value NotDefined found in enum Colors");
         }
 
         [Fact]
