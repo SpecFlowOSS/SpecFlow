@@ -1,6 +1,6 @@
 ﻿<Project>
-  <UsingTask TaskName="SpecFlow.Tools.MsBuild.Generation.GenerateFeatureFileCodeBehindTask" AssemblyFile="$(_SpecFlow_TaskAssembly)" />
-  <UsingTask TaskName="SpecFlow.Tools.MsBuild.Generation.ReplaceTokenInFileTask" AssemblyFile="$(_SpecFlow_TaskAssembly)" />
+  <UsingTask TaskName="SpecFlow.Tools.MsBuild.Generation.GenerateFeatureFileCodeBehindTask" AssemblyFile="$(_SpecFlow_TaskAssembly)"  />
+  <UsingTask TaskName="SpecFlow.Tools.MsBuild.Generation.ReplaceTokenInFileTask" AssemblyFile="$(_SpecFlow_TaskAssembly)"  />
 
   <PropertyGroup>
     <_SpecFlowTasksImported>true</_SpecFlowTasksImported>
