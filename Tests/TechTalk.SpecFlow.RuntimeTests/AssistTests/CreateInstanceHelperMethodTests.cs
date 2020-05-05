@@ -10,7 +10,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    
+
     public class CreateInstanceHelperMethodTests
     {
         public CreateInstanceHelperMethodTests()
@@ -36,6 +36,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = table.CreateInstance<Person>();
 
             person.FirstName.Should().Be("Howard");
+        }
+
+        [Fact]
+        public void Create_instance_will_set_values_with_a_vertical_table_and_unbound_column_throws_ColumnCouldNotBeBoundException_on_verify()
+        {
+            var table = new Table("FirstNaame");
+            table.AddRow("Howard");
+
+            Action act = () => table.CreateInstance<Person>(new InstanceCreationOptions() { VerifyAllColumnsBound = true });
+            act.Should().Throw<ColumnCouldNotBeBoundException>();
         }
 
         [Fact]
@@ -102,6 +112,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             person.FirstName.Should().Be("John");
             person.LastName.Should().Be("Galt");
+        }
+
+        [Fact]
+        public void Sets_string_values_unbound_column_throws_ColumnCouldNotBeBoundException_on_verify()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("FirstNaame", "John");
+            table.AddRow("LastName", "Galt");
+
+            Action act = () => table.CreateInstance<Person>(new InstanceCreationOptions { VerifyAllColumnsBound = true });
+            act.Should().Throw<ColumnCouldNotBeBoundException>();
+        }
+
+        [Fact]
+        public void SetConstructor_unbound_column_throws_ColumnCouldNotBeBoundException_on_verify()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("FirstNaame", "John");
+            table.AddRow("LastName", "Galt");
+
+            Action act = () => table.CreateInstance<PersonWithMandatoryLastName>(new InstanceCreationOptions { VerifyAllColumnsBound = true });
+            act.Should().Throw<ColumnCouldNotBeBoundException>();
         }
 
         [Fact]
@@ -352,7 +384,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("PropertyOne", "PropertyTwo", "PropertyThree", "PropertyFour", "PropertyFive", "PropertySix", "PropertySeven", "PropertyEight");
             table.AddRow("Look at me", "hello", "999", "this", "should", "actually", "fail", "right?");
 
-           Assert.Throws<Exception>(() => table.CreateInstance<(string one, string two, int three, string four, string five, string six, string seven, string eight)>());
+            Assert.Throws<Exception>(() => table.CreateInstance<(string one, string two, int three, string four, string five, string six, string seven, string eight)>());
         }
 
         [Fact]

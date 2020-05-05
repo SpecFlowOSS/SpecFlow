@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Utils;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
@@ -18,7 +19,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             string currentTargetFramework)
         {
             GeneratorPlugins = generatorPlugins;
-            FeatureFiles = featureFiles;
+            FeatureFiles = FileFilter.GetValidFiles(featureFiles);
             ProjectFolder = projectFolder;
             OutputPath = outputPath;
             RootNamespace = rootNamespace;
@@ -48,5 +49,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string TargetFrameworks { get; }
 
         public string CurrentTargetFramework { get; }
+
     }
 }

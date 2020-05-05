@@ -1,10 +1,19 @@
+Changes since 3.1.97
+
+Fixes for Development:
++ Changed unit tests to ignore custom user overrides to data formatting in en-US locale
+
+
 Changes since 3.1.89
 
 Fixes:
 + Update the default C# skeleton template to use context injection instead of the deprecated ScenarioContext.Current
 + Save generated files with UTF8-BOM encoding.
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
-+ Changed unit tests to ignore custom user overrides to data formatting in en-US locale
++ Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
+
+Features:
++ Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
 
 Changes since 3.1.86
 
