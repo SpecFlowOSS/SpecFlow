@@ -49,7 +49,8 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, InstanceCreationOptions creationOptions)
         {
-            int count = table.Rows.Count();
+            int count = table.Rows.Count;
+
             var list = new List<T>(count);
 
 
@@ -70,7 +71,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance, InstanceCreationOptions creationOptions)
         {
-            int count = table.Rows.Count();
+            int count = table.Rows.Count;
             var list = new List<T>(count);
 
             var pivotTable = new PivotTable(table);
@@ -91,7 +92,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<TableRow, T> methodToCreateEachInstance, InstanceCreationOptions creationOptions)
         {
-            int count = table.Rows.Count();
+            int count = table.Rows.Count;
             var list = new List<T>(count);
 
             var pivotTable = new PivotTable(table);
