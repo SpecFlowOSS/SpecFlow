@@ -2,11 +2,11 @@
 
 SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification language and integrates to Visual Studio. It provides efficient testing solution for the .NET-related platforms, like .NET Desktop Framework, .NET Core and Mono.
 
-- Project website: [http://www.specflow.org](http://www.specflow.org)
-- Documentation: [http://www.specflow.org/documentation/](http://www.specflow.org/documentation/)
-- Discussion group: [http://groups.google.com/group/SpecFlow](http://groups.google.com/group/SpecFlow) 
+- Project website: [https://www.specflow.org](https://www.specflow.org)
+- Documentation: [https://www.specflow.org/documentation/](https://www.specflow.org/documentation/)
+- Discussion group: [https://groups.google.com/group/SpecFlow](https://groups.google.com/group/SpecFlow) 
 
-For questions please send them to the [Discussion group](http://groups.google.com/group/SpecFlow).
+For questions please send them to the [Discussion group](https://groups.google.com/group/SpecFlow).
 
 For issues/bugs please use the [issue tracker on GitHub](https://github.com/techtalk/SpecFlow/issues).
 
@@ -42,4 +42,4 @@ Plugin- Developer- Gitter channel: [![Gitter](https://badges.gitter.im/techtalk/
 
 ## Copyright
 
-Copyright (c) SpecFlow Team. See [LICENSE](http://go.specflow.org/license) for details.
+Copyright (c) SpecFlow Team. See [LICENSE](https://go.specflow.org/license) for details.
