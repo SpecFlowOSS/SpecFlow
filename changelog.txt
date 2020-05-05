@@ -15,6 +15,7 @@ Fixes:
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
 
+
 Changes since 3.1.86
 
 Fixes:
