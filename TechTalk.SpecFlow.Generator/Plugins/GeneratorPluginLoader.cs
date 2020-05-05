@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
@@ -13,8 +14,13 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             Assembly pluginAssembly;
             try
             {
-                pluginAssembly = Assembly.LoadFrom(pluginDescriptor.Path);
 
+#if NETCOREAPP
+                var absolutePath = Path.GetFullPath(pluginDescriptor.Path);
+                pluginAssembly = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(typeof(GeneratorPluginLoader).Assembly).LoadFromAssemblyPath(absolutePath);
+#else
+                pluginAssembly = Assembly.LoadFrom(pluginDescriptor.Path);
+#endif
             }
             catch(Exception ex)
             {
