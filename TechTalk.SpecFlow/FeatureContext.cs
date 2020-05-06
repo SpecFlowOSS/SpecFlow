@@ -25,13 +25,13 @@ namespace TechTalk.SpecFlow
         private static bool isCurrentDisabled = false;
         private static FeatureContext current;
 
-        [Obsolete("Please get the FeatureContext via Context Injection - http://www.specflow.org/documentation/Context-Injection/")]
+        [Obsolete("Please get the FeatureContext via Context Injection - https://www.specflow.org/documentation/Context-Injection/")]
         public static FeatureContext Current
         {
             get
             {
                 if (isCurrentDisabled)
-                    throw new SpecFlowException("The FeatureContext.Current static accessor cannot be used in multi-threaded execution. Try injecting the feature context to the binding class. See http://go.specflow.org/doc-multithreaded for details.");
+                    throw new SpecFlowException("The FeatureContext.Current static accessor cannot be used in multi-threaded execution. Try injecting the feature context to the binding class. See https://go.specflow.org/doc-multithreaded for details.");
                 if (current == null)
                 {
                     Debug.WriteLine("Accessing NULL FeatureContext");

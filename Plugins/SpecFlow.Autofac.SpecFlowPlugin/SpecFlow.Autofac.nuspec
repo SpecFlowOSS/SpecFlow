@@ -9,8 +9,8 @@
     <description>SpecFlow plugin that enables to use Autofac for resolving test dependencies.</description>
     <summary>SpecFlow plugin that enables to use Autofac for resolving test dependencies.</summary>
     <language>en-US</language>
-    <projectUrl>http://www.specflow.org</projectUrl>
-    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <iconUrl>https://go.specflow.org/specflow-nuget-icon</iconUrl>
     <copyright>Copyright © Gaspar Nagy, Spec Solutions, $author$</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>

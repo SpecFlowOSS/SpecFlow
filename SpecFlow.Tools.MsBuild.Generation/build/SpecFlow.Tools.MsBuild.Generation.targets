@@ -71,7 +71,7 @@
     <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
 
     <Error
-      Text="SpecFlow designer codebehind generation is not compatible with MSBuild codebehind generation. The custom tool must be removed from the file. See http://www.specflow.org/documentation/Generate-Tests-from-MsBuild"
+      Text="SpecFlow designer codebehind generation is not compatible with MSBuild codebehind generation. The custom tool must be removed from the file. See https://www.specflow.org/documentation/Generate-Tests-from-MsBuild"
       File="@(None)"
       Condition="%(None.Extension) == '.feature' AND %(None.Generator) == 'SpecFlowSingleFileGenerator'"/>
 

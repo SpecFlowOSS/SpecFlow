@@ -16,13 +16,13 @@ namespace TechTalk.SpecFlow
         private static bool isCurrentDisabled = false;
         private static ScenarioContext current;
 
-        [Obsolete("Please get the ScenarioContext via Context Injection - http://www.specflow.org/documentation/Context-Injection/")]
+        [Obsolete("Please get the ScenarioContext via Context Injection - https://www.specflow.org/documentation/Context-Injection/")]
         public static ScenarioContext Current
         {
             get
             {
                 if (isCurrentDisabled)
-                    throw new SpecFlowException("The ScenarioContext.Current static accessor cannot be used in multi-threaded execution. Try injecting the scenario context to the binding class. See http://go.specflow.org/doc-multithreaded for details.");
+                    throw new SpecFlowException("The ScenarioContext.Current static accessor cannot be used in multi-threaded execution. Try injecting the scenario context to the binding class. See https://go.specflow.org/doc-multithreaded for details.");
                 if (current == null)
                 {
                     Debug.WriteLine("Accessing NULL ScenarioContext");
