@@ -5,6 +5,7 @@ Features:
 
 Fixes for Development:
 + Changed unit tests to ignore custom user overrides to data formatting in en-US locale
++ Some errors could randomly happen when running tests in parallel
 
 API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
