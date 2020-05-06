@@ -15,6 +15,9 @@ Changes:
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
 
 
+Fixes:
++ add auto-generated comment for StyleCop to ignore the Assemblyhook files
+
 Changes since 3.1.89
 
 Fixes:
