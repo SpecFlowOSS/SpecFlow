@@ -10,6 +10,8 @@ Fixes for Development:
 API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
 
+Changes:
++ Performance and memory improvements for `table.CreateSet` and `table.CreateInstance`
 
 Changes since 3.1.89
 
