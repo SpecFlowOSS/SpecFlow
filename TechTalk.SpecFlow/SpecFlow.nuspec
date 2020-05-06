@@ -9,8 +9,8 @@
     <description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</description>
     <summary>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</summary>
     <language>en-US</language>
-    <projectUrl>http://www.specflow.org</projectUrl>
-    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <iconUrl>https://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <tags>specflow bdd gherkin cucumber</tags>

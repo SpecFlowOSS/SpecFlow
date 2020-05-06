@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
+<TestProfile xmlns="https://www.specflow.org/schemas/plus/TestProfile/1.5">
   <Settings projectName="$rootProject$" projectId="{88deb3a1-fcc9-4024-8d60-489b612c02cf}" />
   <Execution stopAfterFailures="3" testThreadCount="1" testSchedulingMode="Sequential" />
   <!-- For collecting by a SpecRun server update and enable the following element. For using the 
