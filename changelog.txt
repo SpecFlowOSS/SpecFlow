@@ -12,6 +12,8 @@ API Changes:
 
 Changes:
 + Performance and memory improvements for `table.CreateSet` and `table.CreateInstance`
++ Changed all specflow.org hyperlinks to https (docs, generated code, packages)
+
 
 Changes since 3.1.89
 
