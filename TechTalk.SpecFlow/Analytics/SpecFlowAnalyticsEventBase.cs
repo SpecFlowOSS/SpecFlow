@@ -12,12 +12,13 @@ namespace TechTalk.SpecFlow.Analytics
         public string SpecFlowVersion { get; }
         public string UnitTestProvider { get; }
         public bool IsBuildServer { get; }
+        public string BuildServerName { get; }
         public string HashedAssemblyName { get; }
         public string TargetFrameworks { get; }
         public string TargetFramework { get; }
         public bool IsDockerContainer { get; }
 
-        protected SpecFlowAnalyticsEventBase(DateTime utcDate, string userId, string platform, string platformDescription, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, string targetFrameworks, string targetFramework, bool isDockerContainer)
+        protected SpecFlowAnalyticsEventBase(DateTime utcDate, string userId, string platform, string platformDescription, string specFlowVersion, string unitTestProvider, string buildServerName, string hashedAssemblyName, string targetFrameworks, string targetFramework, bool isDockerContainer)
         {
             UtcDate = utcDate;
             UserId = userId;
@@ -25,7 +26,8 @@ namespace TechTalk.SpecFlow.Analytics
             PlatformDescription = platformDescription;
             SpecFlowVersion = specFlowVersion;
             UnitTestProvider = unitTestProvider;
-            IsBuildServer = isBuildServer;
+            BuildServerName = buildServerName;
+            IsBuildServer = !string.IsNullOrWhiteSpace(buildServerName);
             HashedAssemblyName = hashedAssemblyName;
             TargetFrameworks = targetFrameworks;
             TargetFramework = targetFramework;
