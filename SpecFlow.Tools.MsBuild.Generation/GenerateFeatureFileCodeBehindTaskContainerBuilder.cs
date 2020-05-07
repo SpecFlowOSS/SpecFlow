@@ -3,6 +3,7 @@ using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Analytics.AppInsights;
 using TechTalk.SpecFlow.Analytics.UserId;
+using TechTalk.SpecFlow.EnvironmentAccess;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
@@ -36,6 +37,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             objectContainer.RegisterTypeAs<FileUserIdStore, IUserUniqueIdStore>();
             objectContainer.RegisterTypeAs<FileService, IFileService>();
             objectContainer.RegisterTypeAs<DirectoryService, IDirectoryService>();
+            objectContainer.RegisterTypeAs<EnvironmentWrapper, IEnvironmentWrapper>();
 
             objectContainer.RegisterTypeAs<EnvironmentSpecFlowTelemetryChecker, IEnvironmentSpecFlowTelemetryChecker>();
             objectContainer.RegisterTypeAs<AnalyticsTransmitter, IAnalyticsTransmitter>();
