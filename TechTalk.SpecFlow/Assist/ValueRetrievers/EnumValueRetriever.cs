@@ -8,6 +8,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public object GetValue(string value, Type enumType)
         {
+            if (string.IsNullOrEmpty(value) && IsNullable(enumType))
+            {
+                return null;
+            }
+
             CheckThatTheValueIsAnEnum(value, enumType);
 
             return ConvertTheStringToAnEnum(value, enumType);
@@ -20,9 +25,14 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (IsNullable(propertyType))
                 return typeof(Enum).IsAssignableFrom(propertyType.GetGenericArguments()[0]);
             return propertyType.IsEnum;
+        }
+
+        private static bool IsNullable(Type propertyType)
+        {
+            return propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)

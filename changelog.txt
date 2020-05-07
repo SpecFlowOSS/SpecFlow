@@ -14,6 +14,9 @@ Changes:
 + Performance and memory improvements for `table.CreateSet` and `table.CreateInstance`
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
 
+Fixes:
++ Empty value for nullable enum should not throw an exception
+
 
 Fixes:
 + add auto-generated comment for StyleCop to ignore the Assemblyhook files
@@ -25,6 +28,7 @@ Fixes:
 + Save generated files with UTF8-BOM encoding.
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 + Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
+
 
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
