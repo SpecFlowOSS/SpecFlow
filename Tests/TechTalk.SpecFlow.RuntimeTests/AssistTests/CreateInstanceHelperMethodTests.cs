@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public CreateInstanceHelperMethodTests()
         {
             // this is required, because the tests depend on parsing decimals with the en-US culture
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
 
         }
 

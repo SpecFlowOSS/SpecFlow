@@ -9,10 +9,10 @@ using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 {
-    
+
     public class StepTextAnalyzerTests
     {
-        private readonly CultureInfo bindingCulture = new CultureInfo("en-US");
+        private readonly CultureInfo bindingCulture = new CultureInfo("en-US", false);
 
         [Fact]
         public void Should_not_change_simple_step()
@@ -101,6 +101,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[0].Should().Be("I have ");
             result.TextParts[1].Should().Be(" bars");
             result.Parameters[0].Type.Should().Be("Int32");
+        }
+
+        [Theory]
+        [InlineData("2030-12-23", "en-US")]
+        [InlineData("2030/12/23", "en-US")]
+        [InlineData("23-12-2030", "nl-NL")]
+        [InlineData("23.12.2030", "nl-BE")]
+        public void Should_recognize_dates(string dateString, string cultureCode)
+        {
+            var sut = new StepTextAnalyzer();
+
+            var culture = CultureInfo.GetCultureInfo(cultureCode);
+
+            var result = sut.Analyze("Zombie apocalypse is expected at " + dateString, culture);
+            result.Parameters.Count.Should().Be(1);
+            result.Parameters[0].Name.Should().Be("p0");
+            result.Parameters[0].Type.Should().Be("DateTime");
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("Zombie apocalypse is expected at ");
+            result.TextParts[1].Should().Be("");
         }
 
         [Fact]

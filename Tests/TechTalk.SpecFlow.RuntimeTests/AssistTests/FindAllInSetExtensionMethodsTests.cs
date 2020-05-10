@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         private IList<InstanceComparisonTestObject> testSet;
         public FindAllInSetExtensionMethodsTests()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
             testSet = new List<InstanceComparisonTestObject>();
             testSet.Add(new InstanceComparisonTestObject { StringProperty = "Howard Rorak" });
             testSet.Add(new InstanceComparisonTestObject { StringProperty = "Joel Mario", IntProperty = 20 });

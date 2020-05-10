@@ -77,12 +77,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         protected virtual CultureInfo GetFeatureLanguage()
         {
-            return new CultureInfo("en-US");
+            return new CultureInfo("en-US", false);
         }     
         
         protected virtual CultureInfo GetBindingCulture()
         {
-            return new CultureInfo("en-US");
+            return new CultureInfo("en-US", false);
         }        
 
         public StepExecutionTestsBase()

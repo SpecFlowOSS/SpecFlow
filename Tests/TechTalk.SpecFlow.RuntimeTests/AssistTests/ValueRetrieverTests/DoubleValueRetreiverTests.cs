@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Fact]
 		public void Returns_the_Double_value_when_passed_a_Double_string_If_Culture_Is_fr_Fr()
 		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var retriever = new DoubleValueRetriever();
 			retriever.GetValue("0").Should().Be(0);

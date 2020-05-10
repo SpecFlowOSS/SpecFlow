@@ -119,29 +119,30 @@ namespace TechTalk.SpecFlow.Assist
             }
         }
 
-        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
+        internal static List<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
+
         {
-            var properties = from property in type.GetProperties()
-                             from row in table.Rows
-                             where TheseTypesMatch(type, property.PropertyType, row)
-                                   && (IsMemberMatchingToColumnName(property, row.Id())
-                                   || IsMatchingAlias(property, row.Id()))
-                             select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
+            var properties = (from property in type.GetProperties()
+                              from row in table.Rows
+                              where TheseTypesMatch(type, property.PropertyType, row)
+                                    && (IsMemberMatchingToColumnName(property, row.Id())
+                                    || IsMatchingAlias(property, row.Id()))
+                              select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) }).ToList();
 
-            var fields = from field in type.GetFields()
-                         from row in table.Rows
-                         where TheseTypesMatch(type, field.FieldType, row)
-                               && (IsMemberMatchingToColumnName(field, row.Id()) ||
-                                IsMatchingAlias(field, row.Id()))
-                         select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
+            var fieldInfos = type.GetFields();
+            var fields = (from field in fieldInfos
+                          from row in table.Rows
+                          where TheseTypesMatch(type, field.FieldType, row)
+                                && (IsMemberMatchingToColumnName(field, row.Id()) ||
+                                    IsMatchingAlias(field, row.Id()))
+                          select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) }).ToList();
 
-            var memberHandlers = new List<MemberHandler>();
+            var memberHandlers = new List<MemberHandler>(properties.Capacity + fields.Count);
 
             memberHandlers.AddRange(properties);
             memberHandlers.AddRange(fields);
 
             // tuple special case
-            var fieldInfos = type.GetFields();
             if (IsValueTupleType(type))
             {
                 if (fieldInfos.Length > 7)

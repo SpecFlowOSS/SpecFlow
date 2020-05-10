@@ -9,8 +9,8 @@
     <description>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</description>
     <summary>Package to enable the code-behind file generation during build time http://specflow.org/documentation/Generate-Tests-from-MsBuild/</summary>
     <language>en-US</language>
-    <projectUrl>http://www.specflow.org</projectUrl>
-    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <iconUrl>https://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <tags>specflow msbuild</tags>
@@ -23,8 +23,8 @@
     <file src="build\**\*" target="build" />
     <file src="buildMultiTargeting\**\*" target="buildMultiTargeting" />
     <file src="bin\$config$\net471\*.dll" target="tasks\$SpecFlow_FullFramework_Generator_TFM$" />
-    <file src="bin\$config$\netcoreapp2.0\*.dll" target="tasks\$SpecFlow_Core_Tools_TFM$" />
-    <file src="bin\$config$\netcoreapp2.0\*.deps.json" target="tasks\$SpecFlow_Core_Tools_TFM$" />
+    <file src="bin\$config$\netcoreapp2.1\*.dll" target="tasks\$SpecFlow_Core_Tools_TFM$" />
+    <file src="bin\$config$\netcoreapp2.1\*.deps.json" target="tasks\$SpecFlow_Core_Tools_TFM$" />
     
     <file src="$SolutionDir$\Licenses\**\*" target="licenses" />
     <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />

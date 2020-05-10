@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     {
         public InstanceComparisonExtensionMethodsTests()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
         }
 
         [Fact]

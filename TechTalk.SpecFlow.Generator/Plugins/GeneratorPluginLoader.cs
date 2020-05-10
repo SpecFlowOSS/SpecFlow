@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
@@ -13,12 +14,17 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             Assembly pluginAssembly;
             try
             {
-                pluginAssembly = Assembly.LoadFrom(pluginDescriptor.Path);
 
+#if NETCOREAPP
+                var absolutePath = Path.GetFullPath(pluginDescriptor.Path);
+                pluginAssembly = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(typeof(GeneratorPluginLoader).Assembly).LoadFromAssemblyPath(absolutePath);
+#else
+                pluginAssembly = Assembly.LoadFrom(pluginDescriptor.Path);
+#endif
             }
             catch(Exception ex)
             {
-                throw new SpecFlowException($"Unable to load plugin assembly: {pluginDescriptor.Path}. Please check http://go.specflow.org/doc-plugins for details.", ex);
+                throw new SpecFlowException($"Unable to load plugin assembly: {pluginDescriptor.Path}. Please check https://go.specflow.org/doc-plugins for details.", ex);
             }
 
             var pluginAttribute = (GeneratorPluginAttribute)Attribute.GetCustomAttribute(pluginAssembly, typeof(GeneratorPluginAttribute));
@@ -26,7 +32,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
                 throw new SpecFlowException("Missing [assembly:GeneratorPlugin] attribute in " + pluginDescriptor.Path);
 
             if (!typeof(IGeneratorPlugin).IsAssignableFrom((pluginAttribute.PluginType)))
-                throw new SpecFlowException($"Invalid plugin attribute in {pluginDescriptor.Path}. Plugin type must implement IGeneratorPlugin. Please check http://go.specflow.org/doc-plugins for details.");
+                throw new SpecFlowException($"Invalid plugin attribute in {pluginDescriptor.Path}. Plugin type must implement IGeneratorPlugin. Please check https://go.specflow.org/doc-plugins for details.");
 
             IGeneratorPlugin plugin;
             try
@@ -35,7 +41,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             }
             catch (Exception ex)
             {
-                throw new SpecFlowException($"Invalid plugin in {pluginDescriptor.Path}. Plugin must have a default constructor that does not throw exception. Please check http://go.specflow.org/doc-plugins for details.", ex);
+                throw new SpecFlowException($"Invalid plugin in {pluginDescriptor.Path}. Plugin must have a default constructor that does not throw exception. Please check https://go.specflow.org/doc-plugins for details.", ex);
             }
 
             return plugin;

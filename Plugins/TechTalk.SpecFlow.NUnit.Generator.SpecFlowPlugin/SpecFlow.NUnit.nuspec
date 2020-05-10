@@ -9,8 +9,8 @@
     <description>Package to use SpecFlow with NUnit 3.11 and later</description>
     <summary>Package to use SpecFlow with NUnit 3.11 and later</summary>
     <language>en-US</language>
-    <projectUrl>http://www.specflow.org</projectUrl>
-    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <iconUrl>https://go.specflow.org/specflow-nuget-icon</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.txt</license>
     <tags>specflow nunit</tags>
@@ -24,12 +24,12 @@
   <files>
     <file src="build\**\*" exclude="build\*.template.*" target="build" />
     <file src="bin\$config$\net471\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
-    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
-    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="bin\$config$\netcoreapp2.1\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="bin\$config$\netcoreapp2.1\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
 
     <file src="bin\$config$\net471\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.*" target="build\$SpecFlow_FullFramework_Generator_TFM$" />
-    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.dll" target="build\$SpecFlow_Core_Generator_TFM$" />
-    <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.pdb" target="build\$SpecFlow_Core_Generator_TFM$" />
+    <file src="bin\$config$\netcoreapp2.1\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.dll" target="build\$SpecFlow_Core_Generator_TFM$" />
+    <file src="bin\$config$\netcoreapp2.1\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.pdb" target="build\$SpecFlow_Core_Generator_TFM$" />
 
     <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
   </files>

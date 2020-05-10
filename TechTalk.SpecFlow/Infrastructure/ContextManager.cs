@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             private void DisposeInstance()
             {
-                objectContainer.Dispose();
+                objectContainer?.Dispose();
                 instance = null;
                 objectContainer = null;
             }

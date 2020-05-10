@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         protected override CultureInfo GetFeatureLanguage()
         {
-            return new CultureInfo("de-DE");
+            return new CultureInfo("de-DE", false);
         }           
 
         [Fact]

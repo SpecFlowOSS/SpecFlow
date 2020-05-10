@@ -1,3 +1,26 @@
+Changes since 3.1.97
+
+Features:
++ Allow the use of custom subclasses of StepDefinitionBaseAttribute.
+
+Fixes for Development:
++ Changed unit tests to ignore custom user overrides to data formatting in en-US locale
++ Some errors could randomly happen when running tests in parallel
+
+API Changes:
++ Now allows override of method categories in NUnit to allow for plugin development on this function
+
+Changes:
++ Performance and memory improvements for `table.CreateSet` and `table.CreateInstance`
++ Changed all specflow.org hyperlinks to https (docs, generated code, packages)
+
+Fixes:
++ Empty value for nullable enum should not throw an exception
+
+
+Fixes:
++ add auto-generated comment for StyleCop to ignore the Assemblyhook files
+
 Changes since 3.1.89
 
 Fixes:
@@ -6,8 +29,10 @@ Fixes:
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 + Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
 
+
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
+
 
 Changes since 3.1.86
 
@@ -156,7 +181,7 @@ New Features:
 + Expose the current status (result) of the scenario execution in ScenarioContext via ScenarioExecutionStatus property https://github.com/techtalk/SpecFlow/pull/963
 + Allow aliasing of properties or fields on objects mapped from tables via the CreateInstance or CreateSet extensionMethods by utilising the TableAliases attribute https://github.com/techtalk/SpecFlow/pull/969
 + Allow custom XSLT files to include scripts https://github.com/techtalk/SpecFlow/pull/933
-+ Allow tuples (with max 7 properties) in CreateSet/CreateInstance https://github.com/techtalk/SpecFlow/pull/951 (http://specflow.org/documentation/SpecFlow-Assist-Helpers/)
++ Allow tuples (with max 7 properties) in CreateSet/CreateInstance https://github.com/techtalk/SpecFlow/pull/951 (https://specflow.org/documentation/SpecFlow-Assist-Helpers/)
 + Add support for MSTest V2 and [DoNotParallelize] attributes https://github.com/techtalk/SpecFlow/pull/996
 + Environment variables are working in the plugin path https://github.com/techtalk/SpecFlow/pull/986
 + Update to latest Gherkin parser https://github.com/techtalk/SpecFlow/pull/1015
@@ -268,7 +293,7 @@ Core changes:
 + All components upgraded to .NET 4.5
 + Visual Studio integration has been separated to a separate project: https://github.com/techtalk/SpecFlow.VisualStudio
 + Using the new Gherkin 3 parser (see https://github.com/cucumber/gherkin3)
-+ Allow running SpecFlow tests parallel within the same AppDomain. See http://go.specflow.org/doc-multithreaded for details.
++ Allow running SpecFlow tests parallel within the same AppDomain. See https://go.specflow.org/doc-multithreaded for details.
 
 Breaking changes:
 + The new release will not work with .NET runtimes older than .NET 4.5.
@@ -299,7 +324,7 @@ Smaller Improvements/fixes:
 Note: 1.9.3 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
 
 New Features:
-+ Visual Studio 2013 support (see http://www.specflow.org/documentation/Visual-Studio-2013-Integration/)
++ Visual Studio 2013 support (see https://www.specflow.org/documentation/Visual-Studio-2013-Integration/)
 + SpecRun 1.2 support: run/debug tests from the feature file editor
 
 
@@ -341,15 +366,15 @@ Fixed issues:
 
 1.9.0 - 2012-08-06
 
-See detailed feature summary at http://go.specflow.org/whatsnew-19
+See detailed feature summary at https://go.specflow.org/whatsnew-19
 
 New Features:
 + Visual Studio 2012 support
 + Download IDE integration packages through their own distribution channel:
-    Visual Studio 2012 and 2010: Visual Studio Gallery (http://go.specflow.org/vsgallery)
-    MonoDevelop: MonoDevelop Add-in Repository (http://go.specflow.org/monodevelop-addin)
-    SharpDevelop: download addin and install it from SharpDevelop AddIn Manager (http://go.specflow.org/download-sdaddin)
-    Visual Studio 2008: download installer (http://go.specflow.org/download-vs2008msi)
+    Visual Studio 2012 and 2010: Visual Studio Gallery (https://go.specflow.org/vsgallery)
+    MonoDevelop: MonoDevelop Add-in Repository (https://go.specflow.org/monodevelop-addin)
+    SharpDevelop: download addin and install it from SharpDevelop AddIn Manager (https://go.specflow.org/download-sdaddin)
+    Visual Studio 2008: download installer (https://go.specflow.org/download-vs2008msi)
 + Visual Studio 2012 generic test runner support
 + Added SpecFlow.xUnit NuGet package
 + Guids can now be used as arguments to step definitions.
@@ -371,7 +396,7 @@ New Features:
 + VS2010: Context-dependent navigation (go to step definition / go to steps) with Alt+Ctrl+Shift+S
 + VS2010: Generate missing step definitions from a feature file
 + Support custom step definition skeleton templates (dirrerent style customizable in config, template can be overriden in
-  "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see http://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
+  "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see https://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
 + VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Issue 49, Pull 189, with support of matgiro)
 + Plugin infrastructure
 + The default MsTest unit test provider is changed to the MsTest.2010. If you need to use the MsTest 2008 provider, you have to specify "MsTest.2008".
@@ -748,5 +773,5 @@ Fixed issues:
 
 1.0.1 - 2009-10-13
 
-Initial publish on http://www.specflow.org
+Initial publish on https://www.specflow.org
 

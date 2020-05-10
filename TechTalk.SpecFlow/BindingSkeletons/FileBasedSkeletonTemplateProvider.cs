@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {
@@ -10,12 +11,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         private const string templateSeparator = ">>>";
         private Dictionary<string, string> templates = null;
 
-        private void EnsureInitialized()
+        private Dictionary<string, string> GetTemplates()
         {
-            if (templates != null)
-                return;
-
-            templates = new Dictionary<string, string>();
+            var templates = new Dictionary<string, string>();
 
             string templateFileContent = GetTemplateFileContent();
             var templateItems = templateFileContent.Split(new[] {templateSeparator}, StringSplitOptions.RemoveEmptyEntries);
@@ -28,6 +26,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                     throw new SpecFlowException(string.Format("Invalid sftemplate file! Duplicate key: '{0}'.", templateItem.Key));
                 templates.Add(templateItem.Key, templateItem.Body);
             }
+
+            return templates;
         }
 
         protected abstract string GetTemplateFileContent();
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         internal protected virtual string GetTemplate(string key)
         {
-            EnsureInitialized();
+            LazyInitializer.EnsureInitialized(ref templates, GetTemplates);
 
             string template;
             if (!templates.TryGetValue(key, out template))

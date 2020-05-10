@@ -191,6 +191,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
         }
 
+        [Binding]
+        public class BindingClassWithCustomStepDefinitionAttribute
+        {
+            public class GivenAndWhenAttribute : StepDefinitionBaseAttribute
+            {
+                public GivenAndWhenAttribute(string regex)
+                    : base(regex, new[] { StepDefinitionType.Given, StepDefinitionType.When } )
+                {
+                }
+            }
+
+            [GivenAndWhen("given and when")]
+            public void GivenAndWhen()
+            {
+            }
+        }
+
         [Fact]
         public void ShouldFindBinding_WithDefaultOrder()
         {
@@ -360,6 +377,19 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));
             Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.When));
             Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Then));
+        }
+
+        [Fact]
+        public void ShouldFindStepDefinitionsWithCustomAttribute()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
+
+            builder.BuildBindingsFromType(typeof(BindingClassWithCustomStepDefinitionAttribute));
+
+            Assert.Equal(2, bindingSourceProcessorStub.StepDefinitionBindings.Count);
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));
+            Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.When));
+            Assert.Equal(0, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Then));
         }
     }
 }

@@ -19,18 +19,18 @@ namespace TechTalk.SpecFlow.Plugins
             }
             catch(Exception ex)
             {
-                throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check http://go.specflow.org/doc-plugins for details.", pluginAssemblyName), ex);
+                throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check https://go.specflow.org/doc-plugins for details.", pluginAssemblyName), ex);
             }
 
             var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));
             if (pluginAttribute == null)
             {
-                traceListener.WriteToolOutput(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
+                traceListener.WriteToolOutput(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check https://go.specflow.org/doc-plugins for details.", assembly.FullName));
                 return null;
             }
 
             if (!typeof(IRuntimePlugin).IsAssignableFrom((pluginAttribute.PluginType)))
-                throw new SpecFlowException(string.Format("Invalid plugin attribute in {0}. Plugin type must implement IRuntimePlugin. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
+                throw new SpecFlowException(string.Format("Invalid plugin attribute in {0}. Plugin type must implement IRuntimePlugin. Please check https://go.specflow.org/doc-plugins for details.", assembly.FullName));
 
             IRuntimePlugin plugin;
             try
@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Plugins
             }
             catch (Exception ex)
             {
-                throw new SpecFlowException(string.Format("Invalid plugin in {0}. Plugin must have a default constructor that does not throw exception. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName), ex);
+                throw new SpecFlowException(string.Format("Invalid plugin in {0}. Plugin must have a default constructor that does not throw exception. Please check https://go.specflow.org/doc-plugins for details.", assembly.FullName), ex);
             }
 
             return plugin;
