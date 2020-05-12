@@ -186,7 +186,8 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
         private void AddVariableForArguments(CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier)
         {
-            var argumentsExpression = new CodeVariableDeclarationStatement(typeof(OrderedDictionary),
+            var argumentsExpression = new CodeVariableDeclarationStatement(
+                typeof(OrderedDictionary),
                 GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME,
                 new CodeObjectCreateExpression(typeof(OrderedDictionary)));
 
