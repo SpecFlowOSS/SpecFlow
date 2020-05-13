@@ -16,6 +16,7 @@ Changes:
 
 Fixes:
 + Empty value for nullable enum should not throw an exception
++ RegEx performance fix in TEHelpers (Table column name validation)
 
 
 Fixes:
