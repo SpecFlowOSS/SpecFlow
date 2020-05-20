@@ -29,9 +29,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var testRunResultSuccessCalculatorMock = GetTestRunResultSuccessCalculatorMock();
 
             var sinkProviderMock = new Mock<ISinkProvider>();
-            sinkProviderMock.Setup(m => m.GetMessageSinksFromConfiguration()).Returns(new List<ICucumberMessageSink>() {cucumberMessageSinkMock.Object});
+            sinkProviderMock.Setup(m => m.GetMessageSinksFromConfiguration()).Returns(new List<ICucumberMessageSink>() { cucumberMessageSinkMock.Object });
             var cucumberMessageSender = new CucumberMessageSender(cucumberMessageFactoryMock.Object, platformFactoryMock.Object, fieldValueProviderMock.Object, testRunResultSuccessCalculatorMock.Object, sinkProviderMock.Object);
-            var scenarioInfo = new ScenarioInfo("Test", "Description", "Tag1");
+            var scenarioInfo = new ScenarioInfo("Test", "Description", new string[] { "Tag1" }, null);
 
             // ACT
             cucumberMessageSender.SendTestCaseStarted(scenarioInfo);

@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class LongValueRetriever : NonNullableValueRetriever<long>
+    public class LongValueRetriever : StructRetriever<long>
     {
-        public override long GetValue(string value)
+        protected override long GetNonEmptyValue(string value)
         {
             long.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out long returnValue);
             return returnValue;

@@ -2,6 +2,7 @@ Changes since 3.1.97
 
 Features:
 + Allow the use of custom subclasses of StepDefinitionBaseAttribute.
++ Be able to get the arguments of the current executed Scenario Outline example - https://github.com/SpecFlowOSS/SpecFlow/pull/1988
 
 Fixes for Development:
 + Changed unit tests to ignore custom user overrides to data formatting in en-US locale
@@ -9,13 +10,20 @@ Fixes for Development:
 
 API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
++ (breaking) tableRow.GetEnum<T>(..) has now a class contraint on T
++ (breaking) tableRow.GetTheEnumValue<T>(..) has now a class contraint on T
++ added tableRow.GetDiscreteEnum<T>
++ TechTalk.SpecFlow.Assist.ValueRetrievers.* public classes have undergone some refactoring. IValueRetriever interface remains unchanged.
 
 Changes:
 + Performance and memory improvements for `table.CreateSet` and `table.CreateInstance`
++ Improved performance of ValueRetrievers
++ Removed Nullable*ValueRetriever as nullability is now handled by the *ValueRetriever directly.
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
 
 Fixes:
 + Empty value for nullable enum should not throw an exception
++ RegEx performance fix in TEHelpers (Table column name validation)
 
 
 Fixes:

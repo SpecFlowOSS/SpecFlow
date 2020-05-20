@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,31 +8,37 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class ListValueRetriever : EnumerableValueRetriever
     {
-        private static readonly Type[] GenericTypes = { typeof(IEnumerable<>), typeof(ICollection<>), typeof(IList<>), typeof(List<>) };
+        private MethodInfo toListMethodInfo;
+
+        public override bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            if (!propertyType.IsGenericType)
+            {
+                return false;
+            }
+
+            var genericType = propertyType.GetGenericTypeDefinition();
+            return genericType == typeof(List<>)
+                   || genericType == typeof(IEnumerable<>)
+                   || genericType == typeof(ICollection<>)
+                   || genericType == typeof(IList<>);
+        }
 
         protected override Type GetActualValueType(Type propertyType)
         {
-            if (propertyType.IsGenericType)
-            {
-                var definiton = propertyType.GetGenericTypeDefinition();
-                if (GenericTypes.Any(x => x == definiton))
-                    return propertyType.GetGenericArguments()[0];
-            }
-            return null;
+            return propertyType.GetGenericArguments()[0];
         }
 
-        protected override object BuildInstance(object[] values, Type valueType)
+        protected override object BuildInstance(int count, IEnumerable values, Type valueType)
         {
-            var castMethod = typeof(Enumerable).GetMethod("Cast", BindingFlags.Static | BindingFlags.Public);
-            var genericCast = castMethod.MakeGenericMethod(valueType);
+            return GetMethod().MakeGenericMethod(valueType).Invoke(this, new [] { values });
+        }
 
-            var toListMethod = typeof(Enumerable).GetMethod("ToList", BindingFlags.Static | BindingFlags.Public);
-            var genericToList = toListMethod.MakeGenericMethod(valueType);
+        private MethodInfo GetMethod() => toListMethodInfo = toListMethodInfo ??  typeof(ListValueRetriever).GetMethod(nameof(ToList), BindingFlags.NonPublic | BindingFlags.Instance);
 
-            var casted = genericCast.Invoke(null, new object[] { values });
-            var list = genericToList.Invoke(null, new[] { casted });
-
-            return list;
+        private List<T> ToList<T>(IEnumerable values)
+        {
+            return values.Cast<T>().ToList();
         }
     }
 }

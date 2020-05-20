@@ -57,23 +57,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 typeof(EnumValueRetriever),
                 typeof(TimeSpanValueRetriever),
                 typeof(DateTimeOffsetValueRetriever),
-                typeof(NullableGuidValueRetriever),
-                typeof(NullableDateTimeValueRetriever),
-                typeof(NullableBoolValueRetriever),
-                typeof(NullableCharValueRetriever),
-                typeof(NullableDecimalValueRetriever),
-                typeof(NullableDoubleValueRetriever),
-                typeof(NullableFloatValueRetriever),
-                typeof(NullableULongValueRetriever),
-                typeof(NullableByteValueRetriever),
-                typeof(NullableSByteValueRetriever),
-                typeof(NullableIntValueRetriever),
-                typeof(NullableUIntValueRetriever),
-                typeof(NullableShortValueRetriever),
-                typeof(NullableUShortValueRetriever),
-                typeof(NullableLongValueRetriever),
-                typeof(NullableTimeSpanValueRetriever),
-                typeof(NullableDateTimeOffsetValueRetriever),
                 typeof(UriValueRetriever),
 
                 typeof(ArrayValueRetriever),
@@ -94,12 +77,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             foreach (var valueComparer in service.ValueComparers.ToArray())
             {
-                service.UnregisterValueComparer(valueComparer);
+                service.ValueComparers.Unregister(valueComparer);
                 Assert.DoesNotContain(valueComparer, service.ValueComparers);
             }
 
             var thing = new IExistsForTestingValueComparing();
-            service.RegisterValueComparer(thing);
+            service.ValueComparers.Register(thing);
             Assert.Single(service.ValueComparers);
             Assert.Same(thing, service.ValueComparers.First());
         }
@@ -111,12 +94,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             foreach (var valueRetriever in service.ValueRetrievers.ToArray())
             {
-                service.UnregisterValueRetriever(valueRetriever);
+                service.ValueRetrievers.Unregister(valueRetriever);
                 Assert.DoesNotContain(valueRetriever, service.ValueRetrievers);
             }
 
             var thing = new IExistsForTestingValueRetrieving();
-            service.RegisterValueRetriever(thing);
+            service.ValueRetrievers.Register(thing);
             Assert.Single(service.ValueRetrievers);
             Assert.Same(thing, service.ValueRetrievers.First());
         }
@@ -129,18 +112,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             foreach (var valueRetriever in service.ValueRetrievers.ToArray())
             {
-                service.UnregisterValueRetriever(valueRetriever);
+                service.ValueRetrievers.Unregister(valueRetriever);
                 Assert.DoesNotContain(valueRetriever, service.ValueRetrievers);
             }
 
             foreach (var valueComparer in service.ValueComparers.ToArray())
             {
-                service.UnregisterValueComparer(valueComparer);
+                service.ValueComparers.Unregister(valueComparer);
                 Assert.DoesNotContain(valueComparer, service.ValueComparers);
             }
 
-            service.RegisterValueRetriever(new IExistsForTestingValueRetrieving());
-            service.RegisterValueComparer(new IExistsForTestingValueComparing());
+            service.ValueRetrievers.Register(new IExistsForTestingValueRetrieving());
+            service.ValueComparers.Register(new IExistsForTestingValueComparing());
 
             service.RestoreDefaults();
         }
@@ -161,10 +144,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
     public class IExistsForTestingValueRetrieving : IValueRetriever
     {
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
-        {
-            throw new NotImplementedException();
-        }
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             throw new NotImplementedException();

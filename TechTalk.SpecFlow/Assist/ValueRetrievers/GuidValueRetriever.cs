@@ -2,72 +2,51 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class GuidValueRetriever : NonNullableValueRetriever<Guid>
+    public class GuidValueRetriever : StructRetriever<Guid>
     {
-        public override Guid GetValue(string value)
+        protected override Guid GetNonEmptyValue(string value)
         {
-            var cleanedValue = "";
-            try
+            if (Guid.TryParse(value, out var result))
             {
-                cleanedValue = RemoveUnnecessaryCharacters(value);
-                return AttemptToBuildAGuidFromTheString(cleanedValue);
+                return result;
             }
-            catch
+            
+            AttemptToBuildAGuidByAddingTrailingZeroes(value, out result);
+            return result;
+        }
+
+        public Guid GetValue(string value)
+        {
+            return this.GetNonEmptyValue(value);
+        }
+
+        private static bool AttemptToBuildAGuidByAddingTrailingZeroes(string value, out Guid result)
+        {
+            if (value == null)
             {
-                try
-                {
-                    return AttemptToBuildAGuidByAddingTrailingZeroes(cleanedValue);
-                }
-                catch
-                {
-                    return new Guid();
-                }
+                result = Guid.Empty;
+                return false;
             }
-        }
 
-        private static Guid AttemptToBuildAGuidFromTheString(string value)
-        {
-            var guid = new Guid(value);
+            const int CharsInGuid = 32;
+            value = value.Replace("-", "").PadRight(CharsInGuid, '0');
 
-            if (string.Compare(RemoveUnnecessaryCharacters(guid), value, true) != 0)
-                throw new Exception("The parsed value is not what was expected.");
-
-            return guid;
-        }
-
-        private static string RemoveUnnecessaryCharacters(object value)
-        {
-            return value.ToString().Replace("{", "").Replace("}", "").Replace("-", "");
-        }
-
-        private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)
-        {
-            value = value.Replace("-", "");
-            value = value + "00000000000000000000000000000000".Substring(value.Length);
-
-            return new Guid(value);
+            return Guid.TryParse(value, out result);
         }
 
         public bool IsAValidGuid(string value)
         {
-            if (string.IsNullOrEmpty(value)) return false;
-            try
+            if (string.IsNullOrEmpty(value))
             {
-                new Guid(value);
+                return false;
+            }
+
+            if (Guid.TryParse(value, out _))
+            {
                 return true;
             }
-            catch
-            {
-                try
-                {
-                    AttemptToBuildAGuidByAddingTrailingZeroes(value);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
+
+            return AttemptToBuildAGuidByAddingTrailingZeroes(value, out _);
         }
     }
 }

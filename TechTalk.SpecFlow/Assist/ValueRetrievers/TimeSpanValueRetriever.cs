@@ -3,11 +3,12 @@ using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class TimeSpanValueRetriever : NonNullableValueRetriever<TimeSpan>
+    public class TimeSpanValueRetriever : StructRetriever<TimeSpan>
     {
-        public override TimeSpan GetValue(string value)
+        protected override TimeSpan GetNonEmptyValue(string value)
         {
-            return TimeSpan.Parse(value, CultureInfo.CurrentCulture);
+            TimeSpan.TryParse(value, CultureInfo.CurrentCulture, out var result);
+            return result;
         }
     }
 }

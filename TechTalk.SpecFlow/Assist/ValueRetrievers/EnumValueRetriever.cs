@@ -6,78 +6,45 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class EnumValueRetriever : IValueRetriever
     {
-        public object GetValue(string value, Type enumType)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            if (string.IsNullOrEmpty(value) && IsNullable(enumType))
-            {
-                return null;
-            }
-
-            CheckThatTheValueIsAnEnum(value, enumType);
-
-            return ConvertTheStringToAnEnum(value, enumType);
+            return propertyType.IsEnum || (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) && propertyType.GetGenericArguments()[0].IsEnum);
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return GetValue(keyValuePair.Value, propertyType);
-        }
+            var value = keyValuePair.Value;
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        {
-            if (IsNullable(propertyType))
-                return typeof(Enum).IsAssignableFrom(propertyType.GetGenericArguments()[0]);
-            return propertyType.IsEnum;
-        }
+            if (propertyType.IsEnum)
+            {
+                if (value == null)
+                {
+                    throw new InvalidOperationException("No enum with value {null} found");
+                }
 
-        private static bool IsNullable(Type propertyType)
-        {
-            return propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
+                if (value.Length == 0)
+                {
+                    throw new InvalidOperationException("No enum with value {empty} found");
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return null;
+                }
 
-        private object ConvertTheStringToAnEnum(string value, Type enumType)
-        {
-            return StepArgumentTypeConverter.ConvertToAnEnum(GetTheEnumType(enumType), PrepareValue(value));
-        }
-
-        protected virtual string PrepareValue(string value)
-        {
-            return value;
-        }
-
-        private static Type GetTheEnumType(Type enumType)
-        {
-            return ThisIsNotANullableEnum(enumType) ? enumType : enumType.GetGenericArguments()[0];
-        }
-
-        private void CheckThatTheValueIsAnEnum(string value, Type enumType)
-        {
-            if (ThisIsNotANullableEnum(enumType))
-                CheckThatThisNotAnObviouslyIncorrectNonNullableValue(value);
+                propertyType = propertyType.GetGenericArguments()[0];
+            }
 
             try
             {
-                ConvertTheStringToAnEnum(value, enumType);
+                return StepArgumentTypeConverter.ConvertToAnEnum(propertyType, value);
             }
             catch
             {
                 throw new InvalidOperationException($"No enum with value {value} found");
             }
         }
-
-        private void CheckThatThisNotAnObviouslyIncorrectNonNullableValue(string value)
-        {
-            if (value == null)
-                throw GetInvalidOperationException("{null}");
-            if (value == string.Empty)
-                throw GetInvalidOperationException("{empty}");
-        }
-
-        private static bool ThisIsNotANullableEnum(Type enumType)
-        {
-            return enumType.IsGenericType == false;
-        }
-
-        private InvalidOperationException GetInvalidOperationException(string value) => new InvalidOperationException($"No enum with value {value} found");
     }
 }

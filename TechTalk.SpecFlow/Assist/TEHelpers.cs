@@ -10,6 +10,9 @@ namespace TechTalk.SpecFlow.Assist
 {
     internal static class TEHelpers
     {
+        private static readonly Regex invalidPropertyNameRegex = new Regex(InvalidPropertyNamePattern, RegexOptions.Compiled);
+        private const string InvalidPropertyNamePattern = @"[^\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}_]";
+
         internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table, InstanceCreationOptions creationOptions)
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
@@ -84,7 +87,7 @@ namespace TechTalk.SpecFlow.Assist
         internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
         {
             //Unicode groups allowed: Lu, Ll, Lt, Lm, Lo, Nl or Nd see https://msdn.microsoft.com/en-us/library/aa664670%28v=vs.71%29.aspx
-            return new Regex(@"[^\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}_]").Replace(name, string.Empty);
+            return invalidPropertyNameRegex.Replace(name, string.Empty);
         }
 
         internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)

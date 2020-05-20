@@ -3,9 +3,9 @@ using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class DateTimeOffsetValueRetriever : NonNullableValueRetriever<DateTimeOffset>
+    public class DateTimeOffsetValueRetriever : StructRetriever<DateTimeOffset>
     {
-        public override DateTimeOffset GetValue(string value)
+        protected override DateTimeOffset GetNonEmptyValue(string value)
         {
             DateTimeOffset.TryParse(value, CultureInfo.CurrentCulture, DateTimeStyles.None, out DateTimeOffset returnValue);
             return returnValue;

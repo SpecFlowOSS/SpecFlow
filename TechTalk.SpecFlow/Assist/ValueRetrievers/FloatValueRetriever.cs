@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class FloatValueRetriever : NonNullableValueRetriever<float>
+    public class FloatValueRetriever : StructRetriever<float>
     {
-        public override float GetValue(string value)
+        protected override float GetNonEmptyValue(string value)
         {
             float.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out float returnValue);
             return returnValue;

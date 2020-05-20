@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -9,150 +10,69 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     
     public class EnumValueRetrieverTests
     {
-        [Fact]
-        public void Throws_an_exception_when_the_value_is_not_an_enum()
+        private const string IrrelevantKey = "Irrelevant";
+        private readonly Type IrrelevantType = typeof(object);
+
+        [Theory]
+        [InlineData(typeof(Sex), true)]
+        [InlineData(typeof(Sex?), true)]
+        [InlineData(typeof(int), false)]
+        public void CanRetrieve(Type type, bool expectation)
+        {
+            var retriever = new EnumValueRetriever();
+            var result = retriever.CanRetrieve(new KeyValuePair<string, string>(IrrelevantKey, IrrelevantKey), IrrelevantType, type);
+            result.Should().Be(expectation);
+        }
+
+        [Theory]
+        [InlineData("Male", Sex.Male)]
+        [InlineData("Unknown Sex", Sex.UnknownSex)]
+        [InlineData("feMale", Sex.Female)]
+        [InlineData("unknown sex", Sex.UnknownSex)]
+        public void Retrieve_correct_value(string value, Sex expectation)
+        {
+            var retriever = new EnumValueRetriever();
+            var result = (Sex)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(Sex));
+            result.Should().Be(expectation);
+        }
+
+        [Theory]
+        [InlineData("", "No enum with value {empty} found")]
+        [InlineData(null, "No enum with value {null} found")]
+        [InlineData("NotDefinied", "No enum with value NotDefinied found")]
+        public void Throws_an_exception_when_the_value_is_illegal(string value, string exceptionMessage)
         {
             var retriever = new EnumValueRetriever();
 
-            var exceptionThrown = false;
-            try
-            {
-                retriever.GetValue("NotDefinied", typeof (Sex));
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message == "No enum with value NotDefinied found")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.Should().BeTrue();
+            Action action = () => retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(Sex));
+
+            action.Should().Throw<InvalidOperationException>().WithMessage(exceptionMessage);
         }
 
-        [Fact]
-        public void Should_return_the_value_when_it_matches_the_enum()
+        [Theory]
+        [InlineData("Male", Sex.Male)]
+        [InlineData("Unknown Sex", Sex.UnknownSex)]
+        [InlineData("feMale", Sex.Female)]
+        [InlineData("unknown sex", Sex.UnknownSex)]
+        [InlineData("", null)]
+        [InlineData(null, null)]
+        public void Retrieve_correct_nullable_value(string value, Sex? expectation)
         {
             var retriever = new EnumValueRetriever();
-            retriever.GetValue("Male", typeof (Sex)).Should().Be(Sex.Male);
+            var result = (Sex?)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(Sex?));
+            result.Should().Be(expectation);
         }
 
-        [Fact]
-        public void Should_return_the_value_when_it_includes_extra_spaces()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("Unknown Sex", typeof (Sex)).Should().Be(Sex.UnknownSex);
-        }
-
-        [Fact]
-        public void Returns_the_value_regardless_of_proper_casing()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("feMale", typeof (Sex)).Should().Be(Sex.Female);
-        }
-
-        [Fact]
-        public void Returns_the_proper_value_when_spaces_and_casing_is_wrong()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("unknown sex", typeof (Sex)).Should().Be(Sex.UnknownSex);
-        }
-
-        [Fact]
-        public void Throws_an_exception_when_the_value_is_null()
+        [Theory]
+        [InlineData("NotDefinied", "No enum with value NotDefinied found")]
+        public void Throws_an_exception_when_the_value_is_illegal_for_nullable(string value, string exceptionMessage)
         {
             var retriever = new EnumValueRetriever();
 
-            var exceptionThrown = false;
-            try
-            {
-                retriever.GetValue(null, typeof (Sex));
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message == "No enum with value {null} found")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.Should().BeTrue();
+            Action action = () => retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(Sex?));
+
+            action.Should().Throw<InvalidOperationException>().WithMessage(exceptionMessage);
         }
 
-        [Fact]
-        public void Throws_an_exception_when_the_value_is_empty()
-        {
-            var retriever = new EnumValueRetriever();
-
-            var exceptionThrown = false;
-            try
-            {
-                retriever.GetValue(string.Empty, typeof (Sex));
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message == "No enum with value {empty} found")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.Should().BeTrue();
-        }
-
-        [Fact]
-        public void Does_not_throw_an_exception_when_the_value_is_null_and_enum_type_is_not_nullable()
-        {
-            var retriever = new EnumValueRetriever();
-
-            var exceptionThrown = false;
-            try
-            {
-                retriever.GetValue(null, typeof (Sex?));
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message == "No enum with value {null} found")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.Should().BeFalse();
-        }
-
-        [Fact]
-        public void Does_not_throw_an_exception_when_the_value_is_empty_and_enum_type_is_not_nullable()
-        {
-            var retriever = new EnumValueRetriever();
-
-            var exceptionThrown = false;
-            try
-            {
-                retriever.GetValue(string.Empty, typeof (Sex));
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message == "No enum with value {empty} found")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.Should().BeTrue();
-        }
-
-        [Fact]
-        public void Should_return_the_value_when_it_matches_the_nullable_enum()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("Male", typeof (Sex?)).Should().Be(Sex.Male);
-        }
-
-        [Fact]
-        public void Should_return_the_value_when_it_includes_extra_spaces_on_the_nullable_enum()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("Unknown Sex", typeof (Sex?)).Should().Be(Sex.UnknownSex);
-        }
-
-        [Fact]
-        public void Returns_the_value_regardless_of_proper_casing_on_a_nullable_enum()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("feMale", typeof (Sex?)).Should().Be(Sex.Female);
-        }
-
-        [Fact]
-        public void Returns_the_proper_value_when_spaces_and_casing_is_wrong_on_a_nullable_enum()
-        {
-            var retriever = new EnumValueRetriever();
-            retriever.GetValue("unknown sex", typeof (Sex?)).Should().Be(Sex.UnknownSex);
-        }
     }
 }
