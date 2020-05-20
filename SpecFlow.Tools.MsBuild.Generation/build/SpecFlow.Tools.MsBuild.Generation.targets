@@ -93,6 +93,6 @@
 
   
   <Target Name="CleanGeneratedSpecFlowCodeBehindFiles">
-    <Delete Files="$(SpecFlowCodeBehindOutputPath)**/*.cs" ContinueOnError="true" />
+    <Delete Files="$(SpecFlowCodeBehindOutputPath)**/*$(DefaultLanguageSourceExtension)" ContinueOnError="true" />
   </Target>
 </Project>
