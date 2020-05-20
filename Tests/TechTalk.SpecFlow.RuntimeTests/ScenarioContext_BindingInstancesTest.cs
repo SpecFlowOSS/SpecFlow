@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer testThreadContainer;
             testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerTestThreadMocks, registerGlobalMocks);
-            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", "sample scenario description", new string[0]), testThreadContainer.Resolve<ITestObjectResolver>());
+            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", "sample scenario description", new string[0], null), testThreadContainer.Resolve<ITestObjectResolver>());
         }
 
         [Fact]
