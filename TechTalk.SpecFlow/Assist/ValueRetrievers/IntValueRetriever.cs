@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class IntValueRetriever : NonNullableValueRetriever<int>
+    public class IntValueRetriever : StructRetriever<int>
     {
-        public override int GetValue(string value)
+        protected override int GetNonEmptyValue(string value)
         {
             int.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out int returnValue);
             return returnValue;

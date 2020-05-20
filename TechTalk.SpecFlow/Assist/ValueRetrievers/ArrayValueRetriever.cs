@@ -1,21 +1,28 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class ArrayValueRetriever : EnumerableValueRetriever
     {
-        protected override Type GetActualValueType(Type propertyType)
+        public override bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return propertyType.IsArray ? propertyType.GetElementType() : null;
+            return propertyType.IsArray;
         }
 
-        protected override object BuildInstance(object[] values, Type valueType)
+        protected override Type GetActualValueType(Type propertyType)
         {
-            var typedArray = Array.CreateInstance(valueType, values.Length);
-            //Array.Copy(values, typedArray, values.Length);
-            for (int i=0; i < values.Length; i++)
+            return propertyType.GetElementType();
+        }
+
+        protected override object BuildInstance(int count, IEnumerable values, Type valueType)
+        {
+            var typedArray = Array.CreateInstance(valueType, count);
+            int i = 0;
+            foreach (var value in values)
             {
-                typedArray.SetValue(values[i], i);
+                typedArray.SetValue(value, i++);
             }
             return typedArray;
         }

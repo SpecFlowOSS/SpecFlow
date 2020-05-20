@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class UShortValueRetriever : NonNullableValueRetriever<ushort>
+    public class UShortValueRetriever : StructRetriever<ushort>
     {
-        public override ushort GetValue(string value)
+        protected override ushort GetNonEmptyValue(string value)
         {
             ushort.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out ushort returnValue);
             return returnValue;

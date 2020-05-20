@@ -49,10 +49,13 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, InstanceCreationOptions creationOptions)
         {
-            var list = new List<T>();
+            int count = table.Rows.Count;
+
+            var list = new List<T>(count);
+
 
             var pivotTable = new PivotTable(table);
-            for (var index = 0; index < table.Rows.Count(); index++)
+            for (var index = 0; index < count; index++)
             {
                 var instance = pivotTable.GetInstanceTable(index).CreateInstance<T>(creationOptions);
                 list.Add(instance);
@@ -68,10 +71,11 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance, InstanceCreationOptions creationOptions)
         {
-            var list = new List<T>();
+            int count = table.Rows.Count;
+            var list = new List<T>(count);
 
             var pivotTable = new PivotTable(table);
-            for (var index = 0; index < table.Rows.Count(); index++)
+            for (var index = 0; index < count; index++)
             {
                 var instance = methodToCreateEachInstance();
                 pivotTable.GetInstanceTable(index).FillInstance(instance, creationOptions);
@@ -88,10 +92,11 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<TableRow, T> methodToCreateEachInstance, InstanceCreationOptions creationOptions)
         {
-            var list = new List<T>();
+            int count = table.Rows.Count;
+            var list = new List<T>(count);
 
             var pivotTable = new PivotTable(table);
-            for (var index = 0; index < table.Rows.Count(); index++)
+            for (var index = 0; index < count; index++)
             {
                 var row = table.Rows[index];
                 var instance = methodToCreateEachInstance(row);

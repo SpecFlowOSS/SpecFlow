@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Analytics
         public string MSBuildVersion { get; }
         public string ProjectGuid { get; set; }
 
-        public SpecFlowProjectCompilingEvent(DateTime utcDate, string userId, string platform, string platformDescription, string specFlowVersion, string unitTestProvider, bool isBuildServer, string hashedAssemblyName, string targetFrameworks, string targetFramework, string msBuildVersion, string projectGuid, bool isDockerContainer) : base(utcDate, userId, platform, platformDescription, specFlowVersion, unitTestProvider, isBuildServer, hashedAssemblyName, targetFrameworks, targetFramework, isDockerContainer)
+        public SpecFlowProjectCompilingEvent(DateTime utcDate, string userId, string platform, string platformDescription, string specFlowVersion, string unitTestProvider, string buildServerName, string hashedAssemblyName, string targetFrameworks, string targetFramework, string msBuildVersion, string projectGuid, bool isDockerContainer) : base(utcDate, userId, platform, platformDescription, specFlowVersion, unitTestProvider, buildServerName, hashedAssemblyName, targetFrameworks, targetFramework, isDockerContainer)
         {
             MSBuildVersion = msBuildVersion;
             ProjectGuid = projectGuid;

@@ -1,8 +1,8 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class StringValueRetriever : NonNullableValueRetriever<string>
+    public class StringValueRetriever : ClassRetriever<string>
     {
-        public override string GetValue(string value)
+        protected override string GetNonEmptyValue(string value)
         {
             return value;
         }

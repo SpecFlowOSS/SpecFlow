@@ -1,8 +1,8 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class BoolValueRetriever : NonNullableValueRetriever<bool>
+    public class BoolValueRetriever : StructRetriever<bool>
     {
-        public override bool GetValue(string value)
+        protected override bool GetNonEmptyValue(string value)
         {
             return value == "True" || value == "true" || value == "1";
         }

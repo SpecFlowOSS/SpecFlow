@@ -1,6 +1,6 @@
 name: SpecFlow
 desc: SpecFlow is a pragmatic BDD solution for .NET
-site: http://www.specflow.org
+site: https://www.specflow.org
 tags:
 - bdd
 - testing

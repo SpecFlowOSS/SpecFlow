@@ -15,5 +15,7 @@
         public const string TESTRUNNER_FIELD = "testRunner";
         public const string SPECFLOW_NAMESPACE = "TechTalk.SpecFlow";
         public const string SCENARIO_OUTLINE_EXAMPLE_TAGS_PARAMETER = "exampleTags";
+        public const string SCENARIO_TAGS_VARIABLE_NAME = "tagsOfScenario";
+        public const string SCENARIO_ARGUMENTS_VARIABLE_NAME = "argumentsOfScenario";
     }
 }

@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
     {
         private ScenarioContext CreateScenarioContext(ScenarioExecutionStatus scenarioExecutionStatus)
         {
-            return new ScenarioContext(null, new ScenarioInfo("",""), null)
+            return new ScenarioContext(null, new ScenarioInfo("","", null, null), null)
             {
                 ScenarioExecutionStatus = scenarioExecutionStatus
             };

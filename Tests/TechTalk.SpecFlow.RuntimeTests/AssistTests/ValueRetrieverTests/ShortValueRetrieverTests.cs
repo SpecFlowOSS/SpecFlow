@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using FluentAssertions;
@@ -9,59 +11,69 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     
     public class ShortValueRetrieverTests
     {
+        private const string IrrelevantKey = "Irrelevant";
+        private readonly Type IrrelevantType = typeof(object);
+
         public ShortValueRetrieverTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
         }
 
-
-        [Fact]
-        public void Returns_a_short_when_passed_a_short_value()
+        [Theory]
+        [InlineData(typeof(short), true)]
+        [InlineData(typeof(short?), true)]
+        [InlineData(typeof(int), false)]
+        public void CanRetrieve(Type type, bool expectation)
         {
             var retriever = new ShortValueRetriever();
-            retriever.GetValue("1").Should().Be(1);
-            retriever.GetValue("3").Should().Be(3);
-            retriever.GetValue("30").Should().Be(30);
-            retriever.GetValue("12,345").Should().Be(12345);
-		}
+            var result = retriever.CanRetrieve(new KeyValuePair<string, string>(IrrelevantKey, IrrelevantKey), IrrelevantType, type);
+            result.Should().Be(expectation);
+        }
 
-        [Fact]
-	    public void Returns_a_short_when_passed_a_short_value_if_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
-
-			var retriever = new IntValueRetriever();
-		    retriever.GetValue("1").Should().Be(1);
-		    retriever.GetValue("3").Should().Be(3);
-		    retriever.GetValue("30").Should().Be(30);
-		    retriever.GetValue("12345").Should().Be(12345);
-		}
-
-		[Fact]
-        public void Returns_negative_numbers_when_passed_a_negative_value()
+        [Theory]
+        [InlineData("1", 1)]
+        [InlineData("3", 3)]
+        [InlineData("12,345", 12345)]
+        [InlineData("x", 0)]
+        [InlineData("-1", -1)]
+        [InlineData("-5", -5)]
+        [InlineData("1234567890123456789", 0)]
+        [InlineData("every good boy does fine", 0)]
+        [InlineData(null, 0)]
+        [InlineData("", 0)]
+        public void Retrieve_correct_value(string value, short expectation)
         {
             var retriever = new ShortValueRetriever();
-            retriever.GetValue("-1").Should().Be(-1);
-            retriever.GetValue("-5").Should().Be(-5);
+            var result = (short)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(short));
+            result.Should().Be(expectation);
+        }
+
+        [Theory]
+        [InlineData("1", (short)1)]
+        [InlineData("3", (short)3)]
+        [InlineData("30", (short)30)]
+        [InlineData("x", (short)0)]
+        [InlineData("-1", (short)-1)]
+        [InlineData("-5", (short)-5)]
+        [InlineData("1234567890123456789", (short)0)]
+        [InlineData("every good boy does fine", (short)0)]
+        [InlineData(null, null)]
+        [InlineData("", null)]
+        public void Retrieve_correct_nullable_value(string value, short? expectation)
+        {
+            var retriever = new ShortValueRetriever();
+            var result = (short?)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(short?));
+            result.Should().Be(expectation);
         }
 
         [Fact]
-        public void Returns_a_zero_when_passed_an_invalid_short()
+        public void Retrieve_a_short_when_passed_a_short_value_if_culture_is_fr_Fr()
         {
-            var retriever = new IntValueRetriever();
-            retriever.GetValue("x").Should().Be(0);
-            retriever.GetValue("").Should().Be(0);
-            retriever.GetValue("1234567890123456789").Should().Be(0);
-            retriever.GetValue("every good boy does fine").Should().Be(0);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
+
+            var retriever = new ShortValueRetriever();
+            var result = (short?)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, "305,0"), IrrelevantType, typeof(short?));
+            result.Should().Be(305);
         }
-
-	    [Fact]
-	    public void Returns_a_zero_when_passed_an_invalid_short_if_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
-
-			var retriever = new IntValueRetriever();
-		    retriever.GetValue("12,345").Should().Be(0);
-		}
-	}
+    }
 }

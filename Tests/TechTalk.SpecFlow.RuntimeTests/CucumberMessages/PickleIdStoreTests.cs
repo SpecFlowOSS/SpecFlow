@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             var dictionary = new Dictionary<ScenarioInfo, Guid>();
             var pickleIdStoreDictionaryFactoryMock = GetPickleIdStoreDictionaryFactoryMock(dictionary);
             var guidToCreate = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-            var scenarioInfo = new ScenarioInfo("Title", "Description");
+            var scenarioInfo = new ScenarioInfo("Title", "Description", null, null);
             var mock = GetPickleIdGeneratorMock(guidToCreate);
 
             var pickleIdStore = new PickleIdStore(mock.Object, pickleIdStoreDictionaryFactoryMock.Object);
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var existingGuid = new Guid(11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
             var guidToCreate = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-            var scenarioInfo = new ScenarioInfo("Title", "Description");
+            var scenarioInfo = new ScenarioInfo("Title", "Description", null, null);
             var dictionary = new Dictionary<ScenarioInfo, Guid> { [scenarioInfo] = existingGuid };
             var pickleIdStoreDictionaryFactoryMock = GetPickleIdStoreDictionaryFactoryMock(dictionary);
             var mock = GetPickleIdGeneratorMock(guidToCreate);
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
             // ARRANGE
             var existingGuid = new Guid(11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
             var guidToCreate = new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
-            var scenarioInfo = new ScenarioInfo("Title", "Description");
+            var scenarioInfo = new ScenarioInfo("Title", "Description", null, null);
             var dictionary = new Dictionary<ScenarioInfo, Guid> { [scenarioInfo] = existingGuid };
             var pickleIdStoreDictionaryFactoryMock = GetPickleIdStoreDictionaryFactoryMock(dictionary);
             var mock = GetPickleIdGeneratorMock(guidToCreate);

@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class ULongValueRetriever : NonNullableValueRetriever<ulong>
+    public class ULongValueRetriever : StructRetriever<ulong>
     {
-        public override ulong GetValue(string value)
+        protected override ulong GetNonEmptyValue(string value)
         {
             ulong.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out ulong returnValue);
             return returnValue;

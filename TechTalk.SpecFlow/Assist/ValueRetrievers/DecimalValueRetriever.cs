@@ -3,9 +3,9 @@ using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class DecimalValueRetriever : NonNullableValueRetriever<decimal>
+    public class DecimalValueRetriever : StructRetriever<decimal>
     {
-        public override decimal GetValue(string value)
+        protected override decimal GetNonEmptyValue(string value)
         {
             Decimal.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out Decimal returnValue);
             return returnValue;
