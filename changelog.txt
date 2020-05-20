@@ -2,6 +2,7 @@ Changes since 3.1.97
 
 Features:
 + Allow the use of custom subclasses of StepDefinitionBaseAttribute.
++ Be able to get the arguments of the current executed Scenario Outline example - https://github.com/SpecFlowOSS/SpecFlow/pull/1988
 
 Fixes for Development:
 + Changed unit tests to ignore custom user overrides to data formatting in en-US locale
