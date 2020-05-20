@@ -92,7 +92,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private static string GetTheExpectedValue(TableRow row)
         {
-            return row.Value().ToString();
+            return row.Value();
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
@@ -161,7 +161,7 @@ namespace TechTalk.SpecFlow.Assist
             return row[0];
         }
 
-        public static object Value(this TableRow row)
+        public static string Value(this TableRow row)
         {
             return row[1];
         }

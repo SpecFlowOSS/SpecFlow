@@ -2,9 +2,9 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class UriValueRetriever : NonNullableValueRetriever<Uri>
+    public class UriValueRetriever : ClassRetriever<Uri>
     {
-        public override Uri GetValue(string value)
+        protected override Uri GetNonEmptyValue(string value)
         {
             return new Uri(value, UriKind.RelativeOrAbsolute);
         }

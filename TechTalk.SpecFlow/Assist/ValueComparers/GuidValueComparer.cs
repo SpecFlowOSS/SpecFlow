@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             {
                 if (guidValueRetriever.IsAValidGuid(expectedValue) == false) return false;
                 var guid = guidValueRetriever.GetValue(expectedValue);
-                if (guid == new Guid()) return true;
+                if (guid == Guid.Empty) return true;
                 return guid == (Guid)actualValue;
             }
         }

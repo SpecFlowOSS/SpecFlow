@@ -6,13 +6,13 @@ namespace TechTalk.SpecFlow.Assist
     {
         public SpecFlowDefaultValueComparerList()
         {
-            Register<DateTimeValueComparer>();
-            Register<BoolValueComparer>();
-            Register<GuidValueComparer>();
-            Register<DecimalValueComparer>();
-            Register<DoubleValueComparer>();
-            Register<FloatValueComparer>();
-            SetDefault<DefaultValueComparer>();
+            Register(new DateTimeValueComparer());
+            Register(new BoolValueComparer());
+            Register(new GuidValueComparer());
+            Register(new DecimalValueComparer());
+            Register(new DoubleValueComparer());
+            Register(new FloatValueComparer());
+            SetDefault(new DefaultValueComparer());
         }
     }
 }

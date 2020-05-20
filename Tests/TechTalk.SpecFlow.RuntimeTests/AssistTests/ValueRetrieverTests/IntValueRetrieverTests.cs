@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using FluentAssertions;
@@ -6,61 +8,73 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    
     public class IntValueRetrieverTests
     {
-		public IntValueRetrieverTests()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
-		}
+        private const string IrrelevantKey = "Irrelevant";
+        private readonly Type IrrelevantType = typeof(object);
 
-        [Fact]
-        public void Returns_an_integer_when_passed_an_integer_value()
+        public IntValueRetrieverTests()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
+        }
+
+        [Theory]
+        [InlineData(typeof(int), true)]
+        [InlineData(typeof(int?), true)]
+        [InlineData(typeof(long), false)]
+        public void CanRetrieve(Type type, bool expectation)
         {
             var retriever = new IntValueRetriever();
-            retriever.GetValue("1").Should().Be(1);
-            retriever.GetValue("3").Should().Be(3);
-            retriever.GetValue("30").Should().Be(30);
-	        retriever.GetValue("1234567890").Should().Be(1234567890);
-			retriever.GetValue("1,234,567,890").Should().Be(1234567890);
+            var result = retriever.CanRetrieve(new KeyValuePair<string, string>(IrrelevantKey, IrrelevantKey), IrrelevantType, type);
+            result.Should().Be(expectation);
+        }
+
+        [Theory]
+        [InlineData("1", 1)]
+        [InlineData("3", 3)]
+        [InlineData("1234567890", 1234567890)]
+        [InlineData("1,234,567,890", 1234567890)]
+        [InlineData("x", 0)]
+        [InlineData("-1", -1)]
+        [InlineData("-5", -5)]
+        [InlineData("123456789019999923456789", 0)]
+        [InlineData("every good boy does fine", 0)]
+        [InlineData(null, 0)]
+        [InlineData("", 0)]
+        public void Retrieve_correct_value(string value, int expectation)
+        {
+            var retriever = new IntValueRetriever();
+            var result = (int)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(int));
+            result.Should().Be(expectation);
+        }
+
+        [Theory]
+        [InlineData("1", 1)]
+        [InlineData("3", 3)]
+        [InlineData("1234567890", 1234567890)]
+        [InlineData("1,234,567,890", 1234567890)]
+        [InlineData("x", 0)]
+        [InlineData("-1", -1)]
+        [InlineData("-5", -5)]
+        [InlineData("123456789019999923456789", 0)]
+        [InlineData("every good boy does fine", 0)]
+        [InlineData(null, null)]
+        [InlineData("", null)]
+        public void Retrieve_correct_nullable_value(string value, int? expectation)
+        {
+            var retriever = new IntValueRetriever();
+            var result = (int?)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(int?));
+            result.Should().Be(expectation);
         }
 
         [Fact]
-	    public void Returns_an_integer_when_passed_an_integer_value_if_culture_if_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
-
-			var retriever = new IntValueRetriever();
-		    retriever.GetValue("1").Should().Be(1);
-		    retriever.GetValue("3").Should().Be(3);
-		    retriever.GetValue("30").Should().Be(30);
-		    retriever.GetValue("1234567890").Should().Be(1234567890);
-		}
-
-		[Fact]
-        public void Returns_negative_numbers_when_passed_a_negative_value()
+        public void Retrieve_a_int_when_passed_a_int_value_if_culture_is_fr_Fr()
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
+
             var retriever = new IntValueRetriever();
-            retriever.GetValue("-1").Should().Be(-1);
-            retriever.GetValue("-5").Should().Be(-5);
+            var result = (int?)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, "1234567890,0"), IrrelevantType, typeof(int?));
+            result.Should().Be(1234567890);
         }
-
-        [Fact]
-        public void Returns_a_zero_when_passed_an_invalid_int()
-        {
-            var retriever = new IntValueRetriever();
-            retriever.GetValue("x").Should().Be(0);
-            retriever.GetValue("").Should().Be(0);
-            retriever.GetValue("every good boy does fine").Should().Be(0);
-		}
-
-	    [Fact]
-	    public void Returns_a_zero_when_passed_an_invalid_int_if_culture_is_fr_FR()
-		{
-			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
-
-			var retriever = new IntValueRetriever();
-		    retriever.GetValue("1,234,567,890").Should().Be(0);
-		}
 	}
 }

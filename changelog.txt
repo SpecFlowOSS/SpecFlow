@@ -10,9 +10,12 @@ Fixes for Development:
 
 API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
++ TechTalk.SpecFlow.Assist.ValueRetrievers.* public classes have undergone some refactoring. IValueRetriever interface remains unchanged.
 
 Changes:
 + Performance and memory improvements for `table.CreateSet` and `table.CreateInstance`
++ Improved performance of ValueRetrievers
++ Removed Nullable*ValueRetriever as nullability is now handled by the *ValueRetriever directly.
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
 
 Fixes:
