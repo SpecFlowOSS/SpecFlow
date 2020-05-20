@@ -8,6 +8,9 @@ Fixes for Development:
 
 API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
++ (breaking) tableRow.GetEnum<T>(..) has now a class contraint on T
++ (breaking) tableRow.GetTheEnumValue<T>(..) has now a class contraint on T
++ added tableRow.GetDiscreteEnum<T>
 
 
 Changes since 3.1.89
