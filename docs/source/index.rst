@@ -1,23 +1,27 @@
-.. SpecFlow documentation master file, created by
-   sphinx-quickstart on Fri May 29 13:44:55 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to SpecFlow's documentation!
 ====================================
 
 .. toctree::
    :maxdepth: 1
-   :caption: Installation
+   :caption: Getting started
 
    Installation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents
+   :caption: Tutorials
 
-   Bindings
-   Gherkin.md
+.. toctree::
+   :maxdepth: 1
+   :caption: Reference
+
+   Reference/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Developing on SpecFlow
+
+   DevelopingOnSpecFlow/index
 
 
 
