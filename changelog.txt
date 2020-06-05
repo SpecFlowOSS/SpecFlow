@@ -20,6 +20,7 @@ Changes:
 + Improved performance of ValueRetrievers
 + Removed Nullable*ValueRetriever as nullability is now handled by the *ValueRetriever directly.
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
++ Changed minimal .NET Framework version from .NET 4.5 to .NET 4.6.1
 
 Fixes:
 + Empty value for nullable enum should not throw an exception
