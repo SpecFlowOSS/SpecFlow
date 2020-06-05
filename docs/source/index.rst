@@ -8,6 +8,9 @@ Welcome to SpecFlow's documentation!
 
 .. toctree::
    :maxdepth: 1
+   :caption: Installation:
+   Installation
+
    :caption: Contents:
 
    Bindings
