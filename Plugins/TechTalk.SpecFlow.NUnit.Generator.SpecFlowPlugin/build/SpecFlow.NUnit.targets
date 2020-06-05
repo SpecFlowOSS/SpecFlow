@@ -22,7 +22,7 @@
     <_SpecFlow_NUnitGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_NUnitGeneratorPlugin)\TechTalk.SpecFlow.NUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_NUnitGeneratorPluginPath>
 
     <_SpecFlow_NUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_NUnitRuntimePlugin>
-    <_SpecFlow_NUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net45</_SpecFlow_NUnitRuntimePlugin>
+    <_SpecFlow_NUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SpecFlow_NUnitRuntimePlugin>
     <_SpecFlow_NUnitRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_NUnitRuntimePlugin)\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.dll</_SpecFlow_NUnitRuntimePluginPath>
 
     <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)NUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>

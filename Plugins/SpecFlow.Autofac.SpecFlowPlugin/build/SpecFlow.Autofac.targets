@@ -2,7 +2,7 @@
   <PropertyGroup>
 
     <_SpecFlow_AutofacPluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_AutofacPluginFramework>
-    <_SpecFlow_AutofacPluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net45</_SpecFlow_AutofacPluginFramework>
+    <_SpecFlow_AutofacPluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SpecFlow_AutofacPluginFramework>
     <_SpecFlow_AutofacPluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_AutofacPluginFramework)\SpecFlow.Autofac.SpecFlowPlugin.dll</_SpecFlow_AutofacPluginPath>
   </PropertyGroup>
 </Project>
