@@ -22,7 +22,7 @@
     <_SpecFlow_MsTestGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_MsTestGeneratorPlugin)\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.dll</_SpecFlow_MsTestGeneratorPluginPath>
 
     <_SpecFlow_MsTestRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_MsTestRuntimePlugin>
-    <_SpecFlow_MsTestRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net45</_SpecFlow_MsTestRuntimePlugin>
+    <_SpecFlow_MsTestRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SpecFlow_MsTestRuntimePlugin>
     <_SpecFlow_MsTestRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_MsTestRuntimePlugin)\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll</_SpecFlow_MsTestRuntimePluginPath>
 
     <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)MSTest.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>

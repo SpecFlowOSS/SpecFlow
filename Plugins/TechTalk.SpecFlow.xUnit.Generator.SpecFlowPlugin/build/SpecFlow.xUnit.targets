@@ -21,7 +21,7 @@
     <_SpecFlow_xUnitGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_xUnitGeneratorPlugin)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_xUnitGeneratorPluginPath>
 
     <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_xUnitRuntimePlugin>
-    <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net452</_SpecFlow_xUnitRuntimePlugin>
+    <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SpecFlow_xUnitRuntimePlugin>
     <_SpecFlow_xUnitRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_xUnitRuntimePlugin)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</_SpecFlow_xUnitRuntimePluginPath>
 
     <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
