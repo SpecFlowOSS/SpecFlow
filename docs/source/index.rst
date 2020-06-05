@@ -8,13 +8,13 @@ Welcome to SpecFlow's documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Installation:
+   :caption: Installation
 
    Installation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Contents
 
    Bindings
    Gherkin.md
