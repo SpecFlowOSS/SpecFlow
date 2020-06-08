@@ -30,10 +30,10 @@
 
   <files>
     
-    <file src="bin\$config$\net471\Gherkin.dll" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
-    <file src="bin\$config$\net471\TechTalk.SpecFlow.Generator.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
-    <file src="bin\$config$\net471\TechTalk.SpecFlow.Utils.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
-    <file src="bin\$config$\net471\TechTalk.SpecFlow.Parser.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net461\Gherkin.dll" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net461\TechTalk.SpecFlow.Generator.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net461\TechTalk.SpecFlow.Utils.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net461\TechTalk.SpecFlow.Parser.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
 
     <file src="bin\$config$\netcoreapp2.1\Gherkin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netcoreapp2.1\TechTalk.SpecFlow.Generator.*" target="lib\$SpecFlow_Core_Runtime_TFM$" />
