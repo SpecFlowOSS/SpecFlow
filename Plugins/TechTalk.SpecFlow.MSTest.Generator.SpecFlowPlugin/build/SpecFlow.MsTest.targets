@@ -18,7 +18,7 @@
   <PropertyGroup>
 
     <_SpecFlow_MsTestGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.1</_SpecFlow_MsTestGeneratorPlugin>
-    <_SpecFlow_MsTestGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SpecFlow_MsTestGeneratorPlugin>
+    <_SpecFlow_MsTestGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'">net461</_SpecFlow_MsTestGeneratorPlugin>
     <_SpecFlow_MsTestGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_MsTestGeneratorPlugin)\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.dll</_SpecFlow_MsTestGeneratorPluginPath>
 
     <_SpecFlow_MsTestRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_MsTestRuntimePlugin>

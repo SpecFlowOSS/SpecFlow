@@ -32,19 +32,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SpecFlow_FullFramework_Runtime_TFM>net461</SpecFlow_FullFramework_Runtime_TFM>
+    <SpecFlow_FullFramework_TFM>net461</SpecFlow_FullFramework_TFM>
+
+    <SpecFlow_FullFramework_Runtime_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Runtime_TFM>
     <SpecFlow_Core_Runtime_TFM>netstandard2.0</SpecFlow_Core_Runtime_TFM>
 
-    <SpecFlow_FullFramework_Generator_TFM>net471</SpecFlow_FullFramework_Generator_TFM>
+    <SpecFlow_FullFramework_Generator_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Generator_TFM>
     <SpecFlow_Core_Generator_TFM>netcoreapp2.1</SpecFlow_Core_Generator_TFM>
 
-    <SpecFlow_FullFramework_Test_TFM>net471</SpecFlow_FullFramework_Test_TFM>
+    <SpecFlow_FullFramework_Test_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Test_TFM>
     <SpecFlow_Core_Test_TFM>netcoreapp2.1;netcoreapp3.1</SpecFlow_Core_Test_TFM>
 
-    <SpecFlow_FullFramework_Specs_TFM>net471</SpecFlow_FullFramework_Specs_TFM>
+    <SpecFlow_FullFramework_Specs_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Specs_TFM>
     <SpecFlow_Core_Specs_TFM>netcoreapp3.1</SpecFlow_Core_Specs_TFM>
 
-    <SpecFlow_FullFramework_Tools_TFM>net471</SpecFlow_FullFramework_Tools_TFM>
+    <SpecFlow_FullFramework_Tools_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Tools_TFM>
     <SpecFlow_Core_Tools_TFM>netcoreapp2.1</SpecFlow_Core_Tools_TFM>
 
     <SpecFlow_Runtime_TFM>$(SpecFlow_FullFramework_Runtime_TFM);$(SpecFlow_Core_Runtime_TFM)</SpecFlow_Runtime_TFM>
