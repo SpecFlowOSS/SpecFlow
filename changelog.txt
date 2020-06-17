@@ -25,6 +25,7 @@ Changes:
 Fixes:
 + Empty value for nullable enum should not throw an exception
 + RegEx performance fix in TEHelpers (Table column name validation)
++ Use AssemblyLoadContext for loading the generator plugin in case of netcoreapp
 
 
 Fixes:
