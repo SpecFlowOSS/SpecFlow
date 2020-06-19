@@ -62,5 +62,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
             _messageValidationDriver.TestCaseStartedMessageShouldHaveBeenSentWithPlatformInformation(table);
         }
 
+        [Then(@"the TestCaseStarted message contains the following platform information attributes")]
+        public void ThenTheTestCaseStartedMessageContainsTheFollowingPlatformInformationAttributes(Table attributes)
+        {
+            _messageValidationDriver.TestCaseStartedMessageShouldHaveBeenSentWithPlatformInformationAttributes(attributes);
+        }
     }
 }
