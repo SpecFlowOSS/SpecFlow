@@ -22,6 +22,7 @@ Changes:
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
 + Changed minimal .NET Framework version from .NET 4.5 to .NET 4.6.1
 + Changed minimal .NET Framework version of the Generator plugins and the SpecFlow.Tools.MSBuild.Generation package from .NET 4.7.1 to .NET 4.6.1
++ Downgrade to be able to use xUnit 2.4.0 (because VS Templates are using this version)
 
 Fixes:
 + Empty value for nullable enum should not throw an exception
