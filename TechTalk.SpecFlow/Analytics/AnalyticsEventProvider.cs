@@ -110,6 +110,8 @@ namespace TechTalk.SpecFlow.Analytics
                 { "CODEBUILD_BUILD_ID","AWS CodeBuild"},
                 { "TRAVIS","Travis CI"},
                 { "APPVEYOR","AppVeyor"},
+                { "BITBUCKET_BUILD_NUMBER", "Bitbucket Pipelines" },
+                { "bamboo_agentId", "Atlassian Bamboo" }
             };
 
         private string GetBuildServerName()
