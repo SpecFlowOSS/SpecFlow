@@ -1,4 +1,4 @@
-Changes since 3.1.97
+3.3
 
 Features:
 + Allow the use of custom subclasses of StepDefinitionBaseAttribute.
@@ -27,13 +27,10 @@ Changes:
 Fixes:
 + Empty value for nullable enum should not throw an exception
 + RegEx performance fix in TEHelpers (Table column name validation)
-+ Use AssemblyLoadContext for loading the generator plugin in case of netcoreapp
-
-
-Fixes:
++ Adjust assembly loading of Generator plugins to changed behavior in .NET Core SDK 3.1.200 and later - https://github.com/SpecFlowOSS/SpecFlow/issues/1912
 + add auto-generated comment for StyleCop to ignore the Assemblyhook files
 
-Changes since 3.1.89
+3.1.97
 
 Fixes:
 + Update the default C# skeleton template to use context injection instead of the deprecated ScenarioContext.Current
@@ -41,17 +38,14 @@ Fixes:
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 + Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
 
-
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
 
-
-Changes since 3.1.86
+3.1.89
 
 Fixes:
 + Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225
 + Import MSBuild Tasks only once (fixes https://github.com/SpecFlowOSS/SpecFlow/issues/1699)
-
 
 3.1 - 2020-01-09
 
