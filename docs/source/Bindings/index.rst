@@ -4,8 +4,7 @@
     :name: bindings
 
     Step Definitions.md
-    Step Definition Styles.md
-    Scoped Bindings.md
+    Scoped Step Definitions.md
     Asynchronous Bindings.md
     
     Hooks.md

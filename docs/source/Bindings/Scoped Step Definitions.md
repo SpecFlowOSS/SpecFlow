@@ -1,4 +1,4 @@
-# Scoped Bindings
+# Scoped Step Definitions
 
 Bindings (step definitions, hooks) are global for the entire SpecFlow project. This means that step definitions bound to a very generic step text (e.g. "When I save the changes") become challenging to implement. The general solution for this problem is to phrase the scenario steps in a way that the context is clear (e.g. "When I save the **book details**").
 

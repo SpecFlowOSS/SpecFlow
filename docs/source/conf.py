@@ -19,7 +19,7 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'SpecFlow'
-copyright = '2020, SpecFlow Team'
+copyright = 'SpecFlow Team'
 author = 'SpecFlow Team'
 
 
