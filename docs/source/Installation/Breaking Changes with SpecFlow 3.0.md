@@ -24,10 +24,10 @@ The easiest way is to package your Generator Plugin in a NuGet package and use t
 A good example are the plugins for the different test frameworks.
 
 For example, if we look at the xUnit Plugin:  
-The Generator Plugin is located at [/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin](/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin).
+The Generator Plugin is located at [/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin](https://github.com/SpecFlowOSS/SpecFlow/tree/master/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin).
 
-In the [/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.props](/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.props) you can add your entry to the `SpecFlowGeneratorPlugins` ItemGroup. Be careful, because dependent on the version of MSBuild you use (Full Framework or .NET Core version), you have to put different assemblies in the ItemGroup.
-The best way to do this is in the [/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.targets](/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.targets) files. You can use the `MSBuildRuntimeType` property to decide which assembly you want to use.
+In the [/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.props](https://github.com/SpecFlowOSS/SpecFlow/tree/master/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.props) you can add your entry to the `SpecFlowGeneratorPlugins` ItemGroup. Be careful, because dependent on the version of MSBuild you use (Full Framework or .NET Core version), you have to put different assemblies in the ItemGroup.
+The best way to do this is in the [/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.targets](https://github.com/SpecFlowOSS/SpecFlow/tree/master/Plugins/TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin/build/SpecFlow.xUnit.targets) files. You can use the `MSBuildRuntimeType` property to decide which assembly you want to use.
 
 ## RuntimePlugins are configured by References
 

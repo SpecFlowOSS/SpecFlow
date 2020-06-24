@@ -1,4 +1,4 @@
-_Editor note: We recommend reading this documentation entry at [[http://www.specflow.org/documentation/Unit-test-providers]]. We use the GitHub wiki for authoring the documentation pages._
+# Unit Test Providers
 
 **Note:** This information only applies to Full Framework projects using the `app.config` file to configure SpecFlow. For .NET Core and projects using `specflow.json` to configure SpecFlow, you need to add a NuGet package to your project to determine your unit test provider, see [[SpecFlow-and-.NET-Core]],
 

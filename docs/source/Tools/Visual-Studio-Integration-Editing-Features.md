@@ -1,4 +1,4 @@
-_Editor note: We recommend reading this documentation entry at [[http://www.specflow.org/documentation/Context-Injection]]. We use the GitHub wiki for authoring the documentation pages._
+# Visual Studio Integration Editing Features
 
 The Visual Studio integration includes the following features to make it easier to edit feature files and identify which steps have already been bound.
 

@@ -33,6 +33,18 @@ Welcome to SpecFlow's documentation!
 
 .. toctree::
    :maxdepth: 1
+   :caption: Tools
+
+   Tools/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Enhance SpecFlow
+
+   Enhance/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Developing on SpecFlow
 
    DevelopingOnSpecFlow/index

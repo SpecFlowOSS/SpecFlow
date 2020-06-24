@@ -8,4 +8,5 @@
     Projects.md
     SpecialFiles.md
     potentialProblems.md
+    Coding Style.md
     

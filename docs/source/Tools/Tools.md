@@ -1,3 +1,5 @@
+# Tools
+
 ## Removed in SpecFlow 3!
 
 Note that this tool has been removed in SpecFlow 3. This topic only applies to earlier versions of SpecFlow.

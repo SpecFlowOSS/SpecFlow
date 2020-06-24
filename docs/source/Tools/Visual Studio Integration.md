@@ -1,4 +1,4 @@
-_Editor note: We recommend reading this documentation entry at [[https://github.com/techtalk/SpecFlow/wiki/Visual-Studio-Integration]]. We use the GitHub wiki for authoring the documentation pages._
+# Visual Studio Integration
 
 The Visual Studio integration includes a number of features that make it easier to edit Gherkin files and navigate to and from bindings in Visual Studio. You can also generate skeleton code including step definition methods from feature files. The Visual Studio integration also allows you to execute tests from Visual Studio's Test Explorer.
 
@@ -28,5 +28,5 @@ The integration provides the following features:
   * Configurable options
   * Support for ReSharper command shortcuts (when ReSharper is installed): commenting, navigation, test execution
 
-# Troubleshooting    
+## Troubleshooting    
 If you are having trouble with the Visual Studio integration, refer to the [[Troubleshooting page|Troubleshooting-Visual-Studio-Integration]] first.
