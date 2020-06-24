@@ -17,6 +17,7 @@
     <copyright>$copyright$</copyright>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
+      <dependency id="SpecFlow.Tools.MsBuild.Generation" version="[$version$]" />
       <dependency id="MSTest.TestFramework" version="1.3.2" />
     </dependencies>
   </metadata>

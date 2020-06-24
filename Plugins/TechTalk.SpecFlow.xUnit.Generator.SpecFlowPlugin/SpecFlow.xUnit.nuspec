@@ -17,6 +17,7 @@
     <copyright>$copyright$</copyright>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
+      <dependency id="SpecFlow.Tools.MsBuild.Generation" version="[$version$]" />
       <dependency id="xunit.core" version="2.4.0" />
       <dependency id="Xunit.SkippableFact" version="1.3.12" />
     </dependencies>
