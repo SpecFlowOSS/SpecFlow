@@ -1,4 +1,4 @@
-# Using the Gherkin Language in SpecFlow
+# Using Gherkin Language In SpecFlow
 
 The feature files used by SpecFlow to specify acceptance criteria for features (use cases, user stories) in your application are defined using the Gherkin syntax. The Gherkin language defines the structure and a basic syntax for describing tests. The Gherkin format was introduced by [[Cucumber|http://cukes.info/]] and is also used by other tools. 
 

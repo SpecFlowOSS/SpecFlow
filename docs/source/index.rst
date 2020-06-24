@@ -3,19 +3,33 @@ Welcome to SpecFlow's documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Getting started
+   :caption: Installation
 
-   Installation
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tutorials
+   Installation/index
 
 .. toctree::
    :maxdepth: 1
-   :caption: Reference
+   :caption: Configuration
 
-   Reference/index
+   Configuration/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Bindings
+
+   Bindings/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Gherkin
+
+   Gherkin/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Execution
+
+   Execution/index
 
 .. toctree::
    :maxdepth: 1
