@@ -2,31 +2,31 @@
 
 **Note: This feature will be deprecated with SpecFlow 3.1 and removed in a future version (probably 4.0).**
 
-It is possible to call steps from within [[Step Definitions]]:
+It is possible to call steps from within [Step Definitions](Step%20Definitions.md):
 
-```c#
+``` csharp
 [Binding]
 public class CallingStepsFromStepDefinitionSteps : Steps
 {
-	[Given(@"the user (.*) exists")]
-	public void GivenTheUserExists(string name)
-	{
-		// ...
-	}
+  [Given(@"the user (.*) exists")]
+  public void GivenTheUserExists(string name)
+  {
+    // ...
+  }
 
-	[Given(@"I log in as (.*)")]
-	public void GivenILogInAs(string name)
-	{
-		// ...
-	}
+  [Given(@"I log in as (.*)")]
+  public void GivenILogInAs(string name)
+  {
+    // ...
+  }
 
-	[Given(@"(.*) is logged in")]
-	public void GivenIsLoggedIn(string name)
-	{
-		Given(string.Format("the user {0} exists", name));
-		Given(string.Format("I log in as {0}", name));
-	}
-}	
+  [Given(@"(.*) is logged in")]
+  public void GivenIsLoggedIn(string name)
+  {
+    Given(string.Format("the user {0} exists", name));
+    Given(string.Format("I log in as {0}", name));
+  }
+}
 ```
 
 Invoking steps from step definitions is practical if you have several common steps that you want to perform in several scenarios, or simply if you want to make your scenarios shorter and more declarative. This allows you to do the following in a Scenario:
@@ -57,9 +57,9 @@ Scenario: View last incidents
   When I go to the incident page
 </pre>
 
-## Calling steps with multiline step arguments 
+## Calling steps with multiline step arguments  
 
-Sometimes you want to call a step that has been designed to take [[Multiline Step Arguments|Using Gherkin Language in SpecFlow]], for example:
+Sometimes you want to call a step that has been designed to take [Multiline Step Arguments](../Gherkin/Using%20Gherkin%20Language%20in%20SpecFlow.md), for example:
 
 ### Tables
 
@@ -67,7 +67,7 @@ Sometimes you want to call a step that has been designed to take [[Multiline Ste
 [Given(@"an expense report for (.*) with the following posts:")]
 public void GivenAnExpenseReportForWithTheFollowingPosts(string date, Table postTable)
 {
-	// ...
+  // ...
 }
 ```
 

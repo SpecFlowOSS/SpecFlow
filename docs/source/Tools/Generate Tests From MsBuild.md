@@ -58,7 +58,7 @@ To change these options, add the corresponding element to your project file **be
 ## Including Feature Files Dynamically
 If you are also adding, renaming or deleting feature files outside of Visual Studio, you can include these files in your project dynamically. To do so, add the following lines to your project file in a text editor:
 
-An example can be found [[here|https://github.com/techtalk/SpecFlow-Examples/tree/master/BowlingKata/BowlingKata-GenateTestsFromMsBuild]] (project Bowling.SpecFlow.DynamicallyIncludedFeatureFiles)
+An example can be found [here|https://github.com/techtalk/SpecFlow-Examples/tree/master/BowlingKata/BowlingKata-GenateTestsFromMsBuild]() (project Bowling.SpecFlow.DynamicallyIncludedFeatureFiles)
 -->
 
 

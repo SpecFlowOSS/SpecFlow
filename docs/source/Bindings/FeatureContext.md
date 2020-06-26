@@ -1,12 +1,12 @@
 # FeatureContext
 
-SpecFlow provides access to the current test context using both `FeatureContext` and the more commonly used [[ScenarioContext]]. `FeatureContext` persists for the duration of the execution of an entire feature, whereas `ScenarioContext` only persists for the duration of a scenario.
+SpecFlow provides access to the current test context using both `FeatureContext` and the more commonly used [ScenarioContext](). `FeatureContext` persists for the duration of the execution of an entire feature, whereas `ScenarioContext` only persists for the duration of a scenario.
 
 ## Accessing the FeatureContext
 
 ### in Bindings
 
-To access the `FeatureContext` you have to get it via [[Context-Injection]].
+To access the `FeatureContext` you have to get it via [Context-Injection]().
 
 Example: 
 

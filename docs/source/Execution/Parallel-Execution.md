@@ -2,7 +2,7 @@
 
 SpecFlow is mainly used to drive integration test that have external dependencies and applications with complex internal architecture. Because of this, it is generally not easy to execute these tests in parallel.
 
-**Note**: This page only covers parallel execution with SpecFlow. For options when executing tests with SpecFlow+ Runner, refer to the [[SpecFlow+ documentation|https://specflow.org/plus/documentation/Execution/]]
+**Note**: This page only covers parallel execution with SpecFlow. For options when executing tests with SpecFlow+ Runner, refer to the [SpecFlow+ documentation|https://specflow.org/plus/documentation/Execution/]()
 
 ## Parallel Execution with Memory (AppDomain) Isolation
 

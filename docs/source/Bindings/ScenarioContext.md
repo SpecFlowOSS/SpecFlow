@@ -8,7 +8,7 @@ You may have at least seen the ScenarioContext from the code that SpecFlow gener
 
 ### in Bindings
 
-To access the `ScenarioContext` you have to get it via [[context injection]].
+To access the `ScenarioContext` you have to get it via [context injection]().
 
 Example: 
 
@@ -77,9 +77,9 @@ and the step definition:
 
 ## Storing data in the ScenarioContext
 
-[[ScenarioContext]] helps you store values in a dictionary between steps. This helps you to organize your step definitions better than using private variables in step definition classes.
+[ScenarioContext]() helps you store values in a dictionary between steps. This helps you to organize your step definitions better than using private variables in step definition classes.
 
-There are some type-safe extension methods that help you to manage the contents of the dictionary in a safer way. To do so, you need to include the namespace TechTalk.SpecFlow.Assist, since these methods are extension methods of [[ScenarioContext]].
+There are some type-safe extension methods that help you to manage the contents of the dictionary in a safer way. To do so, you need to include the namespace TechTalk.SpecFlow.Assist, since these methods are extension methods of [ScenarioContext]().
 
 ## ScenarioContext.ScenarioInfo
 

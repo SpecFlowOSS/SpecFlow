@@ -5,13 +5,13 @@ When SpecFlow tests are executed, the execution engine processes the test steps,
 ## Test Passes
 While executing the tests, the engine outputs information about the execution to the test output. In some cases it makes sense to investigate the test output even if the test passes. 
 
-By default, the test output includes the executed test steps, the invoked test logic methods ([[bindings]]) and the execution time for longer operations. You can [[configure|Configuration]] the information displayed in the test output.
+By default, the test output includes the executed test steps, the invoked test logic methods ([bindings]()) and the execution time for longer operations. You can [configure|Configuration]() the information displayed in the test output.
 
 ## Test Fails due to an Error
 A test can fail because it causes an error. The test output contains more detailed information, e.g. a stack trace.
 
 ## Test Fails due to Missing, Pending or Improperly Configured Bindings
-A test can fail if the test logic (bindings) have not yet been implemented (or are configured improperly). By default, this is reported as an “inconclusive” result, although you can [[configure|Configuration]] how SpecFlow behaves in this case.
+A test can fail if the test logic (bindings) have not yet been implemented (or are configured improperly). By default, this is reported as an “inconclusive” result, although you can [configure|Configuration]() how SpecFlow behaves in this case.
 
 **Note:** Some unit test frameworks do not support inconclusive result. In this case the problem is reported as an error instead.
 

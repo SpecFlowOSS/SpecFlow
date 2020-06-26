@@ -1,6 +1,6 @@
 # Step Definitions
 
-The bindings ([[step definitions]], [[hooks]], etc.) provide the connection between your feature files and application interfaces (see [[Bindings]]). For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters. 
+The bindings ([step definitions](), [hooks](), etc.) provide the connection between your feature files and application interfaces (see [Bindings]()). For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters. 
 
 The following example shows a simple step definition that matches to the step `When I perform a simple search on 'Domain'`:
 
@@ -15,7 +15,7 @@ public void WhenIPerformASimpleSearchOn(string searchTerm)
 
 Here the method is annotated with the `[When]` attribute, and includes the regular expression used to match the step's text. This regular expression uses (`(.*)`) to define parameters for the method.
 
-Although the step definitions are usually invoked by the SpecFlow runtime, you can also call steps from other step definitions. Check the [[Calling Steps from Step Definitions]] page for details.
+Although the step definitions are usually invoked by the SpecFlow runtime, you can also call steps from other step definitions. Check the [Calling Steps from Step Definitions]() page for details.
 
 ## Supported Step Definition Attributes
 
@@ -44,12 +44,12 @@ public void WhenIPerformASimpleSearchOn(string searchTerm)
 * Cannot have a return type. 
 
 ## Step Matching Rules
-* The rules depend on the step definition style you use. Check the [[step definition styles]] page for the exact rules.
+* The rules depend on the step definition style you use. Check the [step definition styles]() page for the exact rules.
 
 ## Parameter Matching Rules
 
 * Step definitions can specify parameters. These will match to the parameters of the step definition method.
-* The method parameter type can be `string` or other .NET type. In the later case [[configurable conversion|Step Argument Conversions]] is applied.
+* The method parameter type can be `string` or other .NET type. In the later case [configurable conversion|Step Argument Conversions]() is applied.
 * With regular expressions
   * The match groups (`(…)`) of the regular expression define the arguments for the method based on the order (the match result of the first group becomes the first argument, etc.).
   * You can use non-capturing groups `(?:regex)` in order to use groups without a method argument.
@@ -58,7 +58,7 @@ public void WhenIPerformASimpleSearchOn(string searchTerm)
 
 ## Table or Multi-line Text Arguments
 
-If the step definition method should match for steps having [[table or multi-line text arguments|Using Gherkin Language in SpecFlow]], additional `Table` and/or `string` parameters have to be defined in the method signature to be able to receive these arguments. If both table and multi-line text argument are used for the step, the multi-line text argument is provided first.
+If the step definition method should match for steps having [table or multi-line text arguments|Using Gherkin Language in SpecFlow](), additional `Table` and/or `string` parameters have to be defined in the method signature to be able to receive these arguments. If both table and multi-line text argument are used for the step, the multi-line text argument is provided first.
 
 ```
 Given the following books
@@ -77,11 +77,11 @@ public void GivenTheFollowingBooks(Table table)
 
 ## Step Definition Styles
 
-[[Step definitions]] provide the connection between the free-text specification steps and the application interfaces. Step definitions are .NET methods that match to certain scenario steps.
+[Step definitions]() provide the connection between the free-text specification steps and the application interfaces. Step definitions are .NET methods that match to certain scenario steps.
 
 The classic way of providing the match rules is to annotate the method with regular expressions. From SpecFlow 1.9 however, you can also create the step definitions without regex.
 
-This page contains information about the **different styles**, the **step definition skeleton generation** and about the **custom templates**. For general rules of step definitions, please check the [[Step Definitions]] page.
+This page contains information about the **different styles**, the **step definition skeleton generation** and about the **custom templates**. For general rules of step definitions, please check the [Step Definitions]() page.
 
 
 ### Regular expressions in attributes
@@ -120,9 +120,9 @@ Matching rules:
 * Underscore character is matched to one or more non-word character (eg. whitespace, punctuation): `\W+`.
 * If the step contains accented characters, the method name should also contain the accented characters (no substitution). 
 * The step keyword (e.g. `Given`) can be omitted: `[Given] public void I_have_entered_NUMBER_...`.
-* The step keyword can be specified in the local Gherkin language, or English. The default language can be specified in the [[app config|Configuration]] as the feature language or binding culture. The following step definition is threfore a valid "Given" step with German language settings: `[When] public void Wenn_ich_addieren_drücke()`
+* The step keyword can be specified in the local Gherkin language, or English. The default language can be specified in the [app config|Configuration]() as the feature language or binding culture. The following step definition is threfore a valid "Given" step with German language settings: `[When] public void Wenn_ich_addieren_drücke()`
 
-More detailed examples can be found in our specs: [[StepDefinitionsWithoutRegex.feature|https://github.com/techtalk/SpecFlow/blob/master/Tests/TechTalk.SpecFlow.Specs/Features/Execution/StepDefinitionsWithoutRegex.feature]].
+More detailed examples can be found in our specs: [StepDefinitionsWithoutRegex.feature|https://github.com/techtalk/SpecFlow/blob/master/Tests/TechTalk.SpecFlow.Specs/Features/Execution/StepDefinitionsWithoutRegex.feature]().
 
 ### Method name - Pascal-case
 
@@ -144,7 +144,7 @@ Matching rules:
 
 ### Method name - regex (F# only)
 
-F# allows providing any characters in method names, so you can make the regular expression as the method name, if you use [[F# bindings||FSharp Support]].
+F# allows providing any characters in method names, so you can make the regular expression as the method name, if you use [F# bindings||FSharp Support]().
 
 ```F#
 let [<Given>] ``I have entered (.*) into the calculator``(number:int) = 
@@ -153,7 +153,7 @@ let [<Given>] ``I have entered (.*) into the calculator``(number:int) =
 
 ## See also
 
-* [[Step Definition Styles]]
-* [[Step Argument Conversions]]
-* [[Scoped Bindings]]
+* [Step Definition Styles]()
+* [Step Argument Conversions]()
+* [Scoped Bindings]()
 

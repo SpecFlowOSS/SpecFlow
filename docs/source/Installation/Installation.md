@@ -1,6 +1,6 @@
 # Installation
 
-_Note:_ If you are new to SpecFlow, we recommend checking out the [[Getting Started guide|http://go.specflow.org/getting-started]] first. It will take you through the process of installing SpecFlow and setting up your first project and tests in Visual Studio. 
+_Note:_ If you are new to SpecFlow, we recommend checking out the [Getting Started guide|http://go.specflow.org/getting-started]() first. It will take you through the process of installing SpecFlow and setting up your first project and tests in Visual Studio. 
 
 SpecFlow consists of three components:
 
@@ -12,7 +12,7 @@ In order to install everything you need, you first have to install the IDE integ
 
 ## Installing the IDE Integration
 
-The process of installing the IDE Integration packages depends on your IDE. If you are using Visual Studio, the easiest way is to search for “SpecFlow” in the online search in the extension manager (**Tools | Extensions and Updates**). For other IDE integrations and for the direct download links, see the [[Install IDE Integration]] page.
+The process of installing the IDE Integration packages depends on your IDE. If you are using Visual Studio, the easiest way is to search for “SpecFlow” in the online search in the extension manager (**Tools | Extensions and Updates**). For other IDE integrations and for the direct download links, see the [Install IDE Integration]() page.
 
 This step only needs to be performed once in Visual Studio.
 
@@ -24,8 +24,8 @@ The generator and runtime are usually installed together for each project. To in
 1. Switch to the **Browse** tab.
 1. Enter "SpecFlow" in the search field to list the available packages for SpecFlow.
 1. Install the required packages. You need to install the 
-SpecFlow NuGet package (`[[SpecFlow|http://www.nuget.org/packages/SpecFlow]]`). 
-Other helper packages are also availble, e.g. `[[SpecFlow.NUnit|http://www.nuget.org/packages/SpecFlow.NUnit]]` or `[[SpecRun.SpecFlow|http://www.nuget.org/packages/SpecRun.SpecFlow]]`. We recommend that you install the NuGet packages for your test framework.
+SpecFlow NuGet package (`[SpecFlow|http://www.nuget.org/packages/SpecFlow]()`). 
+Other helper packages are also availble, e.g. `[SpecFlow.NUnit|http://www.nuget.org/packages/SpecFlow.NUnit]()` or `[SpecRun.SpecFlow|http://www.nuget.org/packages/SpecRun.SpecFlow]()`. We recommend that you install the NuGet packages for your test framework.
 
 You can also install NuGet package manager console, e.g.:
 
@@ -33,4 +33,4 @@ You can also install NuGet package manager console, e.g.:
 Install-Package SpecFlow -ProjectName MyApp.Specs
 ```
 
-Refer to the [[NuGet Integration]] page a full list of supported NuGet packages. You can find more details on setting up your project on the [[Setup SpecFlow Projects]] page.
+Refer to the [NuGet Integration]() page a full list of supported NuGet packages. You can find more details on setting up your project on the [Setup SpecFlow Projects]() page.

@@ -47,7 +47,7 @@ The following 2 examples show the same option defined in the `app.config` in `sp
 }
 ```
 
-You can find more examples in the [[sample projects|https://github.com/techtalk/SpecFlow-Examples]] for SpecFlow.
+You can find more examples in the [sample projects|https://github.com/techtalk/SpecFlow-Examples]() for SpecFlow.
 
 ## Default Configuration
 
@@ -83,7 +83,7 @@ The same configuration elements are available in both the XML (`app.config`) and
 
 #### `<language>`
 
-Use this section to define the default language for feature files and other language-related settings. For more details on language settings, see [[Feature Language]].
+Use this section to define the default language for feature files and other language-related settings. For more details on language settings, see [Feature Language]().
 
 <table>
     <tr>
@@ -107,7 +107,7 @@ Use this section to define the default language for feature files and other lang
 
 #### `<bindingCulture>`
 
-Use this section to define the culture for executing binding methods and converting step arguments. For more details on language settings, see [[Feature Language]].
+Use this section to define the culture for executing binding methods and converting step arguments. For more details on language settings, see [Feature Language]().
 
 <table>
     <tr>
@@ -125,7 +125,7 @@ Use this section to define the culture for executing binding methods and convert
 
 #### `<unitTestProvider>` (**Legacy option: Full Framework and app.config only!**)
 
-**Note:** If you are using `specflow.json` to configure SpecFlow, this option is unavailable. See [[SpecFlow and .NET Core]] for information on adding the NuGet packages required to configure your unit test provider in this case.
+**Note:** If you are using `specflow.json` to configure SpecFlow, this option is unavailable. See [SpecFlow and .NET Core]() for information on adding the NuGet packages required to configure your unit test provider in this case.
 
 Use this section to specify the unit test framework used by SpecFlow to execute acceptance criteria. You can either use one of the built-in unit test providers or you can specify the classes that implement custom unit test providers.
 
@@ -137,7 +137,7 @@ Use this section to specify the unit test framework used by SpecFlow to execute 
     </tr>
     <tr>
         <td>name</td>
-        <td>Name of the unit test provider. See [[Unit Test Providers]].</td>
+        <td>Name of the unit test provider. See [Unit Test Providers]().</td>
         <td>The name of the built-in unit test provider. If you specify this attribute, you don’t have to specify the other two.<br/><br />
             <b>Default:</b> nunit
 <br /><br />
@@ -151,7 +151,7 @@ The following lists all supported providers with their name and generator provid
  </tr>
  <tr>
   <td>specrun</td>
-  <td>SpecRunTestGeneratorProvider, see [[the SpecFlow+ documentation|https://specflow.org/plus/documentation/]]</td>
+  <td>SpecRunTestGeneratorProvider, see [the SpecFlow+ documentation|https://specflow.org/plus/documentation/]()</td>
  </tr>
  <tr>
   <td>nunit</td>
@@ -187,12 +187,12 @@ The following lists all supported providers with their name and generator provid
     <tr>
         <td>generatorProvider</td>
         <td>class name</td>
-        <td>Legacy option, unsupported from v2.0. Use [[<code>&lt;plugins&gt;</code>|Plugins]] instead.</td>
+        <td>Legacy option, unsupported from v2.0. Use [<code>&lt;plugins&gt;</code>|Plugins]() instead.</td>
     </tr>
     <tr>
         <td>runtimeProvider</td>
         <td>class name</td>
-        <td>Legacy option, unsupported from v2.0. Use [[<code>&lt;plugins&gt;</code>|Plugins]] instead.</td>
+        <td>Legacy option, unsupported from v2.0. Use [<code>&lt;plugins&gt;</code>|Plugins]() instead.</td>
     </tr>
 </table>
 
@@ -211,31 +211,31 @@ Use this section to define unit test generation options.
     <tr>
         <td>allowDebugGeneratedFiles</td>
         <td>true|false</td>
-        <td>By default, the debugger is configured to step through the generated code. This helps you debug your feature files and bindings (see [[Debugging Tests]]). Disabled this option by setting this attribute to “true”.<br/>
+        <td>By default, the debugger is configured to step through the generated code. This helps you debug your feature files and bindings (see [Debugging Tests]()). Disabled this option by setting this attribute to “true”.<br/>
             <b>Default:</b> false</td>
     </tr>
     <tr>
         <td>allowRowTests</td>
         <td>true|false</td>
-        <td>Determines whether "row tests" should be generated for [[scenario outlines|Using Gherkin Language in SpecFlow]]. This setting is ignored if the [[unit test framework|Unit Test Providers]] does not support row based testing.<br/>
+        <td>Determines whether "row tests" should be generated for [scenario outlines|Using Gherkin Language in SpecFlow](). This setting is ignored if the [unit test framework|Unit Test Providers]() does not support row based testing.<br/>
             <b>Default:</b> true</td>
     </tr>
     <tr>
         <td>generateAsyncTests</td>
         <td>true|false</td>
-        <td>Determines whether the generated tests should support [[testing asynchronous code|Testing Silverlight Asynchronous Code]]. This setting is currently only supported for the Silverlight platform.<br/>
+        <td>Determines whether the generated tests should support [testing asynchronous code|Testing Silverlight Asynchronous Code](). This setting is currently only supported for the Silverlight platform.<br/>
             <b>Default:</b> false</td>
     </tr>
     <tr>
         <td>path</td>
         <td>path relative to the project folder</td>
-        <td>Specifies the custom folder of the SpecFlow generator to be used if it is not in the standard path search list. See [[Setup SpecFlow Projects]] for details.<br/>
+        <td>Specifies the custom folder of the SpecFlow generator to be used if it is not in the standard path search list. See [Setup SpecFlow Projects]() for details.<br/>
             <b>Default:</b> not specified</td>
     </tr>
     <tr>
         <td>dependencies</td>
         <td>custom dependencies</td>
-        <td>Specifies the custom dependencies for the SpecFlow generator. See [[Plugins]] for details.<br/>
+        <td>Specifies the custom dependencies for the SpecFlow generator. See [Plugins]() for details.<br/>
             <b>Default:</b> not specified</td>
     </tr>
 </table>
@@ -253,7 +253,7 @@ Use this section to specify various test execution options.
     <tr>
         <td>dependencies</td>
         <td>custom dependencies</td>
-        <td>Specifies custom dependencies for the SpecFlow runtime. See [[Plugins]] for details.<br/>
+        <td>Specifies custom dependencies for the SpecFlow runtime. See [Plugins]() for details.<br/>
             <b>Default:</b> not specified</td>
     </tr>
     <tr>
@@ -265,7 +265,7 @@ Use this section to specify various test execution options.
     <tr>
         <td>missingOrPendingStepsOutcome</td>
         <td>Inconclusive|<br/>Ignore|<br/>Error</td>
-        <td>Determines how SpecFlow behaves if a step binding is not implemented or pending. See [[Missing, Pending or Improperly Configured Bindings|Test Result]].<br/>
+        <td>Determines how SpecFlow behaves if a step binding is not implemented or pending. See [Missing, Pending or Improperly Configured Bindings|Test Result]().<br/>
             <b>Default:</b> Inconclusive</td>
     </tr>
     <tr>
@@ -313,19 +313,19 @@ Use this section to determine the SpecFlow trace output.
     <tr>
         <td>stepDefinitionSkeletonStyle</td>
         <td>RegexAttribute|<br/>MethodNameUnderscores|<br/>MethodNamePascalCase|<br/>MethodNameRegex</td>
-        <td>Specifies the default [[step definition style|Step Definition Styles]].<br/>
+        <td>Specifies the default [step definition style|Step Definition Styles]().<br/>
             <b>Default:</b> RegexAttribute</td>
     </tr>
     <tr>
         <td>Listener</td>
         <td>class name</td>
-        <td>Legacy option, unsupported from v2.0. Use [[<code>&lt;plugins&gt;</code>|Plugins]] instead.</td>
+        <td>Legacy option, unsupported from v2.0. Use [<code>&lt;plugins&gt;</code>|Plugins]() instead.</td>
     </tr>
 </table>
 
 #### `<stepAssemblies>`
 
-This section can be used to configure additional assemblies that contain [[external binding assemblies|Use Bindings from External Assemblies]]. The assembly of the SpecFlow project (the project containing the feature files) is automatically included. The binding assemblies must be placed in the output folder (e.g. bin/Debug) of the SpecFlow project, for example by adding a reference to the assembly from the project. 
+This section can be used to configure additional assemblies that contain [external binding assemblies|Use Bindings from External Assemblies](). The assembly of the SpecFlow project (the project containing the feature files) is automatically included. The binding assemblies must be placed in the output folder (e.g. bin/Debug) of the SpecFlow project, for example by adding a reference to the assembly from the project. 
 
 The following example registers an additional binding assembly (MySharedBindings.dll). 
 
@@ -365,7 +365,7 @@ The `<stepAssemblies>` can contain multiple `<stepAssembly>` elements (one for e
 
 #### `<plugins>`
 
-This section can be used to configure plugins that contain customisations. See [[Plugins]] for more details.
+This section can be used to configure plugins that contain customisations. See [Plugins]() for more details.
 
 ```xml
 <specFlow>
@@ -391,7 +391,7 @@ The `<plugins>` element can contain multiple `<add>` elements (one for each plug
     <tr>
         <td>path</td>
         <td>path relative to the project folder</td>
-        <td>Specifies the custom folder of the SpecFlow plugin to be used if it is not in the standard path search list. See [[Plugins]] for details.<br/>
+        <td>Specifies the custom folder of the SpecFlow plugin to be used if it is not in the standard path search list. See [Plugins]() for details.<br/>
             <b>Default:</b> not specified</td>
     </tr>
     <tr>
