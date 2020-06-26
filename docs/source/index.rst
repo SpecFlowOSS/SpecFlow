@@ -21,53 +21,98 @@ Indices and tables
    :caption: Installation
    :hidden:
 
-   Installation/index
+   Installation/Installation.md 
+   Installation/Install-IDE-Integration.md
+   Installation/NuGet-Packages.md
+   Installation/Project-and-Item-Templates.md
+   Installation/Advanced-Project-Setup.md
+   Installation/Troubleshooting-Visual-Studio-Integration.md
+   Installation/.NET-Support.md
+   Installation/Unit Test Providers.md
+   Installation/Breaking Changes with SpecFlow 3.0.md
+
 
 .. toctree::
    :maxdepth: 1
    :caption: Configuration
    :hidden:
 
-   Configuration/index
+   Configuration/Configuration.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Bindings
    :hidden:
 
-   Bindings/index
+   Bindings/Bindings.md
+   Bindings/Step Definitions.md
+   Bindings/Scoped Step Definitions.md
+   Bindings/Asynchronous Bindings.md
+
+   Bindings/Hooks.md
+
+   Bindings/Sharing Data between Bindings.md
+   Bindings/Context-Injection.md
+   Bindings/ScenarioContext.md
+   Bindings/FeatureContext.md
+   Bindings/Calling-Steps-from-Step-Definitions.md
+
+   Bindings/Step Argument Transformations.md
+   Bindings/Step Argument Conversions.md
+
+   Bindings/Use Bindings from External Assemblies.md
+
+   Bindings/Renaming-Steps.md
+   Bindings/SpecFlow-Assist-Helpers.md
+   Bindings/FSharp-Support.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Gherkin
    :hidden:
 
-   Gherkin/index
+   Gherkin/Using Gherkin Language in SpecFlow.md
+   Gherkin/Feature Language.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Execution
    :hidden:
 
-   Execution/index
+   Execution/Executing SpecFlow Scenarios.md
+   Execution/Test Results.md
+   Execution/Parallel-Execution.md
+   Execution/Debugging.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Tools
    :hidden:
 
-   Tools/index
+   Tools/Tools.md
+   Tools/Generate Tests From MsBuild.md
+   Tools/Visual Studio Integration.md
+   Tools/Visual-Studio-Integration-Editing-Features.md
+   Tools/Visual-Studio-Integration-Navigation-Features.md
+   Tools/Visual-Studio-Test-Explorer-Support.md
+   Tools/Reporting.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Enhance SpecFlow
    :hidden:
 
-   Enhance/index
+   Enhance/Writing Plugins for SpecFlow 3.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Developing on SpecFlow
    :hidden:
 
-   DevelopingOnSpecFlow/index
+   DevelopingOnSpecFlow/Prerequisite.md
+   DevelopingOnSpecFlow/LocalSetup.md
+   DevelopingOnSpecFlow/Definition of Terms.md
+   DevelopingOnSpecFlow/Projects.md
+   DevelopingOnSpecFlow/SpecialFiles.md
+   DevelopingOnSpecFlow/potentialProblems.md
+   DevelopingOnSpecFlow/Coding Style.md

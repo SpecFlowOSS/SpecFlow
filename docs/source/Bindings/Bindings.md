@@ -1,28 +1,4 @@
-.. toctree::
-    :maxdepth: 1
-    :hidden:
-    :name: bindings
-
-    Step Definitions.md
-    Scoped Step Definitions.md
-    Asynchronous Bindings.md
-    
-    Hooks.md
-    
-    Sharing Data between Bindings.md
-    Context-Injection.md
-    ScenarioContext.md
-    FeatureContext.md
-    Calling-Steps-from-Step-Definitions.md
-
-    Step Argument Transformations.md
-    Step Argument Conversions.md
-
-    Use Bindings from External Assemblies.md
-
-    Renaming-Steps.md
-    SpecFlow-Assist-Helpers.md
-    FSharp-Support.md
+# Bindings
 
 The [[Gherkin feature files|Using Gherkin Language in SpecFlow]] are closer to free-text than to code – they cannot be executed as they are. The automation that connects the specification to the application interface has to be developed first. The automation that connects the Gherkin specifications to source code is called a _binding_. The binding classes and methods can be defined in the SpecFlow project or in [[external binding assemblies|Use Bindings from External Assemblies]].
 
