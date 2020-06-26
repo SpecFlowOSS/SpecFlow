@@ -1,6 +1,6 @@
 # Project and Item Templates
 
-**Note:** The [.NET Core SDK|https://dotnet.microsoft.com/download]() must be installed to use project templates.
+**Note:** The [.NET Core SDK](https://dotnet.microsoft.com/download) must be installed to use project templates.
 
 ## Installing the Project Template
 

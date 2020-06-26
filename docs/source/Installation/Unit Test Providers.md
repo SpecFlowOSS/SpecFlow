@@ -1,8 +1,8 @@
 # Unit Test Providers
 
-**Note:** This information only applies to Full Framework projects using the `app.config` file to configure SpecFlow. For .NET Core and projects using `specflow.json` to configure SpecFlow, you need to add a NuGet package to your project to determine your unit test provider, see [SpecFlow-and-.NET-Core](),
+**Note:** This information only applies to Full Framework projects using the `app.config` file to configure SpecFlow. For .NET Core and projects using `specflow.json` to configure SpecFlow, you need to add a NuGet package to your project to determine your unit test provider, see [SpecFlow-and-.NET-Core](SpecFlow-and-.NET-Core.md),
 
-SpecFlow supports several unit test framework you can use to execute your tests. In addition to using the built-in unit test providers, you can also create a custom provider. Use the [&lt;unitTestProvider&gt;|Configuration]() configuration element in your `app.config` file to specify which unit test provider you want to use.
+SpecFlow supports several unit test framework you can use to execute your tests. In addition to using the built-in unit test providers, you can also create a custom provider. Use the [&lt;unitTestProvider&gt;](../Configuration/Configuration.md) configuration element in your `app.config` file to specify which unit test provider you want to use.
 
 The following table contains the built-in unit test providers.
 
@@ -22,14 +22,14 @@ The following table contains the built-in unit test providers.
         <td>+</td>
         <td>+</td>
         <td>+</td>
-        <td>[SpecFlow+ Runner|http://www.specflow.org/plus/runner/]() is a dedicated test execution framework for SpecFlow. Install it with the SpecRun.SpecFlow NuGet package. See [SpecRun Integration]() for details.</td>
+        <td>[SpecFlow+ Runner](http://www.specflow.org/plus/runner/) is a dedicated test execution framework for SpecFlow. Install it with the SpecRun.SpecFlow NuGet package. See [SpecRun Integration]() for details.</td>
     </tr>
     <tr>
         <td>NUnit</td>
         <td>+</td>
         <td>+</td>
         <td>+</td>
-        <td>See [http://www.nunit.org](). Specialized [NuGet packages|NuGet Integration]() available for easy setup: SpecFlow.NUnit, SpecFlow.NUnit.Runners. Supports parallel execution with NUnit v3. </td>
+        <td>See [http://www.nunit.org](http://www.nunit.org). Specialized [NuGet packages](NuGet-Packages.md) available for easy setup: SpecFlow.NUnit, SpecFlow.NUnit.Runners. Supports parallel execution with NUnit v3. </td>
     </tr>
     <tr>
         <td>MsTest.2008</td>

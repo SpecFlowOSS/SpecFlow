@@ -25,7 +25,6 @@ Indices and tables
    Installation/Install-IDE-Integration.md
    Installation/NuGet-Packages.md
    Installation/Project-and-Item-Templates.md
-   Installation/Advanced-Project-Setup.md
    Installation/Troubleshooting-Visual-Studio-Integration.md
    Installation/.NET-Support.md
    Installation/Unit Test Providers.md
@@ -71,16 +70,16 @@ Indices and tables
    :caption: Gherkin
    :hidden:
 
-   Gherkin/Using Gherkin Language in SpecFlow.md
-   Gherkin/Feature Language.md
+   Gherkin/Using-Gherkin-Language-in-SpecFlow.md
+   Gherkin/Feature-Language.md
 
 .. toctree::
    :maxdepth: 1
    :caption: Execution
    :hidden:
 
-   Execution/Executing SpecFlow Scenarios.md
-   Execution/Test Results.md
+   Execution/Executing-SpecFlow-Scenarios.md
+   Execution/Test-Results.md
    Execution/Parallel-Execution.md
    Execution/Debugging.md
 
@@ -91,7 +90,7 @@ Indices and tables
 
    Tools/Tools.md
    Tools/Generate Tests From MsBuild.md
-   Tools/Visual Studio Integration.md
+   Tools/Visual-Studio-Integration.md
    Tools/Visual-Studio-Integration-Editing-Features.md
    Tools/Visual-Studio-Integration-Navigation-Features.md
    Tools/Visual-Studio-Test-Explorer-Support.md
@@ -102,7 +101,10 @@ Indices and tables
    :caption: Enhance SpecFlow
    :hidden:
 
-   Enhance/Writing Plugins for SpecFlow 3.md
+   Enhance/Plugins.md
+   Enhance/Plugins-(Legacy).md
+   Enhance/Available-Plugins.md
+   Enhance/Available-Containers-&-Registrations.md
 
 .. toctree::
    :maxdepth: 1
