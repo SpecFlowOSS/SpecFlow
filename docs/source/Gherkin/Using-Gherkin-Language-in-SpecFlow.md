@@ -1,6 +1,6 @@
 # Using Gherkin Language In SpecFlow
 
-The feature files used by SpecFlow to specify acceptance criteria for features (use cases, user stories) in your application are defined using the Gherkin syntax. The Gherkin language defines the structure and a basic syntax for describing tests. The Gherkin format was introduced by [Cucumber](http://cucumber.io/) and is also used by other tools. 
+The feature files used by SpecFlow to specify acceptance criteria for features (use cases, user stories) in your application are defined using the Gherkin syntax. The Gherkin language defines the structure and a basic syntax for describing tests. The Gherkin format was introduced by [Cucumber](http://cucumber.io/) and is also used by other tools.  
 
 The Gherkin language is maintained as a separate project [on GitHub](https://github.com/cucumber/cucumber/tree/master/gherkin). A detailed description of the language can be found [here](https://cucumber.io/docs/gherkin/reference/).
 
@@ -30,31 +30,31 @@ More details can be found [here](https://cucumber.io/docs/gherkin/reference/#ste
 
 SpecFlow generates a call inside the unit test method for each scenario step. The call is performed by the SpecFlow runtime that will execute the step definition matching to the scenario step. The matching is done at runtime, so the generated tests can be compiled and executed even if the binding is not yet implemented. Read more about execution of test before the binding has been implemented: [Missing, Pending or Improperly Configured Bindings](Execution/Test-Result.md).
 
-The scenario steps are primary way to execute any custom code to automate the application. You can read more about the different bindings in the [Bindings]() page.
+The scenario steps are primary way to execute any custom code to automate the application. You can read more about the different bindings in the [Bindings) page.
 
 ## Table and multi-line text arguments
-You can include tables and multi-line arguments in scenario steps. These are used by the [step definitions]() and are either passed as additional `Table` or `string` arguments.
+You can include tables and multi-line arguments in scenario steps. These are used by the [step definitions](../Bindings/Step-Definitions.md) and are either passed as additional `Table` or `string` arguments.
 
-More details can be found [here|https://cucumber.io/docs/gherkin/reference/#step-arguments]().
+More details can be found [here](https://cucumber.io/docs/gherkin/reference/#step-arguments).
 
 ## Tags
-Tags are markers that can be assigned to features and scenarios. Assigning a tag to a feature is equivalent to assigning the tag to all scenarios in the feature file. More details can be found [here|https://cucumber.io/docs/cucumber/api/#tags]().
+Tags are markers that can be assigned to features and scenarios. Assigning a tag to a feature is equivalent to assigning the tag to all scenarios in the feature file. More details can be found [here](https://cucumber.io/docs/cucumber/api/#tags).
 
-If supported by the [unit test framework|Unit Test Providers](), SpecFlow generates categories from the tags. The generated category name is the same as the tag's name, but without the leading `@`. You can filter and group the tests to be executed using these unit test categories. For example, you can tag crucial tests with `@important`, and then execute these tests more frequently.
+If supported by the [unit test framework](Unit Test Providers), SpecFlow generates categories from the tags. The generated category name is the same as the tag's name, but without the leading `@`. You can filter and group the tests to be executed using these unit test categories. For example, you can tag crucial tests with `@important`, and then execute these tests more frequently.
 
-If your unit test framework does not support categories, you can still use tags to implement special logic for tagged scenarios in [hooks](), [scoped bindings]() or step definitions by querying the `ScenarioContext.Current.ScenarioInfo.Tags` property.
+If your unit test framework does not support categories, you can still use tags to implement special logic for tagged scenarios in [hooks), [scoped bindings) or step definitions by querying the `ScenarioContext.Current.ScenarioInfo.Tags` property.
 
-SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test|Test-result#ignored-tests]() method from scenarios with this tag.
+SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test](Test-result#ignored-tests) method from scenarios with this tag.
 
 ## Background
-The background language element allows specifying a common precondition for all scenarios in a feature file. The background part of the file can contain one or more scenario steps that are executed before any other steps of the scenarios. More details can be found [here|https://cucumber.io/docs/gherkin/reference/#background]().
+The background language element allows specifying a common precondition for all scenarios in a feature file. The background part of the file can contain one or more scenario steps that are executed before any other steps of the scenarios. More details can be found [here](https://cucumber.io/docs/gherkin/reference/#background).
 
 SpecFlow generates a method from the background elements that is invoked from all unit tests generated for the scenarios.
 
 ## Scenario Outlines
-Scenario outlines can be used to define data-driven acceptance tests. They can be also seen as scenario templates. The scenario outline always consists of a scenario template specification (a scenario with data placeholders using the `'<placeholder>'` syntax) and a set of examples that provide values for the placeholders. More details can be found [here|https://cucumber.io/docs/gherkin/reference/#scenario-outline](). Note that placing single quotation marks (') around placeholders (e.g. `'<placeholder>'` ) is not mandatory according to the Gherkin language, but helps to improve SpecFlow's ability to parse the scenario outline and generate more accurate regular expressions and test method signatures.
+Scenario outlines can be used to define data-driven acceptance tests. They can be also seen as scenario templates. The scenario outline always consists of a scenario template specification (a scenario with data placeholders using the `'<placeholder>'` syntax) and a set of examples that provide values for the placeholders. More details can be found [here](https://cucumber.io/docs/gherkin/reference/#scenario-outline). Note that placing single quotation marks (') around placeholders (e.g. `'<placeholder>'` ) is not mandatory according to the Gherkin language, but helps to improve SpecFlow's ability to parse the scenario outline and generate more accurate regular expressions and test method signatures.
 
-If the [unit test framework|Unit Test Providers]() supports it, SpecFlow generates row based tests from scenario outlines. Otherwise it generates a parameterized unit test logic method for a scenario outline and an individual unit test method for each example set. 
+If the [unit test framework](Unit Test Providers) supports it, SpecFlow generates row based tests from scenario outlines. Otherwise it generates a parameterized unit test logic method for a scenario outline and an individual unit test method for each example set. 
 
 For better traceability, the generated unit test method names are derived from the scenario outline title and the first value of the examples (first column of the examples table). It is therefore good practice to choose a unique and descriptive parameter as the first column in the example set. As the Gherkin syntax does not require all example columns to have matching placeholders in the scenario outline, you can even introduce an arbitrary column in the example sets used to name tests with more readability. 
 

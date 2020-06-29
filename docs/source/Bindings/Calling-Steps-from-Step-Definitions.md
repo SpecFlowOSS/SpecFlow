@@ -2,7 +2,7 @@
 
 **Note: This feature will be deprecated with SpecFlow 3.1 and removed in a future version (probably 4.0).**
 
-It is possible to call steps from within [Step Definitions](Step%20Definitions.md):
+It is possible to call steps from within [Step Definitions](Step Definitions.md):
 
 ``` csharp
 [Binding]
@@ -59,7 +59,7 @@ Scenario: View last incidents
 
 ## Calling steps with multiline step arguments  
 
-Sometimes you want to call a step that has been designed to take [Multiline Step Arguments](../Gherkin/Using%20Gherkin%20Language%20in%20SpecFlow.md), for example:
+Sometimes you want to call a step that has been designed to take [Multiline Step Arguments](../Gherkin/Using Gherkin Language in SpecFlow.md), for example:
 
 ### Tables
 

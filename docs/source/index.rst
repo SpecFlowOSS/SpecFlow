@@ -27,8 +27,8 @@ Indices and tables
    Installation/Project-and-Item-Templates.md
    Installation/Troubleshooting-Visual-Studio-Integration.md
    Installation/.NET-Support.md
-   Installation/Unit Test Providers.md
-   Installation/Breaking Changes with SpecFlow 3.0.md
+   Installation/Unit-Test-Providers.md
+   Installation/Breaking-Changes-with-SpecFlow-3.0.md
 
 
 .. toctree::
@@ -44,22 +44,22 @@ Indices and tables
    :hidden:
 
    Bindings/Bindings.md
-   Bindings/Step Definitions.md
-   Bindings/Scoped Step Definitions.md
-   Bindings/Asynchronous Bindings.md
+   Bindings/Step-Definitions.md
+   Bindings/Scoped-Step-Definitions.md
+   Bindings/Asynchronous-Bindings.md
 
    Bindings/Hooks.md
 
-   Bindings/Sharing Data between Bindings.md
+   Bindings/Sharing-Data-between-Bindings.md
    Bindings/Context-Injection.md
    Bindings/ScenarioContext.md
    Bindings/FeatureContext.md
    Bindings/Calling-Steps-from-Step-Definitions.md
 
-   Bindings/Step Argument Transformations.md
-   Bindings/Step Argument Conversions.md
+   Bindings/Step-Argument-Transformations.md
+   Bindings/Step-Argument-Conversions.md
 
-   Bindings/Use Bindings from External Assemblies.md
+   Bindings/Use-Bindings-from-External-Assemblies.md
 
    Bindings/Renaming-Steps.md
    Bindings/SpecFlow-Assist-Helpers.md
@@ -89,7 +89,7 @@ Indices and tables
    :hidden:
 
    Tools/Tools.md
-   Tools/Generate Tests From MsBuild.md
+   Tools/Generate-Tests-From-MsBuild.md
    Tools/Visual-Studio-Integration.md
    Tools/Visual-Studio-Integration-Editing-Features.md
    Tools/Visual-Studio-Integration-Navigation-Features.md
@@ -113,8 +113,8 @@ Indices and tables
 
    DevelopingOnSpecFlow/Prerequisite.md
    DevelopingOnSpecFlow/LocalSetup.md
-   DevelopingOnSpecFlow/Definition of Terms.md
+   DevelopingOnSpecFlow/Definition-of-Terms.md
    DevelopingOnSpecFlow/Projects.md
    DevelopingOnSpecFlow/SpecialFiles.md
    DevelopingOnSpecFlow/potentialProblems.md
-   DevelopingOnSpecFlow/Coding Style.md
+   DevelopingOnSpecFlow/Coding-Style.md
