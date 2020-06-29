@@ -1,8 +1,8 @@
 # Step Argument Conversions
 
-[Step bindings]() can use parameters to make them reusable for similar steps. The parameters are taken from either the step's text or from the values in additional examples. These arguments are provided as either strings or `TechTalk.SpecFlow.Table` instances.
+[Step bindings](Step-Definitions.md) can use parameters to make them reusable for similar steps. The parameters are taken from either the step's text or from the values in additional examples. These arguments are provided as either strings or `TechTalk.SpecFlow.Table` instances.
 
-To avoid cumbersome conversions in the step binding methods, SpecFlow can perform an automatic conversion from the arguments to the parameter type in the binding method. All conversions are performed using the culture of the feature file, unless the [&lt;bindingCulture&gt; element|Configuration]() is defined in your `app.config` file (see [Feature Language]()). The following conversions can be performed by SpecFlow (in the following precedence):
+To avoid cumbersome conversions in the step binding methods, SpecFlow can perform an automatic conversion from the arguments to the parameter type in the binding method. All conversions are performed using the culture of the feature file, unless the [bindingCulture element](../Configuration/Configuration.md) is defined in your `app.config` file (see [Feature Language](../Gherkin/Feature-Language.md)). The following conversions can be performed by SpecFlow (in the following precedence):
 
 * no conversion, if the argument is an instance of the parameter type (e.g. the parameter type is `object` or `string`)
 * step argument transformation

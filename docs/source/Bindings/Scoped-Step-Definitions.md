@@ -100,7 +100,7 @@ The following example shows a way to "ignore" executing the scenarios marked wit
 ```
 
 ## Beyond Scope
-You can define more complex filters using the [ScenarioContext]() class. The following example starts selenium if the scenario is tagged with `@web` _and_ `@automated`.
+You can define more complex filters using the [ScenarioContext](ScenarioContext.md) class. The following example starts selenium if the scenario is tagged with `@web` _and_ `@automated`.
 
 
 ```c#

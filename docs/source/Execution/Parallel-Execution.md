@@ -2,13 +2,13 @@
 
 SpecFlow is mainly used to drive integration test that have external dependencies and applications with complex internal architecture. Because of this, it is generally not easy to execute these tests in parallel.
 
-**Note**: This page only covers parallel execution with SpecFlow. For options when executing tests with SpecFlow+ Runner, refer to the [SpecFlow+ documentation|https://specflow.org/plus/documentation/Execution/]()
+**Note**: This page only covers parallel execution with SpecFlow. For options when executing tests with SpecFlow+ Runner, refer to the [SpecFlow+ documentation](https://specflow.org/plus/documentation/Execution/)
 
 ## Parallel Execution with Memory (AppDomain) Isolation
 
 If there are no external dependencies or they can be cloned for parallel execution, but the application architecture depends on a static state (e.g. a caches etc.), the best way is to execute tests in parallel isolated by AppDomain. This ensures that every test execution thread is hosted in a separate AppDomain and that each thread's memory (e.g. static fields) is isolated. In such scenarios, SpecFlow can be used to execute tests in parallel without any extra considerations. SpecFlow+ Runner supports parallel execution with AppDomain, SharedAppDomain and Process isolation.
 
-**Note:** The `[BeforeTestRun]` and `[AfterTestRun]` hooks are executed for each individual test execution thread (AppDomain), so you can use them to initialize/reset shared memory. 
+**Note:** The `[BeforeTestRun]` and `[AfterTestRun]` hooks are executed for each individual test execution thread (AppDomain), so you can use them to initialize/reset shared memory.  
 
 ## Parallel Execution Without Memory Isolation
 

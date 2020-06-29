@@ -1,13 +1,12 @@
-Configuration
-=============
+# Configuration
 
 SpecFlow's behaviour can be configured extensively. How to configure SpecFlow depends on the version of SpecFlow you are using. 
 
-### SpecFlow 2.x
+## SpecFlow 2.x
 
 SpecFlow 2 is configured in your standard .NET configuration file, `app.config`, which is automatically added to your project. This method is not supported by .NET Core, and SpecFlow 2 does not include .NET Core support.
 
-### SpecFlow 3.x
+## SpecFlow 3.x
 
 The configuration has been moved to a JSON file, `specflow.json`. This file is mandatory for .NET Core projects, and optional for projects using the Full Framework. When using the Full Framework, you can still use the `app.config` file, as with earlier versions of SpecFlow, or `specflow.json`. If both the `specflow.json` and `app.config` files are available in a Full Framework project, `specflow.json` takes precedence. 
 
@@ -47,7 +46,7 @@ The following 2 examples show the same option defined in the `app.config` in `sp
 }
 ```
 
-You can find more examples in the [sample projects|https://github.com/techtalk/SpecFlow-Examples]() for SpecFlow.
+You can find more examples in the [sample projects](https://github.com/techtalk/SpecFlow-Examples) for SpecFlow.
 
 ## Default Configuration
 
@@ -76,14 +75,13 @@ SpecFlow 2 is configured using the `app.config` file (Full Framework only). Ente
   </specFlow>
 ```
 
-
 ## Configuration Elements
 
 The same configuration elements are available in both the XML (`app.config`) and JSON (`specflow.json`) formats.
 
-#### `<language>`
+### `<language>`
 
-Use this section to define the default language for feature files and other language-related settings. For more details on language settings, see [Feature Language]().
+Use this section to define the default language for feature files and other language-related settings. For more details on language settings, see [Feature Language](../Gherkin/Feature-Language.md).
 
 <table>
     <tr>
@@ -105,9 +103,9 @@ Use this section to define the default language for feature files and other lang
     </tr>
 </table>
 
-#### `<bindingCulture>`
+### `<bindingCulture>`
 
-Use this section to define the culture for executing binding methods and converting step arguments. For more details on language settings, see [Feature Language]().
+Use this section to define the culture for executing binding methods and converting step arguments. For more details on language settings, see [Feature Language](../Gherkin/Feature-Language.md).
 
 <table>
     <tr>
@@ -123,9 +121,9 @@ Use this section to define the culture for executing binding methods and convert
     </tr>
 </table>
 
-#### `<unitTestProvider>` (**Legacy option: Full Framework and app.config only!**)
+### `<unitTestProvider>` (**Legacy option: Full Framework and app.config only!**)
 
-**Note:** If you are using `specflow.json` to configure SpecFlow, this option is unavailable. See [SpecFlow and .NET Core]() for information on adding the NuGet packages required to configure your unit test provider in this case.
+**Note:** This option was removed with SpecFlow 3.0
 
 Use this section to specify the unit test framework used by SpecFlow to execute acceptance criteria. You can either use one of the built-in unit test providers or you can specify the classes that implement custom unit test providers.
 
@@ -198,7 +196,7 @@ The following lists all supported providers with their name and generator provid
 
 
 
-#### `<generator>`
+### `<generator>`
 
 Use this section to define unit test generation options.
 
@@ -240,7 +238,7 @@ Use this section to define unit test generation options.
     </tr>
 </table>
 
-#### `<runtime>`
+### `<runtime>`
 
 Use this section to specify various test execution options.
 
@@ -282,7 +280,7 @@ Use this section to specify various test execution options.
     </tr>
 </table>
 
-#### `<trace>`
+### `<trace>`
 
 Use this section to determine the SpecFlow trace output.
 
@@ -323,9 +321,9 @@ Use this section to determine the SpecFlow trace output.
     </tr>
 </table>
 
-#### `<stepAssemblies>`
+### `<stepAssemblies>`
 
-This section can be used to configure additional assemblies that contain [external binding assemblies|Use Bindings from External Assemblies](). The assembly of the SpecFlow project (the project containing the feature files) is automatically included. The binding assemblies must be placed in the output folder (e.g. bin/Debug) of the SpecFlow project, for example by adding a reference to the assembly from the project. 
+This section can be used to configure additional assemblies that contain [external binding assemblies](../Bindings/Use-Bindings-from-External-Assemblies.md). The assembly of the SpecFlow project (the project containing the feature files) is automatically included. The binding assemblies must be placed in the output folder (e.g. bin/Debug) of the SpecFlow project, for example by adding a reference to the assembly from the project. 
 
 The following example registers an additional binding assembly (MySharedBindings.dll). 
 
@@ -365,7 +363,7 @@ The `<stepAssemblies>` can contain multiple `<stepAssembly>` elements (one for e
 
 #### `<plugins>`
 
-This section can be used to configure plugins that contain customisations. See [Plugins]() for more details.
+This section can be used to configure plugins that contain customisations. See [Plugins](../Enhance/Plugins.md) for more details.
 
 ```xml
 <specFlow>

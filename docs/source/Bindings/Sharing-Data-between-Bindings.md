@@ -4,7 +4,7 @@ In many cases, different bindings need to exchange data during execution. SpecFl
 
 ## Instance Fields
 
-If the binding is an instance method, SpecFlow creates a new instance of the containing class for every scenario execution. Following the [entity-based step organization rule|https://github.com/cucumber/cucumber/wiki/Step-Organisation](), defining instance fields in the binding classes is an efficient way of sharing data between different steps of the same scenario that are related to the same entity. 
+If the binding is an instance method, SpecFlow creates a new instance of the containing class for every scenario execution. Following the [entity-based step organization rule](https://github.com/cucumber/cucumber/wiki/Step-Organisation), defining instance fields in the binding classes is an efficient way of sharing data between different steps of the same scenario that are related to the same entity. 
 
 The following example saves the result of the MVC action to an instance field in order to make assertions for it in a "then" step.
 
@@ -34,7 +34,7 @@ public class SearchSteps
 
 SpecFlow supports a very simple dependency framework that is able to instantiate and inject class instances for the scenarios. With this feature you can group the shared state to context-classes, and inject them into every binding class that is interested in that shared state.
 
-See more about this feature in the [Context Injection]() page.
+See more about this feature in the [Context Injection](Context-Injection.md) page.
 
 The following example defines a context class to store referred books. The context class is injected to a binding class.
 
@@ -75,12 +75,12 @@ public class BookSteps
 
 SpecFlow provides two context instances. 
 
-The [ScenarioContext]() is created for each individual scenario execution and it is disposed when the scenario execution has been finished. The [ScenarioContext.Current]() instance can be used as a property bag to store and retrieve data. See [ScenarioContext.Current]() for more details and examples. 
+The [ScenarioContext](ScenarioContext.md) is created for each individual scenario execution and it is disposed when the scenario execution has been finished.
 
-The [FeatureContext]() is created when the first scenario is executed from a feature and disposed when the execution of the feature's scenarios ends. In the rare case, when you need to preserve state in the context of a feature, the `FeatureContext.Current` instance can be used as a property bag. See [FeatureContext]() for more details and examples. 
+The [FeatureContext](FeatureContext.md) is created when the first scenario is executed from a feature and disposed when the execution of the feature's scenarios ends. In the rare case, when you need to preserve state in the context of a feature, the `FeatureContext.Current` instance can be used as a property bag. 
 
 ## Static Fields
 
 Generally, using static fields can cause synchronization and maintenance issues and makes the unit testability hard. As the SpecFlow tests are executed synchronously and people usually don't write unit tests for the tests itself, these arguments are just partly valid for binding codes. 
 
-In some cases sharing a state through static fields can be an efficient solution. 
+In some cases sharing a state through static fields can be an efficient solution.

@@ -28,7 +28,7 @@ Scenario steps are defined using text and can have additional table (called `Dat
 
 More details can be found [here](https://cucumber.io/docs/gherkin/reference/#steps).
 
-SpecFlow generates a call inside the unit test method for each scenario step. The call is performed by the SpecFlow runtime that will execute the step definition matching to the scenario step. The matching is done at runtime, so the generated tests can be compiled and executed even if the binding is not yet implemented. Read more about execution of test before the binding has been implemented: [Missing, Pending or Improperly Configured Bindings](Execution/Test-Result.md).
+SpecFlow generates a call inside the unit test method for each scenario step. The call is performed by the SpecFlow runtime that will execute the step definition matching to the scenario step. The matching is done at runtime, so the generated tests can be compiled and executed even if the binding is not yet implemented. Read more about execution of test before the binding has been implemented: [Missing, Pending or Improperly Configured Bindings](../Execution/Test-Results.md).
 
 The scenario steps are primary way to execute any custom code to automate the application. You can read more about the different bindings in the [Bindings) page.
 

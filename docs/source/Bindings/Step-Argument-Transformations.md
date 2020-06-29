@@ -39,7 +39,7 @@ public class Transforms
 }
 ```
 
-The following example transforms a table argument into a list of `Book` entities (using the [SpecFlow Assist Helpers]()). 
+The following example transforms a table argument into a list of `Book` entities (using the [SpecFlow Assist Helpers](SpecFlow-Assist-Helpers.md)).  
 
 ```c#
 [Binding]

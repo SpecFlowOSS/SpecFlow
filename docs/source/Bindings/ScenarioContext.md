@@ -8,7 +8,7 @@ You may have at least seen the ScenarioContext from the code that SpecFlow gener
 
 ### in Bindings
 
-To access the `ScenarioContext` you have to get it via [context injection]().
+To access the `ScenarioContext` you have to get it via [context injection](Context-Injection.md).
 
 Example: 
 
@@ -77,9 +77,9 @@ and the step definition:
 
 ## Storing data in the ScenarioContext
 
-[ScenarioContext]() helps you store values in a dictionary between steps. This helps you to organize your step definitions better than using private variables in step definition classes.
+ScenarioContext helps you store values in a dictionary between steps. This helps you to organize your step definitions better than using private variables in step definition classes.
 
-There are some type-safe extension methods that help you to manage the contents of the dictionary in a safer way. To do so, you need to include the namespace TechTalk.SpecFlow.Assist, since these methods are extension methods of [ScenarioContext]().
+There are some type-safe extension methods that help you to manage the contents of the dictionary in a safer way. To do so, you need to include the namespace TechTalk.SpecFlow.Assist, since these methods are extension methods of ScenarioContext.
 
 ## ScenarioContext.ScenarioInfo
 
@@ -87,16 +87,21 @@ There are some type-safe extension methods that help you to manage the contents 
 
 In the .feature file:
 
-        @showUpInScenarioInfo @andThisToo
-        Scenario: Showing information of the scenario
-	  When I execute any scenario
-	  Then the ScenarioInfo contains the following information
+``` gherkin
+    @showUpInScenarioInfo @andThisToo
+    
+    Scenario: Showing information of the scenario
+	
+    When I execute any scenario
+	Then the ScenarioInfo contains the following information
 		| Field | Value                               |
 		| Tags  | showUpInScenarioInfo, andThisToo    |
 		| Title | Showing information of the scenario |
+```
 
 and in the step definition:
 
+``` csharp
         private class ScenarioInformation
         {
             public string Title { get; set; }
@@ -123,6 +128,7 @@ and in the step definition:
                 si.Tags[i].Should().Equal(fromStep.Tags[i]);
             }
         }
+```
 
 Another use is to check if an error has occurred, which is possible with the `ScenarioContext.TestError` property, which simply returns the exception.
 
@@ -130,13 +136,17 @@ You can use this information for “error handling”. Here is an uninteresting 
 
 in the .feature file:
 
+``` gherkin
          #This is not so easy to write a scenario for but I've created an AfterScenario-hook
          @showingErrorHandling 
          Scenario: Display error information in AfterScenario
 	    When an error occurs in a step
 
+```
+
 and the step definition:
 
+``` csharp
         [When("an error occurs in a step")]
         public void AnErrorOccurs()
         {
@@ -153,10 +163,11 @@ and the step definition:
                 Console.WriteLine("It was of type:" + error.GetType().Name);
             }
         }
+```
 
 This is another example, that might be more useful:
 
-
+``` csharp
        [AfterScenario]
        public void AfterScenario()
         {
@@ -165,6 +176,7 @@ This is another example, that might be more useful:
                 WebBrowser.Driver.CaptureScreenShot(_scenarioContext.ScenarioInfo.Title);
             }
         }
+```
 
 In this case, MvcContrib is used to capture a screenshot of the failing test and name the screenshot after the title of the scenario.
 
@@ -175,14 +187,17 @@ Use `ScenarioContext.CurrentScenarioBlock` to query the “type” of step (Give
 
 in the .feature file:
 
+``` gherkin
         Scenario: Show the type of step we're currently on
 	     Given I have a Given step
 		  And I have another Given step
 	     When I have a When step
 	     Then I have a Then step
+```
 
 and the step definition:
 
+``` csharp
         [Given("I have a (.*) step")]
         [Given("I have another (.*) step")]
         [When("I have a (.*) step")]
@@ -192,6 +207,7 @@ and the step definition:
             var stepType = _scenarioContext.CurrentScenarioBlock.ToString();
             stepType.Should().Equal(expectedStepType);
         }
+```
 
 ## ScenarioContext.StepContext
 

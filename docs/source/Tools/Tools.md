@@ -51,7 +51,7 @@ The following command line regenerates unit tests for the BookShop sample applic
 specflow.exe generateall --ProjectFile BookShop.AcceptanceTests.csproj
 ```
 
-SpecFlow's `generateall` function can also be used with MSBuild, allowing you to update the files before compiling the solution. This can be particularly useful if feature files are regularly modified outside of Visual Studio. See [Generate Tests from MsBuild](Generate%20Tests%20From%20MsBuild.md) for details on configuring MSBuild to use the `generateall` function.
+SpecFlow's `generateall` function can also be used with MSBuild, allowing you to update the files before compiling the solution. This can be particularly useful if feature files are regularly modified outside of Visual Studio. See [Generate Tests from MsBuild](Generate-Tests-From-MsBuild.md) for details on configuring MSBuild to use the `generateall` function.
 
 # Generating Reports
 
