@@ -1,4 +1,4 @@
-_Editor note: We recommend reading this documentation entry at [[http://www.specflow.org/documentation/Context-Injection]]. We use the GitHub wiki for authoring the documentation pages._
+# Generating Skeleton Code
 
 You can automatically create a suitable class with skeleton bindings and methods in Visual Studio. To do so:
 
