@@ -59,3 +59,7 @@ html_logo = '_static/logo.png'
 html_css_files = [
     'css/custom.css'
 ]
+
+html_js_files = [
+    'js/hotjar.js',
+]
