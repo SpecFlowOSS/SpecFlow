@@ -7,12 +7,12 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
-set SOURCEDIR=source
-set BUILDDIR=build
+set SOURCEDIR=.
+set BUILDDIR=_build
 
 if "%1" == "" goto help
 
-del build /S /Q
+del _build /S /Q
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (

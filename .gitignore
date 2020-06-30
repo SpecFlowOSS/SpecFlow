@@ -395,4 +395,4 @@ Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs
 #Analytics
 AppInsightsInstrumentationKey.cs
 
-docs/build/*
+docs/_build/*
