@@ -1,5 +1,7 @@
-SpecFlow BookShop Example
-=========================
+# Getting Started with an example
+
+
+## SpecFlow BookShop Example
 
 This solution contains an end-to-end example to demonstrate the usage of SpecFlow with an
 [ASP.NET](https://dotnet.microsoft.com/apps/aspnet) MVC application.
@@ -7,15 +9,14 @@ The application is provided for demonstration purposes only.
 
 You can find more information about SpecFlow at [http://www.specflow.org/](http://www.specflow.org).
 
-Prerequisites to run the application
-====================================
+## Prerequisites to run the application
+
 - [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 - [Visual Studio 2019](https://www.visualstudio.com/downloads/) or [Visual Studio Code](https://code.visualstudio.com/)
 
 If you use Visual Studio 2019, please install the [SpecFlow extension](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowForVisualStudio) for Visual Studio.
 
-Setup the application
-=====================
+## Setup the application
 
 - Open the solution `BookShop.sln` in Visual Studio.
 - Set the `BookShop.Mvc` project as startup project.
@@ -38,19 +39,18 @@ The application is impemented as an ASP.NET Core MVC web application and uses En
 
 > *__Note__: To keep the setup simple the Bookshop application uses an in-memory database.*
 
-Automated SpecFlow Acceptance Tests
-===================================
+## Automated SpecFlow Acceptance Tests
 
-Feature files
--------------
+### Feature files
+
 With SpecFlow you formulate your acceptance criteria in *.feature* files in [Given-When-Then](https://specflow.org/bdd/given-when-then/) style, using the [Gherkin]((https://specflow.org/bdd/gherkin/)) language. Using SpecFlow these acceptance criteria can be validated with [Automated Acceptance Tests](https://specflow.org/bdd/automated-acceptance-tests/). 
 
 In this example the `BookShop.AcceptanceTests` project contains the feature files for the Bookshop application. These describe the implemented behaviour of the Bookshop in the form of [Features](https://specflow.org/bdd/feature-and-feature-files/) and [Scenarios](https://specflow.org/bdd/scenario/).
 
 Open the `Book Details.feature` file to see the acceptance criteria of the **Displaying book details** feature.
 
-Step defintions
----------------
+### Step defintions
+
 Step definitions are implemented as .NET code in plain old .NET classes (see the .cs files in the folder *StepDefinitions*). These step definitions (also known as "bindings") define, how the individual scenario steps should be automated.
 
 In Visual Studio you can easily navigate from the scenario steps to the step defintion that automates the step using the standard "Go To Definition" command (default hotkey: "F12"). 
@@ -58,8 +58,8 @@ In Visual Studio you can easily navigate from the scenario steps to the step def
 In the `Book Details.feature` file put the carret in the line "Given the following books" and press "F12" to jump to the step defintion of this step. You can see Given/When/Then attributes on the C# methods and a Binding attribute on the class that establish the connection between the Gherkin steps and the step definitions.
 
 
-Executable tests
-----------------
+### Executable tests
+
 When you build the solution SpecFlow generates executable tests from the acceptance criteria scenarios. The generated tests use the step definitions that you need to implement.
 
 In Visual Studio you can find the generated tests files as sub-items under each feature file (see e.g. the `Book Details.feature.cs` under the `Book Details.feature` file).
@@ -73,8 +73,7 @@ The Bookshop example project is configured to generate unit tests for SpecFlow+ 
 You could easily switch to other unit test providers (such as [NUnit](http://nunit.org/), [XUnit](https://xunit.github.io/), etc.)
 by uninstalling the current test provider NuGet package (`SpecRun.SpecFlow`) and installing another (e.g. `SpecFlow.MsTest`). However, the Bookshop example leverages some unique features of SpecFlow+ Runner, hence changing to another unit test provider would require some additional changes in the step definitions.
 
-Executing SpecFlow+ Runner the first time
-=========================================
+## Executing SpecFlow+ Runner the first time
 
 In this example we use [SpecFlow+ Runner](https://specflow.org/plus/) to execute the SpecFlow tests, but you can use a number of other test execution frameworks, including NUnit, xUnit or MSTest. SpecFlow+ Runner’s advantages include integration with Visual Studio Test Runner and extensive integrated reports available from within Visual Studio.
 
@@ -97,8 +96,8 @@ In Visual Studio you can also click the link while pressing the CTRL-key, in thi
 9.  Return to Visual Studio and click on “**Run all**” again.
 10.  The acceptance tests should all pass.
 
-Test execution report
-=====================
+## Test execution report
+
 When you execute your acceptance tests with SpecFlow+ Runner a special test execution report is generated automatically.
 
 To see the output of the SpecFlow+ Runner please open the Output window (View- > Output) and select "Tests" in the "Show output from" dropdown. 
@@ -110,13 +109,12 @@ The report contains information about the overall test results as well as a brea
 
 ![Test result with report](docs/RunnerReport.png)
 
-Automating the Bookshop application with SpecFlow
-=================================================
+## Automating the Bookshop application with SpecFlow
 
 SpecFlow is completely independent of what level or which interface of the system is automated. When you implement the step bindings you have to decide what the Given/When/Then steps should do to exercise the system and to validate the acceptance criteria. 
 
-Unit level automation
----------------------
+### Unit level automation
+
 In a project where complex business logic is encapsulated in a bunch of classes there might be even an option to validate some acceptance criteria on "unit level". This level can be also automated with SpecFlow, writing the step definitions accordingly. In this case the Given step could instantiate those classes based on the given preconditions, the When step could execute a method on those classes performing some key business logic, and the Then step could check if the result of the method call meets the expectations.  
 
 However, unit tests usually focus on implementation details far below the the abstraction level of an acceptance criterion and then it is not feasible to automate those unit tests with SpecFlow. 
@@ -124,8 +122,7 @@ However, unit tests usually focus on implementation details far below the the ab
 In the Bookshop example we added some classic unit tests in the `BookShop.UnitTest` project. These are implemented with xUnit and are NOT bound to SpecFlow scenarios.
 
 
-Controller level automation
----------------------------
+### Controller level automation
 
 The Bookshop example automates the tests directly through the Controller of the MVC web application with SpecFlow (sometimes called *automation below the skin*).
 
@@ -157,8 +154,7 @@ Finally the `Then the book details should show` step is bound to the `ThenTheBoo
 Note that the reason why these test run relatively fast is that the automation steps perfrom cheaper in-memory operations, basically working with .NET objects within a single process.
 
 
-UI level automation with Selenium
----------------------------------
+### UI level automation with Selenium
 
 Sometimes the behaviour that should be validated cannot be observed on the controller level, but only on the UI. This might range from client side javascript behavior up to server side middleware that is not executed when calling the action methods of the controller classes directly. In those cases the automation of the user interface might be a solution.
 
@@ -217,8 +213,8 @@ After each scenario step a screenshot is taken from the browser and saved into t
 
 The default report template is overridden in the `Default.srprofile` configuration in the `TestProfile/Report/Template` element. The customized `ReportTemplate.cshtml` replaces the screenshot text in the trace output  with the image link.
 
-Executing tests from the command line
-=====================================
+## Executing tests from the command line
+
 While Visual Studio provides several convenience features when working with SpecFlow (syntax coloring, navigation, integration with the Test Explorer, etc.), you can easily run the automated tests from the command line too.
 
 * Open a command line terminal where you can execute [.NET Core CLI](https://docs.microsoft.com/en-us/dotnet/core/tools/) commands
@@ -240,11 +236,11 @@ The SpecFlow+ Runner execution reports and logs are generated in the "results di
 Please consult the documentation of the [dotnet test](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test) command for further details.
 
 
-Further `dotnet test` examples
-----------------------------
+### Further `dotnet test` examples
+
 The following examples guide you through some typical questions/scenarios when running the Bookshop acceptance tests from the command line using `dotnet test`. Feel free to experiment with other combinations of parameters and consult the documentation of [dotnet test](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test).
 
-###Run all acceptance test
+#### Run all acceptance test
 * Run only the acceptance tests (and ignore the unit tests) from the root folder of the Bookshop sample
     * `dotnet test BookShop.AcceptanceTests`
         * The default `TestResults` test results directory of `dotnet test` is relative to the project, hence in this case the reports and logs are generated into the `BookShop.AccteptanceTests\TestResults` folder.
@@ -256,7 +252,7 @@ The following examples guide you through some typical questions/scenarios when r
         * This speeds up the test execution command as the build step is skipped
         * This is also useful to limit the output of the command to the test execution details
 
-###Set output details
+#### Set output details
 
 * Run with more detailed output (similar detail level like the Visual Studio output)
     * `dotnet test BookShop.AcceptanceTests --no-build -v n`
@@ -265,7 +261,7 @@ The following examples guide you through some typical questions/scenarios when r
 * Save the execution report and logs to a different folder
     * `dotnet test BookShop.AcceptanceTests -r C:\CentralTestResults\Bookshop`
 
-###Filter tests
+#### Filter tests
 Please also consult the documentation of [filter options](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details) of the `dotnet test` command for more insights. With SpecFlow+ Runner the `Name` and `TestCategory` properties can be used to filter the acceptance tests.
 
 * Run the "automated" scenarios (tagged as @automated)
