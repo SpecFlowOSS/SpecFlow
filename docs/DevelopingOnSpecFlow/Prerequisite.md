@@ -1,4 +1,4 @@
-# Dependencies
+# Prerequisite
 
 - Visual Studio 2019 or higher
     - Workloads
@@ -6,4 +6,4 @@
         - .NET desktop development
         - .NET Core cross- platform development
 - .NET Core SDK 2.1
-- .NET Core SDK 3.0
+- .NET Core SDK 3.1
