@@ -28,14 +28,14 @@ The web application should start, a new browser window should be opened, and you
 The example application is a web application, where users can search and buy BDD books.
 The implementation focuses on the first steps of the following user journey.
 
-![User Journey](docs/BookshopUserJourney.png)
+![User Journey](/_static/images/BookshopUserJourney.png)
 
 Feel free to explore the application: try to search for a book, check the details of a selected book, add it to the shopping card, manipulate the quantity.
 
 ### Architecture
 The application is impemented as an ASP.NET Core MVC web application and uses Entity Framework Core for the database access.
 
-![Bookshop Architecture](docs/BookshopArchitectureSimple.png)
+![Bookshop Architecture](/_static/images/BookshopArchitectureSimple.png)
 
 > *__Note__: To keep the setup simple the Bookshop application uses an in-memory database.*
 
@@ -85,7 +85,7 @@ SpecFlow+ Runner is available free of charge. Only a quick initial activation is
 4.  You will be asked to sign up for a [SpecFlow account](https://specflow.org/2020/introducing-the-specflow-account/) or to sign in with your existing account.  
     To see the output of the SpecFlow+ Runner please open the Output window (View- > Output) and select "Tests" in the "Show output from" dropdown:  
     
-    ![Test result with activation request](docs/RunnerVisualStudioOutputWithActivationLink.png)
+    ![Test result with activation request](/_static/images/RunnerVisualStudioOutputWithActivationLink.png)
    
 5.  Open the URL in the message in your browser. 
 In Visual Studio you can also click the link while pressing the CTRL-key, in this case Visual Studio opens the link in your default browser.
@@ -103,11 +103,11 @@ When you execute your acceptance tests with SpecFlow+ Runner a special test exec
 To see the output of the SpecFlow+ Runner please open the Output window (View- > Output) and select "Tests" in the "Show output from" dropdown. 
 The hyperlink to the HTML execution report should be shown there.
 
-![Test result with report](docs/RunnerVisualStudioOutputWithReportLink.png)
+![Test result with report](/_static/images/RunnerVisualStudioOutputWithReportLink.png)
 
 The report contains information about the overall test results as well as a break down of each individual scenario execution.
 
-![Test result with report](docs/RunnerReport.png)
+![Test result with report](/_static/images/RunnerReport.png)
 
 ## Automating the Bookshop application with SpecFlow
 
@@ -129,7 +129,7 @@ The Bookshop example automates the tests directly through the Controller of the 
 Automating below the skin provides several benefits:
 less brittle tests, less efforts for automation, better performance of the test suite.
 
-![Controller Automation](docs/BookshopControllerAutomation.png)
+![Controller Automation](/_static/images/BookshopControllerAutomation.png)
 
 #### Inside the Controller bindings
 Let's examine the scenario in `Book Details.feature` and navigate to the step definitions of the steps (shortcut "F12"). 
@@ -160,7 +160,7 @@ Sometimes the behaviour that should be validated cannot be observed on the contr
 
 In case of e2e UI automation the Given steps can open a browser with Selenium and perform the necessary preparation steps. Still, the boundaries of automation are not necessarily strict. Sometimes ensuring all preconditions through the user interface would be very hard, and it is a feasible tradeoff to manipulate the database or other underlying components directly. The When steps typically perform those key user actions on the UI that are in the focus of the scenario. And finally the Then steps can either validate the results on the UI or, again, could look into the database or internal component directly to validate the expected result.
 
-![Selenium Automation](docs/BookshopSeleniumAutomation.png)
+![Selenium Automation](/_static/images/BookshopSeleniumAutomation.png)
 
 To demonstrate this approach as well, the Bookshop example contains an alternative automation implementation for all scenarios using Selenium.
 
@@ -207,7 +207,7 @@ Notice that the phrasing of the scenarios didn't have to be changed, in order to
 #### Extended report with screenshots from the UI
 The Bookshop example extends the SpecFlow+ Runner execution report with screenshots from the user interface taken during the UI automation. This is especially useful if a UI automated scenario breaks, because the screenshot might provide an immediate clue about the root cause of the failure.
 
-![Runner report with screenshots](docs/RunnerReportWithScreenshots.png)
+![Runner report with screenshots](/_static/images/RunnerReportWithScreenshots.png)
 
 After each scenario step a screenshot is taken from the browser and saved into the output directory as a new file. For the implementation details see the `Screenshots.MakeScreenshotAfterStep` method with the `[AfterStep]` attribute. The name of the sceenshot file is written into the trace output using `Console.WriteLine`.
 
@@ -227,7 +227,7 @@ While Visual Studio provides several convenience features when working with Spec
 
 > *__Note:__ You can also skip the `dotnet build` step and run the tests immediately with `dotnet test`, because this command also (re-)builds the project. However it hides the details of the build output. We outlined the build as a separate step here as a best practice when examining a new project, because separating the steps makes the understanding of the output and potential troubleshooting easier.*
 
-![Running tests from the command line](docs/BookShopCommandLine.gif)
+![Running tests from the command line](/_static/images/BookShopCommandLine.gif)
 
 Note that if you run `dotnet test` for the entire Bookshop solution then both the unit tests and the acceptance tests are executed.
 
