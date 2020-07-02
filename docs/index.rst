@@ -25,6 +25,7 @@ Indices and tables
    :caption: Installation
    :hidden:
 
+   Installation/Requirements.md
    Installation/Installation.md 
    Installation/Install-IDE-Integration.md
    Installation/NuGet-Packages.md
