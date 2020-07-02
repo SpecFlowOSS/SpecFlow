@@ -1,20 +1,27 @@
 # Getting Started with an example
 
-
-## SpecFlow BookShop Example
-
-This solution contains an end-to-end example to demonstrate the usage of SpecFlow with an
-[ASP.NET](https://dotnet.microsoft.com/apps/aspnet) MVC application.
-The application is provided for demonstration purposes only. 
-
-You can find more information about SpecFlow at [http://www.specflow.org/](http://www.specflow.org).
+Follow our step by step guide to get started, learn, explore and experiment with a simple web application project using SpecFlow and the SpecFlow+ Runner.
 
 ## Prerequisites to run the application
 
 - [.NET Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)
-- [Visual Studio 2019](https://www.visualstudio.com/downloads/) or [Visual Studio Code](https://code.visualstudio.com/)
+- [Visual Studio 2019](https://www.visualstudio.com/downloads/) or [Visual Studio Code](https://code.visualstudio.com/) is recommended
 
 If you use Visual Studio 2019, please install the [SpecFlow extension](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowForVisualStudio) for Visual Studio.
+
+## Get the BookShop Example
+
+The SpecFlow sample applications are publicly available in the [SpecFlow-Examples](https://github.com/SpecFlowOSS/SpecFlow-Examples) GitHub repository.
+
+You can clone the repository in Visual Studio 2019 by selecting the "Clone a repository" option on the start screen. Use the GitHub URL `https://github.com/SpecFlowOSS/SpecFlow-Examples.git` as repository location.
+
+Alternatively you can clone the repository from the command line:
+```
+git clone https://github.com/SpecFlowOSS/SpecFlow-Examples.git
+```
+
+This guide will walk you through the **BookShop example** that you can find **in the `ASP.NET-MVC/BookShop` folder**.
+
 
 ## Setup the application
 
@@ -24,7 +31,7 @@ If you use Visual Studio 2019, please install the [SpecFlow extension](https://m
 
 The web application should start, a new browser window should be opened, and you should see a list of books on the start page of the app.
 
-### Book shop
+### Book shop application
 The example application is a web application, where users can search and buy BDD books.
 The implementation focuses on the first steps of the following user journey.
 
@@ -33,7 +40,7 @@ The implementation focuses on the first steps of the following user journey.
 Feel free to explore the application: try to search for a book, check the details of a selected book, add it to the shopping card, manipulate the quantity.
 
 ### Architecture
-The application is impemented as an ASP.NET Core MVC web application and uses Entity Framework Core for the database access.
+The application is impemented as an ASP.NET Core MVC web application and it uses Entity Framework Core for the database access.
 
 ![Bookshop Architecture](/_static/images/BookshopArchitectureSimple.png)
 
@@ -43,7 +50,7 @@ The application is impemented as an ASP.NET Core MVC web application and uses En
 
 ### Feature files
 
-With SpecFlow you formulate your acceptance criteria in *.feature* files in [Given-When-Then](https://specflow.org/bdd/given-when-then/) style, using the [Gherkin]((https://specflow.org/bdd/gherkin/)) language. Using SpecFlow these acceptance criteria can be validated with [Automated Acceptance Tests](https://specflow.org/bdd/automated-acceptance-tests/). 
+With SpecFlow you formulate your acceptance criteria in *.feature* files in [Given-When-Then](https://specflow.org/bdd/given-when-then/) style, using the [Gherkin](https://specflow.org/bdd/gherkin/) language. Using SpecFlow these acceptance criteria can be validated with [Automated Acceptance Tests](https://specflow.org/bdd/automated-acceptance-tests/). 
 
 In this example the `BookShop.AcceptanceTests` project contains the feature files for the Bookshop application. These describe the implemented behaviour of the Bookshop in the form of [Features](https://specflow.org/bdd/feature-and-feature-files/) and [Scenarios](https://specflow.org/bdd/scenario/).
 
