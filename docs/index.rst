@@ -22,6 +22,14 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 1
+   :caption: Getting Started
+   :hidden:
+   :glob:
+
+   Getting-Started/*
+
+.. toctree::
+   :maxdepth: 2
    :caption: Installation
    :hidden:
 
