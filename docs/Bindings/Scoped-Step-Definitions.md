@@ -21,9 +21,13 @@ The following tags are taken into account for scenario, scenarioblock or step ho
 
 Use the `[Scope]` attribute to define the scope:
 
-    [Scope(Tag = "mytag", Feature = "feature title", Scenario = "scenario title")] 
+``` csharp
+    [Scope(Tag = "mytag", Feature = "feature title", Scenario = "scenario title")]
+```
 
-## Scoping Rules:
+Navigation from feature files to scoped step definitions is currently not supported by the Visual Studio extension.
+
+## Scoping Rules
 
 Scope can be defined at the method or class level.
 
@@ -43,6 +47,7 @@ If you have multiple scoped step definition with the same number of restrictions
 ## Scope Examples
 
 ### Scoped BeforeScenario Hook
+
 The following example starts Selenium for scenarios marked with the `@web` tag.
 
 ```c#
@@ -100,10 +105,10 @@ The following example shows a way to "ignore" executing the scenarios marked wit
 ```
 
 ## Beyond Scope
+
 You can define more complex filters using the [ScenarioContext](ScenarioContext.md) class. The following example starts selenium if the scenario is tagged with `@web` _and_ `@automated`.
 
-
-```c#
+``` c#
 [BeforeScenario("web")]
 public static void BeforeWebScenario()
 {
