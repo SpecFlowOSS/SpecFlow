@@ -265,82 +265,183 @@ The following examples guide you through some typical questions/scenarios when r
 
 #### Run all acceptance test
 
-- Run only the acceptance tests (and ignore the unit tests) from the root folder of the Bookshop sample
-  - `dotnet test BookShop.AcceptanceTests`
-    - The default `TestResults` test results directory of `dotnet test` is relative to the project, hence in this case the reports and logs are generated into the `BookShop.AccteptanceTests\TestResults` folder.
-    - Alternatively you can run `dotnet test --filter BookShop.AcceptanceTests` on the entire solution and use the filter to include the acceptance tests only. However, in this case `dotnet test` still discovers both the unit test and acceptance test projects separately and emits a warning for the unit tests that "*no test matches the given testcase filter*".
-    - You can also specify the project file explicitly as `dotnet test .\BookShop.AcceptanceTests\BookShop.AcceptanceTests.csproj`
-    - Or you can specify the test assembly (dll) explicitly as `dotnet test .\BookShop.AcceptanceTests\bin\Debug\netcoreapp3.1\BookShop.AcceptanceTests.dll`
-- Run acceptance tests without re-building the project (assuming the project was built succesfully already)
-  - `dotnet test BookShop.AcceptanceTests --no-build`
-    - This speeds up the test execution command as the build step is skipped
-    - This is also useful to limit the output of the command to the test execution details
+Run only the acceptance tests (and ignore the unit tests) from the root folder of the Bookshop sample:
 
-#### Set output details
+```ps1con
+dotnet test BookShop.AcceptanceTests
+```
 
-- Run with more detailed output (similar detail level like the Visual Studio output)
-  - `dotnet test BookShop.AcceptanceTests --no-build -v n`
-    - Note: if you omit the `--no-build` option the output will also contain the detailed output of the build.
+> __Note:__ the default `TestResults` test results directory of `dotnet test` is relative to the project, hence in this case the reports and logs are generated into the `BookShop.AccteptanceTests\TestResults` folder.
 
-- Save the execution report and logs to a different folder
-  - `dotnet test BookShop.AcceptanceTests -r C:\CentralTestResults\Bookshop`
+Alternatively you can run on the tests for the entire solution and use a filter to include the acceptance tests only:
+
+```ps1con
+dotnet test --filter BookShop.AcceptanceTests
+```
+
+> __Note:__ in this case `dotnet test` still discovers both the unit test and acceptance test projects separately and emits a warning for the unit tests that "*no test matches the given testcase filter*":
+
+You can also specify the project file explicitly:
+
+```ps1con
+dotnet test .\BookShop.AcceptanceTests\BookShop.AcceptanceTests.csproj
+```
+
+Or you can specify the test assembly (dll) explicitly:
+
+```ps1con
+dotnet test .\BookShop.AcceptanceTests\bin\Debug\netcoreapp3.1\BookShop.AcceptanceTests.dll
+```
+
+#### Run acceptance tests without re-building the project
+
+Assuming the project was built succesfully already:
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --no-build
+```
+
+This speeds up the test execution command as the build step is skipped.
+It is also useful to limit the output of the command to the test execution details.
+
+#### Set output detail level
+
+Run tests with more detailed output (similar detail level like the Visual Studio output):
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --no-build -v n
+```
+
+> __Note:__ if you omit the `--no-build` option the output will also contain the detailed output of the build.
+
+#### Set the output folder
+
+Save the execution report and logs to a different folder:
+
+```ps1con
+dotnet test BookShop.AcceptanceTests -r C:\CentralTestResults\Bookshop
+```
 
 #### Filter tests
 
 Please also consult the documentation of [filter options](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details) of the `dotnet test` command for more insights. With SpecFlow+ Runner the `Name` and `TestCategory` properties can be used to filter the acceptance tests.
 
-- Run the "automated" scenarios (tagged as @automated)
-  - `dotnet test BookShop.AcceptanceTests --filter TestCategory=automated`
-    - See the `@automated` tag in the feature files
-- Run scenarios associated with work item 11 (tagged as @WI11)
-  - `dotnet test BookShop.AcceptanceTests --filter TestCategory=WI11`
-    - See the `@WI11` tag on the feature in `Features\Shopping Cart\Add to.feature`
-- Run scenarios associated with work item 12 or 13 (tagged as @WI12 or @WI13)
-  - `dotnet test BookShop.AcceptanceTests --filter "TestCategory=WI12|TestCategory=WI13"`
-    - See the `@WI12` and `@WI13`tags on the scenarios in `Features\Shopping Cart\Add to.feature`
-    - We combined two filter expressions with the `|` (OR) operator. See the [filter options](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details) documentation of `dotnet test` for the string matching and conditional operators.
-- Run all scenarios related to the "shopping cart"
-  - `dotnet test BookShop.AcceptanceTests --filter Name~"shopping cart"`
-    - This command runs all scenarios where the feature or the scenario title contains the term "shopping cart".
-    - Note: you have to use the `~` (contains) operator to match the `Name` property.
-- Run all scenarios of the feature "Adding books to the shopping card"
-  - `dotnet test BookShop.AcceptanceTests --filter Name~"Adding books to the shopping cart"`
-    - See the feature in `Features\Shopping Cart\Add to.feature`
-    - Note: you have to use the `~` (contains) operator to match the `Name` property.
-    - Note: in practice feature titles and scenario titles are so unique that it is unlikely that another scenario/feature title contains the *whole title* of your selected feature.
-- Run a single scenario "Author should be matched" in the "Searching for books" feature. Let's look at 3 different solutions, as the used matching strategy gets more and more strict:
-  - Filter by scenario title only
-    - `dotnet test BookShop.AcceptanceTests --filter Name~"Author should be matched"`
-    - Note: you have to use the `~` (contains) operator to match the `Name` property.
-    - Note: in practice feature titles and scenario titles are so unique that it is unlikely that another scenario/feature title contains the *whole title* of your selected scenario.
-  - Filter by scenario title AND feature title
-    - `dotnet test BookShop.AcceptanceTests --filter Name~"Author should be matched in Searching for books"`
-    - Note: you have to add the `in` word between the scenario title and feature title. This is how the `Name` property of the test is built.
-    - Note: you have to use the `~` (contains) operator to match the `Name` property.
-  - Filter by scenario title AND feature title AND target (= the full name)
-    - `dotnet test BookShop.AcceptanceTests --filter Name="Author should be matched in Searching for books \(target: Integrated\)"`
-    - When using the targets feature of SpecFlow+ Runner the same scenario can be executed on different targets, hence the target is also included in the name of the test.
-    - Note: For this example the `Integrated` target must be enabled in the `Default.srprofile`.
-    - Note: here you can filter with exact match using the `=` (equals) operator to match the `Name` property, because you use the full name in the filter.
-    - Note: the filter syntax of `dotnet test` recognizes parenthesis to enclose conditional operators. To match the string `(target: Integrated)` in the name we have to escape the parenthesis with a preceeding `\` (backslash) character.
-    - Provided that you enabled also the `Chrome` target in the `Default.srprofile` you can execute the same test with the Chrome UI automation as:
-      - `dotnet test BookShop.AcceptanceTests --filter Name="Author should be matched in Searching for books \(target: Chrome\)"`
-- Run all scenarios with the Controller level automation (and skip UI automation targets) to get a quick test result
-  - `dotnet test BookShop.AcceptanceTests --filter Name~"target: Integrated"`
-    - Note: For this example the `Integrated` target must be enabled in the `Default.srprofile`.
-
 > *__Tip:__ You can list all acceptance tests with the `dotnet test BookShop.AcceptanceTests -t` command. The tests are listed by the `Name` property. This can help to check the naming convention and to construct the desired filter by `Name` (e.g. `--filter Name~"Author should be matched in Searching for books"`).*
->
-> __Note:__ With `dotnet test` it is possible to filter for the `FullyQualifiedName` property as `--filter FullyQualifiedName~"some text"` and this is equivalent with the shorthand form of `--filter "some text"` (when omitting the property name in the filter).
->
-> However, the `FullyQualifiedName` property has a more complex naming convetion due to technical requirements and it is unfortunately not possible to list the tests by the `FullyQualifiedName` property with `dotnet test`. Hence in the command line **we recommend to filter by the `Name` property** when running a selected feature or scenario during development **or by the `TestCategory` property** when running a defined sets of scenarios using tags.
->
-> To demonstrate some of the challenges with `FullyQualifiedName` you could try to filter for the "Author should be matched" scenario (this won't work, because the `FullyQualifiedName` does not literally contain the title of the scenario in this form):
-> > ~~`dotnet test BookShop.AcceptanceTests --filter "Author should be matched"`~~
->
-> You can fix the filter as follows:
-> > `dotnet test BookShop.AcceptanceTests --filter "Author+should+be+matched"`
->
-> The following command exactly matches the `FullyQualifiedName` of the scenario to demonstrate the structure of the `FullyQualifiedName` property:
-> > `dotnet test BookShop.AcceptanceTests --filter FullyQualifiedName="BookShop.AcceptanceTests.Searching for books.#\(\)::Target:Integrated/TestAssembly:BookShop.AcceptanceTests/Feature:Searching+for+books/Scenario:Author+should+be+matched"`
->
+
+##### Run the "automated" scenarios (tagged as @automated)
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter TestCategory=automated
+```
+
+See the `@automated` tag in the feature files
+
+##### Run scenarios associated with work item 11 (tagged as @WI11)
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter TestCategory=WI11`
+```
+
+See the `@WI11` tag on the feature in `Features\Shopping Cart\Add to.feature`
+
+##### Run scenarios associated with work item 12 or 13 (tagged as @WI12 or @WI13)
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter "TestCategory=WI12|TestCategory=WI13"
+```
+
+See the `@WI12` and `@WI13`tags on the scenarios in `Features\Shopping Cart\Add to.feature`.
+
+We combined two filter expressions with the `|` (OR) operator. See the [filter options](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details) documentation of `dotnet test` for the string matching and conditional operators.
+
+##### Run all scenarios related to the "shopping cart"
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter Name~"shopping cart"
+```
+
+This command runs all scenarios where the feature or the scenario title contains the term "shopping cart".
+
+Note: you have to use the `~` (contains) operator to match the `Name` property.
+
+##### Run all scenarios of the feature "Adding books to the shopping card"
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter Name~"Adding books to the shopping cart"
+```
+
+See the feature in `Features\Shopping Cart\Add to.feature`.
+Note: you have to use the `~` (contains) operator to match the `Name` property.
+Note: in practice feature titles and scenario titles are so unique that it is unlikely that another scenario/feature title contains the *whole title* of your selected feature.
+
+##### Run a single scenario "Author should be matched" in the "Searching for books" feature
+
+Let's look at 3 different solutions, as the used matching strategy gets more and more strict.
+
+- Filter by scenario title only
+
+    ```ps1con
+    dotnet test BookShop.AcceptanceTests --filter Name~"Author should be matched"
+    ```
+
+  - Note: you have to use the `~` (contains) operator to match the `Name` property.
+  - Note: in practice feature titles and scenario titles are so unique that it is unlikely that another scenario/feature title contains the *whole title* of your selected scenario.
+
+- Filter by scenario title AND feature title
+
+    ```ps1con
+    dotnet test BookShop.AcceptanceTests --filter Name~"Author should be matched in Searching for books"
+    ```
+
+  - Note: you have to add the `in` word between the scenario title and feature title. This is how the `Name` property of the test is built.
+  - Note: you have to use the `~` (contains) operator to match the `Name` property.
+
+- Filter by scenario title AND feature title AND target (= the full name)
+
+    ```ps1con
+    dotnet test BookShop.AcceptanceTests --filter Name="Author should be matched in Searching for books \(target: Integrated\)"`
+    ```
+
+  - When using the targets feature of SpecFlow+ Runner the same scenario can be executed on different targets, hence the target is also included in the name of the test.
+  - Note: For this example the `Integrated` target must be enabled in the `Default.srprofile`.
+  - Note: here you can filter with exact match using the `=` (equals) operator to match the `Name` property, because you use the full name in the filter.
+  - Note: the filter syntax of `dotnet test` recognizes parenthesis to enclose conditional operators. To match the string `(target: Integrated)` in the name we have to escape the parenthesis with a preceeding `\` (backslash) character.
+  - Provided that you enabled also the `Chrome` target in the `Default.srprofile` you can execute the same test with the Chrome UI automation as:
+
+    ```ps1con
+    dotnet test BookShop.AcceptanceTests --filter Name="Author should be matched in Searching for books \(target: Chrome\)"
+    ```
+
+##### Run all scenarios with the Controller level automation (and skip UI automation targets) to get a quick test result
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter Name~"target: Integrated"`
+    - Note: For this example the `Integrated` target must be enabled in the `Default.srprofile
+```
+
+#### Filter by FullyQualifiedName
+
+With `dotnet test` it is possible to filter by the `FullyQualifiedName` property as `--filter FullyQualifiedName~"some text"` and this is equivalent with the shorthand form of `--filter "some text"` (when omitting the property name in the filter).
+
+However, the `FullyQualifiedName` property has a more complex naming convetion due to technical requirements. Unfortunately it is not possible to list the tests by the `FullyQualifiedName` property with `dotnet test`, which makes the practical usage of a `FullyQualifiedName` filter even harder.
+
+Hence in the command line **we recommend to filter by the `Name` property** if you (ad-hoc) want to run a feature or scenario during development, **or by the `TestCategory` property** when running a defined sets of scenarios using tags. It is also a common practice to add a `@wip` tag to the scenarios under active development in your workspace, because this way you can easily identify and run them (you can also change the groupping in Visual Studio Text Explorer to group the tests by Traits).
+
+To demonstrate some of the challenges with `FullyQualifiedName` try to filter for the "Author should be matched" scenario. The following filter **does not find the scenario**, because the `FullyQualifiedName` does not literally contain the title of the scenario in this form:
+
+```ps1con
+# NOT WORKING:
+dotnet test BookShop.AcceptanceTests --filter "Author should be matched"`
+```
+
+You can fix the filter as follows:
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter "Author+should+be+matched"
+```
+
+The following command exactly matches the `FullyQualifiedName` of the scenario to demonstrate the structure of the `FullyQualifiedName` property:
+
+```ps1con
+dotnet test BookShop.AcceptanceTests --filter FullyQualifiedName="BookShop.AcceptanceTests.Searching for books.#\(\)::Target:Integrated/TestAssembly:BookShop.AcceptanceTests/Feature:Searching+for+books/Scenario:Author+should+be+matched"
+```
