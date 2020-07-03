@@ -1,4 +1,5 @@
-# SpecFlow 3
+# Reporting
+
 **These reports are only available prior to SpecFlow 3! They have been removed in SpecFlow 3.**
 
 SpecFlow provides various options to generate reports related to the acceptance tests.

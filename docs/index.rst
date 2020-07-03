@@ -150,7 +150,7 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 1
-   :caption: Miscellenious
+   :caption: Miscellaneous
    :hidden:
 
    Misc/Usage-Analytics.md
