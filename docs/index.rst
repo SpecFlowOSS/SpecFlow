@@ -24,9 +24,9 @@ Indices and tables
    :maxdepth: 1
    :caption: Getting Started
    :hidden:
-   :glob:
 
-   Getting-Started/*
+   Getting-Started/Getting-Started.md
+   Getting-Started/Getting-Started-With-An-Example.md
 
 .. toctree::
    :maxdepth: 2
