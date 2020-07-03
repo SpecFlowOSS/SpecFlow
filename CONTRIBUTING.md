@@ -36,8 +36,6 @@ Please try to be as detailed as possible in your report. Please provide steps to
 reproduce the issue as well as the outcome you were expecting! And fill out the issue template. If you don't provide this information, we have to ask them again from you. All these details
 will help developers to fix any potential bugs.
 
-
-
 We move issues that need help, but may not be of a criticial nature or require
 intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/techtalk/SpecFlow/labels/up-for-grabs). 
 This is a list of easier tasks that anybody who wants to get into SpecFlow
