@@ -3,8 +3,25 @@ name: $(GitAssemblyInformationalVersion)
 
 resources:
 - repo: self
-  clean: true
+  clean: "true"
 
+trigger:
+  branches:
+    include:
+    - '*'
+  paths:
+    exclude:
+    - docs/*
+    - .readthedocs.yml
+
+pr:
+  branches:
+    include:
+    - '*'
+  paths:
+    exclude:
+    - docs/*
+    - .readthedocs.yml
 
 jobs:
 #- template: build.yml  
