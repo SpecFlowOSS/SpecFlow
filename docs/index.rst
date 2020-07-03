@@ -51,10 +51,9 @@ Indices and tables
 
    Bindings/Bindings.md
    Bindings/Step-Definitions.md
-   Bindings/Scoped-Step-Definitions.md
-   Bindings/Asynchronous-Bindings.md
-
    Bindings/Hooks.md
+   Bindings/Asynchronous-Bindings.md
+   Bindings/Scoped-Step-Definitions.md
 
    Bindings/Sharing-Data-between-Bindings.md
    Bindings/Context-Injection.md
