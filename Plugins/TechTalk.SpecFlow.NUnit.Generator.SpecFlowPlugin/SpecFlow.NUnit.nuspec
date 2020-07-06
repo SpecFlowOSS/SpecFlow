@@ -17,6 +17,7 @@
     <copyright>$copyright$</copyright>
     <dependencies>
       <dependency id="SpecFlow" version="[$version$]" />
+      <dependency id="SpecFlow.Tools.MsBuild.Generation" version="[$version$]" />
       <dependency id="NUnit" version="3.11.0" />
     </dependencies>
   </metadata>
