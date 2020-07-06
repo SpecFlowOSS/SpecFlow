@@ -1,1 +1,2 @@
 sphinx-markdown-tables
+readthedocs-sphinx-search
