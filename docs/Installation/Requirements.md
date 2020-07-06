@@ -24,3 +24,7 @@ We recommend using always the latest version of Visual Studio
 - ASP.NET and web development **or**
 - .NET Desktop environment **or**
 - .NET Core cross- platform development
+
+## Project Setup
+
+- Project folder should not be too deep in the filesystem, as you will get problems with Windows 255 character limit in file paths
