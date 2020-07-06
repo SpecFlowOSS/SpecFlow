@@ -251,7 +251,7 @@ While Visual Studio provides several convenience features when working with Spec
 
 > *__Note:__ You can also skip the `dotnet build` step and run the tests immediately with `dotnet test`, because this command also (re-)builds the project. However it hides the details of the build output. We outlined the build as a separate step here as a best practice when examining a new project, because separating the steps makes the understanding of the output and potential troubleshooting easier.*
 
-![Running tests from the command line](/_static/images/BookshopCommandLine.gif)
+![Running tests from the command line](/_static/images/BookshopCommandLine.gif)  
 
 Note that if you run `dotnet test` for the entire Bookshop solution then both the unit tests and the acceptance tests are executed.
 
