@@ -83,8 +83,9 @@ Indices and tables
    :caption: Gherkin
    :hidden:
 
-   Gherkin/Using-Gherkin-Language-in-SpecFlow.md
+   Gherkin/Gherkin-Reference.md
    Gherkin/Feature-Language.md
+   
 
 .. toctree::
    :maxdepth: 1

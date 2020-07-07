@@ -124,7 +124,7 @@ let [<Given>] ``I have entered (.*) into the calculator``(number:int) =
 
 ## Table or Multi-line Text Arguments
 
-If the step definition method should match for steps having [table or multi-line text arguments](../Gherkin/Using-Gherkin-Language-in-SpecFlow.md), additional `Table` and/or `string` parameters have to be defined in the method signature to be able to receive these arguments. If both table and multi-line text argument are used for the step, the multi-line text argument is provided first.
+If the step definition method should match for steps having [table or multi-line text arguments](../Gherkin/Gherkin-Reference.md), additional `Table` and/or `string` parameters have to be defined in the method signature to be able to receive these arguments. If both table and multi-line text argument are used for the step, the multi-line text argument is provided first.
 
 ``` gherkin
 Given the following books
