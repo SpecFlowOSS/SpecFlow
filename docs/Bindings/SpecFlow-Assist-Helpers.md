@@ -2,7 +2,7 @@
 
 To use these helpers, you need to add the `TechTalk.SpecFlow.Assist` namespace to the top of your file:
 
-```c#
+``` csharp
 using TechTalk.SpecFlow.Assist;
 ```
 
@@ -29,7 +29,7 @@ Given I entered the following data into the new account form:
 
 ... you can convert the data in the table to an instance of an object like this:
 
-```c#
+``` csharp
 [Given(@"Given I entered the following data into the new account form:")]
 public void x(Table table)
 {
@@ -44,7 +44,7 @@ The headers in this table can be anything you want, e.g. "Field" and "Value". Wh
 
 Alternatively you can use ValueTuples and destructuring:
 
-```c#
+``` csharp
 [Given(@"Given I entered the following data into the new account form:")]
 public void x(Table table)
 {
@@ -53,7 +53,6 @@ public void x(Table table)
     // account.name will equal "John Galt", heightInInches will equal 72, etc.
 }
 ```
-This feature is supported from version 2.2.1.
 
 **Important:** In the case of tuples, _**you need to have the same number of parameters and types; parameter names do not matter**_, as ValueTuples do not hold parameter names at runtime using reflection.
 **Scenarios with more than 7 properties are not currently supported, and you will receive an exception if you try to map more properties.** 
@@ -71,7 +70,7 @@ Given these products exist
 
 You can convert the data in the table to a set of objects like this:
 
-```c#
+``` csharp
 [Given(@"Given these products exist")]
 public void x(Table table)
 {
@@ -86,7 +85,7 @@ The `CreateSet<T>` method returns an `IEnumerable<T>` based on the matching data
 
 `CompareToInstance<T>` makes it easy to compare the properties of an object against a table. For example, you have a class like this:
 
-```c#
+``` csharp
 public class Person
 {
     public string FirstName { get; set;}  
@@ -107,7 +106,7 @@ Then the person should have the following values
   
 You can assert that the properties match with this simple step definition:
 
-```c#  
+``` csharp
     [Binding]
     public class Binding
     {
@@ -136,7 +135,7 @@ If the values match, no exception is thrown, and SpecFlow continues to process y
 
 `CompareToSet<T>` makes it easy to compare the values in a table to a set of objects. For example, you have a class like this:
 
-```c#
+```csharp
 public class Account
 {
     public string Id { get; set;}
@@ -157,7 +156,7 @@ Then I get back the following accounts
 
 You can test you results with one call to CompareToSet<T>:
 
-```c#
+``` csharp
     [Binding]
     public class Binding
     {
@@ -201,7 +200,7 @@ If you have properties in your objects that are known by different terms within 
 
 For example, if you have an object representing an Employee, you might want to alias the `Surname` property:
 
-```c#
+``` csharp
     public class Employee
     {
         public string FirstName { get; set; }
@@ -218,11 +217,11 @@ The `TableAliases` attribute can be applied to a field, a property as a single a
 
 ## Extensions
 
-Out-of-the-box, the SpecFlow table helpers knows how to handle most C# base types. Types like `String`, `Bool`, `Enum`, `Int`, `Decimal`, `DateTime`, etc. are all covered. The covered types can be found [here](https://github.com/techtalk/SpecFlow/tree/master/TechTalk.SpecFlow/Assist/ValueRetrievers). If you want to cover more types, including your own custom types, you can do so by registering your own instances of `IValueRetriever` and `IValueComparer`.
+Out-of-the-box, the SpecFlow table helpers knows how to handle most  csharp base types. Types like `String`, `Bool`, `Enum`, `Int`, `Decimal`, `DateTime`, etc. are all covered. The covered types can be found [here](https://github.com/techtalk/SpecFlow/tree/master/TechTalk.SpecFlow/Assist/ValueRetrievers). If you want to cover more types, including your own custom types, you can do so by registering your own instances of `IValueRetriever` and `IValueComparer`.
 
 For example, you have a complex object like this:
 
-```c#
+``` csharp
     public class Shirt
     {
         public string Name { get; set; }
@@ -242,7 +241,7 @@ If you want to map `Blue` and `Red` to the appropriate instance of the `Color` c
 
 You can register your custom `IValueRetriever` (and/or an instance of `IValueComparer` if you want to compare colors) like this:
 
-```c#
+``` csharp
 [Binding]
 public static class Hooks1
 {
@@ -270,7 +269,7 @@ By default, non-specified (empty string) values are considered:
 
 To specify null values explicitly, add a `NullValueRetriever` to the set of registered retrievers, specifying the text to be treated as a null value, e.g.:
 
-```c#
+``` csharp
 [Binding]
 public static class Hooks1
 {
@@ -450,15 +449,20 @@ What if Artist and Album are properties of different entities? Look at this piec
 
 **SpecFlow.Assist** has a generic class **EnumerableProjection<T>**. If a type “T” is known at compile time, **ToProjection** method converts a table or a collection straight to an instance of **EnumerableProjection**:
 
+``` csharp
     table.ToProjection<Item>();
+```
 
 But if we need to compare a table with the collection of anonymous types from the example above, we need to express this type in some way so ToProjection will be able to build an instance of specialized **EnumerableProjection**. This is done by sending a collection as an argument to **ToProjection**. And to support both sets and instances and avoid naming ambiguity, corresponding methods are called **ToProjectionOfSet** and **ToProjectionOfInstance**:
 
+``` csharp
     table.ToProjectionOfSet(collection);
     table.ToProjectionOfInstance(instance);
+```
 
 Here are the definitions of SpecFlow Table extensions methods that convert tables and collections of IEnumerables to EnumerableProjection:
 
+``` csharp
     public static IEnumerable<Projection<T>> ToProjection<T>(this IEnumerable<T> collection, Table table = null)
     {
         return new EnumerableProjection<T>(table, collection);
@@ -478,9 +482,11 @@ Here are the definitions of SpecFlow Table extensions methods that convert table
     {
         return new EnumerableProjection<T>(table);
     }
+```
 
 Note that last arguments of **ToProjectionOfSet** and **ToProjectionOfInstance** methods are not used in method implementation. Their only purpose is to bring information about “T”, so the **EnumerableProjection** adapter class can be built properly. Now we can perform the following comparisons with anomymous types collections and instances:
 
+``` csharp
     [Test]
     public void Table_with_subset_of_columns_with_matching_values_should_match_collection()
     {
@@ -504,3 +510,4 @@ Note that last arguments of **ToProjectionOfSet** and **ToProjectionOfInstance**
  
         Assert.AreEqual(table.ToProjectionOfInstance(instance), instance);
     }
+```
