@@ -1,6 +1,6 @@
 # Bindings
 
-The [Gherkin feature files](../Gherkin/Using-Gherkin-Language-in-SpecFlow.md) are closer to free-text than to code – they cannot be executed as they are. The automation that connects the specification to the application interface has to be developed first. The automation that connects the Gherkin specifications to source code is called a _binding_. The binding classes and methods can be defined in the SpecFlow project or in [external binding assemblies](Use-Bindings-from-External-Assemblies.md).
+The [Gherkin feature files](../Gherkin/Gherkin-Reference.md) are closer to free-text than to code – they cannot be executed as they are. The automation that connects the specification to the application interface has to be developed first. The automation that connects the Gherkin specifications to source code is called a _binding_. The binding classes and methods can be defined in the SpecFlow project or in [external binding assemblies](Use-Bindings-from-External-Assemblies.md).
 
 There are several kinds of bindings in SpecFlow. 
 
