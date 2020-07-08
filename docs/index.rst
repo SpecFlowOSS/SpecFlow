@@ -68,7 +68,6 @@ Indices and tables
    Bindings/FeatureContext.md
    Bindings/Calling-Steps-from-Step-Definitions.md
 
-   Bindings/Step-Argument-Transformations.md
    Bindings/Step-Argument-Conversions.md
 
    Bindings/Use-Bindings-from-External-Assemblies.md
