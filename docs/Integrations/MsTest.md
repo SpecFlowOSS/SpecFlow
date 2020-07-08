@@ -88,9 +88,20 @@ public class MyStepDefs
 ### Using the Scenario Container
 
 ``` csharp
-[Given(@"my test step definition")]
-public void MyStepDefinition()
-{
-   var testContext = ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>();
-}
+    [Binding]
+    public class Binding
+    {
+        ScenarioContext _scenarioContext;
+
+        public Binding(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
+        [Given(@"my test step definition")]
+        public void MyStepDefinition()
+        {
+        var testContext = _scenarioContext.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>();
+        }
+    }
 ```

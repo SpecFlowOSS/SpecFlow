@@ -54,26 +54,27 @@ This is the default behavior for a missing step definition, but you can also use
 
 in the .feature:
 
-        Scenario: Pending step
-	    When I set the ScenarioContext.Current to pending
-	    Then this step will not even be executed
+``` gherkin
+    Scenario: Pending step
+      When I set the current ScenarioContext to pending
+      Then this step will not even be executed
+```
 
 and the step definition:
 
-        [When("I set the ScenarioContext.Current to pending")]
-        public void WhenIHaveAPendingStep()
-        {
-            ScenarioContext.Pending();
-        }
+``` csharp
+    [When("I set the current ScenarioContext to pending")]
+    public void WhenIHaveAPendingStep()
+    {
+        ScenarioContext.Pending();
+    }
 
-        [Then("this step will not even be executed")]
-        public void ThisStepWillNotBeExecuted()
-        {
-            throw new Exception("See!? This wasn't even thrown");
-        }
-
-
-
+    [Then("this step will not even be executed")]
+    public void ThisStepWillNotBeExecuted()
+    {
+        throw new Exception("See!? This wasn't even thrown");
+    }
+```
 
 ## Storing data in the ScenarioContext
 

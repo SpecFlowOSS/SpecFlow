@@ -108,13 +108,24 @@ Then the person should have the following values
 You can assert that the properties match with this simple step definition:
 
 ```c#  
-[Then("the person should have the following values")]
-public void x(Table table){
-    // you don't have to get person this way, this is just for demo
-    var person = ScenarioContext.Current.Get<Person>();
-  
-    table.CompareToInstance<Person>(person);
-}
+    [Binding]
+    public class Binding
+    {
+        ScenarioContext _scenarioContext;
+
+        public Binding(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
+        [Then("the person should have the following values")]
+        public void x(Table table){
+            // you don't have to get person this way, this is just for demo
+            var person = _scenarioContext.Get<Person>();
+        
+            table.CompareToInstance<Person>(person);
+        }
+    }
 ```
 
 If FirstName is not "John", LastName is not "Galt", or YearsOld is not 54, a descriptive error showing the differences is thrown.
@@ -147,12 +158,23 @@ Then I get back the following accounts
 You can test you results with one call to CompareToSet<T>:
 
 ```c#
-[Then("I get back the following accounts")]
-public void x(Table table){
-    var accounts = ScenarioContext.Current.Get<IEnumerable<Account>>();
-  
-    table.CompareToSet<Account>(accounts)
-}
+    [Binding]
+    public class Binding
+    {
+        ScenarioContext _scenarioContext;
+
+        public Binding(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
+        [Then("I get back the following accounts")]
+        public void x(Table table){
+            var accounts = _scenarioContext.Get<IEnumerable<Account>>();
+        
+            table.CompareToSet<Account>(accounts)
+        }
+    }
 ```
 
 In this example, `CompareToSet<T>` checks that two accounts are returned, and only tests the properties you defined in the table. **It does not test the order of the objects, only that one was found that matches.**  If no record matching the properties in your table is found, an exception is thrown that includes the row number(s) that do not match up.
@@ -308,39 +330,50 @@ Consider the following steps:
 With LINQ-based operations each of the above comparisons can be expressed using a single line of code
 
 ``` csharp
-    [When(@"I have a collection")]
-    public void WhenIHaveACollection(Table table)
+    [Binding]
+    public class Binding
     {
-    	var collection = table.CreateSet<Item>();
-    	ScenarioContext.Current.Add("Collection", collection);
-    }
- 
-    [Then(@"it should match")]
-    public void ThenItShouldMatch(Table table)
-    {
-    	var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-    	Assert.IsTrue(table.RowCount == collection.Count() && table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
-    }
- 
-    [Then(@"it should exactly match")]
-    public void ThenItShouldExactlyMatch(Table table)
-    {
-    	var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-    	Assert.IsTrue(table.ToProjection<Item>().SequenceEqual(collection.ToProjection()));
-    }
- 
-    [Then(@"it should not match")]
-    public void ThenItShouldNotMatch(Table table)
-    {
-    	var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-    	Assert.IsFalse(table.RowCount == collection.Count() && table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
-    }
- 
-    [Then(@"it should not exactly match")]
-    public void ThenItShouldNotExactlyMatch(Table table)
-    {
-    	var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-    	Assert.IsFalse(table.ToProjection<Item>().SequenceEqual(collection.ToProjection()));
+        ScenarioContext _scenarioContext;
+
+        public Binding(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
+        [When(@"I have a collection")]
+        public void WhenIHaveACollection(Table table)
+        {
+            var collection = table.CreateSet<Item>();
+            _scenarioContext.Add("Collection", collection);
+        }
+    
+        [Then(@"it should match")]
+        public void ThenItShouldMatch(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsTrue(table.RowCount == collection.Count() && table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
+        }
+    
+        [Then(@"it should exactly match")]
+        public void ThenItShouldExactlyMatch(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsTrue(table.ToProjection<Item>().SequenceEqual(collection.ToProjection()));
+        }
+    
+        [Then(@"it should not match")]
+        public void ThenItShouldNotMatch(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsFalse(table.RowCount == collection.Count() && table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
+        }
+    
+        [Then(@"it should not exactly match")]
+        public void ThenItShouldNotExactlyMatch(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsFalse(table.ToProjection<Item>().SequenceEqual(collection.ToProjection()));
+        }
     }
 ```
 
@@ -368,25 +401,36 @@ In a similar way we can implement containment validation:
 ```
 
 ``` csharp
-    [Then(@"it should contain all items")]
-    public void ThenItShouldContainAllItems(Table table)
+    [Binding]
+    public class Binding
     {
-        var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-        Assert.IsTrue(table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
-    }
- 
-    [Then(@"it should not contain all items")]
-    public void ThenItShouldNotContainAllItems(Table table)
-    {
-        var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-        Assert.IsFalse(table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
-    }
- 
-    [Then(@"it should not contain any of items")]
-    public void ThenItShouldNotContainAnyOfItems(Table table)
-    {
-        var collection = ScenarioContext.Current["Collection"] as IEnumerable<Item>;
-        Assert.IsTrue(table.ToProjection<Item>().Except(collection.ToProjection()).Count() == table.RowCount);
+        ScenarioContext _scenarioContext;
+
+        public Binding(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
+        [Then(@"it should contain all items")]
+        public void ThenItShouldContainAllItems(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsTrue(table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
+        }
+
+        [Then(@"it should not contain all items")]
+        public void ThenItShouldNotContainAllItems(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsFalse(table.ToProjection<Item>().Except(collection.ToProjection()).Count() == 0);
+        }
+
+        [Then(@"it should not contain any of items")]
+        public void ThenItShouldNotContainAnyOfItems(Table table)
+        {
+            var collection = _scenarioContext["Collection"] as IEnumerable<Item>;
+            Assert.IsTrue(table.ToProjection<Item>().Except(collection.ToProjection()).Count() == table.RowCount);
+        }
     }
 ```
 

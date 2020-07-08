@@ -109,10 +109,21 @@ The following example shows a way to "ignore" executing the scenarios marked wit
 You can define more complex filters using the [ScenarioContext](ScenarioContext.md) class. The following example starts selenium if the scenario is tagged with `@web` _and_ `@automated`.
 
 ``` c#
-[BeforeScenario("web")]
-public static void BeforeWebScenario()
-{
-    if(ScenarioContext.Current.ScenarioInfo.Tags.Contains("automated"))
-        StartSelenium();
-}
+    [Binding]
+    public class Binding
+    {
+        ScenarioContext _scenarioContext;
+
+        public Binding(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
+        [BeforeScenario("web")]
+        public static void BeforeWebScenario()
+        {
+            if(_scenarioContext.ScenarioInfo.Tags.Contains("automated"))
+                StartSelenium();
+        }
+    }
 ```
