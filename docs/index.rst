@@ -39,7 +39,6 @@ Indices and tables
    Installation/NuGet-Packages.md
    Installation/Project-and-Item-Templates.md
    Installation/Troubleshooting-Visual-Studio-Integration.md
-   Installation/.NET-Support.md
    Installation/Unit-Test-Providers.md
    Installation/SpecFlow-and-.NET-Core.md
    Installation/Breaking-Changes-with-SpecFlow-3.0.md
@@ -116,8 +115,12 @@ Indices and tables
    :caption: Integrations
    :hidden:
 
-   Integrations/MsTest.md
+
    Integrations/SpecFlow+Runner-Integration.md
+   Integrations/MsTest.md
+   Integrations/NUnit.md
+   Integrations/xUnit.md
+   
    Integrations/Azure-DevOps.md
    Integrations/Teamcity-Integration.md
    Integrations/Browserstack.md
