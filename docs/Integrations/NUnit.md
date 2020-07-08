@@ -2,5 +2,13 @@
 
 SpecFlow supports NUnit 3.11 or later.  
 
-Please add the NuGet package [SpecFlow.NUnit](https://www.nuget.org/packages/SpecFlow.NUnit/) to your project to use NUnit in your project.  
-You probably also need the NUnit3 TestAdapter NuGet Package [NUnit3TestAdapter](https://www.nuget.org/packages/NUnit3TestAdapter/) in your project that the scenarios will be visible in the Visual Studio Test Explorer.  
+## Needed NuGet Packages
+
+For SpecFlow: [SpecFlow.NUnit](https://www.nuget.org/packages/SpecFlow.NUnit/)  
+
+For NUnit: [NUnit](https://www.nuget.org/packages/NUnit/)  
+
+For Test Discovery & Execution:
+
+- [NUnit3TestAdapter](https://www.nuget.org/packages/NUnit3TestAdapter/)
+- [Microsoft.NET.Test.Sdk](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk)
