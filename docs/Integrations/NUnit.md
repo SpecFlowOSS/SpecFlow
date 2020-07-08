@@ -2,6 +2,8 @@
 
 SpecFlow supports NUnit 3.11 or later.  
 
+Documentation for NUnit can be found [here](https://github.com/nunit/docs/wiki/NUnit-Documentation).
+
 ## Needed NuGet Packages
 
 For SpecFlow: [SpecFlow.NUnit](https://www.nuget.org/packages/SpecFlow.NUnit/)  

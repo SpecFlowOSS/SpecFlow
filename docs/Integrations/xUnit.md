@@ -2,8 +2,18 @@
 
 SpecFlow supports xUnit 2.4 or later.  
 
-Please add the NuGet package [SpecFlow.xUnit](https://www.nuget.org/packages/SpecFlow.xUnit/) to your project to use xUnit in your project.  
-You probably also need the xUnit TestAdapter NuGet Package [xunit.runner.visualstudio](https://www.nuget.org/packages/xunit.runner.visualstudio/) in your project that the scenarios will be visible in the Visual Studio Test Explorer.  
+Documentation for NUnit can be found [here](https://xunit.net/#documentation).
+
+## Needed NuGet Packages
+
+For SpecFlow: [SpecFlow.xUnit](https://www.nuget.org/packages/SpecFlow.xUnit/)
+
+For xUnit: [xUnit](https://www.nuget.org/packages/xunit/)  
+
+For Test Discovery & Execution:
+
+- [xunit.runner.visualstudio](https://www.nuget.org/packages/xunit.runner.visualstudio/)
+- [Microsoft.NET.Test.Sdk](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk)
 
 ## Access ITestOutputHelper
 

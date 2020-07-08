@@ -2,9 +2,20 @@
 
 SpecFlow does support MsTest V2. It is not any more working with the old MsTest V1.
 
-## Accessing TestContext
+Documentation for MSTest can be found [here](https://docs.microsoft.com/en-us/visualstudio/test/unit-test-your-code?view=vs-2019).
 
-### Using Context Injection
+## Needed NuGet Packages
+
+For SpecFlow: [SpecFlow.MSTest](https://www.nuget.org/packages/SpecFlow.MSTest/)  
+
+For MSTest: [MSTest.TestFramework](https://www.nuget.org/packages/MSTest.TestFramework/)  
+
+For Test Discovery & Execution:
+
+- [MSTest.TestAdapter](https://www.nuget.org/packages/MSTest.TestAdapter/)
+- [Microsoft.NET.Test.Sdk](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk)
+
+## Accessing TestContext
 
 ``` csharp
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,16 +33,6 @@ public class MyStepDefs
     {
         //now you can access the TestContext
     } 
-}
-```
-
-### Using the Scenario Container
-
-``` csharp
-[Given(@"my test step definition")]
-public void MyStepDefinition()
-{
-   var testContext = ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>();
 }
 ```
 
