@@ -83,7 +83,14 @@
   <Target Name="IncludeCucumberMessagesSpecs" BeforeTargets="BeforeUpdateFeatureFilesInProject" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
     <Copy SourceFiles="@(CucumberMessagesSpecFlowFeatureFiles)" DestinationFolder="Features/CucumberMessages" />
     <ItemGroup>
-      <SpecFlowFeatureFiles Include="Features/CucumberMessages/*.feature" />
+      <_CucumberMessagesSpecFlowFeatureFiles Include="Features/CucumberMessages/*.feature" />
+
+      <_CucumberMessagesSpecFlowFeatureFiles>
+        <CodeBehindFile>Features/CucumberMessages/%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+        <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      </_CucumberMessagesSpecFlowFeatureFiles>
+
+      <SpecFlowFeatureFiles Include="@(_CucumberMessagesSpecFlowFeatureFiles)" />
     </ItemGroup>
   </Target>
 
