@@ -19,7 +19,7 @@ The easiest way to add these packages to your project is to right-click your pro
 Install-Package SpecFlow -ProjectName myproject
 ```
 
-The [SpecFlow.CustomPlugin](https://www.nuget.org/packages/SpecFlow.CustomPlugin) NuGet package can be used to implement custom [plugins](../Enhance/Plugins.md) for SpecFlow.
+The [SpecFlow.CustomPlugin](https://www.nuget.org/packages/SpecFlow.CustomPlugin) NuGet package can be used to implement custom [plugins](../Extend/Plugins.md) for SpecFlow.
 
 
 ## NuGet packages after 3.0

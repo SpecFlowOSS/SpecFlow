@@ -363,7 +363,7 @@ The `<stepAssemblies>` can contain multiple `<stepAssembly>` elements (one for e
 
 #### `<plugins>`
 
-This section can be used to configure plugins that contain customisations. See [Plugins](../Enhance/Plugins.md) for more details.
+This section can be used to configure plugins that contain customisations. See [Plugins](../Extend/Plugins.md) for more details.
 
 ```xml
 <specFlow>

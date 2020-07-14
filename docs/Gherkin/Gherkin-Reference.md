@@ -499,7 +499,7 @@ A `# language:` header on the first line of a feature file tells SpecFlow what
 spoken language to use - for example `# language: fr` for French.
 If you omit this header, SpecFlow will default to English (`en`).
 
-You can also define the language in the [configuration file](../Configuration/Configuration.html#language).
+You can also define the language in the [configuration file](../Installation/Configuration.html#language).
 
 ### Gherkin Dialects
 

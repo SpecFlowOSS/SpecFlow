@@ -30,12 +30,18 @@ Indices and tables
    Guides/UpgradeSpecFlow2To3.md
 
 .. toctree::
+   :maxdepth: 1
+   :caption: Guides
+   :hidden:
+
+.. toctree::
    :maxdepth: 2
    :caption: Installation
    :hidden:
 
    Installation/Requirements.md
    Installation/Installation.md 
+   Installation/Configuration.md
    Installation/Install-IDE-Integration.md
    Installation/NuGet-Packages.md
    Installation/Project-and-Item-Templates.md
@@ -44,13 +50,13 @@ Indices and tables
    Installation/SpecFlow-and-.NET-Core.md
    Installation/Breaking-Changes-with-SpecFlow-3.0.md
 
-
 .. toctree::
    :maxdepth: 1
-   :caption: Configuration
+   :caption: Gherkin
    :hidden:
 
-   Configuration/Configuration.md
+   Gherkin/Gherkin-Reference.md
+   Gherkin/Feature-Language.md
 
 .. toctree::
    :maxdepth: 1
@@ -79,15 +85,6 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 1
-   :caption: Gherkin
-   :hidden:
-
-   Gherkin/Gherkin-Reference.md
-   Gherkin/Feature-Language.md
-   
-
-.. toctree::
-   :maxdepth: 1
    :caption: Execution
    :hidden:
 
@@ -95,21 +92,6 @@ Indices and tables
    Execution/Test-Results.md
    Execution/Parallel-Execution.md
    Execution/Debugging.md
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tools
-   :hidden:
-
-   Tools/Tools.md
-   Tools/Generate-Tests-From-MsBuild.md
-   Tools/Visual-Studio-Integration.md
-   Tools/Visual-Studio-Integration-Editing-Features.md
-   Tools/Visual-Studio-Integration-Navigation-Features.md
-   Tools/Visual-Studio-Test-Explorer-Support.md
-   Tools/Generating-Skeleton-Code.md
-   Tools/Cucumber-Messages.md
-   Tools/Reporting.md
 
 .. toctree::
    :maxdepth: 1
@@ -129,35 +111,50 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 1
-   :caption: Enhance SpecFlow
+   :caption: Extend SpecFlow
    :hidden:
 
-   Enhance/Value-Retriever.md
-   Enhance/Plugins.md
-   Enhance/Plugins-(Legacy).md
-   Enhance/Available-Plugins.md
-   Enhance/Available-Containers-&-Registrations.md
+   Extend/Value-Retriever.md
+   Extend/Plugins.md
+   Extend/Plugins-(Legacy).md
+   Extend/Available-Plugins.md
+   Extend/Available-Containers-&-Registrations.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: Common Issues
+   :caption: Tools
    :hidden:
 
-   CommonIssues/Troubleshooting.md
-   CommonIssues/Known-Issues.md
+   Tools/Tools.md
+   Tools/Generate-Tests-From-MsBuild.md
+   Tools/Visual-Studio-Integration.md
+   Tools/Visual-Studio-Integration-Editing-Features.md
+   Tools/Visual-Studio-Integration-Navigation-Features.md
+   Tools/Visual-Studio-Test-Explorer-Support.md
+   Tools/Generating-Skeleton-Code.md
+   Tools/Cucumber-Messages.md
+   Tools/Reporting.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: Developing on SpecFlow
+   :caption: Contribute
    :hidden:
 
-   DevelopingOnSpecFlow/Prerequisite.md
-   DevelopingOnSpecFlow/LocalSetup.md
-   DevelopingOnSpecFlow/Definition-of-Terms.md
-   DevelopingOnSpecFlow/Projects.md
-   DevelopingOnSpecFlow/SpecialFiles.md
-   DevelopingOnSpecFlow/potentialProblems.md
-   DevelopingOnSpecFlow/Coding-Style.md
+   Contribute/Prerequisite.md
+   Contribute/LocalSetup.md
+   Contribute/Definition-of-Terms.md
+   Contribute/Projects.md
+   Contribute/SpecialFiles.md
+   Contribute/potentialProblems.md
+   Contribute/Coding-Style.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Help
+   :hidden:
+
+   Help/Troubleshooting.md
+   Help/Known-Issues.md
 
 .. toctree::
    :maxdepth: 1
