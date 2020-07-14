@@ -29,25 +29,25 @@ To upgrade a solution from SpecFlow 2.x to SpecFlow 3:
 1. Switch to Updates in the list on the left and locate SpecFlow in the list of packages. Use the search box to restrict the listed packages if necessary.
 ![NuGet Dialog in Visual Studio](../_static/images/update-specflow2-nuget-packages.png)
 1. Select the SpecFlow package in the list and click on Update.
-1. Add one of the following packages to your specifications project (the one containing your tests) to select your unit test provider:
+1. Add one of the following packages to your specifications project (the one containing your tests) to select your unit test provider. You will receive an error if you add more than one of these packages to your project:
 
     - SpecRun.SpecFlow
     - SpecFlow.xUnit
     - SpecFlow.MsTest
-    - SpecFlow.NUnit
-Note: You will receive an error if you add more than one of these packages to your project.
+    - SpecFlow.NUnit  
+
 1. Add the SpecFlow.Tools.MsBuild.Generation NuGet package to your project. This package is used to generate SpecFlow’s code-behind files.
 1. Remove “SpecFlowSingleFileGenerator” from the Custom Tool field in the Properties of your feature files.
 
 ## Updating SpecFlow+ Runner
 
-If you want to update both SpecFlow and SpecFlow+ Runner to version 3, the easiest way to do this is to simply upgrade the SpecRun for SpecFlow package. This automatically updates SpecFlow as well.
+If you want to update both SpecFlow and SpecFlow+ Runner to version 3, the easiest way to do this is to simply upgrade the SpecRun package. This automatically updates SpecFlow as well.
 
 To update SpecFlow and SpecFlow+ Runner:
 
 1. Open your solution, and check that it compiles, all tests are discovered and that all source files have been committed.
 1. Right-click on your solution and select Manage NuGet Packages for Solution.
-1. Uninstall any SpecRun.SpecFlow packages you have installed.
+1. Uninstall any SpecRun.SpecFlow.*-*-* packages you have installed.
 1. Install/update the following packages:
     - SpecFlow
     - SpecRun.SpecFlow
