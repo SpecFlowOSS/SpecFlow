@@ -18,7 +18,7 @@ In previous versions of SpecFlow, the unit test provider used to execute tests w
 
 ### specflow.json
 
-Moving forward, we recommend using specflow.json to configure SpecFlow, rather than app.config. .NET Core projects require specflow.json (app.config is not supported). While using specflow.json is optional for Full Framework projects, we recommend migrating to the new format. For more details, see [Configuration](../Configuration/Configuration.md) in the documentation.
+Moving forward, we recommend using specflow.json to configure SpecFlow, rather than app.config. .NET Core projects require specflow.json (app.config is not supported). While using specflow.json is optional for Full Framework projects, we recommend migrating to the new format. For more details, see [Configuration](../Installation/Configuration.md) in the documentation.
 
 ## Updating SpecFlow
 

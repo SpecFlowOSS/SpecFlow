@@ -81,7 +81,7 @@ Matching rules:
 * Underscore character is matched to one or more non-word character (eg. whitespace, punctuation): `\W+`.
 * If the step contains accented characters, the method name should also contain the accented characters (no substitution). 
 * The step keyword (e.g. `Given`) can be omitted: `[Given] public void I_have_entered_NUMBER_...`.
-* The step keyword can be specified in the local Gherkin language, or English. The default language can be specified in the [app config](../Configuration/Configuration.md) as the feature language or binding culture. The following step definition is threfore a valid "Given" step with German language settings: `[When] public void Wenn_ich_addieren_drücke()`
+* The step keyword can be specified in the local Gherkin language, or English. The default language can be specified in the [app config](../Installation/Configuration.md) as the feature language or binding culture. The following step definition is threfore a valid "Given" step with German language settings: `[When] public void Wenn_ich_addieren_drücke()`
 
 More detailed examples can be found in our specs: [StepDefinitionsWithoutRegex.feature](https://github.com/SpecFlowOSS/SpecFlow/blob/master/Tests/TechTalk.SpecFlow.Specs/Features/Execution/StepDefinitionsWithoutRegex.feature).
 
