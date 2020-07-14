@@ -22,11 +22,12 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 1
-   :caption: Getting Started
+   :caption: Guides & Tutorials
    :hidden:
 
    Getting-Started/Getting-Started.md
    Getting-Started/Getting-Started-With-An-Example.md
+   Guides/UpgradeSpecFlow2To3.md
 
 .. toctree::
    :maxdepth: 2
