@@ -36,7 +36,6 @@ To upgrade a solution from SpecFlow 2.x to SpecFlow 3:
     - SpecFlow.MsTest
     - SpecFlow.NUnit  
 
-1. Add the SpecFlow.Tools.MsBuild.Generation NuGet package to your project. This package is used to generate SpecFlow’s code-behind files.
 1. Remove “SpecFlowSingleFileGenerator” from the Custom Tool field in the Properties of your feature files.
 
 ## Updating SpecFlow+ Runner
@@ -51,7 +50,6 @@ To update SpecFlow and SpecFlow+ Runner:
 1. Install/update the following packages:
     - SpecFlow
     - SpecRun.SpecFlow
-    - SpecFlow.Tools.MsBuild.Generation
 1. Remove “SpecFlowSingleFileGenerator” from the Custom Tool field in the Properties of your feature files.
 
 ### SpecFlow+ Runner Report Templates

@@ -38,11 +38,11 @@ This package enables the code-behind file generation at build time.
 
 #### >= 3.0
 
-It is **mandatory** for projects in the SDK- Style format.
+It is **mandatory** for projects to use. After SpecFlow 3.3.30 this is a dependency of the `SpecFlow.xUnit`, `SpecFlow.NUnit`, `SpecFlow.MSTest` and `SpecRun.SpecFlow.3-3-0` packages.
 
 #### < 3.0
 
-This package is optional, because the code- behind file generation is done in the most cases by Visual Studio. But it is highly recommendated to use it.
+This package is optional, because the code- behind file generation is done in the most cases by Visual Studio. But it is highly recommended to use it.
 
 ### SpecFlow.xUnit
 
