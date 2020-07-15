@@ -1,3 +1,8 @@
+Changes after 3.3.30
+
+Changes:
++ Add `SpecFlow.Tools.MSBuild.Generation` as a dependency to the `SpecFlow.xUnit`, `SpecFlow.MSTest`, `SpecFlow.NUnit` packages
+
 3.3
 
 Features:
