@@ -2,7 +2,7 @@
 
 The Visual Studio integration includes a number of features that make it easier to edit Gherkin files and navigate to and from bindings in Visual Studio. You can also generate skeleton code including step definition methods from feature files. The Visual Studio integration also allows you to execute tests from Visual Studio's Test Explorer.
 
-You can install the integration from [Visual Studio Gallery](http://go.specflow.org/vsgallery) or from the online search in Visual Studio under **Tools/Extensions and Updates** (search for "SpecFlow"). Detailed instructions can be found [here](../Installation/Install-IDE-Integration.md).
+You can install the integration from [Visual Studio Gallery](http://go.specflow.org/vsgallery) or from the online search in Visual Studio under **Tools/Extensions and Updates** (search for "SpecFlow"). Detailed instructions can be found [here](../Installation/Installation.md).
 
 The integration provides the following features:
 
@@ -30,4 +30,4 @@ The integration provides the following features:
 
 ## Troubleshooting
 
-If you are having trouble with the Visual Studio integration, refer to the [Troubleshooting page](../Installation/Troubleshooting-Visual-Studio-Integration.md) first.
+If you are having trouble with the Visual Studio integration, refer to the [Troubleshooting page](../Help/Troubleshooting-Visual-Studio-Integration.md) first.

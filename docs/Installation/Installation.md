@@ -12,9 +12,37 @@ In order to install everything you need, you first have to install the IDE integ
 
 ## Installing the IDE Integration
 
-The process of installing the IDE Integration packages depends on your IDE. If you are using Visual Studio, the easiest way is to search for “SpecFlow” in the online search in the extension manager (**Tools | Extensions and Updates**). For other IDE integrations and for the direct download links, see the [Install IDE Integration](Install-IDE-Integration.md) page.
+The process of installing the IDE Integration packages depends on your IDE.
 
-This step only needs to be performed once in Visual Studio.
+### Visual Studio
+
+We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. An overview of the features provided by the integration can be found [here](../Tools/Visual-Studio-Integration.md).
+
+**If you are using Deveroom, do not install the SpecFlow Visual Studio extension; you should only install one of these 2 extensions.**
+
+The easiest way to install the IDE integration is to select **Tools\Extensions and Updates** from the menu and search for "SpecFlow" in the online gallery.  
+
+The integration packages can also be downloaded and installed separately from the Visual Studio Gallery:  
+
+* [VS2019 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowForVisualStudio)
+* [VS2017 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2017)
+* [VS2015 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2015)
+
+If you want even tighter integration with Visual Studio, [SpecFlow+ Runner](http://www.specflow.org/plus/runner) provides seamless integration with Visual Studio's Test Explorer and Team Foundation Server (TFS) and DevOps Build.
+
+### MonoDevelop/XamarinStudio/Visual Studio for Mac
+
+We currently don't have an extension for MonoDevelop/XamarinStudio/Visual Studio for Mac.
+
+### VSCode
+
+We currently don't have an extension for VSCode.
+
+### Rider
+
+We currently don't have an extension for Rider.
+
+If you are interested in one, please up-vote this [feature-request](https://support.specflow.org/hc/en-us/community/posts/360012011397--SpecFlow-Rider-IDE-Support)
 
 ## Project Setup
 
@@ -23,13 +51,4 @@ The generator and runtime are usually installed together for each project. To in
 1. Right-click on your project in Visual Studio, and select **Manage NuGet Packages** from the menu.
 1. Switch to the **Browse** tab.
 1. Enter "SpecFlow" in the search field to list the available packages for SpecFlow.
-1. Install the required packages. You need to install the SpecFlow NuGet package ([SpecFlow](http://www.nuget.org/packages/SpecFlow])).
-Other helper packages are also availble, e.g. [SpecFlow.NUnit](http://www.nuget.org/packages/SpecFlow.NUnit) or [SpecRun.SpecFlow](http://www.nuget.org/packages/SpecRun.SpecFlow). We recommend that you install the NuGet packages for your test framework.
-
-You can also install NuGet package manager console, e.g.:
-
-``` PowerShell
-Install-Package SpecFlow -ProjectName MyApp.Specs
-```
-
-Refer to the [NuGet-Packages](NuGet-Packages.md) page a full list of supported NuGet packages. You can find more details on setting up your project on the [Setup SpecFlow Projects]() page.
+1. Install the required NuGet packages. Depending on your chosen unit test provider, you have to use different packages. See [this list](Unit-Test-Providers.md) to find the correct package
