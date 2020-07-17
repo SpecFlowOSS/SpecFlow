@@ -4,7 +4,7 @@ _Note:_ If you are new to SpecFlow, we recommend checking out the [Getting Start
 
 SpecFlow consists of three components:
 
-* The **IDE Integration** that provides a customized editor and test generation functions within your IDE. This is provided as an extension for Visual Studio.
+* The **IDE Integration** that provides a customized editor and test generation functions within your IDE.
 * The **generator** that can turn Gherkin specifications into executable test classes, available from NuGet.
 * The **runtime** required for executing the generated tests. There are different runtime assemblies compiled for different target platforms. These packages are also available from NuGet.
 
@@ -28,19 +28,26 @@ The integration packages can also be downloaded and installed separately from th
 * [VS2017 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2017)
 * [VS2015 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2015)
 
-If you want even tighter integration with Visual Studio, [SpecFlow+ Runner](http://www.specflow.org/plus/runner) provides seamless integration with Visual Studio's Test Explorer and Team Foundation Server (TFS) and DevOps Build.
-
 ### MonoDevelop/XamarinStudio/Visual Studio for Mac
 
-We currently don't have an extension for MonoDevelop/XamarinStudio/Visual Studio for Mac.
+We don't maintain our own extension for MonoDevelop/XamarinStudio/Visual Studio for Mac. But our amazing community created on at <https://github.com/straighteight/SpecFlow-VS-Mac-Integration>.
 
 ### VSCode
 
-We currently don't have an extension for VSCode.
+We currently don't have our own extension for VSCode.
+
+For creating new projects, we recommend to use our [.NET templates](../Installation/Project-and-Item-Templates.html#creating-a-new-project-from-the-template).
+
+To improve your developing and scenario writing expierience, we recommend following VSCode extensions:
+
+* [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) - for editing feature files
+* [.NET Core Test Explore](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer) - for executing scenarios
 
 ### Rider
 
-We currently don't have an extension for Rider.
+We currently don't have our own extension for Rider.
+
+For creating new projects, we recommend to use our [.NET templates](../Installation/Project-and-Item-Templates.html#creating-a-new-project-from-the-template).
 
 If you are interested in one, please up-vote this [feature-request](https://support.specflow.org/hc/en-us/community/posts/360012011397--SpecFlow-Rider-IDE-Support)
 
