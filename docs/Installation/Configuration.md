@@ -1,14 +1,17 @@
 # Configuration
 
-SpecFlow's behaviour can be configured extensively. How to configure SpecFlow depends on the version of SpecFlow you are using.
+SpecFlow's behavior can be configured extensively. How to configure SpecFlow depends on the version of SpecFlow you are using.
+
+## SpecFlow 3.x
+
+Starting with SpecFlow 3, you can use the `specflow.json` file to configure it. It is mandatory for .NET Core projects and it is recommended for .NET Framework projects.  
+When using the .NET Framework, you can still use the `app.config` file, as with earlier versions of SpecFlow.
+
+If both the `specflow.json` and `app.config` files are available in a project, `specflow.json` takes precedence.
 
 ## SpecFlow 2.x
 
 SpecFlow 2 is configured in your standard .NET configuration file, `app.config`, which is automatically added to your project. This method is not supported by .NET Core, and SpecFlow 2 does not include .NET Core support.
-
-## SpecFlow 3.x
-
-The configuration has been moved to a JSON file, `specflow.json`. This file is mandatory for .NET Core projects, and optional for projects using the Full Framework. When using the Full Framework, you can still use the `app.config` file, as with earlier versions of SpecFlow, or `specflow.json`. If both the `specflow.json` and `app.config` files are available in a Full Framework project, `specflow.json` takes precedence.
 
 We recommend using `specflow.json` in new projects.
 
@@ -16,11 +19,19 @@ We recommend using `specflow.json` in new projects.
 
 Both configuration methods use the same options and general structure. The only difference is that SpecFlow 2 only uses the `app.config` file (XML) and SpecFlow 3 requires the `specflow.json` file (JSON) for .NET Core projects.
 
-Unit test providers for SpecFlow 3 are not configured in your configuration file, but by adding the appropriate packages to your solution, see Configuring Your Unit Test Provider below.
-
 ### Configuration examples
 
-The following 2 examples show the same option defined in the `app.config` in `specflow.json` formats:
+The following 2 examples show the same option defined in the `specflow.json` and `app.config` in formats:
+
+**specflow.json example:**
+
+```json
+{
+  "language": {
+    "feature": "de-AT"
+  }
+}
+```
 
 **app.config example:**
 
@@ -34,16 +45,6 @@ The following 2 examples show the same option defined in the `app.config` in `sp
     <language feature="de-AT" />
   </specFlow>
 </configuration>
-```
-
-**specflow.json example:**
-
-```json
-{
-  "language": {
-    "feature": "de-AT"
-  }
-}
 ```
 
 You can find more examples in the [sample projects](https://github.com/techtalk/SpecFlow-Examples) for SpecFlow.

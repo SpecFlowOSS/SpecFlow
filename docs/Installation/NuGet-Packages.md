@@ -38,11 +38,11 @@ This package enables the code-behind file generation at build time.
 
 #### >= 3.0
 
-It is **mandatory** for projects to use. After SpecFlow 3.3.30 this is a dependency of the `SpecFlow.xUnit`, `SpecFlow.NUnit`, `SpecFlow.MSTest` and `SpecRun.SpecFlow.3-3-0` packages.
+It is **mandatory** for projects to use. After SpecFlow 3.3.30 this is a dependency of the `SpecFlow.xUnit`, `SpecFlow.NUnit`, `SpecFlow.MSTest` and `SpecRun.SpecFlow.3-3-0` packages, hence the package is automatically installed with the unit test provider packages and you don't have to install it manually.
 
 #### < 3.0
 
-This package is optional, because the code- behind file generation is done in the most cases by Visual Studio. But it is highly recommended to use it.
+This package is optional if the code-behind file generation is enabled in the Visual Studio Extension. However, we recommend to upgrade to the [MSBuild code behind file generation](../Tools/Generate-Tests-From-MsBuild.md).
 
 ### SpecFlow.xUnit
 
