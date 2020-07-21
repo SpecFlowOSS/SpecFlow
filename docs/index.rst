@@ -22,10 +22,11 @@ Indices and tables
 
 .. toctree::
    :maxdepth: 1
-   :caption: Guides & Tutorials
+   :caption: Getting Started
    :hidden:
 
    Getting-Started/Getting-Started.md
+   Getting-Started/Getting-Started-With-A-New-Project.md
    Getting-Started/Getting-Started-With-An-Example.md
    
 
