@@ -134,16 +134,6 @@ This section can be used to configure additional assemblies that contain [extern
 
 The following example registers an additional binding assembly (MySharedBindings.dll).
 
-**app.config example:**
-
-```xml
-<specFlow>
-  <stepAssemblies>
-    <stepAssembly assembly="MySharedBindings" />
-  </stepAssemblies>
-</specFlow>
-```
-
 **specflow.json example:**
 
 ```
@@ -152,6 +142,16 @@ The following example registers an additional binding assembly (MySharedBindings
         { "assembly": "MySharedBindings" }
     ]
 }
+```
+
+**app.config example:**
+
+```xml
+<specFlow>
+  <stepAssemblies>
+    <stepAssembly assembly="MySharedBindings" />
+  </stepAssemblies>
+</specFlow>
 ```
 
 The `<stepAssemblies>` can contain multiple `<stepAssembly>` elements (one for each assembly), with the following attributes.
