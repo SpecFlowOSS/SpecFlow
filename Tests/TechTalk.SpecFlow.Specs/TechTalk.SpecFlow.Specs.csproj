@@ -90,7 +90,7 @@
         <Visible>$(UsingMicrosoftNETSdk)</Visible>
       </_CucumberMessagesSpecFlowFeatureFiles>
 
-      <SpecFlowFeatureFiles Include="@(_CucumberMessagesSpecFlowFeatureFiles)" />
+      <SpecFlowFeatureFiles Include="@(_CucumberMessagesSpecFlowFeatureFiles)" Exclude="@(SpecFlowFeatureFiles)" />
     </ItemGroup>
   </Target>
 
