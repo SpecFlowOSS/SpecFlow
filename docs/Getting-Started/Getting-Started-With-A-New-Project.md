@@ -30,7 +30,7 @@ SpecFlow tests are usually placed into one or more separate projects in your sol
 To set up your specification project:
 
 1. Add an “MSTest Test Project (.NET Core)” to your solution (e.g. “MyProject.Specs”).  
-    **Note:** Adding this simplifies the setup, as we will be using the .NET Core framework for this project. For a Full Framework project, select “Unit Test Project (.NET Framework)” instead.
+   **Note:** Adding this simplifies the setup, as we will be using the .NET Core framework for this project. For a Full Framework project, select “Unit Test Project (.NET Framework)” instead.
 2. Remove the _UnitTest1.cs_ file, as it is not required.
 3. Right-click on your solution (e.g. “MyProject.Specs”) and select **Manage NuGet Packages for Solution**.
 4. Install the following packages (use the search field to filter the search results):
@@ -57,11 +57,11 @@ You now need to add a feature file to your specifications project that outlines 
 
 1. Right-click on your specifications project and select **Add | New Item** from the popup menu.
 2. Select **SpecFlow Feature File** (restrict the entries by entering “SpecFlow” in the search field), give it a meaningful name (e.g. “Calculator.feature”) and click on **Add**.  
-        **Note:** Do not choose one of the feature files with a language in the name, as these files do not contain the skeleton code we will be using.
+    **Note:** Do not choose one of the feature files with a language in the name, as these files do not contain the skeleton code we will be using.
 
-The feature file is added to your specification project. It includes a default scenario for adding two numbers. You can leave most of the content as is, but add the word “also” to the scenario on the line beginning with “And” (see red text below):  
+The feature file is added to your specification project. It includes a default scenario for adding two numbers. You can leave most of the content as is, but add the word “also” to the scenario on the line beginning with “And” (see red text below):
 
-``` gherkin
+```gherkin
 
 Feature: Calculator
  In order to avoid silly mistakes
@@ -76,7 +76,7 @@ Scenario: Add two numbers
        Then the result should be 120 on the screen
 ```
 
-We will use this scenario to demonstrate the first development iteration. By adding “also” to the second Given statement, we have two separate statements that will be parsed differently (otherwise both statements would match the regular expression “I have entered (.*) into the calculator”). This both simplifies the code in our example and illustrates how different statements linked with “And” are handled.
+We will use this scenario to demonstrate the first development iteration. By adding “also” to the second Given statement, we have two separate statements that will be parsed differently (otherwise both statements would match the regular expression “I have entered (.\*) into the calculator”). This both simplifies the code in our example and illustrates how different statements linked with “And” are handled.
 
 You can also assign tags to scenarios (e.g. “@mytag” in the example above), which can be used to filter scenarios, and control how scenarios are executed and automated. For more details on using tags, see [Hooks](../Bindings/Hooks.md), [Scoped Step Definitions](../Bindings/Scoped-Step-Definitions.md), [FeatureContext](../Bindings/FeatureContext.md) and [ScenarioContext](../Bindings/ScenarioContext.md) in the documentation.
 
@@ -86,43 +86,44 @@ In order to test our scenario, we need to create step definitions that bind the 
 
 1. Right-click on your feature file **in the code editor** **(!)** and select **Generate Step Definitions** from the popup menu. A dialogue is displayed.![Step Definition Menu](../_static/images/Step-Definition.jpg)
 2. Enter a name for the class, e.g. “CalculatorSteps”.  
-    ![Step Definition Dialog](/_static/images/GenerateStepDefinitionSkeleton.png)
-3. Click on **Generate** and save the file. A new skeleton class is added to your project with steps for each of the steps in the scenario:  
-    ``` csharp
-    using System;
-    using TechTalk.SpecFlow;
+   ![Step Definition Dialog](/_static/images/GenerateStepDefinitionSkeleton.png)
+3. Click on **Generate** and save the file. A new skeleton class is added to your project with steps for each of the steps in the scenario:
 
-    namespace MyProject.Specs.Steps
-    {
-        [Binding]
-        public class CalculatorSteps
-        {
-            [Given(@"I have entered (.*) into the calculator")]
-            public void GivenIHaveEnteredIntoTheCalculator(int number)
-            {
-                ScenarioContext.Current.Pending();
-            }
+   ``` csharp
+   using System;
+   using TechTalk.SpecFlow;
 
-            [Given(@"I have also entered (.*) into the calculator")]
-            public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
-            {
-                ScenarioContext.Current.Pending();
-            }
+   namespace MyProject.Specs.Steps
+   {
+       [Binding]
+       public class CalculatorSteps
+       {
+           [Given(@"I have entered (.*) into the calculator")]
+           public void GivenIHaveEnteredIntoTheCalculator(int number)
+           {
+               ScenarioContext.Current.Pending();
+           }
 
-            [When(@"I press add")]
-            public void WhenIPressAdd()
-            {
-                ScenarioContext.Current.Pending();
-            }
+           [Given(@"I have also entered (.*) into the calculator")]
+           public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
+           {
+               ScenarioContext.Current.Pending();
+           }
 
-            [Then(@"the result should be (.*) on the screen")]
-            public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
-            {
-                ScenarioContext.Current.Pending();
-            }
-        }
-    }
-    ```
+           [When(@"I press add")]
+           public void WhenIPressAdd()
+           {
+               ScenarioContext.Current.Pending();
+           }
+
+           [Then(@"the result should be (.*) on the screen")]
+           public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
+           {
+               ScenarioContext.Current.Pending();
+           }
+       }
+   }
+   ```
 
 ## Executing your first test
 
@@ -130,12 +131,12 @@ SpecFlow+ Runner integrates with Visual Studio Test Explorer. After adding your 
 
 1. Build your solution.
 2. Select **Test | Windows | Test Explorer** to open the Test Explorer:  
-    ![Test Explorer before first execution](../_static/images/TestExplorerInitialStatus.png)  
-    Scenarios are displayed with their plain text scenario title instead of a generated unit test name.
+   ![Test Explorer before first execution](../_static/images/TestExplorerInitialStatus.png)  
+   Scenarios are displayed with their plain text scenario title instead of a generated unit test name.
 3. Click on **Run All** to run your test.
 4. You will be asked to sign up for a [SpecFlow account](https://specflow.org/2020/introducing-the-specflow-account/) or to sign in with your existing account.  
-    To see the output of the SpecFlow+ Runner please open the “Output” pane and select “Tests” in the “Show output from” dropdown:  
-    ![Test output pane displays link for free SpecFlow Account](../_static/images/TestOutputPane.png)
+   To see the output of the SpecFlow+ Runner please open the “Output” pane and select “Tests” in the “Show output from” dropdown:  
+   ![Test output pane displays link for free SpecFlow Account](../_static/images/TestOutputPane.png)
 5. Open the URL in the message in your browser. In Visual Studio you can click the link while pressing the CTRL-key.
 6. You are displayed with a “Welcome Page”. Click on **Sign in with Microsoft** to continue.
 7. Sign in with your Microsoft account. It can be a personal or corporate/enterprise account. If you are already signed in, this should happen automatically – _you might need additional permissions from your Active Directory admin. [Learn more about admin consents](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-admin-consent-workflow)_
@@ -158,41 +159,50 @@ In order for your tests to pass, you need to implement both the application code
 
 The application code that implements the actual functions performed by the calculator should be defined in a separate project from your specification project. This project should include a class for the calculator and expose methods for initialising the calculator and performing the addition:
 
-1.  Right-click on your solution in the Solution Explorer and select **Add | Project** from the context menu. Choose to add a new class library and give your project a name (e.g. “Example”).
-2.  Right-click on the .cs file in the new project and rename it (e.g. “Calculator.cs”), and choose to rename all references.
-3.  Your new class should be similar to the following:  
-    ![EmptyCalculatorClass](/media/EmptyCalculatorClass.png)
+1. Right-click on your solution in the Solution Explorer and select **Add | Project** from the context menu. Choose to add a new class library and give your project a name (e.g. “Example”).
+2. Right-click on the .cs file in the new project and rename it (e.g. “Calculator.cs”), and choose to rename all references.
+3. Your new class should be similar to the following:  
+    ``` csharp
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    namespace Example
+    {
+        public class Calculator
+        {
+            
+        }
+    }
+    ```
 
 ### Referencing the Calculator Class
 
-1.  Right-click your specification project and select **Add | Reference** from the context menu.
-2.  Click on **Projects** on the left of the **Reference Manager** dialogue. The projects in your solution are listed.
-3.  Enable the check box next to the **Example** project to reference it from the specifications project.
-4.  Click on **OK**.  
+1. Right-click your specification project and select **Add | Reference** from the context menu.
+2. Click on **Projects** on the left of the **Reference Manager** dialogue. The projects in your solution are listed.
+3. Enable the check box next to the **Example** project to reference it from the specifications project.
+4. Click on **OK**.  
     A reference to the **Example** project is added to the **References** node in the **Solution Explorer**.
-5.  Add a using directive for the namespace (e.g. “Example”) of your Calculator class to the CalculatorSteps.cs file in your specification project:  
+5. Add a using directive for the namespace (e.g. “Example”) of your Calculator class to the CalculatorSteps.cs file in your specification project:
 
-    
-
+``` csharp
     using Example;
-    
+```
 
-    
+6. Define a variable of the type Calculator in the CalculatorSteps class prior to the step definitions:
 
-6.  Define a variable of the type Calculator in the CalculatorSteps class prior to the step definitions:  
-
-    
-
+``` csharp
     public class CalculatorSteps
     {
         private Calculator calculator = new Calculator();
-     [Given(@"I have entered (.*) into the calculator")]
-    …
-    
+        [Given(@"I have entered (.*) into the calculator")]
 
-    
+    }
+```
 
-    Defining a variable outside of the individual steps allows the variable to be accessed by each of the individual steps and ensures the variable is persistent between steps.
+Defining a variable outside of the individual steps allows the variable to be accessed by each of the individual steps and ensures the variable is persistent between steps.
 
 ### Implementing the Code
 
@@ -200,71 +210,56 @@ Now that the step definitions can reference the **Calculator** class, you need t
 
 #### Binding the First Given Statement
 
-The first Given statement in the scenario needs to initialise the calculator with the first of the two numbers defined in the scenario (50). To implement the code:
+The first Given statement in the scenario needs to initialize the calculator with the first of the two numbers defined in the scenario (50). To implement the code:
 
-1.  Open CalculatorSteps.cs if it is not already open.  
-    The value defined in the scenario is passed as a parameter in the automation code’s associated function, e.g.:  
-    ![InitialGivenStep](/media/InitialGivenStep.png)
-2.  Rename this parameter to something more human-readable (e.g. “number”):  
+1. Open CalculatorSteps.cs if it is not already open.  
+   The value defined in the scenario is passed as a parameter in the automation code’s associated function, e.g.:  
+    ![Initial Given Step](../_static/images/InitialGivenStep.png)
+2. Rename this parameter to something more human-readable (e.g. “number”):
 
-    
-
+``` csharp
     public void GivenIHaveEnteredIntoTheCalculator(int number)
-    
+```
 
-    
+3. To initialize the calculator with this number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:
 
-3.  To initialise the calculator with this number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:  
-
-    
-
+``` csharp
     public void GivenIHaveEnteredIntoTheCalculator(int number)
     {
         calculator.FirstNumber = number;
     }
-    
+```
 
-    
+4. Switch to the file containing your **Calculator** class (e.g. Calculator.cs) and add a public integer member to the class:
 
-4.  Switch to the file containing your **Calculator** class (e.g. Calculator.cs) and add a public integer member to the class:  
-
-    
-
+``` csharp
     public int FirstNumber { get; set; }
-    
+```
 
-    
-
-You have now determined that the FirstNumber member of the **Calculator** class is initialised with the value defined in the scenario when the test is executed.
+You have now determined that the FirstNumber member of the **Calculator** class is initialized with the value defined in the scenario when the test is executed.
 
 #### Binding the Second Given Statement
 
-The second Given statement in the scenario needs to initialise the second number with the second value defined in the scenario (70). To implement the code:
+The second Given statement in the scenario needs to initialize the second number with the second value defined in the scenario (70). To implement the code:
 
-1.  Open CalculatorSteps.cs if it is not already open.
-2.  Locate the function corresponding to the second Given statement and rename the p0 parameter to “number”, as before.
-3.  To initialise the calculator with the second number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:  
+1. Open CalculatorSteps.cs if it is not already open.
+2. Locate the function corresponding to the second Given statement and rename the p0 parameter to “number”, as before.
+3. To initialize the calculator with the second number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:
 
-    
-
+``` csharp
     public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
     {
         calculator.SecondNumber = number;
     }
-    
+```
 
-    
+4. Switch to the file containing your **Calculator** class and add another public integer member to the class:
 
-4.  Switch to the file containing your **Calculator** class and add another public integer member to the class:  
-
-    
-
+``` csharp
     public int SecondNumber { get; set; }
-    
+```
 
-    
-
-You have now determined that the SecondNumber member of the **Calculator** class is initialised with the value defined in the scenario when the test is executed.
+You have now determined that the SecondNumber member of the **Calculator** class is initialized with the value defined in the scenario when the test is executed.
 
 #### Binding the When Statement
 
@@ -272,41 +267,32 @@ The step for the When statement needs to call the method that performs the actua
 
 To implement the code:
 
-1.  Open CalculatorSteps.cs if it is not already open.
-2.  Define a variable to store the result at the start of the CalculatorSeps class (before any of the steps):  
+1. Open CalculatorSteps.cs if it is not already open.
+2. Define a variable to store the result at the start of the CalculatorSeps class (before any of the steps):
 
-    
-
+``` csharp
     private int result;
-    
+```
 
-    
+Defining a variable outside of the individual steps allows the variable to be accessed by each of the individual steps.
 
-    Defining a variable outside of the individual steps allows the variable to be accessed by each of the individual steps.
+3. Locate the function corresponding to the When statement and edit it as follows:
 
-3.  Locate the function corresponding to the When statement and edit it as follows:  
-
-    
-
+``` csharp
     public void WhenIPressAdd()
     {
         result = calculator.Add();
     }
-    
+```
 
-    
+4. Switch to the file containing your **Calculator** class and define the Add() method:
 
-4.  Switch to the file containing your **Calculator** class and define the Add() method:  
-
-    
-
+``` csharp
     public int Add()
     {
         return FirstNumber + SecondNumber;
     }
-    
-
-    
+```
 
 You have now determined that the Add() method of the calculator class is called once the initial Given steps have been performed.
 
@@ -314,207 +300,119 @@ You have now determined that the Add() method of the calculator class is called 
 
 The step for the Then statement needs to verify that the result returned by the **Add()** method in the previous step is the same as the expected result defined in the test scenario. To implement the code:
 
-1.  Open CalculatorSteps.cs if it is not already open.  
-    As the result will be verified using Assert, you need to add “using Microsoft.VisualStudio.TestTools.UnitTesting;” to the top of your automation code.
-2.  Locate the function corresponding to the Then statement. Rename the p0 parameter in the function call (this time to “expectedResult”) and edit the step definition as follows:
+1. Open CalculatorSteps.cs if it is not already open.  
+   As the result will be verified using Assert, you need to add “using Microsoft.VisualStudio.TestTools.UnitTesting;” to the top of your automation code.
+2. Locate the function corresponding to the Then statement. Rename the p0 parameter in the function call (this time to “expectedResult”) and edit the step definition as follows:
 
-
-
-public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
-{
-    Assert.AreEqual(expectedResult, result);
-}
-
-
-
+``` csharp
+    public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
+    {
+        Assert.AreEqual(expectedResult, result);
+    }
+```
 
 You have now implemented the final piece of the jigsaw – testing that the result returned by your application matches the expected result defined in the scenario.
 
 ### Final CalculatorSteps.cs Code
 
-Your CalculatorSteps.cs code should be similar to the following:  
+Your CalculatorSteps.cs code should be similar to the following:
 
+``` csharp
+    using System;
+    using TechTalk.SpecFlow;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Example;
 
-
-using System;
-using TechTalk.SpecFlow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Example;
-
-namespace MyProject.Specs
-{
- [Binding]
-    public class CalculatorSteps
+    namespace MyProject.Specs
     {
-        private int result; 
-        private Calculator calculator = new Calculator();
-
- [Given(@"I have entered (.*) into the calculator")]
-        public void GivenIHaveEnteredIntoTheCalculator(int number)
+        [Binding]
+        public class CalculatorSteps
         {
-            calculator.FirstNumber = number;
-        }
+            private int result;
+            private Calculator calculator = new Calculator();
 
- [Given(@"I have also entered (.*) into the calculator")]
-        public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
-        {
-            calculator.SecondNumber = number;
-        }
+            [Given(@"I have entered (.*) into the calculator")]
+            public void GivenIHaveEnteredIntoTheCalculator(int number)
+            {
+                calculator.FirstNumber = number;
+            }
 
- [When(@"I press add")]
-        public void WhenIPressAdd()
-        {
-            result = calculator.Add();
-        }
+            [Given(@"I have also entered (.*) into the calculator")]
+            public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
+            {
+                calculator.SecondNumber = number;
+            }
 
- [Then(@"the result should be (.*) on the screen")]
-        public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
-        {
-            Assert.AreEqual(expectedResult, result);
+            [When(@"I press add")]
+            public void WhenIPressAdd()
+            {
+                result = calculator.Add();
+            }
+
+            [Then(@"the result should be (.*) on the screen")]
+            public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
+            {
+                Assert.AreEqual(expectedResult, result);
+            }
         }
     }
-}
-
-
-
+```
 
 ### Final Calculator.cs Code
 
-Your Calculator.cs code should be similar to the following:  
+Your Calculator.cs code should be similar to the following:
 
+``` csharp
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Example
-{
-    public class Calculator
+    namespace Example
     {
+        public class Calculator
+        {
         public int FirstNumber { get; set; }
         public int SecondNumber { get; set; }
 
-        public int Add()
-        {
-            return FirstNumber + SecondNumber;
+            public int Add()
+            {
+                return FirstNumber + SecondNumber;
+            }
         }
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 ## Executing the Tests Again
 
-
-
-
-
-
-
 Now that the test steps have been bound to your application code, you need to rebuild your solution and execute the tests again (click on **Run All** in the Test Explorer). You should see that the test now passes (green).
 
-![TestExplorerInitialStatus](/media/TestExplorerInitialStatus.png)
+![TestExplorer Initial Status](../_static/images/TestExplorerInitialStatus.png)
 
 Click on **Output** in the Test Explorer to display a summary of the test:  
-![TestSummary](/media/TestSummary.png)  
+![Test Explorer after Execution](../_static/images/Test-Explorer-After-Execution.png)  
 This example is obviously very simple; at this point you would want to refactor your code before proceeding with the implementation of your remaining scenarios.
 
-## Sample Projects
+### Sample Projects
 
 A number of SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/techtalk/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/techtalk/SpecFlow.Plus.Examples)
 
 You can find samples using other test unit providers also [on GitHub](https://github.com/techtalk/SpecFlow-Examples).
 
-## Other Test Engines
+### Other Test Engines
 
 Instead of [SpecFlow+ Runner](https://specflow.org/plus/runner/), you can also use [other test engines](https://specflow.org/documentation/Unit-Test-Providers/), like MsTest, xUnit, or NUnit. These packages are installed in exactly the same manner as SpecFlow+ Runner. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
 
-## Improve your Gherkin Specifications
+### Improve your Gherkin Specifications
 
 If you are new to BDD/ATDD/Specification by Example, we also suggest reading up on best practices for writing your tests. This is not covered in this guide; you can read a short article on [how to write your specifications in Gherkin](https://specflow.org/2017/fit-for-purpose-gherkin/).
 
-## Advanced SpecFlow+ Runner Features
+### Advanced SpecFlow+ Runner Features
 
 Learn about the [Advanced features SpecFlow+ Runner has to offer](https://specflow.org/plus/runner/advanced-features/).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Living Documentation
-
-
-
-
-
-
 
 An easy way to share your feature files with all members of your team is to use the [SpecFlow+ LivingDoc extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to generate a living documentation from your feature files.
 
