@@ -3,7 +3,8 @@
 ## General
 
 You need to use the MSBuild code behind file generation for SpecFlow 3.0.  
-After version SpecFlow 3.3.30 don't need to add the `SpecFlow.Tools.MSBuild.Generation` package anymore to your project, if you are using the `SpecFlow.NUnit`, `SpecFlow.MSTest`, `SpecFlow.xUnit` or `SpecRun.SpecFlow.3-3-0` package.
+
+After version SpecFlow 3.3.30 don't need to add the `SpecFlow.Tools.MSBuild.Generation` package anymore to your project, if you are using one of our [Unit-Test-Provider](../Installation/Unit-Test-Providers.md) NuGet packages.
 
 **Note:** You will need at least VS2017/MSBuild 15 to use this package.
 
