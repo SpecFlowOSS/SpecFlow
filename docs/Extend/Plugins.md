@@ -22,7 +22,7 @@ SpecFlow loads plugins in the order they are found in the folder.
 ### Create a runtime plugin
 
 1. Create a new class library for your plugin.
-1. Add the SpecFlow.CustomPlugin NuGet package to your project.
+1. Add the SpecFlow NuGet package to your project.
 1. Define a class that implements the `IRuntimePlugin` interface (defined in TechTalk.SpecFlow.Plugins).
 1. Flag your assembly with the `RuntimePlugin` attribute for the plugin to be identified by SpecFlow plugin loader. The following example demonstrates a `MyNewPlugin` class that implements the `IRuntimePlugin` interface:  
   `[assembly: RuntimePlugin(typeof(MyNewPlugin))]`
