@@ -1,4 +1,9 @@
-Changes after 3.3.30
+Changes after 3.3.57
+
+Fixes: 
++ Fix step definition attribute support for the Visual Studio Extension #2065
+
+3.3.57
 
 Changes:
 + Add `SpecFlow.Tools.MSBuild.Generation` as a dependency to the `SpecFlow.xUnit`, `SpecFlow.MSTest`, `SpecFlow.NUnit` packages
