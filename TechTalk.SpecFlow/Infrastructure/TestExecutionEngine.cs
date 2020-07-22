@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             var runtimePluginEvents = TestThreadContainer.Resolve<RuntimePluginEvents>();
-            runtimePluginEvents.RaiseTestRunEnd(_testRunnerManager, new ObjectContainer(TestThreadContainer));
+            runtimePluginEvents.RaiseTestRunEnd(new ObjectContainer(TestThreadContainer));
 
             FireEvents(HookType.AfterTestRun);
         }

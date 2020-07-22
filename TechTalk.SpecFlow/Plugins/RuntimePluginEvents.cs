@@ -44,9 +44,9 @@ namespace TechTalk.SpecFlow.Plugins
             CustomizeScenarioDependencies?.Invoke(this, new CustomizeScenarioDependenciesEventArgs(scenarioContainer));
         }
 
-        public void RaiseTestRunEnd(ITestRunnerManager testRunnerManager, ObjectContainer container)
+        public void RaiseTestRunEnd(ObjectContainer container)
         {
-            TestRunEnd?.Invoke(this, new TestRunEndEventArgs(testRunnerManager, container));
+            TestRunEnd?.Invoke(this, new TestRunEndEventArgs(container));
         }
     }
 }

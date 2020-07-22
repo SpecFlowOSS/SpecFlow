@@ -65,11 +65,8 @@ namespace TechTalk.SpecFlow.Plugins
 
     public class TestRunEndEventArgs : ObjectContainerEventArgs
     {
-        public TestRunEndEventArgs(ITestRunnerManager testRunnerManager, ObjectContainer objectContainer) : base(objectContainer)
+        public TestRunEndEventArgs(ObjectContainer objectContainer) : base(objectContainer)
         {
-            TestRunnerManager = testRunnerManager;
         }
-
-        public ITestRunnerManager TestRunnerManager { get; private set; }
     }
 }
