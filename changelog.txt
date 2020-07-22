@@ -2,6 +2,7 @@ Changes after 3.3.30
 
 Changes:
 + Add `SpecFlow.Tools.MSBuild.Generation` as a dependency to the `SpecFlow.xUnit`, `SpecFlow.MSTest`, `SpecFlow.NUnit` packages
++ Add and raise TestRunEnd event
 
 3.3
 
