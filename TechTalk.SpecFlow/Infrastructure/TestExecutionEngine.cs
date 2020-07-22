@@ -146,10 +146,10 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _cucumberMessageSender.SendTestRunFinished(success.Result);
             }
 
+            FireEvents(HookType.AfterTestRun);
+            
             var runtimePluginEvents = TestThreadContainer.Resolve<RuntimePluginEvents>();
             runtimePluginEvents.RaiseTestRunEnd(new ObjectContainer(TestThreadContainer));
-
-            FireEvents(HookType.AfterTestRun);
         }
 
         public virtual void OnFeatureStart(FeatureInfo featureInfo)
