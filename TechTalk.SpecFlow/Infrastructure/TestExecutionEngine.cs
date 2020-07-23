@@ -13,6 +13,7 @@ using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -146,6 +147,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             FireEvents(HookType.AfterTestRun);
+            
+            var runtimePluginEvents = TestThreadContainer.Resolve<RuntimePluginEvents>();
+            runtimePluginEvents.RaiseTestRunEnd(new ObjectContainer(TestThreadContainer));
         }
 
         public virtual void OnFeatureStart(FeatureInfo featureInfo)
