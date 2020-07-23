@@ -61,5 +61,12 @@ namespace TechTalk.SpecFlow.Plugins
         public CustomizeScenarioDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)
         {
         }
-    }   
+    }
+
+    public class TestRunEndEventArgs : ObjectContainerEventArgs
+    {
+        public TestRunEndEventArgs(ObjectContainer objectContainer) : base(objectContainer)
+        {
+        }
+    }
 }
