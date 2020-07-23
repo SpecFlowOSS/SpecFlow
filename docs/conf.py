@@ -50,7 +50,6 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 html_theme_options = {
-    'canonical_url':'https://docs.specflow.org',
     'logo_only': True,
     'style_nav_header_background': '#e9e7ee',
     'analytics_id':'UA-11088967-5'
