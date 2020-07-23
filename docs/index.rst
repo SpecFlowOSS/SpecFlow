@@ -43,13 +43,10 @@ Indices and tables
 
    Installation/Requirements.md
    Installation/Installation.md 
-   Installation/Configuration.md
-   Installation/Install-IDE-Integration.md
    Installation/NuGet-Packages.md
+   Installation/Configuration.md
    Installation/Project-and-Item-Templates.md
-   Installation/Troubleshooting-Visual-Studio-Integration.md
    Installation/Unit-Test-Providers.md
-   Installation/SpecFlow-and-.NET-Core.md
    Installation/Breaking-Changes-with-SpecFlow-3.0.md
 
 .. toctree::
@@ -157,6 +154,7 @@ Indices and tables
 
    Help/Troubleshooting.md
    Help/Known-Issues.md
+   Help/Troubleshooting-Visual-Studio-Integration.md
 
 .. toctree::
    :maxdepth: 1

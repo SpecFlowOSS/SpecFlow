@@ -3,6 +3,9 @@ Changes after 3.3.57
 Fixes: 
 + Fix step definition attribute support for the Visual Studio Extension #2065
 
+Changes:
++ Add a new `TestRunEnd` extension point for plugins
+
 3.3.57
 
 Changes:
