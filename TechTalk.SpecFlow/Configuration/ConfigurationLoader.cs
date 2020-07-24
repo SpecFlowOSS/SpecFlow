@@ -20,10 +20,11 @@ namespace TechTalk.SpecFlow.Configuration
         private readonly AppConfigConfigurationLoader _appConfigConfigurationLoader;
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
+        private readonly ISpecFlowJsonLocator _specFlowJsonLocator;
 
-
-        public ConfigurationLoader()
+        public ConfigurationLoader(ISpecFlowJsonLocator specFlowJsonLocator)
         {
+            _specFlowJsonLocator = specFlowJsonLocator;
             _jsonConfigurationLoader = new JsonConfigurationLoader();
             _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
         }
@@ -61,7 +62,7 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get
             {
-                var specflowJsonFile = SpecFlowJsonLocator.GetSpecFlowJsonFilePath();
+                var specflowJsonFile = _specFlowJsonLocator.GetSpecFlowJsonFilePath();
                 return File.Exists(specflowJsonFile);
             }
         }
@@ -160,7 +161,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         private SpecFlowConfiguration LoadJson(SpecFlowConfiguration specFlowConfiguration)
         {
-            var jsonContent = File.ReadAllText(SpecFlowJsonLocator.GetSpecFlowJsonFilePath());
+            var jsonContent = File.ReadAllText(_specFlowJsonLocator.GetSpecFlowJsonFilePath());
 
             return LoadJson(specFlowConfiguration, jsonContent);
         }

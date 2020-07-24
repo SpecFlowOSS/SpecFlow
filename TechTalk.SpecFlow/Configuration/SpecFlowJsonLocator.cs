@@ -3,11 +3,11 @@ using System.IO;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    public static class SpecFlowJsonLocator
+    public class SpecFlowJsonLocator : ISpecFlowJsonLocator
     {
         public const string JsonConfigurationFileName = "specflow.json";
 
-        public static string GetSpecFlowJsonFilePath()
+        public string GetSpecFlowJsonFilePath()
         {
             var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, JsonConfigurationFileName);
 
