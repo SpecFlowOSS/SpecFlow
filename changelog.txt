@@ -4,6 +4,7 @@ Fixes:
 + Fix step definition attribute support for the Visual Studio Extension #2065
 
 Changes:
++ Add NullValueRetriever back again (was accidential removed with https://github.com/SpecFlowOSS/SpecFlow/pull/1928) - https://github.com/SpecFlowOSS/SpecFlow/pull/2067
 + Add a new `TestRunEnd` extension point for plugins
 
 3.3.57
