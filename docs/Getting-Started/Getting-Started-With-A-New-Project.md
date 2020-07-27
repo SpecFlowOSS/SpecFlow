@@ -1,4 +1,4 @@
-# Getting Started with a new Project
+# Getting Started with a New Project
 
 ## Installation and Setup
 
@@ -9,7 +9,7 @@ Installing SpecFlow consists of two steps:
 
 ### Installing the Visual Studio Extension
 
-The SpecFlow extension for Visual Studio provides a number of helpful features, such as syntax highlighting for Gherkin (feature) files, a Visual Studio project template and multiple item templates, which help you create executable specifications with SpecFlow. This extension is not required to use SpecFlow, but we recommend you install it if you are using Visual Studio. If you are not using Visual Studio on Windows, you will not be able to install the extension.
+The SpecFlow extension for Visual Studio provides several helpful features, such as syntax highlighting for Gherkin (feature) files, a Visual Studio project template, and multiple item templates, which help you create executable specifications with SpecFlow. This extension is not required to use SpecFlow, but we recommend you install it if you are using Visual Studio. If you are not using Visual Studio on Windows, you will not be able to install the extension.
 
 To install the extension, download the extension for your version of Visual Studio:
 
@@ -17,13 +17,15 @@ To install the extension, download the extension for your version of Visual Stud
 - [Visual Studio 2017](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2017)
 - [Visual Studio 2015](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2015)
 
-Either choose to open the download directly, or double-click the extension once it has downloaded to install it in Visual Studio.
+Either choose to open the download directly, or double-click the extension once it has downloaded to install it in Visual Studio.  
+
+In this guide, we are assuming that you installed the Visual Studio extension.
 
 ### Setting Up your SpecFlow Project
 
-This section guides you through the first steps of setting up a Visual Studio project with SpecFlow and defining and executing your first test scenario. In this example, we will be using [SpecFlow+ Runner](https://www.specflow.org/plus/), but you can use a number of other test execution frameworks, including NUnit, xUnit or MSTest. SpecFlow+ Runner’s advantages include integration with Visual Studio Test Runner and extensive integrated reports available from within Visual Studio.
+This section guides you through the first steps of setting up a SpecFlow project within Visual Studio and defining and executing your first test scenario. In this example, we will be using [SpecFlow+ Runner](https://www.specflow.org/plus/), but you can use several other test execution frameworks, including NUnit, xUnit, or MSTest.  
 
-**SpecFlow+ Runner is available free of charge.** Learn more about [how to sign-up for your free account](https://specflow.org/2020/introducing-the-specflow-account/). After the successful sign-up you are able to execute your scenarios for the first time.
+**SpecFlow+ Runner is available free of charge.** Learn more about [how to sign-up for your free account](https://specflow.org/2020/introducing-the-specflow-account/). After the successful sign-up, you can execute your scenarios for the first time.
 
 SpecFlow tests are usually placed into one or more separate projects in your solution, and these projects are referred to as a “specification project” below. The easiest and most convenient way to set up these projects is to use the SpecFlow project template provided by our SpecFlow for Visual Studio extension.
 
@@ -34,34 +36,31 @@ To set up your specification project:
 1. Select it and press `Next`
 1. Enter your project name and location and press `Create`  
    ![Configure your project](../_static/images/CreateNewProjectDialog_Configure.png)
-1. Configure your wanted .NET version and unit test framework  
+1. Configure your wanted .NET version and unit test framework and press `Create`  
    ![SpecFlow configuration for your project](../_static/images/CreateNewProjectDialog_SpecFlow.png)
-1. Press `Create`
-1. The project with all needed NuGet packages is created  
+1. The project is created with all needed NuGet packages  
    ![Created project](../_static/images/CreatedProject.png)
-1. All NuGet packages on which the newly created SpecFlow project depends, should be automatically restored. If not, do a manual restore.
+1. All NuGet packages which the newly created SpecFlow project depends on should be automatically restored. If not, do a manual restore.
 
 _Hint_: Your project folder should not be too deep in the filesystem, as you will get problems with Windows 255 character limit in file paths.
 
 #### SpecRun.Runner Package
 
-This package is added to your project automatically when create the project using the SpecFlow Visual Studio project template with default settings or by manually installing. This package configures SpecFlow+ Runner as your unit test provider.
+This package is added to your project automatically when creating the project using the SpecFlow Visual Studio project template with default settings or by manually installing. This package configures SpecFlow+ Runner as your unit test provider.
 
-**Note: Instead of SpecFlow+ Runner, you can also use [other test engines](../Installation/Unit-Test-Providers.md), like MsTest, xUnit or NUnit.** Simply choose a different Test Framework than `SpecFlow+ Runner`. However to follow all the steps in this guide, you need to install SpecFlow+ Runner.
+**Note: Instead of SpecFlow+ Runner, you can also use [other test engines](../Installation/Unit-Test-Providers.md), like MsTest, xUnit or NUnit.** Simply choose a different Test Framework than `SpecFlow+ Runner`. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
 
 #### Microsoft.NET.Test.Sdk
 
 This package is needed for all .NET test project.
 
-## Adding a Feature File
+## Looking at the Feature File
 
-Unless you have created the project using the SpecFlow Visual Studio project template, now you need to add a feature file to your specifications project that outlines a specific feature and includes a test scenario:
+In the created project, we added already the Feature file, we are using in the rest of this guide.  
 
-1. Right-click on your specifications project and select **Add | New Item** from the popup menu.
-2. Select **SpecFlow Feature File** (restrict the entries by entering “SpecFlow” in the search field), give it a meaningful name (e.g. “Calculator.feature”) and click on **Add**.  
-   **Note:** Do not choose one of the feature files with a language in the name, as these files do not contain the skeleton code we will be using.
+![feature file created project from template](../_static/images/Project_created_from_Wizard.png)
 
-The feature file is added to your specification project. It includes a default scenario for adding two numbers. You can leave most of the content as is, but add the word “also” to the scenario on the line beginning with “And” (see red text below):
+It includes a default scenario written in [Gherkin](../Gherkin/Gherkin-Reference.md) for adding two numbers.  
 
 ```gherkin
 
@@ -78,73 +77,97 @@ Scenario: Add two numbers
     Then the result should be 120
 ```
 
-We will use this scenario to demonstrate the first development iteration. By adding “also” to the second Given statement, we have two separate statements that will be parsed differently (otherwise both statements would match the regular expression “I have entered (.\*) into the calculator”). This both simplifies the code in our example and illustrates how different statements linked with “And” are handled.
+We will use this scenario to demonstrate the first development iteration.  
 
-You can also assign tags to scenarios (e.g. “@mytag” in the example above), which can be used to filter scenarios, and control how scenarios are executed and automated. For more details on using tags, see [Hooks](../Bindings/Hooks.md), [Scoped Step Definitions](../Bindings/Scoped-Step-Definitions.md), [FeatureContext](../Bindings/FeatureContext.md) and [ScenarioContext](../Bindings/ScenarioContext.md) in the documentation.
+To add later new feature files to your project, have a look at our [Item- Templates](../Installation/Project-and-Item-Templates.html#item-template).  
 
-### Generating Step Definitions
+### Having a look at the created Step Definitions
 
-If you have created the project using the SpecFlow Visual Studio project template, you already have a step definition skeleton class file in the Steps folder of your project. Otherwise, in order to test the scenario, you need to create step definitions that bind the statements in the test scenario to the application code. SpecFlow can automatically generate a skeleton for the automation code that you can then extend as necessary:
+Also with the project template, [step definitions](../Bindings/Step-Definitions.md) for the feature file were created.
 
-1. Right-click on your feature file **in the code editor** **(!)** and select **Generate Step Definitions** from the popup menu. A dialogue is displayed.![Step Definition Menu](../_static/images/Step-Definition.jpg)
-2. Enter a name for the class, e.g. “CalculatorSteps”.  
-   ![Step Definition Dialog](/_static/images/GenerateStepDefinitionSkeleton.png)
-3. Click on **Generate** and save the file. A new skeleton class is added to your project with steps for each of the steps in the scenario:
+![step definitions created in project](../_static/images/Project_created_from_Wizard_StepDefinitions.png)
 
-   ```csharp
-   using System;
-   using TechTalk.SpecFlow;
+``` csharp
+using TechTalk.SpecFlow;
 
-   namespace SpecFlowProject1.Steps
-   {
-        [Binding]
-        public class CalculatorSteps
+namespace GettingStarted.Steps
+{
+    [Binding]
+    public sealed class CalculatorStepDefinitions
+    {
+
+        // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
+
+        private readonly ScenarioContext _scenarioContext;
+
+        public CalculatorStepDefinitions(ScenarioContext scenarioContext)
         {
-            [Given(@"the first number is (.*)")]
-            public void GivenTheFirstNumberIs(int p0)
-            {
-                ScenarioContext.Current.Pending();
-            }
-
-            [Given(@"the second number is (.*)")]
-            public void GivenTheSecondNumberIs(int p0)
-            {
-                ScenarioContext.Current.Pending();
-            }
-
-            [When(@"the two numbers are added")]
-            public void WhenTheTwoNumbersAreAdded()
-            {
-                ScenarioContext.Current.Pending();
-            }
-
-            [Then(@"the result should be (.*)")]
-            public void ThenTheResultShouldBe(int p0)
-            {
-                ScenarioContext.Current.Pending();
-            }
+            _scenarioContext = scenarioContext;
         }
-   }
-   ```
+
+        [Given("the first number is (.*)")]
+        public void GivenTheFirstNumberIs(int number)
+        {
+            //TODO: implement arrange (precondition) logic
+            // For storing and retrieving scenario-specific data see https://go.specflow.org/doc-sharingdata
+            // To use the multiline text or the table argument of the scenario,
+            // additional string/Table parameters can be defined on the step definition
+            // method. 
+
+            _scenarioContext.Pending();
+        }
+
+        [Given("the second number is (.*)")]
+        public void GivenTheSecondNumberIs(int number)
+        {
+            //TODO: implement arrange (precondition) logic
+            // For storing and retrieving scenario-specific data see https://go.specflow.org/doc-sharingdata
+            // To use the multiline text or the table argument of the scenario,
+            // additional string/Table parameters can be defined on the step definition
+            // method. 
+
+            _scenarioContext.Pending();
+        }
+
+        [When("the two numbers are added")]
+        public void WhenTheTwoNumbersAreAdded()
+        {
+            //TODO: implement act (action) logic
+
+            _scenarioContext.Pending();
+        }
+
+        [Then("the result should be (.*)")]
+        public void ThenTheResultShouldBe(int result)
+        {
+            //TODO: implement assert (verification) logic
+
+            _scenarioContext.Pending();
+        }
+    }
+}
+```
+
+If you need to add new step definitions to your project later, have a look [how to create step definitions skeleton code](../Tools/Generating-Skeleton-Code.md).
 
 ## Executing your first test
 
-SpecFlow+ Runner integrates with Visual Studio Test Explorer. After adding your first specification and building the solution, the business readable scenario titles will show up in Visual Studio Test Explorer:
+The next step for you is to build the solution. After that, the business readable scenario titles will show up in Visual Studio Test Explorer:
 
 1. Build your solution.
-2. Select **Test | Windows | Test Explorer** to open the Test Explorer:  
+1. Select **Test | Windows | Test Explorer** to open the Test Explorer:  
    ![Test Explorer before first execution](../_static/images/TestExplorerInitialStatus.png)  
    Scenarios are displayed with their plain text scenario title instead of a generated unit test name.
-3. Click on **Run All** to run your test.
-4. You will be asked to sign up for a [SpecFlow account](https://specflow.org/2020/introducing-the-specflow-account/) or to sign in with your existing account.  
+1. Click on **Run All** to run your test.
+1. You will be asked to sign up for a [SpecFlow account](https://specflow.org/2020/introducing-the-specflow-account/) or to sign in with your existing account.  
    To see the output of the SpecFlow+ Runner please open the “Output” pane and select “Tests” in the “Show output from” dropdown:  
-   ![Test output pane displays link for free SpecFlow Account](../_static/images/TestOutputPane.png)
-5. Open the URL in the message in your browser. In Visual Studio you can click the link while pressing the CTRL-key.
-6. You are displayed with a “Welcome Page”. Click on **Sign in with Microsoft** to continue.
-7. Sign in with your Microsoft account. It can be a personal or corporate/enterprise account. If you are already signed in, this should happen automatically – _you might need additional permissions from your Active Directory admin. [Learn more about admin consents](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-admin-consent-workflow)_
-8. You will be taken to a setup page where you can set up your SpecFlow account. Enter your details to sign up for a free SpecFlow account.
-9. Return to Visual Studio and click on “**Run all**” again.
-10. As the automation and application code has not yet been implemented, the test will not pass successfully.
+   ![Test output pane displays a link for free SpecFlow Account](../_static/images/TestOutputPane.png)
+1. Open the URL in the message in your browser. In Visual Studio you can click the link while pressing the CTRL-key.
+1. You are displayed with a “Welcome Page”. Click on **Sign in with Microsoft** to continue.
+1. Sign in with your Microsoft account. It can be a personal or corporate/enterprise account. If you are already signed in, this should happen automatically – _you might need additional permissions from your Active Directory admin. [Learn more about admin consents](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-admin-consent-workflow)_
+1. You will be taken to a setup page where you can set up your SpecFlow account. Enter your details to sign up for a free SpecFlow account.
+1. Return to Visual Studio and click on “**Run all**” again.
+1. As the automation and application code has not yet been implemented, the test will not pass successfully.
 
 **Note:** If you cannot see your tests, make sure there are no spaces or dashes in your project name!
 
@@ -152,14 +175,14 @@ SpecFlow+ Runner integrates with Visual Studio Test Explorer. After adding your 
 
 In order for your tests to pass, you need to implement both the application code (the code in your application you are testing) and the automation code (binding the test scenario to the automation interface). This involves the following steps, which are covered in this section:
 
-1. Reference the assembly or project containing the interface you want to bind the automation to (including APIs, controllers, UI automation tools etc.).
+1. Reference the assembly or project containing the interface you want to bind the automation to (including APIs, controllers, UI automation tools, etc.).
 2. Extend the step definition skeleton with the automation code.
 3. Implement the missing application code.
 4. Verify that the scenario passes the test.
 
 ### Adding a Calculator Class
 
-The application code that implements the actual functions performed by the calculator should be defined in a separate project from your specification project. This project should include a class for the calculator and expose methods for initialising the calculator and performing the addition:
+The application code that implements the actual functions performed by the calculator should be defined in a separate project from your specification project. This project should include a class for the calculator and expose methods for initializing the calculator and performing the addition:
 
 1. Right-click on your solution in the Solution Explorer and select **Add | Project** from the context menu. Choose to add a new class library and give your project a name (e.g. “Example”).
 2. Right-click on the .cs file in the new project and rename it (e.g. “Calculator.cs”), and choose to rename all references.
@@ -185,7 +208,7 @@ The application code that implements the actual functions performed by the calcu
 
 1. Right-click your specification project and select **Add | Reference** from the context menu.
 2. Click on **Projects** on the left of the **Reference Manager** dialogue. The projects in your solution are listed.
-3. Enable the check box next to the **Example** project to reference it from the specifications project.
+3. Enable the checkbox next to the **Example** project to reference it from the specifications project.
 4. Click on **OK**.  
    A reference to the **Example** project is added to the **References** node in the **Solution Explorer**.
 5. Add a using directive for the namespace (e.g. “Example”) of your Calculator class to the CalculatorSteps.cs file in your specification project:
@@ -194,14 +217,20 @@ The application code that implements the actual functions performed by the calcu
     using Example;
 ```
 
-6. Define a variable of the type Calculator in the CalculatorSteps class prior to the step definitions:
+6. Define a variable of the type Calculator in the CalculatorSteps class before the step definitions:
 
 ```csharp
     public class CalculatorSteps
     {
         private Calculator calculator = new Calculator();
-        [Given(@"I have entered (.*) into the calculator")]
+        
+        [Given("the first number is (.*)")]
+        public void GivenTheFirstNumberIs(int number)
+        {
+            calculator.FirstNumber = number;
+        }
 
+        //more code ...
     }
 ```
 
@@ -221,13 +250,15 @@ The first Given statement in the scenario needs to initialize the calculator wit
 2. Rename this parameter to something more human-readable (e.g. “number”):
 
 ```csharp
-    public void GivenIHaveEnteredIntoTheCalculator(int number)
+    [Given("the first number is (.*)")]
+    public void GivenTheFirstNumberIs(int number)
 ```
 
 3. To initialize the calculator with this number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:
 
 ```csharp
-    public void GivenIHaveEnteredIntoTheCalculator(int number)
+    [Given("the first number is (.*)")]
+    public void GivenTheFirstNumberIs(int number)
     {
         calculator.FirstNumber = number;
     }
@@ -250,7 +281,8 @@ The second Given statement in the scenario needs to initialize the second number
 3. To initialize the calculator with the second number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:
 
 ```csharp
-    public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
+    [Given("the second number is (.*)")]
+    public void GivenTheSecondNumberIs(int number)
     {
         calculator.SecondNumber = number;
     }
@@ -282,7 +314,8 @@ Defining a variable outside of the individual steps allows the variable to be ac
 3. Locate the function corresponding to the When statement and edit it as follows:
 
 ```csharp
-    public void WhenIPressAdd()
+    [When("the two numbers are added")]
+    public void WhenTheTwoNumbersAreAdded()
     {
         result = calculator.Add();
     }
@@ -308,7 +341,8 @@ The step for the Then statement needs to verify that the result returned by the 
 2. Locate the function corresponding to the Then statement. Rename the p0 parameter in the function call (this time to “expectedResult”) and edit the step definition as follows:
 
 ```csharp
-    public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
+    [Then("the result should be (.*)")]
+    public void ThenTheResultShouldBe(int result)
     {
         Assert.AreEqual(expectedResult, result);
     }
@@ -321,44 +355,48 @@ You have now implemented the final piece of the jigsaw – testing that the resu
 Your CalculatorSteps.cs code should be similar to the following:
 
 ```csharp
-    using System;
-    using TechTalk.SpecFlow;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Example;
+using TechTalk.SpecFlow;
 
-    namespace MyProject.Specs
+namespace GettingStarted.Steps
+{
+    [Binding]
+    public sealed class CalculatorStepDefinitions
     {
-        [Binding]
-        public class CalculatorSteps
+        private readonly ScenarioContext _scenarioContext;
+
+        private int result;
+        private Calculator calculator = new Calculator();
+
+        public CalculatorStepDefinitions(ScenarioContext scenarioContext)
         {
-            private int result;
-            private Calculator calculator = new Calculator();
+            _scenarioContext = scenarioContext;
+        }
 
-            [Given(@"I have entered (.*) into the calculator")]
-            public void GivenIHaveEnteredIntoTheCalculator(int number)
-            {
-                calculator.FirstNumber = number;
-            }
+        [Given("the first number is (.*)")]
+        public void GivenTheFirstNumberIs(int number)
+        {
+            calculator.FirstNumber = number;
+        }
 
-            [Given(@"I have also entered (.*) into the calculator")]
-            public void GivenIHaveAlsoEnteredIntoTheCalculator(int number)
-            {
-                calculator.SecondNumber = number;
-            }
+        [Given("the second number is (.*)")]
+        public void GivenTheSecondNumberIs(int number)
+        {
+            calculator.SecondNumber = number;
+        }
 
-            [When(@"I press add")]
-            public void WhenIPressAdd()
-            {
-                result = calculator.Add();
-            }
+        [When("the two numbers are added")]
+        public void WhenTheTwoNumbersAreAdded()
+        {
+            result = calculator.Add();
+        }
 
-            [Then(@"the result should be (.*) on the screen")]
-            public void ThenTheResultShouldBeOnTheScreen(int expectedResult)
-            {
-                Assert.AreEqual(expectedResult, result);
-            }
+        [Then("the result should be (.*)")]
+        public void ThenTheResultShouldBe(int result)
+        {
+            Assert.AreEqual(expectedResult, result);
         }
     }
+}
 ```
 
 ### Final Calculator.cs Code
@@ -395,17 +433,17 @@ Now that the test steps have been bound to your application code, you need to re
 
 Click on **Output** in the Test Explorer to display a summary of the test:  
 ![Test Explorer after Execution](../_static/images/Test-Explorer-After-Execution.png)  
-This example is obviously very simple; at this point you would want to refactor your code before proceeding with the implementation of your remaining scenarios.
+This example is very simple; at this point, you would want to refactor your code before proceeding with the implementation of your remaining scenarios.
 
 ### Sample Projects
 
-A number of SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/techtalk/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/techtalk/SpecFlow.Plus.Examples)
+Many SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/techtalk/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/techtalk/SpecFlow.Plus.Examples)
 
 You can find samples using other test unit providers also [on GitHub](https://github.com/techtalk/SpecFlow-Examples).
 
 ### Other Test Engines
 
-Instead of [SpecFlow+ Runner](https://specflow.org/plus/runner/), you can also use [other test engines](https://specflow.org/documentation/Unit-Test-Providers/), like MsTest, xUnit, or NUnit. These packages are installed in exactly the same manner as SpecFlow+ Runner. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
+Instead of [SpecFlow+ Runner](https://specflow.org/plus/runner/), you can also use [other test engines](https://specflow.org/documentation/Unit-Test-Providers/), like MsTest, xUnit, or NUnit. These packages are installed in the same manner as SpecFlow+ Runner. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
 
 ### Improve your Gherkin Specifications
 
@@ -417,8 +455,8 @@ Learn about the [Advanced features SpecFlow+ Runner has to offer](https://specfl
 
 ## Living Documentation
 
-An easy way to share your feature files with all members of your team is to use the [SpecFlow+ LivingDoc extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to generate a living documentation from your feature files.
+An easy way to share your feature files with all members of your team is to use the [SpecFlow+ LivingDoc extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to generate living documentation from your feature files.
 
-This documentation can then be accessed from within Azure DevOps without the need of Visual Studio. Your Gherkin tests constitute an important part of the documentation of your system, describing the intended behavior in human-readable form and providing the basis for discussion with other project stakeholders.
+This documentation can then be accessed from within Azure DevOps without the need for Visual Studio. Your Gherkin tests constitute an important part of the documentation of your system, describing the intended behavior in human-readable form and providing the basis for discussion with other project stakeholders.
 
 Many stakeholders will not be able to access your feature files directly in your repository, nor will they be using Visual Studio, so sharing them on a common platform is a big advantage. [Learn more about SpecFlow+ LivingDoc](https://specflow.org/plus/livingdoc/).
