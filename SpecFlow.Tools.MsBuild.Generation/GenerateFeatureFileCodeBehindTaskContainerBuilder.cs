@@ -3,7 +3,9 @@ using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Analytics.AppInsights;
 using TechTalk.SpecFlow.Analytics.UserId;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.EnvironmentAccess;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace SpecFlow.Tools.MsBuild.Generation
@@ -45,6 +47,10 @@ namespace SpecFlow.Tools.MsBuild.Generation
             objectContainer.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
             objectContainer.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
             objectContainer.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
+            objectContainer.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
+            objectContainer.RegisterTypeAs<GeneratorConfigurationProvider, IGeneratorConfigurationProvider>();
+            objectContainer.RegisterTypeAs<ProjectReader, ISpecFlowProjectReader>();
+            objectContainer.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
 
             if (generateFeatureFileCodeBehindTaskConfiguration.OverrideAnalyticsTransmitter is null)
             {

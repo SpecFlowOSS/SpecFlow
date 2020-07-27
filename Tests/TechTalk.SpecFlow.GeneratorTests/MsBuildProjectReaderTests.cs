@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
 using FluentAssertions;
+using Moq;
+using TechTalk.SpecFlow.Configuration;
 using Xunit;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Generator.Helpers;
 
@@ -14,8 +17,15 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             string directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath);
             string projectFilePath = Path.Combine(directoryName, csprojPath);
-            var specFlowProjectFile = new MSBuildProjectReader().LoadSpecFlowProjectFromMsBuild(projectFilePath, rootNamespace);
 
+            var specFlowJsonLocatorMock = new Mock<ISpecFlowJsonLocator>();
+            
+            var configurationLoader = new ConfigurationLoader(specFlowJsonLocatorMock.Object);
+            var generatorConfigurationProvider = new GeneratorConfigurationProvider(configurationLoader);
+            var projectLanguageReader = new ProjectLanguageReader();
+            var reader = new ProjectReader(generatorConfigurationProvider, projectLanguageReader);
+
+            var specFlowProjectFile = reader.ReadSpecFlowProject(projectFilePath, rootNamespace);
 
             specFlowProjectFile.ProjectSettings.DefaultNamespace.Should().Be(rootNamespace);
             specFlowProjectFile.ProjectSettings.ProjectName.Should().Be(projectName);

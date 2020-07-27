@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using BoDi;
 using FluentAssertions;
+using Moq;
 using Xunit;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Configuration;
@@ -20,8 +21,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         [Fact]
         public void CanLoadConfigFromConfigFile()
         {
+            var specFlowJsonLocatorMock = new Mock<ISpecFlowJsonLocator>();
+
             var runtimeConfiguration = ConfigurationLoader.GetDefault();
-            var configurationLoader = new ConfigurationLoader();
+            var configurationLoader = new ConfigurationLoader(specFlowJsonLocatorMock.Object);
 
             runtimeConfiguration = configurationLoader.Load(runtimeConfiguration);
         }

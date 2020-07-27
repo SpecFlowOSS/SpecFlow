@@ -98,6 +98,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
             container.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
             container.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
+            
+            container.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
