@@ -2,6 +2,6 @@
 {
     public interface IAppInsightsEventSerializer
     {
-        byte[] SerializeAnalyticsEvent(IAnalyticsEvent analyticsEvent);
+        byte[] SerializeAnalyticsEvent(IAnalyticsEvent analyticsEvent, string instrumentationKey);
     }
 }

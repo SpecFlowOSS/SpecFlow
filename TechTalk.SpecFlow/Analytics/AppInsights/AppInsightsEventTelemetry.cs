@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
         public string EventDateTime { get; set; }
 
         [DataMember(Name = "iKey")] 
-        public string InstrumentationKey => AppInsightsInstrumentationKey.Key;
+        public string InstrumentationKey { get; set; }
 
         [DataMember(Name = "data")]
         public TelemetryData TelemetryData { get; set; }
@@ -26,8 +26,9 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
 
         private const string DefaultValue = "undefined";
 
-        public AppInsightsEventTelemetry(IAnalyticsEvent analyticsEvent)
+        public AppInsightsEventTelemetry(IAnalyticsEvent analyticsEvent, string instrumentationKey)
         {
+            InstrumentationKey = instrumentationKey;
             DataTypeName = $"Microsoft.ApplicationInsights.{InstrumentationKey}.Event";
 
             EventDateTime = analyticsEvent.UtcDate.ToString("O");
