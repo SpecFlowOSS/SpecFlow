@@ -1,4 +1,4 @@
-# Getting Started with a New Project
+# Getting Started
 
 ## Installation and Setup
 
@@ -9,7 +9,9 @@ Installing SpecFlow consists of two steps:
 
 ### Installing the Visual Studio Extension
 
-The SpecFlow extension for Visual Studio provides several helpful features, such as syntax highlighting for Gherkin (feature) files, a Visual Studio project template, and multiple item templates, which help you create executable specifications with SpecFlow. This extension is not required to use SpecFlow, but we recommend you install it if you are using Visual Studio. If you are not using Visual Studio on Windows, you will not be able to install the extension.
+**Note:** The Visual Studio Extension is only available on Windows. Please skip this step for Linux and macOS and continue with Setting up your SpecFlow Project.
+
+The SpecFlow extension for Visual Studio provides several helpful features, such as syntax highlighting for Gherkin (feature) files, a Visual Studio project template, and multiple item templates, which help you create executable specifications with SpecFlow. This extension is not required to use SpecFlow, but we recommend you install it if you are using Visual Studio.
 
 To install the extension, download the extension for your version of Visual Studio:
 
@@ -19,9 +21,7 @@ To install the extension, download the extension for your version of Visual Stud
 
 Either choose to open the download directly, or double-click the extension once it has downloaded to install it in Visual Studio.  
 
-In this guide, we are assuming that you installed the Visual Studio extension.
-
-### Setting Up your SpecFlow Project
+### Setting up your SpecFlow Project
 
 This section guides you through the first steps of setting up a SpecFlow project within Visual Studio and defining and executing your first test scenario. In this example, we will be using [SpecFlow+ Runner](https://www.specflow.org/plus/), but you can use several other test execution frameworks, including NUnit, xUnit, or MSTest.  
 
@@ -33,34 +33,34 @@ To set up your specification project:
 
 1. In Visual Studio, create a new project and search for `SpecFlow`  
    ![Create new project dialog](../_static/images/CreateNewProjectDialog.png)
-1. Select it and press `Next`
+1. Select `SpecFlow Project` and press `Next`
 1. Enter your project name and location and press `Create`  
    ![Configure your project](../_static/images/CreateNewProjectDialog_Configure.png)
-1. Configure your wanted .NET version and unit test framework and press `Create`  
+1. Configure your .NET version and unit test framework and press `Create`  
    ![SpecFlow configuration for your project](../_static/images/CreateNewProjectDialog_SpecFlow.png)
-1. The project is created with all needed NuGet packages  
+1. The project is created with all required NuGet packages  
    ![Created project](../_static/images/CreatedProject.png)
-1. All NuGet packages which the newly created SpecFlow project depends on should be automatically restored. If not, do a manual restore.
+1. All NuGet packages for the newly created SpecFlow project should be automatically restored. If not, do a manual restore.
 
-_Hint_: Your project folder should not be too deep in the filesystem, as you will get problems with Windows 255 character limit in file paths.
+**Note:** Your project folder should not be too deep in the filesystem, as you will get problems with Windows 255 character limit in file paths.
 
-#### SpecRun.Runner Package
+#### SpecRun.SpecFlow Package
 
 This package is added to your project automatically when creating the project using the SpecFlow Visual Studio project template with default settings or by manually installing. This package configures SpecFlow+ Runner as your unit test provider.
 
-**Note: Instead of SpecFlow+ Runner, you can also use [other test engines](../Installation/Unit-Test-Providers.md), like MsTest, xUnit or NUnit.** Simply choose a different Test Framework than `SpecFlow+ Runner`. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
+**Note:** Instead of SpecFlow+ Runner, you can also use [other unit test providers](../Installation/Unit-Test-Providers.md), like MsTest, xUnit or NUnit. Simply choose a different Test Framework than `SpecFlow+ Runner`. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
 
 #### Microsoft.NET.Test.Sdk
 
-This package is needed for all .NET test project.
+This package is required for all .NET test projects.
 
-## Looking at the Feature File
+## Your First Feature File
 
-In the created project, we added already the Feature file, we are using in the rest of this guide.  
+We have already added your first Feature file in order to help you get started. 
 
 ![feature file created project from template](../_static/images/Project_created_from_Wizard.png)
 
-It includes a default scenario written in [Gherkin](../Gherkin/Gherkin-Reference.md) for adding two numbers.  
+The Feature File includes a default scenario written in [Gherkin](../Gherkin/Gherkin-Reference.md) for adding two numbers.  
 
 ```gherkin
 
@@ -79,11 +79,13 @@ Scenario: Add two numbers
 
 We will use this scenario to demonstrate the first development iteration.  
 
-To add later new feature files to your project, have a look at our [Item- Templates](../Installation/Project-and-Item-Templates.html#item-template).  
+To add further Feature Files to your project, please take a look at our [Item- Templates](../Installation/Project-and-Item-Templates.html#item-template).  
 
-### Having a look at the created Step Definitions
+**Note:** If you are new to BDD/ATDD and Specification-by-Example, we suggest continue reading up on best practices for writing your tests. Learn more about [how to write your specifications in Gherkin](https://specflow.org/2017/fit-for-purpose-gherkin/).
 
-Also with the project template, [step definitions](../Bindings/Step-Definitions.md) for the feature file were created.
+### Your First Step Definitions
+
+Our SpecFlow project template, also includes your first [step definitions](../Bindings/Step-Definitions.md) for the Feature File in the previous section.
 
 ![step definitions created in project](../_static/images/Project_created_from_Wizard_StepDefinitions.png)
 
@@ -148,11 +150,11 @@ namespace GettingStarted.Steps
 }
 ```
 
-If you need to add new step definitions to your project later, have a look [how to create step definitions skeleton code](../Tools/Generating-Skeleton-Code.md).
+To add further step definitions to your project, please take a look at [how to create step definitions skeleton code](../Tools/Generating-Skeleton-Code.md).
 
-## Executing your first test
+## Executing your First Test
 
-The next step for you is to build the solution. After that, the business readable scenario titles will show up in Visual Studio Test Explorer:
+The next step is to build the solution. After that, the business readable scenario titles will show up in Visual Studio Test Explorer:
 
 1. Build your solution.
 1. Select **Test | Windows | Test Explorer** to open the Test Explorer:  
@@ -435,28 +437,26 @@ Click on **Output** in the Test Explorer to display a summary of the test:
 ![Test Explorer after Execution](../_static/images/Test-Explorer-After-Execution.png)  
 This example is very simple; at this point, you would want to refactor your code before proceeding with the implementation of your remaining scenarios.
 
-### Sample Projects
+### SpecFlow+ Runner Sample Projects
 
-Many SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/techtalk/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/techtalk/SpecFlow.Plus.Examples)
+Many SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/SpecFlowOSS/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/SpecFlowOSS/SpecFlow.Plus.Examples)
 
-You can find samples using other test unit providers also [on GitHub](https://github.com/techtalk/SpecFlow-Examples).
+You can find samples using other unit test providers also [on GitHub](https://github.com/SpecFlowOSS/SpecFlow-Examples).
 
-### Other Test Engines
-
-Instead of [SpecFlow+ Runner](https://specflow.org/plus/runner/), you can also use [other test engines](https://specflow.org/documentation/Unit-Test-Providers/), like MsTest, xUnit, or NUnit. These packages are installed in the same manner as SpecFlow+ Runner. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
-
-### Improve your Gherkin Specifications
-
-If you are new to BDD/ATDD/Specification by Example, we also suggest reading up on best practices for writing your tests. This is not covered in this guide; you can read a short article on [how to write your specifications in Gherkin](https://specflow.org/2017/fit-for-purpose-gherkin/).
-
-### Advanced SpecFlow+ Runner Features
+### SpecFlow+ Runner Advanced Features
 
 Learn about the [Advanced features SpecFlow+ Runner has to offer](https://specflow.org/plus/runner/advanced-features/).
 
+### Other Unit Test Providers
+
+Instead of [SpecFlow+ Runner](https://specflow.org/plus/runner/), you can also use [other unit test providers](https://specflow.org/documentation/Unit-Test-Providers/), like MsTest, xUnit, or NUnit. These packages are installed in the same manner as SpecFlow+ Runner. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
+
 ## Living Documentation
 
-An easy way to share your feature files with all members of your team is to use the [SpecFlow+ LivingDoc extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to generate living documentation from your feature files.
+To get the most out of SpecFlow and providing the basis for further discussions about the behavior of your system, we recommend to share your Feature Files with all your stakeholders and team members. 
+
+An easy way to share your Feature Files is to use the **free** [SpecFlow+ LivingDoc extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to generate a living documentation from your Feature Files.
 
 This documentation can then be accessed from within Azure DevOps without the need for Visual Studio. Your Gherkin tests constitute an important part of the documentation of your system, describing the intended behavior in human-readable form and providing the basis for discussion with other project stakeholders.
 
-Many stakeholders will not be able to access your feature files directly in your repository, nor will they be using Visual Studio, so sharing them on a common platform is a big advantage. [Learn more about SpecFlow+ LivingDoc](https://specflow.org/plus/livingdoc/).
+Many stakeholders will not be able to access your Feature Files directly in your repository, nor will they be using Visual Studio, so sharing them on a common platform is a big advantage. [Learn more about SpecFlow+ LivingDoc](https://specflow.org/plus/livingdoc/).
