@@ -2,17 +2,17 @@
 
 ## Visual Studio Templates
 
-You need to have the [SpecFlow Visual Studio Extension](Installation.md) installed.
+It is required to have the [SpecFlow Visual Studio Extension](Installation.md) installed.
 
 ### Project Template
 
-You can find it in the `New project` dialog, when you search for `SpecFlow`.  
+You can find the `SpecFlow Project` in the `New project` dialog, when you search for `SpecFlow`.  
 ![Create new project dialog](../_static/images/CreateNewProjectDialog.png)
 
 After the normal configuration of your project (location, name, ...), you will get to a step to choose your .NET version and test framework for the new project.  
 ![SpecFlow configuration for your project](../_static/images/CreateNewProjectDialog_SpecFlow.png)
 
-This will create you a project with all needed NuGet packages:  
+Clicking on `Next` will create you a new project with all required NuGet packages:  
 ![Created project](../_static/images/CreatedProject.png)
 
 ### Item Template
@@ -23,7 +23,7 @@ We provide various item templates:
 
 ## .NET CLI Templates
 
-**Note:** The [.NET Core SDK](https://dotnet.microsoft.com/download) must be installed to use project templates.
+**Note:** The [.NET Core SDK](https://dotnet.microsoft.com/download) is required to be installed in order to use project templates.
 
 * **SpecFlow Feature File**: Gherkin Feature file with an example
 * **SpecFlow Feature File (Dutch/Nederlands)**: empty Gherkin feature file in dutch
@@ -46,7 +46,7 @@ To install the project template:
 
 ### Creating a New Project from the Template
 
-After installing the templates, create a new project using the following command:
+After installing the templates, you can create a new project using the following command:
 
 `dotnet new specflowproject`
 
