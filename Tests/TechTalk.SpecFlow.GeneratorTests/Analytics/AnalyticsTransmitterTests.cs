@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.Analytics
             await analyticsTransmitter.TransmitEvent(analyticsEventMock.Object);
 
             // ASSERT
-            analyticsTransmitterSinkMock.Verify(sink => sink.TransmitEvent(It.IsAny<IAnalyticsEvent>(), null), Times.Never);
+            analyticsTransmitterSinkMock.Verify(sink => sink.TransmitEvent(It.IsAny<IAnalyticsEvent>(), It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.Analytics
             await analyticsTransmitter.TransmitSpecFlowProjectCompilingEvent(specFlowProjectCompilingEvent);
 
             // ASSERT
-            analyticsTransmitterSinkMock.Verify(m => m.TransmitEvent(It.IsAny<IAnalyticsEvent>(), null), Times.Once);
+            analyticsTransmitterSinkMock.Verify(m => m.TransmitEvent(It.IsAny<IAnalyticsEvent>(), It.IsAny<string>()), Times.Once);
         }
     }
 }
