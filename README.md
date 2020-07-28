@@ -39,7 +39,7 @@ Developer Gitter channel:
 
 The main development happens on the master branch.
 
-If you are interested in contributing, there are some useful information on this page: [Contributing](https://github.com/techtalk/SpecFlow/wiki/Contributing).
+If you are interested in contributing, there are some useful information on this page: [Contributing](https://github.com/SpecFlowOSS/SpecFlow/blob/master/CONTRIBUTING.md).
 
 ## Writing plugins 
 
