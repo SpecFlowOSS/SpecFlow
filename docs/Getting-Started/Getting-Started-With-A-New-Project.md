@@ -1,4 +1,6 @@
-# Getting Started
+# Getting Started with a New Project
+
+This guide assumes you are working on Windows with Visual Studio.
 
 ## Installation and Setup
 
@@ -8,8 +10,6 @@ Installing SpecFlow consists of two steps:
 2.  Set up your Visual Studio project to work with SpecFlow
 
 ### Installing the Visual Studio Extension
-
-**Note:** The Visual Studio Extension is only available on Windows. Please skip this step for Linux and macOS and continue with Setting up your SpecFlow Project.
 
 The SpecFlow extension for Visual Studio provides several helpful features, such as syntax highlighting for Gherkin (feature) files, a Visual Studio project template, and multiple item templates, which help you create executable specifications with SpecFlow. This extension is not required to use SpecFlow, but we recommend you install it if you are using Visual Studio.
 
