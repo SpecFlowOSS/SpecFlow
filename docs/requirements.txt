@@ -1,2 +1,5 @@
 sphinx-markdown-tables
 readthedocs-sphinx-search
+sphinx-sitemap
+sphinx-rtd-theme
+recommonmark
