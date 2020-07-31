@@ -32,13 +32,17 @@ SpecFlow tests are usually placed into one or more separate projects in your sol
 To set up your specification project:
 
 1. In Visual Studio, create a new project and search for `SpecFlow`  
+
    ![Create new project dialog](../_static/images/CreateNewProjectDialog.png)
 1. Select `SpecFlow Project` and press `Next`
-1. Enter your project name and location and press `Create`  
+1. Enter your project name and location and press `Create`
+
    ![Configure your project](../_static/images/CreateNewProjectDialog_Configure.png)
 1. Configure your .NET version and unit test framework and press `Create`  
+
    ![SpecFlow configuration for your project](../_static/images/CreateNewProjectDialog_SpecFlow.png)
 1. The project is created with all required NuGet packages  
+
    ![Created project](../_static/images/CreatedProject.png)
 1. All NuGet packages for the newly created SpecFlow project should be automatically restored. If not, do a manual restore.
 
