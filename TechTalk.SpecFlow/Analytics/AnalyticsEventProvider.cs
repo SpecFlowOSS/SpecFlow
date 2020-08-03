@@ -111,7 +111,14 @@ namespace TechTalk.SpecFlow.Analytics
                 { "TRAVIS","Travis CI"},
                 { "APPVEYOR","AppVeyor"},
                 { "BITBUCKET_BUILD_NUMBER", "Bitbucket Pipelines" },
-                { "bamboo_agentId", "Atlassian Bamboo" }
+                { "bamboo_agentId", "Atlassian Bamboo" },
+                { "CIRCLECI", "CircleCI" },
+                { "GO_PIPELINE_NAME", "GoCD" },
+                { "BUDDY", "Buddy" },
+                { "NEVERCODE", "Nevercode" },
+                { "SEMAPHORE", "SEMAPHORE" },
+                { "CI_NAME", "CodeShip" },
+                { "BROWSERSTACK_USERNAME", "BrowserStack" }
             };
 
         private string GetBuildServerName()
