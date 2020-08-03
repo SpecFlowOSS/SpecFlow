@@ -32,16 +32,20 @@ SpecFlow tests are usually placed into one or more separate projects in your sol
 To set up your specification project:
 
 1. In Visual Studio, create a new project and search for `SpecFlow`  
+
    ![Create new project dialog](../_static/images/CreateNewProjectDialog.png)
 1. Select `SpecFlow Project` and press `Next`
-1. Enter your project name and location and press `Create`  
+1. Enter your project name and location and press `Create`
+
    ![Configure your project](../_static/images/CreateNewProjectDialog_Configure.png)
 1. Configure your .NET version and unit test framework and press `Create`  
+
    ![SpecFlow configuration for your project](../_static/images/CreateNewProjectDialog_SpecFlow.png)
 1. The project is created with all required NuGet packages  
+
    ![Created project](../_static/images/CreatedProject.png)
 1. All NuGet packages for the newly created SpecFlow project should be automatically restored. If not, do a manual restore.
-
+p
 **Note:** Your project folder should not be too deep in the filesystem, as you will get problems with Windows 255 character limit in file paths.
 
 #### SpecRun.SpecFlow Package
@@ -158,12 +162,16 @@ The next step is to build the solution. After that, the business readable scenar
 
 1. Build your solution.
 1. Select **Test | Windows | Test Explorer** to open the Test Explorer:  
+
    ![Test Explorer before first execution](../_static/images/TestExplorerInitialStatus.png)  
+
    Scenarios are displayed with their plain text scenario title instead of a generated unit test name.
 1. Click on **Run All** to run your test.
 1. You will be asked to sign up for a [SpecFlow account](https://specflow.org/2020/introducing-the-specflow-account/) or to sign in with your existing account.  
    To see the output of the SpecFlow+ Runner please open the “Output” pane and select “Tests” in the “Show output from” dropdown:  
+
    ![Test output pane displays a link for free SpecFlow Account](../_static/images/TestOutputPane.png)
+
 1. Open the URL in the message in your browser. In Visual Studio you can click the link while pressing the CTRL-key.
 1. You are displayed with a “Welcome Page”. Click on **Sign in with Microsoft** to continue.
 1. Sign in with your Microsoft account. It can be a personal or corporate/enterprise account. If you are already signed in, this should happen automatically – _you might need additional permissions from your Active Directory admin. [Learn more about admin consents](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-admin-consent-workflow)_
@@ -248,7 +256,9 @@ The first Given statement in the scenario needs to initialize the calculator wit
 
 1. Open CalculatorSteps.cs if it is not already open.  
    The value defined in the scenario is passed as a parameter in the automation code’s associated function, e.g.:  
+
     ![Initial Given Step](../_static/images/InitialGivenStep.png)
+    
 2. Rename this parameter to something more human-readable (e.g. “number”):
 
 ```csharp
