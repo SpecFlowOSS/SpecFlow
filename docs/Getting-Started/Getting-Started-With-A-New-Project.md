@@ -221,16 +221,16 @@ The application code that implements the actual functions performed by the calcu
 3. Enable the checkbox next to the **Example** project to reference it from the specifications project.
 4. Click on **OK**.  
    A reference to the **Example** project is added to the **References** node in the **Solution Explorer**.
-5. Add a using directive for the namespace (e.g. “Example”) of your Calculator class to the CalculatorSteps.cs file in your specification project:
+5. Add a using directive for the namespace (e.g. “Example”) of your Calculator class to the CalculatorStepDefinitions.cs file in your specification project:
 
 ```csharp
     using Example;
 ```
 
-6. Define a variable of the type Calculator in the CalculatorSteps class before the step definitions:
+6. Define a variable of the type Calculator in the CalculatorStepDefinitions class before the step definitions:
 
 ```csharp
-    public class CalculatorSteps
+    public class CalculatorStepDefinitions
     {
         private Calculator calculator = new Calculator();
         
@@ -254,7 +254,7 @@ Now that the step definitions can reference the **Calculator** class, you need t
 
 The first Given statement in the scenario needs to initialize the calculator with the first of the two numbers defined in the scenario (50). To implement the code:
 
-1. Open CalculatorSteps.cs if it is not already open.  
+1. Open CalculatorStepDefinitions.cs if it is not already open.  
    The value defined in the scenario is passed as a parameter in the automation code’s associated function, e.g.:  
 
     ![Initial Given Step](../_static/images/InitialGivenStep.png)
@@ -266,7 +266,7 @@ The first Given statement in the scenario needs to initialize the calculator wit
     public void GivenTheFirstNumberIs(int number)
 ```
 
-3. To initialize the calculator with this number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:
+3. To initialize the calculator with this number, replace `_scenarioContext.Pending();` in the step definition as follows:
 
 ```csharp
     [Given("the first number is (.*)")]
@@ -288,9 +288,9 @@ You have now determined that the FirstNumber member of the **Calculator** class 
 
 The second Given statement in the scenario needs to initialize the second number with the second value defined in the scenario (70). To implement the code:
 
-1. Open CalculatorSteps.cs if it is not already open.
+1. Open CalculatorStepDefinitions.cs if it is not already open.
 2. Locate the function corresponding to the second Given statement and rename the p0 parameter to “number”, as before.
-3. To initialize the calculator with the second number, replace `ScenarioContext.Current.Pending();` in the step definition as follows:
+3. To initialize the calculator with the second number, replace `_scenarioContext.Pending();` in the step definition as follows:
 
 ```csharp
     [Given("the second number is (.*)")]
@@ -314,7 +314,7 @@ The step for the When statement needs to call the method that performs the actua
 
 To implement the code:
 
-1. Open CalculatorSteps.cs if it is not already open.
+1. Open CalculatorStepDefinitions.cs if it is not already open.
 2. Define a variable to store the result at the start of the CalculatorSeps class (before any of the steps):
 
 ```csharp
@@ -348,7 +348,7 @@ You have now determined that the Add() method of the calculator class is called 
 
 The step for the Then statement needs to verify that the result returned by the **Add()** method in the previous step is the same as the expected result defined in the test scenario. To implement the code:
 
-1. Open CalculatorSteps.cs if it is not already open.  
+1. Open CalculatorStepDefinitions.cs if it is not already open.  
    As the result will be verified using Assert, you need to add “using Microsoft.VisualStudio.TestTools.UnitTesting;” to the top of your automation code.
 2. Locate the function corresponding to the Then statement. Rename the p0 parameter in the function call (this time to “expectedResult”) and edit the step definition as follows:
 
@@ -362,9 +362,9 @@ The step for the Then statement needs to verify that the result returned by the 
 
 You have now implemented the final piece of the jigsaw – testing that the result returned by your application matches the expected result defined in the scenario.
 
-### Final CalculatorSteps.cs Code
+### Final CalculatorStepDefinitions.cs Code
 
-Your CalculatorSteps.cs code should be similar to the following:
+Your CalculatorStepDefinitions.cs code should be similar to the following:
 
 ```csharp
 using TechTalk.SpecFlow;
