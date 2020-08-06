@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Analytics
             _httpClient = httpClientWrapper.HttpClient;
         }
 
-        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent, string instrumentationKey = AppInsightsInstrumentationKey.Key)
+        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent, string instrumentationKey)
         {
             try
             {
