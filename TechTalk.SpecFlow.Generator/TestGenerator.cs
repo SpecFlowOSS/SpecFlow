@@ -118,7 +118,7 @@ namespace TechTalk.SpecFlow.Generator
             SpecFlowDocument specFlowDocument;
             using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
             {
-                specFlowDocument = ParseContent(parser, contentReader, featureFileInput.GetFullPath(projectSettings));
+                specFlowDocument = ParseContent(parser, contentReader, GetSpecFlowDocumentLocation(featureFileInput));
             }
 
             var featureGenerator = featureGeneratorRegistry.CreateGenerator(specFlowDocument);
@@ -127,9 +127,24 @@ namespace TechTalk.SpecFlow.Generator
             return codeNamespace;
         }
 
-        protected virtual SpecFlowDocument ParseContent(IGherkinParser parser, TextReader contentReader, string sourceFilePath)
+        private SpecFlowDocumentLocation GetSpecFlowDocumentLocation(FeatureFileInput featureFileInput)
         {
-            return parser.Parse(contentReader, sourceFilePath);
+            return new SpecFlowDocumentLocation(
+                featureFileInput.GetFullPath(projectSettings), 
+                GetFeatureFolderPath(featureFileInput.ProjectRelativePath));
+        }
+
+        private string GetFeatureFolderPath(string projectRelativeFilePath)
+        {
+            string directoryName = Path.GetDirectoryName(projectRelativeFilePath);
+            if (string.IsNullOrWhiteSpace(directoryName)) return null;
+
+            return string.Join("/", directoryName.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        protected virtual SpecFlowDocument ParseContent(IGherkinParser parser, TextReader contentReader, SpecFlowDocumentLocation documentLocation)
+        {
+            return parser.Parse(contentReader, documentLocation);
         }
 
         protected string GetTargetNamespace(FeatureFileInput featureFileInput)

@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, testObjectResolverMock.Object);
             scenarioContainer.RegisterInstanceAs(scenarioContext);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
-            featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
+            featureInfo = new FeatureInfo(culture, "feature path", "feature_title", "", ProgrammingLanguage.CSharp);
             var featureContext = new FeatureContext(featureContainer, featureInfo, specFlowConfiguration);
             featureContainer.RegisterInstanceAs(featureContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(featureContext);

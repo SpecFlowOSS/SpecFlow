@@ -189,6 +189,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                     new CodeObjectCreateExpression(typeof(FeatureInfo),
                         new CodeObjectCreateExpression(typeof(CultureInfo),
                             new CodePrimitiveExpression(generationContext.Feature.Language)),
+                        new CodePrimitiveExpression(generationContext.Document.DocumentLocation?.FeatureFolderPath),
                         new CodePrimitiveExpression(generationContext.Feature.Name),
                         new CodePrimitiveExpression(generationContext.Feature.Description),
                         new CodeFieldReferenceExpression(

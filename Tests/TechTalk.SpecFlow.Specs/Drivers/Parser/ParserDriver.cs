@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
             try
             {
-                ParsedDocument = _parser.Parse(contentReader, "sample.feature");
+                ParsedDocument = _parser.Parse(contentReader, new SpecFlowDocumentLocation("sample.feature"));
                 ParsedDocument.Should().NotBeNull();                
             }
             catch (ParserException ex)

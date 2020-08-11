@@ -183,7 +183,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                         children: null
                         ),
                     comments: null,
-                    sourceFilePath: null),
+                    documentLocation: null),
                 ns: null,
                 testClass: null,
                 testRunnerField: null,
@@ -280,7 +280,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                         children: null
                         ),
                     comments: null,
-                    sourceFilePath: null),
+                    documentLocation: null),
                 ns: null,
                 testClass: null,
                 testRunnerField: null,
