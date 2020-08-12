@@ -52,12 +52,12 @@ namespace TechTalk.SpecFlow.Parser
 
         private class SpecFlowAstBuilder : AstBuilder<SpecFlowDocument>
         {
-            private readonly string sourceFilePath;
+            private readonly SpecFlowDocumentLocation documentLocation;
             private ScenarioBlock scenarioBlock = ScenarioBlock.Given;
 
-            public SpecFlowAstBuilder(string sourceFilePath)
+            public SpecFlowAstBuilder(SpecFlowDocumentLocation documentLocation)
             {
-                this.sourceFilePath = sourceFilePath;
+                this.documentLocation = documentLocation;
             }
 
             protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, IHasLocation[] children, AstNode node)
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.Parser
 
             protected override GherkinDocument CreateGherkinDocument(Feature feature, Comment[] gherkinDocumentComments, AstNode node)
             {
-                return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments, sourceFilePath);
+                return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments, documentLocation);
             }
 
             protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps, AstNode node)
@@ -104,9 +104,9 @@ namespace TechTalk.SpecFlow.Parser
             }
         }
 
-        public SpecFlowDocument Parse(TextReader featureFileReader, string sourceFilePath)
+        public SpecFlowDocument Parse(TextReader featureFileReader, SpecFlowDocumentLocation documentLocation)
         {
-            var parser = new Parser<SpecFlowDocument>(CreateAstBuilder(sourceFilePath));
+            var parser = new Parser<SpecFlowDocument>(CreateAstBuilder(documentLocation));
             SpecFlowDocument specFlowDocument = parser.Parse(CreateTokenScanner(featureFileReader), CreateTokenMatcher());
 
             CheckSemanticErrors(specFlowDocument);
@@ -124,9 +124,9 @@ namespace TechTalk.SpecFlow.Parser
             return new TokenMatcher(dialectProvider);
         }
 
-        protected virtual IAstBuilder<SpecFlowDocument> CreateAstBuilder(string sourceFilePath)
+        protected virtual IAstBuilder<SpecFlowDocument> CreateAstBuilder(SpecFlowDocumentLocation documentLocation)
         {
-            return new SpecFlowAstBuilder(sourceFilePath);
+            return new SpecFlowAstBuilder(documentLocation);
         }
 
         protected virtual void CheckSemanticErrors(SpecFlowDocument specFlowDocument)

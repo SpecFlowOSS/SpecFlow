@@ -343,7 +343,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             using (var reader = new StringReader(feature))
             {
                 var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-                var document = parser.Parse(reader, "test.feature");
+                var document = parser.Parse(reader, new SpecFlowDocumentLocation("test.feature"));
 
                 var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
 
