@@ -327,6 +327,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void FireEvents(HookType hookType)
         {
+            FireRuntimePluginEvent(hookType);
+
             var stepContext = _contextManager.GetStepContext();
 
             var matchingHooks = _bindingRegistry.GetHooks(hookType)
@@ -342,6 +344,20 @@ namespace TechTalk.SpecFlow.Infrastructure
             foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
             {
                 InvokeHook(_bindingInvoker, hookBinding, hookType);
+            }
+        }
+
+        private void FireRuntimePluginEvent(HookType hookType)
+        {
+            //We resolve the event listeners from the test thread container as they are logically bound to the TestExecutionEngine and to a test thread
+            var runtimeListeners = TestThreadContainer.ResolveAll<IRuntimePluginTestThreadEventListener>();
+
+            //We pass a container corresponding the type of event
+            var container = GetHookContainer(hookType);
+
+            foreach (var listener in runtimeListeners)
+            {
+                listener.OnExecutionEvent(hookType, new ObjectContainer(container));
             }
         }
 
