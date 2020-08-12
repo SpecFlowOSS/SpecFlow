@@ -6,6 +6,10 @@ Fixes:
 Changes:
 + Add NullValueRetriever back again (was accidential removed with https://github.com/SpecFlowOSS/SpecFlow/pull/1928) - https://github.com/SpecFlowOSS/SpecFlow/pull/2067
 + Add a new `TestRunEnd` extension point for plugins
++ Extend FeatureInfo with FolderPath information
+
+API changes:
++ IGherkinParser.Parse method signature change - external usages must be updated
 
 3.3.57
 
