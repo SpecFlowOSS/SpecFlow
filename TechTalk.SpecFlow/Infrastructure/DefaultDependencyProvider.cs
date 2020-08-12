@@ -100,6 +100,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
             
             container.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
+
+            container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEvents, RuntimePluginTestExecutionLifecycleEvents>();
+            container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEventEmitter, IRuntimePluginTestExecutionLifecycleEventEmitter>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)

@@ -42,6 +42,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IAnalyticsEventProvider _analyticsEventProvider;
         private readonly IAnalyticsTransmitter _analyticsTransmitter;
         private readonly ITestRunnerManager _testRunnerManager;
+        private readonly IRuntimePluginTestExecutionLifecycleEventEmitter _runtimePluginTestExecutionLifecycleEventEmitter;
         private CultureInfo _defaultBindingCulture = CultureInfo.CurrentCulture;
 
         private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
@@ -72,6 +73,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             IAnalyticsEventProvider analyticsEventProvider, 
             IAnalyticsTransmitter analyticsTransmitter, 
             ITestRunnerManager testRunnerManager,
+            IRuntimePluginTestExecutionLifecycleEventEmitter runtimePluginTestExecutionLifecycleEventEmitter,
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -97,6 +99,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             _analyticsEventProvider = analyticsEventProvider;
             _analyticsTransmitter = analyticsTransmitter;
             _testRunnerManager = testRunnerManager;
+            _runtimePluginTestExecutionLifecycleEventEmitter = runtimePluginTestExecutionLifecycleEventEmitter;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -327,7 +330,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void FireEvents(HookType hookType)
         {
-            FireRuntimePluginEvent(hookType);
+            FireRuntimePluginTestExecutionLifecycleEvents(hookType);
 
             var stepContext = _contextManager.GetStepContext();
 
@@ -347,18 +350,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private void FireRuntimePluginEvent(HookType hookType)
+        private void FireRuntimePluginTestExecutionLifecycleEvents(HookType hookType)
         {
-            //We resolve the event listeners from the test thread container as they are logically bound to the TestExecutionEngine and to a test thread
-            var runtimeListeners = TestThreadContainer.ResolveAll<IRuntimePluginTestThreadEventListener>();
-
             //We pass a container corresponding the type of event
             var container = GetHookContainer(hookType);
-
-            foreach (var listener in runtimeListeners)
-            {
-                listener.OnExecutionEvent(hookType, new ObjectContainer(container));
-            }
+            _runtimePluginTestExecutionLifecycleEventEmitter.RasiseExecutionLifecycleEvent(hookType, container);
         }
 
         protected IObjectContainer TestThreadContainer { get; }

@@ -17,6 +17,7 @@ using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -47,6 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IAnalyticsEventProvider> _analyticsEventProvider;
         private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
         private Mock<ITestRunnerManager> _testRunnerManager;
+        private Mock<IRuntimePluginTestExecutionLifecycleEventEmitter> _runtimePluginTestExecutionLifecycleEventEmitter;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -144,6 +146,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             _testRunnerManager = new Mock<ITestRunnerManager>();
             _testRunnerManager.Setup(trm => trm.TestAssembly).Returns(Assembly.GetCallingAssembly);
+
+            _runtimePluginTestExecutionLifecycleEventEmitter = new Mock<IRuntimePluginTestExecutionLifecycleEventEmitter>();
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -169,6 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 _analyticsEventProvider.Object,
                 _analyticsTransmitter.Object,
                 _testRunnerManager.Object,
+                _runtimePluginTestExecutionLifecycleEventEmitter.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
