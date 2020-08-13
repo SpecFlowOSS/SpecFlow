@@ -1,4 +1,14 @@
-Changes after 3.3.57
+Changes after 3.3.74
+
+Changes:
++ Extend FeatureInfo with FolderPath information
++ RuntimePluginTestExecutionLifecycleEvents - allow runtime plugins to subscribe to test execution lifecycle events (similarly to the hooks in binding code)
++ Remove `TestRunEnd` extension point (obsolete with RuntimePluginTestExecutionLifecycleEvents)
+
+API changes:
++ IGherkinParser.Parse method signature change - external usages must be updated
+
+3.3.74
 
 Fixes: 
 + Fix step definition attribute support for the Visual Studio Extension #2065
@@ -6,10 +16,6 @@ Fixes:
 Changes:
 + Add NullValueRetriever back again (was accidential removed with https://github.com/SpecFlowOSS/SpecFlow/pull/1928) - https://github.com/SpecFlowOSS/SpecFlow/pull/2067
 + Add a new `TestRunEnd` extension point for plugins
-+ Extend FeatureInfo with FolderPath information
-
-API changes:
-+ IGherkinParser.Parse method signature change - external usages must be updated
 
 3.3.57
 

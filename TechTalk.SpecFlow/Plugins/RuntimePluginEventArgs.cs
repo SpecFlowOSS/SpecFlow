@@ -62,11 +62,4 @@ namespace TechTalk.SpecFlow.Plugins
         {
         }
     }
-
-    public class TestRunEndEventArgs : ObjectContainerEventArgs
-    {
-        public TestRunEndEventArgs(ObjectContainer objectContainer) : base(objectContainer)
-        {
-        }
-    }
 }
