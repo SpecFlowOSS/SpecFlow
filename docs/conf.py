@@ -64,9 +64,10 @@ html_js_files = [
     'js/hotjar.js',
 ]
 
-html_baseurl = 'https://docs.specflow.org/projects/specflow/en/latest/'
+html_baseurl = 'https://docs.specflow.org/projects/specflow/'
 html_extra_path = ['robots.txt']
 
 sys.path.append(os.path.abspath('exts'))
 
 sitemap_filename = 'sitemap_generated.xml'
+sitemap_url_scheme = "{lang}latest/{link}"
