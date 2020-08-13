@@ -330,8 +330,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void FireEvents(HookType hookType)
         {
-            FireRuntimePluginTestExecutionLifecycleEvents(hookType);
-
             var stepContext = _contextManager.GetStepContext();
 
             var matchingHooks = _bindingRegistry.GetHooks(hookType)
@@ -348,6 +346,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 InvokeHook(_bindingInvoker, hookBinding, hookType);
             }
+
+            FireRuntimePluginTestExecutionLifecycleEvents(hookType);
         }
 
         private void FireRuntimePluginTestExecutionLifecycleEvents(HookType hookType)
