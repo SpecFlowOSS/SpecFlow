@@ -150,9 +150,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             FireEvents(HookType.AfterTestRun);
-            
-            var runtimePluginEvents = TestThreadContainer.Resolve<RuntimePluginEvents>();
-            runtimePluginEvents.RaiseTestRunEnd(new ObjectContainer(TestThreadContainer));
         }
 
         public virtual void OnFeatureStart(FeatureInfo featureInfo)
