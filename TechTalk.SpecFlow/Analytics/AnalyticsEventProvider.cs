@@ -117,8 +117,9 @@ namespace TechTalk.SpecFlow.Analytics
                 { "BUDDY", "Buddy" },
                 { "NEVERCODE", "Nevercode" },
                 { "SEMAPHORE", "SEMAPHORE" },
-                { "CI_NAME", "CodeShip" },
-                { "BROWSERSTACK_USERNAME", "BrowserStack" }
+                { "BROWSERSTACK_USERNAME", "BrowserStack" },
+                { "CF_BUILD_ID", "Codefresh" },
+                { "CI_NAME", "CodeShip" }
             };
 
         private string GetBuildServerName()
