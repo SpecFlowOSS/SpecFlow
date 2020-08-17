@@ -1,4 +1,4 @@
-Changes after 3.3.74
+3.4
 
 Changes:
 + Allow incremental builds to work correctly for projects with MSTest/NUnit/xUnit integration
