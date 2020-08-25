@@ -20,7 +20,7 @@ Good bug reports are extremely helpful - thank you!
 Guidelines for bug reports:
 
 1. **Use the GitHub issue search** &mdash; [check if the issue has already been
-   reported](https://github.com/techtalk/SpecFlow/search?type=Issues).
+   reported](https://github.com/SpecFlowOSS/SpecFlow/search?type=Issues).
 
 2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
    `master` branch in the repository.
@@ -39,7 +39,7 @@ will help developers to fix any potential bugs.
 
 
 We move issues that need help, but may not be of a criticial nature or require
-intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/techtalk/SpecFlow/labels/up-for-grabs). 
+intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/SpecFlowOSS/SpecFlow/labels/up-for-grabs). 
 This is a list of easier tasks that anybody who wants to get into SpecFlow
 development can try.  Thank you!
 
@@ -62,7 +62,7 @@ Good pull requests - patches, improvements, new features - are a fantastic
 help. They should remain focused in scope and avoid containing unrelated
 commits.
 
-All needed informations about developing SpecFlow can be found at [Development.md](/docs/Development.md).
+All needed informations about developing SpecFlow can be found in [our documentation](https://docs.specflow.org/projects/specflow/en/latest/Contribute/Prerequisite.html).
 
 **NOTE**: Do not send code style changes as pull requests like changing
 the indentation of some particular code snippet or how a function is called.
@@ -91,7 +91,7 @@ in order to craft an excellent pull request:
   # Navigate to the newly cloned directory
   cd SpecFlow
   # Assign the original repo to a remote called "upstream"
-  git remote add upstream https://github.com/techtalk/SpecFlow
+  git remote add upstream https://github.com/SpecFlowOSS/SpecFlow
   ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
