@@ -1,3 +1,8 @@
+3.4.4
+
+Fixes: 
++ Support dynamic assemblies in container initialization #2110
+
 3.4
 
 Changes:

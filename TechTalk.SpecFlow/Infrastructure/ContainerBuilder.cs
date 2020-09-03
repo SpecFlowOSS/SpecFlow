@@ -141,7 +141,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
             var traceListener = container.Resolve<ITraceListener>();
-            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins(Path.GetDirectoryName(testAssembly?.Location)))
+            var assemblyLocation = testAssembly != null && !testAssembly.IsDynamic ? testAssembly.Location : null;
+            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins(Path.GetDirectoryName(assemblyLocation)))
             {
                 LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
             }
