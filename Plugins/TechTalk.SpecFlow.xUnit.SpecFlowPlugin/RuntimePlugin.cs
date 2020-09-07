@@ -16,7 +16,6 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
         {
             runtimePluginEvents.RegisterGlobalDependencies += RuntimePluginEvents_RegisterGlobalDependencies;
             runtimePluginEvents.CustomizeTestThreadDependencies += RuntimePluginEvents_CustomizeTestThreadDependencies;
-            runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
             unitTestProviderConfiguration.UseUnitTestProvider("xunit");
         }
 
@@ -30,13 +29,6 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
             var container = e.ObjectContainer;
 
             container.RegisterTypeAs<XUnitTraceListener, ITraceListener>();
-        }
-
-        private void RuntimePluginEvents_CustomizeScenarioDependencies(object sender, CustomizeScenarioDependenciesEventArgs e)
-        {
-            var container = e.ObjectContainer;
-
-            container.RegisterTypeAs<OutputHelper, ISpecFlowOutputHelper>();
         }
     }
 }

@@ -1,9 +1,10 @@
-3.4.4
+Changes:
++ Unit test provider independent ISpecFlowOutputHelper implementation
 
 Fixes: 
 + Support dynamic assemblies in container initialization #2110
 
-3.4
+3.4.3
 
 Changes:
 + Allow incremental builds to work correctly for projects with MSTest/NUnit/xUnit integration

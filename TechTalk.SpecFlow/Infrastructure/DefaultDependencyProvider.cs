@@ -124,7 +124,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public void RegisterScenarioContainerDefaults(ObjectContainer scenarioContainer)
         {
             scenarioContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
-
+            scenarioContainer.RegisterTypeAs<SpecFlowScenarioOutputTracer, ISpecFlowScenarioOutputListener>("tracer");
         }
     }
 }
