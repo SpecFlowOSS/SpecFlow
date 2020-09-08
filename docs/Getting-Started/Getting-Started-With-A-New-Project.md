@@ -354,7 +354,7 @@ The step for the Then statement needs to verify that the result returned by the 
 
 ```csharp
     [Then("the result should be (.*)")]
-    public void ThenTheResultShouldBe(int result)
+    public void ThenTheResultShouldBe(int expectedResult)
     {
         Assert.AreEqual(expectedResult, result);
     }
@@ -403,7 +403,7 @@ namespace GettingStarted.Steps
         }
 
         [Then("the result should be (.*)")]
-        public void ThenTheResultShouldBe(int result)
+        public void ThenTheResultShouldBe(int expectedResult)
         {
             Assert.AreEqual(expectedResult, result);
         }
