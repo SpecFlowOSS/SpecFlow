@@ -2,7 +2,7 @@
 
 SpecFlow supports xUnit 2.4 or later.  
 
-Documentation for NUnit can be found [here](https://xunit.net/#documentation).
+Documentation for xUnit can be found [here](https://xunit.net/#documentation).
 
 ## Needed NuGet Packages
 
