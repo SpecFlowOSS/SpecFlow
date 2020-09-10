@@ -25,6 +25,7 @@ The xUnit ITestOutputHelper is registered in the ScenarioContainer. You can get 
 
 using System;
 using TechTalk.SpecFlow;
+
 [Binding]
 public class BindingClass
 {
@@ -37,7 +38,7 @@ public class BindingClass
     [When(@"I do something")]
     public void WhenIDoSomething()
     {
-        _output.WriteLine("EB7C1291-2C44-417F-ABB7-A5154843BC7B");
+        _testOutputHelper.WriteLine("EB7C1291-2C44-417F-ABB7-A5154843BC7B");
     }
 }
 
