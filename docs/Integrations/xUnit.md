@@ -30,7 +30,7 @@ using TechTalk.SpecFlow;
 public class BindingClass
 {
     private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-    public StepsWithScenarioContext(Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+    public BindingClass(Xunit.Abstractions.ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
     }
