@@ -1,4 +1,4 @@
-# Getting Started with a New Project
+# Getting Started with a new project
 
 This guide assumes you are working on Windows with Visual Studio.
 
@@ -447,26 +447,29 @@ Click on **Output** in the Test Explorer to display a summary of the test:
 ![Test Explorer after Execution](../_static/images/Test-Explorer-After-Execution.png)  
 This example is very simple; at this point, you would want to refactor your code before proceeding with the implementation of your remaining scenarios.
 
-### SpecFlow+ Runner Sample Projects
 
-Many SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/SpecFlowOSS/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/SpecFlowOSS/SpecFlow.Plus.Examples)
+### Get the most out of the SpecFlow+ Runner
 
-You can find samples using other unit test providers also [on GitHub](https://github.com/SpecFlowOSS/SpecFlow-Examples).
+**SpecFlow+ Runner Sample Projects**
 
-### SpecFlow+ Runner Advanced Features
+* Many SpecFlow+ Runner sample projects, including the project covered in this tutorial ([Getting Started](https://github.com/SpecFlowOSS/SpecFlow.Plus.Examples/tree/master/Getting_Started)), can be found [on GitHub.](https://github.com/SpecFlowOSS/SpecFlow.Plus.Examples)
 
-Learn about the [Advanced features SpecFlow+ Runner has to offer](https://specflow.org/plus/runner/advanced-features/).
+**SpecFlow+ Runner Advanced Features**
 
-### Other Unit Test Providers
+* Learn more about the advanced features like Parallel Test Execution, Detect Flickering Scenarios and many more [on our website](https://specflow.org/plus/runner/advanced-features/).
 
-Instead of [SpecFlow+ Runner](https://specflow.org/plus/runner/), you can also use [other unit test providers](https://specflow.org/documentation/Unit-Test-Providers/), like MsTest, xUnit, or NUnit. These packages are installed in the same manner as SpecFlow+ Runner. However, to follow all the steps in this guide, you need to install SpecFlow+ Runner.
+Note: You can find additional samples using [other unit test providers](https://specflow.org/documentation/Unit-Test-Providers/) on [GitHub](https://github.com/SpecFlowOSS/SpecFlow-Examples).
 
 ## Living Documentation
 
-To get the most out of SpecFlow and providing the basis for further discussions about the behavior of your system, we recommend to share your Feature Files with all your stakeholders and team members. 
+To get the most out of SpecFlow, **get feedback early on** and providing the basis for further discussions about the behavior of your system, we recommend to share your Gherkin Feature Files with all your stakeholders and team members. 
 
-An easy way to share your Feature Files is to use the **free** [SpecFlow+ LivingDoc extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to generate a living documentation from your Feature Files.
+An easy way to share your Gherkin Feature Files is to use the **free** SpecFlow+ LivingDoc:
+* [ Generator](https://specflow.org/blog/introducing-the-specflow-plus-livingdoc-generator/) for local or self-hosted documentation
+* [Azure DevOps Extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to quickly generate a living documentation from your Gherkin Feature Files on Azure DevOps.
 
-This documentation can then be accessed from within Azure DevOps without the need for Visual Studio. Your Gherkin tests constitute an important part of the documentation of your system, describing the intended behavior in human-readable form and providing the basis for discussion with other project stakeholders.
+💡 Demo: Try out our [SpecFlow+ LivingDoc Generator Demo](https://go.specflow.org/mzu) which is hosted on GitHub Pages. 
 
-Many stakeholders will not be able to access your Feature Files directly in your repository, nor will they be using Visual Studio, so sharing them on a common platform is a big advantage. [Learn more about SpecFlow+ LivingDoc](https://specflow.org/plus/livingdoc/).
+The generated documentation can finally be shared per Email, per Microsoft Teams or Slack without the need for Visual Studio. 
+
+Sounds interesting? **Let's get started** with [SpecFlow+ LivingDoc](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/index.html).
