@@ -445,3 +445,17 @@ The following command exactly matches the `FullyQualifiedName` of the scenario t
 ```ps1con
 dotnet test BookShop.AcceptanceTests --filter FullyQualifiedName="BookShop.AcceptanceTests.Searching for books.#\(\)::Target:Integrated/TestAssembly:BookShop.AcceptanceTests/Feature:Searching+for+books/Scenario:Author+should+be+matched"
 ```
+
+## Living Documentation
+
+To get the most out of SpecFlow, **get feedback early on** and providing the basis for further discussions about the behavior of your system, we recommend to share your Gherkin Feature Files with all your stakeholders and team members. 
+
+An easy way to share your Gherkin Feature Files is to use the **free** SpecFlow+ LivingDoc:
+* [ Generator](https://specflow.org/blog/introducing-the-specflow-plus-livingdoc-generator/) for local or self-hosted documentation
+* [Azure DevOps Extension](https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus) to quickly generate a living documentation from your Gherkin Feature Files on Azure DevOps.
+
+💡 Demo: Try out our [SpecFlow+ LivingDoc Generator Demo](https://go.specflow.org/mzu) which is hosted on GitHub Pages. 
+
+The generated documentation can finally be shared per Email, per Microsoft Teams or Slack without the need for Visual Studio. 
+
+Sounds interesting? **Let's get started** with [SpecFlow+ LivingDoc](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/index.html).
