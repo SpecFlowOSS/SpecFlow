@@ -41,7 +41,7 @@
     <SpecFlow_Core_Generator_TFM>netcoreapp2.1</SpecFlow_Core_Generator_TFM>
 
     <SpecFlow_FullFramework_Test_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Test_TFM>
-    <SpecFlow_Core_Test_TFM>netcoreapp2.1;netcoreapp3.1</SpecFlow_Core_Test_TFM>
+    <SpecFlow_Core_Test_TFM>netcoreapp2.1;netcoreapp3.1;net5.0</SpecFlow_Core_Test_TFM>
 
     <SpecFlow_FullFramework_Specs_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Specs_TFM>
     <SpecFlow_Core_Specs_TFM>netcoreapp3.1</SpecFlow_Core_Specs_TFM>
