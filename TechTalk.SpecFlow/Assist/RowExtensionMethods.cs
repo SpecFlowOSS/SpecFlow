@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Assist
 
             AssertThatTheRequestIsValid(row, id);
 
-            return row[id] == "true";
+            return string.Equals(row[id], "true", StringComparison.OrdinalIgnoreCase);
         }
 
         public static double GetDouble(this TableRow row, string id)
@@ -162,7 +162,7 @@ namespace TechTalk.SpecFlow.Assist
         private static void AssertThatThisIsAnAcceptableBoolValue(TableRow row, string id)
         {
             var acceptedValues = new[] { "true", "false" };
-            if (acceptedValues.Contains(row[id]) == false)
+            if (acceptedValues.Contains(row[id], StringComparer.OrdinalIgnoreCase) == false)
                 throw new InvalidCastException($"You must use 'true' or 'false' when setting bools for {id}");
         }
 
