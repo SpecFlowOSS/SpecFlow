@@ -126,10 +126,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Fact]
+        public void GetBool_returns_true_when_the_value_is_True()
+        {
+            var table = new Table("IsNeat");
+            table.AddRow("True");
+            table.Rows.First()
+                .GetBoolean("IsNeat").Should().BeTrue();
+        }
+
+        [Fact]
         public void GetBool_returns_false_when_the_value_is_false()
         {
             var table = new Table("IsNeat");
             table.AddRow("false");
+            table.Rows.First()
+                .GetBoolean("IsNeat").Should().BeFalse();
+        }
+
+        [Fact]
+        public void GetBool_returns_false_when_the_value_is_False()
+        {
+            var table = new Table("IsNeat");
+            table.AddRow("False");
             table.Rows.First()
                 .GetBoolean("IsNeat").Should().BeFalse();
         }
