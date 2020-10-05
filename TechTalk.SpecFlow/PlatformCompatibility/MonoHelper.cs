@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Compatibility
 
         internal static void PreserveStackTrace(Exception ex)
         {
-            typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(ex, ex.StackTrace + Environment.NewLine);
+            typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(ex, ex.StackTrace + Environment.NewLine);
         }
 
         internal static Assembly GetLoadedAssembly(string assemblyName)
