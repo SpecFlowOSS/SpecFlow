@@ -52,6 +52,9 @@
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
 
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Net5_TFM)'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
+  </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='$(SpecFlow_Core_Runtime_TFM)'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
