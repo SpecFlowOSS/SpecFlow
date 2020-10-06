@@ -55,6 +55,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Guides/UpgradeSpecFlow2To3.md
+   Guides/PageObjectModel.md
 
 .. toctree::
    :maxdepth: 2
