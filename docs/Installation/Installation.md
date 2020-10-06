@@ -1,6 +1,6 @@
 # Installation
 
-_Note:_ If you are new to SpecFlow, we recommend checking out the [Getting Started guide](http://go.specflow.org/getting-started) first. It will take you through the process of installing SpecFlow and setting up your first project and tests in Visual Studio.
+_Note:_ If you are new to SpecFlow, we recommend checking out the [Getting Started guide](https://go.specflow.org/getting-started) first. It will take you through the process of installing SpecFlow and setting up your first project and tests in Visual Studio.
 
 SpecFlow consists of three components:
 
