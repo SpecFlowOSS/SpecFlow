@@ -87,21 +87,25 @@ in order to craft an excellent pull request:
 
   ```sh
   # Clone your fork of the repo into the current directory
-  git clone https://github.com/<your-username>/SpecFlow
+  git clone –recurse-submodules https://github.com/<your-username>/SpecFlow
   # Navigate to the newly cloned directory
   cd SpecFlow
   # Assign the original repo to a remote called "upstream"
   git remote add upstream https://github.com/SpecFlowOSS/SpecFlow
   ```
+  
+2. Configure your local setup  
+  Information to do this can be found [here](https://docs.specflow.org/projects/specflow/en/latest/Contribute/LocalSetup.html)
 
-2. If you cloned a while ago, get the latest changes from upstream:
+
+3. If you cloned a while ago, get the latest changes from upstream:
 
   ```sh
   git checkout master
   git pull upstream master
   ```
 
-3. Create a new topic branch (off of `master`) to contain your feature, change,
+4. Create a new topic branch (off of `master`) to contain your feature, change,
   or fix.
 
   **IMPORTANT**: Making changes in `master` is discouraged. You should always
@@ -112,27 +116,27 @@ in order to craft an excellent pull request:
   git checkout -b <topic-branch-name>
   ```
 
-4. Commit your changes in logical chunks. Keep your commit messages organized,
+5. Commit your changes in logical chunks. Keep your commit messages organized,
   with a short description in the first line and more detailed information on
   the following lines. Feel free to use Git's
   [interactive rebase](https://help.github.com/articles/interactive-rebase)
   feature to tidy up your commits before making them public.
 
-5. Make sure all the tests are still passing.
+6. Make sure all the tests are still passing.
 
   This is needed to ensure your changes can
   pass all the tests.
 
-6. Push your topic branch up to your fork:
+7. Push your topic branch up to your fork:
 
   ```sh
   git push origin <topic-branch-name>
   ```
 
-7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
+8. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
   with a clear title and description.
 
-8. If you haven't updated your pull request for a while, you should consider
+9. If you haven't updated your pull request for a while, you should consider
   rebasing on master and resolving any conflicts.
 
   **IMPORTANT**: _Never ever_ merge upstream `master` into your branches. You
