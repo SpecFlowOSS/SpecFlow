@@ -3,6 +3,7 @@ parameters:
   pool: ''
   nugetVersion: 5.1.0
   sdkVersion: 3.1.201
+  net5SdkVersion: 5.0.100-rc.1.20452.10
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
   publishArtifacts: true
@@ -26,6 +27,13 @@ jobs:
     inputs:
       packageType: sdk
       version: ${{ parameters.sdkVersion }}
+      includePreviewVersions: true
+      
+  - task: UseDotNet@2
+    displayName: 'Use .NET 5 SDK'
+    inputs:
+      packageType: sdk
+      version: ${{ parameters.net5SdkVersion }}
       includePreviewVersions: true
 
   - task: PowerShell@2
