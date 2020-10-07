@@ -484,7 +484,7 @@ Here are the definitions of SpecFlow Table extensions methods that convert table
     }
 ```
 
-Note that last arguments of **ToProjectionOfSet** and **ToProjectionOfInstance** methods are not used in method implementation. Their only purpose is to bring information about “T”, so the **EnumerableProjection** adapter class can be built properly. Now we can perform the following comparisons with anomymous types collections and instances:
+Note that last arguments of **ToProjectionOfSet** and **ToProjectionOfInstance** methods are not used in method implementation. Their only purpose is to bring information about “T”, so the **EnumerableProjection** adapter class can be built properly. Now we can perform the following comparisons with anonymous types collections and instances:
 
 ``` csharp
     [Test]

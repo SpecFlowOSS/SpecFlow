@@ -58,7 +58,7 @@ We set a different `<AssemblyName>` to add the required `.SpecFlowPlugin` suffix
 ```
 
 `<GeneratePackageOnBuild>` is set to true so that the NuGet package is generated on build.
-We use a NuSpec file (SamplePlugin.nuspec) to provde all information for the NuGet package. This is set with the `<NuspecFile>` property.
+We use a NuSpec file (SamplePlugin.nuspec) to provide all information for the NuGet package. This is set with the `<NuspecFile>` property.
 
 ``` xml
 <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -77,7 +77,7 @@ Runtime plugins only need a reference to the `SpecFlow` NuGet package.
 
 The sample targets file is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/build/SpecFlow.SamplePlugin.targets).
 
-We need to copy a different assembly to the output folder depending on the target framework (.NET Core vs .NET Framework) of the project using the runtime plugin package. Because the `$(TargetFrameworkIdentifider)` property is only availabe in imported `targets` files, we have to work out the path to the assembly here.
+We need to copy a different assembly to the output folder depending on the target framework (.NET Core vs .NET Framework) of the project using the runtime plugin package. Because the `$(TargetFrameworkIdentifier)` property is only available in imported `targets` files, we have to work out the path to the assembly here.
 
 ``` xml
 <_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SampleRuntimePluginFramework>
@@ -135,7 +135,7 @@ The runtime plugin assemblies are also specified here, using the additional `$co
 ## Generator plugins
 
 Generator plugins need to target .NET Framework 4.7.1 and .NET Core 2.1.
-The MSBuild task needs to know which generator plugins it should use. You therfore have to add your generator plugin to the `SpecFlowGeneratorPlugins` ItemGroup.
+The MSBuild task needs to know which generator plugins it should use. You therefore have to add your generator plugin to the `SpecFlowGeneratorPlugins` ItemGroup.
 This is passed to the MSBuild task as a parameter and later used to load the plugins.
 
 ### Create a generator plugin
@@ -164,7 +164,7 @@ The sample project is [here](https://github.com/techtalk/SpecFlow-Examples/blob/
 The project targets multiple frameworks, so it uses `<TargetFrameworks>` and not `<TargetFramework>`.
 We set a different `<AssemblyName>` to add the required `.SpecFlowPlugin` at the end. You can also name your project with  `.SpecFlowPlugin` at the end.
 `<GeneratePackageOnBuild>` is set to true, so that the NuGet package is generated on build.
-We use a NuSpec file (SamplePlugin.nuspec) to provde all information for the NuGet package. This is set with the `<NuspecFile>` property.
+We use a NuSpec file (SamplePlugin.nuspec) to provide all information for the NuGet package. This is set with the `<NuspecFile>` property.
 
 ``` xml
 <PropertyGroup>
@@ -188,7 +188,7 @@ For a generator plugin you  need a reference to the `SpecFlow.CustomPlugin`- NuG
 The sample targets file is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/build/SpecFlow.SamplePlugin.targets).
 
 We have to add a different assembly to the ItemGroup depending on the MSBuild version in use (.NET Full Framework or .NET Core).
-Because the `$(MSBuildRuntimeType)` property is only availabe in imported `target` files, we have to work out the path to the assembly here.
+Because the `$(MSBuildRuntimeType)` property is only available in imported `target` files, we have to work out the path to the assembly here.
 
 ``` xml
 <PropertyGroup>
@@ -229,7 +229,7 @@ This is done in `Directory.Build.targets`, so it defined for all projects in sub
 
 The sample file is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/GeneratorOnlyPlugin/GeneratorPlugin/SamplePlugin.nuspec).
 
-This is the NuSpec filethat privodes information for the NuGet package. To get the files from the build directory into the NuGet package, we have to specify them in the `file` list.
+This is the NuSpec file that provides information for the NuGet package. To get the files from the build directory into the NuGet package, we have to specify them in the `file` list.
 The generator plugin assemblies are also specified here, using the additional `$config$` property we added in the `Directory.Build.targets`.
 It is important to ensure that they are not added to the `lib` folder. If this were the case, they would be referenced by the project where you add the NuGet package. This is something we don't want to happen!
 
