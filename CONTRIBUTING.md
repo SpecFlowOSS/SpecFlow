@@ -38,7 +38,7 @@ will help developers to fix any potential bugs.
 
 
 
-We move issues that need help, but may not be of a criticial nature or require
+We move issues that need help, but may not be of a critical nature or require
 intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/SpecFlowOSS/SpecFlow/labels/up-for-grabs). 
 This is a list of easier tasks that anybody who wants to get into SpecFlow
 development can try.  Thank you!
