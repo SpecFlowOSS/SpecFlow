@@ -5,7 +5,7 @@ SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification
 - Project website: [https://www.specflow.org](https://www.specflow.org)
 - Documentation: [https://www.specflow.org/documentation/](https://www.specflow.org/documentation/)
 - Discussion group: [https://groups.google.com/group/SpecFlow](https://groups.google.com/group/SpecFlow) 
-- GitHub link: [https://github.com/shaheennamboori/easyfiledownloader/](https://github.com/shaheennamboori/easyfiledownloader/)
+- GitHub link: [https://github.com/SpecFlowOSS/SpecFlow/](https://github.com/SpecFlowOSS/SpecFlow/)
 
 For questions please send them to the [Discussion group](https://groups.google.com/group/SpecFlow).
 
