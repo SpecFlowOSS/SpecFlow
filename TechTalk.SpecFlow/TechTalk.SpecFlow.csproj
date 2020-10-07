@@ -40,23 +40,16 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.ValueTuple" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)'">
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net5_TFM)'">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Net5_TFM)'">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)'=='$(SpecFlow_Core_Runtime_TFM)'">
+  <PropertyGroup Condition="'$(TargetFramework)'=='$(SpecFlow_Core_Runtime_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net5_TFM)'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
