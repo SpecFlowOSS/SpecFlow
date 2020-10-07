@@ -27,7 +27,7 @@ This has following advantages:
 - if you need to change an `id` of your element, you need to change only one place
 - your bindings are less dependent on your HTML structure
 
-## Simple Sample Implementation
+## Simple Implementation
 
 **HTML**:
 
@@ -53,7 +53,7 @@ public class PageObject
 
 You pass your `WebDriver` instance via constructor, and always when you access the `txtUrl` property, the `WebDriver` searches on the whole page for an element with the id `txtUrl`. There is no caching involved.
 
-## Sample Implementation with Caching
+## Implementation with Caching
 
 **HTML**:
 
@@ -84,43 +84,49 @@ Only the first call to the `txtUrl` property, triggers a call to the `FindElemen
 
 If you use a caching strategy like that, be careful with your lifetime of your page objects and your page. Don't reuse an old instance of your page model, if the page changed in the meantime.
 
-## Implementation with hierarchie
+## Implementation with Hierarchy
 
 **HTML**:
 
 ``` html
-<div id='inputs'>
-    <input name="Url 1" type="text" value="">
-    <input name="Url 2" type="text" value="">
+<div id='parent'>
+    <div id='child' />
 </div>
 ```
 
+**Code**:
+
 ``` csharp
-public class InputsPageObject
+public class ParentPageObject
 {
     private IWebDriver _webDriver;
 
-    public InputsPageObject(IWebDriver webDriver)
+    public ParentPageObject(IWebDriver webDriver)
     {
         _webDriver = webDriver;
     }
 
-    public IWebElement Inputs => _webDriver.FindElement(By.Id("inputs"));
+    public IWebElement WebElement => _webDriver.FindElement(By.Id("parent"));
 
-    public IEnumerable<UrlPageObject> => Inputs.FindElements(By.TagName("input")).Select(i => new UrlPageObject(i));
+    public ChildPageObject Child => new ChildPageObject(WebElement);
 }
 
-public class UrlPageObject
+public class ChildPageObject
 {
     private IWebElement _webElement;
     private Lazy<IWebElement> _txtUrl;
 
-    public UrlPageObject(IWebElement webElement)
+    public ChildPageObject(IWebElement webElement)
     {
         _webElement = webElement;
     }
 
-    public IWebElement txtUrl => _webElement.FindElement(By.Id("txtUrl"));
+    public IWebElement WebElement => _webElement.FindElement(By.Id("child"));
 }
 
 ```
+
+Every WebElement has also the `FindElement(s)`- methods, which enable you to query the elements only in a part of your whole HTML DOM. The `ParentPageObject` is the already known PageObject that has access to the `WebDriver`. 
+To the `ChildPageObject` we are passing this time the `parent`- WebElement to only search for the element with id `child` within the `parent`- div.
+
+This concept enables you to have elements with the same id in different parts of your whole HTML DOM.
