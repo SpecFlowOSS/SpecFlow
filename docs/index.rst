@@ -128,6 +128,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Integrations/Teamcity-Integration.md
    Integrations/Browserstack.md
    Integrations/CodedUI.md
+   Integrations/SpecFlow.Autofac.md
 
 .. toctree::
    :maxdepth: 1
