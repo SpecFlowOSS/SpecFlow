@@ -42,7 +42,7 @@ Feel free to explore the application: try to search for a book, check the detail
 
 ### Architecture
 
-The application is impemented as an ASP.NET Core MVC web application and it uses Entity Framework Core for the database access.
+The application is implemented as an ASP.NET Core MVC web application and it uses Entity Framework Core for the database access.
 
 ![Bookshop Architecture](/_static/images/BookshopArchitectureSimple.png)
 
@@ -62,9 +62,9 @@ Open the `Book Details.feature` file to see the acceptance criteria of the **Dis
 
 Step definitions are implemented as .NET code in plain old .NET classes (see the .cs files in the folder *StepDefinitions*). These step definitions (also known as "bindings") define, how the individual scenario steps should be automated.
 
-In Visual Studio you can easily navigate from the scenario steps to the step defintion that automates the step using the standard "Go To Definition" command (default hotkey: "F12").
+In Visual Studio you can easily navigate from the scenario steps to the step definition that automates the step using the standard "Go To Definition" command (default hotkey: "F12").
 
-In the `Book Details.feature` file put the carret in the line "Given the following books" and press "F12" to jump to the step defintion of this step. You can see Given/When/Then attributes on the C# methods and a Binding attribute on the class that establish the connection between the Gherkin steps and the step definitions.
+In the `Book Details.feature` file put the carret in the line "Given the following books" and press "F12" to jump to the step definition of this step. You can see Given/When/Then attributes on the C# methods and a Binding attribute on the class that establish the connection between the Gherkin steps and the step definitions.
 
 ### Executable tests
 
@@ -142,7 +142,7 @@ less brittle tests, less efforts for automation, better performance of the test 
 
 Let's examine the scenario in `Book Details.feature` and navigate to the step definitions of the steps (shortcut "F12").
 
-The `Given the following books` step is bound to the `GivenTheFollowingBooks` step definition method in the `BookStep` class. The step defintion classes use the *Driver pattern* and *Dependency Injection* to better structure the code into reusable layers and parts. Following the flow of execution to the `DatabaseDriver` the books are inserted into the Entity Framework `DatabaseContext` (using an in-memory database):
+The `Given the following books` step is bound to the `GivenTheFollowingBooks` step definition method in the `BookStep` class. The step definition classes use the *Driver pattern* and *Dependency Injection* to better structure the code into reusable layers and parts. Following the flow of execution to the `DatabaseDriver` the books are inserted into the Entity Framework `DatabaseContext` (using an in-memory database):
 
 ```C#
       _databaseContext.Books.Add(book);
@@ -151,7 +151,7 @@ The `Given the following books` step is bound to the `GivenTheFollowingBooks` st
 ```
 
 The `When I open the details of 'Analysis Patterns'` step is bound to the `WhenIOpenTheDetailsOfBook` step definition method in the `BookSteps` class, passing the name of the book as parameter. The implementation is delegated to an `IBookDetailsDriver` implementation, and with the default configuration the `IntegratedBookDetailsDriver` is used. We're calling the `OpenBookDetails` method.
-Here we can see that our automation directly instantiates the Contoller class, calls the action method, and stores the result for the subsequent assertions.
+Here we can see that our automation directly instantiates the Controller class, calls the action method, and stores the result for the subsequent assertions.
 
 ```C#
       using var controller = new CatalogController(_bookLogic);
@@ -162,7 +162,7 @@ It is important that Controller is instantiated with appropriate dependencies, t
 
 Finally the `Then the book details should show` step is bound to the `ThenTheBookDetailsShouldShow` method in the `BookSteps` class, that again delegates to the `IntegratedBookDetailsDriver`, where we can assert on the previously stored action result.
 
-Note that the reason why these test run relatively fast is that the automation steps perfrom cheaper in-memory operations, basically working with .NET objects within a single process.
+Note that the reason why these test run relatively fast is that the automation steps perform cheaper in-memory operations, basically working with .NET objects within a single process.
 
 ### UI level automation with Selenium
 
@@ -203,7 +203,7 @@ We have seen before that the `Given the following books` step is bound to the `G
 However, in case of the `When I open the details of 'Analysis Patterns'` step now a different implementation of `IBookDetailsDriver` interface is configured due to our changes in the configuration file. Instead of the `IntegratedBookDetailsDriver` the `SeleniumBookDetailsDriver` is used.
 In the `OpenBookDetails` method of `SeleniumBookDetailsDriver` we can see that our automation interacts with the `BrowserDriver` and `WebServerDriver`, where the first one automates the browser opening the appropriate URL, while the second one automates the web server starting a new instance of the Bookshop application with Kestrel.
 
-The `Then the book details should show` step is also routed to the  `SeleniumBookDetailsDriver`. In the `ShowBookDetails` method the result is validated in the browser. We use the *page object pattern* to encapsulate the UI details in the `BookDetailPageObject` class, e.g. how the title of the book can be found in the rendered page with Selenium. This way the driver can forumlate the expectations on a higher level:
+The `Then the book details should show` step is also routed to the  `SeleniumBookDetailsDriver`. In the `ShowBookDetails` method the result is validated in the browser. We use the *page object pattern* to encapsulate the UI details in the `BookDetailPageObject` class, e.g. how the title of the book can be found in the rendered page with Selenium. This way the driver can formulate the expectations on a higher level:
 
 ```C#
       var bookDetailPageObject = new BookDetailPageObject(_browserDriver.Current);
@@ -222,7 +222,7 @@ The Bookshop example extends the SpecFlow+ Runner execution report with screensh
 
 ![Runner report with screenshots](/_static/images/RunnerReportWithScreenshots.png)
 
-After each scenario step a screenshot is taken from the browser and saved into the output directory as a new file. For the implementation details see the `Screenshots.MakeScreenshotAfterStep` method with the `[AfterStep]` attribute. The name of the sceenshot file is written into the trace output using `Console.WriteLine`.
+After each scenario step a screenshot is taken from the browser and saved into the output directory as a new file. For the implementation details see the `Screenshots.MakeScreenshotAfterStep` method with the `[AfterStep]` attribute. The name of the screenshot file is written into the trace output using `Console.WriteLine`.
 
 The default report template is overridden in the `Default.srprofile` configuration in the `TestProfile/Report/Template` element. The customized `ReportTemplate.cshtml` replaces the screenshot text in the trace output  with the image link.
 
@@ -271,7 +271,7 @@ Run only the acceptance tests (and ignore the unit tests) from the root folder o
 dotnet test BookShop.AcceptanceTests
 ```
 
-> __Note:__ the default `TestResults` test results directory of `dotnet test` is relative to the project, hence in this case the reports and logs are generated into the `BookShop.AccteptanceTests\TestResults` folder.
+> __Note:__ the default `TestResults` test results directory of `dotnet test` is relative to the project, hence in this case the reports and logs are generated into the `BookShop.AcceptanceTests\TestResults` folder.
 
 Alternatively you can run on the tests for the entire solution and use a filter to include the acceptance tests only:
 
@@ -295,7 +295,7 @@ dotnet test .\BookShop.AcceptanceTests\bin\Debug\netcoreapp3.1\BookShop.Acceptan
 
 #### Run acceptance tests without re-building the project
 
-Assuming the project was built succesfully already:
+Assuming the project was built successfully already:
 
 ```ps1con
 dotnet test BookShop.AcceptanceTests --no-build
@@ -405,7 +405,7 @@ Let's look at 3 different solutions, as the used matching strategy gets more and
   - When using the targets feature of SpecFlow+ Runner the same scenario can be executed on different targets, hence the target is also included in the name of the test.
   - Note: For this example the `Integrated` target must be enabled in the `Default.srprofile`.
   - Note: here you can filter with exact match using the `=` (equals) operator to match the `Name` property, because you use the full name in the filter.
-  - Note: the filter syntax of `dotnet test` recognizes parenthesis to enclose conditional operators. To match the string `(target: Integrated)` in the name we have to escape the parenthesis with a preceeding `\` (backslash) character.
+  - Note: the filter syntax of `dotnet test` recognizes parenthesis to enclose conditional operators. To match the string `(target: Integrated)` in the name we have to escape the parenthesis with a preceding `\` (backslash) character.
   - Provided that you enabled also the `Chrome` target in the `Default.srprofile` you can execute the same test with the Chrome UI automation as:
 
     ```ps1con
@@ -423,9 +423,9 @@ dotnet test BookShop.AcceptanceTests --filter Name~"target: Integrated"`
 
 With `dotnet test` it is possible to filter by the `FullyQualifiedName` property as `--filter FullyQualifiedName~"some text"` and this is equivalent with the shorthand form of `--filter "some text"` (when omitting the property name in the filter).
 
-However, the `FullyQualifiedName` property has a more complex naming convetion due to technical requirements. Unfortunately it is not possible to list the tests by the `FullyQualifiedName` property with `dotnet test`, which makes the practical usage of a `FullyQualifiedName` filter even harder.
+However, the `FullyQualifiedName` property has a more complex naming convention due to technical requirements. Unfortunately it is not possible to list the tests by the `FullyQualifiedName` property with `dotnet test`, which makes the practical usage of a `FullyQualifiedName` filter even harder.
 
-Hence in the command line **we recommend to filter by the `Name` property** if you (ad-hoc) want to run a feature or scenario during development, **or by the `TestCategory` property** when running a defined sets of scenarios using tags. It is also a common practice to add a `@wip` tag to the scenarios under active development in your workspace, because this way you can easily identify and run them (you can also change the groupping in Visual Studio Text Explorer to group the tests by Traits).
+Hence in the command line **we recommend to filter by the `Name` property** if you (ad-hoc) want to run a feature or scenario during development, **or by the `TestCategory` property** when running a defined sets of scenarios using tags. It is also a common practice to add a `@wip` tag to the scenarios under active development in your workspace, because this way you can easily identify and run them (you can also change the grouping in Visual Studio Text Explorer to group the tests by Traits).
 
 To demonstrate some of the challenges with `FullyQualifiedName` try to filter for the "Author should be matched" scenario. The following filter **does not find the scenario**, because the `FullyQualifiedName` does not literally contain the title of the scenario in this form:
 

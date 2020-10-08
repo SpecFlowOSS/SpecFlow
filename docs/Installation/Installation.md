@@ -38,7 +38,7 @@ We currently don't have our own extension for VSCode.
 
 For creating new projects, we recommend to use our [.NET templates](../Installation/Project-and-Item-Templates.html#creating-a-new-project-from-the-template).
 
-To improve your developing and scenario writing expierience, we recommend following VSCode extensions:
+To improve your developing and scenario writing experience, we recommend following VSCode extensions:
 
 * [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) - for editing feature files
 * [.NET Core Test Explore](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer) - for executing scenarios
