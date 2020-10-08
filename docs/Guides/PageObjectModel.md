@@ -13,7 +13,7 @@ you have following class to control it
 ``` csharp
 public class PageObject
 {
-    public IWebElement txtUrl {get;}
+    public IWebElement TxtUrl {get;}
 }
 ```
 
@@ -51,7 +51,7 @@ public class PageObject
 }
 ```
 
-You pass your `WebDriver` instance via constructor, and always when you access the `txtUrl` property, the `WebDriver` searches on the whole page for an element with the id `txtUrl`. There is no caching involved.
+You pass your `WebDriver` instance via constructor, and always when you access the `TxtUrl` property, the `WebDriver` searches on the whole page for an element with the id `txtUrl`. There is no caching involved.
 
 ## Implementation with Caching
 
@@ -80,7 +80,8 @@ public class PageObject
 ```
 
 Again You pass your `WebDriver` instance via constructor. In this case we are using [Lazy](https://docs.microsoft.com/en-us/dotnet/api/system.lazy-1) as a easy way to cache the result of the `FindElement` method.  
-Only the first call to the `txtUrl` property, triggers a call to the `FindElement` function. All subsequent calls, will return the same value as before.  
+Only the first call to the `txtUrl` property, triggers a call to the `FindElement` function. All subsequent calls, will return the same value as before. 
+This will save you some time in execution of your automation code, as the WebDriver needs to do search less often for the same element.
 
 If you use a caching strategy like that, be careful with your lifetime of your page objects and your page. Don't reuse an old instance of your page model, if the page changed in the meantime.
 
@@ -130,3 +131,9 @@ Every WebElement has also the `FindElement(s)`- methods, which enable you to que
 To the `ChildPageObject` we are passing this time the `parent`- WebElement to only search for the element with id `child` within the `parent`- div.
 
 This concept enables you to have elements with the same id in different parts of your whole HTML DOM.
+
+## Further resources
+
+- <https://www.browserstack.com/guide/page-object-model-in-selenium>
+- <https://www.selenium.dev/documentation/en/guidelines_and_recommendations/page_object_models/>
+- <https://martinfowler.com/bliki/PageObject.html>
