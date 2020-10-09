@@ -1,5 +1,13 @@
 # Contributing to SpecFlow
 
+
+#### “You’re happiest while you’re making the greatest contribution.” – Robert F. Kennedy  
+ So... why waiting? contribute Specflow😃<hr>
+
+ 
+
+<br>
+
 This contributing guide is based on the contributing for ElixirScript (which was based on the guide for contributing to Elixir), with changes suitable for this project.
 
 Contributing can have many faces. It can be code, but also answering questions and issues, writing documentation or trying out preview versions are contributions.
