@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.100-buster
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.402-buster
 
 RUN apt update \
     && apt install -y git mono-complete \
