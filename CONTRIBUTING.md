@@ -87,7 +87,7 @@ in order to craft an excellent pull request:
 
   ```sh
   # Clone your fork of the repo into the current directory
-  git clone –recurse-submodules https://github.com/<your-username>/SpecFlow
+  git clone --recurse-submodules https://github.com/<your-username>/SpecFlow
   # Navigate to the newly cloned directory
   cd SpecFlow
   # Assign the original repo to a remote called "upstream"
