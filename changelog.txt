@@ -4,6 +4,7 @@ Changes:
 
 Fixes: 
 + Support dynamic assemblies in container initialization #2110
++ System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
 
 3.4.3
 
