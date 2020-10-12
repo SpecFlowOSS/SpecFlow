@@ -1,14 +1,11 @@
-# SpecFlow.Autofac
+# Autofac
 
 ## Introduction
 SpecFlow plugin for using Autofac as a dependency injection framework for step definitions.
 
 ***Currently supports***
 
-**SpecFlow v2.1**
-
-**Autofac v3.5.2 or above**
-
+**Autofac v4.0.0 or above**
 
 ## Step by step walkthrough of using SpecFlow.Autofac
 
@@ -18,7 +15,8 @@ SpecFlow plugin for using Autofac as a dependency injection framework for step d
 ```csharp
 PM> Install-Package SpecFlow.Autofac
 ```
-### 2.  Create a static method somewhere in the SpecFlow project (recommended to put it into the `Support` folder) that returns an Autofac `ContainerBuilder` and tag it with the `[ScenarioDependencies]` attribute. 
+### 2.  Create a static method somewhere in the SpecFlow project  
+  (Recommended to put it into the `Support` folder) that returns an Autofac `ContainerBuilder` and tag it with the `[ScenarioDependencies]` attribute. 
   ##### 2.1 Configure your dependencies for the scenario execution within the method. 
   ##### 2.2 You also have to register the step definition classes, that you can do by either registering all public types from the SpecFlow project:
 
@@ -30,7 +28,7 @@ builder.RegisterAssemblyTypes(typeof(YourClassInTheSpecFlowProject).Assembly).Si
 ```csharp
 builder.RegisterTypes(typeof(TestDependencies).Assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(BindingAttribute))).ToArray()).SingleInstance();
 ```
-  ### 3 A typical dependency builder method probably looks like this:
+  ### 3. A typical dependency builder method probably looks like this:
 
 ```csharp
 [ScenarioDependencies]
