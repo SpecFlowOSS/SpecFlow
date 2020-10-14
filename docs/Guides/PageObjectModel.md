@@ -90,8 +90,10 @@ If you use a caching strategy like that, be careful with your lifetime of your p
 **HTML**:
 
 ``` html
-<div id='parent'>
-    <div id='child' />
+<div class='A'>
+    <div class='B'/>
+</div>
+<div class='B'>
 </div>
 ```
 
@@ -107,7 +109,7 @@ public class ParentPageObject
         _webDriver = webDriver;
     }
 
-    public IWebElement WebElement => _webDriver.FindElement(By.Id("parent"));
+    public IWebElement WebElement => _webDriver.FindElement(By.ClassName("A"));
 
     public ChildPageObject Child => new ChildPageObject(WebElement);
 }
@@ -122,15 +124,18 @@ public class ChildPageObject
         _webElement = webElement;
     }
 
-    public IWebElement WebElement => _webElement.FindElement(By.Id("child"));
+    public IWebElement WebElement => _webElement.FindElement(By.ClassName("B"));
 }
 
 ```
 
-Every WebElement has also the `FindElement(s)`- methods, which enable you to query the elements only in a part of your whole HTML DOM. The `ParentPageObject` is the already known PageObject that has access to the `WebDriver`. 
-To the `ChildPageObject` we are passing this time the `parent`- WebElement to only search for the element with id `child` within the `parent`- div.
+In this example we have a slightly adjusted HTML document to work with. There are two `div`- elements with the same class `B`, but we only want the PageObject for the `div`- element with the class `A` and the child.  
 
-This concept enables you to have elements with the same id in different parts of your whole HTML DOM.
+If we would use the same `WebDriver.FindElement` method we would get the `div`- element that is on the same level as the `A` div.  
+But every WebElement has also the `FindElement(s)`- methods. This enable you to query the elements only in a part of your whole HTML DOM.  
+To do that  we are passing this time the `parent`- WebElement to the `ChildPageObject` class to only search for the element with the class `B` within the `A`- div.  
+
+This concept enables you to structure your PageObjects in a similar way you have your HTML DOM structure.
 
 ## Further resources
 
