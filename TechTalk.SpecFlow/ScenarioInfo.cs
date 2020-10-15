@@ -10,6 +10,9 @@ namespace TechTalk.SpecFlow
         public string Title { get; private set; }
         public string Description { get; private set; }
 
+        /// <summary>
+        /// ScenarioInfo can be used to access the example of the current ScenarioOutline
+        /// </summary>
         public ScenarioInfo(string title, string description, string[] tags, IOrderedDictionary arguments)
         {
             Title = title;
