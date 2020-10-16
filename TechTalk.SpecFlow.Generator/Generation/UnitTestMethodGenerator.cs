@@ -460,10 +460,14 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             //_linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
             var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells.ElementAt(paramIndex).Value)).ToList();
-            _unitTestGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetTitle, variantName, arguments);
-        }
 
-        private CodeMemberMethod CreateTestMethod(
+            // Use the identifier of the example set (e.g. ExampleSet0, ExampleSet1) if we have it.
+            // Otherwise, use the title of the example set provided by the user in the feature file.
+            string exampleSetName = string.IsNullOrEmpty(exampleSetIdentifier) ? exampleSetTitle : exampleSetIdentifier;
+            _unitTestGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetName, variantName, arguments);
+		}
+
+		private CodeMemberMethod CreateTestMethod(
             TestClassGenerationContext generationContext,
             StepsContainer scenario,
             IEnumerable<Tag> additionalTags,
