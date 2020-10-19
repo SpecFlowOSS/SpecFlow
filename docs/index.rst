@@ -56,6 +56,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
 
    Guides/UpgradeSpecFlow2To3.md
    Guides/PageObjectModel.md
+   Guides/DriverPattern.md
 
 .. toctree::
    :maxdepth: 2
