@@ -16,10 +16,10 @@ This project contains some helper classes.
 This project contains the MSBuild task that generates the code-behind files.
 
 ## TechTalk.SpecFlow.GeneratorTests
-This contains unit tests that are about the generation of the code-behind files
+This contains unit tests that are about the generation of the code-behind files.
 
 ## TechTalk.SpecFlow.RuntimeTests
-This contains unit tests that are about the runtime of Scenarios
+This contains unit tests that are about the runtime of Scenarios.
 
 ## TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 This is the plugin for MSTest. It contains all specific implementations for MSTest.
