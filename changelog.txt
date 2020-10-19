@@ -4,6 +4,7 @@ Changes:
 
 Fixes: 
 + Support dynamic assemblies in container initialization #2110
++ Testexplorer doesn't show all tests when using tags on examples in scenario outlines (BUG 9731)
 
 3.4.3
 
