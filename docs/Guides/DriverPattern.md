@@ -1,6 +1,6 @@
 # Driver Pattern
 
-Over the years, we noticed that a good practice to organize your bindings and automation code is to keep the code in the bindings very short (max 10 lines) and easy understandable.  
+Over the years, we noticed that a good practice to organize your bindings and automation code is to keep the code in the bindings very short (around 10 lines) and easy understandable.  
 This makes it possible, that also non- technical people can understand what is happening in a step definition. This makes your live in bigger projects easier, because nobody will remember what every single step is doing.  
 
 One of the best ways to achieve this is to use the driver pattern.
@@ -94,14 +94,14 @@ public class SubmissionPageDriver
 
 ![Architecture after](../_static/images/DriverPattern_After.png)
 
-
 ## Benefits
+
+With now the methods in a separate class, you get also following benefits
 
 - easier to read step definitions
 - easy to reuse methods in different step definitions
 - easy to combine multiple steps into a single step
-
-
+  
 ## Further Resources
 
 - <http://leitner.io/2015/11/14/driver-pattern-empowers-your-specflow-step-definitions>
