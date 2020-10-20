@@ -130,6 +130,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Integrations/Browserstack.md
    Integrations/CodedUI.md
    Integrations/Autofac.md
+   Integrations/Windsor.md
 
 .. toctree::
    :maxdepth: 1
