@@ -4,7 +4,7 @@
     <id>SpecFlow.Windsor</id>
     <version>$version$</version>
     <title>SpecFlow Windsor integration plugin</title>
-    <authors>Gaspar Nagy, Spec Solutions, $author$</authors>
+    <authors>$author$</authors>
     <owners>Gaspar Nagy, Spec Solutions, $owner$</owners>
     <description>SpecFlow plugin that enables to use Windsor for resolving test dependencies.</description>
     <summary>SpecFlow plugin that enables to use Windsor for resolving test dependencies.</summary>
