@@ -97,7 +97,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Templates
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{05275A0B-57E4-484C-B181-227697C7B89A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.Windsor.SpecFlowPlugin", "Plugins\SpecFlow.Windsor.SpecFlowPlugin\SpecFlow.Windsor.SpecFlowPlugin.csproj", "{A3931239-01D7-4277-9A7C-44D751BA746A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.Windsor.SpecFlowPlugin", "Plugins\SpecFlow.Windsor.SpecFlowPlugin\SpecFlow.Windsor.SpecFlowPlugin.csproj", "{A3931239-01D7-4277-9A7C-44D751BA746A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalData", "ExternalData", "{16EAF4F9-9860-4BB9-8992-98522E68E570}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.ExternalData.SpecFlowPlugin", "Plugins\SpecFlow.ExternalData\SpecFlow.ExternalData.SpecFlowPlugin\SpecFlow.ExternalData.SpecFlowPlugin.csproj", "{AF7CACE6-1F26-454D-A814-19CFCF7C5810}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -397,6 +401,18 @@ Global
 		{A3931239-01D7-4277-9A7C-44D751BA746A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3931239-01D7-4277-9A7C-44D751BA746A}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
 		{A3931239-01D7-4277-9A7C-44D751BA746A}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug-MSTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug-MSTest|Any CPU.Build.0 = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug-NUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug-NUnit|Any CPU.Build.0 = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug-XUnit|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Debug-XUnit|Any CPU.Build.0 = Debug|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -424,6 +440,8 @@ Global
 		{EA16606D-6F1C-4A4D-B7A1-8A08B448CD86} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
 		{B7F589EB-524F-4BAD-9419-6576F6527670} = {05275A0B-57E4-484C-B181-227697C7B89A}
 		{A3931239-01D7-4277-9A7C-44D751BA746A} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
+		{16EAF4F9-9860-4BB9-8992-98522E68E570} = {8BE0FE31-6A52-452E-BE71-B8C64A3ED402}
+		{AF7CACE6-1F26-454D-A814-19CFCF7C5810} = {16EAF4F9-9860-4BB9-8992-98522E68E570}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D0636F-0160-4FA5-81A3-9784C7E3B3A4}
