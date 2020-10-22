@@ -1,0 +1,9 @@
+﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<_ExternalDataGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.1</_ExternalDataGeneratorPluginFramework>
+		<_ExternalDataGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' != 'Core'">net461</_ExternalDataGeneratorPluginFramework>
+
+		<_ExternalDataGeneratorPluginPath>$(MSBuildThisFileDirectory)$(_ExternalDataGeneratorPluginFramework)\SpecFlow.ExternalData.SpecFlowPlugin.dll</_ExternalDataGeneratorPluginPath>
+
+	</PropertyGroup>
+</Project>

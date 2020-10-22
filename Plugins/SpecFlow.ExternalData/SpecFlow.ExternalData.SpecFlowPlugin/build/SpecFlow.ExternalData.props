@@ -1,0 +1,5 @@
+﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="TaskFolder;TaskAssembly">
+	<ItemGroup>
+		<SpecFlowGeneratorPlugins Include="$(_ExternalDataGeneratorPluginPath)" />
+	</ItemGroup>
+</Project>

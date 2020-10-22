@@ -1,0 +1,32 @@
+﻿<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SpecFlow.ExternalData</id>
+    <version>$version$</version>
+    <title>SpecFlow.ExternalData</title>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
+    <description>Package to use external data in Gherkin scenarios</description>
+    <summary>Package to use external data in Gherkin scenarios</summary>
+    <language>en-US</language>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <icon>images\specflow-icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <tags>specflow externaldata json</tags>
+    <copyright>$copyright$</copyright>
+    <dependencies>
+      <dependency id="SpecFlow" version="[$version$]" />
+    </dependencies>
+  </metadata>
+	<files>
+		<file src="build\**\*" target="build"/>
+
+		<file src="bin\$config$\net461\**\*" target="build\net461"/>
+
+		<file src="bin\$config$\netcoreapp2.1\SpecFlow.ExternalData.SpecFlowPlugin.dll" target="build\netcoreapp2.1"/>
+		<file src="bin\$config$\netcoreapp2.1\SpecFlow.ExternalData.SpecFlowPlugin.pdb" target="build\netcoreapp2.1"/>
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
+    <file src="$SolutionDir$specflow-icon.png" target="images\" />
+  </files>
+</package>
