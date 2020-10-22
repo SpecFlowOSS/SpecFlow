@@ -1,7 +1,7 @@
 # Driver Pattern
 
 Over the years, we noticed that a good practice to organize your bindings and automation code is to keep the code in the bindings very short (around 10 lines) and easy understandable.  
-This makes it possible, that also non- technical people can understand what is happening in a step definition. This makes your live in bigger projects easier, because nobody will remember what every single step is doing.  
+This makes it possible, that also non- technical people can understand what is happening in a step definition. This makes your life in bigger projects easier, because nobody will remember what every single step is doing.  
 
 One of the best ways to achieve this is to use the driver pattern.
 
