@@ -106,7 +106,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                                               specFlowFeature.Description,
                                               specFlowFeature.Children.ToArray());
 
-            return new SpecFlowDocument(feature, specFlowDocument.Comments.ToArray(), specFlowDocument.SourceFilePath);
+            return new SpecFlowDocument(feature, specFlowDocument.Comments.ToArray(), specFlowDocument.DocumentLocation);
         }
 
         private IEnumerable<KeyValuePair<Combination, IFeatureGenerator>> GetFilteredFeatureGenerator(IEnumerable<string> unitTestProviders, bool onlyFullframework, bool onlyDotNetCore)
@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (onlyFullframework)
                     {
-                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet452)
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet461)
                         {
                             yield return featureGenerator;
                         }
@@ -148,7 +148,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyFullframework)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet452)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet461)
                             {
                                 yield return featureGenerator;
                             }

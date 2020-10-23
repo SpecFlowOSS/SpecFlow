@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -221,6 +223,35 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 CheckUpToDate = true
             });
             result.IsUpToDate.Should().Be(false);
+        }
+
+        private static string AssertFolderPathArgument(string outputFile)
+        {
+            var match = Regex.Match(outputFile, @"new TechTalk.SpecFlow.FeatureInfo\([^;]*");
+            match.Success.Should().BeTrue("FeatureInfo ctor should be found in output");
+            var folderPathArgument = match.Value.Split(',')[1].Trim();
+            folderPathArgument.Should().StartWith("\"").And.EndWith("\"", "the folderPath argument should be a string");
+            return folderPathArgument;
+        }
+
+        [Fact]
+        public void Should_generate_empty_folderpath_when_file_in_project_root()
+        {
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings);
+
+            string folderPathArgument = AssertFolderPathArgument(outputFile);
+
+            folderPathArgument.Should().Be("\"\"");
+        }
+
+        [Fact]
+        public void Should_generate_folderpath_with_slash_separator_when_file_in_subfolder()
+        {
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings, Path.Combine("Folder1", "Folder2"));
+
+            string folderPathArgument = AssertFolderPathArgument(outputFile);
+
+            folderPathArgument.Should().Be("\"Folder1/Folder2\"");
         }
     }
 }

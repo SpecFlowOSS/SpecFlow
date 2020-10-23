@@ -1,3 +1,4 @@
 {
-    "github.upstream": "techtalk/SpecFlow"
+    "github.upstream": "SpecFlowOSS/SpecFlow",
+    "restructuredtext.confPath": "${workspaceFolder}\\docs\\source"
 }

@@ -20,7 +20,7 @@ Good bug reports are extremely helpful - thank you!
 Guidelines for bug reports:
 
 1. **Use the GitHub issue search** &mdash; [check if the issue has already been
-   reported](https://github.com/techtalk/SpecFlow/search?type=Issues).
+   reported](https://github.com/SpecFlowOSS/SpecFlow/search?type=Issues).
 
 2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
    `master` branch in the repository.
@@ -38,8 +38,8 @@ will help developers to fix any potential bugs.
 
 
 
-We move issues that need help, but may not be of a criticial nature or require
-intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/techtalk/SpecFlow/labels/up-for-grabs). 
+We move issues that need help, but may not be of a critical nature or require
+intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/SpecFlowOSS/SpecFlow/labels/up-for-grabs). 
 This is a list of easier tasks that anybody who wants to get into SpecFlow
 development can try.  Thank you!
 
@@ -62,7 +62,7 @@ Good pull requests - patches, improvements, new features - are a fantastic
 help. They should remain focused in scope and avoid containing unrelated
 commits.
 
-All needed informations about developing SpecFlow can be found at [Development.md](/docs/Development.md).
+All needed informations about developing SpecFlow can be found in [our documentation](https://docs.specflow.org/projects/specflow/en/latest/Contribute/Prerequisite.html).
 
 **NOTE**: Do not send code style changes as pull requests like changing
 the indentation of some particular code snippet or how a function is called.
@@ -87,21 +87,25 @@ in order to craft an excellent pull request:
 
   ```sh
   # Clone your fork of the repo into the current directory
-  git clone https://github.com/<your-username>/SpecFlow
+  git clone --recurse-submodules https://github.com/<your-username>/SpecFlow
   # Navigate to the newly cloned directory
   cd SpecFlow
   # Assign the original repo to a remote called "upstream"
-  git remote add upstream https://github.com/techtalk/SpecFlow
+  git remote add upstream https://github.com/SpecFlowOSS/SpecFlow
   ```
+  
+2. Configure your local setup  
+  Information to do this can be found [here](https://docs.specflow.org/projects/specflow/en/latest/Contribute/LocalSetup.html)
 
-2. If you cloned a while ago, get the latest changes from upstream:
+
+3. If you cloned a while ago, get the latest changes from upstream:
 
   ```sh
   git checkout master
   git pull upstream master
   ```
 
-3. Create a new topic branch (off of `master`) to contain your feature, change,
+4. Create a new topic branch (off of `master`) to contain your feature, change,
   or fix.
 
   **IMPORTANT**: Making changes in `master` is discouraged. You should always
@@ -112,27 +116,27 @@ in order to craft an excellent pull request:
   git checkout -b <topic-branch-name>
   ```
 
-4. Commit your changes in logical chunks. Keep your commit messages organized,
+5. Commit your changes in logical chunks. Keep your commit messages organized,
   with a short description in the first line and more detailed information on
   the following lines. Feel free to use Git's
   [interactive rebase](https://help.github.com/articles/interactive-rebase)
   feature to tidy up your commits before making them public.
 
-5. Make sure all the tests are still passing.
+6. Make sure all the tests are still passing.
 
   This is needed to ensure your changes can
   pass all the tests.
 
-6. Push your topic branch up to your fork:
+7. Push your topic branch up to your fork:
 
   ```sh
   git push origin <topic-branch-name>
   ```
 
-7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
+8. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/)
   with a clear title and description.
 
-8. If you haven't updated your pull request for a while, you should consider
+9. If you haven't updated your pull request for a while, you should consider
   rebasing on master and resolving any conflicts.
 
   **IMPORTANT**: _Never ever_ merge upstream `master` into your branches. You

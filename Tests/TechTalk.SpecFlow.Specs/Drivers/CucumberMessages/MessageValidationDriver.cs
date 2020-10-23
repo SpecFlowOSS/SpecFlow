@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.Assist;
+﻿using System.Linq;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages.RowObjects;
 
@@ -45,6 +46,12 @@ namespace TechTalk.SpecFlow.Specs.Drivers.CucumberMessages
         {
             var platformRow = values.CreateInstance<PlatformRow>();
             _testCaseStartedDriver.TestCaseStartedMessageShouldHaveBeenSentWithPlatformInformation(platformRow);
+        }
+
+        public void TestCaseStartedMessageShouldHaveBeenSentWithPlatformInformationAttributes(Table attributes)
+        {
+            var expectedAttributes = attributes.Rows.Select(r => r["Attribute"]);
+            _testCaseStartedDriver.TestCaseStartedMessageShouldHaveBeenSentWithPlatformInformationAttributes(expectedAttributes);
         }
 
         public void TestRunFinishedMessageShouldHaveBeenSent(Table values)

@@ -147,6 +147,11 @@
     <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true'">
       <Compile Include="@(SpecFlowGeneratedFiles)" Exclude="@(Compile)" />
     </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="@(SpecFlowFeatureFiles)" />
+    </ItemGroup>
+    
   </Target>
 
   <Target Name="AfterUpdateFeatureFilesInProject" DependsOnTargets="IncludeCodeBehindFilesInProject">

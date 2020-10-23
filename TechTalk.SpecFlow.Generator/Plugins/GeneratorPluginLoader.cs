@@ -8,7 +8,6 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 {
     public class GeneratorPluginLoader : IGeneratorPluginLoader
     {
-
         public IGeneratorPlugin LoadPlugin(PluginDescriptor pluginDescriptor)
         {
             Assembly pluginAssembly;
@@ -17,7 +16,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
 #if NETCOREAPP
                 var absolutePath = Path.GetFullPath(pluginDescriptor.Path);
-                pluginAssembly = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(typeof(GeneratorPluginLoader).Assembly).LoadFromAssemblyPath(absolutePath);
+                pluginAssembly = PluginAssemblyResolver.Load(absolutePath);
 #else
                 pluginAssembly = Assembly.LoadFrom(pluginDescriptor.Path);
 #endif

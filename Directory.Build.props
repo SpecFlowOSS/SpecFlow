@@ -2,7 +2,7 @@
 
 
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     
     <SpecFlow_Copyright>Copyright © SpecFlow Team</SpecFlow_Copyright>
     <SpecFlow_Authors>SpecFlow Team</SpecFlow_Authors>
@@ -23,7 +23,7 @@
     <Company>Tricentis</Company>
     <Product />
     <PackageProjectUrl>https://www.specflow.org</PackageProjectUrl>
-    <PackageIconUrl>https://go.specflow.org/specflow-nuget-icon</PackageIconUrl>
+    <PackageIcon>images/specflow-icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/SpecFlowOSS/SpecFlow</RepositoryUrl>
     <PackageTags>specflow bdd gherkin cucumber</PackageTags>
     <Description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today."</Description>
@@ -32,19 +32,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SpecFlow_FullFramework_Runtime_TFM>net45</SpecFlow_FullFramework_Runtime_TFM>
+    <SpecFlow_FullFramework_TFM>net461</SpecFlow_FullFramework_TFM>
+
+    <SpecFlow_FullFramework_Runtime_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Runtime_TFM>
     <SpecFlow_Core_Runtime_TFM>netstandard2.0</SpecFlow_Core_Runtime_TFM>
 
-    <SpecFlow_FullFramework_Generator_TFM>net471</SpecFlow_FullFramework_Generator_TFM>
+    <SpecFlow_FullFramework_Generator_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Generator_TFM>
     <SpecFlow_Core_Generator_TFM>netcoreapp2.1</SpecFlow_Core_Generator_TFM>
 
-    <SpecFlow_FullFramework_Test_TFM>net471</SpecFlow_FullFramework_Test_TFM>
+    <SpecFlow_FullFramework_Test_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Test_TFM>
     <SpecFlow_Core_Test_TFM>netcoreapp2.1;netcoreapp3.1</SpecFlow_Core_Test_TFM>
 
-    <SpecFlow_FullFramework_Specs_TFM>net471</SpecFlow_FullFramework_Specs_TFM>
+    <SpecFlow_FullFramework_Specs_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Specs_TFM>
     <SpecFlow_Core_Specs_TFM>netcoreapp3.1</SpecFlow_Core_Specs_TFM>
 
-    <SpecFlow_FullFramework_Tools_TFM>net471</SpecFlow_FullFramework_Tools_TFM>
+    <SpecFlow_FullFramework_Tools_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Tools_TFM>
     <SpecFlow_Core_Tools_TFM>netcoreapp2.1</SpecFlow_Core_Tools_TFM>
 
     <SpecFlow_Runtime_TFM>$(SpecFlow_FullFramework_Runtime_TFM);$(SpecFlow_Core_Runtime_TFM)</SpecFlow_Runtime_TFM>

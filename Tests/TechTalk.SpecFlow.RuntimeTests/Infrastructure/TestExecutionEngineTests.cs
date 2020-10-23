@@ -17,6 +17,7 @@ using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -47,6 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IAnalyticsEventProvider> _analyticsEventProvider;
         private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
         private Mock<ITestRunnerManager> _testRunnerManager;
+        private Mock<IRuntimePluginTestExecutionLifecycleEventEmitter> _runtimePluginTestExecutionLifecycleEventEmitter;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -103,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, testObjectResolverMock.Object);
             scenarioContainer.RegisterInstanceAs(scenarioContext);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
-            featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
+            featureInfo = new FeatureInfo(culture, "feature path", "feature_title", "", ProgrammingLanguage.CSharp);
             var featureContext = new FeatureContext(featureContainer, featureInfo, specFlowConfiguration);
             featureContainer.RegisterInstanceAs(featureContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(featureContext);
@@ -144,6 +146,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             _testRunnerManager = new Mock<ITestRunnerManager>();
             _testRunnerManager.Setup(trm => trm.TestAssembly).Returns(Assembly.GetCallingAssembly);
+
+            _runtimePluginTestExecutionLifecycleEventEmitter = new Mock<IRuntimePluginTestExecutionLifecycleEventEmitter>();
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -169,6 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 _analyticsEventProvider.Object,
                 _analyticsTransmitter.Object,
                 _testRunnerManager.Object,
+                _runtimePluginTestExecutionLifecycleEventEmitter.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
@@ -691,6 +696,88 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             sut.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             mockHandler.Verify(action => action.Handle(It.IsAny<ScenarioContext>()), Times.Never);
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforetestrun()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnTestRunStart();
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_aftertestrun()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnTestRunEnd();
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforefeature()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnFeatureStart(featureInfo);
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterfeature()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnFeatureEnd();
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforescenario()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnScenarioStart();
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterscenario()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            testExecutionEngine.OnScenarioEnd();
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforestep()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
+        }
+
+        [Fact]
+        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterstep()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
         }
     }
 }

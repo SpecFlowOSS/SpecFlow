@@ -29,8 +29,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions.CucumberMessages
 
 
 
-        [Given(@"the cucumber implementation is '(.*)' in version '(.*)'")]
-        public void GivenTheCucumberImplementationIs(string cucumberImplementation, string version)
+        [Given(@"the cucumber implementation '(.*)'")]
+        public void GivenTheCucumberImplementationIs(string cucumberImplementation)
         {
             if (_scenarioContext.ScenarioInfo.Tags.Contains("SpecFlow"))
             {

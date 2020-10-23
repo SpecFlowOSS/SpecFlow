@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow
                 var mess =
                     string.Format(
                         ERROR_CELLS_NOT_MATCHING_HEADERS + ".\nThe table looks like this\n{2}",
-                        cells.Count(),
+                        cells.Length,
                         header.Length,
                         this);
                 throw new ArgumentException(mess);

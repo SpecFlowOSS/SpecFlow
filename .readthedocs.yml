@@ -1,0 +1,16 @@
+version: 2
+sphinx:
+  builder: html
+  configuration: docs/conf.py
+
+formats:
+  - pdf
+  - htmlzip
+
+build:
+  image: latest
+
+python:
+  version: 3.7
+  install:
+    - requirements: docs/requirements.txt

@@ -8,16 +8,19 @@ namespace TechTalk.SpecFlow
     {
         public string[] Tags { get; private set; }
         public ProgrammingLanguage GenerationTargetLanguage { get; private set; }
+        
+        public string FolderPath { get; private set; }
+        
         public string Title { get; private set; }
         public string Description { get; private set; }
         public CultureInfo Language { get; private set; }
 
-        public FeatureInfo(CultureInfo language, string title, string description, params string[] tags)
-            : this(language, title, description, ProgrammingLanguage.CSharp, tags)
+        public FeatureInfo(CultureInfo language, string folderPath, string title, string description, params string[] tags)
+            : this(language, folderPath, title, description, ProgrammingLanguage.CSharp, tags)
         {
         }
 
-        public FeatureInfo(CultureInfo language, string title, string description, ProgrammingLanguage programmingLanguage, params string[] tags)
+        public FeatureInfo(CultureInfo language, string folderPath, string title, string description, ProgrammingLanguage programmingLanguage, params string[] tags)
         {
             if (language.IsNeutralCulture)
             {
@@ -27,6 +30,7 @@ namespace TechTalk.SpecFlow
             }
 
             Language = language;
+            FolderPath = folderPath;
             Title = title;
             Description = description;
             GenerationTargetLanguage = programmingLanguage;

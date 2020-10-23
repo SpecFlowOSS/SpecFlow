@@ -1,4 +1,38 @@
-Changes since 3.1.97
+Changes:
++ Unit test provider independent ISpecFlowOutputHelper implementation
++ Row extension method `GetBoolean` is now case insensitive
++ Add support for Castle Windsor dependency injection via plugin
+
+Fixes: 
++ Support dynamic assemblies in container initialization #2110
++ Testexplorer doesn't show all tests when using tags on examples in scenario outlines (BUG 9731)
+
+3.4.3
+
+Changes:
++ Allow incremental builds to work correctly for projects with MSTest/NUnit/xUnit integration
++ Extend FeatureInfo with FolderPath information
++ RuntimePluginTestExecutionLifecycleEvents - allow runtime plugins to subscribe to test execution lifecycle events (similarly to the hooks in binding code)
++ Remove `TestRunEnd` extension point (obsolete with RuntimePluginTestExecutionLifecycleEvents)
+
+API changes:
++ IGherkinParser.Parse method signature change - external usages must be updated
+
+3.3.74
+
+Fixes: 
++ Fix step definition attribute support for the Visual Studio Extension #2065
+
+Changes:
++ Add NullValueRetriever back again (was accidentally removed with https://github.com/SpecFlowOSS/SpecFlow/pull/1928) - https://github.com/SpecFlowOSS/SpecFlow/pull/2067
++ Add a new `TestRunEnd` extension point for plugins
+
+3.3.57
+
+Changes:
++ Add `SpecFlow.Tools.MSBuild.Generation` as a dependency to the `SpecFlow.xUnit`, `SpecFlow.MSTest`, `SpecFlow.NUnit` packages
+
+3.3
 
 Features:
 + Allow the use of custom subclasses of StepDefinitionBaseAttribute.
@@ -12,7 +46,7 @@ API Changes:
 + Now allows override of method categories in NUnit to allow for plugin development on this function
 + (breaking) tableRow.GetEnum<T>(..) has now a class contraint on T
 + (breaking) tableRow.GetTheEnumValue<T>(..) has now a class contraint on T
-+ added tableRow.GetDiscreteEnum<T>
++ Added tableRow.GetDiscreteEnum<T>
 + TechTalk.SpecFlow.Assist.ValueRetrievers.* public classes have undergone some refactoring. IValueRetriever interface remains unchanged.
 
 Changes:
@@ -20,16 +54,17 @@ Changes:
 + Improved performance of ValueRetrievers
 + Removed Nullable*ValueRetriever as nullability is now handled by the *ValueRetriever directly.
 + Changed all specflow.org hyperlinks to https (docs, generated code, packages)
++ Changed minimal .NET Framework version from .NET 4.5 to .NET 4.6.1
++ Changed minimal .NET Framework version of the Generator plugins and the SpecFlow.Tools.MSBuild.Generation package from .NET 4.7.1 to .NET 4.6.1
++ Downgrade to be able to use xUnit 2.4.0 (because VS Templates are using this version)
 
 Fixes:
 + Empty value for nullable enum should not throw an exception
 + RegEx performance fix in TEHelpers (Table column name validation)
++ Adjust assembly loading of Generator plugins to changed behavior in .NET Core SDK 3.1.200 and later - https://github.com/SpecFlowOSS/SpecFlow/issues/1912
++ Add auto-generated comment for StyleCop to ignore the Assemblyhook files
 
-
-Fixes:
-+ add auto-generated comment for StyleCop to ignore the Assemblyhook files
-
-Changes since 3.1.89
+3.1.97
 
 Fixes:
 + Update the default C# skeleton template to use context injection instead of the deprecated ScenarioContext.Current
@@ -37,17 +72,14 @@ Fixes:
 + Revert "Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225" because of problems with the NUnit Test Adapter
 + Remove files with invalid characters from the FeatureFiles list (provided by msbuild)
 
-
 Features:
 + Created VerifyAllColumnsBound check for `table.CreateSet` and `table.CreateInstance`
 
-
-Changes since 3.1.86
+3.1.89
 
 Fixes:
 + Replace NUnit.Framework.DescriptionAttribute to TestName in NUnit generator #1225
 + Import MSBuild Tasks only once (fixes https://github.com/SpecFlowOSS/SpecFlow/issues/1699)
-
 
 3.1 - 2020-01-09
 
@@ -67,7 +99,7 @@ Features:
 3.1 
 
 Features:
-+ first set of cucumber-messages are implemented 
++ First set of cucumber-messages are implemented 
   - TestRunStarted
   - TestCaseStarted
   - TestCaseFinished
@@ -76,8 +108,8 @@ Features:
   Documentation: <https://specflow.org/documentation/Cucumber-Messages/>
 
 + cucumber-messages can be enabled via specflow.json and app.config
-+ file sinks for cucumber-messages can be configured
-+ support for Gherkin v6 "Rule" keyword
++ File sinks for cucumber-messages can be configured
++ Support for Gherkin v6 "Rule" keyword
 + Support discovering step definitions from attributes that are derived from Given,When,Then or StepDefinition attributes (related to https://github.com/techtalk/SpecFlow/issues/1745)
 
 Fixes: 
@@ -86,13 +118,13 @@ Fixes:
 + specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761
 + specflow.json is copied to output directory automatically https://github.com/techtalk/SpecFlow/issues/1315
 + A scenario with an "Examples" block should be treated as a Scenario Outline according to Gherkin v6
-+ step definition method with "object" parameter type might not match
++ Step definition method with "object" parameter type might not match
 + AssemblyHooks are now marked as [GeneratedCode] so that Code Analyzers don't check them.
 
 
 Changes:
 + Ignored Scenarios are skipped at runtime
-    + SpecFlow.xUnit has a dependency on Xunit.SkippableFact
++ SpecFlow.xUnit has a dependency on Xunit.SkippableFact
 + Added support for TypeConverter attributes.
 + All Steps.Given, Steps.When, Steps.Then, Steps.But and Steps.And methods are obsolete; these methods will be removed in SpecFlow 3.2. For more details refer to https://github.com/techtalk/SpecFlow/issues/1733
 
@@ -159,7 +191,7 @@ Fixes:
 + Fixed test body generation order for outline tests https://github.com/techtalk/SpecFlow/pull/1168
 + Update to Gherkin 5.1.0
 + Fix XUnit ITestOutputhelper and MSTest TestContext container registrations so that they are available in BeforeScenario hooks. See https://github.com/techtalk/SpecFlow/issues/936
-+ fixed CompareToSet not flagging missing rows correctly with dash https://github.com/techtalk/SpecFlow/pull/1098
++ Fixed CompareToSet not flagging missing rows correctly with dash https://github.com/techtalk/SpecFlow/pull/1098
 + Fix Used steps are falsely marked as unused in Step Definition Report https://github.com/techtalk/SpecFlow/issues/782
 
 2.3.2 - 2018-04-17
@@ -169,7 +201,7 @@ Fixes:
 + Improve error message of test generator https://github.com/techtalk/SpecFlow/pull/1089
 + Fix assembly loading of dependencies in MSBuild task https://github.com/techtalk/SpecFlow/pull/1088
 + Make MSBuild Task debuggable https://github.com/techtalk/SpecFlow/pull/1087
-+ add licenses for all dependencies that are shipped with the NuGet packages
++ Add licenses for all dependencies that are shipped with the NuGet packages
 
 
 API Changes:
@@ -198,9 +230,9 @@ Fixes:
 + Meaningful exception is thrown when there are no Examples or Examples are empty in Scenario Outline https://github.com/techtalk/SpecFlow/pull/967
 + "copy" feature in the step definition report is not working in modern browsers https://github.com/techtalk/SpecFlow/issues/958 https://github.com/techtalk/SpecFlow/issues/915
 + Xunit support @ignore on a feature level https://github.com/techtalk/SpecFlow/pull/968
-+ Format error message to facilate identification of ambiguous steps https://github.com/techtalk/SpecFlow/issues/994
++ Format error message to facilitate identification of ambiguous steps https://github.com/techtalk/SpecFlow/issues/994
 + Adds fix for .feature files path parsing on macOS / Unix https://github.com/techtalk/SpecFlow/pull/1012
-+ more detailed output of generator errors is written in the code behind file https://github.com/techtalk/SpecFlow/pull/1013
++ More detailed output of generator errors is written in the code behind file https://github.com/techtalk/SpecFlow/pull/1013
 
 API Changes:
 + GetValue of ValueRetrievers are virtual https://github.com/techtalk/SpecFlow/pull/981
@@ -213,7 +245,7 @@ New Features:
 + @MsBuild [DeploymentItem] - added option to provide output directory https://github.com/techtalk/SpecFlow/pull/901
 
 Fixes:
-+ unable to access readonly csproj file  https://github.com/techtalk/SpecFlow/pull/906
++ Unable to access read only csproj file  https://github.com/techtalk/SpecFlow/pull/906
 
 2.2.0 - 2017-06-28
 
@@ -225,7 +257,7 @@ Core changes:
 + Upgrade to BoDi 1.3 (https://github.com/techtalk/SpecFlow/pull/876)
 
 Fixes:
-+ Fix code behind generation if it is tiggered through Save in Visual Studio (https://github.com/techtalk/SpecFlow/pull/877)
++ Fix code behind generation if it is triggered through Save in Visual Studio (https://github.com/techtalk/SpecFlow/pull/877)
 
 2.2.0-preview20170523 - 2017-05-23
 
@@ -306,7 +338,7 @@ Core changes:
 Breaking changes:
 + The new release will not work with .NET runtimes older than .NET 4.5.
 + Because of the new Gherkin parser, some feature files might not be able to parse
-+ Support for obsolete runtimes (Silverlight, WP7) have been removed, they will be re-added in a better way soon.
++ Support for obsolete runtime (Silverlight, WP7) have been removed, they will be re-added in a better way soon.
 
 New Features:
 + Support for xUnit 2.0, including parallel support. The old provider is renamed to xunit.1. (Issue 419)
@@ -320,11 +352,11 @@ Smaller Improvements/fixes:
 + Better regular expression suggestions generated for missing steps with quoted parameters
 + Steps base class provides properties to access the feature, scenario and step contexts in a thread-safe way
 + Scenario and feature context can be injected to the binding class to avoid the ScenarioContext.Current and FeatureContext.Current static accessors
-+ Assist: better matching of column names to preperty names by removing any character from the header name that is not valid in property names (Issue 511)
++ Assist: better matching of column names to property names by removing any character from the header name that is not valid in property names (Issue 511)
 + Small improvements in the DI framework, see https://github.com/gasparnagy/BoDi/blob/master/BoDi/BoDi.cs for details.
 + SpecFlow.MsTest NuGet package can be used to easily configure SpecFlow with MsTest
 + Specflow Test Execution report now includes the "tags" in the Nunit Report which can be displayed through a custom XSLT by the users.
-+ remove .net runtime version from generated file header to avoid unwanted changes
++ Remove .net runtime version from generated file header to avoid unwanted changes
 
 
 1.9.3 - 2013-09-26 (Visual Studio 2013 Integration)
@@ -403,7 +435,7 @@ New Features:
 + VS2010: Navigation from step definitions to the matching steps (Issue 192)
 + VS2010: Context-dependent navigation (go to step definition / go to steps) with Alt+Ctrl+Shift+S
 + VS2010: Generate missing step definitions from a feature file
-+ Support custom step definition skeleton templates (dirrerent style customizable in config, template can be overriden in
++ Support custom step definition skeleton templates (different style customizable in config, template can be overridden in
   "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see https://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
 + VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Issue 49, Pull 189, with support of matgiro)
 + Plugin infrastructure
@@ -438,7 +470,7 @@ New features:
 + Async testing support for Windows Phone 7 (Issue 132, by Jeff Simons)
 + Support for MbUnit v3. Use unit test provider name "mbunit.3". (Issue 133, by Raytheon)
 + SpecFlow framework classes can be used as a dependency for context injection.
-+ Custom extensions for the runtime can be specified in the config file (specflow/runtime/dependencies).
++ Custom extensions for the runtime can be specified in the config file (Specflow/runtime/dependencies).
 + Better customization possibilities with plugins.
 + [StepScope] attribute can also scope hooks (event bindings) (Issue 95)
 + [StepScope] has been renamed to [Scope]. [StepScope] is kept with obsolete warning.
@@ -519,7 +551,7 @@ New features:
   See https://github.com/techtalk/SpecFlow/wiki/Testing-Silverlight-Asynchronous-Code for details.
 + TableRow implements IDictionary<string, string>
 + Add table row from a (total or partially filled) dictionary
-+ Raname table column (Table.RenameColumn(stirng, string))
++ Rename table column (Table.RenameColumn(stirng, string))
 
 Fixed issues:
 + Installer executes devenv /installtemplates even if VS2008 integration is not selected.
@@ -544,7 +576,7 @@ New features:
 + Added a Set<T>(Func<T>) extension method. The Func<T> method will be invoked whenever ScenarioContext.Current.Get<T> is called.
 + Support for tagging (including @ignore) scenario outline examples.
   NUnit and MbUnit: to filter for categories generated for the examples in the unit test runner, you need to
-  switch off row test generaiton (<generator allowRowTests="false" />)
+  switch off row test generation (<generator allowRowTests="false" />)
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.5
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
@@ -565,7 +597,7 @@ New features:
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
 + Binding is reported as invalid if there is a matching step definition with different scope
-+ Support for datetime comparisons that ignore 12:00:00 AM (issue 52)
++ Support for date time comparisons that ignore 12:00:00 AM (issue 52)
 + Fix NUnit execution report to properly select features when .features is solely comprised Scenario Outlines.
   (by Jon Archer)
 + Tags applied at the feature level are now applied as Silverlight TagAttributes on the class. (by Matt Ellis, citizenmatt)
@@ -606,7 +638,7 @@ Fixed issues:
 + Adding comparison helpers to SpecFlow.Assist (by darrencauthon)
 + Support for char parsing in table-helpers of SpecFlow.Assist (Issue 19)
 + VS2010 might crash after pasting into a feature file
-+ Excution report should list features ordered by feature title
++ Execution report should list features ordered by feature title
 
 1.4.0 - 2010-10-07
 
@@ -782,4 +814,3 @@ Fixed issues:
 1.0.1 - 2009-10-13
 
 Initial publish on https://www.specflow.org
-

@@ -74,7 +74,16 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private bool IsStepDefinitionAttribute(BindingSourceAttribute attribute)
         {
-            return typeof(StepDefinitionBaseAttribute).IsAssignableFrom(attribute.AttributeType);
+            //NOTE: the IsAssignableFrom calls below are not the built-in ones from the Type system but custom extension methods.
+            //The IBindingType based IsAssignableFrom does not support polymorphism if the IBindingType is not IPolymorphicBindingType (e.g. RuntimeBindingType)
+            //The Visual Studio Extension uses a source code based IBindingType that cannot support IPolymorphicBindingType.
+            //Please do not remove the checks for the sub-classes.
+            return
+                typeof(GivenAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(WhenAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(ThenAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(StepDefinitionAttribute).IsAssignableFrom(attribute.AttributeType) ||
+                typeof(StepDefinitionBaseAttribute).IsAssignableFrom(attribute.AttributeType);
         }
 
         private bool IsHookAttribute(BindingSourceAttribute attribute)
@@ -297,6 +306,18 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private IEnumerable<StepDefinitionType> GetStepDefinitionTypes(BindingSourceAttribute stepDefinitionAttribute)
         {
+            //Note: the Visual Studio Extension resolves the BindingSourceAttribute from the step definition source code without the Types property.
+            //The Types property is only available at runtime when a StepDefinitionBaseAttribute can be reflected.
+            //Please do not remove the checks for the sub-classes.
+            if (typeof(GivenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
+                return new[] { StepDefinitionType.Given };
+            if (typeof(WhenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
+                return new[] { StepDefinitionType.When };
+            if (typeof(ThenAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
+                return new[] { StepDefinitionType.Then };
+            if (typeof(StepDefinitionAttribute).IsAssignableFrom(stepDefinitionAttribute.AttributeType))
+                return new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then };
+
             return stepDefinitionAttribute.NamedAttributeValues["Types"].GetValue<IEnumerable<StepDefinitionType>>();
         }
 

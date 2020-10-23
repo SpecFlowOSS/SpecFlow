@@ -17,15 +17,14 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public class ConfigurationLoader : IConfigurationLoader
     {
-        private const string JsonConfigurationFileName = "specflow.json";
-
         private readonly AppConfigConfigurationLoader _appConfigConfigurationLoader;
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
+        private readonly ISpecFlowJsonLocator _specFlowJsonLocator;
 
-
-        public ConfigurationLoader()
+        public ConfigurationLoader(ISpecFlowJsonLocator specFlowJsonLocator)
         {
+            _specFlowJsonLocator = specFlowJsonLocator;
             _jsonConfigurationLoader = new JsonConfigurationLoader();
             _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
         }
@@ -63,9 +62,7 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get
             {
-                var specflowJsonFile = GetSpecflowJsonFilePath();
-
-
+                var specflowJsonFile = _specFlowJsonLocator.GetSpecFlowJsonFilePath();
                 return File.Exists(specflowJsonFile);
             }
         }
@@ -164,7 +161,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         private SpecFlowConfiguration LoadJson(SpecFlowConfiguration specFlowConfiguration)
         {
-            var jsonContent = File.ReadAllText(GetSpecflowJsonFilePath());
+            var jsonContent = File.ReadAllText(_specFlowJsonLocator.GetSpecFlowJsonFilePath());
 
             return LoadJson(specFlowConfiguration, jsonContent);
         }
@@ -174,33 +171,6 @@ namespace TechTalk.SpecFlow.Configuration
             return _jsonConfigurationLoader.LoadJson(specFlowConfiguration, jsonContent);
         }
 
-        private string GetSpecflowJsonFilePath()
-        {
-            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, JsonConfigurationFileName);
-
-            if (File.Exists(specflowJsonFileInAppDomainBaseDirectory))
-            {
-                return specflowJsonFileInAppDomainBaseDirectory;
-            }
-
-            var specflowJsonFileTwoDirectoriesUp = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", JsonConfigurationFileName);
-
-            if (File.Exists(specflowJsonFileTwoDirectoriesUp))
-            {
-                return specflowJsonFileTwoDirectoriesUp;
-            }
-
-            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, JsonConfigurationFileName);
-
-            if (File.Exists(specflowJsonFileInCurrentDirectory))
-            {
-                return specflowJsonFileInCurrentDirectory;
-            }
-
-
-          
-
-            return null;
-        }
+        
     }
 }

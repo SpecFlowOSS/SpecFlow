@@ -98,6 +98,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
             container.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
             container.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
+            
+            container.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
+
+            container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEvents, RuntimePluginTestExecutionLifecycleEvents>();
+            container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEventEmitter, IRuntimePluginTestExecutionLifecycleEventEmitter>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
@@ -119,7 +124,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public void RegisterScenarioContainerDefaults(ObjectContainer scenarioContainer)
         {
             scenarioContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
-
+            scenarioContainer.RegisterTypeAs<SpecFlowScenarioOutputTracer, ISpecFlowScenarioOutputListener>("tracer");
         }
     }
 }

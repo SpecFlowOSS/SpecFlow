@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using TechTalk.SpecFlow.Utils;
 using Xunit;
@@ -20,16 +21,20 @@ namespace TechTalk.SpecFlow.GeneratorTests
             };
         }
 
-        [Fact]
+        [SkippableFact]
         public void ShouldReturnValidFilePaths()
         {
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
             var validatedFilePaths = FileFilter.GetValidFiles(_validFeatureFilePaths);
             validatedFilePaths.Should().BeEquivalentTo(_validFeatureFilePaths);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ShouldRemoveInvalidFilePaths()
         {
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
             var notValidFeatureFilePaths = new List<string>()
             {
                 @"Features\SpecFlowFeature*.feature",
@@ -43,9 +48,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             validatedPaths.Should().BeEquivalentTo(_validFeatureFilePaths);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ShouldRemoveWildChars()
         {
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
             var wildCards = new List<string>()
             {
                 @"**\*.feature"
@@ -56,9 +63,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
             validatedPaths.Should().BeEquivalentTo(_validFeatureFilePaths);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ShouldBeAnEmptyListIfOnlyWildCards()
         {
+            Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
             var wildCards = new List<string>()
             {
                 @"**\*.feature"

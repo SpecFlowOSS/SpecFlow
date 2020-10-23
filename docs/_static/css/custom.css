@@ -1,0 +1,49 @@
+.wy-side-nav-search {
+    background-color: #e9e7ee;
+}
+a, a:visited, a:hover {
+    color: #8588b6
+}
+
+.wy-menu-vertical a:hover {
+    background-color: white;
+}
+
+.wy-menu-vertical a {
+    color: #8588b6
+}
+
+.wy-menu {
+    background-color: #e9e7ee;
+}
+
+.wy-nav-side {
+    color:#e9e7ee;
+    background-color: #e9e7ee;
+}
+
+.wy-menu-vertical li.current {
+    background-color: #f8f5ff;
+}
+
+.caption-text {
+    color: black;
+}
+
+.wy-nav-content {
+    max-width: 80%;
+}
+
+/* override table width restrictions */
+@media screen and (min-width: 767px) {
+
+    .wy-table-responsive table td {
+       /* !important prevents the common CSS stylesheets from overriding
+          this as on RTD they are loaded after this stylesheet */
+       white-space: normal !important;
+    }
+ 
+    .wy-table-responsive {
+       overflow: visible !important;
+    }
+ }

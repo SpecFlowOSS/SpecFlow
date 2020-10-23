@@ -110,6 +110,16 @@ namespace TechTalk.SpecFlow.Analytics
                 { "CODEBUILD_BUILD_ID","AWS CodeBuild"},
                 { "TRAVIS","Travis CI"},
                 { "APPVEYOR","AppVeyor"},
+                { "BITBUCKET_BUILD_NUMBER", "Bitbucket Pipelines" },
+                { "bamboo_agentId", "Atlassian Bamboo" },
+                { "CIRCLECI", "CircleCI" },
+                { "GO_PIPELINE_NAME", "GoCD" },
+                { "BUDDY", "Buddy" },
+                { "NEVERCODE", "Nevercode" },
+                { "SEMAPHORE", "SEMAPHORE" },
+                { "BROWSERSTACK_USERNAME", "BrowserStack" },
+                { "CF_BUILD_ID", "Codefresh" },
+                { "CI_NAME", "CodeShip" }
             };
 
         private string GetBuildServerName()

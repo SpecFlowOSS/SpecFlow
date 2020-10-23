@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SpecFlow.Windsor</id>
+    <version>$version$</version>
+    <title>SpecFlow Windsor integration plugin</title>
+    <authors>$author$</authors>
+    <owners>Gaspar Nagy, Spec Solutions, $owner$</owners>
+    <description>SpecFlow plugin that enables to use Windsor for resolving test dependencies.</description>
+    <summary>SpecFlow plugin that enables to use Windsor for resolving test dependencies.</summary>
+    <language>en-US</language>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <icon>images\specflow-icon.png</icon>
+    <copyright>Copyright © Gaspar Nagy, Spec Solutions, $author$</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <tags>specflow castle windsor di dependency injection</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[$version$]" />
+      <dependency id="Castle.Windsor" version="5.0.1" />
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="build\**\*" target="build" />
+    <file src="bin\$config$\net461\SpecFlow.Windsor.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\netstandard2.0\SpecFlow.Windsor.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+    <file src="bin\$config$\netstandard2.0\SpecFlow.Windsor.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
+    <file src="$SolutionDir$specflow-icon.png" target="images\" />
+  </files>
+</package>
