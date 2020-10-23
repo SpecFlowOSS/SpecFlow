@@ -10,30 +10,19 @@
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
     <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'!='true'">true</BuildServerMode>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <BuildDependsOn>
-      BeforeGenerateSpecFlowCodeBehindFiles;
-      GenerateSpecFlowCodeBehindFiles;
-      AfterGenerateSpecFlowCodeBehindFiles;
-      $(BuildDependsOn)
-    </BuildDependsOn>
-    <CleanDependsOn>
-      CleanGeneratedSpecFlowCodeBehindFiles;
-      $(CleanDependsOn)
-    </CleanDependsOn>
-    <RebuildDependsOn>
-      SwitchToForceGenerate;
-      $(RebuildDependsOn)
-    </RebuildDependsOn>
-  </PropertyGroup>
-
-  <Target Name="SwitchToForceGenerate">
-    <PropertyGroup>
-      <ForceGeneration>true</ForceGeneration>
-    </PropertyGroup>
+  
+  <!--
+  Hook into the build system to produce SpecFlow sources.
+  -->
+  <Target 
+    Name="GenerateSpecFlowSources"
+    BeforeTargets="BeforeCompile"
+    DependsOnTargets="BeforeGenerateSpecFlowCodeBehindFiles;GenerateSpecFlowCodeBehindFiles;AfterGenerateSpecFlowCodeBehindFiles">
   </Target>
 
+  <!--
+  Generate the SpecFlow code-behind files.
+  -->
   <Target Name="GenerateSpecFlowCodeBehindFiles"
           DependsOnTargets="BeforeGenerateSpecFlowCodeBehindFiles">
 
@@ -74,9 +63,12 @@
 
     <Message Text="SpecFlowGeneratedFiles: %(SpecFlowGeneratedFiles.Identity)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
 
-    <!-- Include generated files for compilation. -->
     <ItemGroup>
+      <!-- Include generated files for compilation. -->
       <Compile Include="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)%(RelativeDir)%(Filename)%(Extension)$(DefaultLanguageSourceExtension)')" />
+      
+      <!-- Track written files to support build cleaning. -->
+      <FileWrites Include="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)%(RelativeDir)%(Filename)%(Extension)$(DefaultLanguageSourceExtension)')" />
     </ItemGroup>
   </Target>
 
@@ -89,10 +81,5 @@
     <ItemGroup>
       <EmbeddedResource Include="@(SpecFlowFeatureFiles)" />
     </ItemGroup>
-  </Target>
-
-  
-  <Target Name="CleanGeneratedSpecFlowCodeBehindFiles">
-    <Delete Files="$(SpecFlowCodeBehindOutputPath)**/*$(DefaultLanguageSourceExtension)" ContinueOnError="true" />
   </Target>
 </Project>
