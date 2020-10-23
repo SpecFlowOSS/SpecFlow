@@ -46,5 +46,4 @@ If you are interested in contributing, there is some useful information on this 
 Plugin- Developer- Gitter channel: [![Gitter](https://badges.gitter.im/techtalk/specflow-plugin-dev.svg)](https://gitter.im/techtalk/specflow-plugin-dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Copyright
-
-Copyright (c) SpecFlow Team. See [LICENSE](https://go.specflow.org/license) for details.
+© SpecFlow Team. See [LICENSE](https://go.specflow.org/license) for details.
