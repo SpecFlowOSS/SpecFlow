@@ -1,0 +1,12 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "pwsh",
+            "type": "process",
+            "args": ["./build.ps1"],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
