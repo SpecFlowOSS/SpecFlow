@@ -6,6 +6,8 @@ labels: ''
 assignees: ''
 
 ---
+<!-- Filling out this data is not optional. If you don't fill it out, we will close the issue immediatly! ->
+
 
 <!-- PLEASE GIVE YOUR ISSUE A SENSIBLE NAME. This makes it easier to identify issues at a glance -->
 
