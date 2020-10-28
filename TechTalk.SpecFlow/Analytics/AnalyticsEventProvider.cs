@@ -119,6 +119,8 @@ namespace TechTalk.SpecFlow.Analytics
                 { "SEMAPHORE", "SEMAPHORE" },
                 { "BROWSERSTACK_USERNAME", "BrowserStack" },
                 { "CF_BUILD_ID", "Codefresh" },
+                { "Octopus.Project.Id", "Octopus Deploy" },
+
                 { "CI_NAME", "CodeShip" }
             };
 
