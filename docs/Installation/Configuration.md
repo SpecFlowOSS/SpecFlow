@@ -136,11 +136,13 @@ The following example registers an additional binding assembly (MySharedBindings
 
 **specflow.json example:**
 
-```
+```json
 {
-    "stepAssemblies": [
-        { "assembly": "MySharedBindings" }
-    ]
+  "stepAssemblies": [
+    {
+      "assembly": "MySharedBindings"
+    }
+  ]
 }
 ```
 
