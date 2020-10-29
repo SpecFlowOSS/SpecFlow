@@ -2,6 +2,8 @@
 
 [Bindings](Bindings.md) for SpecFlow can be written also in F#. Doing so you can take the advantages of the F# language for writing step definitions: you can define regex-named F# functions for your steps. Simply put the regex between double backticks.
 
+About F language: F# is a mature, open source, cross-platform, functional-first programming language. It empowers users and organizations to tackle complex computing problems with simple, maintainable and robust code.
+
 ```F#
 let [<Given>] ``I have entered (.*) into the calculator``(number:int) = 
     Calculator.Push(number)
