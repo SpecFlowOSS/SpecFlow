@@ -50,7 +50,7 @@ public void LoginUser()
 
 The number indicates the order, not the priority, i.e. the hook with the lowest number is always executed first.
 
-If no order is specified, the default value is 1000. However, we do not recommend on relying on the value to order your tests and recommend specifying the order explicitly for each hook.
+If no order is specified, the default value is 10000. However, we do not recommend on relying on the value to order your tests and recommend specifying the order explicitly for each hook.
 
 **Note:** If a hook throws an unhandled exception, subsequent hooks of the same type are not executed. If you want to ensure that all hooks of the same types are executed, you need to handle your exceptions manually.
 
