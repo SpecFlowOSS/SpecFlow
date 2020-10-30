@@ -60,7 +60,7 @@ namespace SpecFlow.Windsor
 
         private void RegisterSpecflowDependecies(IObjectContainer objectContainer, IWindsorContainer container)
         {
-            container.Register(Component.For<IObjectContainer>().Instance(objectContainer));
+            container.Register(Component.For<IObjectContainer>().Instance(objectContainer).LifestyleScoped());
 
             RegisterContext<ScenarioContext>(objectContainer, container);
             RegisterContext<FeatureContext>(objectContainer, container);
