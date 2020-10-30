@@ -1,5 +1,5 @@
-﻿using System;
-using BoDi;
+﻿using BoDi;
+using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using SpecFlow.Windsor;
@@ -14,7 +14,7 @@ namespace SpecFlow.Windsor
 {
     public class WindsorPlugin : IRuntimePlugin
     {
-        private static Object _registrationLock = new Object();
+        private static object _registrationLock = new object();
 
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
@@ -43,26 +43,34 @@ namespace SpecFlow.Windsor
             {
                 args.ObjectContainer.RegisterFactoryAs(() =>
                 {
-                    var containerBuilderFinder = args.ObjectContainer.Resolve<IContainerFinder>();
-                    var createScenarioContainer = containerBuilderFinder.GetCreateScenarioContainer();
-                    var container = createScenarioContainer();
+                    var finder = args.ObjectContainer.Resolve<IContainerFinder>();
+                    var containerBuilder = finder.GetCreateScenarioContainer();
+
+                    var container = containerBuilder();
+                    var scope = container.BeginScope();
 
                     RegisterSpecflowDependecies(args.ObjectContainer, container);
+
+                    args.ObjectContainer.RegisterInstanceAs(new WindsorScenarioScope(scope), dispose: true);
 
                     return container;
                 });
             };
         }
 
-        private void RegisterSpecflowDependecies(
-            IObjectContainer objectContainer,
-            IWindsorContainer container)
+        private void RegisterSpecflowDependecies(IObjectContainer objectContainer, IWindsorContainer container)
         {
-            container.Register(
-                Component.For<IObjectContainer>().Instance(objectContainer),
-                Component.For<ScenarioContext>().Instance(objectContainer.Resolve<ScenarioContext>()),
-                Component.For<FeatureContext>().Instance(objectContainer.Resolve<FeatureContext>()),
-                Component.For<TestThreadContext>().Instance(objectContainer.Resolve<TestThreadContext>()));
+            container.Register(Component.For<IObjectContainer>().Instance(objectContainer));
+
+            RegisterContext<ScenarioContext>(objectContainer, container);
+            RegisterContext<FeatureContext>(objectContainer, container);
+            RegisterContext<TestThreadContext>(objectContainer, container);
+        }
+
+        private void RegisterContext<T>(IObjectContainer objectContainer, IWindsorContainer container)
+            where T : class
+        {
+            container.Register(Component.For<T>().UsingFactoryMethod(objectContainer.Resolve<T>).LifestyleTransient());
         }
     }
 }

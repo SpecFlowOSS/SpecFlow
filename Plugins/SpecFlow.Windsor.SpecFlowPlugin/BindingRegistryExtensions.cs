@@ -10,7 +10,7 @@ namespace SpecFlow.Windsor
     {
         public static IEnumerable<IBindingType> GetBindingTypes(this IBindingRegistry bindingRegistry)
         {
-            return bindingRegistry.GetStepDefinitions().Cast<IBinding>()
+            return bindingRegistry.GetStepDefinitions()
                 .Concat(bindingRegistry.GetHooks().Cast<IBinding>())
                 .Concat(bindingRegistry.GetStepTransformations())
                 .Select(b => b.Method.Type)

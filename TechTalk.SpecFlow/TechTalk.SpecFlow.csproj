@@ -1,21 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>$(SpecFlow_Runtime_TFM)</TargetFrameworks>
-    <AssemblyName>TechTalk.SpecFlow</AssemblyName>
-    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
-    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
-    <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
-    <PackageId>SpecFlow</PackageId>
-
-    <NuspecFile>$(MSBuildThisFileDirectory)SpecFlow.nuspec</NuspecFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-
-    <NoWarn>$(NoWarn);1591</NoWarn>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,17 +42,5 @@
     <!-- This is only the testing instance's instrumentation key -->
     <AppInsightsInstrumentationKey>27cfb992-6c29-4bc8-8093-78d95e275b3a</AppInsightsInstrumentationKey>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" />
-    <None Include="Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" />
-  </ItemGroup>
-
-  <Target Name="RunTokenReplace" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" TextToReplace="&lt;InstrumentationKeyGoesHere&gt;" TextToReplaceWith="$(AppInsightsInstrumentationKey)" />
-    <ItemGroup>
-      <Compile Include="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" />
-    </ItemGroup>
-  </Target>
 
 </Project>
