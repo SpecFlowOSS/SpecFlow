@@ -1,0 +1,8 @@
+﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+
+    <_SpecFlow_WindsorPluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_WindsorPluginFramework>
+    <_SpecFlow_WindsorPluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SpecFlow_WindsorPluginFramework>
+    <_SpecFlow_WindsorPluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_WindsorPluginFramework)\SpecFlow.Windsor.SpecFlowPlugin.dll</_SpecFlow_WindsorPluginPath>
+  </PropertyGroup>
+</Project>
