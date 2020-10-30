@@ -22,74 +22,48 @@ namespace SpecFlow.Windsor
 
         public Func<IWindsorContainer> GetCreateScenarioContainer()
         {
-            var scenarioBuilder = createScenarioContainer.Value;
+            var builder = createScenarioContainer.Value;
 
-            if (scenarioBuilder == null)
-                throw new Exception("Unable to find dependencies. Mark a static method that returns a IWindsorContainer with [ScenarioDependencies]");
+            if (builder == null)
+                throw new Exception("Unable to find scenario dependencies! Mark a static method that returns a IWindsorContainer with [ScenarioDependencies]!");
 
-            return scenarioBuilder;
+            return builder;
         }
-        
+
         protected virtual Func<IWindsorContainer> FindCreateScenarioContainer()
         {
-            var descriptor = GetMethodDescriptor<ScenarioDependenciesAttribute>();
+            var assemblies = bindingRegistry.GetBindingAssemblies();
 
-            if (descriptor == null) 
+            var method = assemblies
+                         .SelectMany(x => x.GetTypes())
+                         .SelectMany(x => x.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+                         .FirstOrDefault(x => Attribute.IsDefined(x, typeof(ScenarioDependenciesAttribute)));
+
+            if (method == null) 
                 return null;
 
-            return () => GetContainer(descriptor.Method, descriptor.Attribute.AutoRegister);
+            return () => GetContainer(method);
         }
 
-        private MethodDescriptor<T> GetMethodDescriptor<T>()
-            where T : Attribute
-        {
-            return bindingRegistry.GetBindingAssemblies()
-                                  .SelectMany(x => x.GetTypes())
-                                  .SelectMany(x => x.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
-                                  .Where(x => Attribute.IsDefined(x, typeof(T)))
-                                  .Select(x => new MethodDescriptor<T>(x, (T)Attribute.GetCustomAttribute(x, typeof(T))))
-                                  .FirstOrDefault();
-        }
-
-        private IWindsorContainer GetContainer(MethodInfo method, SpecFlowDependencies dependencies)
+        private IWindsorContainer GetContainer(MethodInfo method)
         {
             if (!(method.Invoke(null, null) is IWindsorContainer container)) 
                 return null;
 
-            if (dependencies.HasFlag(SpecFlowDependencies.Bindings))
-            {
-                foreach (var assembly in bindingRegistry.GetBindingAssemblies())
-                {
-                    container.Register(
-                        Types.FromAssembly(assembly)
-                             .Where(x => x.IsDefined(typeof(BindingAttribute), false))
-                             .LifestyleScoped());
-                }
-            }
-
-            if (dependencies.HasFlag(SpecFlowDependencies.Contexts))
-            {
-                container.Register(
-                    Component.For<ScenarioContext>().LifestyleScoped(),
-                    Component.For<FeatureContext>().LifestyleScoped(),
-                    Component.For<TestThreadContext>().LifestyleScoped());
-            }
+            RegisterBindings(container);
 
             return container;
         }
 
-        private class MethodDescriptor<T>
-            where T : Attribute
+        private void RegisterBindings(IWindsorContainer container)
         {
-            public MethodDescriptor(MethodInfo method, T attribute)
+            foreach (var assembly in bindingRegistry.GetBindingAssemblies())
             {
-                Method = method;
-                Attribute = attribute;
+                container.Register(
+                    Types.FromAssembly(assembly)
+                         .Where(x => x.IsDefined(typeof(BindingAttribute), false))
+                         .LifestyleScoped());
             }
-
-            public MethodInfo Method { get; }
-
-            public T Attribute { get; }
         }
     }
 }
