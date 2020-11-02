@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Plugins\SpecFlow.Windsor.SpecFlowPlugin\SpecFlow.Windsor.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.NUnit.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" />
