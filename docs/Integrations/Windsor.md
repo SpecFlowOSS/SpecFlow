@@ -17,29 +17,30 @@ PM> Install-Package SpecFlow.Windsor
 ### 2.  Create a static method somewhere in the SpecFlow project  
   (Recommended to put it into the `Support` folder) that returns a Windsor `IWindsorContainer` and tag it with the `[ScenarioDependencies]` attribute. 
   ##### 2.1 Configure your dependencies for the scenario execution within the method. 
-  ##### 2.2 You also have to register the step definition classes by registering all classes marked with the `[Binding]` attribute:
+  ##### 2.2 All your binding classes are automatically registered, including ScenarioContext etc.
 
-```csharp
-container.Register(
-  Types.FromAssembly(myAssembly)
-    .Where(x => x.IsDefined(typeof(BindingAttribute), false))
-    .LifestyleScoped());
-```
-  ### 3. A typical dependency builder method probably looks like this:
-
+### 3. A typical dependency builder method probably looks like this:
 ```csharp
 [ScenarioDependencies]
 public static IWindsorContainer CreateContainer()
 {
   var container = new WindsorContainer();
 
-  container.BeginScope();
-  container.Register(
-    Types.FromAssembly(myAssembly)
-      .Where(x => x.IsDefined(typeof(BindingAttribute), false))
-      .LifestyleScoped());
-	  
   //TODO: add customizations, stubs required for testing
+
+  return container;
+}
+```
+
+### 4. To re-use a container betweeen scenarios, try the following:
+Your shared services will be resolved from the root container, while scoped objects
+such as ScenarioContext will be resolved from the new container.
+```csharp
+[ScenarioDependencies]
+public static IWindsorContainer CreateContainer()
+{
+  var container = new WindsorContainer();
+  container.Parent = sharedRootContainer;
 
   return container;
 }
