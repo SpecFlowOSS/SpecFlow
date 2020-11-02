@@ -58,7 +58,7 @@ namespace SpecFlow.Windsor
             };
         }
 
-        private void RegisterSpecflowDependecies(IObjectContainer objectContainer, IWindsorContainer container)
+        public void RegisterSpecflowDependecies(IObjectContainer objectContainer, IWindsorContainer container)
         {
             container.Register(Component.For<IObjectContainer>().Instance(objectContainer).LifestyleScoped());
 
@@ -70,7 +70,7 @@ namespace SpecFlow.Windsor
         private void RegisterContext<T>(IObjectContainer objectContainer, IWindsorContainer container)
             where T : class
         {
-            container.Register(Component.For<T>().UsingFactoryMethod(objectContainer.Resolve<T>).LifestyleTransient());
+            container.Register(Component.For<T>().UsingFactoryMethod(objectContainer.Resolve<T>, true));
         }
     }
 }
