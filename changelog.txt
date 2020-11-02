@@ -4,9 +4,10 @@ Changes:
 + Add support for Castle Windsor dependency injection via plugin
 + Auto-register bindings in Castle Windsor plugin
 
-Fixes: 
+Fixes:
 + Support dynamic assemblies in container initialization #2110
 + Testexplorer doesn't show all tests when using tags on examples in scenario outlines (BUG 9731)
++ Generated code causes CS1591 doc warning #2189
 
 3.4.3
 
@@ -21,7 +22,7 @@ API changes:
 
 3.3.74
 
-Fixes: 
+Fixes:
 + Fix step definition attribute support for the Visual Studio Extension #2065
 
 Changes:
@@ -97,10 +98,10 @@ Fixes:
 Features:
 + .NET Core 3.1 Support
 
-3.1 
+3.1
 
 Features:
-+ First set of cucumber-messages are implemented 
++ First set of cucumber-messages are implemented
   - TestRunStarted
   - TestCaseStarted
   - TestCaseFinished
@@ -113,7 +114,7 @@ Features:
 + Support for Gherkin v6 "Rule" keyword
 + Support discovering step definitions from attributes that are derived from Given,When,Then or StepDefinition attributes (related to https://github.com/techtalk/SpecFlow/issues/1745)
 
-Fixes: 
+Fixes:
 + AfterTestRun hook can take longer than 100ms on .NET Core https://github.com/techtalk/SpecFlow/issues/1348
 + Adjust parameter names generation in scenario outlines https://github.com/techtalk/SpecFlow/issues/1694
 + specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761
