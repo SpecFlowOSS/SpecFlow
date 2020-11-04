@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow
         private static bool isCurrentDisabled = false;
         private static ScenarioContext current;
 
-        [Obsolete("Please get the ScenarioContext via Context Injection - https://www.specflow.org/documentation/Context-Injection/")]
+        [Obsolete("Please get the ScenarioContext via Context Injection - https://go.specflow.org/Migrate-ScenarioContext-Current")]
         public static ScenarioContext Current
         {
             get
