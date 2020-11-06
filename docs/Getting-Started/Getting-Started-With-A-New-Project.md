@@ -2,6 +2,30 @@
 
 This guide assumes you are working on Windows with Visual Studio.
 
+## Table of Content
+-[Installation and Setup](#installation-and-setup)
+   -[Installing the Visual Studio Extension](#installing-visual-studio-extension)
+   -[Setting up your SpecFlow Project](#setting-up-specflow-project)
+      -[SpecRun.SpecFlow Package](#specrun-specflow-package)
+      -[Microsoft.NET.Test.Sdk](#microsoft-net-test-sdk)
+-[Your First Feature File](#your-first-feature-file)
+   -[Your First Step Definitions](#your-first-step-definitions)
+-[Executing your First Test](#executing-your-first-test)
+-[Implementing the Automation and Application Code](#implementing-automation-application-code)
+   -[Adding a Calculator Class](#adding-calculator-class)
+   -[Referencing the Calculator Class](#referencing-calculator-class)
+   -[Implementing the Code](#implementing-code)
+      -[Binding the First Given Statement](#binding-first-statement)
+      -[Binding the Second Given Statement](#binding-second-statement)
+      -[Binding the When Statement](#binding-when-statement)
+      -[Binding the Then Statement](#binding-then-statement)
+   -[Final CalculatorStepDefinitions.cs Code](#final-calculatorstepdefintion-code)
+   -[Final Calculator.cs Code](#final-calculator-code)
+-[Executing the Tests Again](#excecuting-tests-again)
+   -[Get the most out of the SpecFlow+ Runner](#get-specflow-runner)
+-[Living Documentation](#living-documentation)
+
+
 ## Installation and Setup
 
 Installing SpecFlow consists of two steps:
