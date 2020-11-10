@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow
         private static bool isCurrentDisabled = false;
         private static FeatureContext current;
 
-        [Obsolete("Please get the FeatureContext via Context Injection - https://www.specflow.org/documentation/Context-Injection/")]
+        [Obsolete("Please get the FeatureContext via Context Injection - https://go.specflow.org/Migrate-FeatureContext-Current")]
         public static FeatureContext Current
         {
             get

@@ -9,6 +9,8 @@ When using the .NET Framework, you can still use the `app.config` file, as with 
 
 If both the `specflow.json` and `app.config` files are available in a project, `specflow.json` takes precedence.
 
+Please make sure that the **Copy to Output Directory property** of `specflow.json` is set to either **Copy always** or **Copy if newer**. Otherwise `specflow.json` might not get copied to the Output Directory, which results in the configuration specified in `specflow.json` taking no effect during text execution.
+
 ## SpecFlow 2.x
 
 SpecFlow 2 is configured in your standard .NET configuration file, `app.config`, which is automatically added to your project. This method is not supported by .NET Core, and SpecFlow 2 does not include .NET Core support.
@@ -136,11 +138,13 @@ The following example registers an additional binding assembly (MySharedBindings
 
 **specflow.json example:**
 
-```
+```json
 {
-    "stepAssemblies": [
-        { "assembly": "MySharedBindings" }
-    ]
+  "stepAssemblies": [
+    {
+      "assembly": "MySharedBindings"
+    }
+  ]
 }
 ```
 

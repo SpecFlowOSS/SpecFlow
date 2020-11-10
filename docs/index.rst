@@ -55,6 +55,8 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Guides/UpgradeSpecFlow2To3.md
+   Guides/PageObjectModel.md
+   Guides/DriverPattern.md
 
 .. toctree::
    :maxdepth: 2
@@ -128,6 +130,8 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Integrations/Teamcity-Integration.md
    Integrations/Browserstack.md
    Integrations/CodedUI.md
+   Integrations/Autofac.md
+   Integrations/Windsor.md
 
 .. toctree::
    :maxdepth: 1
