@@ -1,3 +1,10 @@
+3.5
+
+Fixes:
++ System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
+
+
+
 Changes:
 + Unit test provider independent ISpecFlowOutputHelper implementation
 + Row extension method `GetBoolean` is now case insensitive
@@ -6,8 +13,7 @@ Changes:
 
 Fixes:
 + Support dynamic assemblies in container initialization #2110
-+ Testexplorer doesn't show all tests when using tags on examples in scenario outlines (BUG 9731)
-+ Generated code causes CS1591 doc warning #2189
++ System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
 
 3.4.3
 
