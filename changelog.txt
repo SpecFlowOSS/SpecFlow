@@ -8,6 +8,8 @@ Fixes:
 + Result collection has not been started issues #2008 #2159 #1956
 
 
+3.4.31
+
 Changes:
 + Unit test provider independent ISpecFlowOutputHelper implementation
 + Row extension method `GetBoolean` is now case insensitive
@@ -16,7 +18,7 @@ Changes:
 
 Fixes:
 + Support dynamic assemblies in container initialization #2110
-+ System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
+
 
 3.4.3
 
