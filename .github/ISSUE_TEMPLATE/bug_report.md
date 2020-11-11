@@ -58,14 +58,14 @@ Version number:
 - [ ]    No, I use Visual Studio version `<Major>.<Minor>.<Patch>` <!-- e.g. 16.1.0 -->
  
 ### .NET Framework:
-- [ ]    >= .NET 4.5
-- [ ]    before .NET 4.5
+- [ ]	>= .NET 4.5
+- [ ]	before .NET 4.5
 - [ ] .NET Core 2.0
 - [ ] .NET Core 2.1
 - [ ] .NET Core 2.2
 - [ ] .NET Core 3.0
 - [ ] .NET Core 3.1
-- [ ] .NET Core 5.0
+- [ ] .NET 5.0
 
 ### Test Execution Method:
 - [ ]    Visual Studio Test Explorer
