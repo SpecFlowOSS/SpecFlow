@@ -7,11 +7,17 @@
       <NuspecProperties>$(NuspecProperties);copyright=$(SpecFlow_Copyright)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);author=$(SpecFlow_Authors)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);owner=$(SpecFlow_Owners)</NuspecProperties>
+      
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Net5_TFM=$(SpecFlow_Net5_TFM)</NuspecProperties>
+      
       <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Runtime_TFM=$(SpecFlow_FullFramework_Runtime_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Runtime_TFM=$(SpecFlow_Core_Runtime_TFM)</NuspecProperties>
+      
       <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Generator_TFM=$(SpecFlow_FullFramework_Generator_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Generator_TFM=$(SpecFlow_Core_Generator_TFM)</NuspecProperties>
+            
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Tools_TFM=$(SpecFlow_Core_Tools_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Net5_Tools_TFM=$(SpecFlow_Net5_Tools_TFM)</NuspecProperties>
     </PropertyGroup>
   </Target>
 
