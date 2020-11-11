@@ -1,5 +1,13 @@
 3.5
 
+Features:
++ .NET 5 Support
+
+Fixes:
++ System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
++ Result collection has not been started issues #2008 #2159 #1956
+
+
 Changes:
 + Unit test provider independent ISpecFlowOutputHelper implementation
 + Row extension method `GetBoolean` is now case insensitive
@@ -9,7 +17,6 @@ Changes:
 Fixes:
 + Support dynamic assemblies in container initialization #2110
 + System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
-+ Result collection has not been started when running tests in TeamCity #2159
 
 3.4.3
 
