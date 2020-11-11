@@ -5,12 +5,14 @@ using System.CodeDom.Compiler;
 using System.Diagnostics;
 using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
+using global::System.Runtime.CompilerServices;
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 [TestClass]
 public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 {
     [AssemblyInitialize]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void AssemblyInitialize(TestContext testContext)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
@@ -19,6 +21,7 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     }
 
     [AssemblyCleanup]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void AssemblyCleanup()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;

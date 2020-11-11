@@ -1,8 +1,11 @@
 3.5
 
+Features:
++ .NET 5 Support
+
 Fixes:
 + System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
-
++ Result collection has not been started issues #2008 #2159 #1956
 
 
 Changes:
