@@ -24,6 +24,8 @@ SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integrati
 Let's get started
 ==================
 
+A detailed step- by- step guide to start with SpecFlow can be found `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. 
+
 **Start with a new project**
 
 Learn the basics of SpecFlow and follow our step by step guide to setup SpecFlow and the SpecFlow+ Runner with a new project in Visual Studio. 
@@ -44,7 +46,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :caption: Getting Started
    :hidden:
 
-
+   Step by Step Guide <https://docs.specflow.org/projects/getting-started/en/latest/>
    Getting-Started/Getting-Started-With-A-New-Project.md
    Getting-Started/Getting-Started-With-An-Example.md
    
