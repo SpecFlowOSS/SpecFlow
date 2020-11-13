@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using Xunit;
-using TechTalk.SpecFlow.Assist;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
+﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
-using FluentAssertions;
+using System.Linq;
+using TechTalk.SpecFlow.Assist;
+using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -17,7 +15,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public override string ToString()
         {
-            return String.Join(" ", new string[]{ FirstName, LastName });
+            return string.Join(" ", new string[]{ FirstName, LastName });
         }
     }
 
@@ -43,12 +41,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return FancyNameValueRetriever.Parse(keyValuePair.Value);
+            return Parse(keyValuePair.Value);
         }
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
-            return this.TypesForWhichIRetrieveValues().Contains(type);
+            return TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }
@@ -75,8 +73,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_be_able_to_retrieve_the_fancy_name()
         {
-
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
+            Service.Instance.ValueRetrievers.Register(new FancyNameValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -90,8 +87,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_be_able_to_compare_the_fancy_name()
         {
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
-            Service.Instance.RegisterValueComparer(new FancyNameValueComparer());
+            Service.Instance.ValueRetrievers.Register(new FancyNameValueRetriever());
+            Service.Instance.ValueComparers.Register(new FancyNameValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -142,12 +139,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return ProductCategoryValueRetriever.Parse(keyValuePair.Value);
+            return Parse(keyValuePair.Value);
         }
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
-            return this.TypesForWhichIRetrieveValues().Contains(type);
+            return TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }
@@ -173,8 +170,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_be_able_to_retrieve_the_category()
         {
-
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+            Service.Instance.ValueRetrievers.Register(new ProductCategoryValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Apple");
@@ -189,8 +185,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_be_able_to_compare_the_category()
         {
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
-            Service.Instance.RegisterValueComparer(new ProductCategoryValueComparer());
+            Service.Instance.ValueRetrievers.Register(new ProductCategoryValueRetriever());
+            Service.Instance.ValueComparers.Register(new ProductCategoryValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Cucumber");
@@ -200,6 +196,141 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var expectedProduct = new Product() { Name = "Cucumber", Category = expectedCategory };
 
             table.CompareToInstance<Product>(expectedProduct);
+        }
+
+        public void Dispose()
+        {
+            Service.Instance.RestoreDefaults();
+        }
+    }
+
+    /***************************************************/
+
+    public class ParentItem
+    {
+        public string Name { get; set; }
+
+        public ChildItem DutchItem { get; set; }
+
+        public ChildItem EnglishItem { get; set; }
+    }
+
+    public class ChildItem
+    {
+        public string ItemName { get; set; }
+
+        public string Language { get; set; }
+    }
+
+    /// <summary>
+    /// Retrieves a ChildItem-objects for column's "Dutch name" and "English name" and maps them
+    /// to the corresponding "DutchItem" and "EnglishItem" properties of a ParentItem-object.
+    /// </summary>
+    public class ChildItemValueRetriever : IValueRetriever
+    {
+        private static readonly IEnumerable<Type> TypesForWhichIRetrieveValues = new Type[] { typeof(ChildItem) };
+
+        private static readonly IDictionary<string, string> ColumnNamesForWhichIRetrieveValues =
+            new Dictionary<string, string>
+            {
+                { "Dutch name", "nl-NL" },
+                { "English name", "en-US" }
+            };
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
+        {
+            return TypesForWhichIRetrieveValues.Contains(type) 
+                && ColumnNamesForWhichIRetrieveValues.ContainsKey(keyValuePair.Key);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return Parse(keyValuePair.Key, keyValuePair.Value);
+        }
+
+        public static ChildItem Parse(string columnName, string columnValue)
+        {
+            return new ChildItem
+            {
+                ItemName = columnValue,
+                Language = ColumnNamesForWhichIRetrieveValues[columnName]
+            };
+        }
+    }
+
+
+    public class ChildItemValueRetrieverTests : IDisposable
+    {
+        [Fact]
+        public void IValueRetrievers_should_be_able_to_retrieve_the_child_item_by_column_name_registered_with_instance()
+        {
+            // Arrange
+            Service.Instance.ValueRetrievers.Register(new ChildItemValueRetriever());
+
+            var table = new Table("Name", "Dutch name", "English name");
+            table.AddRow("Yellow fruit", "Ananas", "Pineapple");
+            table.AddRow("Red fruit", "Appel", "Apple");
+
+            // Act
+            var parentItems = table.CreateSet<ParentItem>();
+
+            // Assert
+            parentItems.Should().NotBeNull();
+            parentItems.Should().HaveCount(table.RowCount);
+
+            // Assert - item 1
+            parentItems.ElementAt(0).Name.Should().Be("Yellow fruit");
+            parentItems.ElementAt(0).DutchItem.Should().NotBeNull();
+            parentItems.ElementAt(0).DutchItem.ItemName.Should().Be("Ananas");
+            parentItems.ElementAt(0).DutchItem.Language.Should().Be("nl-NL");
+            parentItems.ElementAt(0).EnglishItem.Should().NotBeNull();
+            parentItems.ElementAt(0).EnglishItem.ItemName.Should().Be("Pineapple");
+            parentItems.ElementAt(0).EnglishItem.Language.Should().Be("en-US");
+
+            // Assert - item 2
+            parentItems.ElementAt(1).Name.Should().Be("Red fruit");
+            parentItems.ElementAt(1).DutchItem.Should().NotBeNull();
+            parentItems.ElementAt(1).DutchItem.ItemName.Should().Be("Appel");
+            parentItems.ElementAt(1).DutchItem.Language.Should().Be("nl-NL");
+            parentItems.ElementAt(1).EnglishItem.Should().NotBeNull();
+            parentItems.ElementAt(1).EnglishItem.ItemName.Should().Be("Apple");
+            parentItems.ElementAt(1).EnglishItem.Language.Should().Be("en-US");
+        }
+
+        [Fact]
+        public void IValueRetrievers_should_be_able_to_retrieve_the_child_item_by_column_name_registered_generic()
+        {
+            // Arrange
+            Service.Instance.ValueRetrievers.Register<ChildItemValueRetriever>();
+
+            var table = new Table("Name", "Dutch name", "English name");
+            table.AddRow("Yellow fruit", "Ananas", "Pineapple");
+            table.AddRow("Red fruit", "Appel", "Apple");
+
+            // Act
+            var parentItems = table.CreateSet<ParentItem>();
+
+            // Assert
+            parentItems.Should().NotBeNull();
+            parentItems.Should().HaveCount(table.RowCount);
+
+            // Assert - item 1
+            parentItems.ElementAt(0).Name.Should().Be("Yellow fruit");
+            parentItems.ElementAt(0).DutchItem.Should().NotBeNull();
+            parentItems.ElementAt(0).DutchItem.ItemName.Should().Be("Ananas");
+            parentItems.ElementAt(0).DutchItem.Language.Should().Be("nl-NL");
+            parentItems.ElementAt(0).EnglishItem.Should().NotBeNull();
+            parentItems.ElementAt(0).EnglishItem.ItemName.Should().Be("Pineapple");
+            parentItems.ElementAt(0).EnglishItem.Language.Should().Be("en-US");
+
+            // Assert - item 2
+            parentItems.ElementAt(1).Name.Should().Be("Red fruit");
+            parentItems.ElementAt(1).DutchItem.Should().NotBeNull();
+            parentItems.ElementAt(1).DutchItem.ItemName.Should().Be("Appel");
+            parentItems.ElementAt(1).DutchItem.Language.Should().Be("nl-NL");
+            parentItems.ElementAt(1).EnglishItem.Should().NotBeNull();
+            parentItems.ElementAt(1).EnglishItem.ItemName.Should().Be("Apple");
+            parentItems.ElementAt(1).EnglishItem.Language.Should().Be("en-US");
         }
 
         public void Dispose()
