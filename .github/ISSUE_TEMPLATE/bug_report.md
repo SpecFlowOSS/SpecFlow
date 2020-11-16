@@ -47,7 +47,6 @@ Version number:
 ### Visual Studio Version
 - [ ] VS 2019
 - [ ]    VS 2017
-- [ ]    VS 2015
 
 ### `Enable SpecFlowSingleFileGenerator Custom Tool` option in Visual Studio extension settings
 - [ ] Enabled
