@@ -18,7 +18,7 @@ SpecFlow components
  * `SpecFlow+ LivingDoc Generator <https://specflow.org/blog/introducing-the-specflow-plus-livingdoc-generator/>`_ is available set of plugins and tools for SpecFlow to generate a local or self-hosted documentation out of your Gherkin feature files, which can be easily shared. No SpecFlow account needed.
  * `SpecFlow+ LivingDoc Azure DevOps <https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus>`_ is an extension for Azure DevOps/TFS. You can view the output directly in Azure DevOps/TFS, meaning that anyone with access to the system can easily review your specifications when needed. SpecFlow+ LivingDoc Azure DevOps is free of charge, and only requires a free `SpecFlow Account <https://specflow.org/2020/introducing-the-specflow-account/>`_.
 
-SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integration>`_ that adds a number of helpful features to Visual Studio (e.g. Intellisense, feature file templates, context menu entries). However, SpecFlow is not tied to Visual Studio; you can use SpecFlow with Mono or VSCode as well.
+SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integration.html>`_ that adds a number of helpful features to Visual Studio (e.g. Intellisense, feature file templates, context menu entries). However, SpecFlow is not tied to Visual Studio; you can use SpecFlow with Mono or VSCode as well.
 
 ==================
 Let's get started

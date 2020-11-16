@@ -6,6 +6,12 @@ To use these helpers, you need to add the `TechTalk.SpecFlow.Assist` namespace t
 using TechTalk.SpecFlow.Assist;
 ```
 
+When the helper methods expects a type, you can use:
+
+- classes
+- records (with C# 9)
+- tuples
+
 ## CreateInstance<T>
 
 `CreateInstance<T>` is an extension method of `Table` that will convert the table data to an object. For example, if you list data in a table that lists the values of your object like this:
@@ -280,6 +286,7 @@ public static class Hooks1
     }
 }
 ```
+
 **Note:** The comparison is case-insensitive.
 
 ## Using ToProjection<T>, ToProjectionOfSet<T> and ToProjectionOfInstance<T> extension methods for LINQ-based instance and set comparison
@@ -326,7 +333,7 @@ Consider the following steps:
     | Pink Floyd | Animals |
 ```
 
-With LINQ-based operations each of the above comparisons can be expressed using a single line of code
+With LINQ- based operations each of the above comparisons can be expressed using a single line of code
 
 ``` csharp
     [Binding]
