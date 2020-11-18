@@ -10,23 +10,22 @@ You may have at least seen the ScenarioContext from the code that SpecFlow gener
 
 To access the `ScenarioContext` you have to get it via [context injection](Context-Injection.md).
 
-Example: 
+Example:  
 
-```
+``` csharp
 [Binding]
 public class Binding
 {
-	private ScenarioContext _scenarioContext;
+    private ScenarioContext _scenarioContext;
 
     public Binding(ScenarioContext scenarioContext)
     {
-		_scenarioContext = scenarioContext;
+        _scenarioContext = scenarioContext;
     }
 }
-
 ```
 
-Now you can access the `ScenarioContext in all your Bindings with the `_scenarioContext` field.
+Now you can access the ScenarioContext in all your Bindings with the `_scenarioContext` field.
 
 ### in Hooks
 
@@ -40,13 +39,80 @@ Accessing the `ScenarioContext` is not possible, as no `Scenario` is executed wh
 
 #### Before/AfterScenario
 
-Accessing the `ScenarioContext` is done like in [normal bindings](#in-Bindings)
+Accessing the `ScenarioContext` is done like in [normal bindings](#in-bindings)
 
 #### Before/AfterStep
 
-Accessing the `ScenarioContext` is done like in [normal bindings](#in-Bindings)
+Accessing the `ScenarioContext` is done like in [normal bindings](#in-bindings)
 
+### Migrating from ScenarioContext.Current
 
+With SpecFlow 3.0, we marked ScenarioContext.Current obsolete, to make clear that you that you should avoid using these properties in future. The reason for moving away from these properties is that they do not work when running scenarios in parallel.
+
+So how do you now access ScenarioContext?
+
+With SpecFlow before 3.0 this was common:
+
+``` csharp
+[Binding]
+public class Bindings
+{
+    [Given(@"I have entered (.*) into the calculator")]
+    public void GivenIHaveEnteredIntoTheCalculator(int number)
+    {
+        ScenarioContext.Current["Number1"] = number;
+    }
+
+    [BeforeScenario()]
+    public void BeforeScenario()
+    {
+        Console.WriteLine("Starting " + ScenarioContext.Current.ScenarioInfo.Title);
+    }
+}
+```
+
+As of SpecFlow 3.0, you now need to use [Context-Injection](Context-Injection.md) to acquire an instance of ScenarioContext by requesting it via the constructor.
+
+``` csharp
+public class Bindings
+{
+    private readonly ScenarioContext _scenarioContext;
+
+    public Bindings(ScenarioContext scenarioContext)
+    {
+        _scenarioContext = scenarioContext;
+    }
+}
+```
+
+Once you have acquired the instance of ScenarioContext, you can use it with the same methods and properties as before.
+
+So our example will now look like this:
+
+``` csharp
+
+public class Bindings
+{
+    private readonly ScenarioContext _scenarioContext;
+
+    public Bindings(ScenarioContext scenarioContext)
+    {
+        _scenarioContext = scenarioContext;
+    }
+
+    [Given(@"I have entered (.*) into the calculator")]
+    public void GivenIHaveEnteredIntoTheCalculator(int number)
+    {
+        _scenarioContext["Number1"] = number;
+    }
+
+    [BeforeScenario()]
+    public void BeforeScenario()
+    {
+        Console.WriteLine("Starting " + _scenarioContext.ScenarioInfo.Title);
+    }
+}
+```
 
 ## ScenarioContext.Pending
 
@@ -90,14 +156,14 @@ In the .feature file:
 
 ``` gherkin
     @showUpInScenarioInfo @andThisToo
-    
+
     Scenario: Showing information of the scenario
-	
+
     When I execute any scenario
-	Then the ScenarioInfo contains the following information
-		| Field | Value                               |
-		| Tags  | showUpInScenarioInfo, andThisToo    |
-		| Title | Showing information of the scenario |
+    Then the ScenarioInfo contains the following information
+        | Field | Value                               |
+        | Tags  | showUpInScenarioInfo, andThisToo    |
+        | Title | Showing information of the scenario |
 ```
 
 and in the step definition:
@@ -138,10 +204,10 @@ You can use this information for “error handling”. Here is an uninteresting 
 in the .feature file:
 
 ``` gherkin
-         #This is not so easy to write a scenario for but I've created an AfterScenario-hook
-         @showingErrorHandling 
-         Scenario: Display error information in AfterScenario
-	    When an error occurs in a step
+        #This is not so easy to write a scenario for but I've created an AfterScenario-hook
+        @showingErrorHandling
+        Scenario: Display error information in AfterScenario
+        When an error occurs in a step
 
 ```
 
@@ -181,7 +247,6 @@ This is another example, that might be more useful:
 
 In this case, MvcContrib is used to capture a screenshot of the failing test and name the screenshot after the title of the scenario.
 
-
 ## ScenarioContext.CurrentScenarioBlock
 
 Use `ScenarioContext.CurrentScenarioBlock` to query the “type” of step (Given, When or Then). This can be used to execute additional setup/cleanup code right before or after Given, When or Then blocks.
@@ -190,10 +255,10 @@ in the .feature file:
 
 ``` gherkin
         Scenario: Show the type of step we're currently on
-	     Given I have a Given step
-		  And I have another Given step
-	     When I have a When step
-	     Then I have a Then step
+         Given I have a Given step
+          And I have another Given step
+         When I have a When step
+         Then I have a Then step
 ```
 
 and the step definition:
