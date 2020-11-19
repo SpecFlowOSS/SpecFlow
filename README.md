@@ -1,12 +1,12 @@
 # SpecFlow - Cucumber for .NET
 
-SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification language and integrates to Visual Studio. It provides efficient testing solution for the .NET-related platforms, like .NET Framework, .NET Core and Mono.
+SpecFlow is a pragmatic BDD solution for .NET. It provides test automation for .NET (.NET Framework, .NET Core and Mono), based on the Gherkin specification language and integrates to Visual Studio.
 
 - Project website: [https://www.specflow.org](https://www.specflow.org)
-- Documentation: [https://www.specflow.org/documentation/](https://www.specflow.org/documentation/)
-- Discussion group: [https://groups.google.com/group/SpecFlow](https://groups.google.com/group/SpecFlow) 
+- Documentation: [https://docs.specflow.org](https://docs.specflow.org)
+- Discussion group in our community: [https://specflow.org/community](https://specflow.org/community) 
 
-For questions please send them to the [Discussion group](https://groups.google.com/group/SpecFlow).
+For questions please post them in our [community discussion group](https://support.specflow.org/hc/en-us/community/topics).
 
 For issues/bugs please use the [issue tracker on GitHub](https://github.com/SpecFlowOSS/SpecFlow/issues).
 
