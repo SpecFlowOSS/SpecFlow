@@ -50,9 +50,17 @@ namespace SpecFlow.Windsor
             if (!(method.Invoke(null, null) is IWindsorContainer container)) 
                 return null;
 
-            RegisterBindings(container);
+            if (ShouldRegisterBindings(method)) 
+                RegisterBindings(container);
 
             return container;
+        }
+
+        private bool ShouldRegisterBindings(MethodInfo method)
+        {
+            var attribute = (ScenarioDependenciesAttribute)Attribute.GetCustomAttribute(method, typeof(ScenarioDependenciesAttribute));
+
+            return attribute.AutoRegisterBindings;
         }
 
         private void RegisterBindings(IWindsorContainer container)
@@ -61,8 +69,7 @@ namespace SpecFlow.Windsor
             {
                 container.Register(
                     Types.FromAssembly(assembly)
-                         .Where(x => x.IsDefined(typeof(BindingAttribute), false))
-                         .LifestyleScoped());
+                         .Where(x => x.IsDefined(typeof(BindingAttribute), false)));
             }
         }
     }

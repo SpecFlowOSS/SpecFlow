@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using BoDi;
-using Castle.MicroKernel.Lifestyle.Scoped;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using FluentAssertions;
 using Moq;
 using SpecFlow.Windsor;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
@@ -51,36 +54,6 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             var container = CreateContainerViaPlugin(globalContainer, scenarioContainer);
 
             container.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void Starts_Windsor_scope_when_container_is_created()
-        {
-            var globalContainer = new ObjectContainer();
-            var scenarioContainer = new ObjectContainer(globalContainer);
-
-            var beforeScope = CallContextLifetimeScope.ObtainCurrentScope();
-            CreateContainerViaPlugin(globalContainer, scenarioContainer);
-            var afterScope = CallContextLifetimeScope.ObtainCurrentScope();
-
-            beforeScope.Should().BeNull();
-            afterScope.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void Windsor_scope_ends_when_scenario_ends()
-        {
-            var globalContainer = new ObjectContainer();
-            var scenarioContainer = new ObjectContainer(globalContainer);
-
-            CreateContainerViaPlugin(globalContainer, scenarioContainer);
-
-            var activeScope = CallContextLifetimeScope.ObtainCurrentScope();
-            scenarioContainer.Dispose();
-            var endedScope = CallContextLifetimeScope.ObtainCurrentScope();
-
-            activeScope.Should().NotBeNull();
-            endedScope.Should().BeNull();
         }
 
         [Fact]
@@ -148,6 +121,30 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             context2.Should().BeSameAs(context1);
         }
 
+        [Fact]
+        public void Bindings_registered_by_default()
+        {
+            var container = new Mock<IWindsorContainer>();
+            var registry = new Mock<IBindingRegistry>();
+            var step = new Mock<IStepDefinitionBinding>();
+            var bindingMethod = new Mock<IBindingMethod>();
+            var binding = new RuntimeBindingType(typeof(AutoRegisterContainerBinding));
+            
+            var finder = new ContainerFinder(registry.Object);
+
+            step.Setup(x => x.Method).Returns(bindingMethod.Object);
+            bindingMethod.Setup(x => x.Type).Returns(binding);
+            registry.Setup(x => x.GetStepDefinitions()).Returns(new[] { step.Object });
+            registry.Setup(x => x.GetHooks()).Returns(Array.Empty<IHookBinding>());
+            registry.Setup(x => x.GetStepTransformations()).Returns(Array.Empty<IStepArgumentTransformationBinding>());
+
+            TestContainer.Container = container.Object;
+
+            finder.GetCreateScenarioContainer()();
+
+            container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Once);
+        }
+
         private IWindsorContainer CreateContainerViaPlugin(ObjectContainer globalContainer, ObjectContainer scenarioContainer)
         {
             var plugin = new WindsorPlugin();
@@ -190,6 +187,31 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             protected override Func<IWindsorContainer> FindCreateScenarioContainer()
             {
                 return containerBuilder;
+            }
+        }
+
+        private static class TestContainer
+        {
+            public static IWindsorContainer Container;
+        }
+
+        [Binding]
+        private class AutoRegisterContainerBinding
+        {
+            [ScenarioDependencies]
+            public static IWindsorContainer GetContainer()
+            {
+                return TestContainer.Container;
+            }
+        }
+
+        [Binding]
+        private class NoAutoRegisterContainerBinding
+        {
+            [ScenarioDependencies(AutoRegisterBindings = false)]
+            public static IWindsorContainer GetContainer()
+            {
+                return TestContainer.Container;
             }
         }
     }

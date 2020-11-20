@@ -1,5 +1,4 @@
 ﻿using BoDi;
-using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using SpecFlow.Windsor;
@@ -47,11 +46,8 @@ namespace SpecFlow.Windsor
                     var containerBuilder = finder.GetCreateScenarioContainer();
 
                     var container = containerBuilder();
-                    var scope = container.BeginScope();
 
                     RegisterSpecflowDependecies(args.ObjectContainer, container);
-
-                    args.ObjectContainer.RegisterInstanceAs(new WindsorScenarioScope(scope), dispose: true);
 
                     return container;
                 });
