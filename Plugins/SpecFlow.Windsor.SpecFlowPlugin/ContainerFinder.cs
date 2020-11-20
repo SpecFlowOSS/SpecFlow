@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Castle.MicroKernel.Registration;
@@ -30,12 +31,14 @@ namespace SpecFlow.Windsor
             return builder;
         }
 
+        protected virtual IEnumerable<Type> GetBindingTypes()
+        {
+            return bindingRegistry.GetBindingAssemblies().SelectMany(x => x.GetTypes());
+        }
+
         protected virtual Func<IWindsorContainer> FindCreateScenarioContainer()
         {
-            var assemblies = bindingRegistry.GetBindingAssemblies();
-
-            var method = assemblies
-                         .SelectMany(x => x.GetTypes())
+            var method = GetBindingTypes()
                          .SelectMany(x => x.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
                          .FirstOrDefault(x => Attribute.IsDefined(x, typeof(ScenarioDependenciesAttribute)));
 

@@ -129,8 +129,8 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             var step = new Mock<IStepDefinitionBinding>();
             var bindingMethod = new Mock<IBindingMethod>();
             var binding = new RuntimeBindingType(typeof(AutoRegisterContainerBinding));
-            
-            var finder = new ContainerFinder(registry.Object);
+
+            var finder = new TypesContainerFinder(registry.Object, new[] { typeof(AutoRegisterContainerBinding) });
 
             step.Setup(x => x.Method).Returns(bindingMethod.Object);
             bindingMethod.Setup(x => x.Type).Returns(binding);
@@ -143,6 +143,19 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             finder.GetCreateScenarioContainer()();
 
             container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Once);
+        }
+
+        [Fact]
+        public void Bindings_not_registered_when_specified()
+        {
+            var container = new Mock<IWindsorContainer>();
+            var finder = new TypesContainerFinder(null, new[] { typeof(NoAutoRegisterContainerBinding) });
+
+            TestContainer.Container = container.Object;
+
+            finder.GetCreateScenarioContainer()();
+
+            container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Never);
         }
 
         private IWindsorContainer CreateContainerViaPlugin(ObjectContainer globalContainer, ObjectContainer scenarioContainer)
@@ -187,6 +200,22 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             protected override Func<IWindsorContainer> FindCreateScenarioContainer()
             {
                 return containerBuilder;
+            }
+        }
+
+        private class TypesContainerFinder : ContainerFinder
+        {
+            private readonly Type[] types;
+
+            public TypesContainerFinder(IBindingRegistry bindingRegistry, Type[] types)
+                : base(bindingRegistry)
+            {
+                this.types = types;
+            }
+
+            protected override IEnumerable<Type> GetBindingTypes()
+            {
+                return types;
             }
         }
 
