@@ -1,3 +1,6 @@
+Changes:
++ Windsor plugin no longer uses scoped lifestyle due to async call context issues
+
 3.5
 
 Features:
