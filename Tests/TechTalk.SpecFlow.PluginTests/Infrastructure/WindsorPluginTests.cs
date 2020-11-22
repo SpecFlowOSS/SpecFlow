@@ -145,18 +145,18 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
         //    container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Once);
         //}
 
-        //[Fact]
-        //public void Bindings_not_registered_when_specified()
-        //{
-        //    var container = new Mock<IWindsorContainer>();
-        //    var finder = new TypesContainerFinder(null, new[] { typeof(NoAutoRegisterContainerBinding) });
+        [Fact]
+        public void Bindings_not_registered_when_specified()
+        {
+            var container = new Mock<IWindsorContainer>();
+            var finder = new TypesContainerFinder(null, new[] { typeof(NoAutoRegisterContainerBinding) });
 
-        //    TestContainer.Container = container.Object;
+            TestContainer.Container = container.Object;
 
-        //    finder.GetCreateScenarioContainer()();
+            finder.GetCreateScenarioContainer()();
 
-        //    container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Never);
-        //}
+            container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Never);
+        }
 
         private IWindsorContainer CreateContainerViaPlugin(ObjectContainer globalContainer, ObjectContainer scenarioContainer)
         {
