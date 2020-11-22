@@ -121,42 +121,42 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             context2.Should().BeSameAs(context1);
         }
 
-        [Fact]
-        public void Bindings_registered_by_default()
-        {
-            var container = new Mock<IWindsorContainer>();
-            var registry = new Mock<IBindingRegistry>();
-            var step = new Mock<IStepDefinitionBinding>();
-            var bindingMethod = new Mock<IBindingMethod>();
-            var binding = new RuntimeBindingType(typeof(AutoRegisterContainerBinding));
+        //[Fact]
+        //public void Bindings_registered_by_default()
+        //{
+        //    var container = new Mock<IWindsorContainer>();
+        //    var registry = new Mock<IBindingRegistry>();
+        //    var step = new Mock<IStepDefinitionBinding>();
+        //    var bindingMethod = new Mock<IBindingMethod>();
+        //    var binding = new RuntimeBindingType(typeof(AutoRegisterContainerBinding));
 
-            var finder = new TypesContainerFinder(registry.Object, new[] { typeof(AutoRegisterContainerBinding) });
+        //    var finder = new TypesContainerFinder(registry.Object, new[] { typeof(AutoRegisterContainerBinding) });
 
-            step.Setup(x => x.Method).Returns(bindingMethod.Object);
-            bindingMethod.Setup(x => x.Type).Returns(binding);
-            registry.Setup(x => x.GetStepDefinitions()).Returns(new[] { step.Object });
-            registry.Setup(x => x.GetHooks()).Returns(Array.Empty<IHookBinding>());
-            registry.Setup(x => x.GetStepTransformations()).Returns(Array.Empty<IStepArgumentTransformationBinding>());
+        //    step.Setup(x => x.Method).Returns(bindingMethod.Object);
+        //    bindingMethod.Setup(x => x.Type).Returns(binding);
+        //    registry.Setup(x => x.GetStepDefinitions()).Returns(new[] { step.Object });
+        //    registry.Setup(x => x.GetHooks()).Returns(Array.Empty<IHookBinding>());
+        //    registry.Setup(x => x.GetStepTransformations()).Returns(Array.Empty<IStepArgumentTransformationBinding>());
 
-            TestContainer.Container = container.Object;
+        //    TestContainer.Container = container.Object;
 
-            finder.GetCreateScenarioContainer()();
+        //    finder.GetCreateScenarioContainer()();
 
-            container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Once);
-        }
+        //    container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Once);
+        //}
 
-        [Fact]
-        public void Bindings_not_registered_when_specified()
-        {
-            var container = new Mock<IWindsorContainer>();
-            var finder = new TypesContainerFinder(null, new[] { typeof(NoAutoRegisterContainerBinding) });
+        //[Fact]
+        //public void Bindings_not_registered_when_specified()
+        //{
+        //    var container = new Mock<IWindsorContainer>();
+        //    var finder = new TypesContainerFinder(null, new[] { typeof(NoAutoRegisterContainerBinding) });
 
-            TestContainer.Container = container.Object;
+        //    TestContainer.Container = container.Object;
 
-            finder.GetCreateScenarioContainer()();
+        //    finder.GetCreateScenarioContainer()();
 
-            container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Never);
-        }
+        //    container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Never);
+        //}
 
         private IWindsorContainer CreateContainerViaPlugin(ObjectContainer globalContainer, ObjectContainer scenarioContainer)
         {
