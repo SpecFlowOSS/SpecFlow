@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Castle.MicroKernel.Registration;
@@ -31,42 +30,59 @@ namespace SpecFlow.Windsor
             return builder;
         }
 
-        protected virtual IEnumerable<Type> GetBindingTypes()
-        {
-            return bindingRegistry.GetBindingAssemblies().SelectMany(x => x.GetTypes());
-        }
-
         protected virtual Func<IWindsorContainer> FindCreateScenarioContainer()
         {
-            var method = GetBindingTypes()
-                         .SelectMany(x => x.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
-                         .FirstOrDefault(x => Attribute.IsDefined(x, typeof(ScenarioDependenciesAttribute)));
+            var method = GetCreationMethod();
 
             if (method == null) 
                 return null;
 
-            return () => GetContainer(method);
+            return () => CreateAndConfigureContainer(method);
         }
 
-        private IWindsorContainer GetContainer(MethodInfo method)
+        private IWindsorContainer CreateAndConfigureContainer(MethodInfo method)
         {
-            if (!(method.Invoke(null, null) is IWindsorContainer container)) 
+            var container = CreateContainer(method);
+
+            if (ShouldRegisterBindings(method))
+                RegisterBindings(container);
+
+            return container;
+        }
+
+        protected virtual MethodInfo GetCreationMethod()
+        {
+            return bindingRegistry
+                   .GetBindingAssemblies()
+                   .SelectMany(x => x.GetTypes())
+                   .SelectMany(x => x.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+                   .FirstOrDefault(x => Attribute.IsDefined(x, typeof(ScenarioDependenciesAttribute)));
+        }
+
+        protected virtual IWindsorContainer CreateContainer(MethodInfo method)
+        {
+            if (method == null) 
                 return null;
 
-            if (ShouldRegisterBindings(method)) 
-                RegisterBindings(container);
+            if (!(method.Invoke(null, null) is IWindsorContainer container)) 
+                return null;
 
             return container;
         }
 
         private bool ShouldRegisterBindings(MethodInfo method)
         {
-            var attribute = (ScenarioDependenciesAttribute)Attribute.GetCustomAttribute(method, typeof(ScenarioDependenciesAttribute));
+            var attribute = GetDependenciesAttribute(method);
 
             return attribute.AutoRegisterBindings;
         }
 
-        private void RegisterBindings(IWindsorContainer container)
+        protected virtual ScenarioDependenciesAttribute GetDependenciesAttribute(MethodInfo method)
+        {
+            return (ScenarioDependenciesAttribute)Attribute.GetCustomAttribute(method, typeof(ScenarioDependenciesAttribute));
+        }
+
+        protected virtual void RegisterBindings(IWindsorContainer container)
         {
             foreach (var assembly in bindingRegistry.GetBindingAssemblies())
             {

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Reflection;
 using BoDi;
-using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using FluentAssertions;
 using Moq;
 using SpecFlow.Windsor;
 using TechTalk.SpecFlow.Bindings;
-using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
@@ -121,41 +119,26 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             context2.Should().BeSameAs(context1);
         }
 
-        //[Fact]
-        //public void Bindings_registered_by_default()
-        //{
-        //    var container = new Mock<IWindsorContainer>();
-        //    var registry = new Mock<IBindingRegistry>();
-        //    var step = new Mock<IStepDefinitionBinding>();
-        //    var bindingMethod = new Mock<IBindingMethod>();
-        //    var binding = new RuntimeBindingType(typeof(AutoRegisterContainerBinding));
+        [Fact]
+        public void Bindings_registered_by_default()
+        {
+            var registry = new Mock<IBindingRegistry>();
+            var finder = new BindingRegistryContainerFinder(registry.Object, new ScenarioDependenciesAttribute());
 
-        //    var finder = new TypesContainerFinder(registry.Object, new[] { typeof(AutoRegisterContainerBinding) });
+            finder.GetCreateScenarioContainer()();
 
-        //    step.Setup(x => x.Method).Returns(bindingMethod.Object);
-        //    bindingMethod.Setup(x => x.Type).Returns(binding);
-        //    registry.Setup(x => x.GetStepDefinitions()).Returns(new[] { step.Object });
-        //    registry.Setup(x => x.GetHooks()).Returns(Array.Empty<IHookBinding>());
-        //    registry.Setup(x => x.GetStepTransformations()).Returns(Array.Empty<IStepArgumentTransformationBinding>());
-
-        //    TestContainer.Container = container.Object;
-
-        //    finder.GetCreateScenarioContainer()();
-
-        //    container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Once);
-        //}
+            finder.RegisterBindingsCalled.Should().BeTrue();
+        }
 
         [Fact]
         public void Bindings_not_registered_when_specified()
         {
-            var container = new Mock<IWindsorContainer>();
-            var finder = new TypesContainerFinder(null, new[] { typeof(NoAutoRegisterContainerBinding) });
-
-            TestContainer.Container = container.Object;
+            var registry = new Mock<IBindingRegistry>();
+            var finder = new BindingRegistryContainerFinder(registry.Object, new ScenarioDependenciesAttribute { AutoRegisterBindings = false });
 
             finder.GetCreateScenarioContainer()();
 
-            container.Verify(x => x.Register(It.IsAny<IRegistration>()), Times.Never);
+            finder.RegisterBindingsCalled.Should().BeFalse();
         }
 
         private IWindsorContainer CreateContainerViaPlugin(ObjectContainer globalContainer, ObjectContainer scenarioContainer)
@@ -163,28 +146,13 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             var plugin = new WindsorPlugin();
             var events = new RuntimePluginEvents();
             
-            globalContainer.RegisterInstanceAs<IContainerFinder>(new TestContainerFinder());
+            globalContainer.RegisterInstanceAs<IContainerFinder>(new SpecificContainerFinder(() => new WindsorContainer()));
 
             plugin.Initialize(events, null, null);
             events.RaiseCustomizeGlobalDependencies(globalContainer, null);
             events.RaiseCustomizeScenarioDependencies(scenarioContainer);
 
             return scenarioContainer.Resolve<IWindsorContainer>();
-        }
-
-        private class TestContainerFinder : ContainerFinder
-        {
-            private readonly WindsorContainer container = new WindsorContainer();
-
-            public TestContainerFinder()
-                : base(null)
-            {
-            }
-
-            protected override Func<IWindsorContainer> FindCreateScenarioContainer()
-            {
-                return () => container;
-            }
         }
 
         private class SpecificContainerFinder : ContainerFinder
@@ -203,44 +171,36 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             }
         }
 
-        private class TypesContainerFinder : ContainerFinder
+        private class BindingRegistryContainerFinder : ContainerFinder
         {
-            private readonly Type[] types;
+            private readonly ScenarioDependenciesAttribute attribute;
 
-            public TypesContainerFinder(IBindingRegistry bindingRegistry, Type[] types)
+            public BindingRegistryContainerFinder(IBindingRegistry bindingRegistry, ScenarioDependenciesAttribute attribute)
                 : base(bindingRegistry)
             {
-                this.types = types;
+                this.attribute = attribute;
             }
 
-            protected override IEnumerable<Type> GetBindingTypes()
+            public bool RegisterBindingsCalled { get; set; }
+
+            protected override MethodInfo GetCreationMethod()
             {
-                return types;
+                return new Mock<MethodInfo>().Object;
             }
-        }
 
-        private static class TestContainer
-        {
-            public static IWindsorContainer Container;
-        }
-
-        [Binding]
-        private class AutoRegisterContainerBinding
-        {
-            [ScenarioDependencies]
-            public static IWindsorContainer GetContainer()
+            protected override IWindsorContainer CreateContainer(MethodInfo method)
             {
-                return TestContainer.Container;
+                return null;
             }
-        }
 
-        [Binding]
-        private class NoAutoRegisterContainerBinding
-        {
-            [ScenarioDependencies(AutoRegisterBindings = false)]
-            public static IWindsorContainer GetContainer()
+            protected override ScenarioDependenciesAttribute GetDependenciesAttribute(MethodInfo method)
             {
-                return TestContainer.Container;
+                return attribute;
+            }
+
+            protected override void RegisterBindings(IWindsorContainer container)
+            {
+                RegisterBindingsCalled = true;
             }
         }
     }
