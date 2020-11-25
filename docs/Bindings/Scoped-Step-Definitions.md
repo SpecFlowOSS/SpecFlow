@@ -6,22 +6,22 @@ In some cases however, it is necessary to restrict when step definitions or hook
 
 You can restrict the execution of scoped bindings by:
 
-* tag
-* feature (using the feature title)
-* scenario (using the scenario title)
+- tag
+- feature (using the feature title)
+- scenario (using the scenario title)
 
 The following tags are taken into account for scenario, scenarioblock or step hooks:
 
-* tags defined for the feature
-* tags defined for the scenario
-* tags defined for the scenario outline
-* tags defined for the scenario outline example set (`Examples:`)
+- tags defined for the feature
+- tags defined for the scenario
+- tags defined for the scenario outline
+- tags defined for the scenario outline example set (`Examples:`)
 
-*Be careful!* Coupling your step definitions to features and scenarios is an anti-pattern. [Read more about it on the Cucumber Wiki](https://cucumber.io/docs/guides/anti-patterns/#feature-coupled-step-definitions)
+_Be careful!_ Coupling your step definitions to features and scenarios is an anti-pattern. [Read more about it on the Cucumber Wiki](https://cucumber.io/docs/guides/anti-patterns/#feature-coupled-step-definitions)
 
 Use the `[Scope]` attribute to define the scope:
 
-``` csharp
+```csharp
     [Scope(Tag = "mytag", Feature = "feature title", Scenario = "scenario title")]
 ```
 
@@ -32,17 +32,27 @@ Navigation from feature files to scoped step definitions is currently not suppor
 Scope can be defined at the method or class level.
 
 If multiple criteria (e.g. both tag and feature) are specified in the same `[Scope]` attribute, they are combined with AND, i.e. all criteria need to match.
-_Example AND tag scope decoration:_ `[Scope(Tag = "thisTag"), Scope(Tag = "AndThisTag")]`
+
+_Example AND tag scope decoration:_
+
+```
+[Scope(Tag = "thisTag", Feature = "myFeature")]
+```
 
 If multiple `[Scope]` attributes are defined for the same method or class, the attributes are combined with OR, i.e. at least one of the `[Scope]` attributes needs to match.
 
-_Example OR tag scope decoration:_ `[Scope(Tag = "thisTag")] [Scope(Tag = "OrThisTag")]`
+_Examples for OR tag scope decoration:_
+
+```
+[Scope(Tag = "thisTag")] [Scope(Tag = "OrThisTag")]
+[Scope(Tag = "thisTag"), Scope(Tag = "OrThisTag")]
+```
 
 If a step can be matched to both a step definition without a `[Scope]` attribute as well as a step definition with a `[Scope]` attribute, the step definition with the `[Scope]` attribute is used (no ambiguity).
 
 If a step matches several scoped step definitions, the one with the most restrictions is used. For example, if the first step definition contains `[Scope(Tag = "myTag")]` and the second contains `[Scope(Tag = "myTag", Feature = "myFeature")]` the second step definition (the more specific one) is used if it matches the step.
 
-If you have multiple scoped step definition with the same number of restrictions that match the step, you will get an ambiguous step binding error. For example, if you have a step definition containing `[Scope(Tag = "myTag", Scenario = "myScenario")]` and another containing `[Scope(Tag = "myTag2", Scenario = "myScenario")]`, you will receive an ambiguous step binding error if the myScenario has **both** the "myTag1" and "myTag2" tags.
+If you have multiple scoped step definition with the same number of restrictions that match the step, you will get an ambiguous step binding error. For example, if you have a step definition containing `[Scope(Tag = "myTag1", Scenario = "myScenario")]` and another containing `[Scope(Tag = "myTag2", Scenario = "myScenario")]`, you will receive an ambiguous step binding error if the myScenario has **both** the "myTag1" and "myTag2" tags.
 
 ## Scope Examples
 
@@ -108,7 +118,7 @@ The following example shows a way to "ignore" executing the scenarios marked wit
 
 You can define more complex filters using the [ScenarioContext](ScenarioContext.md) class. The following example starts selenium if the scenario is tagged with `@web` _and_ `@automated`.
 
-``` c#
+```c#
     [Binding]
     public class Binding
     {
