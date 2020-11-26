@@ -45,3 +45,15 @@ public static IWindsorContainer CreateContainer()
   return container;
 }
 ```
+
+### 5. To customize binding behavior, use the following:
+Default behavior is to auto-register bindings. To manually register these during `CreateContainer`
+you can use the following attribute:
+
+```csharp
+[ScenarioDependencies(AutoRegisterBindings = false)]
+public static IWindsorContainer CreateContainer()
+{
+    // Register your bindings here
+}
+```

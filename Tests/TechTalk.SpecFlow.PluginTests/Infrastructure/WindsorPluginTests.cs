@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Reflection;
 using BoDi;
-using Castle.MicroKernel.Lifestyle.Scoped;
 using Castle.Windsor;
 using FluentAssertions;
 using Moq;
 using SpecFlow.Windsor;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
@@ -51,36 +52,6 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             var container = CreateContainerViaPlugin(globalContainer, scenarioContainer);
 
             container.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void Starts_Windsor_scope_when_container_is_created()
-        {
-            var globalContainer = new ObjectContainer();
-            var scenarioContainer = new ObjectContainer(globalContainer);
-
-            var beforeScope = CallContextLifetimeScope.ObtainCurrentScope();
-            CreateContainerViaPlugin(globalContainer, scenarioContainer);
-            var afterScope = CallContextLifetimeScope.ObtainCurrentScope();
-
-            beforeScope.Should().BeNull();
-            afterScope.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void Windsor_scope_ends_when_scenario_ends()
-        {
-            var globalContainer = new ObjectContainer();
-            var scenarioContainer = new ObjectContainer(globalContainer);
-
-            CreateContainerViaPlugin(globalContainer, scenarioContainer);
-
-            var activeScope = CallContextLifetimeScope.ObtainCurrentScope();
-            scenarioContainer.Dispose();
-            var endedScope = CallContextLifetimeScope.ObtainCurrentScope();
-
-            activeScope.Should().NotBeNull();
-            endedScope.Should().BeNull();
         }
 
         [Fact]
@@ -148,33 +119,40 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             context2.Should().BeSameAs(context1);
         }
 
+        [Fact]
+        public void Bindings_registered_by_default()
+        {
+            var registry = new Mock<IBindingRegistry>();
+            var finder = new BindingRegistryContainerFinder(registry.Object, new ScenarioDependenciesAttribute());
+
+            finder.GetCreateScenarioContainer()();
+
+            finder.RegisterBindingsCalled.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Bindings_not_registered_when_specified()
+        {
+            var registry = new Mock<IBindingRegistry>();
+            var finder = new BindingRegistryContainerFinder(registry.Object, new ScenarioDependenciesAttribute { AutoRegisterBindings = false });
+
+            finder.GetCreateScenarioContainer()();
+
+            finder.RegisterBindingsCalled.Should().BeFalse();
+        }
+
         private IWindsorContainer CreateContainerViaPlugin(ObjectContainer globalContainer, ObjectContainer scenarioContainer)
         {
             var plugin = new WindsorPlugin();
             var events = new RuntimePluginEvents();
             
-            globalContainer.RegisterInstanceAs<IContainerFinder>(new TestContainerFinder());
+            globalContainer.RegisterInstanceAs<IContainerFinder>(new SpecificContainerFinder(() => new WindsorContainer()));
 
             plugin.Initialize(events, null, null);
             events.RaiseCustomizeGlobalDependencies(globalContainer, null);
             events.RaiseCustomizeScenarioDependencies(scenarioContainer);
 
             return scenarioContainer.Resolve<IWindsorContainer>();
-        }
-
-        private class TestContainerFinder : ContainerFinder
-        {
-            private readonly WindsorContainer container = new WindsorContainer();
-
-            public TestContainerFinder()
-                : base(null)
-            {
-            }
-
-            protected override Func<IWindsorContainer> FindCreateScenarioContainer()
-            {
-                return () => container;
-            }
         }
 
         private class SpecificContainerFinder : ContainerFinder
@@ -190,6 +168,39 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             protected override Func<IWindsorContainer> FindCreateScenarioContainer()
             {
                 return containerBuilder;
+            }
+        }
+
+        private class BindingRegistryContainerFinder : ContainerFinder
+        {
+            private readonly ScenarioDependenciesAttribute attribute;
+
+            public BindingRegistryContainerFinder(IBindingRegistry bindingRegistry, ScenarioDependenciesAttribute attribute)
+                : base(bindingRegistry)
+            {
+                this.attribute = attribute;
+            }
+
+            public bool RegisterBindingsCalled { get; set; }
+
+            protected override MethodInfo GetCreationMethod()
+            {
+                return new Mock<MethodInfo>().Object;
+            }
+
+            protected override IWindsorContainer CreateContainer(MethodInfo method)
+            {
+                return null;
+            }
+
+            protected override ScenarioDependenciesAttribute GetDependenciesAttribute(MethodInfo method)
+            {
+                return attribute;
+            }
+
+            protected override void RegisterBindings(IWindsorContainer container)
+            {
+                RegisterBindingsCalled = true;
             }
         }
     }
