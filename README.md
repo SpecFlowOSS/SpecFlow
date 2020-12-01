@@ -35,8 +35,8 @@ CI NuGet Package feed: https://www.myget.org/F/specflow/api/v3/index.json
 
 ## Contributing
 
-Developer Gitter channel:
-[![Join the chat at https://gitter.im/gasparnagy/specflow-dev](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gasparnagy/specflow-dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Developer Discord channel:
+[#contributing](https://go.specflow.org/join-contributing-on-discord)
 
 The main development happens on the master branch.
 
@@ -44,7 +44,7 @@ If you are interested in contributing, there is some useful information on this 
 
 ## Writing plugins 
 
-Plugin- Developer- Gitter channel: [![Gitter](https://badges.gitter.im/techtalk/specflow-plugin-dev.svg)](https://gitter.im/techtalk/specflow-plugin-dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+Plugin- Developer- Discord channel: [#plugin-development](https://go.specflow.org/join-plugin-development-on-discord)
 
 ## Copyright
 
