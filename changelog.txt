@@ -1,3 +1,8 @@
+Fixes:
++ Copy specflow.json to the output directory
+
+3.5.14
+
 Changes:
 + Windsor plugin no longer uses scoped lifestyle due to async call context issues
 
