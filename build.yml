@@ -63,7 +63,7 @@ jobs:
 
   - task: ArchiveFiles@2
     displayName: 'Archive $(Build.SourcesDirectory)'
-    condition: ${{ parameters.publishArtifacts}}
+    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)'
 
@@ -72,7 +72,7 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
-    condition: ${{ parameters.publishArtifacts}}
+    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
     inputs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
       artifactType: container
