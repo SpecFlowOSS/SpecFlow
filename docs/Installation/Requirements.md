@@ -2,9 +2,14 @@
 
 ## .NET
 
+### .NET
+
+- .NET 5
+
 ### .NET Core
 
-- .NET Core 2.1 or .NET Core 3.1
+- .NET Core 2.1
+- .NET Core 3.1
 
 ### .NET Framework
 
