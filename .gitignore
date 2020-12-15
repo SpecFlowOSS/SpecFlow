@@ -396,3 +396,4 @@ Tests/TechTalk.SpecFlow.Specs/NuGetPackageVersion.cs
 AppInsightsInstrumentationKey.cs
 
 docs/_build/*
+!Directory.Build.rsp
