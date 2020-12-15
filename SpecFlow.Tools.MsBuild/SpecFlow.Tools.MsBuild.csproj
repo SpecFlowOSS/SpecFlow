@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="buildMultiTargeting\" />
+  </ItemGroup>
+
+
+  <Target Name="DisplayMessages" AfterTargets="CopyFilesToOutputDirectory">
+    <Message Text="Project File Name = $(MSBuildProjectFile)" Importance="High" />
+    <Message Text="Project Extension = $(MSBuildProjectExtension)" Importance="High" />
+  </Target>
+
+  <!--<Import Project="build\SpecFlow.Tools.MsBuild.targets" />-->
+
+  <!--<UsingTask TaskName="SpecFlow.Tools.MsBuild.ReplaceTextInFile" 
+             AssemblyFile="$(MSBuildThisFileDirectory)bin\Debug\netstandard2.0\SpecFlow.Tools.MsBuild.dll" />-->
+
+  <!--<Target Name="MyTarget" AfterTargets="CopyFilesToOutputDirectory">
+    <ReplaceTextInFile InputFile="C:\Temp\msbuildtask\be.txt" 
+                       OutputFile="C:\Temp\msbuildtask\be1.txt"
+                       TextToReplace="béla"
+                       TextToReplaceWith="géza"
+                       WriteOnlyWhenChanged="true"/>
+  </Target>-->
+
+  <!--<Target Name="Hello">
+    <HelloWorld />
+  </Target>-->
+
+</Project>

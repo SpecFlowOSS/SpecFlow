@@ -1,0 +1,16 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
+
+  <PropertyGroup>
+    <_PropsImported Condition=" '$(_PropsImported)' =='' ">true</_PropsImported>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <__TaskFolder Condition="'$(__TaskFolder)' == ''">netstandard2.0</__TaskFolder>
+    <__TaskAssembly Condition=" '$(__TaskAssembly)' == '' ">..\tasks\$(__TaskFolder)\SpecFlow.Tools.MsBuild.dll</__TaskAssembly>
+  </PropertyGroup>
+
+  <Import Project="SpecFlow.Tools.MsBuild.tasks"/>
+
+  <!--<Import Project="..\build\SpecFlow.Tools.MsBuild.props"/>-->
+  
+</Project>

@@ -42,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.AdditionalTasks" Version="*" />
     <PackageReference Include="Gherkin" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.2" />
@@ -73,7 +72,14 @@
 
 
   <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" TextToReplace="NUGET_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
+    <!--<ReplaceTextInFileTask InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" 
+                           OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" 
+                           TextToReplace="NUGET_VERSION" 
+                           TextToReplaceWith="$(NuGetPackageVersion)" />-->
+    <ReplaceTextInFile InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" 
+                       OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" 
+                       TextToReplace="NUGET_VERSION" 
+                       TextToReplaceWith="$(NuGetPackageVersion)" />
 
     <ItemGroup>
       <Compile Include="$(ProjectDir)\\NuGetPackageVersion.cs" />
@@ -95,9 +101,9 @@
   </Target>
 
   <Target Name="PreBuild">
-    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Net5_Tools_TFM)"/>
-    <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Net5_Tools_TFM)"/>
-    <MSBuild Projects="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Net5_TFM)"/>
+    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Net5_Tools_TFM)" />
+    <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Net5_Tools_TFM)" />
+    <MSBuild Projects="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(SpecFlow_Net5_TFM)" />
   </Target>
 
 

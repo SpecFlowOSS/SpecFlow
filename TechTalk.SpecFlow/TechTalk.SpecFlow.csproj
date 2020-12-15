@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.35" />
     <PackageReference Include="BoDi" Version="1.4.1" />
     <PackageReference Include="Utf8Json" Version="1.3.7" />
     <PackageReference Include="Gherkin" Version="6.0.0" />
@@ -67,7 +66,14 @@
   </ItemGroup>
 
   <Target Name="RunTokenReplace" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" TextToReplace="&lt;InstrumentationKeyGoesHere&gt;" TextToReplaceWith="$(AppInsightsInstrumentationKey)" />
+    <!--<ReplaceTextInFileTask InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" 
+                           OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" 
+                           TextToReplace="&lt;InstrumentationKeyGoesHere&gt;" 
+                           TextToReplaceWith="$(AppInsightsInstrumentationKey)" />-->
+    <ReplaceTextInFile InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" 
+                       OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" 
+                       TextToReplace="&lt;InstrumentationKeyGoesHere&gt;" 
+                       TextToReplaceWith="$(AppInsightsInstrumentationKey)" />
     <ItemGroup>
       <Compile Include="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" />
     </ItemGroup>

@@ -1,0 +1,7 @@
+<Project>
+
+  <UsingTask TaskName="SpecFlow.Tools.MsBuild.Generation.ReplaceTokenInFileTask" AssemblyFile="$(__TaskAssembly)"/>
+             <!--AssemblyFile="SpecFlow.Tools.MsBuild\bin\$(Configuration)\netstandard2.0\SpecFlow.Tools.MsBuild.dll" />-->
+  
+
+</Project>

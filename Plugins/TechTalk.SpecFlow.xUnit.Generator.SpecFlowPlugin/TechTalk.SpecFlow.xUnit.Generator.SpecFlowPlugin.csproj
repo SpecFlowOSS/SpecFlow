@@ -21,8 +21,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-
-    <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.35" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,8 +30,23 @@
   </ItemGroup>
 
   <Target Name="WriteAssemblyHooksVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' or '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
-    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
+    <!--<ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.template.cs" 
+                           OutputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.cs" 
+                           TextToReplace="SPECFLOW_VERSION" 
+                           TextToReplaceWith="$(NuGetPackageVersion)" />
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.template.vb" 
+                           OutputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.vb" 
+                           TextToReplace="SPECFLOW_VERSION" 
+                           TextToReplaceWith="$(NuGetPackageVersion)" />-->
+
+    <ReplaceTextInFile InputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.template.cs" 
+                       OutputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.cs" 
+                       TextToReplace="SPECFLOW_VERSION" 
+                       TextToReplaceWith="$(NuGetPackageVersion)" />
+    <ReplaceTextInFile InputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.template.vb" 
+                       OutputFile="$(MSBuildThisFileDirectory)\build\xUnit.AssemblyHooks.vb" 
+                       TextToReplace="SPECFLOW_VERSION" 
+                       TextToReplaceWith="$(NuGetPackageVersion)" />
 
   </Target>
 

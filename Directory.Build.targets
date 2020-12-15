@@ -34,4 +34,19 @@
     </ItemGroup>
     <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(SolutionDir)GeneratedNuGetPackages\$(Configuration)" />
   </Target>
+
+  <!--<Target Name="RunSampleTask" AfterTargets="Build">
+    --><!-- Call the compiled task --><!--
+    <MySample1 Parameter1="A value for parameter 1" Parameter2="A value for parameter 2">
+      <Output TaskParameter="Parameter3" PropertyName="NewProperty" />
+    </MySample1>
+
+    --><!-- Log whatever text is in NewProperty that came from Parameter3 --><!--
+    <Message Text="NewProperty: '$(NewProperty)'" Importance="High" />
+  </Target>-->
+
+  <UsingTask TaskName="SpecFlow.Tools.MsBuild.ReplaceTextInFile"
+             AssemblyFile="SpecFlow.Tools.MsBuild\bin\$(Configuration)\netstandard2.0\SpecFlow.Tools.MsBuild.dll" />
+
+
 </Project>
