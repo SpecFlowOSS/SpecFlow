@@ -26,13 +26,6 @@ Let's get started
 
 A detailed step- by- step guide to start with SpecFlow can be found `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. 
 
-**Start with a new project**
-
-Learn the basics of SpecFlow and follow our step by step guide to setup SpecFlow and the SpecFlow+ Runner with a new project in Visual Studio. 
-
-`Getting Started with a new project <https://docs.specflow.org/projects/specflow/en/latest/Getting-Started/Getting-Started-With-A-New-Project.html>`_
-
-
 **Start with an example project**
 
 Follow our step by step guide to explore, experiment and learn the basics of SpecFlow based on a simple web application project using SpecFlow and the SpecFlow+ Runner.
@@ -46,8 +39,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :caption: Getting Started
    :hidden:
 
-   Step by Step Guide <https://docs.specflow.org/projects/getting-started/en/latest/>
-   Getting-Started/Getting-Started-With-A-New-Project.md
+   Getting Started Step by Step Guide <https://docs.specflow.org/projects/getting-started/en/latest/>
    Getting-Started/Getting-Started-With-An-Example.md
    
 

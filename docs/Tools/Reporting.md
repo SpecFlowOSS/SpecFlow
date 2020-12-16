@@ -1,4 +1,19 @@
+
 # Reporting
+
+## SpecFlow+ LivingDoc
+
+Reporting is now easier to generate and share thanks to SpecFlow+ LivingDoc.
+
+You can see your test execution results in a dynamic way now and also check for any [unused step definitions](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/LivingDocGenerator/Unused-step-definition-report.html) along with many other handy features that truly bring your reporting and documentation to life!
+
+**Head over to [SpecFlow+ LivingDoc](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/) to read more.**
+
+Here is a quick snapshot:
+
+![sample output](../_static/images/sample_output3.png)
+
+## Reporting prior to SpecFlow 3
 
 **These reports are only available prior to SpecFlow 3! They have been removed in SpecFlow 3.**
 
@@ -8,7 +23,7 @@ SpecFlow provides various options to generate reports related to the acceptance 
 
 You can find a repository containing the old report code [here](https://github.com/techtalk/SpecFlow.Reports). For information on why the reports were moved to a seperate repo, please read see this [GitHub issue](https://github.com/techtalk/SpecFlow/issues/1036).
 
-## Test Execution Report
+### Test Execution Report
 
 This report generates an HTML test execution report. The report contains a summary of the executed tests and their results, as well as a detailed report of the execution of individual scenarios. 
 
@@ -146,7 +161,7 @@ The following table contains the possible arguments for this command.
 
 </table>
 
-## Step Definition Report
+### Step Definition Report
 
 This report shows the usage and binding status of the steps in your entire project. You can use this report to find both unused code in the automation layer and scenario steps with no binding defined.
 
