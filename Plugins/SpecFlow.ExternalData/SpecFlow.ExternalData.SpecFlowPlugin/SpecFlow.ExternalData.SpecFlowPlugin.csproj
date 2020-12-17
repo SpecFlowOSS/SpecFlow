@@ -15,6 +15,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Utf8Json" Version="1.3.7" />
-    <PackageReference Include="SpecFlow.CustomPlugin" Version="3.4.14" />
+    <PackageReference Include="SpecFlow.CustomPlugin" Version="3.5.14" />
   </ItemGroup>
 </Project>
