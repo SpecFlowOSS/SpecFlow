@@ -14,6 +14,10 @@ namespace TechTalk.SpecFlow
         {
         }
 
+        public PendingStepException(string message) : base(message)
+        {
+        }
+
         protected PendingStepException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)

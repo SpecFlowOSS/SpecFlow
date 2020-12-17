@@ -16,7 +16,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Exceptions
             var pendingStepException = new PendingStepException();
             pendingStepException.Message.Should().NotBeNullOrWhiteSpace();
         }
-        
-        
+
+        [Fact]
+        public void Constructor_Message_SetToValueFromConstructor()
+        {
+            var pendingStepException = new PendingStepException("custom pending message");
+            pendingStepException.Message.Should().Be("custom pending message");
+        }
     }
 }
