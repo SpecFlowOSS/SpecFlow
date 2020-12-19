@@ -83,3 +83,19 @@ public class ShirtColorValueRetriever : IValueRetriever
         }
     }
 ```
+
+## Registering Custom ValueRetrievers
+
+Before you can utilize a custom `ValueRetriever`, you'll need to register it. We recommend doing this prior to a test run using the `[BeforeTestRun]` attribute and `Service.Instance.ValueRetrievers.Registr()`. For example:
+
+``` csharp
+[Binding]
+public static class Hooks
+{
+    [BeforeTestRun]
+    public static void BeforeTestRun()
+    {
+        Service.Instance.ValueRetrievers.Register(new MyCustomValueRetriever());
+    }
+}
+```
