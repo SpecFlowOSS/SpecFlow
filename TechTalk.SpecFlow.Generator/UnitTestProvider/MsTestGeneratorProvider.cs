@@ -132,6 +132,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var featureContextExpression = new CodePropertyReferenceExpression(
                 new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name), 
                 "FeatureContext");
+
+            var callTestClassInitializeMethodExpression = new CodeMethodInvokeExpression(
+                new CodeTypeReferenceExpression(
+                    new CodeTypeReference(
+                        generationContext.Namespace.Name + "." + generationContext.TestClass.Name,
+                        CodeTypeReferenceOptions.GlobalReference)),
+                generationContext.TestClassInitializeMethod.Name,
+                new CodePrimitiveExpression(null));
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callTestClassInitializeMethodExpression);
+            
             generationContext.TestInitializeMethod.Statements.Add(
                 new CodeConditionStatement(
                     new CodeBinaryOperatorExpression(
@@ -149,13 +160,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                             CodeBinaryOperatorType.IdentityInequality,
                             new CodePrimitiveExpression(generationContext.Feature.Name))),
                     new CodeExpressionStatement(
-                        new CodeMethodInvokeExpression(
-                            new CodeTypeReferenceExpression(
-                                new CodeTypeReference(
-                                    generationContext.Namespace.Name + "." + generationContext.TestClass.Name, 
-                                    CodeTypeReferenceOptions.GlobalReference)),
-                            generationContext.TestClassInitializeMethod.Name,
-                            new CodePrimitiveExpression(null)))));
+                        callTestClassInitializeMethodExpression)));
         }
 
         public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
@@ -213,6 +218,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             {
                 SetProperty(testMethod, "Parameter:" + pair.Key, pair.Value);
             }
+        }
+
+        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod testMethod)
+        {
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
+        }
+
+        public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
+        {
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
         }
     }
 }

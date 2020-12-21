@@ -58,8 +58,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
         {
             return new NotImplementedException($"{TargetLanguage} is not supported");
         }
-
-
+        
         public void BindTypeToSourceFile(CodeTypeDeclaration typeDeclaration, string fileName)
         {
             switch (TargetLanguage)
@@ -75,8 +74,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                     break;
             }
         }
-
-
+        
         public CodeStatement GetStartRegionStatement(string regionText)
         {
             switch (TargetLanguage)
@@ -100,8 +98,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
             return new CodeCommentStatement("#endregion");
         }
-
-
+        
         public CodeStatement GetDisableWarningsPragma()
         {
             switch (TargetLanguage)
@@ -230,6 +227,38 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                     yield return new CodeSnippetStatement($"#line {lineNo}");
                     yield return CreateCommentStatement($"#indentnext {colNo - 1}");
                     break;
+            }
+        }
+
+        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod method)
+        {
+            var returnTypeArgumentReferences = method.ReturnType.TypeArguments.OfType<CodeTypeReference>().ToArray();
+
+            var asyncReturnType = new CodeTypeReference($"async {method.ReturnType.BaseType}", returnTypeArgumentReferences);
+            method.ReturnType = asyncReturnType;
+        }
+
+        public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
+        {
+            if (expression.Method.TargetObject is CodeVariableReferenceExpression variableExpression)
+            {
+                expression.Method.TargetObject = new CodeVariableReferenceExpression($"await {variableExpression.VariableName}");
+            }
+            else if (expression.Method.TargetObject is CodeTypeReferenceExpression typeExpression)
+            {
+                expression.Method.TargetObject = new CodeTypeReferenceExpression($"await {typeExpression.Type.BaseType}");
+            }
+            else if (expression.Method.TargetObject is CodeThisReferenceExpression thisExpression)
+            {
+                switch (TargetLanguage)
+                {
+                    case CodeDomProviderLanguage.VB:
+                        expression.Method.TargetObject = new CodeVariableReferenceExpression("await Me");
+                        break;
+                    case CodeDomProviderLanguage.CSharp:
+                        expression.Method.TargetObject = new CodeVariableReferenceExpression("await this");
+                        break;
+                }
             }
         }
     }

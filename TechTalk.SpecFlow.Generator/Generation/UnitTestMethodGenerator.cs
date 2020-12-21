@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
@@ -63,7 +64,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             var paramToIdentifier = CreateParamToIdentifierMapping(scenarioOutline);
 
-            var scenarioOutlineTestMethod = CreateScenatioOutlineTestMethod(generationContext, scenarioOutline, paramToIdentifier);
+            var scenarioOutlineTestMethod = CreateScenarioOutlineTestMethod(generationContext, scenarioOutline, paramToIdentifier);
             var exampleTagsParam = new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_OUTLINE_EXAMPLE_TAGS_PARAMETER);
             if (generationContext.GenerateRowTests)
             {
@@ -213,12 +214,14 @@ namespace TechTalk.SpecFlow.Generator.Generation
         internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier, SpecFlowFeature feature)
         {
             var statementsWhenScenarioIsIgnored = new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) };
+
+            var callScenarioStartMethodExpression = new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), generationContext.ScenarioStartMethod.Name);
+
+            _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callScenarioStartMethodExpression);
+
             var statementsWhenScenarioIsExecuted = new List<CodeStatement>
             {
-                new CodeExpressionStatement(
-                    new CodeMethodInvokeExpression(
-                        new CodeThisReferenceExpression(),
-                        generationContext.ScenarioStartMethod.Name))
+                new CodeExpressionStatement(callScenarioStartMethodExpression)
             };
 
 
@@ -280,7 +283,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
             return new CodeBinaryOperatorExpression(variableReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null));
         }
 
-
         internal void GenerateScenarioInitializeCall(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod)
         {
             var statements = new List<CodeStatement>();
@@ -300,13 +302,15 @@ namespace TechTalk.SpecFlow.Generator.Generation
         internal void GenerateScenarioCleanupMethodCall(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             // call scenario cleanup
-            testMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.ScenarioCleanupMethod.Name));
+            var expression = new CodeMethodInvokeExpression(
+                new CodeThisReferenceExpression(),
+                generationContext.ScenarioCleanupMethod.Name);
+
+            _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+
+            testMethod.Statements.Add(expression);
         }
-
-
+        
         private CodeMethodInvokeExpression CreateTestRunnerSkipScenarioCall()
         {
             return new CodeMethodInvokeExpression(
@@ -409,13 +413,16 @@ namespace TechTalk.SpecFlow.Generator.Generation
             return tableBody.Select(r => r.Cells.First().Value.ToIdentifier()).Distinct().Count() == tableBody.Count();
         }
 
-        private CodeMemberMethod CreateScenatioOutlineTestMethod(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, ParameterSubstitution paramToIdentifier)
+        private CodeMemberMethod CreateScenarioOutlineTestMethod(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, ParameterSubstitution paramToIdentifier)
         {
             var testMethod = _codeDomHelper.CreateMethod(generationContext.TestClass);
 
+            testMethod.ReturnType = new CodeTypeReference(typeof(Task));
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = string.Format(GeneratorConstants.TEST_NAME_FORMAT, scenarioOutline.Name.ToIdentifier());
 
+            _unitTestGeneratorProvider.MarkCodeMemberMethodAsAsync(testMethod);
+            
             foreach (var pair in paramToIdentifier)
             {
                 testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), pair.Value));
@@ -437,26 +444,26 @@ namespace TechTalk.SpecFlow.Generator.Generation
             string variantName)
         {
             var testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);
-
-
+            
             //call test implementation with the params
             var argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();
 
             argumentExpressions.Add(_scenarioPartHelper.GetStringArrayExpression(exampleSetTags));
-
-
+            
             var statements = new List<CodeStatement>();
 
             using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, scenarioOutline.Location))
             {
-                statements.Add(new CodeExpressionStatement(
-                    new CodeMethodInvokeExpression(
-                        new CodeThisReferenceExpression(),
-                        scenatioOutlineTestMethod.Name,
-                        argumentExpressions.ToArray())));
+                var callTestMethodExpression = new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    scenatioOutlineTestMethod.Name,
+                    argumentExpressions.ToArray());
+
+                _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callTestMethodExpression);
+
+                statements.Add(new CodeExpressionStatement(callTestMethodExpression));
             }
-
-
+            
             testMethod.Statements.AddRange(statements.ToArray());
 
             //_linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
@@ -466,9 +473,9 @@ namespace TechTalk.SpecFlow.Generator.Generation
             // Otherwise, use the title of the example set provided by the user in the feature file.
             string exampleSetName = string.IsNullOrEmpty(exampleSetIdentifier) ? exampleSetTitle : exampleSetIdentifier;
             _unitTestGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetName, variantName, arguments);
-		}
+        }
 
-		private CodeMemberMethod CreateTestMethod(
+        private CodeMemberMethod CreateTestMethod(
             TestClassGenerationContext generationContext,
             StepsContainer scenario,
             IEnumerable<Tag> additionalTags,
@@ -481,7 +488,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             return testMethod;
         }
-
 
         private void SetupTestMethod(
             TestClassGenerationContext generationContext,

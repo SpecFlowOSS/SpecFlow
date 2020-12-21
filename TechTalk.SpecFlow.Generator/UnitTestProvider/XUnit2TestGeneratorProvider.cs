@@ -5,6 +5,7 @@ using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -34,6 +35,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string CATEGORY_PROPERTY_NAME = "Category";
         protected internal const string IGNORE_TEST_CLASS = "IgnoreTestClass";
         protected internal const string NONPARALLELIZABLE_COLLECTION_NAME = "SpecFlowNonParallelizableFeatures";
+        protected internal const string IASYNCLIFETIME_INTERFACE = "Xunit.IAsyncLifetime";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
         {
@@ -92,29 +94,42 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, INLINEDATA_ATTRIBUTE, args.ToArray());
         }
 
-        protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod)
+        protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor constructor)
         {
             var typeName = $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
-            ctorMethod.Parameters.Add(
+            constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
-            ctorMethod.Parameters.Add(
+            constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression(typeName, "assemblyFixture"));
-            ctorMethod.Parameters.Add(
+            constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
 
-            ctorMethod.Statements.Add(
+            constructor.Statements.Add(
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
+        }
 
-            //ctorMethod.Statements.Add(
-            //    new CodeVariableDeclarationStatement(new CodeTypeReference(typeName), "assemblyFixture",
-            //        new CodeObjectCreateExpression(new CodeTypeReference(typeName))));
+        protected virtual void SetTestInitializeMethod(TestClassGenerationContext generationContext, CodeMemberMethod method)
+        {
+            var typeName = $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
 
-            ctorMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.TestInitializeMethod.Name));
+            var callInitializeAsyncExpression = new CodeMethodInvokeExpression(
+                new CodeTypeReferenceExpression(typeName),
+                "InitializeAsync",
+                new CodePrimitiveExpression(generationContext.TestClass.Name));
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callInitializeAsyncExpression);
+
+            method.Statements.Add(callInitializeAsyncExpression);
+
+            var callTestInitializeMethodExpression = new CodeMethodInvokeExpression(
+                new CodeThisReferenceExpression(),
+                generationContext.TestInitializeMethod.Name);
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callTestInitializeMethodExpression);
+
+            method.Statements.Add(callTestInitializeMethodExpression);
         }
 
         public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
@@ -232,13 +247,23 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             generationContext.TestClass.BaseTypes.Add(_objectCodeTypeReference);
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
 
-            // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }
-            var ctorMethod = new CodeConstructor { Attributes = MemberAttributes.Public };
-            _currentFixtureDataTypeDeclaration.Members.Add(ctorMethod);
-            ctorMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
-                    generationContext.TestClassInitializeMethod.Name));
+            // Task IAsyncLifetime.InitializeAsync() { <fixtureSetupMethod>(); }
+            var initializeMethod = new CodeMemberMethod();
+            initializeMethod.PrivateImplementationType = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
+            initializeMethod.Name = "InitializeAsync";
+            initializeMethod.ReturnType = new CodeTypeReference(typeof(Task));
+
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(initializeMethod);
+
+            _currentFixtureDataTypeDeclaration.Members.Add(initializeMethod);
+
+            var expression = new CodeMethodInvokeExpression(
+                new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
+                generationContext.TestClassInitializeMethod.Name);
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+
+            initializeMethod.Statements.Add(expression);
         }
 
         public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
@@ -247,23 +272,37 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             generationContext.TestClassCleanupMethod.Attributes |= MemberAttributes.Static;
 
-            _currentFixtureDataTypeDeclaration.BaseTypes.Add(typeof(IDisposable));
+            var iasyncLifetimeInterface = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
 
-            // void IDisposable.Dispose() { <fixtureTearDownMethod>(); }
+            CodeDomHelper.SetTypeReferenceAsInterface(iasyncLifetimeInterface);
 
+            _currentFixtureDataTypeDeclaration.BaseTypes.Add(iasyncLifetimeInterface);
+
+            // Task IAsyncLifetime.DisposeAsync() { <fixtureTearDownMethod>(); }
             var disposeMethod = new CodeMemberMethod();
-            disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
-            disposeMethod.Name = "Dispose";
+            disposeMethod.PrivateImplementationType = iasyncLifetimeInterface;
+            disposeMethod.Name = "DisposeAsync";
+            disposeMethod.ReturnType = new CodeTypeReference(typeof(Task));
+
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(disposeMethod);
+            
             _currentFixtureDataTypeDeclaration.Members.Add(disposeMethod);
 
-            disposeMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
-                    generationContext.TestClassCleanupMethod.Name));
+            var expression = new CodeMethodInvokeExpression(
+                new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
+                generationContext.TestClassCleanupMethod.Name);
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+
+            disposeMethod.Statements.Add(expression);
         }
 
         public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
+            testMethod.ReturnType = new CodeTypeReference(typeof(Task));
+
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
+            
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(friendlyTestName)));
 
             SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
@@ -280,7 +319,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
-            // xUnit uses a parameterless constructor
+            // xUnit uses a parameterless constructor & IAsyncLifetime.InitializeAsync
 
             // public <_currentTestTypeDeclaration>() { <memberMethod>(); }
 
@@ -289,25 +328,50 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             generationContext.TestClass.Members.Add(ctorMethod);
 
             SetTestConstructor(generationContext, ctorMethod);
+            
+            // Task IAsyncLifetime.InitializeAsync() { <memberMethod>(); }
+
+            var initializeMethod = new CodeMemberMethod();
+            initializeMethod.Attributes = MemberAttributes.Public;
+            initializeMethod.PrivateImplementationType = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
+            initializeMethod.Name = "InitializeAsync";
+            initializeMethod.ReturnType = new CodeTypeReference(typeof(Task));
+
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(initializeMethod);
+
+            generationContext.TestClass.Members.Add(initializeMethod);
+
+            SetTestInitializeMethod(generationContext, initializeMethod);
         }
 
         public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
         {
-            // xUnit supports test tear down through the IDisposable interface
+            // xUnit supports test tear down through the IAsyncLifetime interface
 
-            generationContext.TestClass.BaseTypes.Add(typeof(IDisposable));
+            var iasyncLifetimeInterface = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
 
-            // void IDisposable.Dispose() { <memberMethod>(); }
+            CodeDomHelper.SetTypeReferenceAsInterface(iasyncLifetimeInterface);
+
+            generationContext.TestClass.BaseTypes.Add(iasyncLifetimeInterface);
+
+            // Task IAsyncLifetime.DisposeAsync() { <memberMethod>(); }
 
             var disposeMethod = new CodeMemberMethod();
-            disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
-            disposeMethod.Name = "Dispose";
+            disposeMethod.PrivateImplementationType = iasyncLifetimeInterface;
+            disposeMethod.Name = "DisposeAsync";
+            disposeMethod.ReturnType = new CodeTypeReference(typeof(Task));
+
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(disposeMethod);
+            
             generationContext.TestClass.Members.Add(disposeMethod);
 
-            disposeMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.TestCleanupMethod.Name));
+            var expression = new CodeMethodInvokeExpression(
+                new CodeThisReferenceExpression(),
+                generationContext.TestCleanupMethod.Name);
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+
+            disposeMethod.Statements.Add(expression);
         }
 
         public void SetTestClassIgnore(TestClassGenerationContext generationContext)
@@ -356,6 +420,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
+        }
+
+        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod testMethod)
+        {
+            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
+        }
+
+        public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
+        {
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
         }
     }
 }
