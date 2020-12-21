@@ -8,21 +8,21 @@ using global::System.Runtime.CompilerServices;
 [assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture))]
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
-public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IDisposable
+public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IAsyncDisposable
 {
     private readonly global::System.Reflection.Assembly _currentAssembly;
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture()
+    public static async Task InitializeAsync(string testClassId)
     {
         _currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
-        global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, _currentAssembly);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(_currentAssembly);
     }
 }
 

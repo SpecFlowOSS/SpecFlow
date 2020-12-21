@@ -8,20 +8,20 @@ Imports System.Runtime.CompilerServices
 
 <GeneratedCode("SpecFlow", "SPECFLOW_VERSION")>
 Public Class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture
-    Implements Global.System.IDisposable
+    Implements Global.System.IAsyncDisposable
 
     Private ReadOnly _currentAssembly As Global.System.Reflection.Assembly
 
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Sub New()
+    Public Shared Async Function InitializeAsync(ByVal testClassId As String) As Task
         _currentAssembly = GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly
-        Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly)
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, _currentAssembly)
     End Sub
 
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Sub Dispose() Implements Global.System.IDisposable.Dispose
-        Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly)
-    End Sub
+    Public Async Function DisposeAsync() Implements Global.System.IAsyncDisposable.DisposeAsync as ValueTask
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(_currentAssembly)
+    End Function
 End Class
 
 <Global.Xunit.CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization:=True)>
