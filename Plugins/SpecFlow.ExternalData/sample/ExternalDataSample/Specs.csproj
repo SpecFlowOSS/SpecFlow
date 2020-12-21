@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.4.192" />
 
     <PackageReference Include="SpecFlow.NUnit" Version="*-*" />
     <PackageReference Include="nunit" Version="3.12.0" />
