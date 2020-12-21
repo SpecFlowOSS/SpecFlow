@@ -4,6 +4,7 @@ Features:
 
 Fixes:
 + Copy specflow.json to the output directory
++ SpecFlow.ExternalData plugin works with SpecFlow 3.5 https://github.com/SpecFlowOSS/SpecFlow/issues/2218
 
 
 3.5.14
