@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             //bindingInstance.Expect(b => b.SingleTable(user));
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert with table", null, table);
+            testRunner.GivenAsync("sample step for argument convert with table", null, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.SingleTable(user));
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             //bindingInstance.Expect(b => b.MultilineArgumentAndTable(multiLineArg, user));
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert with multiline argument and table", multiLineArg, table);
+            testRunner.GivenAsync("sample step for argument convert with multiline argument and table", multiLineArg, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.MultilineArgumentAndTable(multiLineArg, user));
@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             //bindingInstance.Expect(b => b.ParameterMultilineArgumentAndTable(argumentValue, multiLineArg, user));
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert with parameter, multiline argument and table: argument", multiLineArg, table);
+            testRunner.GivenAsync("sample step for argument convert with parameter, multiline argument and table: argument", multiLineArg, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.ParameterMultilineArgumentAndTable(argumentValue, multiLineArg, user));

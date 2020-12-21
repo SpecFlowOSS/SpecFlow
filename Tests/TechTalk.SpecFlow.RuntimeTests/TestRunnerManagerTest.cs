@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void GetTestRunner_should_be_able_to_create_a_testrunner()
         {
-            var testRunner = testRunnerManager.GetTestRunner(0);
+            var testRunner = testRunnerManager.GetTestRunner(TODO);
 
             testRunner.Should().NotBeNull();
             testRunner.Should().BeOfType<TestRunner>();
@@ -42,8 +42,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void GetTestRunner_should_cache_instance()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(threadId: 0);
-            var testRunner2 = testRunnerManager.GetTestRunner(threadId: 0);
+            var testRunner1 = testRunnerManager.GetTestRunner(TODO);
+            var testRunner2 = testRunnerManager.GetTestRunner(TODO);
 
 
             testRunner1.Should().Be(testRunner2);
@@ -52,8 +52,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void Should_return_different_instances_for_different_thread_ids()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(threadId: 1);
-            var testRunner2 = testRunnerManager.GetTestRunner(threadId: 2);
+            var testRunner1 = testRunnerManager.GetTestRunner(TODO);
+            var testRunner2 = testRunnerManager.GetTestRunner(TODO);
 
             testRunner1.Should().NotBe(testRunner2);
         }

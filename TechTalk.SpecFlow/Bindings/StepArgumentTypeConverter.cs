@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
@@ -10,12 +11,6 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IStepArgumentTypeConverter
-    {
-        object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
-        bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
-    }
-
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
     {
         private readonly ITestTracer testTracer;
@@ -42,13 +37,13 @@ namespace TechTalk.SpecFlow.Bindings
             return stepTransformations.Length > 0 ? stepTransformations[0] : null;
         }
 
-        public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
+        public async Task<object> ConvertAsync(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
             if (value == null) throw new ArgumentNullException("value");
             
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
             if (stepTransformation != null)
-                return DoTransform(stepTransformation, value, cultureInfo);
+                return await DoTransformAsync(stepTransformation, value, cultureInfo);
 
             var convertToType = typeToConvertTo as RuntimeBindingType;
             if (convertToType != null && convertToType.Type.IsAssignableFrom(value.GetType()))
@@ -57,26 +52,33 @@ namespace TechTalk.SpecFlow.Bindings
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        private object DoTransform(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
+        private async Task<object> DoTransformAsync(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
         {
             object[] arguments;
             if (stepTransformation.Regex != null && value is string)
-                arguments = GetStepTransformationArgumentsFromRegex(stepTransformation, (string)value, cultureInfo);
+                arguments = await GetStepTransformationArgumentsFromRegexAsync(stepTransformation, (string)value, cultureInfo);
             else
                 arguments = new object[] {value};
 
-            TimeSpan duration;
-            return bindingInvoker.InvokeBinding(stepTransformation, contextManager, arguments, testTracer, out duration);
+            var (result, _) = await bindingInvoker.InvokeBindingAsync(stepTransformation, contextManager, arguments, testTracer);
+
+            return result;
         }
 
-        private object[] GetStepTransformationArgumentsFromRegex(IStepArgumentTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)
+        private async Task<object[]> GetStepTransformationArgumentsFromRegexAsync(IStepArgumentTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)
         {
             var match = stepTransformation.Regex.Match(stepSnippet);
-            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToList();
             var bindingParameters = stepTransformation.Method.Parameters.ToArray();
-            return argumentStrings
-                .Select((arg, argIndex) => this.Convert(arg, bindingParameters[argIndex].Type, cultureInfo))
-                .ToArray();
+            
+            var result = new object[argumentStrings.Count];
+
+            for (int i = 0; i < argumentStrings.Count; i++)
+            {
+                result[i] = await ConvertAsync(argumentStrings[i], bindingParameters[i].Type, cultureInfo);
+            }
+
+            return result;
         }
 
         public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)

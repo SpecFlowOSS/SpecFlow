@@ -142,7 +142,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             _analyticsEventProvider = new Mock<IAnalyticsEventProvider>();
             _analyticsTransmitter = new Mock<IAnalyticsTransmitter>();
-            _analyticsTransmitter.Setup(at => at.TransmitSpecFlowProjectRunningEvent(It.IsAny<SpecFlowProjectRunningEvent>()))
+            _analyticsTransmitter.Setup(at => at.TransmitSpecFlowProjectRunningEventAsync(It.IsAny<SpecFlowProjectRunningEvent>()))
                 .Callback(() => { });
 
             _testRunnerManager = new Mock<ITestRunnerManager>();
@@ -605,7 +605,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnTestRunStart();
 
-            _analyticsTransmitter.Verify(at => at.TransmitSpecFlowProjectRunningEvent(It.IsAny<SpecFlowProjectRunningEvent>()), Times.Once);
+            _analyticsTransmitter.Verify(at => at.TransmitSpecFlowProjectRunningEventAsync(It.IsAny<SpecFlowProjectRunningEvent>()), Times.Once);
         }
 
         [Theory]

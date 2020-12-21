@@ -17,23 +17,24 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class BindingInvoker : IBindingInvoker
     {
-        protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        protected readonly SpecFlowConfiguration specFlowConfiguration;
         protected readonly IErrorProvider errorProvider;
-        protected readonly ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker;
+        protected readonly IBindingDelegateInvoker bindingDelegateInvoker;
 
-        public BindingInvoker(Configuration.SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker)
+        public BindingInvoker(SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, IBindingDelegateInvoker bindingDelegateInvoker)
         {
             this.specFlowConfiguration = specFlowConfiguration;
             this.errorProvider = errorProvider;
-            this.synchronousBindingDelegateInvoker = synchronousBindingDelegateInvoker;
+            this.bindingDelegateInvoker = bindingDelegateInvoker;
         }
 
-        public virtual object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        public virtual async Task<(object result, TimeSpan duration)> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer)
         {
             MethodInfo methodInfo;
             Delegate bindingAction;
             EnsureReflectionInfo(binding, out methodInfo, out bindingAction);
             Stopwatch stopwatch = new Stopwatch();
+            TimeSpan duration;
             try
             {
                 stopwatch.Start();
@@ -45,8 +46,7 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
 
-                    result = synchronousBindingDelegateInvoker
-                        .InvokeDelegateSynchronously(bindingAction, invokeArgs);
+                    result = await bindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs);
 
                     stopwatch.Stop();
                 }
@@ -56,8 +56,7 @@ namespace TechTalk.SpecFlow.Bindings
                     testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }
 
-                duration = stopwatch.Elapsed;
-                return result;
+                return (result, stopwatch.Elapsed);
             }
             catch (ArgumentException ex)
             {

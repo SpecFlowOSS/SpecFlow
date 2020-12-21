@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with simple convert param: 1.23"); // German uses ',' as decimal separator, but BindingCulture is english
+            testRunner.GivenAsync("sample step with simple convert param: 1.23"); // German uses ',' as decimal separator, but BindingCulture is english
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithSimpleConvertParam(1.23));
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("argument 1.23 should be able to convert to 1.23 even though it has english localization"); // German uses ',' as decimal separator, but BindingCulture is english
+            testRunner.GivenAsync("argument 1.23 should be able to convert to 1.23 even though it has english localization"); // German uses ',' as decimal separator, but BindingCulture is english
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.InBindingConversion("1.23", 1.23));

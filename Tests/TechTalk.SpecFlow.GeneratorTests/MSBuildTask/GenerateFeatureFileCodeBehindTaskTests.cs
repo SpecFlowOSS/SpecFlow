@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
         private Mock<IAnalyticsTransmitter> GetAnalyticsTransmitterMock()
         {
             var analyticsTransmitterMock = new Mock<IAnalyticsTransmitter>();
-            analyticsTransmitterMock.Setup(at => at.TransmitSpecFlowProjectCompilingEvent(It.IsAny<SpecFlowProjectCompilingEvent>()))
+            analyticsTransmitterMock.Setup(at => at.TransmitSpecFlowProjectCompilingEventAsync(It.IsAny<SpecFlowProjectCompilingEvent>()))
                 .Callback(() => { });
             return analyticsTransmitterMock;
         }

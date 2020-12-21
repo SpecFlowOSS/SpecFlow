@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with simple convert param: 1.23");
+            testRunner.GivenAsync("sample step with simple convert param: 1.23");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithSimpleConvertParam(1.23));
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with simple convert param: not-a-double");
+            testRunner.GivenAsync("sample step with simple convert param: not-a-double");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
         }
@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert: argument");
+            testRunner.GivenAsync("sample step for argument convert: argument");
 
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK, ContextManagerStub.ScenarioContext.TestError?.ToString());
@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert: argument");
+            testRunner.GivenAsync("sample step for argument convert: argument");
 
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError, ContextManagerStub.ScenarioContext.TestError?.ToString());
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert with table: argument", null, table);
+            testRunner.GivenAsync("sample step for argument convert with table: argument", null, table);
 
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK, ContextManagerStub.ScenarioContext.TestError?.ToString());
@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
            // MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert: argument");
+            testRunner.GivenAsync("sample step for argument convert: argument");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError, ContextManagerStub.ScenarioContext.TestError?.ToString());
         }

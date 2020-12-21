@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.Given(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.Given(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.GivenAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.When(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.When(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.WhenAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.Then(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.Then(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.ThenAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.But(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.But(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.ButAsync(Text, MultilineTextArg, table, null));
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.And(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.And(Text, MultilineTextArg, table, null));
+            mockTestRunner.Verify(m => m.AndAsync(Text, MultilineTextArg, table, null));
         }
 
         public class StepsTestableHelper : Steps

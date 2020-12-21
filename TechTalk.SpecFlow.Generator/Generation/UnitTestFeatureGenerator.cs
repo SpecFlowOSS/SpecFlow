@@ -285,7 +285,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             scenarioStartMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     testRunnerField,
-                    nameof(ITestExecutionEngine.OnScenarioStart)));
+                    nameof(ITestExecutionEngine.OnScenarioStartAsync)));
         }
     }
 }

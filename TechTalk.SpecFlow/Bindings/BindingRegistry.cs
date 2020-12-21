@@ -4,21 +4,6 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IBindingRegistry
-    {
-        bool Ready { get; set; }
-
-        IEnumerable<IStepDefinitionBinding> GetStepDefinitions();
-        IEnumerable<IHookBinding> GetHooks();
-        IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null);
-        IEnumerable<IHookBinding> GetHooks(HookType bindingEvent);
-        IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations();
-
-        void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding);
-        void RegisterHookBinding(IHookBinding hookBinding);
-        void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding);
-    }
-
     public class BindingRegistry : IBindingRegistry
     {
         private readonly List<IStepDefinitionBinding> stepDefinitions = new List<IStepDefinitionBinding>();

@@ -91,16 +91,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
             //see https://github.com/techtalk/SpecFlow/issues/638
             if (!TestEnvironmentHelper.IsBeingRunByNCrunch())
             {
-                var testRunner1 = TestRunnerManager.GetTestRunner(anAssembly, 0, new RuntimeTestsContainerBuilder());
-                testRunner1.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "sds", "sss"));
+                var testRunner1 = TestRunnerManager.GetTestRunner(TODO, anAssembly, new RuntimeTestsContainerBuilder());
+                testRunner1.OnFeatureStartAsync(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "sds", "sss"));
                 testRunner1.OnScenarioInitialize(new ScenarioInfo("foo", "foo_desc", null, null));
-                testRunner1.OnScenarioStart();
+                testRunner1.OnScenarioStartAsync();
                 var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
-                var testRunner2 = TestRunnerManager.GetTestRunner(anAssembly, 1, new RuntimeTestsContainerBuilder());
-                testRunner2.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "sds", "sss"));
+                var testRunner2 = TestRunnerManager.GetTestRunner(TODO, anAssembly, new RuntimeTestsContainerBuilder());
+                testRunner2.OnFeatureStartAsync(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "sds", "sss"));
                 testRunner2.OnScenarioInitialize(new ScenarioInfo("foo", "foo_desc", null, null));
-                testRunner1.OnScenarioStart();
+                testRunner1.OnScenarioStartAsync();
                 var tracer2 = testRunner2.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
                 tracer1.Should().NotBeSameAs(tracer2);

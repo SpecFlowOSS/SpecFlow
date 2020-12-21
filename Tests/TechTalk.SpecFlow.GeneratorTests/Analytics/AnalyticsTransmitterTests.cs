@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.Analytics
             var analyticsTransmitter = new AnalyticsTransmitter(analyticsTransmitterSinkMock.Object, environmentSpecFlowTelemetryCheckerMock.Object);
 
             // ACT
-            var result = await analyticsTransmitter.TransmitEvent(analyticsEventMock.Object);
+            var result = await analyticsTransmitter.TransmitEventAsync(analyticsEventMock.Object);
 
             // ASSERT
             result.Should().BeAssignableTo<ISuccess>();
@@ -41,10 +41,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.Analytics
             var analyticsTransmitter = new AnalyticsTransmitter(analyticsTransmitterSinkMock.Object, environmentSpecFlowTelemetryCheckerMock.Object);
 
             // ACT
-            await analyticsTransmitter.TransmitEvent(analyticsEventMock.Object);
+            await analyticsTransmitter.TransmitEventAsync(analyticsEventMock.Object);
 
             // ASSERT
-            analyticsTransmitterSinkMock.Verify(sink => sink.TransmitEvent(It.IsAny<IAnalyticsEvent>(), It.IsAny<string>()), Times.Never);
+            analyticsTransmitterSinkMock.Verify(sink => sink.TransmitEventAsync(It.IsAny<IAnalyticsEvent>(), It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
@@ -60,10 +60,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.Analytics
             var analyticsTransmitter = new AnalyticsTransmitter(analyticsTransmitterSinkMock.Object, environmentSpecFlowTelemetryCheckerMock.Object);
 
             // ACT
-            await analyticsTransmitter.TransmitSpecFlowProjectCompilingEvent(specFlowProjectCompilingEvent);
+            await analyticsTransmitter.TransmitSpecFlowProjectCompilingEventAsync(specFlowProjectCompilingEvent);
 
             // ASSERT
-            analyticsTransmitterSinkMock.Verify(m => m.TransmitEvent(It.IsAny<IAnalyticsEvent>(), It.IsAny<string>()), Times.Once);
+            analyticsTransmitterSinkMock.Verify(m => m.TransmitEventAsync(It.IsAny<IAnalyticsEvent>(), It.IsAny<string>()), Times.Once);
         }
     }
 }

@@ -124,7 +124,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IContainerBuilder containerBuilder;
 
         /// <summary>
-        /// Holds the StepDefinitionType of the last step that was executed from the actual featrure file, excluding the types of the steps that were executed during the calling of a step
+        /// Holds the StepDefinitionType of the last step that was executed from the actual feature file, excluding the types of the steps that were executed during the calling of a step
         /// </summary>
         public StepDefinitionType? CurrentTopLevelStepDefinitionType { get; private set; }
 
@@ -160,7 +160,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             // Since both TestThreadContext and ContextManager are in the same container (test thread container)
             // their lifetime is the same, so we do not need the swop infrastructure like for the other contexts.
-            // We just neet to initliaze it during contstructuion time.
+            // We just need to initialize it during construction time.
             var testThreadContext = testThreadContainer.Resolve<TestThreadContext>();
             this.TestThreadContext = testThreadContext;
         }
