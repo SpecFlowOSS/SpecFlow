@@ -1,5 +1,10 @@
+
+Features:
++ Add possibility to have a custom pending step message https://github.com/SpecFlowOSS/SpecFlow/issues/1382
+
 Fixes:
 + Copy specflow.json to the output directory
+
 
 3.5.14
 

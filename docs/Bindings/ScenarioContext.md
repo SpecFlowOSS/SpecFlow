@@ -116,31 +116,7 @@ public class Bindings
 
 ## ScenarioContext.Pending
 
-This is the default behavior for a missing step definition, but you can also use it directly if (**why?**) you want to:
-
-in the .feature:
-
-``` gherkin
-Scenario: Pending step
-    When I set the current ScenarioContext to pending
-    Then this step will not even be executed
-```
-
-and the step definition:
-
-``` csharp
-[When("I set the current ScenarioContext to pending")]
-public void WhenIHaveAPendingStep()
-{
-    ScenarioContext.Pending();
-}
-
-[Then("this step will not even be executed")]
-public void ThisStepWillNotBeExecuted()
-{
-    throw new Exception("See!? This wasn't even thrown");
-}
-```
+See [Mark Steps as not implemented](../Execution/Mark-Steps-As-Not-Implemented.md)
 
 ## Storing data in the ScenarioContext
 
