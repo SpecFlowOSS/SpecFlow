@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(SpecFlow_Generator_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.Parser</AssemblyName>

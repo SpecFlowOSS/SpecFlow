@@ -55,8 +55,17 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
         protected override Task BeforeTestAssemblyFinishedAsync()
         {
             // Make sure we clean up everybody who is disposable, and use Aggregator.Run to isolate Dispose failures
-            foreach (var disposable in _assemblyFixtureMappings.Values.OfType<IDisposable>())
-                Aggregator.Run(disposable.Dispose);
+            foreach (var potentialDisposable in _assemblyFixtureMappings.Values)
+            {
+                if (potentialDisposable is IDisposable disposable)
+                {
+                    Aggregator.Run(disposable.Dispose);
+                }
+                else if (potentialDisposable is IAsyncDisposable asyncDisposable)
+                {
+                    Aggregator.RunAsync(async () => await asyncDisposable.DisposeAsync());
+                }
+            }
 
             return base.BeforeTestAssemblyFinishedAsync();
         }

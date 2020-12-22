@@ -266,7 +266,7 @@ namespace TechTalk.SpecFlow
             await testRunnerManager.FireTestRunStartAsync();
         }
 
-        public static async Task<ITestRunner> GetTestRunner(string testClassId, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
+        public static async Task<ITestRunner> GetTestRunnerAsync(string testClassId, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
             testAssembly = testAssembly ?? GetCallingAssembly();
             var testRunnerManager = await GetTestRunnerManagerAsync(testAssembly, containerBuilder);

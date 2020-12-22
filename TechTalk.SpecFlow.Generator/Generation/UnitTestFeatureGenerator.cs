@@ -164,7 +164,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
             return testRunnerField;
         }
 
-
         private void SetupTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             var testClassInitializeMethod = generationContext.TestClassInitializeMethod;
@@ -177,7 +176,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             
             _testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
-            //testRunner = TestRunnerManager.GetTestRunner([class_name]);
+            //testRunner = await TestRunnerManager.GetTestRunnerAsync([class_name]);
             var testRunnerField = _scenarioPartHelper.GetTestRunnerExpression();
 
             var testRunnerParameters = new[]
@@ -189,7 +188,9 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             var getTestRunnerExpression = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
-                nameof(ITestRunnerManager.GetTestRunner), testRunnerParameters);
+                nameof(TestRunnerManager.GetTestRunnerAsync), testRunnerParameters);
+
+            _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(getTestRunnerExpression);
 
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(
