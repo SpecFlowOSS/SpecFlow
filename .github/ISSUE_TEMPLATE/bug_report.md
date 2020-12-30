@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 
 ---
-<!-- Filling out this data is not optional. If you don't fill it out, we will close the issue immediatly! ->
+<!-- Filling out this data is not optional. If you don't fill it out, we will close the issue immediately! ->
 
 
 <!-- PLEASE GIVE YOUR ISSUE A SENSIBLE NAME. This makes it easier to identify issues at a glance -->
@@ -71,8 +71,8 @@ Version number:
 - [ ]    TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
 - [ ]    Command line – PLEASE SPECIFY THE FULL COMMAND LINE
  
-### &lt;SpecFlow> Section in app.config or content of specflow.json
-<!-- PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTRIE specflow.json AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
+### <SpecFlow> Section in app.config or content of specflow.json
+<!-- PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTIRE specflow.json AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
 ```
 
 ```
