@@ -65,6 +65,10 @@
     <None Include="Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpecFlow.Tools.MsBuild\SpecFlow.Tools.MsBuild.csproj" />
+  </ItemGroup>
+
   <Target Name="RunTokenReplace" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
     <!--<ReplaceTextInFileTask InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" 
                            OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" 
