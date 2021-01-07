@@ -72,7 +72,7 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
-    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
+    condition: ${{ parameters.publishArtifacts}}
     inputs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
       artifactType: container
