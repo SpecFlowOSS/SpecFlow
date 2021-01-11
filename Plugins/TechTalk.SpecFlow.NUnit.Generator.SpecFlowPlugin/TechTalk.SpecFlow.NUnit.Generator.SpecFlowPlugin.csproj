@@ -22,7 +22,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.35" />
+    <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.36" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,8 +32,8 @@
   </ItemGroup>
 
   <Target Name="WriteAssemblyHooksVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' or '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
-    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" />
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true"/>
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\NUnit.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true"/>
   </Target>
   
 </Project>
