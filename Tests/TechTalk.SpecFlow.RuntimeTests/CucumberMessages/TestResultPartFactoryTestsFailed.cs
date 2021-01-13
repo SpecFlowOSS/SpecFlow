@@ -2,7 +2,6 @@
 using FluentAssertions;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
-using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages
