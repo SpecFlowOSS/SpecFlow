@@ -4,7 +4,6 @@ using Google.Protobuf.WellKnownTypes;
 using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
-using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 using static Io.Cucumber.Messages.TestResult.Types;

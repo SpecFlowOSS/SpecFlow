@@ -33,7 +33,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
-    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
   </ItemGroup>
 
@@ -47,7 +52,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.2" />
     <PackageReference Include="Moq" Version="4.10.0" />
-    <!--<PackageReference Include="RhinoMocks" Version="3.6.1" />-->
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -59,11 +63,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-
-
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
@@ -74,7 +73,7 @@
 
 
   <Target Name="WriteNuGetVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" TextToReplace="NUGET_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true"/>
+    <ReplaceTextInFileTask InputFile="$(ProjectDir)\\NuGetPackageVersion.template.cs" OutputFile="$(ProjectDir)\\NuGetPackageVersion.cs" TextToReplace="NUGET_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true" />
 
     <ItemGroup>
       <Compile Include="$(ProjectDir)\\NuGetPackageVersion.cs" />
@@ -96,9 +95,7 @@
   </Target>
 
   <Target Name="PreBuild">
-    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)"/>
-    <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)"/>
-    <MSBuild Projects="..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)"/>
+    <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
   </Target>
 
 
