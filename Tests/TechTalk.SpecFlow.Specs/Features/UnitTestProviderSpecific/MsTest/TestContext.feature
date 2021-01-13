@@ -24,12 +24,17 @@ Scenario: Should be able to access TestContext in BeforeTestRun/AfterTestRun hoo
     Given there is a SpecFlow project
     And there is a scenario	
     And all steps are bound and pass
-    And the following hook
+    And the following hooks
         """
         [BeforeTestRun]
-        public static void BeforeTestRun(BoDi.ObjectContainer objectContainer)
+        public static void BeforeTestRun(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
-            var testContext = objectContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>();
+            testContext.WriteLine(testContext.TestRunDirectory);
+        }
+
+        [AfterTestRun]
+        public static void AfterTestRun(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        {
             testContext.WriteLine(testContext.TestRunDirectory);
         }
         """
