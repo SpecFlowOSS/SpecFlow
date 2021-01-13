@@ -22,10 +22,8 @@ Scenario: Should be able to access TestContext in Steps
     
 Scenario: Should be able to access TestContext in BeforeTestRun/AfterTestRun hooks
     Given there is a SpecFlow project
-    And a scenario 'Simple Scenario' as
-        """
-        When I do something
-        """	
+    And there is a scenario	
+    And all steps are bound and pass
     And the following hook
         """
         [BeforeTestRun]
