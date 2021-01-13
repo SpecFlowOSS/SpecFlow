@@ -19,3 +19,23 @@ Scenario: Should be able to access TestContext in Steps
     Then the execution summary should contain
         | Succeeded |
         | 1         |
+    
+Scenario: Should be able to access TestContext in BeforeTestRun/AfterTestRun hooks
+    Given there is a SpecFlow project
+    And a scenario 'Simple Scenario' as
+        """
+        When I do something
+        """	
+    And the following hook
+        """
+        [BeforeTestRun]
+        public static void BeforeTestRun(BoDi.ObjectContainer objectContainer)
+        {
+            var testContext = objectContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>();
+            testContext.WriteLine(testContext.TestRunDirectory);
+        }
+        """
+    When I execute the tests
+    Then the execution summary should contain
+        | Succeeded |
+        | 1         |
