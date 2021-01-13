@@ -42,6 +42,6 @@ jobs:
 - template: build.yml  
   parameters:
     name: Linux
-    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Linux.zip'
     pool:
       name: 'Hosted Ubuntu 1604'
