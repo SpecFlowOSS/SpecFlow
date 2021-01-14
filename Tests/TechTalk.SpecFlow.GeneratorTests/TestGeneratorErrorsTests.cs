@@ -20,11 +20,29 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Fact]
+        public void Should_succeed_when_feature_file_with_only_whitespace()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleFeatureFileInput(" "), defaultSettings);
+            result.Success.Should().Be(true);
+        }
+
+        [Fact]
         public void Should_not_report_error_when_empty_feature_file()
         {
             var testGenerator = CreateTestGenerator(net35CSProjectSettings);
 
             var result = testGenerator.GenerateTestFile(CreateSimpleFeatureFileInput(""), defaultSettings);
+            result.Errors.Should().BeNull();
+        }
+
+        [Fact]
+        public void Should_not_report_error_when_feature_file_with_only_whitespace()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleFeatureFileInput(" "), defaultSettings);
             result.Errors.Should().BeNull();
         }
 
