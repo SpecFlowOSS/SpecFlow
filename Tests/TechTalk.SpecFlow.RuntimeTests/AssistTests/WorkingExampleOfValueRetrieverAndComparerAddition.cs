@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
-            return this.TypesForWhichIRetrieveValues().Contains(type);
+            return TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
-            return this.TypesForWhichIRetrieveValues().Contains(type);
+            return TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }

@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                     var testUpToDateChecker = CreateUpToDateChecker();
 
-                    this.TestHeaderWriterStub.Setup(thw => thw.DetectGeneratedTestVersion(It.IsAny<string>())).Returns(new Version(1, 0));
+                    TestHeaderWriterStub.Setup(thw => thw.DetectGeneratedTestVersion(It.IsAny<string>())).Returns(new Version(1, 0));
                     // version 1.0 is surely older than the current one
 
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
