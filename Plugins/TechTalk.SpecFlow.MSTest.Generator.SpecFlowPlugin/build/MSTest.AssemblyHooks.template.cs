@@ -5,6 +5,7 @@ using System.CodeDom.Compiler;
 using System.Diagnostics;
 using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
+using global::TechTalk.SpecFlow.MSTest.SpecFlowPlugin;
 using global::System.Runtime.CompilerServices;
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
@@ -16,8 +17,9 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     public static void AssemblyInitialize(TestContext testContext)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
+        var containerBuilder = new MsTestContainerBuilder(testContext);
 
-        TestRunnerManager.OnTestRunStart(currentAssembly);
+        TestRunnerManager.OnTestRunStart(currentAssembly, containerBuilder);
     }
 
     [AssemblyCleanup]
