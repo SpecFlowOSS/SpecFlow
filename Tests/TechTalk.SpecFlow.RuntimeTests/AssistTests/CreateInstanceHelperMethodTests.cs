@@ -506,12 +506,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             [TableAliases("Dad's Last Name")]
             public string PropertyThree { get; set; }
 
+#pragma warning disable 649
             [TableAliases("FieldAliasOne")]
             public string FieldOne;
             [TableAliases("FieldAliasTwo")]
             public string FieldTwo;
             [TableAliases("FieldAliasThree")]
             public string FieldThree;
+#pragma warning restore 649
 
             [TableAliases("AliasOne")]
             public string AnotherPropertyWithSameAlias { get; set; }
