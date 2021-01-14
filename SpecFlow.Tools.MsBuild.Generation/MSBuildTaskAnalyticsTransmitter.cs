@@ -31,7 +31,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         {
             try
             {
-                var transmissionResult = await TransmitProjectCompilingEvent();
+                var transmissionResult = await TransmitProjectCompilingEventAsync();
 
                 if (transmissionResult is IFailure failure)
                 {
@@ -46,7 +46,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
         }
 
-        public async Task<IResult> TransmitProjectCompilingEvent()
+        public async Task<IResult> TransmitProjectCompilingEventAsync()
         {
             var projectCompilingEvent = _analyticsEventProvider.CreateProjectCompilingEvent(
                 _msBuildInformationProvider.GetMSBuildVersion(),
