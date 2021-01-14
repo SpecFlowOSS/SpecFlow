@@ -7,11 +7,11 @@ namespace TechTalk.SpecFlow
 {
     public abstract class Steps : IContainerDependentObject
     {
-        private const string GivenObsoleteMessage = nameof(Steps) + "." + nameof(Given) + " is obsolete and will be removed with SpecFlow 3.2. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string WhenObsoleteMessage = nameof(Steps) + "." + nameof(When) + " is obsolete and will be removed with SpecFlow 3.2. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string ThenObsoleteMessage = nameof(Steps) + "." + nameof(Then) + " is obsolete and will be removed with SpecFlow 3.2. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string ButObsoleteMessage = nameof(Steps) + "." + nameof(But) + " is obsolete and will be removed with SpecFlow 3.2. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string AndObsoleteMessage = nameof(Steps) + "." + nameof(And) + " is obsolete and will be removed with SpecFlow 3.2. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string GivenObsoleteMessage = nameof(Steps) + "." + nameof(Given) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string WhenObsoleteMessage = nameof(Steps) + "." + nameof(When) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string ThenObsoleteMessage = nameof(Steps) + "." + nameof(Then) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string ButObsoleteMessage = nameof(Steps) + "." + nameof(But) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string AndObsoleteMessage = nameof(Steps) + "." + nameof(And) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
         private IObjectContainer objectContainer;
 
         void IContainerDependentObject.SetObjectContainer(IObjectContainer container)

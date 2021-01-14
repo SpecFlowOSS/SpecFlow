@@ -27,10 +27,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var net35CSSettings = new ProjectPlatformSettings
             {
-                Language = GenerationTargetLanguage.CSharp,
-                LanguageVersion = new Version("3.0"),
-                Platform = GenerationTargetPlatform.DotNet,
-                PlatformVersion = new Version("3.5"),
+                Language = GenerationTargetLanguage.CSharp
             };
 
             return new TestUpToDateChecker(TestHeaderWriterStub.Object, 
