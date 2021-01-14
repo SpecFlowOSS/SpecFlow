@@ -14,6 +14,8 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- Because templates trigger NU5128, because they need a targetframework, but don't have files in the lib folder for it-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,4 +52,4 @@
     </Content>
   </ItemGroup>
 
-</Project>
+</Project> 
