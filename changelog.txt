@@ -1,6 +1,7 @@
 
 Features:
 + Add possibility to have a custom pending step message https://github.com/SpecFlowOSS/SpecFlow/issues/1382
++ Be able to access MSTest TestContext in BeforeTestRun/AfterTestRun hook https://github.com/SpecFlowOSS/SpecFlow/issues/1859
 
 Fixes:
 + Copy specflow.json to the output directory
