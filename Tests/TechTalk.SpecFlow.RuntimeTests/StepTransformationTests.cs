@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = stepTransformationInstance.GetType().GetMethod("StringToStringConvertRegex");
             var stepTransformationBinding = CreateStepTransformationBinding(@"string (\w+)", transformMethod);
 
-            Assert.True(stepTransformationBinding.Regex.IsMatch("string xyz"));
+            Assert.Matches(stepTransformationBinding.Regex, "string xyz");
 
             var invoker = new BindingInvoker(ConfigurationLoader.GetDefault(), new Mock<IErrorProvider>().Object, new SynchronousBindingDelegateInvoker());
             TimeSpan duration;

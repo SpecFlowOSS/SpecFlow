@@ -27,7 +27,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _taskLoggingWrapper = taskLoggingWrapper;
         }
 
-        public async Task TryTransmitProjectCompilingEvent()
+        public async Task TryTransmitProjectCompilingEventAsync()
         {
             try
             {

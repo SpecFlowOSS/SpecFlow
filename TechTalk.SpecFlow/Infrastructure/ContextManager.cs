@@ -170,7 +170,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             var featureContainer = containerBuilder.CreateFeatureContainer(testThreadContainer, featureInfo);
             var newContext = featureContainer.Resolve<FeatureContext>();
             featureContextManager.Init(newContext, featureContainer);
+#pragma warning disable 618
             FeatureContext.Current = newContext;
+#pragma warning restore 618
         }
 
         public void CleanupFeatureContext()
@@ -183,7 +185,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             var scenarioContainer = containerBuilder.CreateScenarioContainer(FeatureContext.FeatureContainer, scenarioInfo);
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContextManager.Init(newContext, scenarioContainer);
+#pragma warning disable 618
             ScenarioContext.Current = newContext;
+#pragma warning restore 618
 
             ResetCurrentStepStack();
         }

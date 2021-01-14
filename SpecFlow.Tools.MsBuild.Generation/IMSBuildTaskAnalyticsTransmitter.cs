@@ -4,6 +4,6 @@ namespace SpecFlow.Tools.MsBuild.Generation
 {
     public interface IMSBuildTaskAnalyticsTransmitter
     {
-        Task TryTransmitProjectCompilingEvent();
+        Task TryTransmitProjectCompilingEventAsync();
     }
 }
