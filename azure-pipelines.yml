@@ -8,7 +8,7 @@ resources:
 trigger:
   branches:
     include:
-    - '*'
+    - master
   paths:
     exclude:
     - docs/*
