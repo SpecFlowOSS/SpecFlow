@@ -14,7 +14,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         public MSBuildRelativePathParserTests()
         {
-            _directoryName = Path.Combine(Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath), "Data");
+#if NET461
+            string assemblyLocation = GetType().Assembly.CodeBase;
+#else
+            string assemblyLocation = GetType().Assembly.Location;
+#endif
+            string assemblyFolder = Path.GetDirectoryName(new Uri(assemblyLocation).LocalPath);
+            _directoryName = Path.Combine(assemblyFolder, "Data");
         }
 
         [Fact]

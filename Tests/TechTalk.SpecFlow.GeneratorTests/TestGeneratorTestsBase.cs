@@ -26,17 +26,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             net35CSSettings = new ProjectPlatformSettings
                                   {
-                                      Language = GenerationTargetLanguage.CSharp,
-                                      LanguageVersion = new Version("3.0"),
-                                      Platform = GenerationTargetPlatform.DotNet,
-                                      PlatformVersion = new Version("3.5"),
+                                      Language = GenerationTargetLanguage.CSharp
                                   };
             net35VBSettings = new ProjectPlatformSettings
                                   {
-                                      Language = GenerationTargetLanguage.VB,
-                                      LanguageVersion = new Version("9.0"),
-                                      Platform = GenerationTargetPlatform.DotNet,
-                                      PlatformVersion = new Version("3.5"),
+                                      Language = GenerationTargetLanguage.VB
                                   };
 
             net35CSProjectSettings = new ProjectSettings { ProjectFolder = Path.GetTempPath(), ProjectPlatformSettings = net35CSSettings };

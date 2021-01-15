@@ -6,7 +6,6 @@ using Io.Cucumber.Messages;
 using Moq;
 using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.CucumberMessages;
-using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.CucumberMessages

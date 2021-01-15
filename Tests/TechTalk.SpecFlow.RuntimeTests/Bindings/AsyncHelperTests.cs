@@ -27,14 +27,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [Fact]
         public void RunSync_NormalMethod()
         {
-            AsyncHelpers.RunSync(async () => NormalMethod());
+            AsyncHelpers.RunSync(() =>
+            {
+                NormalMethod();
+                return Task.CompletedTask;
+            });
         }
 
         [Fact]
         public void RunSync_ExceptionIsThrown()
         {
 
-            Action action = () => AsyncHelpers.RunSync(async () => ThrowException());
+            Action action = () => AsyncHelpers.RunSync(() =>
+            {
+                ThrowException();
+                return Task.CompletedTask;
+            });
 
             action.Should().Throw<Exception>().WithMessage("Hi from async");
         }
@@ -81,14 +89,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [Fact]
         public void RunSyncReturnValue_NormalMethod()
         {
-            AsyncHelpers.RunSync(async () => NormalMethodReturnValue());
+            AsyncHelpers.RunSync(() => Task.FromResult(NormalMethodReturnValue()));
         }
 
         [Fact]
         public void RunSyncReturnValue_ExceptionIsThrown()
         {
 
-            Action action = () => AsyncHelpers.RunSync(async () => ThrowExceptionReturnValue());
+            Action action = () => AsyncHelpers.RunSync(() =>
+            {
+                ThrowExceptionReturnValue();
+                return Task.CompletedTask;
+            });
 
             action.Should().Throw<Exception>().WithMessage("Hi from async");
         }

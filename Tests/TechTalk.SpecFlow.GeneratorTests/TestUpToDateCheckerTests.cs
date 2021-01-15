@@ -27,10 +27,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var net35CSSettings = new ProjectPlatformSettings
             {
-                Language = GenerationTargetLanguage.CSharp,
-                LanguageVersion = new Version("3.0"),
-                Platform = GenerationTargetPlatform.DotNet,
-                PlatformVersion = new Version("3.5"),
+                Language = GenerationTargetLanguage.CSharp
             };
 
             return new TestUpToDateChecker(TestHeaderWriterStub.Object, 
@@ -76,7 +73,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                     var testUpToDateChecker = CreateUpToDateChecker();
 
-                    this.TestHeaderWriterStub.Setup(thw => thw.DetectGeneratedTestVersion(It.IsAny<string>())).Returns(new Version(1, 0));
+                    TestHeaderWriterStub.Setup(thw => thw.DetectGeneratedTestVersion(It.IsAny<string>())).Returns(new Version(1, 0));
                     // version 1.0 is surely older than the current one
 
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),

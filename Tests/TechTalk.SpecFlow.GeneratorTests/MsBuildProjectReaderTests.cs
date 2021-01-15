@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     {
         private void Should_parse_csproj_file_correctly(string csprojPath, string language, string assemblyName, string rootNamespace, string projectName)
         {
-            string directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.CodeBase).LocalPath);
+            string directoryName = Path.GetDirectoryName(new Uri(GetType().Assembly.Location).LocalPath);
             string projectFilePath = Path.Combine(directoryName, csprojPath);
 
             var specFlowJsonLocatorMock = new Mock<ISpecFlowJsonLocator>();

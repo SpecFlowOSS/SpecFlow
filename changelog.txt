@@ -1,11 +1,13 @@
 
 Features:
 + Add possibility to have a custom pending step message https://github.com/SpecFlowOSS/SpecFlow/issues/1382
++ Be able to access MSTest TestContext in BeforeTestRun/AfterTestRun hook https://github.com/SpecFlowOSS/SpecFlow/issues/1859
 
 Fixes:
 + Copy specflow.json to the output directory
 + SpecFlow.ExternalData plugin works with SpecFlow 3.5 https://github.com/SpecFlowOSS/SpecFlow/issues/2218
 + Show Duration for failed step in Results https://github.com/SpecFlowOSS/SpecFlow/issues/2091
++ Do not show generation error in case of empty feature file https://github.com/SpecFlowOSS/SpecFlow/issues/878
 
 
 3.5.14

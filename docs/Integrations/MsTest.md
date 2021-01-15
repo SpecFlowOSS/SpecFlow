@@ -1,6 +1,6 @@
 # MSTest
 
-SpecFlow does support MsTest V2. It is not any more working with the old MsTest V1.
+SpecFlow supports MsTest V2.
 
 Documentation for MSTest can be found [here](https://docs.microsoft.com/en-us/visualstudio/test/unit-test-your-code?view=vs-2019).
 
@@ -17,9 +17,12 @@ For Test Discovery & Execution:
 
 ## Accessing TestContext
 
+You can access the MsTest TestContext instance in your step definition or hook classes by constructor injection:
+
 ``` csharp
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+[Binding]
 public class MyStepDefs
 {
     private readonly TestContext _testContext;
@@ -28,11 +31,44 @@ public class MyStepDefs
         _testContext = testContext;
     }
 
+    [Given("a step")]
+    public void GivenAStep()
+    {
+        //you can access the TestContext injected in the ctor
+        _testContext.WriteLine(_testContext.TestRunDirectory);
+    }
+
+
     [BeforeScenario()]
     public void BeforeScenario()
     {
-        //now you can access the TestContext
+        //you can access the TestContext injected in the ctor
+        _testContext.WriteLine(_testContext.TestRunDirectory);
     } 
+}
+```
+
+In the static BeforeTestRun/AfterTestRun hooks you can use parameter injection:
+
+``` csharp
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+[Binding]
+public class Hooks
+{
+    [BeforeTestRun]
+    public static void BeforeTestRun(TestContext testContext)
+    {
+        //you can access the TestContext injected as parameter
+        testContext.WriteLine(testContext.TestRunDirectory);
+    }
+
+    [AfterTestRun]
+    public static void AfterTestRun(TestContext testContext)
+    {
+        //you can access the TestContext injected as parameter
+        testContext.WriteLine(testContext.DeploymentDirectory);
+    }
 }
 ```
 
