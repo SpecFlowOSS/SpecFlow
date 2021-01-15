@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -66,6 +67,8 @@ namespace TechTalk.SpecFlow.Generator
             }
 
             string generatedTestCode = GetGeneratedTestCode(featureFileInput);
+            if(string.IsNullOrEmpty(generatedTestCode))
+                return new TestGeneratorResult(null, true);
 
             if (settings.CheckUpToDate && preliminaryUpToDateCheckResult != false)
             {
@@ -88,6 +91,9 @@ namespace TechTalk.SpecFlow.Generator
             {
                 var codeProvider = codeDomHelper.CreateCodeDomProvider();
                 var codeNamespace = GenerateTestFileCode(featureFileInput);
+
+                if (codeNamespace == null) return "";
+
                 var options = new CodeGeneratorOptions
                                   {
                                       BracingStyle = "C",
@@ -120,6 +126,8 @@ namespace TechTalk.SpecFlow.Generator
             {
                 specFlowDocument = ParseContent(parser, contentReader, GetSpecFlowDocumentLocation(featureFileInput));
             }
+
+            if (specFlowDocument.SpecFlowFeature == null) return null;
 
             var featureGenerator = featureGeneratorRegistry.CreateGenerator(specFlowDocument);
 
