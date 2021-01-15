@@ -5,16 +5,16 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     /// IMPORTANT
     /// This class is used for interop with the Visual Studio Extension
     /// DO NOT REMOVE OR RENAME FIELDS!
-    /// This breaks binary serialization accross appdomains
+    /// This breaks binary serialization across appdomains
     [Serializable]
     public class ProjectPlatformSettings
     {
         /// <summary>
-        /// Specifies the programming language of the project. Optinal, defaults to C# 3.0.
+        /// Specifies the programming language of the project. Optional, defaults to C# 3.0.
         /// </summary>
         public string Language { get; set; }
         /// <summary>
-        /// The version of the <see cref="Language"/>. Optinal, defaults to C# 3.0.
+        /// The version of the <see cref="Language"/>. Optional, defaults to C# 3.0.
         /// </summary>
         [Obsolete("Not used anymore, will be removed with SpecFlow future versions")]
         public Version LanguageVersion { get; set; }
@@ -33,10 +33,11 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         public ProjectPlatformSettings()
         {
             Language = GenerationTargetLanguage.CSharp;
+#pragma warning disable 618
             LanguageVersion = new Version(3, 0);
-
             Platform = GenerationTargetPlatform.DotNet;
             PlatformVersion = new Version(3, 5);
+#pragma warning restore 618
         }
     }
 }

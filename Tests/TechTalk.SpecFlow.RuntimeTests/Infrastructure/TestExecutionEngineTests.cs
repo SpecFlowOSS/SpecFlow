@@ -435,7 +435,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
 
-        public void Should_resolve_FeautreContext_hook_parameter()
+        [Fact]
+        public void Should_resolve_FeatureContext_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
