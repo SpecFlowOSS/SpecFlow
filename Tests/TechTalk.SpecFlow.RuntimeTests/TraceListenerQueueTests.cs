@@ -47,7 +47,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             void WriteTestOutputCallback(string message)
             {
-                countdown.Signal();
                 if (!semaphore.Wait(0))
                 {
                     failureOnSemaphoreEntering = true;
@@ -56,6 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
                 testOutputList.Add(message);
                 semaphore.Release();
+                countdown.Signal();
             }
         }
 
