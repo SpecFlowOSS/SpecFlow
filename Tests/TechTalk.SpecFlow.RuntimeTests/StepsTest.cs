@@ -4,6 +4,7 @@ using Xunit;
 
 
 using TechTalk.SpecFlow.Infrastructure;
+#pragma warning disable 618
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

@@ -23,13 +23,6 @@
         <dependency id="Cucumber.Messages" version="[6.0.1, 7.0)" />
       </group>
 
-      <group targetFramework="net471">
-        <dependency id="Utf8Json" version="1.3.7" />
-        <dependency id="BoDi" version="1.4.1" />
-        <dependency id="Gherkin" version="6.0.0"/>
-        <dependency id="Cucumber.Messages" version="[6.0.1, 7.0)" />
-      </group>
-
       <group targetFramework="netstandard2.0">
         <dependency id="Utf8Json" version="1.3.7" />
         <dependency id="System.ValueTuple" version="4.4.0" />

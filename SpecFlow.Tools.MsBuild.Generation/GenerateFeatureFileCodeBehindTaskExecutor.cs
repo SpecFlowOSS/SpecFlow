@@ -55,7 +55,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
                 try
                 {
-                    Task.Run(_msbuildTaskAnalyticsTransmitter.TryTransmitProjectCompilingEvent);
+                    _ = Task.Run(_msbuildTaskAnalyticsTransmitter.TryTransmitProjectCompilingEventAsync);
 
                     var returnValue = projectCodeBehindGenerator.GenerateCodeBehindFilesForProject();
 

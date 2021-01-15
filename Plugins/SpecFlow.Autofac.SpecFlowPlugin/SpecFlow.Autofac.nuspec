@@ -16,8 +16,18 @@
     <license type="file">LICENSE.txt</license>
     <tags>specflow autofac di dependency injection</tags>
     <dependencies>
-      <dependency id="SpecFlow" version="[$version$]" />
-      <dependency id="Autofac" version="4.0.0" />
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Autofac" version="4.0.0" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Autofac" version="4.0.0" />
+      </group>
+      <group targetFramework="net5.0">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Autofac" version="4.0.0" />
+      </group>
     </dependencies>
   </metadata>
 

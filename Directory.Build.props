@@ -1,8 +1,7 @@
 <Project>
-
-
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     
     <SpecFlow_Copyright>Copyright © SpecFlow Team</SpecFlow_Copyright>
     <SpecFlow_Authors>SpecFlow Team</SpecFlow_Authors>
