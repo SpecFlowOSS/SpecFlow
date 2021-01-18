@@ -33,14 +33,13 @@ namespace TechTalk.SpecFlow.Bindings
             MethodInfo methodInfo;
             Delegate bindingAction;
             EnsureReflectionInfo(binding, out methodInfo, out bindingAction);
-
+            Stopwatch stopwatch = new Stopwatch();
             try
             {
+                stopwatch.Start();
                 object result;
-                Stopwatch stopwatch = new Stopwatch();
                 using (CreateCultureInfoScope(contextManager))
                 {
-                    stopwatch.Start();
                     object[] invokeArgs = new object[arguments == null ? 1 : arguments.Length + 1];
                     if (arguments != null)
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
@@ -62,18 +61,24 @@ namespace TechTalk.SpecFlow.Bindings
             }
             catch (ArgumentException ex)
             {
+                stopwatch.Stop();
+                duration = stopwatch.Elapsed;
                 throw errorProvider.GetCallError(binding.Method, ex);
             }
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
+                stopwatch.Stop();
+                duration = stopwatch.Elapsed;
                 throw ex;
             }
             catch (AggregateException aggregateEx)
             {
                 var ex = aggregateEx.InnerExceptions.First();
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
+                stopwatch.Stop();
+                duration = stopwatch.Elapsed;
                 throw ex;
             }
         }

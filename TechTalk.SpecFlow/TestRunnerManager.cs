@@ -138,7 +138,7 @@ namespace TechTalk.SpecFlow
             }
             catch (Exception ex)
             {
-                testTracer.TraceError(ex);
+                testTracer.TraceError(ex,TimeSpan.Zero);
                 throw;
             }
         }

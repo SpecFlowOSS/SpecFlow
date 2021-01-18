@@ -6,6 +6,7 @@ Features:
 Fixes:
 + Copy specflow.json to the output directory
 + SpecFlow.ExternalData plugin works with SpecFlow 3.5 https://github.com/SpecFlowOSS/SpecFlow/issues/2218
++ Show Duration for failed step in Results https://github.com/SpecFlowOSS/SpecFlow/issues/2091
 + Do not show generation error in case of empty feature file https://github.com/SpecFlowOSS/SpecFlow/issues/878
 
 

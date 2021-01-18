@@ -53,9 +53,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceBindingError: {0}", ex);
             }
 
-            public void TraceError(Exception ex)
+            public void TraceError(Exception ex, TimeSpan duration)
             {
-                Console.WriteLine("TraceError: {0}", ex);
+                Console.WriteLine("TraceError: {0}, ({1:F1}s)", ex, duration.TotalSeconds);
             }
 
             public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
