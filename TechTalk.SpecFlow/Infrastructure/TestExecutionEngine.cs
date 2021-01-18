@@ -415,12 +415,14 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             BindingMatch match = null;
             object[] arguments = null;
+            TimeSpan duration = TimeSpan.Zero;
             try
             {
                 match = GetStepMatch(stepInstance);
                 contextManager.StepContext.StepInfo.BindingMatch = match;
                 contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
+                
 
                 if (isStepSkipped)
                 {
@@ -432,7 +434,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                     onStepStartExecuted = true;
                     OnStepStart();
-                    TimeSpan duration = ExecuteStepMatch(match, arguments);
+                    duration = ExecuteStepMatch(match, arguments);
                     if (_specFlowConfiguration.TraceSuccessfulSteps)
                         _testTracer.TraceStepDone(match, arguments, duration);
                 }
@@ -465,7 +467,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             catch (Exception ex)
             {
-                _testTracer.TraceError(ex);
+                _testTracer.TraceError(ex,duration);
 
                 if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.TestError)
                 {

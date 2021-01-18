@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceStepSkipped();
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
-        void TraceError(Exception ex);
+        void TraceError(Exception ex, TimeSpan duration);
         void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck);
         void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
@@ -72,27 +72,27 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput("binding error: {0}", ex.Message);
         }
 
-        public void TraceError(Exception ex)
+        public void TraceError(Exception ex, TimeSpan duration)
         {
-            WriteErrorMessage(ex.Message);
-            WriteLoaderExceptionsIfAny(ex);
+            WriteErrorMessage(ex.Message, duration);
+            WriteLoaderExceptionsIfAny(ex, duration);
         }
 
-        private void WriteLoaderExceptionsIfAny(Exception ex)
+        private void WriteLoaderExceptionsIfAny(Exception ex, TimeSpan duration)
         {
             switch (ex)
             {
                 case TypeInitializationException typeInitializationException:
-                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException);
+                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException,duration);
                     break;
                 case ReflectionTypeLoadException reflectionTypeLoadException:
-                    WriteErrorMessage("Type Loader exceptions:");
-                    FormatLoaderExceptions(reflectionTypeLoadException);
+                    WriteErrorMessage("Type Loader exceptions:",duration);
+                    FormatLoaderExceptions(reflectionTypeLoadException,duration);
                     break;
             }
         }
 
-        private void FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException)
+        private void FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException, TimeSpan duration)
         {
             var exceptions = reflectionTypeLoadException.LoaderExceptions
                 .Select(x => x.ToString())
@@ -100,13 +100,13 @@ namespace TechTalk.SpecFlow.Tracing
                 .Select(x => $"LoaderException: {x}");
             foreach (var ex in exceptions)
             {
-                WriteErrorMessage(ex);
+                WriteErrorMessage(ex,duration);
             }
         }
 
-        private void WriteErrorMessage(string ex)
+        private void WriteErrorMessage(string ex,TimeSpan duration)
         {
-            traceListener.WriteToolOutput("error: {0}", ex);
+            traceListener.WriteToolOutput("error: {0} ({1:F1}s)", ex, duration.TotalSeconds);
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
