@@ -6,6 +6,7 @@ resources:
   clean: "true"
 
 trigger:
+  batch: true
   branches:
     include:
     - master
