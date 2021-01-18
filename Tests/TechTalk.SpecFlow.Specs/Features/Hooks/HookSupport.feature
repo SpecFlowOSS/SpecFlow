@@ -141,7 +141,3 @@ Examples:
     | AfterScenarioBlock  | 0     |
     | BeforeScenario      | 0     |
     | AfterScenario       | 0     |
-    | BeforeFeature       | 1     |
-    | AfterFeature        | 1     |
-    | BeforeTestRun       | 1     |
-    | AfterTestRun        | 1     |
