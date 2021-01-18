@@ -3,7 +3,7 @@ parameters:
   pool: ''
   nugetVersion: 5.8.0
   sdkVersion: 3.1.201
-  net5SdkVersion: 5.0.100
+  net5SdkVersion: 5.0.102
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
   publishArtifacts: true
