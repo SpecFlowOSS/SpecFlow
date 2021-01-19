@@ -17,12 +17,12 @@ namespace TechTalk.SpecFlow.PluginTests
         [Fact]
         public void LoadPlugins_Find_TestAssembly()
         {
-            var testAssemblyProvider = new Mock<ITestAssemblyProvider>();
+            var testAssemblyProvider = new TestAssemblyProvider();
             var testAssembly = Assembly.GetExecutingAssembly();
-            testAssemblyProvider.Setup(t => t.TestAssembly).Returns(testAssembly);
+            testAssemblyProvider.RegisterTestAssembly(testAssembly);
 
             //ARRANGE
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider.Object);
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider);
 
             //ACT
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
@@ -34,12 +34,12 @@ namespace TechTalk.SpecFlow.PluginTests
         [Fact]
         public void LoadPlugins_Find_All_Referenced_Plugins()
         {
-            var testAssemblyProvider = new Mock<ITestAssemblyProvider>();
+            var testAssemblyProvider = new TestAssemblyProvider();
             var testAssembly = Assembly.GetExecutingAssembly();
-            testAssemblyProvider.Setup(t => t.TestAssembly).Returns(testAssembly);
+            testAssemblyProvider.RegisterTestAssembly(testAssembly);
 
             //ARRANGE
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider.Object);
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider);
 
             //ACT
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
