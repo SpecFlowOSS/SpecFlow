@@ -1,6 +1,8 @@
 # Contributing to SpecFlow
 
-Contributing can be a rewarding way to teach,Improve existing skills,refine the software you work with and build experience. Contributing to open source  can also help you grow and learn more in your career or even change careers!
+Contributing can be a rewarding way to teach,improve existing skills,refine the software you work with and build experience. Contributing to open source  can also help you grow and learn more in your career or even change careers!
+
+By contributing to SpecFlow, you also have the chance to become a SpecFlow Community Hero! Please check the [SpecFlow Community Hero Program](https://specflow.org/community/community-hero-program/) for more details.
 
 ## What do I need to know to help?
 
@@ -19,7 +21,7 @@ and of course **C# knowledge** if you are looking to contribute by coding.
 
 ## Types of contributions 
 
-You can contribute by working on an  [existing bug/issue](https://github.com/SpecFlowOSS/SpecFlow/search?type=Issues) or report a new one, build a new functionality based on [feature requests](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests) reported by SpecFlow community or if do not wish to code you can always contribute to [documentation](#Building-documentation). 
+You can contribute by working on an  [existing bug/issue](https://github.com/SpecFlowOSS/SpecFlow/search?type=Issues) or report a new one, build a new functionality based on [feature requests](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests) reported by SpecFlow community or if do not wish to code you can always contribute to [writing documentation](##Building-documentation). 
 
 ### Ground rules & expectations
 
@@ -37,22 +39,13 @@ Guidelines for bug reports:
 3. **Isolate and report the problem** &mdash; ideally create a reduced test
    case. Fill out the provided template.
 
-4. **Provide a screenshot or example code** &mdash; you might in a situation that
-   is very tied to your specific use-case, so provide as much information as
-    possible.
 
-We move issues that need help, but may not be of a critical nature or require
-intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/SpecFlowOSS/SpecFlow/labels/up-for-grabs). This is a list of easier tasks that anybody who wants to get into SpecFlow
-development can try.
-
-Please try to be as detailed as possible in your report and provide steps to reproduce the issue as well as the outcome you were expecting! Please fill out the issue template,If you don't provide this information, we have to ask them again from you.
+We label issues that need help, but may not be of a critical nature or require intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/SpecFlowOSS/SpecFlow/labels/up-for-grabs). This is a list of easier tasks that anybody who wants to get into SpecFlow development can try.
 
 #### Feature requests
 
 Feature requests are welcome. But please take a moment to find out whether your idea fits with the scope and aims of the project. It's up to *you*
 to make a strong case to convince the community of the merits of this feature. Please visit our [feature request page](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests) to check out the existing requests and vote on the ones already proposed by the community. Since much of the work is done by volunteers, someone who believes in the idea will have to write the code.  Please provide as much detail and context as possible. 
-
-If active work is not made on your feature request within 2-3 months, we may close your feature request.  Anybody is free to pick up on the idea, and we welcome the work! But in the interest of keeping the issue list down to a maintainable level, we have to do some pruning from time-to-time.
 
 ## How to contribute
 
@@ -97,7 +90,7 @@ Some important notes to keep in mind:
 - If you have any large pull request in mind (e.g. implementing features, refactoring code, etc), **please ask first** otherwise you risk spending
   a lot of time working on something that the project's developers might not want to merge into the project. 										
 
- ### Building sources
+ ## Building sources
 
 Visual Studio:  
 
@@ -145,6 +138,8 @@ To build local documentation:
 
 ## Where can I go for help?
 
-????
+Please join our dedicated [discord server](https://go.specflow.org/join-contributing-on-discord) to ask questions from the SpecFlow team and also get to work with other contributors.
+
+
 
 Thank you for your contributions!
