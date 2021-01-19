@@ -168,7 +168,8 @@ namespace TechTalk.SpecFlow.Generator.Generation
                         new CodePrimitiveExpression(scenario.Name),
                         new CodePrimitiveExpression(scenario.Description),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_TAGS_VARIABLE_NAME),
-                        new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME))));
+                        new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME),
+                        new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_featureTags"))));
 
             GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
 
