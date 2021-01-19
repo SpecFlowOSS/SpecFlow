@@ -1,12 +1,12 @@
 # Contributing to SpecFlow
 
-Contributing can be a rewarding way to teach,improve existing skills,refine the software you work with and build experience. Contributing to open source  can also help you grow and learn more in your career or even change careers!
+Contributing can be a rewarding way to teach, improve existing skills, refine the software you work with and build experience. Contributing to open source can also help you grow and learn more in your career or even change careers!
 
 By contributing to SpecFlow, you also have the chance to become a SpecFlow Community Hero! Please check the [SpecFlow Community Hero Program](https://specflow.org/community/community-hero-program/) for more details.
 
 ## What do I need to know to help?
 
-We do all of our development [on GitHub](https://github.com/SpecFlowOSS/SpecFlow). If you are not familiar with GitHub or pull requests please check [out this guide to get started](https://guides.github.com/activities/hello-world/).
+We do all of our development [on GitHub](https://github.com/SpecFlowOSS/SpecFlow). If you are not familiar with GitHub or pull requests please check out [this guide](https://guides.github.com/activities/hello-world/) to get started.
 
 Other prerequisites to develop are : 
 
@@ -49,7 +49,7 @@ to make a strong case to convince the community of the merits of this feature. P
 
 ## How to contribute
 
-As mentioned before, we do all of our development [on GitHub](https://github.com/SpecFlowOSS/SpecFlow). If you are not familiar with GitHub or pull requests please check [out this guide to get started](https://guides.github.com/activities/hello-world/). All required information about developing SpecFlow can be found in [our documentation](https://docs.specflow.org/projects/specflow/en/latest/Contribute/Prerequisite.html).
+As mentioned before, we do all of our development [on GitHub](https://github.com/SpecFlowOSS/SpecFlow). If you are not familiar with GitHub or pull requests please check out [this guide](https://guides.github.com/activities/hello-world/) to get started. All required information about developing SpecFlow can be found in [our documentation](https://docs.specflow.org/projects/specflow/en/latest/Contribute/Prerequisite.html).
 
 Please adhere to the coding conventions in the project (indentation, accurate comments, etc.) and don't forget to add your own tests and documentation. When working with Git, we recommend the following process.
 
@@ -87,7 +87,7 @@ Some important notes to keep in mind:
 - Do not send code style changes as pull requests like changing the indentation of some particular code snippet or how a function is called.
   Those will not be accepted as they pollute the repository history with non functional changes and are often based on personal preferences.
 - By submitting a patch, you agree that your work will be licensed under the license used by the project.
-- If you have any large pull request in mind (e.g. implementing features, refactoring code, etc), **please ask first** otherwise you risk spending
+- If you have any large pull request in mind (e.g. Implementing features, refactoring code, etc), **please ask first** otherwise you risk spending
   a lot of time working on something that the project's developers might not want to merge into the project. 										
 
  ## Building sources
