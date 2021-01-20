@@ -73,6 +73,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _vsTestExecutionDriver.CheckAnyOutputContainsText(text);
         }
 
+        [Then(@"the execution log should contain text")]
+        public void ThenTheExecutionLogShouldContainMultilineText(string multilineText)
+        {
+            _vsTestExecutionDriver.CheckAnyOutputContainsText(multilineText);
+        }
+
         [Then(@"the output should contain text '(.*)'")]
         public void ThenTheOutputShouldContainText(string text)
         {

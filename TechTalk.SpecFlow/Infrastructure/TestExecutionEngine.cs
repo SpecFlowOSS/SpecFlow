@@ -199,7 +199,18 @@ namespace TechTalk.SpecFlow.Infrastructure
         public virtual void OnScenarioStart()
         {
             _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
-            FireScenarioEvents(HookType.BeforeScenario);
+            try
+            {
+                FireScenarioEvents(HookType.BeforeScenario);
+            }
+            catch (Exception ex)
+            {
+                if (_contextManager.ScenarioContext != null)
+                {
+                    _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
+                    _contextManager.ScenarioContext.TestError = ex;
+                }
+            }
         }
 
         public virtual void OnAfterLastStep()
