@@ -11,6 +11,7 @@ Fixes:
 + Show Duration for failed step in Results https://github.com/SpecFlowOSS/SpecFlow/issues/2091
 + Do not show generation error in case of empty feature file https://github.com/SpecFlowOSS/SpecFlow/issues/878
 + Fix StepArgumentTrasformation with same return type but different parameters https://github.com/SpecFlowOSS/SpecFlow/issues/469
++ ScenarioExecutionStatus displays as OK if test failed in before scenario https://github.com/SpecFlowOSS/SpecFlow/issues/1646
 
 3.5.14
 

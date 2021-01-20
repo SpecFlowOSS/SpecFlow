@@ -132,6 +132,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddHookBinding(eventType, methodName, order: hookOrder);
         }
 
+        [Given(@"a hook '(.*)' for '([^']*)' with order '([^']*)' throwing an exception")]
+        public void GivenAHookForWithOrderThrowingAnException(string methodName, string eventType, int hookOrder)
+        {
+            _projectsDriver.AddHookBinding(eventType, methodName, order: hookOrder, code: $"throw new System.Exception(\"Error in Hook: {eventType}\");");
+        }
+
         [Given(@"the following binding class")]
         [Given(@"the following class")]
         public void GivenTheFollowingBindingClass(string rawBindingClass)
