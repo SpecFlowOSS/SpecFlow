@@ -1,6 +1,6 @@
 # Decorators
 
-SpecFlow supports decorators which can be used in feature files.
+SpecFlow supports decorators which can be used in feature files. Decorators can be used to convert a tag in a feature file to an attribute in the generated code behind file.
 
 ## Example decorator
 
