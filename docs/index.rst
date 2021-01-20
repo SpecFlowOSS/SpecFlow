@@ -138,6 +138,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Extend/Plugins-(Legacy).md
    Extend/Available-Plugins.md
    Extend/Available-Containers-&-Registrations.md
+   Extend/Decorators.md
 
 .. toctree::
    :maxdepth: 1
