@@ -94,14 +94,20 @@ namespace TechTalk.SpecFlow.Bindings
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object value, IBindingType typeToConvertTo)
+        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object valueToConvert, IBindingType typeToConvertTo)
         {
             if (!stepTransformationBinding.Method.ReturnType.TypeEquals(typeToConvertTo))
                 return false;
 
-            if (stepTransformationBinding.Regex != null && value is string)
-                return stepTransformationBinding.Regex.IsMatch((string) value);
-            return true;
+            if (stepTransformationBinding.Regex != null && valueToConvert is string)
+                return stepTransformationBinding.Regex.IsMatch((string) valueToConvert);
+            
+            var transformationFirstArgumentTypeName = stepTransformationBinding.Method.Parameters.FirstOrDefault()?.Type.FullName;
+            
+            var isTableStepTransformation = transformationFirstArgumentTypeName == typeof(Table).FullName;
+            var valueIsTable = valueToConvert is Table;
+            
+            return isTableStepTransformation == valueIsTable;
         }
 
         private static object ConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
