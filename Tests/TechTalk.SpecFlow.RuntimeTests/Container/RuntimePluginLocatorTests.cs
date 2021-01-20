@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reflection;
 using FluentAssertions;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 using Xunit;
 
@@ -12,9 +14,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Container
         {
             //ARRANGE
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath());
-
+            var testAssemblyProvider = new TestAssemblyProvider();
+            testAssemblyProvider.RegisterTestAssembly(Assembly.GetExecutingAssembly());
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider);
 
             //ACT
             runtimePluginLocator.GetAllRuntimePlugins();

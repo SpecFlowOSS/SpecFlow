@@ -36,6 +36,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             RegisterDefaults(container);
 
+            var testAssemblyProvider = container.Resolve<ITestAssemblyProvider>();
+            testAssemblyProvider.RegisterTestAssembly(testAssembly);
+
             if (configurationProvider != null)
                 container.RegisterInstanceAs(configurationProvider);
 
@@ -141,8 +144,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
             var traceListener = container.Resolve<ITraceListener>();
-            var assemblyLocation = testAssembly != null && !testAssembly.IsDynamic ? testAssembly.Location : null;
-            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins(Path.GetDirectoryName(assemblyLocation)))
+            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins())
             {
                 LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
             }

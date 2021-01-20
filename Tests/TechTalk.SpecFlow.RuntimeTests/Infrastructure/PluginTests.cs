@@ -309,7 +309,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var runtimePluginLocator = new Mock<IRuntimePluginLocator>();
             runtimePluginLocator.Setup(m => m.GetAllRuntimePlugins()).Returns(new List<string>() { "aPlugin" });
-            runtimePluginLocator.Setup(m => m.GetAllRuntimePlugins(It.IsAny<string>())).Returns(new List<string>() { "aPlugin" });
 
 
             var pluginLoaderStub = new Mock<IRuntimePluginLoader>();
