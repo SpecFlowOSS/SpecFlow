@@ -103,6 +103,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEvents, RuntimePluginTestExecutionLifecycleEvents>();
             container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEventEmitter, IRuntimePluginTestExecutionLifecycleEventEmitter>();
+
+            container.RegisterTypeAs<TestAssemblyProvider, ITestAssemblyProvider>();
         }
 
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)

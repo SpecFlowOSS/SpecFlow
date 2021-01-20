@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Plugins
 {
@@ -9,19 +11,16 @@ namespace TechTalk.SpecFlow.Plugins
     {
         private readonly IRuntimePluginLocationMerger _runtimePluginLocationMerger;
         private readonly ISpecFlowPath _specFlowPath;
+        private readonly Assembly _testAssembly;
 
-        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger, ISpecFlowPath specFlowPath)
+        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger, ISpecFlowPath specFlowPath, ITestAssemblyProvider testAssemblyProvider)
         {
             _runtimePluginLocationMerger = runtimePluginLocationMerger;
             _specFlowPath = specFlowPath;
+            _testAssembly = testAssemblyProvider.TestAssembly;
         }
 
         public IReadOnlyList<string> GetAllRuntimePlugins()
-        {
-            return GetAllRuntimePlugins(null);
-        }
-
-        public IReadOnlyList<string> GetAllRuntimePlugins(string testAssemblyLocation)
         {
             var allRuntimePlugins = new List<string>();
 
@@ -29,9 +28,11 @@ namespace TechTalk.SpecFlow.Plugins
             string specFlowAssemblyFolder = Path.GetDirectoryName(_specFlowPath.GetPathToSpecFlowDll());
             allRuntimePlugins.AddRange(SearchPluginsInFolder(specFlowAssemblyFolder));
 
-            if (testAssemblyLocation.IsNotNullOrWhiteSpace())
+            var assemblyLocation = _testAssembly != null && !_testAssembly.IsDynamic ? _testAssembly.Location : null;
+            if (assemblyLocation.IsNotNullOrWhiteSpace())
             {
-                allRuntimePlugins.AddRange(SearchPluginsInFolder(testAssemblyLocation));
+                allRuntimePlugins.Add(assemblyLocation);
+                allRuntimePlugins.AddRange(SearchPluginsInFolder(Path.GetDirectoryName(assemblyLocation)));
             }
 
             return _runtimePluginLocationMerger.Merge(allRuntimePlugins.Distinct().ToList());
