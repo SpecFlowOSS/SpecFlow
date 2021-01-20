@@ -2,6 +2,7 @@
 Features:
 + Add possibility to have a custom pending step message https://github.com/SpecFlowOSS/SpecFlow/issues/1382
 + Be able to access MSTest TestContext in BeforeTestRun/AfterTestRun hook https://github.com/SpecFlowOSS/SpecFlow/issues/1859
++ Access Feature level tags in Sceario level via ScenarioAndFeatureTags https://github.com/SpecFlowOSS/SpecFlow/issues/2024
 + Search for RuntimePlugins in the TestAssembly https://github.com/SpecFlowOSS/SpecFlow/issues/1395
 
 Fixes:

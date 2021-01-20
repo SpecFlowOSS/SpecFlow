@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 _testGeneratorProvider.SetTestClassCategories(generationContext, featureCategories);
             }
 
-            var featureTagsField = new CodeMemberField(typeof(string[]), "_featureTags");
+            var featureTagsField = new CodeMemberField(typeof(string[]), GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME);
             featureTagsField.InitExpression = _scenarioPartHelper.GetStringArrayExpression(generationContext.Feature.Tags);
 
             generationContext.TestClass.Members.Add(featureTagsField);
