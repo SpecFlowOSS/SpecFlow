@@ -11,7 +11,7 @@ Steps to follow:
 
 1. Create a SpecFlow project with test framework NUnit using the project template provided by the SpecFlow Visual Studio extension. [Learn more](../Installation/Project-and-Item-Templates.html#visual-studio-templates)
 
-1. Create a GeneratorPlugin. You can follow the steps [here](./Plugins.html#sample-generator-plugin) or you can take a [sample generator plugin project](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/Plugins/GeneratorOnlyPlugin) as a basis
+1. Create a GeneratorPlugin. You can follow the steps [here](./Plugins.html#sample-generator-plugin) or you can use the [sample generator plugin project](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/Plugins/GeneratorOnlyPlugin) as a basis
 
 1. Create a Decorator (which is a class which implements interfaces like `ITestMethodTagDecorator`, `ITestMethodDecorator`, etc.):
 
@@ -65,7 +65,7 @@ Steps to follow:
     }
     ```
 
-1. Install the GeneratorPlugin NuGet package to the SpecFlow project. After the install, it should look like this:
+1. Install the GeneratorPlugin NuGet package to the SpecFlow project. Once the installation finishes, it should look like this:
 
     ![Generator plugin installed](../_static/images/generator_plugin_installed.png)
 
