@@ -168,7 +168,8 @@ namespace TechTalk.SpecFlow.Generator.Generation
                         new CodePrimitiveExpression(scenario.Name),
                         new CodePrimitiveExpression(scenario.Description),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_TAGS_VARIABLE_NAME),
-                        new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME))));
+                        new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME),
+                        new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME))));
 
             GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
 
@@ -246,7 +247,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             var tagsOfScenarioVariableReferenceExpression = new CodeVariableReferenceExpression("tagsOfScenario");
             var isScenarioIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isScenarioIgnored");
-            var featureFileTagFieldReferenceExpression = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_featureTags");
+            var featureFileTagFieldReferenceExpression = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME);
             var isFeatureIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isFeatureIgnored");
 
             var ignoreLinqStatement = "Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any";
