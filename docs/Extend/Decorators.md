@@ -14,6 +14,10 @@ Steps to follow:
 1. Create a GeneratorPlugin. You can follow the steps [here](./Plugins.html#sample-generator-plugin) or you can use the [sample generator plugin project](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/Plugins/GeneratorOnlyPlugin) as a basis
 
 1. Create a Decorator (which is a class which implements interfaces like `ITestMethodTagDecorator`, `ITestMethodDecorator`, etc.):
+  
+   - `ITestMethodDecorator` is called always
+   - `ITestMethodTagDecorator` is called only if the scenario has at least one tag
+
 
     ```c#
     public class MyMethodTagDecorator : ITestMethodTagDecorator
