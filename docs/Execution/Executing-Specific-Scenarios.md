@@ -2,7 +2,8 @@
 
 SpecFlow converts the tags in your feature files to test case categories:
 
-- NUnit: Category
+- SpecFlow+ Runner: TestCategory
+- NUnit: Category or TestCategory
 - MSTest: TestCategory
 - xUnit: Trait (similar functionality, SpecFlow will insert a Trait attribute with `Category` name)
 
@@ -14,13 +15,11 @@ Learn more about the filters in the [Official documentation](https://docs.micros
 
 ## Examples
 
-All the examples here are with using `Category`, but if you are using `MsTest` then you should use `TestCategory` instead.
+All the examples here are using `Category`, but if you are using `MsTest` or `SpecFlow+ Runner` then you should use `TestCategory` instead.
 
 ### How to use the filters
 
-[//]: # "example feature file with tag on scenario -> single tag"
-
-There are 2 scenarios where one of them has a tag: `@done`, other one does not have a tag.
+Below are 2 scenarios where one of them has a tag: `@done`, and the other one does not have a tag.
 
 ```gherkin
 Feature: Breakfast
@@ -45,9 +44,7 @@ Category=done
 
 ---
 
-[//]: # "example feature file with 2 tag on scenario -> 'one of two tags at a scenario' - or relationship"
-
-There are 2 scenarios where one of them has a tag: `@done`, and the other one has `@automated`.
+Below are 2 scenarios where one of them has a tag: `@done`, and the other one has `@automated`.
 
 ```gherkin
 Feature: Breakfast
@@ -65,7 +62,7 @@ Scenario: Use all the sugar
   Then the cup is empty
 ```
 
-If we would like to run scenarios which has either `@done` or `@automated`:
+If we would like to run scenarios which have either `@done` or `@automated`:
 
 ```bash
 Category=done | Category=automated
@@ -73,9 +70,7 @@ Category=done | Category=automated
 
 ---
 
-[//]: # "example feature file with tag on feature and tag on 1 scenario, other has no tags -> and relationship"
-
-There are 2 scenarios where one of them has a tag: `@done`, and the other one has `@automated`. On Feature level, there is the `@US123` tag.
+Below are 2 scenarios where one of them has a tag: `@done`, and the other one has `@automated`. There is also a `@US123` tag at Feature level.
 
 ```gherkin
 @US123
@@ -94,15 +89,13 @@ Scenario: Use all the sugar
   Then the cup is empty
 ```
 
-If we would like to run only those scenarios, which has both `@US123` and `@done`:
+If we would like to run only those scenarios, which have both `@US123` and `@done`:
 
 ```bash
 Category=US123 & Category=done
 ```
 
-[//]: # "example feature file with 2 tags on scenario -> and relationship"
-
-There are 2 scenarios where one of them has two tags: `@done` and `@important`. There is another scenario, which has the `@automated` tag. On Feature level, there is the `@US123` tag.
+Below are 2 scenarios where one of them has two tags: `@done` and `@important`. There is another scenario, which has the `@automated` tag, and there is a `@us123` tag at Feature level.
 
 ```gherkin
 @US123
@@ -121,7 +114,7 @@ Scenario: Use all the sugar
   Then the cup is empty
 ```
 
-If we would like to run only those scenarios, which has both `@done` and `@important`:
+If we would like to run only those scenarios, which have both `@done` and `@important`:
 
 ```bash
 Category=done & Category=important
