@@ -32,7 +32,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<ITestTracer> testTracerStub;
         private Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
         private Mock<IBindingInvoker> methodBindingInvokerMock;
-        private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<ITestObjectResolver> testObjectResolverMock;
         private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
@@ -129,7 +128,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();
             methodBindingInvokerMock = new Mock<IBindingInvoker>();
 
-            stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
             obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
 
             cucumberMessageSenderMock = new Mock<ICucumberMessageSender>();
@@ -162,7 +160,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 new Mock<IUnitTestRuntimeProvider>().Object,
                 contextManagerStub.Object,
                 stepDefinitionMatcherStub.Object,
-                stepErrorHandlers,
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
                 cucumberMessageSenderMock.Object,
@@ -226,10 +223,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return stepDefStub;
         }
 
-        private void RegisterFailingStepDefinition()
+        private void RegisterFailingStepDefinition(TimeSpan? expectedDuration = null)
         {
             var stepDefStub = RegisterStepDefinition();
             TimeSpan duration;
+            if (expectedDuration.HasValue) duration = expectedDuration.Value;
             methodBindingInvokerMock.Setup(i => i.InvokeBinding(stepDefStub.Object, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out duration))
                 .Throws(new Exception("simulated error"));
         }
@@ -331,69 +329,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration));
-        }
-
-        [Fact]
-        public void Should_call_step_error_handlers()
-        {
-            var stepErrorHandlerMock = new Mock<IStepErrorHandler>();
-            stepErrorHandlers.Add("eh1", stepErrorHandlerMock.Object);
-
-            var testExecutionEngine = CreateTestExecutionEngine();
-            RegisterFailingStepDefinition();
-
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
-            stepErrorHandlerMock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
-        }
-
-
-        [Fact]
-        public void Should_call_multiple_step_error_handlers()
-        {
-            var stepErrorHandler1Mock = new Mock<IStepErrorHandler>();
-            var stepErrorHandler2Mock = new Mock<IStepErrorHandler>();
-            stepErrorHandlers.Add("eh1", stepErrorHandler1Mock.Object);
-            stepErrorHandlers.Add("eh2", stepErrorHandler2Mock.Object);
-
-            var testExecutionEngine = CreateTestExecutionEngine();
-            RegisterFailingStepDefinition();
-
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
-            stepErrorHandler1Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
-            stepErrorHandler2Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
-        }
-
-        [Fact]
-        public void Should_be_able_to_swallow_error_in_step_error_handlers()
-        {
-            var stepErrorHandlerStub = new Mock<IStepErrorHandler>();
-            stepErrorHandlers.Add("eh1", stepErrorHandlerStub.Object);
-
-            stepErrorHandlerStub.Setup(seh => seh.OnStepFailure(It.IsAny<TestExecutionEngine>(), It.IsAny<StepFailureEventArgs>()))
-                .Callback((TestExecutionEngine _, StepFailureEventArgs args) => args.IsHandled = true);
-
-            var testExecutionEngine = CreateTestExecutionEngine();
-            RegisterFailingStepDefinition();
-
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
-            scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.OK);
-        }
-
-        [Fact]
-        public void Step_error_handlers_should_not_swallow_error_by_default()
-        {
-            var stepErrorHandlerStub = new Mock<IStepErrorHandler>();
-            stepErrorHandlers.Add("eh1", stepErrorHandlerStub.Object);
-
-            var testExecutionEngine = CreateTestExecutionEngine();
-            RegisterFailingStepDefinition();
-
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
-            scenarioContext.ScenarioExecutionStatus.Should().Be(ScenarioExecutionStatus.TestError);
         }
 
         [Fact]
@@ -780,5 +715,43 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
         }
+
+        [Fact]
+        public void Should_set_correct_duration_in_case_of_failed_step()
+        {
+            TimeSpan executionDuration = TimeSpan.Zero;
+            testTracerStub.Setup(c => c.TraceError(It.IsAny<Exception>(), It.IsAny<TimeSpan>()))
+                          .Callback<Exception, TimeSpan>((ex, duration) => executionDuration = duration);
+
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            TimeSpan expectedDuration = TimeSpan.FromSeconds(5);
+            RegisterFailingStepDefinition(expectedDuration);
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            
+            testTracerStub.Verify(tracer => tracer.TraceError(It.IsAny<Exception>(), It.IsAny<TimeSpan>()), Times.Once());
+            executionDuration.Should().Be(expectedDuration);
+        }
+
+        [Fact]
+        public void Should_set_correct_duration_in_case_of_passed_step()
+        {
+            TimeSpan executionDuration = TimeSpan.Zero;
+            testTracerStub.Setup(c => c.TraceStepDone(It.IsAny<BindingMatch>(), It.IsAny<object[]>(), It.IsAny<TimeSpan>()))
+                          .Callback<BindingMatch, object[], TimeSpan>((match, arguments, duration) => executionDuration = duration);
+
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            TimeSpan expectedDuration = TimeSpan.FromSeconds(5);
+            var stepDefStub = RegisterStepDefinition();
+            methodBindingInvokerMock.Setup(i => i.InvokeBinding(stepDefStub.Object, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out expectedDuration));
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+
+            testTracerStub.Verify(tracer => tracer.TraceStepDone(It.IsAny<BindingMatch>(), It.IsAny<object[]>(), It.IsAny<TimeSpan>()), Times.Once());
+            executionDuration.Should().Be(expectedDuration);
+        }
+
     }
 }

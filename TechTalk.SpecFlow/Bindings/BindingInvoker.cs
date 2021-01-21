@@ -81,6 +81,12 @@ namespace TechTalk.SpecFlow.Bindings
                 duration = stopwatch.Elapsed;
                 throw ex;
             }
+            catch (Exception)
+            {
+                stopwatch.Stop();
+                duration = stopwatch.Elapsed;
+                throw;
+            }
         }
 
         protected virtual CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
