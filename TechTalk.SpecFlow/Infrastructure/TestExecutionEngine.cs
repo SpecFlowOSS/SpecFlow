@@ -34,7 +34,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
-        private readonly IStepErrorHandler[] _stepErrorHandlers;
         private readonly IStepFormatter _stepFormatter;
         private readonly ITestObjectResolver _testObjectResolver;
         private readonly ITestTracer _testTracer;
@@ -62,7 +61,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IContextManager contextManager,
             IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers,
             IBindingInvoker bindingInvoker,
             IObsoleteStepHandler obsoleteStepHandler,
             ICucumberMessageSender cucumberMessageSender,
@@ -86,7 +84,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testTracer = testTracer;
             _stepFormatter = stepFormatter;
             _stepArgumentTypeConverter = stepArgumentTypeConverter;
-            _stepErrorHandlers = stepErrorHandlers?.Values.ToArray();
             _stepDefinitionMatchService = stepDefinitionMatchService;
             _testObjectResolver = testObjectResolver;
             TestThreadContainer = testThreadContainer;
@@ -445,7 +442,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                     onStepStartExecuted = true;
                     OnStepStart();
-                    duration = ExecuteStepMatch(match, arguments);
+                    ExecuteStepMatch(match, arguments, out duration);
                     if (_specFlowConfiguration.TraceSuccessfulSteps)
                         _testTracer.TraceStepDone(match, arguments, duration);
                 }
@@ -478,7 +475,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             catch (Exception ex)
             {
-                _testTracer.TraceError(ex,duration);
+                _testTracer.TraceError(ex, duration);
 
                 if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.TestError)
                 {
@@ -519,31 +516,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw _errorProvider.GetMissingStepDefinitionError();
         }
 
-        protected virtual TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        protected virtual void ExecuteStepMatch(BindingMatch match, object[] arguments, out TimeSpan duration)
         {
-            TimeSpan duration = TimeSpan.Zero;
-            try
-            {
-                _bindingInvoker.InvokeBinding(match.StepBinding, _contextManager, arguments, _testTracer, out duration);
-            }
-            catch (Exception ex)
-            {
-                if (_stepErrorHandlers != null)
-                {
-                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepContext, ex);
-                    foreach (var stepErrorHandler in _stepErrorHandlers)
-                    {
-                        stepErrorHandler.OnStepFailure(this, stepFailureEventArgs);
-                    }
-
-                    if (stepFailureEventArgs.IsHandled)
-                        return duration;
-                }
-
-                throw;
-            }
-
-            return duration;
+            _bindingInvoker.InvokeBinding(match.StepBinding, _contextManager, arguments, _testTracer, out duration);
         }
 
         private void HandleBlockSwitch(ScenarioBlock block)
