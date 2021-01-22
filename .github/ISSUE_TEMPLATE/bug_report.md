@@ -14,6 +14,7 @@ assignees: ''
 
 <!-- PLEASE CHECK THE OPTIONS THAT APPLY TO YOU BY ADDING AN 'x' TO THE CORRESPONDING CHECKBOX ('[ ]') -->
 ### SpecFlow Version:
+- [ ] 3.6
 - [ ] 3.5
 - [ ] 3.4
 - [ ] 3.3
