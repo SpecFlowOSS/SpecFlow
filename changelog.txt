@@ -1,8 +1,9 @@
+3.6
 
 Features:
 + Add possibility to have a custom pending step message https://github.com/SpecFlowOSS/SpecFlow/issues/1382
 + Be able to access MSTest TestContext in BeforeTestRun/AfterTestRun hook https://github.com/SpecFlowOSS/SpecFlow/issues/1859
-+ Access Feature level tags in Sceario level via ScenarioAndFeatureTags https://github.com/SpecFlowOSS/SpecFlow/issues/2024
++ Access Feature level tags in Scenario level via ScenarioAndFeatureTags https://github.com/SpecFlowOSS/SpecFlow/issues/2024
 + Search for RuntimePlugins in the TestAssembly https://github.com/SpecFlowOSS/SpecFlow/issues/1395
 
 Fixes:
@@ -12,6 +13,7 @@ Fixes:
 + Do not show generation error in case of empty feature file https://github.com/SpecFlowOSS/SpecFlow/issues/878
 + Fix StepArgumentTrasformation with same return type but different parameters https://github.com/SpecFlowOSS/SpecFlow/issues/469
 + ScenarioExecutionStatus displays as OK if test failed in before scenario https://github.com/SpecFlowOSS/SpecFlow/issues/1646
+
 
 3.5.14
 
