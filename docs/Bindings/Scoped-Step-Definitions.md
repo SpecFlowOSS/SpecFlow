@@ -48,6 +48,12 @@ _Examples for OR tag scope decoration:_
 [Scope(Tag = "thisTag"), Scope(Tag = "OrThisTag")]
 ```
 
+**Note:** Scopes on a different level (class and method) will be combined with OR: defining a `[Scope]` attribute on class level and defining another `[Scope]` at method level will cause the attributes to be combined with OR. If you want an AND combination, use a single Scope, e.g.:
+
+```
+[Scope(Feature = "feature title", Scenario = "scenario title")]
+```
+
 If a step can be matched to both a step definition without a `[Scope]` attribute as well as a step definition with a `[Scope]` attribute, the step definition with the `[Scope]` attribute is used (no ambiguity).
 
 If a step matches several scoped step definitions, the one with the most restrictions is used. For example, if the first step definition contains `[Scope(Tag = "myTag")]` and the second contains `[Scope(Tag = "myTag", Feature = "myFeature")]` the second step definition (the more specific one) is used if it matches the step.
