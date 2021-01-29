@@ -51,11 +51,13 @@ _(click image for full size)_
 
 ## Document Formatting
 
-Format document (in this case feature files) is also available. It re-indents code and fixes blank lines, comments, etc.
+Document formatting is also available. It automatically re-indents code and fixes blank lines, comments, etc.
+
+You can find this option under Edit->Advanced->Format document or alternatively use the Ctrl+K, Ctrl+D shortcut:
 
 ![Format document](/_static/images/format-doc.png)
 
-Below is a document which is not indented correctly:
+Below is a feature file document which is not indented correctly:
 
 ![Unformatted document](/_static/images/format-doc-before.png)
 
