@@ -1,6 +1,16 @@
 # Step Definitions
 
-The step definitions provide the connection between your feature files and application interfaces. For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters.  
+The step definitions provide the connection between your feature files and application interfaces. You have to add the `[Binding]` attribute to the class where your step definitions are:
+
+```csharp
+[Binding]
+public class StepDefinitions
+{
+	...
+}
+```
+
+For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters.  
 
 The following example shows a simple step definition that matches to the step `When I perform a simple search on 'Domain'`:
 
