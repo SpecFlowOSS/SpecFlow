@@ -1,3 +1,6 @@
+Fixes:
+ + Thread-safe object resolution in BoDi
+
 3.6
 
 Features:
