@@ -43,6 +43,21 @@ public void WhenIPerformASimpleSearchOn(string searchTerm)
 }
 ```
 
+## Other Attributes
+
+The `[Obsolete]` attribute from the system namespace is also supported, check [here](https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#runtime) for more details.
+
+```c#
+[Given(@"Stuff is done")]
+            [Obsolete]
+            public void GivenStuffIsDone()
+            {
+                var x = 2+3;
+            }
+
+```
+
+
 ## Step Definition Methods Rules
 
 * Must be in a public class, marked with the `[Binding]` attribute.
