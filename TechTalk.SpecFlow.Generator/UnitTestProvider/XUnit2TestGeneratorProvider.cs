@@ -33,6 +33,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string SKIP_REASON = "Ignored";
         protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         protected internal const string CATEGORY_PROPERTY_NAME = "Category";
+        protected internal const string IGNORE_TEST_CLASS = "IgnoreTestClass";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
         {
@@ -165,6 +166,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
+            IgnoreFeature(generationContext);
+            
             // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<ITestOutputHelper>(_testOutputHelper);
             generationContext.ScenarioInitializeMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -177,6 +180,34 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         nameof(IObjectContainer.RegisterInstanceAs),
                         new CodeTypeReference(OUTPUT_INTERFACE)),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
+        }
+
+        protected virtual void IgnoreFeature(TestClassGenerationContext generationContext)
+        {
+            var featureHasIgnoreTag = generationContext.CustomData.TryGetValue(IGNORE_TEST_CLASS, out var featureHasIgnoreTagValue) && (bool)featureHasIgnoreTagValue == true;
+
+            if (featureHasIgnoreTag)
+            {
+                //Ignore all test methods
+                foreach (CodeTypeMember member in generationContext.TestClass.Members)
+                {
+                    var method = member as CodeMemberMethod;
+                    if (method != null && !IsTestMethodAlreadyIgnored(method))
+                    {
+                        SetTestMethodIgnore(generationContext, method);
+                    }
+                }
+
+                //Clear FixtureData method statements to skip the Before/AfterFeature hooks
+                foreach (CodeTypeMember member in _currentFixtureDataTypeDeclaration.Members)
+                {
+                    var method = member as CodeMemberMethod;
+                    if (method != null)
+                    {
+                        method.Statements.Clear();
+                    }
+                }
+            }
         }
 
         protected virtual bool IsTestMethodAlreadyIgnored(CodeMemberMethod testMethod)
@@ -286,6 +317,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // The individual tests have to get Skip argument in their attributes
             // xUnit does not provide a way to Skip a set of tests - https://xunit.github.io/docs/comparisons.html#attributes
             // This is handled in FinalizeTestClass
+            
+            // Store in custom data that the test class should be ignored
+            generationContext.CustomData.Add(IGNORE_TEST_CLASS, true);
         }
 
         protected void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
