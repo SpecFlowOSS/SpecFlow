@@ -59,9 +59,9 @@ All SpecFlow configuration options have a default setting. Simple SpecFlow proje
 
 ### SpecFlow 3
 
-Yu can only configure your unit provider by adding the corresponding packages to your project. You will therefore need to add **one** of the following NuGet packages to your project to configure the unit test provider:
+You can only configure your unit provider by adding the corresponding packages to your project. You will therefore need to add **one** of the following NuGet packages to your project to configure the unit test provider:
 
-- SpecRun.SpecFlow-3.3.0
+- SpecRun.SpecFlow
 - SpecFlow.xUnit
 - SpecFlow.MsTest
 - SpecFlow.NUnit
