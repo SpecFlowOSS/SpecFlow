@@ -165,3 +165,11 @@ Examples: no feature hooks are called
     | BeforeFeature       | 0     |
     | AfterFeature        | 0     |
     
+Examples: no scenario hooks are called
+    | event               | count |
+    | BeforeStep          | 0     |
+    | AfterStep           | 0     |
+    | BeforeScenarioBlock | 0     |
+    | AfterScenarioBlock  | 0     |
+    | BeforeScenario      | 0     |
+    | AfterScenario       | 0     |
