@@ -262,6 +262,25 @@ You can simply combine the contents of the `.targets` and `.props` file to a sin
 
 A complete example of a NuGet package that contains a runtime and generator plugin can be found [here](https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/CombinedPlugin).
 
+
+## Tips & Tricks
+
+### Building Plugins on non-Windows machines
+
+For building .NET 4.6.1 projects on non- Windows machines, the .NET Framework reference assemblies are needed.
+
+You can add them with following PackageReference to your project:
+
+``` xml
+<ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+</ItemGroup>
+
+```
+
 ## Plugin Developer Channel
 
-We have set up a Gitter channel for plugin developers here. If you questions regarding the development of plugins for SpecFlow, this is the place to ask them.
+We have set up a Discord channel for plugin developers [here](https://go.specflow.org/join-plugin-development-on-discord). If you have any questions regarding the development of plugins for SpecFlow, this is the place to ask them.
