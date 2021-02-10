@@ -1,5 +1,9 @@
 Fixes:
- + Thread-safe object resolution in BoDi
++ Thread-safe object resolution in BoDi
++ Before Feature hooks should not be executed when the feature is ignored https://github.com/SpecFlowOSS/SpecFlow/issues/2234
+
+Changes:
++ Ignore tag handling: generate test framework specific ignore attributes 
 
 3.6
 
