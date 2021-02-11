@@ -270,12 +270,17 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void OnScenarioEnd()
         {
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
+            try
             {
-                FireScenarioEvents(HookType.AfterScenario);
+                if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
+                {
+                    FireScenarioEvents(HookType.AfterScenario);
+                }
             }
-
-            _contextManager.CleanupScenarioContext();
+            finally
+            {
+                _contextManager.CleanupScenarioContext();
+            }
         }
 
         public virtual void OnScenarioSkipped()
