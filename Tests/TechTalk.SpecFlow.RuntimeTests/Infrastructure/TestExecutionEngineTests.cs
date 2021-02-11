@@ -369,6 +369,40 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
+        
+        [Fact]
+        public void Should_cleanup_scenario_context_on_scenario_end()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            testExecutionEngine.OnScenarioInitialize(scenarioInfo);
+            testExecutionEngine.OnScenarioStart();
+            testExecutionEngine.OnScenarioEnd();
+
+            contextManagerStub.Verify(cm => cm.CleanupScenarioContext(), Times.Once);
+        }
+
+        [Fact]
+        public void Should_cleanup_scenario_context_after_AfterScenario_hook_error()
+        {
+            TimeSpan duration;
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var afterHook = CreateParametrizedHookMock(afterScenarioEvents, typeof(DummyClass));
+            var hookMock = CreateHookMock(afterScenarioEvents);
+            methodBindingInvokerMock.Setup(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration))
+                                    .Throws(new Exception("simulated error"));
+
+
+            testExecutionEngine.OnScenarioInitialize(scenarioInfo);
+            testExecutionEngine.OnScenarioStart();
+            Action act = () => testExecutionEngine.OnScenarioEnd();
+
+            act.Should().Throw<Exception>().WithMessage("simulated error");
+            contextManagerStub.Verify(cm => cm.CleanupScenarioContext(), Times.Once);
+        }
 
         [Fact]
         public void Should_resolve_FeatureContext_hook_parameter()
@@ -752,6 +786,5 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             testTracerStub.Verify(tracer => tracer.TraceStepDone(It.IsAny<BindingMatch>(), It.IsAny<object[]>(), It.IsAny<TimeSpan>()), Times.Once());
             executionDuration.Should().Be(expectedDuration);
         }
-
     }
 }
