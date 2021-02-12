@@ -27,6 +27,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return UnitTestGeneratorTraits.ParallelExecution;
         }
 
+        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        {
+            if (generationContext.Feature.Tags.Any(t => t.Name.Substring(1).StartsWith(DEPLOYMENTITEM_TAG, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                CodeDomHelper.AddAttribute(generationContext.TestClass, DEPLOYMENTITEM_ATTR, "TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll");
+            }
+
+            base.SetTestClass(generationContext, featureTitle, featureDescription);
+        }
+
         public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             var doNotParallelizeTags = featureCategories.Where(f => f.StartsWith(DONOTPARALLELIZE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
