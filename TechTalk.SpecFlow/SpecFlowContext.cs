@@ -5,6 +5,8 @@ namespace TechTalk.SpecFlow
 {
     public abstract class SpecFlowContext : Dictionary<string, object>, IDisposable
     {
+        public Exception TestError { get; internal set; }
+
         protected virtual void Dispose()
         {
         }

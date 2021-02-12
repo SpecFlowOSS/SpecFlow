@@ -347,17 +347,32 @@ namespace TechTalk.SpecFlow.Infrastructure
                                       hookBinding.BindingScope.Match(stepContext, out int _));
 
             //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
-            // if multiple scopes mathching for the same method, we take the first one. 
+            // if multiple scopes match the same method, we take the first one. 
             // The InvokeHook uses only the Method anyway...
             // The only problem could be if the same method is decorated with hook attributes using different order, 
             // but in this case it is anyway impossible to tell the right ordering.
             var uniqueMatchingHooks = matchingHooks.GroupBy(hookBinding => hookBinding.Method).Select(g => g.First());
-            foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
+            Exception hookException = null;
+            try
             {
-                InvokeHook(_bindingInvoker, hookBinding, hookType);
+                //Note: if a (user-)hook throws an exception the subsequent hooks of the same type are not executed
+                foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
+                {
+                    InvokeHook(_bindingInvoker, hookBinding, hookType);
+                }
+            }
+            catch (Exception hookExceptionCaught)
+            {
+                hookException = hookExceptionCaught;
+                SetHookError(hookType, hookException);
             }
 
+            //Note: plugin-hooks are still executed even if a user-hook failed with an exception
+            //A plugin-hook should not throw an exception under normal circumstances, exceptions are not handled/caught here
             FireRuntimePluginTestExecutionLifecycleEvents(hookType);
+
+            //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error  
+            if (hookException != null) throw hookException;
         }
 
         private void FireRuntimePluginTestExecutionLifecycleEvents(HookType hookType)
@@ -396,6 +411,33 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             return currentContainer;
+        }
+
+        private SpecFlowContext GetHookContext(HookType hookType)
+        {
+            switch (hookType)
+            {
+                case HookType.BeforeTestRun:
+                case HookType.AfterTestRun:
+                    return _contextManager.TestThreadContext;
+                case HookType.BeforeFeature:
+                case HookType.AfterFeature:
+                    return _contextManager.FeatureContext;
+                default: // scenario scoped hooks
+                    return _contextManager.ScenarioContext;
+            }
+        }
+
+        private void SetHookError(HookType hookType, Exception hookException)
+        {
+            var context = GetHookContext(hookType);
+            if (context != null && context.TestError == null)
+                context.TestError = hookException;
+
+            if (context is ScenarioContext scenarioContext)
+            {
+                scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
+            }
         }
 
         private object[] ResolveArguments(IHookBinding hookBinding, IObjectContainer currentContainer)
