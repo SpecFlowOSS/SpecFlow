@@ -2,6 +2,7 @@
 
 Fixes:
 + Thread-safe object resolution in BoDi
++ Automatically include TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll as a deployment item for MSTest V2 https://github.com/SpecFlowOSS/SpecFlow/issues/2076
 + Before Feature hooks should not be executed when the feature is ignored https://github.com/SpecFlowOSS/SpecFlow/issues/2234
 + Cleanup scenario context even after an AfterScenario hook error
 + Load RuntimePlugins to the same AssemblyLoadContext
