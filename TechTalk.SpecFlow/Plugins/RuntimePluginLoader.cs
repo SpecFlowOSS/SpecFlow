@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using TechTalk.SpecFlow.Tracing;
 
@@ -7,17 +6,18 @@ namespace TechTalk.SpecFlow.Plugins
 {
     public class RuntimePluginLoader : IRuntimePluginLoader
     {
-        private const string ASSEMBLY_NAME_PATTERN = "{0}.SpecFlowPlugin";
-
         public IRuntimePlugin LoadPlugin(string pluginAssemblyName, ITraceListener traceListener)
         {
-            //var assemblyName = string.Format(ASSEMBLY_NAME_PATTERN, pluginDescriptor.Name);
             Assembly assembly;
             try
             {
-                assembly = LoadAssembly(pluginAssemblyName);
+#if NETSTANDARD
+                assembly = PluginAssemblyResolver.Load(pluginAssemblyName);
+#else
+                assembly = Assembly.LoadFrom(pluginAssemblyName);
+#endif
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check https://go.specflow.org/doc-plugins for details.", pluginAssemblyName), ex);
             }
@@ -43,11 +43,6 @@ namespace TechTalk.SpecFlow.Plugins
             }
 
             return plugin;
-        }       
-
-        protected virtual Assembly LoadAssembly(string pluginAssemblyName)
-        {
-            return Assembly.LoadFrom(pluginAssemblyName);
         }
     }
 }
