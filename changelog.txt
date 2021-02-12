@@ -1,7 +1,10 @@
+3.7
+
 Fixes:
 + Thread-safe object resolution in BoDi
 + Before Feature hooks should not be executed when the feature is ignored https://github.com/SpecFlowOSS/SpecFlow/issues/2234
 + Cleanup scenario context even after an AfterScenario hook error
++ Load RuntimePlugins to the same AssemblyLoadContext
 
 Changes:
 + Ignore tag handling: generate test framework specific ignore attributes 
