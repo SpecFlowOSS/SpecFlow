@@ -347,7 +347,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                                       hookBinding.BindingScope.Match(stepContext, out int _));
 
             //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
-            // if multiple scopes mathching for the same method, we take the first one. 
+            // if multiple scopes match the same method, we take the first one. 
             // The InvokeHook uses only the Method anyway...
             // The only problem could be if the same method is decorated with hook attributes using different order, 
             // but in this case it is anyway impossible to tell the right ordering.
@@ -355,6 +355,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             Exception hookException = null;
             try
             {
+                //Note: if a (user-)hook throws an exception the subsequent hooks of the same type are not executed
                 foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
                 {
                     InvokeHook(_bindingInvoker, hookBinding, hookType);
@@ -366,8 +367,11 @@ namespace TechTalk.SpecFlow.Infrastructure
                 SetHookError(hookType, hookException);
             }
 
+            //Note: plugin-hooks are still executed even if a user-hook failed with an exception
+            //A plugin-hook should not throw an exception under normal circumstances, exceptions are not handled/caught here
             FireRuntimePluginTestExecutionLifecycleEvents(hookType);
 
+            //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error  
             if (hookException != null) throw hookException;
         }
 
