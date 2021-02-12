@@ -46,8 +46,6 @@ namespace TechTalk.SpecFlow
 
         public ScenarioInfo ScenarioInfo { get; }
         public ScenarioBlock CurrentScenarioBlock { get; internal set; }
-        public Exception TestError { get; internal set; }
-
         public IObjectContainer ScenarioContainer { get; }
 
         public ScenarioExecutionStatus ScenarioExecutionStatus { get; internal set; }
