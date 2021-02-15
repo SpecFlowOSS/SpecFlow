@@ -10,9 +10,9 @@ You may have at least seen the ScenarioContext from the code that SpecFlow gener
 
 To access the `ScenarioContext` you have to get it via [context injection](Context-Injection.md).
 
-Example:  
+Example:
 
-``` csharp
+```csharp
 [Binding]
 public class Binding
 {
@@ -51,9 +51,9 @@ With SpecFlow 3.0, we marked ScenarioContext.Current obsolete, to make clear tha
 
 So how do you now access ScenarioContext?
 
-With SpecFlow before 3.0 this was common:
+Before SpecFlow 3.0 this was common:
 
-``` csharp
+```csharp
 [Binding]
 public class Bindings
 {
@@ -73,7 +73,7 @@ public class Bindings
 
 As of SpecFlow 3.0, you now need to use [Context-Injection](Context-Injection.md) to acquire an instance of ScenarioContext by requesting it via the constructor.
 
-``` csharp
+```csharp
 public class Bindings
 {
     private readonly ScenarioContext _scenarioContext;
@@ -89,7 +89,7 @@ Once you have acquired the instance of ScenarioContext, you can use it with the 
 
 So our example will now look like this:
 
-``` csharp
+```csharp
 
 public class Bindings
 {
@@ -126,11 +126,11 @@ There are some type-safe extension methods that help you to manage the contents 
 
 ## ScenarioContext.ScenarioInfo
 
-`ScenarioContext.ScenarioInfo` allows  you to access information about the scenario currently being executed, such as its title and tags:
+`ScenarioContext.ScenarioInfo` allows you to access information about the scenario currently being executed, such as its title and tags:
 
 In the .feature file:
 
-``` gherkin
+```gherkin
 @showUpInScenarioInfo @andThisToo
 
 Scenario: Showing information of the scenario
@@ -144,7 +144,7 @@ Then the ScenarioInfo contains the following information
 
 and in the step definition:
 
-``` csharp
+```csharp
 private class ScenarioInformation
 {
     public string Title { get; set; }
@@ -179,7 +179,7 @@ You can use this information for “error handling”. Here is an uninteresting 
 
 in the .feature file:
 
-``` gherkin
+```gherkin
 #This is not so easy to write a scenario for but I've created an AfterScenario-hook
 @showingErrorHandling
 Scenario: Display error information in AfterScenario
@@ -189,7 +189,7 @@ When an error occurs in a step
 
 and the step definition:
 
-``` csharp
+```csharp
 [When("an error occurs in a step")]
 public void AnErrorOccurs()
 {
@@ -210,7 +210,7 @@ public void AfterScenarioHook()
 
 This is another example, that might be more useful:
 
-``` csharp
+```csharp
 [AfterScenario]
 public void AfterScenario()
 {
@@ -229,7 +229,7 @@ Use `ScenarioContext.CurrentScenarioBlock` to query the “type” of step (Give
 
 in the .feature file:
 
-``` gherkin
+```gherkin
 Scenario: Show the type of step we're currently on
     Given I have a Given step
     And I have another Given step
@@ -239,7 +239,7 @@ Scenario: Show the type of step we're currently on
 
 and the step definition:
 
-``` csharp
+```csharp
 [Given("I have a (.*) step")]
 [Given("I have another (.*) step")]
 [When("I have a (.*) step")]
