@@ -14,6 +14,7 @@ assignees: ''
 
 <!-- PLEASE CHECK THE OPTIONS THAT APPLY TO YOU BY ADDING AN 'x' TO THE CORRESPONDING CHECKBOX ('[ ]') -->
 ### SpecFlow Version:
+- [ ] 3.7
 - [ ] 3.6
 - [ ] 3.5
 - [ ] 3.4
@@ -60,10 +61,7 @@ Version number:
 ### .NET Framework:
 - [ ]	>= .NET 4.5
 - [ ]	before .NET 4.5
-- [ ] .NET Core 2.0
 - [ ] .NET Core 2.1
-- [ ] .NET Core 2.2
-- [ ] .NET Core 3.0
 - [ ] .NET Core 3.1
 - [ ] .NET 5.0
 
