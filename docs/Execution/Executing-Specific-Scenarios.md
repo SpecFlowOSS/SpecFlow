@@ -11,7 +11,7 @@ This category can be used to filter the test execution in your build pipeline. N
 
 You don't have to include the `@` prefix in the filter expression.
 
-Learn more about the filters in the [Official documentation](https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests?pivots=xunit).
+Learn more about the filters in Microsoft's [official documentation](https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests?pivots=xunit).
 
 ## Examples
 
@@ -156,17 +156,17 @@ vstest.console.exe "C:\Temp\BookShop.AcceptanceTests.dll" /TestCaseFilter:"Categ
 
 ### Azure DevOps - Visual Studio Test task
 
-**This task is supported only on Windows agents and cannot be used on other platforms.**
+*>**Note:** This task is supported only on Windows agents and cannot be used on other platforms.*
 
-The filter expression should be provided in the "Test filter criteria" setting in the `Visual Studio Test` task.
+The filter expression should be provided in the "Test filter criteria" setting in the `Visual Studio Test` task:
 
-![Visual Studio Test task](/_static/images/vstest-task-filter1.png)
+![Visual Studio Test task](/_static/images/task_filter1.png)
 
-![Visual Studio Test task](/_static/images/vstest-task-filter2.png)
+![Visual Studio Test task](/_static/images/task_filter2.png)
 
 ### Azure DevOps - .NET Core task
 
-Alternatively you could use the dotnet task (DotNetCoreCLI) to run your tests. This works on all kinds of build agents.
+Alternatively you could use the dotnet task (DotNetCoreCLI) to run your tests. This works on all kinds of build agents:
 
 ```bash
 - task: DotNetCoreCLI@2

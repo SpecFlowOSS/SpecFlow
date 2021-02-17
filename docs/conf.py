@@ -28,7 +28,7 @@ author = 'The SpecFlow Team'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark',  "sphinx_rtd_theme",  "sphinx_markdown_tables", "sphinx_search.extension", "sphinx_sitemap_dev"]
+extensions = ['recommonmark',  "sphinx_rtd_theme",  "sphinx_markdown_tables", "sphinx_search.extension", "sphinx_sitemap_dev",'sphinx_copybutton']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -57,7 +57,8 @@ html_theme_options = {
 }
 html_logo = '_static/logo.png'
 html_css_files = [
-    'css/custom.css'
+    'css/custom.css',
+    'css/copybutton.css'
 ]
 
 html_js_files = [
