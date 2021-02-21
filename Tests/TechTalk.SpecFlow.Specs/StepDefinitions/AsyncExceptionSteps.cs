@@ -14,6 +14,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             Console.WriteLine("the given");
         }
 
+        [When(@"some basic synchronous action")]
+        public void WhenSomeBasicSynchronousAction()
+        {
+            List<string> list = null;
+            list.Where(x => x.Contains("whatever"));
+        }
+
         [When(@"some basic async action")]
         public async Task WhenSomeBasicAsyncAction()
         {
