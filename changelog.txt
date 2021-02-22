@@ -7,6 +7,7 @@ Fixes:
 + Cleanup scenario context even after an AfterScenario hook error
 + Load RuntimePlugins to the same AssemblyLoadContext
 + Capture hook errors and call plugin hooks after hook error
++ Fixed context injection in static methods for Autofac plugin https://github.com/SpecFlowOSS/SpecFlow/issues/2307
 
 Changes:
 + Ignore tag handling: generate test framework specific ignore attributes 

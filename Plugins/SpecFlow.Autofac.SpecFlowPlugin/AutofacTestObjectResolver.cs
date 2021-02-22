@@ -9,8 +9,12 @@ namespace SpecFlow.Autofac
     {
         public object ResolveBindingInstance(Type bindingType, IObjectContainer scenarioContainer)
         {
-            var componentContext = scenarioContainer.Resolve<IComponentContext>();
-            return componentContext.Resolve(bindingType);
+            if (scenarioContainer.IsRegistered<IComponentContext>())
+            {
+                var componentContext = scenarioContainer.Resolve<IComponentContext>();
+                return componentContext.Resolve(bindingType);
+            }
+            return scenarioContainer.Resolve(bindingType);
         }
     }
 }
