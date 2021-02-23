@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.Bindings
@@ -24,14 +25,20 @@ namespace TechTalk.SpecFlow.Bindings
 
         protected virtual object InvokeBindingDelegateAsync(Delegate bindingDelegate, object[] invokeArgs)
         {
-            return AsyncHelpers.RunSync(async () =>
+            try
             {
-                var r = bindingDelegate.DynamicInvoke(invokeArgs);
-                if (r is Task t)
-                    await t;
-                return r;
-            });
+                return AsyncHelpers.RunSync(async () =>
+                {
+                    var r = bindingDelegate.DynamicInvoke(invokeArgs);
+                    if (r is Task t)
+                        await t;
+                    return r;
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new TargetInvocationException(ex);
+            }
         }
-
     }
 }
