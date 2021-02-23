@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,9 +60,8 @@ namespace TechTalk.SpecFlow.Bindings
                     }
                     catch (Exception e)
                     {
-                        var ex = new TargetInvocationException(e);
-                        synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(ex);
-                        throw ex;
+                        synch.InnerExceptionDispatchInfo = ExceptionDispatchInfo.Capture(e);
+                        throw;
                     }
                     finally
                     {
