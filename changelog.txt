@@ -1,5 +1,8 @@
 3.7
 
+Features:
++ support translations for true value
+
 Fixes:
 + Thread-safe object resolution in BoDi
 + Automatically include TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll as a deployment item for MSTest V2 https://github.com/SpecFlowOSS/SpecFlow/issues/2076
