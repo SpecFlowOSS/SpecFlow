@@ -1,11 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Gherkin;
-using Gherkin.Ast;
-using Gherkin.Stream;
-using TechTalk.SpecFlow.Configuration.AppConfig;
-using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers {
 
