@@ -25,20 +25,22 @@ namespace TechTalk.SpecFlow.Bindings
 
         protected virtual object InvokeBindingDelegateAsync(Delegate bindingDelegate, object[] invokeArgs)
         {
-            try
+            return AsyncHelpers.RunSync(async () =>
             {
-                return AsyncHelpers.RunSync(async () =>
+                var r = bindingDelegate.DynamicInvoke(invokeArgs);
+                if (r is Task t)
                 {
-                    var r = bindingDelegate.DynamicInvoke(invokeArgs);
-                    if (r is Task t)
+                    try
+                    {
                         await t;
-                    return r;
-                });
-            }
-            catch (Exception ex)
-            {
-                throw new TargetInvocationException(ex);
-            }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new TargetInvocationException(ex);
+                    }
+                }
+                return r;
+            });
         }
     }
 }
