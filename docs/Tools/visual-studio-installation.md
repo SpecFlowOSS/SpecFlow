@@ -13,11 +13,11 @@ or through the Visual Studio extensions:
 
 **3-** Hit ***Download*** to begin the installation. You will need to restart Visual Studio for the installation to complete
 
-![Rider_settings](../_static/images/extension_dialog_installation.png)
+![VisualStudio_installation](../_static/images/extension_dialog_installation.png)
 
 Once the extension is successfully installed, you can see it in the list of "Installed extensions" in  ***Extensions ➡ Manage Extensions*** dialog of Visual Studio.
 
-![Rider_settings](../_static/images/extension_dialog_installedv2.png)
+![VisualStudio_Installed](../_static/images/extension_dialog_installedv2.png)
 
 The below video is from our getting started guide which covers the installation of SpecFlow's Visual Studio extension. If you are new to SpecFlow we highly recommend you to go through this [getting started guide](https://docs.specflow.org/projects/getting-started/en/latest/GettingStarted/Step1.html)
 
