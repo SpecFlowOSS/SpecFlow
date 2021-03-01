@@ -5,6 +5,16 @@ SpecFlow is a test automation solution for .NET built upon the BDD paradigm. Use
 
 SpecFlow tests are written using `Gherkin <https://cucumber.io/docs/gherkin/>`_, which allows you to write test cases using natural languages. SpecFlow uses the official Gherkin parser, which supports over 70 languages. These tests are then tied to your application code using so-called :doc:`bindings <Bindings/Bindings>`, allowing you to execute the tests using the testing framework of your choice. You can also execute your tests using SpecFlow's own dedicated test runner, SpecFlow+ Runner.
 
+==================
+ What's new?
+==================
+
+.. image:: _static/images/riderspecflow.png
+   
+
+We are very excited to announce that the official Rider plugin for SpecFlow is now available. Find out more about it `here <https://docs.specflow.org/projects/specflow/en/latest/Rider/rider-installation.html>`_
+
+
 ===================
 SpecFlow components
 ===================
@@ -31,8 +41,6 @@ A detailed step- by- step guide to start with SpecFlow can be found `here <https
 Follow our step by step guide to explore, experiment and learn the basics of SpecFlow based on a simple web application project using SpecFlow and the SpecFlow+ Runner.
 
 `Getting Started with an example project <https://docs.specflow.org/projects/specflow/en/latest/Getting-Started/Getting-Started-With-An-Example.html>`_
-
-
 
 .. toctree::
    :maxdepth: 1
@@ -131,6 +139,28 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
 
 .. toctree::
    :maxdepth: 1
+   :caption: IDE-Integration: Visual Studio
+   :hidden:
+
+   Tools/Visual-Studio-Integration.md
+   Tools/visual-studio-installation.md   
+   Tools/Visual-Studio-Integration-Editing-Features.md
+   Tools/Visual-Studio-Integration-Navigation-Features.md
+   Tools/Visual-Studio-Test-Explorer-Support.md
+   Tools/Generating-Skeleton-Code.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: IDE-Integration: Rider
+   :hidden:
+
+   Rider/rider-installation.md
+   Rider/rider-features.md
+
+
+
+.. toctree::
+   :maxdepth: 1
    :caption: Extend SpecFlow
    :hidden:
 
@@ -147,12 +177,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Tools/Tools.md
-   Tools/Generate-Tests-From-MsBuild.md
-   Tools/Visual-Studio-Integration.md
-   Tools/Visual-Studio-Integration-Editing-Features.md
-   Tools/Visual-Studio-Integration-Navigation-Features.md
-   Tools/Visual-Studio-Test-Explorer-Support.md
-   Tools/Generating-Skeleton-Code.md
+   Tools/Generate-Tests-From-MsBuild.md   
    Tools/Cucumber-Messages.md
    Tools/Reporting.md
 
