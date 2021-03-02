@@ -20,4 +20,4 @@ To install the plugin directly from JetBrains Rider:
 
 ![Rider_settings](../_static/images/rider_restart.png)
 
-The installation is now finished. Check out the [Rider features page](../Rider/rider-features.md) to see a list of all the handy features in this plugin.
+The installation is now finished. Check out the [SpecFlow for Rider features](../Rider/rider-features.md) to see a list of all the handy features in this plugin.

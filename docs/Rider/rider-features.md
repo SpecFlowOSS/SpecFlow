@@ -4,17 +4,13 @@ The SpecFlow for Rider plugin is bundled with a handful of features, see below f
 
 ## Navigation
 
-The plugin allows you to quickly navigate between a Gherkin Step, its relevant bindings, and vice versa.
+The SpecFlow for Rider plugin allows you to quickly navigate between a Gherkin Step, its relevant bindings, and vice versa.
 
 There are multiple ways to achieve this:
 
-***>Note** The keyboard shortcuts documented below may vary depending on how they were setup during the Rider installation. This documentation is based off the Visual Studio shortcut schema.*
+***>Note** The keyboard shortcuts documented below may vary depending on how they were setup during the Rider installation. This documentation is based off the Visual Studio shortcut schema. More info [here](https://www.jetbrains.com/help/rider/Reference_Keymap_VS.html)*.
 
-1- The quickest way to navigate from a Gherkin step to its relevant binding is to use keyboard shortcuts **(Ctrl + F12)**:
-
-![Rider_nav1](../_static/images/rider_nav1.gif)
-
-2-Alternatively, you can right click on a Gherkin step and navigate to ***Go to ➡ Implementations*** :
+1- The quickest way to navigate from a Gherkin step to its relevant binding is to use keyboard shortcuts **(Ctrl + F12)**. Alternatively, you can right click on a Gherkin step and navigate to ***Go to ➡ Implementations*** :
 
 ![Rider_nav2](../_static/images/rider_nav2.gif)
 
@@ -28,7 +24,7 @@ There are multiple ways to achieve this:
 
 ## Creating steps
 
-The plugin allows you to quickly create a step and also highlights when a step is missing:
+The plugin allows you to quickly create a step and also highlights when a step is missing. To do this, click on an unbound step, click on view action list, and then click on *Create step*:
 
 ![Rider_createstep](../_static/images/rider_createstep.gif)
 
