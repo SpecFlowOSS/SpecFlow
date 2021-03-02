@@ -96,7 +96,7 @@ If your unit test framework does not support categories, you can still use tags 
 
 Scenario and Feature level tags are available by querying the `ScenarioInfo.ScenarioAndFeatureTags` property.
 
-SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test](../Execution/Test-Result.html#ignored-tests) method from scenarios with this tag.
+SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test](../Execution/Test-Results.html#ignored-tests) method from scenarios with this tag.
 
 ### Descriptions
 

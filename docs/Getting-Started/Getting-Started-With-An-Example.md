@@ -78,7 +78,7 @@ As SpecFlow is not a unit test runner on its own, it can generate tests for a nu
 
 The Bookshop example project is configured to generate unit tests for SpecFlow+ Runner, which is a test runner provided by the SpecFlow team specialized for running acceptance/integration tests.
 
-You could easily switch to other unit test providers (such as [NUnit](http://nunit.org/), [XUnit](https://xunit.github.io/), etc.)
+You could easily switch to other unit test providers (such as [NUnit](http://nunit.org/), [XUnit](https://xunit.net/), etc.)
 by uninstalling the current test provider NuGet package (`SpecRun.SpecFlow`) and installing another (e.g. `SpecFlow.MsTest`). However, the Bookshop example leverages some unique features of SpecFlow+ Runner, hence changing to another unit test provider would require some additional changes in the step definitions.
 
 ## Executing SpecFlow+ Runner the first time

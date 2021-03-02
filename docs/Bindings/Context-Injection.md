@@ -135,9 +135,8 @@ public class WebDriverSupport
 As mentioned above, the default SpecFlow container is `IObjectContainer` which is recommended for most scenarios. However, you may have situations where you need more control over the configuration of the dependency injection, or make use of an existing dependency injection configuration within the project you are testing, e.g. pulling in service layers for assisting with assertions in `Then` stages.
 
 ### Consuming existing plugins
-- [SpecFlow.Autofac](https://github.com/gasparnagy/SpecFlow.Autofac)
-- [SpecFlow.Unity](https://github.com/phatcher/SpecFlow.Unity)
-- [SpecFlow.Ninject](https://github.com/MattMcKinney/SpecFlow.Ninject) (currently not on nuget)
+
+You can find the list of available plugins [here](https://docs.specflow.org/projects/specflow/en/latest/Extend/Available-Plugins.html#plugins-for-di-container).
 
 To make use of these plugins, you need to add a reference and add the plugin to your configuration in the `specflow` section:
 

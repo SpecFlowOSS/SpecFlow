@@ -91,18 +91,13 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Bindings/Hooks.md
    Bindings/Asynchronous-Bindings.md
    Bindings/Scoped-Step-Definitions.md
-
    Bindings/Sharing-Data-between-Bindings.md
    Bindings/Context-Injection.md
    Bindings/ScenarioContext.md
    Bindings/FeatureContext.md
    Bindings/Calling-Steps-from-Step-Definitions.md
-
    Bindings/Step-Argument-Conversions.md
-
-   Bindings/Use-Bindings-from-External-Assemblies.md
-
-   Bindings/Renaming-Steps.md
+   Bindings/Use-Bindings-from-External-Assemblies.md   
    Bindings/SpecFlow-Assist-Helpers.md
    Bindings/FSharp-Support.md
 
