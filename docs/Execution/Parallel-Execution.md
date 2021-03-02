@@ -51,7 +51,7 @@ When using SpecFlow we can consider the parallel scheduling on the level of scen
 
 ### NUnit configuration
 
-[By default NUnit does not run the tests in parallel](https://docs.nunit.org/articles/nunit/writing-tests/attributes/parallelizable.html).
+By default,[NUnit does not run the tests in parallel](https://docs.nunit.org/articles/nunit/writing-tests/attributes/parallelizable.html).
 Parallelisation must be configured by setting an assembly-level attribute in the SpecFlow project.
 
 ```c#
@@ -59,11 +59,11 @@ using NUnit.Framework;
 [assembly: Parallelizable(ParallelScope.Fixtures)]
 ```
 
-Note: SpecFlow does not support scenario level parallelization with NUnit (when scenarios from the same feature execute in parallel). If you configure a higher level NUnit parallelization than "Fixtures" your tests will fail with runtime errors.
+***>Note:** SpecFlow does not support scenario level parallelization with NUnit (when scenarios from the same feature execute in parallel). If you configure a higher level NUnit parallelization than "Fixtures" your tests will fail with runtime errors.*
 
 ### MSTest configuration
 
-[By default MsTest does not run the tests in parallel](https://devblogs.microsoft.com/devops/mstest-v2-in-assembly-parallel-test-execution/).
+By default,[MsTest does not run the tests in parallel](https://devblogs.microsoft.com/devops/mstest-v2-in-assembly-parallel-test-execution/).
 Parallelisation must be configured by setting an assembly-level attribute in the SpecFlow project.
 
 ```c#
