@@ -1,6 +1,6 @@
 # Coding Style
 
-1. Rule: use the same coding style as already used!
+***Please use the same coding style as the one already used!***
 
 ## Static versus Instance Methods
 

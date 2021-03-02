@@ -7,7 +7,7 @@ The easiest way to execute SpecFlow scenarios on Azure DevOps (Team Foundation S
 * Display scenario titles in the execution result
 * Generate detailed and customizable HTML report
 * Allows filtering scenarios in the TFS build definition
-* The integration also works with the hosted Azure DevOps Server ( [http://tfs.visualstudio.com/])
+* The integration also works with the hosted [Azure DevOps](https://dev.azure.com/) Server
 
 ### Legacy Integration
 

@@ -9,17 +9,27 @@ SpecFlow plugin for using Castle Windsor as a dependency injection framework for
 
 ## Step by step walkthrough of using SpecFlow.Windsor
 
-### 1.  Install plugin from NuGet into your SpecFlow project.
+### 1. Install plugin
+
+**-** Install plugin from NuGet into your SpecFlow project.
 
 ```csharp
 PM> Install-Package SpecFlow.Windsor
 ```
-### 2.  Create a static method somewhere in the SpecFlow project  
-  (Recommended to put it into the `Support` folder) that returns a Windsor `IWindsorContainer` and tag it with the `[ScenarioDependencies]` attribute. 
-  ##### 2.1 Configure your dependencies for the scenario execution within the method. 
-  ##### 2.2 All your binding classes are automatically registered, including ScenarioContext etc.
+### 2. Create static method
 
-### 3. A typical dependency builder method probably looks like this:
+**-** Create a static method somewhere in the SpecFlow project
+  
+  (Recommended to put it into the `Support` folder) that returns a Windsor `IWindsorContainer` and tag it with the `[ScenarioDependencies]` attribute.
+  
+**-** Configure your dependencies for the scenario execution within the method.
+  
+**-** All your binding classes are automatically registered, including ScenarioContext etc.
+
+### 3. Sample dependency builder method
+
+**-** A typical dependency builder method probably looks like this:
+
 ```csharp
 [ScenarioDependencies]
 public static IWindsorContainer CreateContainer()
@@ -32,7 +42,10 @@ public static IWindsorContainer CreateContainer()
 }
 ```
 
-### 4. To re-use a container betweeen scenarios, try the following:
+### 4. Reusing a container
+
+**-** To re-use a container between scenarios, try the following:
+
 Your shared services will be resolved from the root container, while scoped objects
 such as ScenarioContext will be resolved from the new container.
 ```csharp
@@ -46,7 +59,10 @@ public static IWindsorContainer CreateContainer()
 }
 ```
 
-### 5. To customize binding behavior, use the following:
+### 5. Customize binding behavior
+
+**-** To customize binding behavior, use the following:
+
 Default behavior is to auto-register bindings. To manually register these during `CreateContainer`
 you can use the following attribute:
 

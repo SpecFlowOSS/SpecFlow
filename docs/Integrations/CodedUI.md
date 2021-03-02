@@ -1,4 +1,4 @@
-# Coded UI
+# Coded UI (Legacy)
 
 ## Introduction
 
