@@ -4,11 +4,13 @@
 
 Clone the repository with submodules
 
-> git clone --recurse-submodules https://github.com/techtalk/SpecFlow.git
+```
+git clone --recurse-submodules https://github.com/techtalk/SpecFlow.git
+```
 
-You need to clone the repository with submodules, because the code for the SpecFlow.TestProjectGenerator is located in another repository (https://github.com/techtalk/SpecFlow.TestProjectGenerator). The reason is, that this code is shared with other projects
+You need to clone the repository with submodules, because the code for the SpecFlow.TestProjectGenerator is located in [another repository](https://github.com/techtalk/SpecFlow.TestProjectGenerator). This is due to the fact that this code is shared with other projects.
 
-## set environment variables
+## Setting environment variables
 
 ### MSBUILDDISABLENODEREUSE
 
@@ -17,4 +19,4 @@ Reason for this is, that SpecFlow has an MSBuild Task that is used in the TechTa
 
 This environment variable controls the behaviour if MSBuild reuses processes. Setting to 1 disables this behaviour.
 
-See https://github.com/Microsoft/msbuild/wiki/MSBuild-Tips-&-Tricks for more info about it.
+See [here](https://github.com/Microsoft/msbuild/wiki/MSBuild-Tips-&-Tricks) for more info.

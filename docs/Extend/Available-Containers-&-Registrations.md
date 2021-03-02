@@ -27,8 +27,9 @@ The global container captures global services for test execution and the step de
   * RegisterGlobalDependencies- Event
   * CustomizeGlobalDependencies- Event
 
+## Test Thread Container
 
-## Test Thread Container (parent Container is the Global Container)
+***> Note:** Parent Container is the Global Container*
 
 The test thread container captures the services and state for executing scenarios on a particular test thread. For parallel test execution, multiple test runner containers are created, one for each thread.
 
@@ -42,7 +43,9 @@ The test thread container captures the services and state for executing scenario
 * [RuntimePlugins](https://github.com/techtalk/SpecFlow/blob/master/TechTalk.SpecFlow/Plugins/IRuntimePlugin.cs)
   * CustomizeTestThreadDependencies- Event
 
-## Feature Container (parent Container is the Test Thread Container)
+## Feature Container
+
+***> Note:** Parent Container is the Test Thread Container*
 
 The feature container captures a feature's execution state. It is disposed after the feature is executed.
 
@@ -50,13 +53,15 @@ The feature container captures a feature's execution state. It is disposed after
 * [RuntimePlugins] 
   * CustomizeFeatureDependencies- Event
 
-## Scenario Container (parent Container is the Test Thread Container)
+## Scenario Container
+
+***> Note:** Parent Container is the Test Thread Container*
 
 The scenario container captures the state of a scenario execution. It is disposed after the scenario is executed.
 
 * (step definition classes)
 * (dependencies of the step definition classes, aka context injection)
 * ScenarioContext (also available from the *Test Thread Container* through `IContextManager`)
-* [RuntimePlugins] 
+* [RuntimePlugins]
   * CustomizeScenarioDependencies- Event
   

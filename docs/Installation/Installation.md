@@ -16,18 +16,11 @@ The process of installing the IDE Integration packages depends on your IDE.
 
 ### Visual Studio
 
-We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. An overview of the features provided by the integration can be found [here](../Tools/Visual-Studio-Integration.md).
+We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. Find out how to install and use this extension [here](../visualstudio/visual-studio-installation.md).
 
-**If you are using Deveroom, do not install the SpecFlow Visual Studio extension; you should only install one of these 2 extensions.**
+### Rider
 
-The easiest way to install the IDE integration is to select **Tools\Extensions and Updates** from the menu and search for "SpecFlow" in the online gallery.  
-
-The integration packages can also be downloaded and installed separately from the Visual Studio Gallery:  
-
-* [VS2019 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowForVisualStudio)
-* [VS2017 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2017)
-* [VS2015 integration](https://marketplace.visualstudio.com/items?itemName=TechTalkSpecFlowTeam.SpecFlowforVisualStudio2015)
-
+Rider has an official SpecFlow plugin, find out how to install and use it [here](../Rider/rider-installation.md).
 ### MonoDevelop/XamarinStudio/Visual Studio for Mac
 
 We don't maintain our own extension for MonoDevelop/XamarinStudio/Visual Studio for Mac. But our amazing community created on at <https://github.com/straighteight/SpecFlow-VS-Mac-Integration>.
@@ -42,15 +35,6 @@ To improve your developing and scenario writing experience, we recommend followi
 
 * [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) - for editing feature files
 * [.NET Core Test Explore](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer) - for executing scenarios
-
-### Rider
-
-We currently don't have our own extension for Rider.
-
-For creating new projects, we recommend to use our [.NET templates](../Installation/Project-and-Item-Templates.html#creating-a-new-project-from-the-template).
-
-If you are interested in one, please up-vote this [feature-request](https://support.specflow.org/hc/en-us/community/posts/360012011397--SpecFlow-Rider-IDE-Support)
-
 ## Project Setup
 
 The generator and runtime are usually installed together for each project. To install the NuGet packages:

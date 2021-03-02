@@ -6,7 +6,7 @@ The Visual Studio extension does not yet support the "Rule" Gherkin keyword. The
 
 ## Generating step definitions provides deprecated code
 
-The "[Generate Step Definitions](../Tools/Generating-Skeleton-Code)" command generates obsolete code in Visual Studio. E.g.:
+The "[Generate Step Definitions](../visualstudio/Generating-Skeleton-Code)" command generates obsolete code in Visual Studio. E.g.:
 
 ![Obsolete code](/_static/images/ObsoleteGeneratedCode.png)
 
