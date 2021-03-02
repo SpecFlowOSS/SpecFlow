@@ -16,7 +16,11 @@ The process of installing the IDE Integration packages depends on your IDE.
 
 ### Visual Studio
 
-We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. Find out how to install and use this extension [here](../Tools/visual-studio-installation.md).
+We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. Find out how to install and use this extension [here](../visualstudio/visual-studio-installation.md).
+
+### Rider
+
+Rider has an official SpecFlow plugin, find out how to install and use it [here](../Rider/rider-installation.md).
 ### MonoDevelop/XamarinStudio/Visual Studio for Mac
 
 We don't maintain our own extension for MonoDevelop/XamarinStudio/Visual Studio for Mac. But our amazing community created on at <https://github.com/straighteight/SpecFlow-VS-Mac-Integration>.
@@ -31,10 +35,6 @@ To improve your developing and scenario writing experience, we recommend followi
 
 * [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) - for editing feature files
 * [.NET Core Test Explore](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer) - for executing scenarios
-
-### Rider
-
-Rider has an official SpecFlow plugin, find out how to install and use it [here](../Rider/rider-installation.md).
 ## Project Setup
 
 The generator and runtime are usually installed together for each project. To install the NuGet packages:

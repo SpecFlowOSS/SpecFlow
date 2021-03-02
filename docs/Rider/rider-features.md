@@ -16,7 +16,7 @@ There are multiple ways to achieve this:
 
 2-Alternatively, you can right click on a Gherkin step and navigate to ***Go to ➡ Implementations*** :
 
-![Rider_nav4](../_static/images/rider_nav4.gif)
+![Rider_nav2](../_static/images/rider_nav2.gif)
 
 3- To navigate from a binding to its corresponding Gherkin step, the keyboard shortcuts **(Shift + F12)** can be used :
 
@@ -24,7 +24,7 @@ There are multiple ways to achieve this:
 
 4- You can also see all Gherkin steps currently using a particular binding by pressing **F12** or by navigating to it ***Go to ➡ Go to Declarations or Usages*** :
 
-![Rider_nav5](../_static/images/rider_nav5.gif)
+![Rider_nav4](../_static/images/rider_nav4.gif)
 
 ## Creating steps
 

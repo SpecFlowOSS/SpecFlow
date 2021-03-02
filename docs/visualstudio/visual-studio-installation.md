@@ -19,6 +19,6 @@ Once the extension is successfully installed, you can see it in the list of "Ins
 
 ![VisualStudio_Installed](../_static/images/extension_dialog_installedv2.png)
 
-The below video is from our getting started guide which covers the installation of SpecFlow's Visual Studio extension. If you are new to SpecFlow we highly recommend you to go through this [getting started guide](https://docs.specflow.org/projects/getting-started/en/latest/GettingStarted/Step1.html)
+The below video is from our getting started guide which covers the installation of SpecFlow's Visual Studio extension. If you are new to SpecFlow we highly recommend you to go through this [getting started guide](https://docs.specflow.org/projects/getting-started/en/latest/GettingStarted/Step1.html).
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tDEgfCn31o0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

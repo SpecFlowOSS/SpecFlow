@@ -142,12 +142,12 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :caption: IDE-Integration: Visual Studio
    :hidden:
 
-   Tools/Visual-Studio-Integration.md
-   Tools/visual-studio-installation.md   
-   Tools/Visual-Studio-Integration-Editing-Features.md
-   Tools/Visual-Studio-Integration-Navigation-Features.md
-   Tools/Visual-Studio-Test-Explorer-Support.md
-   Tools/Generating-Skeleton-Code.md
+   visualstudio/Visual-Studio-Integration.md
+   visualstudio/visual-studio-installation.md   
+   visualstudio/Visual-Studio-Integration-Editing-Features.md
+   visualstudio/Visual-Studio-Integration-Navigation-Features.md
+   visualstudio/Visual-Studio-Test-Explorer-Support.md
+   visualstudio/Generating-Skeleton-Code.md
 
 .. toctree::
    :maxdepth: 1
