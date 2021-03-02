@@ -7,7 +7,7 @@ SpecFlow supports the following types of plugins:
 
 All types of plugins are created in a similar way.
 
-This information only applies to SpecFlow 3. For legacy information on plugins for previous versions, see [Plugins (Legacy)](Plugins-(Legacy).md). With SpecFlow 3, we have changed how you configure which plugins are used. They are no longer configured in your `app.config` (or `specflow.json`).
+This information only applies to SpecFlow 3. For legacy information on plugins for previous versions, see [Plugins (Legacy)](https://docs.specflow.org/projects/specflow/en/latest/legacy/plugins-(Legacy).html). With SpecFlow 3, we have changed how you configure which plugins are used. They are no longer configured in your `app.config` (or `specflow.json`).
 
 ## Runtime plugins
 

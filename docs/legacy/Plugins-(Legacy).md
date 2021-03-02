@@ -1,4 +1,4 @@
-# Plugins (Legacy)
+# Plugins
 
 ## Introduction
 
