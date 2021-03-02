@@ -1,6 +1,6 @@
 # Rider features
 
-The SpecFlow Rider plugin is bundled with a handful of features, see below for more details.
+The SpecFlow for Rider plugin is bundled with a handful of features, see below for more details.
 
 ## Navigation
 
@@ -44,5 +44,4 @@ The plugin also automatically detects any mismatch in step definition names and 
 
 ![Rider_match](../_static/images/rider_match.gif)
 
-
-![Specflow logo](../_static/images/specflow_logov2.png) Please note we are always working to improve and introduce new features to make the plugin more versatile and easy to use.
+![SpecFlow logo](../_static/images/specflow_logov2.png) Please note we are always working to improve and introduce new features to make the plugin more versatile and easy to use.

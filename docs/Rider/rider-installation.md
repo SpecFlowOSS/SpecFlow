@@ -2,11 +2,11 @@
 
 ## Installation
 
-The SpecFlow Rider plugin can be found either at the [JetBrains marketplace](https://plugins.jetbrains.com/plugin/15957-specflow-support) or directly from within the Rider IDE.
+The SpecFlow for Rider plugin can be found either at the [JetBrains marketplace](https://plugins.jetbrains.com/plugin/15957-specflow-support) or directly from within the Rider IDE.
 
-To install it directly from the Rider IDE:
+To install the plugin directly from JetBrains Rider:
 
-**1-** Open JetBrain Rider
+**1-** Open JetBrains Rider
 
 **2-** Navigate to ***File ➡ Settings ➡ Plugins (Ctrl+Alt+S)*** and search for “SpecFlow” in the search bar:
 
