@@ -123,12 +123,10 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Integrations/SpecFlow+Runner-Integration.md
    Integrations/MsTest.md
    Integrations/NUnit.md
-   Integrations/xUnit.md
-   
+   Integrations/xUnit.md   
    Integrations/Azure-DevOps.md
    Integrations/Teamcity-Integration.md
-   Integrations/Browserstack.md
-   Integrations/CodedUI.md
+   Integrations/Browserstack.md   
    Integrations/Autofac.md
    Integrations/Windsor.md
 
@@ -160,8 +158,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Extend/Value-Retriever.md
-   Extend/Plugins.md
-   Extend/Plugins-(Legacy).md
+   Extend/Plugins.md   
    Extend/Available-Plugins.md
    Extend/Available-Containers-&-Registrations.md
    Extend/Decorators.md
@@ -188,6 +185,14 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Contribute/SpecialFiles.md
    Contribute/potentialProblems.md
    Contribute/Coding-Style.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Legacy
+   :hidden:
+
+   legacy/Plugins-(Legacy).md
+   legacy/CodedUI.md
 
 .. toctree::
    :maxdepth: 1
