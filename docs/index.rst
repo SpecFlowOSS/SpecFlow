@@ -9,8 +9,9 @@ SpecFlow tests are written using `Gherkin <https://cucumber.io/docs/gherkin/>`_,
  What's new?
 ==================
 
-.. image:: _static/images/riderspecflow2.png
-   
+.. image:: _static/images/rider.PNG
+
+
 
 We are very excited to announce that the official SpecFlow for Rider plugin is now available. Find out more `here <https://docs.specflow.org/projects/specflow/en/latest/Rider/rider-installation.html>`_
 
