@@ -9,7 +9,7 @@ SpecFlow tests are written using `Gherkin <https://cucumber.io/docs/gherkin/>`_,
  What's new?
 ==================
 
-.. image:: _static/images/rider.PNG
+.. image:: _static/images/specflow_logov2.PNG
 
 
 
