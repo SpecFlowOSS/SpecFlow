@@ -1,4 +1,4 @@
-# Visual Studio Installation
+# Installation
 
 The integration packages can also be downloaded and installed separately from the Visual Studio Gallery:  
 

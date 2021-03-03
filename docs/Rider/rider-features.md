@@ -1,4 +1,4 @@
-# Rider features
+# Features
 
 The SpecFlow for Rider plugin is bundled with a handful of features, see below for more details.
 
@@ -14,11 +14,11 @@ There are multiple ways to achieve this:
 
 ![Rider_nav2](../_static/images/rider_nav2.gif)
 
-3- To navigate from a binding to its corresponding Gherkin step, the keyboard shortcuts **(Shift + F12)** can be used :
+2- To navigate from a binding to its corresponding Gherkin step, the keyboard shortcuts **(Shift + F12)** can be used :
 
 ![Rider_nav3](../_static/images/rider_nav3.gif)
 
-4- You can also see all Gherkin steps currently using a particular binding by pressing **F12** or by navigating to it ***Go to ➡ Go to Declarations or Usages*** :
+3- You can also see all Gherkin steps currently using a particular binding by pressing **F12** or by navigating to it ***Go to ➡ Go to Declarations or Usages*** :
 
 ![Rider_nav4](../_static/images/rider_nav4.gif)
 

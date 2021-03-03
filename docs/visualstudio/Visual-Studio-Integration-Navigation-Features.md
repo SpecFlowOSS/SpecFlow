@@ -1,4 +1,4 @@
-# Visual Studio Navigation Features
+# Navigation Features
 
 You can navigate between the methods in your bindings and the associated steps in your Gherkin feature files. 
 
