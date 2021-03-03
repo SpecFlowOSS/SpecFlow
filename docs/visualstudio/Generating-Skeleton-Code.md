@@ -1,4 +1,4 @@
-# Visual Studio Generating Skeleton Code
+# Generating Skeleton Code
 
 You can automatically create a suitable class with skeleton bindings and methods in Visual Studio. To do so:
 
