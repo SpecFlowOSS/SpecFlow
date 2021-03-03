@@ -1,4 +1,4 @@
-# Visual Studio Test Explorer Support
+# Test Explorer Support
 
 The Visual Studio integration supports executing SpecFlow scenarios from the Visual Studio Test Explorer. The basic Test Explorer features work with all unit test providers, although you may need to install additional Visual Studio connectors, depending on the unit test framework. Full integration is provided for [SpecFlow+ Runner](https://specflow.org/plus/runner/), meaning you can run and debug your scenarios as first class citizens:
 

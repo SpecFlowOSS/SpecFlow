@@ -1,4 +1,4 @@
-# Visual Studio Editing Features
+# Editing Features
 
 The Visual Studio integration includes the following features to make it easier to edit feature files and identify which steps have already been bound.
 
