@@ -6,9 +6,7 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class TestGeneratorFactory : RemotableGeneratorClass, ITestGeneratorFactory
     {
-        // update this version to the latest version number, if there are changes in the test generation
-        public static readonly Version GeneratorVersion = new Version("3.7.0.0");
-
+        public static readonly Version GeneratorVersion = typeof(TestGeneratorFactory).Assembly.GetName().Version;
         public Version GetGeneratorVersion()
         {
             return GeneratorVersion;
