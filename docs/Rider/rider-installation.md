@@ -12,7 +12,7 @@ To install the plugin directly from JetBrains Rider:
 
 **3-** Hit ***Install*** and then ***Accept*** when prompted with the privacy note. You can find our privacy policy [here](https://specflow.org/privacy-policy/)
 
-![Rider_installation](../_static/images/rider_install4.png)
+![Rider_installation2](../_static/images/rider_install4.png)
 
 **4-** You are then required to restart the Rider IDE, hit ***Restart***:
 
