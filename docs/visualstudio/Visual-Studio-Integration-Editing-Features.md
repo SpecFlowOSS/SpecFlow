@@ -33,13 +33,25 @@ The IntelliSense suggestions (red rectangle) for the **Given** step include the 
 
 IntelliSense is also available for the Gherkin keywords in your code files.
 
+### IntelliSense settings
+
+As much as having a suggested list of previous entries could speed up your work, the list may become too long in a big project and not really usable. To fix this problem, SpecFlow gives you the option to limit the number of IntelliSense step instances suggestions for each step template.
+
+To do this, simply navigate to **Tools | Options | SpecFlow | General | IntelliSense** and set the desired number of suggestions you wish to see against the **Max Step Instances Suggestions**  value:
+
+![Intellisense-settings](/_static/images/intellisetting.png)
+
+*> Note: Setting this value to 0 will only show the template.*
+
 ## Outlining and Comments in Feature Files
 
 Most of the items in the **Edit** menu work well with SpecFlow feature files, for example:
 
 * You can comment and uncomment selected lines ('#' character) with the default shortcut for comments (Ctrl+K Ctrl+C/Ctrl+K Ctrl+U) or from the menu
 * You can use the options in the **Edit | Outlining** menu to expand and contract sections of your feature files  
-[![VS2010 Edit menu](http://specflow.org/media/outlining_editor.png)](http://specflow.org/media/outlining_editor.png)  
+[![VS2010 Edit menu](http://specflow.org/media/outlining_editor.png)](http://specflow.org/media/outlining_editor.png) 
+
+
 _(click image for full size)_
 
 ## Table Formatting
