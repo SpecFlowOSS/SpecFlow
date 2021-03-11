@@ -40,4 +40,16 @@ The plugin also automatically detects any mismatch in step definition names and 
 
 ![Rider_match](../_static/images/rider_match.gif)
 
+## Syntax highlighting
+
+Syntax highlighting helps you quickly identify unbound steps in your feature files by underlining them:
+
+![Syntax step](../_static/images/syntaxstep.png)
+
+The absence of a red underline indicates that the step is bound. Notice the parameters in bound steps are also colored differently, in this example light grey.
+
+![Syntax parameter](../_static/images/syntaxparameter.png)
+
+*> Note: Syntax highlighting colors may vary depending on your Rider theme.*
+
 ![SpecFlow logo](../_static/images/specflow_logov2.png) Please note we are always working to improve and introduce new features to make the plugin more versatile and easy to use.
