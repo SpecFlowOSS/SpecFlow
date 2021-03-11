@@ -70,15 +70,15 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
-                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     }
                 ]
             }
@@ -101,7 +101,7 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     }
                 ]
             }
