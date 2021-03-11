@@ -9,6 +9,7 @@ Fixes:
 + Before Feature hooks should not be executed when the feature is ignored https://github.com/SpecFlowOSS/SpecFlow/issues/2234
 + Cleanup scenario context even after an AfterScenario hook error
 + Load RuntimePlugins to the same AssemblyLoadContext
++ Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
 + Capture hook errors and call plugin hooks after hook error
 + Fixed context injection in static methods for Autofac plugin https://github.com/SpecFlowOSS/SpecFlow/issues/2307
 
