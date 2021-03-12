@@ -56,7 +56,7 @@
   <Target Name="PopulateMetaTemplate" AfterTargets="CoreCompile">
     <WriteLinesToFile
       File="$(OutDir)\templates\%(MetaTemplate.RecursiveDir)\%(MetaTemplate.FileName)%(MetaTemplate.Extension)"
-      Lines="$([System.IO.File]::ReadAllText(%(MetaTemplate.FullPath)).Replace('$$$NuGetPackageVersion$$$',$(NuGetPackageVersion)))"
+      Lines="$([System.IO.File]::ReadAllText(%(MetaTemplate.FullPath)).Replace('$$$NuGetPackageVersion$$$',$(NuGetPackageVersion)).Replace('$$$MajorMinorVersion$$$',$(MajorMinorVersion)))"
       Overwrite="true"/>
       <ItemGroup>
         <Content Include="$(OutDir)\templates\**\*" PackagePath="content"/>

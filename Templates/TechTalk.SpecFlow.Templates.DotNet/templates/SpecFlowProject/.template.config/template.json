@@ -66,7 +66,7 @@
                 "cases": [
                     {
                         "condition": "(unitTestProvider == 'specflowplusrunner')",
-                        "value": "<PackageReference Include=\"SpecRun.SpecFlow\" Version=\"3.7.3\" />"
+                        "value": "<PackageReference Include=\"SpecRun.SpecFlow\" Version=\"$$$MajorMinorVersion$$$.*\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'xunit')",
