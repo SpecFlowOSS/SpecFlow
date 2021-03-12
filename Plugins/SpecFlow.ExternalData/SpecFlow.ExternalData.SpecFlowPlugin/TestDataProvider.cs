@@ -1,6 +1,6 @@
 ﻿using System.IO;
+using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Generator.Interfaces;
-using Utf8Json;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin
 {
@@ -13,10 +13,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
     {
         public TestDataProvider(ProjectSettings projectSettings)
         {
-            using (var stream = File.OpenRead(Path.Combine(projectSettings.ProjectFolder, "testdata.json")))
-            {
-                TestData = JsonSerializer.Deserialize<dynamic>(stream);
-            }
+            var testDataContent = File.ReadAllText(Path.Combine(projectSettings.ProjectFolder, "testdata.json"));
+            TestData = testDataContent.FromJson<dynamic>();
         }
 
         public dynamic TestData { get; }

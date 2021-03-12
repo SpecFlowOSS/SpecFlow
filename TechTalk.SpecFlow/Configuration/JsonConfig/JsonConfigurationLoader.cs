@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using Utf8Json;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
@@ -13,7 +12,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 throw new ArgumentNullException(nameof(jsonContent));
             }
 
-            var jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonContent);
+            var jsonConfig = jsonContent.FromJson<JsonConfig>();
 
             var containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             var generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
