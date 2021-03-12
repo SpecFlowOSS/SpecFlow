@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
@@ -290,7 +289,7 @@ namespace TechTalk.SpecFlow
             if (json[0] == '"' && json[json.Length - 1] == '"')
             {
                 string str = json.Substring(1, json.Length - 2);
-                return str.Replace("\\", string.Empty);
+                return ParseValue(typeof(string), json); // fix https://github.com/zanders3/json/issues/29
             }
             if (char.IsDigit(json[0]) || json[0] == '-')
             {
