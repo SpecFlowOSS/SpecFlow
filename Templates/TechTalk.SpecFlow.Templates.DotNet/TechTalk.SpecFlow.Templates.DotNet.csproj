@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
+    <MetaTemplate Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**"/>
     <Compile Remove="**\*" />
     <None Include="$(SolutionDir)specflow-icon.png" Pack="true" PackagePath="images"/>
   </ItemGroup>
@@ -53,4 +53,14 @@
     </Content>
   </ItemGroup>
 
+  <Target Name="PopulateMetaTemplate" AfterTargets="CoreCompile">
+    <WriteLinesToFile
+      File="$(OutDir)\templates\%(MetaTemplate.RecursiveDir)\%(MetaTemplate.FileName)%(MetaTemplate.Extension)"
+      Lines="$([System.IO.File]::ReadAllText(%(MetaTemplate.FullPath)).Replace('$$$NuGetPackageVersion$$$',$(NuGetPackageVersion)).Replace('$$$MajorMinorVersion$$$',$(MajorMinorVersion)))"
+      Overwrite="true"/>
+      <ItemGroup>
+        <Content Include="$(OutDir)\templates\**\*" PackagePath="content"/>
+      </ItemGroup>
+  </Target>
+  
 </Project> 
