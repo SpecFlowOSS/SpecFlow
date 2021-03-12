@@ -9,14 +9,30 @@ using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow
 {
+    public class JsonSerializerSettings
+    {
+        public bool IgnoreNullValues { get; set; }
+
+        public bool UseEnumUnderlyingValues { get; set; }
+        
+        public JsonSerializerSettings(bool ignoreNullValues = true, bool useEnumUnderlyingValues = false)
+        {
+            IgnoreNullValues = ignoreNullValues;
+            UseEnumUnderlyingValues = useEnumUnderlyingValues;
+        }
+    }
+
     //Really simple JSON writer
     //- Outputs JSON structures from an object
     //- Really simple API (new List<int> { 1, 2, 3 }).ToJson() == "[1,2,3]"
     //- Will only output public fields and property getters on objects
     public static class JSONWriter
     {
-        public static string ToJson(this object item)
+        private static JsonSerializerSettings _settings;
+
+        public static string ToJson(this object item, JsonSerializerSettings settings = null)
         {
+            _settings = settings ?? new JsonSerializerSettings();
             StringBuilder stringBuilder = new StringBuilder();
             AppendValue(stringBuilder, item);
             return stringBuilder.ToString();
@@ -83,9 +99,16 @@ namespace TechTalk.SpecFlow
             }
             else if (type.IsEnum)
             {
-                stringBuilder.Append('"');
-                stringBuilder.Append(item.ToString());
-                stringBuilder.Append('"');
+                if (_settings.UseEnumUnderlyingValues)
+                {
+                    stringBuilder.Append((int)item);
+                }
+                else
+                {
+                    stringBuilder.Append('"');
+                    stringBuilder.Append(item.ToString());
+                    stringBuilder.Append('"');
+                }
             }
             else if (item is IList)
             {
@@ -160,7 +183,7 @@ namespace TechTalk.SpecFlow
                         continue;
 
                     object value = propertyInfo[i].GetValue(item, null);
-                    if (value != null)
+                    if (value != null || !_settings.IgnoreNullValues)
                     {
                         if (isFirst)
                             isFirst = false;
