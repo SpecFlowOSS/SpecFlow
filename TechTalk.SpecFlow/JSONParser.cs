@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
@@ -243,6 +244,14 @@ namespace TechTalk.SpecFlow
                     dictionary[keyValue] = val;
                 }
                 return dictionary;
+            }
+            if (type == typeof(TimeSpan))
+            {
+                if (json[0] == '"')
+                    json = json.Substring(1, json.Length - 2);
+
+                TimeSpan.TryParse(json, System.Globalization.CultureInfo.InvariantCulture, out var timeSpan);
+                return timeSpan;
             }
             if (type == typeof(object))
             {
