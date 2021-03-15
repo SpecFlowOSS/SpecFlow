@@ -126,7 +126,7 @@ There are some type-safe extension methods that help you to manage the contents 
 
 ## ScenarioContext.ScenarioInfo
 
-`ScenarioContext.ScenarioInfo` allows you to access information about the scenario currently being executed, such as its title and tags:
+`ScenarioContext.ScenarioInfo` allows you to access information about the scenario currently being executed, such as its title and scenario and feature tags:
 
 In the .feature file:
 
@@ -169,6 +169,45 @@ public void ScenarioInfoContainsInterestingInformation(Table table)
     for (var i = 0; i < si.Tags.Length -1; i++)
     {
         si.Tags[i].Should().Equal(fromStep.Tags[i]);
+    }
+}
+```
+
+`ScenarioContext.ScenarioInfo` also provides access to the current set of arguments from the scenario's examples in the form of an `IOrderedDictionary`: 
+
+```gherkin
+Scenario: Accessing the current example 
+
+When I use examples in my scenario
+Then the examples are available in ScenarioInfo 
+
+    Examples:
+    | Sport      | TeamSize |
+    | Soccer     | 11       |
+    | Basketball | 6        |
+```
+
+```csharp
+public class ScenarioExamplesDemo
+{
+    private ScenarioInfo _scenarioInfo;
+
+    public ScenarioExamplesDemo(ScenarioInfo scenarioInfo)
+    {
+        _scenarioInfo = scenarioInfo;
+    }
+
+    [When(@"I use examples in my scenario")]
+    public void IUseExamplesInMyScenario() {}
+
+    [Then(@"the examples are available in ScenarioInfo")]
+    public void TheExamplesAreAvailableInScenarioInfo()
+    {
+        var currentArguments = _scenarioInfo.Arguments;
+        var currentSport = currentArguments["Sport"];
+        var currentTeamSize = currentArguments["TeamSize"];
+        Console.WriteLine($"The current sport is {currentSport}");
+        Console.WriteLine($"The current sport allows teams of {currentTeamSize} players");
     }
 }
 ```
