@@ -201,7 +201,7 @@ public class ScenarioExamplesDemo
     public void IUseExamplesInMyScenario() {}
 
     [Then(@"the examples are available in ScenarioInfo")]
-    public void TheExamplesAreAvailableInScenarioInfo(Table table)
+    public void TheExamplesAreAvailableInScenarioInfo()
     {
         var currentArguments = _scenarioInfo.Arguments;
         var currentSport = currentArguments["Sport"];
