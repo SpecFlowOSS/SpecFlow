@@ -104,7 +104,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalData", "ExternalDat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.ExternalData.SpecFlowPlugin", "Plugins\SpecFlow.ExternalData\SpecFlow.ExternalData.SpecFlowPlugin\SpecFlow.ExternalData.SpecFlowPlugin.csproj", "{AF7CACE6-1F26-454D-A814-19CFCF7C5810}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.SerializerTests", "Tests\SpecFlow.SerializerTests\SpecFlow.SerializerTests.csproj", "{7D520252-E158-493B-BD8A-6BD2A18E764C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.ExternalDataTests", "Tests\SpecFlow.ExternalDataTests\SpecFlow.ExternalDataTests.csproj", "{7D520252-E158-493B-BD8A-6BD2A18E764C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

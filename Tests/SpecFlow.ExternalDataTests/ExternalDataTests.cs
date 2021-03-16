@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.TinyJson;
 using Utf8Json;
 using Xunit;
 using Xunit.Sdk;
 
-namespace SerializerTests
+namespace SpecFlow.ExternalDataTests
 {
     public class ExternalDataTests
     {
