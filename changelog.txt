@@ -1,3 +1,9 @@
+After 3.7.38
+
+Fixes:
++ Update to NUnit 3.13.1 as minimum NUnit version
+
+
 3.7
 
 Features:
