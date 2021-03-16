@@ -1,6 +1,6 @@
 # NUnit
 
-SpecFlow supports NUnit 3.11 or later.  
+SpecFlow supports NUnit 3.13.1 or later.  
 
 Documentation for NUnit can be found [here](https://github.com/nunit/docs/wiki/NUnit-Documentation).
 
