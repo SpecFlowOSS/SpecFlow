@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.TinyJson
 {
     // https://github.com/zanders3/json
     // Really simple JSON parser in ~300 lines

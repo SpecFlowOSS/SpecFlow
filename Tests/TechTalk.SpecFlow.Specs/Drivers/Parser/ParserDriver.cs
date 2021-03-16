@@ -7,6 +7,7 @@ using System.Text;
 using FluentAssertions;
 using Gherkin;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.TinyJson;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 {

@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.TinyJson;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin
 {

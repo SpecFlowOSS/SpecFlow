@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TechTalk.SpecFlow.TinyJson;
 
 namespace TechTalk.SpecFlow.Analytics.AppInsights
 {

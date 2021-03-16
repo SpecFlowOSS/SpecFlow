@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using TechTalk.SpecFlow.TinyJson;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
