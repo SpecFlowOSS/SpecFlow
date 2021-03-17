@@ -1,3 +1,8 @@
+After 3.7.38
+
+Fixes:
++ Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
+
 3.7
 
 Features:
