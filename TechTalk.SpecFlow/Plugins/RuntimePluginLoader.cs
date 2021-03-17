@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Plugins
                 return null;
             }
 
-            if (!typeof(IRuntimePlugin).IsAssignableFrom((pluginAttribute.PluginType)))
+            if (!typeof(IRuntimePlugin).IsAssignableFrom(pluginAttribute.PluginType))
                 throw new SpecFlowException(string.Format("Invalid plugin attribute in {0}. Plugin type must implement IRuntimePlugin. Please check https://go.specflow.org/doc-plugins for details.", assembly.FullName));
 
             IRuntimePlugin plugin;

@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow
 {
-	internal static class StringExtensions
+    internal static class StringExtensions
     {
         internal static bool IsNullOrEmpty(this string value)
         {
@@ -14,19 +14,12 @@
 
         internal static bool IsNullOrWhiteSpace(this string value)
         {
-            if (value == null) return true;
-
-            for (int i = 0; i < value.Length; i++)
-            {
-                if (!char.IsWhiteSpace(value[i])) return false;
-            }
-
-            return true;
+            return string.IsNullOrWhiteSpace(value);
         }
 
         internal static bool IsNotNullOrWhiteSpace(this string value)
         {
-            return !value.IsNullOrWhiteSpace();
+            return !string.IsNullOrWhiteSpace(value);
         }
 
         internal static string StripWhitespaces(this string value)

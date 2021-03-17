@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using FluentAssertions;
-using Moq;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 using Xunit;
@@ -28,7 +27,7 @@ namespace TechTalk.SpecFlow.PluginTests
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
 
             //ASSERT
-            plugins.Any(plugin => plugin.Equals(testAssembly.Location)).Should().BeTrue();
+            plugins.Should().Contain(testAssembly.Location);
         }
 
         [Fact]
@@ -54,9 +53,8 @@ namespace TechTalk.SpecFlow.PluginTests
             generatorPluginsFound.Count.Should().Be(numberOfGeneratorPlugins);
 
             var numberOfRuntimePlugins = NumberOfRuntimePluginsReferenced(projectReferences);
-            var runtimePluginsFound = plugins.Where(p => !p.Equals(testAssembly.Location))
-                                        .Except(generatorPluginsFound).ToList();
-            runtimePluginsFound.Count.Should().Be(numberOfRuntimePlugins, $"{string.Join(",", runtimePluginsFound)} were found");
+            var runtimePluginsFound = plugins.Where(p => !p.Equals(testAssembly.Location)).Except(generatorPluginsFound).ToList();
+            runtimePluginsFound.Should().HaveCount(numberOfRuntimePlugins, $"{string.Join(",", runtimePluginsFound)} were found");
         }
 
         private int NumberOfGeneratorPluginsReferenced(List<string> projectReferences)
