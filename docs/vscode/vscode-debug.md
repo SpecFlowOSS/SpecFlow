@@ -2,7 +2,7 @@
 
 Follow the below steps to setup your VS Code environment for debugging:
 
-**1-** Click on the ***Run and Debug*** (Ctrl + Shift + D) button on the left pane and then click on ***Create a launch.json file***. VS Code will then ask you what kind of environment you want to debug, select **.Net Core**:
+**1-** Click on the ***Run and Debug*** (Ctrl + Shift + D) button on the left pane and then click on ***Create a launch.json file***. VS Code will then ask you what kind of environment you want to debug, select **.NET Core**:
 
 ![vscodelaunch](../_static/images/vscodelaunch.png)
 
@@ -10,7 +10,7 @@ Next, you will have to choose the project you want to debug. Select the project 
 
 ![launchproject](../_static/images/launchproject.png)
 
-**2-** Once the **launch.json** file is created by VS Code you will see the debug options on the left pane. There are two debug operations to choose from here, **.Net Core Launch (Consosle)** which is for console applications and **.Net Core Attach** which is what we are going for in this example, Select ***.Net Core Attach***.
+**2-** Once the **launch.json** file is created by VS Code you will see the debug options on the left pane. There are two debug operations to choose from here, **.NET Core Launch (Consosle)** which is for console applications and **.NET Core Attach** which is what we are going for in this example, Select ***.NET Core Attach***.
 
 ![vscodelaunch](../_static/images/rundebug.png)
 
@@ -28,7 +28,7 @@ The terminal is now ready for debugging, Enter `dotnet test` followed by your pr
 
 ![debuggerprocessID](../_static/images/debugattach.png)
 
-**5-** Copy the process ID number and navigate back to debug menu on the left pane and click on the ▶ icon next to **.Net Core Attach** and paste the process ID number in the displayed search box and select ***testhost.exe***:
+**5-** Copy the process ID number and navigate back to debug menu on the left pane and click on the ▶ icon next to **.NET Core Attach** and paste the process ID number in the displayed search box and select ***testhost.exe***:
 
 ![processID](../_static/images/processid.png)
 

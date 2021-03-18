@@ -3,7 +3,7 @@
 
 Although there is **no official** SpecFlow for Visual Studio Code extension available right now, we have put together this guide to help you have an experience as close as possible to a SpecFlow Extension.
 
-If you like to see an official SpecFlow extension for VS Code please request it on our community feature request page [here](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests). You can also vote on other existing requests by other community members.
+If you like to see an official SpecFlow extension for VS Code please vote for it on our community feature request page [here](https://support.specflow.org/hc/en-us/community/posts/360015049478--SpecFlow-for-Visual-Studio-Code). You can also vote on other existing requests by other community members.
 
 Note we do have an official extension for Visual Studio, more details [here](https://docs.specflow.org/projects/specflow/en/latest/visualstudio/visual-studio-installation.html)
 
@@ -27,9 +27,9 @@ The extension enables the following features:
 - Document format support, including tables formatting
 - Supporting of many spoken languages
 - Gherkin page objects native support
-- Multiple programming languages, JS, TS, Ruby, Kotlin etc.
+- Multiple programming languages, C#, JS, TS, Ruby, Kotlin etc.
 
-Which would nicely format and highlight your Gherkin files:
+These features will nicely format and highlight your Gherkin files:
 
 ![vscodefeature](../_static/images/vscodefeature.png)
 
@@ -48,15 +48,3 @@ As the settings describes, you have to insert the path or array of glob-style-pa
 **4-** Save your settings and go back to your feature files. You will now be able to navigate from your feature files steps to their corresponding bindings by pressing **F12** or by holding **Ctrl** and clicking on a step:
 
 ![vscodegif](../_static/images/vscodegif2.gif)
-
-## Test Execution
-
-The best way to execute your tests is to use the VS Code terminal, simply open the terminal type in `dotnet test` and hit enter:
-
-![vscodetest](../_static/images/vscodetest.png)
-
-You can then view the attachments, log file, and an overall results:
-
-![vscoderesult](../_static/images/vscoderesult.png)
-
-***> Note:** The attachments above would vary depending on the runner you are using. In our example we are using the [SpecFlow+Runner](https://docs.specflow.org/projects/specflow-runner/en/latest/).*

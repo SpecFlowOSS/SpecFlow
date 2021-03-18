@@ -161,6 +161,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    vscode/vscode-specflow.md
+   vscode/test-execution.md
    vscode/vscode-debug.md
 
    
