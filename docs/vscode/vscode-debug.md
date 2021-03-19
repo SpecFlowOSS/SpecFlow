@@ -24,7 +24,7 @@ The terminal is now ready for debugging, Enter `dotnet test` followed by your pr
 
 ![debugterminal](../_static/images/debugterminal.png)
 
-**4-** Debugger will then initialize and display the test host process ID on which you can attach the debugger to:
+**4-** dotnet test will then start in debug mode and display the test host process ID on which you can attach the debugger to:
 
 ![debuggerprocessID](../_static/images/debugattach.png)
 
