@@ -15,6 +15,9 @@ SpecFlow tests are written using `Gherkin <https://cucumber.io/docs/gherkin/>`_,
 
 We are very excited to announce that the official SpecFlow for Rider plugin is now available. Find out more `here <https://docs.specflow.org/projects/specflow/en/latest/Rider/rider-installation.html>`_
 
+.. image:: _static/images/vscodelogo.PNG
+
+Although there is no official SpecFlow extension for VS Code, we have put together a guide for you to setup VS code for a similar experience. Find our more `here <https://go.specflow.org/kq9>`_ 
 
 ===================
 SpecFlow components
@@ -152,7 +155,16 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Rider/rider-features.md
 
 
+.. toctree::
+   :maxdepth: 1
+   :caption: IDE-Integration: Visual Studio Code
+   :hidden:
 
+   vscode/vscode-specflow.md
+   vscode/test-execution.md
+   vscode/vscode-debug.md
+
+   
 .. toctree::
    :maxdepth: 1
    :caption: Extend SpecFlow
