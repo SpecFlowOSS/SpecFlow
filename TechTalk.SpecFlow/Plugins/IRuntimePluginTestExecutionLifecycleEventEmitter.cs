@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.Plugins
 {
     public interface IRuntimePluginTestExecutionLifecycleEventEmitter
     {
-        void RasiseExecutionLifecycleEvent(HookType hookType, IObjectContainer container);
+        void RaiseExecutionLifecycleEvent(HookType hookType, IObjectContainer container);
     }
 
     public class RuntimePluginTestExecutionLifecycleEventEmitter : IRuntimePluginTestExecutionLifecycleEventEmitter
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Plugins
             _events = events;
         }
 
-        public void RasiseExecutionLifecycleEvent(HookType hookType, IObjectContainer container)
+        public void RaiseExecutionLifecycleEvent(HookType hookType, IObjectContainer container)
         {
             switch (hookType)
             {
