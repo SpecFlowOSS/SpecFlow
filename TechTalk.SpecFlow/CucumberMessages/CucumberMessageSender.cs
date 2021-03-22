@@ -14,6 +14,8 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         private readonly List<ICucumberMessageSink> _cucumberMessageSinks;
 
+        private bool AnyReceivers => _cucumberMessageSinks.Count > 0;
+
         public CucumberMessageSender(
             ICucumberMessageFactory cucumberMessageFactory,
             IPlatformFactory platformFactory,
@@ -29,6 +31,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestRunStarted()
         {
+            if (!AnyReceivers)
+            {
+                return;
+            }
+
             var nowDateAndTime = _fieldValueProvider.GetTestRunStartedTime();
             var testRunStartedMessageResult = _cucumberMessageFactory.BuildTestRunStartedMessage(nowDateAndTime);
             var envelope = _cucumberMessageFactory.BuildEnvelopeMessage(testRunStartedMessageResult);
@@ -37,6 +44,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestCaseStarted(ScenarioInfo scenarioInfo)
         {
+            if (!AnyReceivers)
+            {
+                return;
+            }
+
             var actualPickleId = _fieldValueProvider.GetTestCaseStartedPickleId(scenarioInfo);
             var nowDateAndTime = _fieldValueProvider.GetTestCaseStartedTime();
 
@@ -49,6 +61,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestCaseFinished(ScenarioInfo scenarioInfo, TestResult testResult)
         {
+            if (!AnyReceivers)
+            {
+                return;
+            }
+
             var actualPickleId = _fieldValueProvider.GetTestCaseFinishedPickleId(scenarioInfo);
             var nowDateAndTime = _fieldValueProvider.GetTestCaseFinishedTime();
 
@@ -59,6 +76,11 @@ namespace TechTalk.SpecFlow.CucumberMessages
 
         public void SendTestRunFinished(TestRunResult testRunResult)
         {
+            if (!AnyReceivers)
+            {
+                return;
+            }
+
             var nowDateAndTime = _fieldValueProvider.GetTestRunFinishedTime();
             bool isSuccess = _testRunResultSuccessCalculator.IsSuccess(testRunResult);
 
@@ -67,7 +89,7 @@ namespace TechTalk.SpecFlow.CucumberMessages
             SendMessageOrThrowException(envelope);
         }
 
-        public void SendMessageOrThrowException(IResult<Envelope> messageResult)
+        private void SendMessageOrThrowException(IResult<Envelope> messageResult)
         {
             switch (messageResult)
             {

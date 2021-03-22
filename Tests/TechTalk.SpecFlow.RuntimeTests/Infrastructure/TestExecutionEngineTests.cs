@@ -570,6 +570,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_TryToSend_ProjectRunningEvent()
         {
+            _analyticsTransmitter.SetupGet(at => at.IsEnabled).Returns(true);
+
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnTestRunStart();
