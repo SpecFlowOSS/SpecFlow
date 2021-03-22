@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnTestRunStart();
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Action act = () => testExecutionEngine.OnTestRunStart();
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnTestRunEnd();
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Action act = () => testExecutionEngine.OnTestRunEnd();
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnFeatureStart(featureInfo);
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Action act = () => testExecutionEngine.OnFeatureStart(featureInfo);
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
         }
 
 
@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnFeatureEnd();
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Action act = () => testExecutionEngine.OnFeatureEnd();
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
         }
 
 
@@ -116,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnScenarioStart();
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
@@ -133,7 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             };
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
         }
 
 
@@ -144,7 +144,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.OnScenarioEnd();
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Action act = () => testExecutionEngine.OnScenarioEnd();
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
@@ -185,7 +185,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             };
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
@@ -214,7 +214,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             };
 
             act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
-            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RasiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
+            _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
         }
 
     }

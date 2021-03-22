@@ -381,7 +381,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             //We pass a container corresponding the type of event
             var container = GetHookContainer(hookType);
-            _runtimePluginTestExecutionLifecycleEventEmitter.RasiseExecutionLifecycleEvent(hookType, container);
+            _runtimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent(hookType, container);
         }
 
         protected IObjectContainer TestThreadContainer { get; }
