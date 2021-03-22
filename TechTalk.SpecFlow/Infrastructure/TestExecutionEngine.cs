@@ -49,7 +49,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private bool _testRunnerEndExecuted = false;
         private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
-        
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -110,15 +109,18 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return;
             }
 
-            try
+            if (_analyticsTransmitter.IsEnabled)
             {
-                var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
-                var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
-                _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
-            }
-            catch (Exception)
-            {
-                // catch all exceptions since we do not want to break anything
+                try
+                {
+                    var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
+                    var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
+                    _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
+                }
+                catch (Exception)
+                {
+                    // catch all exceptions since we do not want to break anything
+                }
             }
 
             _testRunnerStartExecuted = true;
@@ -477,7 +479,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                 contextManager.StepContext.StepInfo.BindingMatch = match;
                 contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
-                
 
                 if (isStepSkipped)
                 {
