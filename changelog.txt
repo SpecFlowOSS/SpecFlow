@@ -2,6 +2,7 @@ After 3.7.38
 
 Fixes:
 + Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
++ Fix spelling of IRuntimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent
 
 3.7
 
