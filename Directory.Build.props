@@ -21,7 +21,7 @@
     <Authors>$(SpecFlow_Authors)</Authors>
     <Company>Tricentis</Company>
     <Product />
-    <PackageProjectUrl>https://www.specflow.org</PackageProjectUrl>
+    <PackageProjectUrl>https://specflow.org</PackageProjectUrl>
     <PackageIcon>images/specflow-icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/SpecFlowOSS/SpecFlow</RepositoryUrl>
     <PackageTags>specflow bdd gherkin cucumber</PackageTags>
