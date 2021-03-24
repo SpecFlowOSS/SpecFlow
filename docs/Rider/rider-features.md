@@ -52,4 +52,10 @@ The absence of a red underline indicates that the step is bound. Notice the para
 
 *> Note: Syntax highlighting colors may vary depending on your Rider theme.*
 
+## Table formatting
+
+Tables are expanded and formatted automatically in feature files. You can use the keyboard shortcuts  **(Ctrl + Alt + Enter)** or go to ***Code ➡ Reformat Code*** to apply correct formatting on the entire feature file.
+
+![table formatting](../_static/images/tablegif.gif)
+
 ![SpecFlow logo](../_static/images/specflow_logov2.png) Please note we are always working to improve and introduce new features to make the plugin more versatile and easy to use.
