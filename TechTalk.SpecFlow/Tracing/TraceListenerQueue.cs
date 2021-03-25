@@ -6,13 +6,13 @@ namespace TechTalk.SpecFlow.Tracing
 {
     public class TraceListenerQueue : ITraceListenerQueue
     {
-        private readonly BlockingCollection<TraceMessage> _messages = new BlockingCollection<TraceMessage>();
         private readonly ITestRunnerManager _testRunnerManager;
 
         private readonly ITraceListener _traceListener;
         private readonly bool _isThreadSafeTraceListener;
+        private BlockingCollection<TraceMessage> _messages;
         private Task _consumerTask;
-        private Exception _error = null;
+        private Exception _error;
 
         public TraceListenerQueue(ITraceListener traceListener, ITestRunnerManager testRunnerManager)
         {
@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void Start()
         {
+            _messages = new BlockingCollection<TraceMessage>();
             _consumerTask = Task.Factory.StartNew(() =>
             {
                 try
@@ -40,7 +41,9 @@ namespace TechTalk.SpecFlow.Tracing
                 {
                     _error = ex;
                 }
-            });
+            },
+            // We don't want to block an thread of the pool for the whole duration, so create a new Thread for it
+            TaskCreationOptions.LongRunning);
         }
 
         public void EnqueueMessage(ITestRunner sourceTestRunner, string message, bool isToolMessgae)
@@ -85,7 +88,7 @@ namespace TechTalk.SpecFlow.Tracing
                 _traceListener.WriteTestOutput(message.Message);
         }
 
-        struct TraceMessage
+        private readonly struct TraceMessage
         {
             public bool IsToolMessage { get; }
             public string Message { get; }
