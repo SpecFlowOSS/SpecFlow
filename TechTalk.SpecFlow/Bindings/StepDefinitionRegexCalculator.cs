@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Bindings
             string methodName = bindingMethod.Name;
             methodName = RemoveStepPrefix(stepDefinitionType, methodName);
 
-            var parameters = bindingMethod.Parameters.ToArray();
+            var parameters = bindingMethod.Parameters.AsArray();
 
             int processedPosition = 0;
             var reBuilder = new StringBuilder("(?i)");

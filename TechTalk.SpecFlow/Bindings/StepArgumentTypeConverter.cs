@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             var match = stepTransformation.Regex.Match(stepSnippet);
             var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
-            var bindingParameters = stepTransformation.Method.Parameters.ToArray();
+            var bindingParameters = stepTransformation.Method.Parameters.AsArray();
             return argumentStrings
                 .Select((arg, argIndex) => this.Convert(arg, bindingParameters[argIndex].Type, cultureInfo))
                 .ToArray();

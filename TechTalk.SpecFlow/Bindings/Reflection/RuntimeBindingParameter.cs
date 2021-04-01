@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
@@ -5,10 +6,11 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     public class RuntimeBindingParameter : IBindingParameter
     {
         private readonly ParameterInfo parameterInfo;
+        private RuntimeBindingType runtimeBindingType;
 
         public IBindingType Type
         {
-            get { return new RuntimeBindingType(parameterInfo.ParameterType); }
+            get { return runtimeBindingType ??= new RuntimeBindingType(parameterInfo.ParameterType); }
         }
 
         public string ParameterName
@@ -18,7 +20,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public RuntimeBindingParameter(ParameterInfo parameterInfo)
         {
-            this.parameterInfo = parameterInfo;
+            this.parameterInfo = parameterInfo ?? throw new ArgumentNullException(nameof(parameterInfo));
         }
 
         public override string ToString()
@@ -41,7 +43,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public override int GetHashCode()
         {
-            return (parameterInfo != null ? parameterInfo.GetHashCode() : 0);
+            return parameterInfo.GetHashCode();
         }
     }
 }

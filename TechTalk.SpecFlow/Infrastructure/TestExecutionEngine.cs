@@ -42,13 +42,10 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IAnalyticsTransmitter _analyticsTransmitter;
         private readonly ITestRunnerManager _testRunnerManager;
         private readonly IRuntimePluginTestExecutionLifecycleEventEmitter _runtimePluginTestExecutionLifecycleEventEmitter;
-        private CultureInfo _defaultBindingCulture = CultureInfo.CurrentCulture;
 
-        private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
-
-        private bool _testRunnerEndExecuted = false;
+        private bool _testRunnerEndExecuted;
         private object _testRunnerEndExecutedLock = new object();
-        private bool _testRunnerStartExecuted = false;
+        private bool _testRunnerStartExecuted;
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -164,8 +161,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             _contextManager.InitializeFeatureContext(featureInfo);
 
-            _defaultBindingCulture = FeatureContext.BindingCulture;
-            _defaultTargetLanguage = featureInfo.GenerationTargetLanguage;
             FireEvents(HookType.BeforeFeature);
         }
 
@@ -322,12 +317,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             FireScenarioEvents(HookType.AfterStep);
         }
+
         protected virtual void OnSkipStep()
         {
             _testTracer.TraceStepSkipped();
 
-            var skippedStepHandlers = _contextManager.ScenarioContext.ScenarioContainer.ResolveAll<ISkippedStepHandler>().ToArray();
-            foreach (var skippedStepHandler in skippedStepHandlers)
+            foreach (var skippedStepHandler in _contextManager.ScenarioContext.ScenarioContainer.ResolveAll<ISkippedStepHandler>())
             {
                 skippedStepHandler.Handle(_contextManager.ScenarioContext);
             }
@@ -342,39 +337,64 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void FireEvents(HookType hookType)
         {
-            var stepContext = _contextManager.GetStepContext();
+            int hooksCount = 0;
+            var hooks = _bindingRegistry.GetHooks(hookType);
+            if (hooks is ICollection<IHookBinding> col)
+            {
+                hooksCount = col.Count;
+                if (hooksCount == 0)
+                {
+                    // Early out, we got no hooks to call
+                    FireRuntimePluginTestExecutionLifecycleEvents(hookType);
+                    return;
+                }
+            }
 
-            var matchingHooks = _bindingRegistry.GetHooks(hookType)
-                .Where(hookBinding => !hookBinding.IsScoped ||
-                                      hookBinding.BindingScope.Match(stepContext, out int _));
+            StepContext stepContext = null;
+            var hooksToInvoke = new List<IHookBinding>(hooksCount);
+            foreach (var hookBinding in hooks)
+            {
+                if (!hookBinding.IsScoped || hookBinding.BindingScope.Match(stepContext ??= _contextManager.GetStepContext(), out _))
+                {
+                    hooksToInvoke.Add(hookBinding);
+                }
+            }
 
-            //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
-            // if multiple scopes match the same method, we take the first one. 
-            // The InvokeHook uses only the Method anyway...
-            // The only problem could be if the same method is decorated with hook attributes using different order, 
-            // but in this case it is anyway impossible to tell the right ordering.
-            var uniqueMatchingHooks = matchingHooks.GroupBy(hookBinding => hookBinding.Method).Select(g => g.First());
-            Exception hookException = null;
+
+            //Note: if a (user-)hook throws an exception the subsequent hooks of the same type are not executed
             try
             {
-                //Note: if a (user-)hook throws an exception the subsequent hooks of the same type are not executed
-                foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
+                if (hooksToInvoke.Count == 1)
                 {
-                    InvokeHook(_bindingInvoker, hookBinding, hookType);
+                    InvokeHook(_bindingInvoker, hooksToInvoke[0], hookType);
+                }
+                else
+                {
+                    hooksToInvoke.Sort((x, y) => x.HookOrder.CompareTo(y.HookOrder));
+                    var uniqueBindingMethods = new HashSet<IBindingMethod>();
+                    foreach (var hookBinding in hooksToInvoke)
+                    {
+                        // HACK: The InvokeHook requires an IHookBinding that contains the scope as well
+                        // if multiple scopes match the same method, we take the first one.
+                        // The InvokeHook uses only the Method anyway...
+                        if (uniqueBindingMethods.Add(hookBinding.Method))
+                        {
+                            InvokeHook(_bindingInvoker, hookBinding, hookType);
+                        }
+                    }
                 }
             }
             catch (Exception hookExceptionCaught)
             {
-                hookException = hookExceptionCaught;
-                SetHookError(hookType, hookException);
+                SetHookError(hookType, hookExceptionCaught);
+                throw;
             }
-
-            //Note: plugin-hooks are still executed even if a user-hook failed with an exception
-            //A plugin-hook should not throw an exception under normal circumstances, exceptions are not handled/caught here
-            FireRuntimePluginTestExecutionLifecycleEvents(hookType);
-
-            //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error  
-            if (hookException != null) throw hookException;
+            finally
+            {
+                //Note: plugin-hooks are still executed even if a user-hook failed with an exception
+                //A plugin-hook should not throw an exception under normal circumstances, exceptions are not handled/caught here
+                FireRuntimePluginTestExecutionLifecycleEvents(hookType);
+            }
         }
 
         private void FireRuntimePluginTestExecutionLifecycleEvents(HookType hookType)
@@ -396,23 +416,17 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private IObjectContainer GetHookContainer(HookType hookType)
         {
-            IObjectContainer currentContainer;
             switch (hookType)
             {
                 case HookType.BeforeTestRun:
                 case HookType.AfterTestRun:
-                    currentContainer = TestThreadContainer;
-                    break;
+                    return TestThreadContainer;
                 case HookType.BeforeFeature:
                 case HookType.AfterFeature:
-                    currentContainer = FeatureContext.FeatureContainer;
-                    break;
+                    return FeatureContext.FeatureContainer;
                 default: // scenario scoped hooks
-                    currentContainer = ScenarioContext.ScenarioContainer;
-                    break;
+                    return ScenarioContext.ScenarioContainer;
             }
-
-            return currentContainer;
         }
 
         private SpecFlowContext GetHookContext(HookType hookType)
@@ -444,9 +458,25 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private object[] ResolveArguments(IHookBinding hookBinding, IObjectContainer currentContainer)
         {
-            if (hookBinding.Method == null || !hookBinding.Method.Parameters.Any())
+            var method = hookBinding.Method;
+            if (method is null)
+            {
                 return null;
-            return hookBinding.Method.Parameters.Select(p => ResolveArgument(currentContainer, p)).ToArray();
+            }
+
+            var paramArray = method.Parameters.AsArray();
+            if (paramArray.Length == 0)
+            {
+                return null;
+            }
+
+            var arguments = new object[paramArray.Length];
+            for (var i = 0; i < paramArray.Length; i++)
+            {
+                arguments[i] = ResolveArgument(currentContainer, paramArray[i]);
+            }
+
+            return arguments;
         }
 
         private object ResolveArgument(IObjectContainer container, IBindingParameter parameter)
@@ -595,23 +625,28 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private object[] GetExecuteArguments(BindingMatch match)
         {
-            var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
+            var bindingParameters = match.StepBinding.Method.Parameters.AsArray();
+
             if (match.Arguments.Length != bindingParameters.Length)
                 throw _errorProvider.GetParameterCountError(match, match.Arguments.Length);
 
-            var arguments = match.Arguments.Select(
-                    (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
-                .ToArray();
+            if (bindingParameters.Length == 0)
+            {
+                return Array.Empty<object>();
+            }
 
+            var bindingCulture = FeatureContext.BindingCulture;
+            var arguments = new object[bindingParameters.Length];
+            for (var i = 0; i < arguments.Length; i++)
+            {
+                object value = match.Arguments[i];
+                IBindingType typeToConvertTo = bindingParameters[i].Type;
+
+                Debug.Assert(value != null);
+                Debug.Assert(typeToConvertTo != null);
+                arguments[i] = _stepArgumentTypeConverter.Convert(value, typeToConvertTo, bindingCulture);
+            }
             return arguments;
-        }
-
-        private object ConvertArg(object value, IBindingType typeToConvertTo)
-        {
-            Debug.Assert(value != null);
-            Debug.Assert(typeToConvertTo != null);
-
-            return _stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
         }
 
         #endregion

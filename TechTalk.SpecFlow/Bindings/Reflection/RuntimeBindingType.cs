@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public RuntimeBindingType(Type type)
         {
-            this.Type = type;
+            Type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
         public bool IsAssignableTo(IBindingType baseType)
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public override int GetHashCode()
         {
-            return (Type != null ? Type.GetHashCode() : 0);
+            return Type.GetHashCode();
         }
 
         public static readonly RuntimeBindingType Void = new RuntimeBindingType(typeof(void));
