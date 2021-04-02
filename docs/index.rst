@@ -164,7 +164,14 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    vscode/test-execution.md
    vscode/vscode-debug.md
 
+.. toctree::
+   :maxdepth: 1
+   :caption: UI Automation
+   :hidden:
    
+   ui-automation/Selenium-with-Page-Object-Pattern.md
+
+
 .. toctree::
    :maxdepth: 1
    :caption: Extend SpecFlow
