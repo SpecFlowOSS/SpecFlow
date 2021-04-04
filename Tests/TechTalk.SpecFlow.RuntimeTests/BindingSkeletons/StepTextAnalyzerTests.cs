@@ -232,5 +232,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[0].Should().Be("I \"");
             result.TextParts[1].Should().Be("\" something ");
         }
+
+        [Fact]
+        public void Should_support_empty_strings()
+        {
+            var sut = new StepTextAnalyzer();
+
+            var result = sut.Analyze("I \"\" something ", bindingCulture);
+            result.Parameters.Count.Should().Be(1);
+            result.Parameters[0].Name.Should().Be("p0");
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I \"");
+            result.TextParts[1].Should().Be("\" something ");
+        }
     }
 }
