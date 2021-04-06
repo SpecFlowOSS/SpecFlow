@@ -4,6 +4,7 @@ Fixes:
 + Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
 + Fix spelling of IRuntimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent
 + Improve performance by lazy initializing certain expensive members
++ Use inputs and outputs from Target to not always regenerates code-behind
 
 3.7
 
