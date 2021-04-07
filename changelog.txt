@@ -4,6 +4,7 @@ Fixes:
 + Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
 + Fix spelling of IRuntimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent
 + Improve performance by lazy initializing certain expensive members
++ Step argument transformations should not be executed if a previous step had an error https://github.com/SpecFlowOSS/SpecFlow/issues/2382
 
 3.7
 

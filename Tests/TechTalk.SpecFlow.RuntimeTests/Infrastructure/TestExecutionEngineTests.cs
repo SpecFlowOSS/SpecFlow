@@ -48,6 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
         private Mock<ITestRunnerManager> _testRunnerManager;
         private Mock<IRuntimePluginTestExecutionLifecycleEventEmitter> _runtimePluginTestExecutionLifecycleEventEmitter;
+        private Mock<IStepArgumentTypeConverter> _stepArgumentTypeConverterMock;
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -60,7 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private List<IHookBinding> beforeScenarioBlockEvents;
         private List<IHookBinding> afterScenarioBlockEvents;
 
-
+        private List<IStepArgumentTransformationBinding> stepTransformations;
 
         class DummyClass
         {
@@ -93,6 +94,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             beforeScenarioBlockEvents = new List<IHookBinding>();
             afterScenarioBlockEvents = new List<IHookBinding>();
 
+            stepTransformations = new List<IStepArgumentTransformationBinding>();
+
             stepDefinitionSkeletonProviderMock = new Mock<IStepDefinitionSkeletonProvider>();
             testObjectResolverMock = new Mock<ITestObjectResolver>();
             testObjectResolverMock.Setup(bir => bir.ResolveBindingInstance(It.IsAny<Type>(), It.IsAny<IObjectContainer>()))
@@ -121,6 +124,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterTestRun)).Returns(afterTestRunEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenario)).Returns(beforeScenarioEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenario)).Returns(afterScenarioEvents);
+            
+            bindingRegistryStub.Setup(br => br.GetStepTransformations()).Returns(stepTransformations);
 
             specFlowConfiguration = ConfigurationLoader.GetDefault();
             errorProviderStub = new Mock<IErrorProvider>();
@@ -146,6 +151,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             _testRunnerManager.Setup(trm => trm.TestAssembly).Returns(Assembly.GetCallingAssembly);
 
             _runtimePluginTestExecutionLifecycleEventEmitter = new Mock<IRuntimePluginTestExecutionLifecycleEventEmitter>();
+
+            _stepArgumentTypeConverterMock = new Mock<IStepArgumentTypeConverter>();
         }
 
         private TestExecutionEngine CreateTestExecutionEngine()
@@ -154,7 +161,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 new Mock<IStepFormatter>().Object,
                 testTracerStub.Object,
                 errorProviderStub.Object,
-                new Mock<IStepArgumentTypeConverter>().Object,
+                _stepArgumentTypeConverterMock.Object,
                 specFlowConfiguration,
                 bindingRegistryStub.Object,
                 new Mock<IUnitTestRuntimeProvider>().Object,
@@ -209,6 +216,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return stepDefStub;
         }
 
+        private Mock<IStepDefinitionBinding> RegisterStepDefinitionWithTransformation(IBindingType bindingType)
+        {            
+            var bindingParameterStub = new Mock<IBindingParameter>();
+            bindingParameterStub.Setup(bp => bp.Type).Returns(bindingType);
+            var methodStub = new Mock<IBindingMethod>();
+            methodStub.Setup(m => m.Parameters).Returns(new[] { bindingParameterStub.Object });
+            var stepDefStub = new Mock<IStepDefinitionBinding>();
+            stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
+                .Returns(
+                    new BindingMatch(stepDefStub.Object, 0, new object[] { "userName" }, new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
+
+            return stepDefStub;
+        }
+
         private Mock<IStepDefinitionBinding> RegisterUndefinedStepDefinition()
         {
             var methodStub = new Mock<IBindingMethod>();
@@ -247,6 +272,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 RuntimeBindingType.Void);
             hookMock.Setup(h => h.Method).Returns(bindingMethod);
             return hookMock;
+        }
+
+        private IStepArgumentTransformationBinding CreateStepTransformationBinding(string regexString, IBindingMethod transformMethod)
+        {
+            return new StepArgumentTransformationBinding(regexString, transformMethod);
         }
 
         private void AssertHooksWasCalledWithParam(Mock<IHookBinding> hookMock, object paramObj)
@@ -315,6 +345,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(beforeStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
+        }
+
+        [Fact]
+        public void Should_not_execute_step_argument_transformations_when_there_was_an_error_earlier()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+
+            var bindingTypeStub = new Mock<IBindingType>();
+            RegisterStepDefinitionWithTransformation(bindingTypeStub.Object);
+
+            scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
+
+            UserCreator stepTransformationInstance = new UserCreator();
+            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
+            var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
+            stepTransformations.Add(stepTransformationBinding);
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "user bar", null, null);
+
+            _stepArgumentTypeConverterMock.Verify(i => i.Convert(It.IsAny<object>(), bindingTypeStub.Object, It.IsAny<CultureInfo>()), Times.Never);
         }
 
         [Fact]
