@@ -16,7 +16,7 @@ You can download this entire repo on our [Github page](https://github.com/SpecFl
 
 The web application we are testing in this example is a simple calculator implementation hosted [here](https://specflowoss.github.io/Calculator-Demo/Calculator.html). Feel free to use this for practice if you like to.
 
-The example feature file that is bundled with the SpecFlow extension is used in this example. We are testing the web application by simply adding two numbers together and checking the results.
+We are testing the web application by simply adding two numbers together and checking the results.
 
 In order to test more than just the two initial numbers in the example feature file we have added an extra Scenario Outline with the parameters `First number`, `Second number`, and `Expected result`. Now we can use an example table to include as many numbers as we like.
 
@@ -46,7 +46,7 @@ Examples:
 
 ```
 
-## Browser Behavior
+## Browser behavior
 
 We start with configuring the browser behavior, the opening and disposing of Google Chrome for our tests:
 
@@ -117,7 +117,7 @@ namespace CalculatorSelenium.Specs.Drivers
 
 ## Using Page Objects
 
-The SpecFlow extension is also bundled with the skeleton code needed to write your step definitions (bindings). Since we are using Page Object Patterns we are **not** adding our UI automation directly here, instead you introduce the Page Object class so you can use it in your bindings.
+Since we are using Page Object Patterns we are **not** adding our UI automation directly here, instead you introduce the Page Object class so you can use it in your bindings.
 
 Here is a snippet of the code used in the step definition file. Note the introduction of *calculatorPageObject* and *Browserdriver* in the automatically generated code skeleton:
 
@@ -177,7 +177,7 @@ namespace CalculatorSelenium.Specs.Steps
 
 ***> Note:** The `Then` step here is the "testing" part where we compare the results from the Page Object Pattern with the expected results, the time delay between hitting the add button and getting the results is covered by the `WaitForNonEmptyResult()` value.
 
-Next, we work on the CalculatorPageObject.cs file. Using the Selenium WebDriver we simulate a user interacting with the webpage. The element IDs on the page are used to identify the fields we want to enter data into. Other functions here are basically simulating a user entering numbers into the calculator, adding them up, waiting for results, and moving on to the next test.
+Using the Selenium WebDriver we simulate a user interacting with the webpage. The element IDs on the page are used to identify the fields we want to enter data into. Other functions here are basically simulating a user entering numbers into the calculator, adding them up, waiting for results, and moving on to the next test.
 
 The code is well commented so you can understand what each line is for:
 
@@ -296,7 +296,7 @@ namespace CalculatorSelenium.Specs.PageObjects
 }
 ```
 
-## Using the Same Browser
+## Using the same browser
 
  In order to avoid having multiple browsers opened up during the test and use the **same** browser to run all the tests, we have introduced the below [Hook](../Bindings/Hooks.md). The major trade off here is you lose the ability to run test in parallel since you are using a single browser instance:
 
