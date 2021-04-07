@@ -1,8 +1,11 @@
 After 3.7.38
 
 Fixes:
++ Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
++ Fix spelling of IRuntimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent
++ Improve performance by lazy initializing certain expensive members
++ Fixed bug in StepTextAnalyzer with empty string parameters
 + Update to NUnit 3.13.1 as minimum NUnit version
-
 
 3.7
 
