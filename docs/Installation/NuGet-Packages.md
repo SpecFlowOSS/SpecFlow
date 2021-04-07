@@ -84,7 +84,7 @@ We support MsTest V1 and V2.
 
 If you want to use SpecFlow with NUnit, you have to use this packages, as it does the configuration for this.  
 
-We don't support older versions than NUnit 3.11.0.
+We don't support older versions than NUnit 3.13.1.
 
 #### < 3.0
 
