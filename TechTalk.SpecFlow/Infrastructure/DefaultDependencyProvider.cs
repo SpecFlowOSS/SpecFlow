@@ -7,7 +7,6 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.CucumberMessages;
-using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.EnvironmentAccess;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.FileAccess;
@@ -61,32 +60,14 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<EnvironmentWrapper, IEnvironmentWrapper>();
             container.RegisterTypeAs<BinaryFileAccessor, IBinaryFileAccessor>();
-            container.RegisterTypeAs<TestErrorMessageFactory, ITestErrorMessageFactory>();
             container.RegisterTypeAs<TestPendingMessageFactory, ITestPendingMessageFactory>();
-            container.RegisterTypeAs<TestAmbiguousMessageFactory, ITestAmbiguousMessageFactory>();
             container.RegisterTypeAs<TestUndefinedMessageFactory, ITestUndefinedMessageFactory>();
-            container.RegisterTypeAs<ProtobufFileSinkOutput, IProtobufFileSinkOutput>();
-            container.RegisterTypeAs<ProtobufFileNameResolver, IProtobufFileNameResolver>();
-            container.RegisterTypeAs<SinkProvider, ISinkProvider>();
             container.RegisterTypeAs<DefaultTestRunContext, ITestRunContext>();
 
             container.RegisterTypeAs<SpecFlowPath, ISpecFlowPath>();
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
-            container.RegisterTypeAs<CucumberMessageFactory, ICucumberMessageFactory>();
-            container.RegisterTypeAs<TestResultFactory, ITestResultFactory>();
-            container.RegisterTypeAs<TestResultPartsFactory, ITestResultPartsFactory>();
-            container.RegisterTypeAs<PlatformFactory, IPlatformFactory>();
-            container.RegisterTypeAs<SystemInformationProvider, ISystemInformationProvider>();
-            container.RegisterTypeAs<SpecFlowVersionInformationProvider, ISpecFlowVersionInformationProvider>();
-            container.RegisterTypeAs<CucumberMessageSender, ICucumberMessageSender>();
-            container.RegisterTypeAs<PickleIdGenerator, IPickleIdGenerator>();
-            container.RegisterTypeAs<PickleIdStore, IPickleIdStore>();
-            container.RegisterTypeAs<PickleIdStoreDictionaryFactory, IPickleIdStoreDictionaryFactory>();
-            container.RegisterTypeAs<FieldValueProvider, IFieldValueProvider>();
-
-            container.RegisterTypeAs<NonStrictTestRunResultSuccessCalculator, ITestRunResultSuccessCalculator>();
-            container.RegisterTypeAs<TestRunResultCollector, ITestRunResultCollector>();
+  
 
             container.RegisterTypeAs<FileUserIdStore, IUserUniqueIdStore>();
             container.RegisterTypeAs<FileService, IFileService>();

@@ -35,7 +35,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<ITestObjectResolver> testObjectResolverMock;
         private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
-        private Mock<ICucumberMessageSender> cucumberMessageSenderMock;
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
         private ObjectContainer testThreadContainer;
@@ -130,9 +129,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
 
-            cucumberMessageSenderMock = new Mock<ICucumberMessageSender>();
-            cucumberMessageSenderMock.Setup(m => m.SendTestRunStarted())
-                                     .Callback(() => { });
+         
 
             _testPendingMessageFactory = new TestPendingMessageFactory(errorProviderStub.Object);
             _testUndefinedMessageFactory = new TestUndefinedMessageFactory(stepDefinitionSkeletonProviderMock.Object, errorProviderStub.Object, specFlowConfiguration);
@@ -162,38 +159,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 stepDefinitionMatcherStub.Object,
                 methodBindingInvokerMock.Object,
                 obsoleteTestHandlerMock.Object,
-                cucumberMessageSenderMock.Object,
-                new TestResultFactory(new TestResultPartsFactory(new TestErrorMessageFactory(), _testPendingMessageFactory, new TestAmbiguousMessageFactory(), _testUndefinedMessageFactory)),
-                _testPendingMessageFactory,
-                _testUndefinedMessageFactory,
-                new Mock<ITestRunResultCollector>().Object,
                 _analyticsEventProvider.Object,
                 _analyticsTransmitter.Object,
                 _testRunnerManager.Object,
-                _runtimePluginTestExecutionLifecycleEventEmitter.Object,
+                _runtimePluginTestExecutionLifecycleEventEmitter.Object, 
+                _testPendingMessageFactory,
+                _testUndefinedMessageFactory,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }
 
-        private Mock<IPickleIdStore> GetPickleIdStoreMock()
-        {
-            var dictionary = new Dictionary<ScenarioInfo, Guid>();
-            var pickleIdStoreMock = new Mock<IPickleIdStore>();
-            pickleIdStoreMock.Setup(m => m.GetPickleIdForScenario(It.IsAny<ScenarioInfo>()))
-                             .Returns<ScenarioInfo>(info =>
-                             {
-                                 if (dictionary.ContainsKey(info))
-                                 {
-                                     return dictionary[info];
-                                 }
-
-                                 var newGuid = Guid.NewGuid();
-                                 dictionary.Add(info, newGuid);
-                                 return newGuid;
-                             });
-            return pickleIdStoreMock;
-        }
-
+      
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()
         {
             var methodStub = new Mock<IBindingMethod>();
