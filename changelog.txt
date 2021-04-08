@@ -1,4 +1,4 @@
-After 3.7.38
+3.8
 
 Fixes:
 + Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
@@ -6,6 +6,10 @@ Fixes:
 + Improve performance by lazy initializing certain expensive members
 + Fixed bug in StepTextAnalyzer with empty string parameters
 + Update to NUnit 3.13.1 as minimum NUnit version
+
+Changes:
++ Remove Cucumber- Messages
+
 
 3.7
 
