@@ -51,7 +51,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :caption: Getting Started
    :hidden:
 
-   Getting Started Step by Step Guide <https://docs.specflow.org/projects/getting-started/en/latest/>
+   Getting Started Step by Step Guides <https://docs.specflow.org/projects/getting-started/en/latest/>
    Getting-Started/Getting-Started-With-An-Example.md
    
 
