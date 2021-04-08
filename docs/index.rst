@@ -182,8 +182,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Tools/Tools.md
-   Tools/Generate-Tests-From-MsBuild.md   
-   Tools/Cucumber-Messages.md
+   Tools/Generate-Tests-From-MsBuild.md
    Tools/Reporting.md
 
 .. toctree::
