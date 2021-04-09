@@ -1,16 +1,19 @@
-# Selenium with Page Object Pattern
+# Selenium with Page Object Model Pattern
 
-You can use SpecFlow alongside Selenium for Web/UI automation. Selenium is a free (open-source) automated testing framework used for web applications across different browsers and platforms, you can read more about them [here](https://www.selenium.dev/).
+Selenium is a free (open-source) automation framework used for web applications across different browsers and platforms, you can read more about them [here](https://www.selenium.dev/). It is often used in connection with SpecFlow to test your web application via their user interface.
 
-## Installation & Project Setup
+The Page Object Model Pattern is an often used pattern to abstract your page into separate classes. With it you have your element selectors at dedicated locations and not scattered around your automation code.
 
-Microsoft Visual Studio with the SpecFlow extension and Selenium NuGet packages is used in this example:
+## Sample Project Setup
 
-- [SpecFlow for Visual Studio](https://docs.specflow.org/projects/specflow/en/latest/visualstudio/visual-studio-installation.html). This is the official SpecFlow extension for Visual Studio.
+You can download this entire sample project from [Github](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/CalculatorSelenium).
 
-- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support/3.141.0?_src=template) and [Selenium.WebDriver.ChromeDriver](https://www.nuget.org/packages/Selenium.WebDriver.ChromeDriver/89.0.4389.2300).
+Base of this sample project is the default project that is created from the SpecFlow project template.
 
-You can download this entire repo on our [Github page](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/CalculatorSelenium).
+Additional used NuGet package to the standard packages:
+
+- [Selenium.Support](https://www.nuget.org/packages/Selenium.Support/3.141.0) - Main package for Selenium
+- [Selenium.WebDriver.ChromeDriver](https://www.nuget.org/packages/Selenium.WebDriver.ChromeDriver/89.0.4389.2300) - Package that contains the ChromeDriver so Selenium is able to control the Chrome browser
 
 ## Sample Scenario
 
@@ -18,7 +21,7 @@ The web application we are testing in this example is a simple calculator implem
 
 We are testing the web application by simply adding two numbers together and checking the results.
 
-In order to test more than just the two initial numbers in the example feature file we have added an extra Scenario Outline with the parameters `First number`, `Second number`, and `Expected result`. Now we can use an example table to include as many numbers as we like.
+In order to test more than just the two initial numbers in the default feature file from the project template we have added an extra Scenario Outline with the parameters `First number`, `Second number`, and `Expected result`. Now we can use an example table to include as many numbers as we like.
 
 Here is a snippet of the feature file:
 
@@ -43,12 +46,13 @@ Examples:
 	| 0            | 0             | 0               |
 	| -1           | 10            | 9               |
 	| 6            | 9             | 15              |
-
 ```
 
-## Browser behavior
+## Starting and quiting the Browser
 
-We start with configuring the browser behavior, the opening and disposing of Google Chrome for our tests:
+We start with configuring the browser behavior, the opening and closing of Google Chrome for our tests:
+
+This class handles it for us. When you access the `Current` property the first time, the browser will be opened. If we did this, the browser will be automatically closed after the scenario finished.
 
 *BrowserDriver.cs*
 
@@ -95,7 +99,7 @@ namespace CalculatorSelenium.Specs.Drivers
         }
 
         /// <summary>
-        /// Disposes the Selenium web driver (closing the browser)
+        /// Disposes the Selenium web driver (closing the browser) after the Scenario completed
         /// </summary>
         public void Dispose()
         {
@@ -117,65 +121,7 @@ namespace CalculatorSelenium.Specs.Drivers
 
 ## Using Page Objects
 
-Since we are using Page Object Patterns we are **not** adding our UI automation directly here, instead you introduce the Page Object class so you can use it in your bindings.
-
-Here is a snippet of the code used in the step definition file. Note the introduction of *calculatorPageObject* and *Browserdriver* in the automatically generated code skeleton:
-
-*CalculatorStepDefinitions.cs*
-
-```csharp
-using CalculatorSelenium.Specs.Drivers;
-using CalculatorSelenium.Specs.PageObjects;
-using FluentAssertions;
-using TechTalk.SpecFlow;
-
-namespace CalculatorSelenium.Specs.Steps
-{
-    [Binding]
-    public sealed class CalculatorStepDefinitions
-    {
-        //Page Object for Calculator
-        private readonly CalculatorPageObject _calculatorPageObject;
-
-        public CalculatorStepDefinitions(BrowserDriver browserDriver)
-        {
-            _calculatorPageObject = new CalculatorPageObject(browserDriver.Current);
-        }
-
-        [Given("the first number is (.*)")]
-        public void GivenTheFirstNumberIs(int number)
-        {
-            //delegate to Page Object
-            _calculatorPageObject.EnterFirstNumber(number.ToString());
-        }
-
-        [Given("the second number is (.*)")]
-        public void GivenTheSecondNumberIs(int number)
-        {
-            //delegate to Page Object
-            _calculatorPageObject.EnterSecondNumber(number.ToString());
-        }
-
-        [When("the two numbers are added")]
-        public void WhenTheTwoNumbersAreAdded()
-        {
-            //delegate to Page Object
-            _calculatorPageObject.ClickAdd();
-        }
-
-        [Then("the result should be (.*)")]
-        public void ThenTheResultShouldBe(int expectedResult)
-        {
-            //delegate to Page Object
-            var actualResult = _calculatorPageObject.WaitForNonEmptyResult();
-
-            actualResult.Should().Be(expectedResult.ToString());
-        }
-    }
-}
-```
-
-***> Note:** The `Then` step here is the "testing" part where we compare the results from the Page Object Pattern with the expected results, the time delay between hitting the add button and getting the results is covered by the `WaitForNonEmptyResult()` value.
+Since we are using Page Object Model Pattern we are **not** adding our UI automation directly in bindings.
 
 Using the Selenium WebDriver we simulate a user interacting with the webpage. The element IDs on the page are used to identify the fields we want to enter data into. Other functions here are basically simulating a user entering numbers into the calculator, adding them up, waiting for results, and moving on to the next test.
 
@@ -290,15 +236,72 @@ namespace CalculatorSelenium.Specs.PageObjects
 
                 return result;
             });
-
         }
     }
 }
 ```
 
-## Using the same browser
+Here is the code of the step definition file. Note the usage of the *calculatorPageObject* and *Browserdriver*.
 
- In order to avoid having multiple browsers opened up during the test and use the **same** browser to run all the tests, we have introduced the below [Hook](../Bindings/Hooks.md). The major trade off here is you lose the ability to run test in parallel since you are using a single browser instance:
+*CalculatorStepDefinitions.cs*
+
+```csharp
+using CalculatorSelenium.Specs.Drivers;
+using CalculatorSelenium.Specs.PageObjects;
+using FluentAssertions;
+using TechTalk.SpecFlow;
+
+namespace CalculatorSelenium.Specs.Steps
+{
+    [Binding]
+    public sealed class CalculatorStepDefinitions
+    {
+        //Page Object for Calculator
+        private readonly CalculatorPageObject _calculatorPageObject;
+
+        public CalculatorStepDefinitions(BrowserDriver browserDriver)
+        {
+            _calculatorPageObject = new CalculatorPageObject(browserDriver.Current);
+        }
+
+        [Given("the first number is (.*)")]
+        public void GivenTheFirstNumberIs(int number)
+        {
+            //delegate to Page Object
+            _calculatorPageObject.EnterFirstNumber(number.ToString());
+        }
+
+        [Given("the second number is (.*)")]
+        public void GivenTheSecondNumberIs(int number)
+        {
+            //delegate to Page Object
+            _calculatorPageObject.EnterSecondNumber(number.ToString());
+        }
+
+        [When("the two numbers are added")]
+        public void WhenTheTwoNumbersAreAdded()
+        {
+            //delegate to Page Object
+            _calculatorPageObject.ClickAdd();
+        }
+
+        [Then("the result should be (.*)")]
+        public void ThenTheResultShouldBe(int expectedResult)
+        {
+            //delegate to Page Object
+            var actualResult = _calculatorPageObject.WaitForNonEmptyResult();
+
+            actualResult.Should().Be(expectedResult.ToString());
+        }
+    }
+}
+```
+
+**> Note:** The `Then` step here is the "testing" part where we compare the results from the Page Object Model Pattern with the expected results. As there is a time delay between hitting the add button and getting the result, we need to handle this behavior with the `WaitForNonEmptyResult()` method.
+
+## Using the same browser for all scenarios
+
+ In order to avoid having multiple browsers opened up during the test run and save some time per scenario, we use the **same** browser to run all the tests. For that we have introduced the below [Hook](../Bindings/Hooks.md). The major trade off here is you lose the ability to run test in parallel since you are using a single browser instance.
 
 *SharedBrowserHooks.cs*
 
@@ -331,9 +334,11 @@ namespace CalculatorSelenium.Specs.Hooks
 }
 ```
 
+If you don't want this, simply delete the class.
+
 ## Resetting the Web Application
 
-Another [Hook](../Bindings/Hooks.md) is introduced here to reset the calculator before each scenario tagged with `@Calculator`:
+Because we reuse the browser instance, we have to reset the web app for every scenario. We are using again a hook to do this.
 
 *CalculatorHooks.cs*
 
@@ -365,6 +370,11 @@ namespace CalculatorSelenium.Specs.Hooks
 
 ## Further Reading
 
-- [Hooks](../Bindings/Hooks.md)
-- [Driver Pattern](../Guides/DriverPattern.md)
-- [Page Objects](../Guides/PageObjectModel.md)
+If you want to get into more details, have a look at the following documentation pages:
+
+- [Hooks](../Bindings/Hooks.md)  
+  All about Hooks, the lifecycle events in SpecFlow
+- [Driver Pattern](../Guides/DriverPattern.md)  
+  More details and examples about the Driver Pattern, which we used for the Browser Lifecycle handling
+- [Page Object Model Pattern](../Guides/PageObjectModel.md)  
+  More details and examples for the Page Object Model Patter
