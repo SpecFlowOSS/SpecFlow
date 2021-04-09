@@ -478,7 +478,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                 match = GetStepMatch(stepInstance);
                 contextManager.StepContext.StepInfo.BindingMatch = match;
                 contextManager.StepContext.StepInfo.StepInstance = stepInstance;
-                arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
                 {
@@ -486,6 +485,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
                 else
                 {
+                    arguments = GetExecuteArguments(match);
                     _obsoleteStepHandler.Handle(match);
 
                     onStepStartExecuted = true;
