@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 string value = paramMatch.Capture.Value;
                 int index = paramMatch.Capture.Index;
 
-                switch (value.Substring(0, 1))
+                switch (value.Substring(0, Math.Min(value.Length, 1)))
                 {
                     case "\"":
                         regexPattern = doubleQuoteRegexPattern;
