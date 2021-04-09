@@ -1,5 +1,4 @@
 ﻿using System;
-using Io.Cucumber.Messages;
 
 namespace TechTalk.SpecFlow
 {
@@ -25,30 +24,7 @@ namespace TechTalk.SpecFlow
         }
 
 
-        public static Timestamp ToCucumberMessagesTimestamp(this DateTime dateTime)
-        {
-            var (seconds, nanos) = dateTime.ToUnixTimeStamp();
-
-            return new Timestamp()
-            {
-                Seconds = seconds,
-                Nanos = nanos
-            };
-        }
-        
-        
-        public static Duration ToCucumberMessagesDuration(this TimeSpan timeSpan)
-        {
-            var timeSpanWithoutTicks = new TimeSpan(timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-
-            var ticksDifference = timeSpan.Ticks - timeSpanWithoutTicks.Ticks;
-
-            return new Duration()
-            {
-                Seconds = (int)timeSpan.TotalSeconds,
-                Nanos = (int)ticksDifference*100
-            };
-        }
+    
         
     }
 }

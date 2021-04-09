@@ -22,8 +22,5 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
         [DataMember(Name = "stepAssemblies")]
         public List<StepAssemblyElement> StepAssemblies { get; set; }
-
-        [DataMember(Name = "cucumber-messages")]
-        public CucumberMessagesElement CucumberMessages { get; set; } 
     }
 }

@@ -50,13 +50,6 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["stepAssemblies"] = value; }
         }
 
-        [ConfigurationProperty("cucumber-messages", IsRequired = false)]
-        public CucumberMessagesElement CucumberMessages
-        {
-            get => (CucumberMessagesElement)this["cucumber-messages"];
-            set => this["cucumber-messages"] = value;
-        }
-
         public static ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();

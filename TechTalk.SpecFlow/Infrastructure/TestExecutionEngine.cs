@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using BoDi;
-using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -26,11 +25,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IContextManager _contextManager;
         private readonly IErrorProvider _errorProvider;
         private readonly IObsoleteStepHandler _obsoleteStepHandler;
-        private readonly ICucumberMessageSender _cucumberMessageSender;
-        private readonly ITestResultFactory _testResultFactory;
-        private readonly ITestPendingMessageFactory _testPendingMessageFactory;
-        private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
-        private readonly ITestRunResultCollector _testRunResultCollector;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
@@ -49,6 +43,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         private bool _testRunnerEndExecuted = false;
         private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
+        private ITestPendingMessageFactory _testPendingMessageFactory;
+        private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -62,15 +58,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             IStepDefinitionMatchService stepDefinitionMatchService,
             IBindingInvoker bindingInvoker,
             IObsoleteStepHandler obsoleteStepHandler,
-            ICucumberMessageSender cucumberMessageSender,
-            ITestResultFactory testResultFactory,
-            ITestPendingMessageFactory testPendingMessageFactory,
-            ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestRunResultCollector testRunResultCollector, 
             IAnalyticsEventProvider analyticsEventProvider, 
             IAnalyticsTransmitter analyticsTransmitter, 
             ITestRunnerManager testRunnerManager,
             IRuntimePluginTestExecutionLifecycleEventEmitter runtimePluginTestExecutionLifecycleEventEmitter,
+            ITestPendingMessageFactory testPendingMessageFactory,
+            ITestUndefinedMessageFactory testUndefinedMessageFactory,
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -87,15 +80,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testObjectResolver = testObjectResolver;
             TestThreadContainer = testThreadContainer;
             _obsoleteStepHandler = obsoleteStepHandler;
-            _cucumberMessageSender = cucumberMessageSender;
-            _testResultFactory = testResultFactory;
-            _testPendingMessageFactory = testPendingMessageFactory;
-            _testUndefinedMessageFactory = testUndefinedMessageFactory;
-            _testRunResultCollector = testRunResultCollector;
             _analyticsEventProvider = analyticsEventProvider;
             _analyticsTransmitter = analyticsTransmitter;
             _testRunnerManager = testRunnerManager;
             _runtimePluginTestExecutionLifecycleEventEmitter = runtimePluginTestExecutionLifecycleEventEmitter;
+            _testPendingMessageFactory = testPendingMessageFactory;
+            _testUndefinedMessageFactory = testUndefinedMessageFactory;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
@@ -124,8 +114,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             _testRunnerStartExecuted = true;
-            _cucumberMessageSender.SendTestRunStarted();
-            _testRunResultCollector.StartCollecting();
             FireEvents(HookType.BeforeTestRun);
         }
 
@@ -139,13 +127,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
 
                 _testRunnerEndExecuted = true;
-            }
-
-            var testRunResultResult = _testRunResultCollector.GetCurrentResult();
-
-            if (testRunResultResult is ISuccess<TestRunResult> success)
-            {
-                _cucumberMessageSender.SendTestRunFinished(success.Result);
             }
 
             FireEvents(HookType.AfterTestRun);
@@ -197,7 +178,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void OnScenarioStart()
         {
-            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             try
             {
                 FireScenarioEvents(HookType.BeforeScenario);
@@ -221,19 +201,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _contextManager.ScenarioContext.Stopwatch.Stop();
                 var duration = _contextManager.ScenarioContext.Stopwatch.Elapsed;
                 _testTracer.TraceDuration(duration, "Scenario: " + _contextManager.ScenarioContext.ScenarioInfo.Title);
-            }
-
-            var testResultResult = _testResultFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
-            switch (testResultResult)
-            {
-                case ISuccess<TestResult> success:
-                    _cucumberMessageSender.SendTestCaseFinished(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
-                    _testRunResultCollector.CollectTestResultForScenario(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
-                    break;
-
-                case IFailure failure:
-                    _testTracer.TraceWarning(failure.ToString());
-                    break;
             }
 
             if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
@@ -288,7 +255,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         public virtual void OnScenarioSkipped()
         {
             // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
-            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.Skipped;
         }
 

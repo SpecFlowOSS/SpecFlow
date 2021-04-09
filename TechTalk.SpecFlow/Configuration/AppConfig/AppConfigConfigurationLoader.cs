@@ -34,7 +34,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
 
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
             string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
-            CucumberMessagesConfiguration cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
 
             if (IsSpecified(configSection.Language))
@@ -95,16 +94,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            if (IsSpecified(configSection.CucumberMessages))
-            {
-                cucumberMessagesConfiguration.Enabled = configSection.CucumberMessages.Enabled;
-
-                foreach (CucumberMessageSinkElement cucumberMessagesSink in configSection.CucumberMessages.Sinks)
-                {
-                    cucumberMessagesConfiguration.Sinks.Add(new CucumberMessagesSink(cucumberMessagesSink.Type, cucumberMessagesSink.Path));
-                }
-            }
-
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
@@ -121,8 +110,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowRowTests,
                                             markFeaturesParallelizable,
                                             skipParallelizableMarkerForTags,
-                                            obsoleteBehavior,
-                                            cucumberMessagesConfiguration
+                                            obsoleteBehavior
                                             );
         }
 
