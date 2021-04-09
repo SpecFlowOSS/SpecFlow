@@ -88,7 +88,7 @@ We need to copy a different assembly to the output folder depending on the targe
 
 ``` xml
 <_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SampleRuntimePluginFramework>
-<_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net45</_SampleRuntimePluginFramework>
+<_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SampleRuntimePluginFramework>
 <_SampleRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SampleRuntimePluginFramework)\SampleRuntimePlugin.SpecFlowPlugin.dll</_SampleRuntimePluginPath>
 ```
 
@@ -133,7 +133,7 @@ The runtime plugin assemblies are also specified here, using the additional `$co
 ``` xml
     <files>
         <file src="build\**\*" target="build"/>
-        <file src="bin\$config$\net45\SampleRuntimePlugin.SpecFlowPlugin.*" target="lib\net45"/>
+        <file src="bin\$config$\net461\SampleRuntimePlugin.SpecFlowPlugin.*" target="lib\net461"/>
         <file src="bin\$config$\netstandard2.0\SampleRuntimePlugin.SpecFlowPlugin.dll" target="lib\netstandard2.0"/>
         <file src="bin\$config$\netstandard2.0\SampleRuntimePlugin.SpecFlowPlugin.pdb" target="lib\netstandard2.0"/>
     </files>
@@ -175,7 +175,7 @@ We use a NuSpec file (SamplePlugin.nuspec) to provide all information for the Nu
 
 ``` xml
 <PropertyGroup>
-    <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NuspecFile>$(MSBuildThisFileDirectory)SamplePlugin.nuspec</NuspecFile>
     <AssemblyName>SampleGeneratorPlugin.SpecFlowPlugin</AssemblyName>
@@ -244,8 +244,8 @@ It is important to ensure that they are not added to the `lib` folder. If this w
 <files>
     <file src="build\**\*" target="build"/>
     <file src="bin\$config$\net471\SampleGeneratorPlugin.SpecFlowPlugin.*" target="build\net471"/>
-    <file src="bin\$config$\netstandard2.0\SampleGeneratorPlugin.SpecFlowPlugin.dll" target="build\netcoreapp2.1"/>
-    <file src="bin\$config$\netstandard2.0\SampleGeneratorPlugin.SpecFlowPlugin.pdb" target="build\netcoreapp2.1"/>
+    <file src="bin\$config$\netcoreapp2.1\SampleGeneratorPlugin.SpecFlowPlugin.dll" target="build\netcoreapp2.1"/>
+    <file src="bin\$config$\netcoreapp2.1\SampleGeneratorPlugin.SpecFlowPlugin.pdb" target="build\netcoreapp2.1"/>
 </files>
 ```
 
