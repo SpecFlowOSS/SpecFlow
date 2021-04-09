@@ -1,88 +1,84 @@
 ---
 name: Bug report
-about: Create a report to help us improve SpecFlow
-title: ''
-labels: ''
-assignees: ''
-
----
-<!-- Filling out this data is not optional. If you don't fill it out, we will close the issue immediately! ->
-
-
-<!-- PLEASE GIVE YOUR ISSUE A SENSIBLE NAME. This makes it easier to identify issues at a glance -->
-
-
-<!-- PLEASE CHECK THE OPTIONS THAT APPLY TO YOU BY ADDING AN 'x' TO THE CORRESPONDING CHECKBOX ('[ ]') -->
-### SpecFlow Version:
-- [ ] 3.7
-- [ ] 3.6
-- [ ] 3.5
-- [ ] 3.4
-- [ ] 3.3
-- [ ] 3.1
-- [ ] 3.0
-- [ ] 2.4
-- [ ] 2.3
-- [ ]    2.2
-- [ ]    2.1
-- [ ]    2.0
-- [ ]    1.9
- 
-### Used Test Runner 
-- [ ] SpecFlow+Runner
-- [ ]    MSTest 
-- [ ]    NUnit
-- [ ]    Xunit
-
-<!-- PLEASE INCLUDE THE VERSION NUMBER OF YOUR TEST RUNNER -->
-Version number:
-
-### Project Format of the SpecFlow project
-- [ ] Classic project format using `packages.config`
-- [ ] Classic project format using `<PackageReference>` tags
-- [ ] Sdk-style project format
-
-### .feature.cs files are generated using
-- [ ] `SpecFlow.Tools.MsBuild.Generation` NuGet package
-- [ ] `SpecFlowSingleFileGenerator` custom tool
-
-### Visual Studio Version
-- [ ] VS 2019
-- [ ]    VS 2017
-
-### `Enable SpecFlowSingleFileGenerator Custom Tool` option in Visual Studio extension settings
-- [ ] Enabled
-- [ ] Disabled
-
-### Are the latest Visual Studio updates installed?
-- [ ]    Yes
-- [ ]    No, I use Visual Studio version `<Major>.<Minor>.<Patch>` <!-- e.g. 16.1.0 -->
- 
-### .NET Implementation:
-- [ ] .NET 5.0
-- [ ] .NET Core 3.1
-- [ ] .NET Core 2.1
-- [ ]	>= .NET Framework 4.5
-- [ ]	before .NET Framework 4.5
-
-### Test Execution Method:
-- [ ]    Visual Studio Test Explorer
-- [ ]    TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
-- [ ]    Command line – PLEASE SPECIFY THE FULL COMMAND LINE
- 
-### &lt;SpecFlow> Section in app.config or content of specflow.json
-<!-- PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTIRE specflow.json AND PASTE IT BETWEEN THE TWO CODE MARKERS (```) BELOW -->
-```
-
-```
-
-### Issue Description
-<!-- PLEASE PROVIDE AS MUCH INFORMATION AS POSSIBLE ON THE ISSUE -->
-
-### Steps to Reproduce
-<!-- PLEASE DESCRIBE THE STEPS REQUIRED TO REPRODUCE THIS ISSUE, IF POSSIBLE -->
-
-### Repro Project
-<!-- PLEASE INCLUDE A LINK TO A PROJECT THAT DEMONSTRATES THE ISSUE YOU ARE REPORTING, IF POSSIBLE 
-For information on how to include a useful repro, refer to https://stackoverflow.com/help/mcve
--->
+description: Create a report to help us improve SpecFlow
+labels: [Bug]
+body:
+- type: input
+  attributes:
+    label: SpecFlow Version
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Which test runner are you using?
+    options: 
+      - SpecFlow+ Runner
+      - MSTest 
+      - NUnit
+      - xUnit
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Test Runner Version Number
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: .NET Implementation
+    options:
+      - .NET 5.0
+      - .NET Core 3.1
+      - .NET Core 3.0
+      - .NET Core 2.2
+      - .NET Core 2.1
+      - .NET Core 2.0
+      - equal or greater .NET Framework 4.6.1
+      - before .NET Framework 4.6.1
+  validations:
+    required: true
+- type: dropdown 
+  attributes:
+    label: Project Format of the SpecFlow project
+    options:
+      - Sdk-style project format
+      - Classic project format using `packages.config`
+      - Classic project format using `<PackageReference>` tags
+  validations:
+    required: true
+- type: dropdown 
+  attributes:
+    label: .feature.cs files are generated using
+    options:
+      - SpecFlow.Tools.MsBuild.Generation NuGet package
+      - SpecFlowSingleFileGenerator custom tool
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Test Execution Method
+    options:
+      - Visual Studio Test Explorer
+      - TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
+      - Command line – PLEASE SPECIFY THE FULL COMMAND LINE
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: SpecFlow Section in app.config or content of specflow.json
+    placeholder: PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTIRE specflow.json
+- type: textarea
+  attributes:
+    label: Issue Description
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps to Reproduce
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Link to Repository Project
+  validations:
+    required: false
