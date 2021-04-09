@@ -51,7 +51,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :caption: Getting Started
    :hidden:
 
-   Getting Started Step by Step Guide <https://docs.specflow.org/projects/getting-started/en/latest/>
+   Getting Started Step by Step Guides <https://docs.specflow.org/projects/getting-started/en/latest/>
    Getting-Started/Getting-Started-With-An-Example.md
    
 
@@ -63,6 +63,15 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Guides/UpgradeSpecFlow2To3.md
    Guides/PageObjectModel.md
    Guides/DriverPattern.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: UI Automation
+   :hidden:
+   
+   ui-automation/Selenium-with-Page-Object-Pattern.md
+
+
 
 .. toctree::
    :maxdepth: 2
@@ -164,7 +173,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    vscode/test-execution.md
    vscode/vscode-debug.md
 
-   
+
 .. toctree::
    :maxdepth: 1
    :caption: Extend SpecFlow
