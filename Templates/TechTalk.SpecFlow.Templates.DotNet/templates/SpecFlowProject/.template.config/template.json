@@ -1,6 +1,6 @@
 {
     "$schema": "http://json.schemastore.org/template",
-    "author": "Manuel Eiwen",
+    "author": "SpecFlow Team",
     "classifications": ["SpecFlow", "Project"],
     "identity": "SpecFlowTemplates.DotNET.Project",
     "name": "SpecFlow Project Template",
@@ -19,16 +19,39 @@
             "replaces": "$target$",
             "choices": [
                 {
-                    "choice": "netcoreapp3.1",
-                    "description": ".NET Core 3"
+                    "choice": "netcoreapp2.1",
+                    "description": ".NET Core 2.1"
                 },
                 {
-                    "choice": "netcoreapp2.2",
-                    "description": ".NET Core 2.2"
+                    "choice": "netcoreapp3.1",
+                    "description": ".NET Core 3.1"
+                },
+                {
+                    "choice": "net5.0",
+                    "description": ".NET 5.0"
+                },
+				{
+                    "choice": "net461",
+                    "description": ".NET Framework 4.6.1"
+                },
+                {
+                    "choice": "net462",
+                    "description": ".NET Framework 4.6.2"
+                },
+                {
+                    "choice": "net47",
+                    "description": ".NET Framework 4.7"
+                },{
+                    "choice": "net471",
+                    "description": ".NET Framework 4.7.1"
                 },
                 {
                     "choice": "net472",
                     "description": ".NET Framework 4.7.2"
+                },
+                {
+                    "choice": "net48",
+                    "description": ".NET Framework 4.8"
                 }
             ]
         },
@@ -40,19 +63,19 @@
             "choices": [
                 {
                     "choice": "specflowplusrunner",
-                    "description": "SpecFlow+ Runner Test Provider"
+                    "description": "SpecFlow+ Runner"
                 },
                 {
                     "choice": "xunit",
-                    "description": "xUnit Test Provider"
+                    "description": "xUnit"
                 },
                 {
                     "choice": "nunit",
-                    "description": "NUnit Test Provider"
+                    "description": "NUnit"
                 },
                 {
                     "choice": "mstest",
-                    "description": "MSTest Test Provider"
+                    "description": "MSTest"
                 }
             ]
         },
@@ -97,11 +120,11 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
-                        "value": "<PackageReference Include=\"MSTest.TestAdapter\" Version=\"1.4.0\" />"
+                        "value": "<PackageReference Include=\"MSTest.TestAdapter\" Version=\"2.1.0\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"$$$NuGetPackageVersion$$$\" />"
+                        "value": "<PackageReference Include=\"nunit\" Version=\"3.13.0\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
                     }
                 ]
             }
