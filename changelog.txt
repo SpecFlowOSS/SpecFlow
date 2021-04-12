@@ -1,6 +1,7 @@
 After 3.7.38
 
 Fixes:
++ Change CultureInfoScope to readonly struct
 + Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
 + Fix spelling of IRuntimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent
 + Improve performance by lazy initializing certain expensive members
