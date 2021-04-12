@@ -64,10 +64,19 @@
     </PropertyGroup>
   </Target>
 
+  <ItemGroup>
+    <!-- features files -->
+    <UpdateFeatureFilesInProjectInputs Include="@(SpecFlowFeatureFiles)"/>
+    <!-- configuration files -->
+    <UpdateFeatureFilesInProjectInputs Include="**\specflow.json"/>
+    <UpdateFeatureFilesInProjectInputs Include="**\app.config" />
+    <!-- plugin files -->
+    <UpdateFeatureFilesInProjectInputs Include="@(SpecFlowGeneratorPlugins)"/>
+  </ItemGroup>
 
   <Target Name="UpdateFeatureFilesInProject"
           DependsOnTargets="BeforeUpdateFeatureFilesInProject"
-		  Inputs="@(SpecFlowFeatureFiles)"
+          Inputs="@(UpdateFeatureFilesInProjectInputs)"
           Outputs="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')">
 
     <Message Text="SpecFlowFeatureFiles: @(SpecFlowFeatureFiles)" Importance="high" Condition="'$(VerboseOutput)' == 'true'" />
