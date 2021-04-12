@@ -91,12 +91,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         protected virtual CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
         {
-            var cultureInfo = CultureInfo.CurrentCulture;
-            if (contextManager.FeatureContext != null)
-            {
-                cultureInfo = contextManager.FeatureContext.BindingCulture;
-            }
-            return new CultureInfoScope(cultureInfo);
+            return new CultureInfoScope(contextManager.FeatureContext);
         }
 
         protected void EnsureReflectionInfo(IBinding binding, out MethodInfo methodInfo, out Delegate bindingAction)
