@@ -116,7 +116,7 @@
                 "cases": [
                     {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
+                        "value": "<PackageReference Include=\"xunit\" Version=\"2.4.1\" />\n    <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
