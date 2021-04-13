@@ -124,7 +124,7 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"nunit\" Version=\"3.13.0\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
+                        "value": "<PackageReference Include=\"nunit\" Version=\"3.13.1\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
                     }
                 ]
             }
