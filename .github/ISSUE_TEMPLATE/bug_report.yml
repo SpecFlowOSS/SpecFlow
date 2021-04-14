@@ -79,6 +79,6 @@ body:
     required: true
 - type: input
   attributes:
-    label: Link to Repository Project
+    label: Link to Repro Project
   validations:
     required: false
