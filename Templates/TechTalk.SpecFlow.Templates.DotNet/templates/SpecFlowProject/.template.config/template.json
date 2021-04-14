@@ -116,7 +116,7 @@
                 "cases": [
                     {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
+                        "value": "<PackageReference Include=\"xunit\" Version=\"2.4.1\" />\n    <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
@@ -124,7 +124,7 @@
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"nunit\" Version=\"3.13.0\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
+                        "value": "<PackageReference Include=\"nunit\" Version=\"3.13.1\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
                     }
                 ]
             }

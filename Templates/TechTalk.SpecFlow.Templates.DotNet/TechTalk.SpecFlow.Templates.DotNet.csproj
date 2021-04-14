@@ -22,7 +22,16 @@
   <ItemGroup>
     <MetaTemplate Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**"/>
     <Compile Remove="**\*" />
-    <None Include="$(SolutionDir)specflow-icon.png" Pack="true" PackagePath="images"/>
+    <Content Include="templates\SpecFlowProject\Drivers\Driver.cs" />
+    <Content Include="templates\SpecFlowProject\Hooks\Hook.cs" />
+    <Content Include="templates\SpecFlowProject\Steps\CalculatorStepDefinitions.cs" />
+    <Content Include="templates\specflow-feature\.template.config\template.json" />
+    <Content Include="templates\specflow-json\.template.config\template.json" />
+    <Content Include="templates\specflow-plus-profile\.template.config\template.json" />
+    <Content Include="templates\SpecFlowProject\.template.config\dotnetcli.host.json" />
+    <Content Include="templates\SpecFlowProject\.template.config\template.json" />
+    <None Include="$(SolutionDir)specflow-icon.png" Pack="true" PackagePath="images" />
+    <None Include="templates\SpecFlowProject\Template.csproj" />
   </ItemGroup>
 
   <ItemGroup>
