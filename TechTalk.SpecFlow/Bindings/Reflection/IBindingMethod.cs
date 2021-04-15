@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
 {
@@ -12,6 +10,12 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         IBindingType Type { get; }
 
         string Name { get; }
+
+        /// <summary>
+        /// Gets the obsoletion.
+        /// </summary>
+        BindingObsoletion Obsoletion { get; }
+
         IEnumerable<IBindingParameter> Parameters { get; }
 
         /// <summary>

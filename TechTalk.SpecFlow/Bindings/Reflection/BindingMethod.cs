@@ -7,6 +7,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     {
         public IBindingType Type { get; private set; }
         public string Name { get; private set; }
+        public BindingObsoletion Obsoletion { get; }
         public IEnumerable<IBindingParameter> Parameters { get; private set; }
         public IBindingType ReturnType { get; private set; }
 

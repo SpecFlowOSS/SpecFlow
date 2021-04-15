@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,14 +24,17 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             get { return MethodInfo.Name; }
         }
 
+        public BindingObsoletion Obsoletion { get; }
+
         public IEnumerable<IBindingParameter> Parameters
         {
             get { return MethodInfo.GetParameters().Select(pi => (IBindingParameter)new RuntimeBindingParameter(pi)); }
         }
 
-        public RuntimeBindingMethod(MethodInfo methodInfo)
+        public RuntimeBindingMethod(MethodInfo methodInfo, ObsoleteAttribute obsoleteAttribute)
         {
-            this.MethodInfo = methodInfo;
+            MethodInfo = methodInfo;
+            Obsoletion = obsoleteAttribute is null ? BindingObsoletion.NotObsolete : new BindingObsoletion(this, obsoleteAttribute);
         }
 
         public override string ToString()

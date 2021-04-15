@@ -358,7 +358,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
 
             UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
+            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"), null);
             var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
             stepTransformations.Add(stepTransformationBinding);
 

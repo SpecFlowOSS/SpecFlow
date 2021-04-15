@@ -1,45 +1,33 @@
 ﻿using System;
-using System.Linq;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class BindingObsoletion
+    #nullable enable
+    public readonly struct BindingObsoletion
     {
-        private const string defaultObsoletionMessage = "it is marked with ObsoleteAttribute but no custom message was provided.";
+        private const string DefaultObsoletionMessage = "it is marked with ObsoleteAttribute but no custom message was provided.";
 
-        private string message;
-        private string methodName;
+        internal static readonly BindingObsoletion NotObsolete = new BindingObsoletion();
 
-        public BindingObsoletion(IStepDefinitionBinding stepBinding)
+        private readonly string? message;
+        private readonly string? methodName;
+
+        public bool IsObsolete => message is not null;
+
+        public BindingObsoletion(IBindingMethod methodBinding, ObsoleteAttribute? attribute)
         {
-            ObsoleteAttribute possibleObsoletionAttribute;
-            try
+            if (attribute is not null)
             {
-                possibleObsoletionAttribute = stepBinding?.Method.AssertMethodInfo()
-                            .GetCustomAttributes(false).OfType<ObsoleteAttribute>()
-                            .FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                possibleObsoletionAttribute = null;
-            }
-
-            if (possibleObsoletionAttribute == null)
-            {
-                IsObsolete = false;
-                message = null;
-                methodName = null;
+                message = attribute.Message ?? DefaultObsoletionMessage;
+                methodName = methodBinding.Name;
             }
             else
             {
-                IsObsolete = true;
-                message = possibleObsoletionAttribute.Message ?? defaultObsoletionMessage;
-                methodName = stepBinding?.Method.Name;
+                message = null;
+                methodName = null;
             }
         }
-
-        public bool IsObsolete { get; private set; }
 
         public string Message => IsObsolete ? $"The step {methodName} is obsolete because {message}" : string.Empty;
     }

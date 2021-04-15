@@ -56,12 +56,13 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private BindingSourceMethod CreateBindingSourceMethod(MethodInfo methodDefinition)
         {
+            var customAttributes = methodDefinition.GetCustomAttributes(true);
             return new BindingSourceMethod
                        {
-                           BindingMethod = new RuntimeBindingMethod(methodDefinition), 
+                           BindingMethod = new RuntimeBindingMethod(methodDefinition, customAttributes.OfType<ObsoleteAttribute>().FirstOrDefault()),
                            IsPublic = methodDefinition.IsPublic,
                            IsStatic = methodDefinition.IsStatic,
-                           Attributes = GetAttributes(methodDefinition.GetCustomAttributes(true).Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
+                           Attributes = GetAttributes(customAttributes.Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
                        };
         }
 
