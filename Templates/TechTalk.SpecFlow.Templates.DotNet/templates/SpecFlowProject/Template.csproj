@@ -9,6 +9,7 @@
 	<PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.7.10" />
     $SpecFlowNugetPackages$
     $additionalNugetPackages$
+    $fluentAssertionsNugetPackage$
   </ItemGroup>
 
 </Project>

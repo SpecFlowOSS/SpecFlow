@@ -30,7 +30,7 @@
                     "choice": "net5.0",
                     "description": ".NET 5.0"
                 },
-				{
+                {
                     "choice": "net461",
                     "description": ".NET Framework 4.6.1"
                 },
@@ -41,7 +41,8 @@
                 {
                     "choice": "net47",
                     "description": ".NET Framework 4.7"
-                },{
+                },
+                {
                     "choice": "net471",
                     "description": ".NET Framework 4.7.1"
                 },
@@ -78,6 +79,12 @@
                     "description": "MSTest"
                 }
             ]
+        },
+        "includeFluentAssertions": {
+            "type": "parameter",
+            "datatype": "bool",
+            "description": "Add FluentAssertions library",
+            "defaultValue": "true"
         },
         "SpecFlowNugetPackages": {
             "type": "generated",
@@ -125,6 +132,21 @@
                     {
                         "condition": "(unitTestProvider == 'nunit')",
                         "value": "<PackageReference Include=\"nunit\" Version=\"3.13.1\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
+                    }
+                ]
+            }
+        },
+        "FluentAssertionsNugetPackage": {
+            "type": "generated",
+            "generator": "switch",
+            "replaces": "$fluentAssertionsNugetPackage$",
+            "parameters": {
+                "evaluator": "C++",
+                "datatype": "string",
+                "cases": [
+                    {
+                        "condition": "(includeFluentAssertions)",
+                        "value": "<PackageReference Include=\"FluentAssertions\" Version=\"5.10.3\" />"
                     }
                 ]
             }
