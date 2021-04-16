@@ -149,7 +149,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="@(SpecFlowFeatureFiles)" />
+      <EmbeddedResource Include="@(SpecFlowFeatureFiles)">
+        <LogicalName>%(SpecFlowFeatureFiles.Identity)</LogicalName>
+      </EmbeddedResource>
     </ItemGroup>
     
   </Target>
