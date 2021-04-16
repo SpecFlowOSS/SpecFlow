@@ -10,7 +10,7 @@
         },
         "includeFluentAssertions": {
             "longName": "includeFluentAssertions",
-            "shortName": "fl"
+            "shortName": "fa"
         }
     }
 }
