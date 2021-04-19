@@ -121,4 +121,5 @@ jobs:
 
   - task: WhiteSource Bolt@20
     displayName: 'WhiteSource Bolt'
+    condition: eq('${{ parameters.name }}', 'Windows')
     timeoutInMinutes: 5
