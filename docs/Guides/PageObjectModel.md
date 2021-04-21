@@ -1,4 +1,4 @@
-# Using Page Object Model with Selenium
+# Using Page Object Model
 
 The Page Object Model is a pattern, that is often used to abstract your Web UI with Selenium to easier automate it.
 
