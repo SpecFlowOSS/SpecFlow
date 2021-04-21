@@ -1,4 +1,4 @@
-# Getting Started with an example
+# Bookshop example
 
 Follow our step by step guide to get started, learn, explore and experiment with a simple web application project using SpecFlow and the SpecFlow+ Runner.
 
