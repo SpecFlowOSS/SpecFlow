@@ -38,7 +38,7 @@ SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integrati
 Let's get started
 ==================
 
-You can find a number of step- by- step guides to start with SpecFlow `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. There are guides available for both complete beginners and more advacaned users.
+You can find a number of step- by- step guides to start with SpecFlow `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. There are guides available for both complete beginners and more advanced users.
 
 .. toctree::
    :maxdepth: 1
