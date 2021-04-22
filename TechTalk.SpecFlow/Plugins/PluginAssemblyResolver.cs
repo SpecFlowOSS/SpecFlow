@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Plugins
 
         private Assembly OnResolving(AssemblyLoadContext context, AssemblyName name)
         {
-            var library = _dependencyContext.RuntimeLibraries.FirstOrDefault(
+            var library = _dependencyContext?.RuntimeLibraries.FirstOrDefault(
                 runtimeLibrary => string.Equals(runtimeLibrary.Name, name.Name, StringComparison.OrdinalIgnoreCase));
 
             if (library != null)
