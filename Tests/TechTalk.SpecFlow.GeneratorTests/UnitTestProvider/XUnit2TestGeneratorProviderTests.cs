@@ -403,7 +403,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void XUnit2TestGeneratorProvider_WithFeatureWithMatchingTag_ShouldAddNonParallelizableAttribute()
+        public void XUnit2TestGeneratorProvider_WithFeatureWithMatchingTag_ShouldAddNonParallelizableCollectionAttribute()
         {
             // ARRANGE
             var document = ParseDocumentFromString(@"
@@ -427,7 +427,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void XUnit2TestGeneratorProvider_WithFeatureWithNoMatchingTag_ShouldNotAddNonParallelizableAttribute()
+        public void XUnit2TestGeneratorProvider_WithFeatureWithNoMatchingTag_ShouldNotAddNonParallelizableCollectionAttribute()
         {
             // ARRANGE
             var document = ParseDocumentFromString(@"
