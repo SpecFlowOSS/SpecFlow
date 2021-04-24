@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string TESTSETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute";
         protected internal const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
         protected internal const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
-        protected internal const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
+        protected internal const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";        
         protected internal const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
         protected internal const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
         protected internal const string TESTCONTEXT_FIELD_NAME = "_testContext";
@@ -96,6 +96,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             //Not Supported
+        }
+
+        public virtual void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
+        {
+            // Not Supported            
         }
 
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)

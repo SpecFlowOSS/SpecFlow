@@ -12,6 +12,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestClassIgnore(TestClassGenerationContext generationContext);
         void FinalizeTestClass(TestClassGenerationContext generationContext);
         void SetTestClassParallelize(TestClassGenerationContext generationContext);
+        void SetTestClassNonParallelizable(TestClassGenerationContext generationContext);
 
         void SetTestClassInitializeMethod(TestClassGenerationContext generationContext);
         void SetTestClassCleanupMethod(TestClassGenerationContext generationContext);

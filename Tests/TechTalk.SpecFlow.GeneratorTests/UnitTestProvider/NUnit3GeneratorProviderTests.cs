@@ -288,9 +288,33 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
+        public void NUnit3TestGeneratorProvider_ShouldAddNonParallelizableAttributeWhenMatchingTag()
+        {            
+            var featureFileWithMatchingTag = @"
+            @nonparallelizable
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something";
+
+            var code = GenerateCodeNamespaceFromFeature(featureFileWithMatchingTag, false, new[] { "nonparallelizable" });
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.Should().ContainSingle(a => a.Name == "NUnit.Framework.NonParallelizableAttribute");
+        }
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_ShouldNotAddNonParallelizableAttributeWhenNoMatchingTag()
+        {
+            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile, false, new[] { "nonparallelizable" });
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.Should().NotContain(a => a.Name == "NUnit.Framework.NonParallelizableAttribute");
+        }
+
+        [Fact]
         public void NUnit3TestGeneratorProvider_ShouldAddParallelizableAttribute()
         {
-            // ARRANGE
             const string exampleFeatureFileWithTags = @"
             @tag1 @tag2 @tag3
             Feature: Sample feature file
@@ -345,7 +369,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
                 var document = parser.Parse(reader, new SpecFlowDocumentLocation("test.feature"));
 
-                var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
+                var featureGenerator = CreateFeatureGenerator(parallelCode, ignoreParallelTags);
 
                 code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
@@ -353,7 +377,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             return code;
         }
 
-        public IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
+        public IFeatureGenerator CreateFeatureGenerator(bool parallelCode, string[] ignoreParallelTags)
         {
             var container = new GeneratorContainerBuilder().CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<GeneratorPluginInfo>());
             var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();

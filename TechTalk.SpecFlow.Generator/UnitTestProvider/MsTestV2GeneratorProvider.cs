@@ -8,12 +8,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class MsTestV2GeneratorProvider : MsTestGeneratorProvider
     {
-        protected internal const string DONOTPARALLELIZE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelize";
         protected internal const string DONOTPARALLELIZE_TAG = "MsTest:donotparallelize";
         protected internal const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
         protected internal const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
         protected internal const string WORKITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute";
         protected internal const string DEPLOYMENTITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute";
+        protected internal const string DONOTPARALLELIZE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute";
         protected internal const string OWNER_TAG = "owner:";
         protected internal const string WORKITEM_TAG = "workitem:";
         protected internal const string DEPLOYMENTITEM_TAG = "MsTest:deploymentitem:";
@@ -162,6 +162,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
 
             CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, GetNonMSTestSpecificTags(scenarioCategoriesArray));
+        }
+
+        public override void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestClass, DONOTPARALLELIZE_ATTR);
         }
 
         private IEnumerable<string> GetNonMSTestSpecificTags(IEnumerable<string> tags)

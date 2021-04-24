@@ -217,6 +217,60 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             featureSetupCall.Method.TargetObject.As<CodeTypeReferenceExpression>().Type.Options.Should().Be(CodeTypeReferenceOptions.GlobalReference);
         }
 
+        [Fact]
+        public void MsTestGeneratorProvider_ShouldNotHaveParallelExecutionTrait()
+        {
+            var sut = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+
+            sut.GetTraits()
+                .HasFlag(UnitTestGeneratorTraits.ParallelExecution)
+                .Should()
+                .BeFalse("trait ParallelExecution was found");
+        }
+
+        [Fact]
+        public void MsTestV2GeneratorProvider_WithFeatureWithMatchingTag_ShouldNotAddDoNotParallelizeAttribute()
+        {
+            // ARRANGE
+            var document = ParseDocumentFromString(@"
+            @nonparallelizable
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something");
+
+            var provider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = provider.CreateFeatureGenerator(new string[] { "nonparallelizable" });
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var attributes = code.Class().CustomAttributes().ToArray();
+            attributes.Should().NotContain(a => a.Name == "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute");
+        }
+
+        [Fact]
+        public void MsTestV2GeneratorProvider_WithFeatureWithNoMatchingTag_ShouldNotAddDoNotParallelizeAttribute()
+        {
+            // ARRANGE
+            var document = ParseDocumentFromString(@"
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something");
+
+            var provider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+            var converter = provider.CreateFeatureGenerator(new string[] { "nonparallelizable" });
+
+            // ACT
+            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var attributes = code.Class().CustomAttributes().ToArray();
+            attributes.Should().NotContain(a => a.Name == "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute");
+        }
+
         public SpecFlowDocument ParseDocumentFromString(string documentSource, CultureInfo parserCultureInfo = null)
         {
             var parser = new SpecFlowGherkinParser(parserCultureInfo ?? new CultureInfo("en-US"));
