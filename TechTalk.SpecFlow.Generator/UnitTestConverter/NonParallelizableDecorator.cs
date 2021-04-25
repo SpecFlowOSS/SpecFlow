@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         private bool ConfiguredTagIsPresent(IEnumerable<string> tagName)
         {
-            return nonParallelizableTags.Any(x => tagFilterMatcher.Match(x, tagName));
+            return nonParallelizableTags?.Any(x => tagFilterMatcher.Match(x, tagName)) ?? false;
         }
     }
 }
