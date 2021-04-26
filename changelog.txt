@@ -9,6 +9,7 @@ Changes:
 + Remove ParallelizeDecorator introduced in #746. Fixes #2442
 + Add semantic validator for duplicate Example column header names #2471
 + Update Available-Plugins document
++ Improved code generation for feature.cs and use the new TagHelper
 
 Fixes:
 + Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
