@@ -10,6 +10,7 @@ using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.CucumberMessages.Sinks;
 using TechTalk.SpecFlow.EnvironmentAccess;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Events;
 using TechTalk.SpecFlow.FileAccess;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.TestFramework;
@@ -112,8 +113,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             testThreadContainer.RegisterTypeAs<TestRunner, ITestRunner>();
             testThreadContainer.RegisterTypeAs<ContextManager, IContextManager>();
             testThreadContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+
+            testThreadContainer.RegisterTypeAs<TestThreadExecutionEventPublisher, ITestThreadExecutionEventPublisher>();
             
-            
+            testThreadContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
+            testThreadContainer.RegisterTypeAs<SpecFlowScenarioOutputTracer, ISpecFlowScenarioOutputListener>("tracer");
 
             // needs to invoke methods so requires the context manager
             testThreadContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
@@ -125,8 +129,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void RegisterScenarioContainerDefaults(ObjectContainer scenarioContainer)
         {
-            scenarioContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
-            scenarioContainer.RegisterTypeAs<SpecFlowScenarioOutputTracer, ISpecFlowScenarioOutputListener>("tracer");
         }
     }
 }

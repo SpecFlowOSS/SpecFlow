@@ -17,6 +17,7 @@ using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.CucumberMessages;
+using TechTalk.SpecFlow.Events;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -48,6 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
         private Mock<ITestRunnerManager> _testRunnerManager;
         private Mock<IRuntimePluginTestExecutionLifecycleEventEmitter> _runtimePluginTestExecutionLifecycleEventEmitter;
+        private Mock<ITestThreadExecutionEventPublisher> _testThreadExecutionEventPublisher;
         private Mock<IStepArgumentTypeConverter> _stepArgumentTypeConverterMock;
 
         private List<IHookBinding> beforeScenarioEvents;
@@ -151,6 +153,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             _testRunnerManager.Setup(trm => trm.TestAssembly).Returns(Assembly.GetCallingAssembly);
 
             _runtimePluginTestExecutionLifecycleEventEmitter = new Mock<IRuntimePluginTestExecutionLifecycleEventEmitter>();
+            _testThreadExecutionEventPublisher = new Mock<ITestThreadExecutionEventPublisher>();
 
             _stepArgumentTypeConverterMock = new Mock<IStepArgumentTypeConverter>();
         }
@@ -178,6 +181,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 _analyticsTransmitter.Object,
                 _testRunnerManager.Object,
                 _runtimePluginTestExecutionLifecycleEventEmitter.Object,
+                _testThreadExecutionEventPublisher.Object,
                 testObjectResolverMock.Object,
                 testThreadContainer);
         }

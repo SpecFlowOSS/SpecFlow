@@ -40,6 +40,8 @@ namespace TechTalk.SpecFlow
 
         public StepInfo StepInfo { get; private set; }
 
+        public ScenarioExecutionStatus Status { get; set; }
+
         internal ScenarioStepContext(StepInfo stepInfo)
         {
             StepInfo = stepInfo;

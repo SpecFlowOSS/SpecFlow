@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using BoDi;
+using TechTalk.SpecFlow.Events;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
     public class SpecFlowOutputHelper : ISpecFlowOutputHelper
     {
         private readonly IObjectContainer _container;
+        private readonly ITestThreadExecutionEventPublisher _testThreadExecutionEventPublisher; 
 
-        public SpecFlowOutputHelper(IObjectContainer container)
+        public SpecFlowOutputHelper(IObjectContainer container, ITestThreadExecutionEventPublisher testThreadExecutionEventPublisher)
         {
             _container = container;
+            _testThreadExecutionEventPublisher = testThreadExecutionEventPublisher;
         }
 
         private IEnumerable<ISpecFlowScenarioOutputListener> Listeners =>
@@ -18,6 +21,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void WriteLine(string message)
         {
+            _testThreadExecutionEventPublisher.PublishEvent(new OutputAddedEvent(message));
             foreach (var listener in Listeners)
             {
                 listener.OnMessage(message);
