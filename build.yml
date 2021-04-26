@@ -119,7 +119,7 @@ jobs:
       artifactType: container
       ArtifactName: 'SpecFlow.CI-Binlogs-${{ parameters.name }}'
 
-  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@19
+  - task: WhiteSource Bolt@20
     displayName: 'WhiteSource Bolt'
-    inputs:
-      advance: true 
+    condition: eq('${{ parameters.name }}', 'Windows')
+    timeoutInMinutes: 5

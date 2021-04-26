@@ -38,13 +38,7 @@ SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integrati
 Let's get started
 ==================
 
-A detailed step- by- step guide to start with SpecFlow can be found `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. 
-
-**Start with an example project**
-
-Follow our step by step guide to explore, experiment and learn the basics of SpecFlow based on a simple web application project using SpecFlow and the SpecFlow+ Runner.
-
-`Getting Started with an example project <https://docs.specflow.org/projects/specflow/en/latest/Getting-Started/Getting-Started-With-An-Example.html>`_
+You can find a number of step- by- step guides to start with SpecFlow `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. There are guides available for both complete beginners and more advanced users.
 
 .. toctree::
    :maxdepth: 1
@@ -52,26 +46,20 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Getting Started Step by Step Guides <https://docs.specflow.org/projects/getting-started/en/latest/>
-   Getting-Started/Getting-Started-With-An-Example.md
+   
    
 
 .. toctree::
    :maxdepth: 1
-   :caption: Guides
+   :caption: Guides & Examples
    :hidden:
 
-   Guides/UpgradeSpecFlow2To3.md
-   Guides/PageObjectModel.md
-   Guides/DriverPattern.md
-
-.. toctree::
-   :maxdepth: 1
-   :caption: UI Automation
-   :hidden:
-   
    ui-automation/Selenium-with-Page-Object-Pattern.md
-
-
+   Guides/PageObjectModel.md
+   Guides/DriverPattern.md   
+   Examples <https://docs.specflow.org/en/latest/Examples.html>
+   Getting-Started/Getting-Started-With-An-Example.md
+  
 
 .. toctree::
    :maxdepth: 2
@@ -215,6 +203,7 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
 
    legacy/Plugins-(Legacy).md
    legacy/CodedUI.md
+   Guides/UpgradeSpecFlow2To3.md
 
 .. toctree::
    :maxdepth: 1
