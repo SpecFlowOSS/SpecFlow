@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
         {
             unitTestProviderConfiguration.UseUnitTestProvider("mstest");
             runtimePluginEvents.RegisterGlobalDependencies += RuntimePluginEvents_RegisterGlobalDependencies;
-            runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
+            runtimePluginEvents.CustomizeTestThreadDependencies += RuntimePluginEventsOnCustomizeTestThreadDependencies;
         }
 
         private void RuntimePluginEvents_RegisterGlobalDependencies(object sender, RegisterGlobalDependenciesEventArgs e)
@@ -22,11 +22,9 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
             e.ObjectContainer.RegisterTypeAs<MsTestRuntimeProvider, IUnitTestRuntimeProvider>("mstest");
         }
 
-        private void RuntimePluginEvents_CustomizeScenarioDependencies(object sender, CustomizeScenarioDependenciesEventArgs e)
+        private void RuntimePluginEventsOnCustomizeTestThreadDependencies(object sender, CustomizeTestThreadDependenciesEventArgs e)
         {
-            var container = e.ObjectContainer;
-
-            container.RegisterTypeAs<MSTestTraceListener, ITraceListener>();
+            e.ObjectContainer.RegisterTypeAs<MSTestTraceListener, ITraceListener>();
         }
     }
 }

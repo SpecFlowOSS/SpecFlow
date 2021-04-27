@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
         {
             runtimePluginEvents.RegisterGlobalDependencies += RuntimePluginEventsOnRegisterGlobalDependencies;
             runtimePluginEvents.CustomizeGlobalDependencies += RuntimePluginEvents_CustomizeGlobalDependencies;
-            runtimePluginEvents.CustomizeScenarioDependencies += RuntimePluginEvents_CustomizeScenarioDependencies;
+            runtimePluginEvents.CustomizeTestThreadDependencies += RuntimePluginEventsOnCustomizeTestThreadDependencies;
             unitTestProviderConfiguration.UseUnitTestProvider("nunit");
         }
 
@@ -30,11 +30,9 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
 #endif
         }
 
-        private void RuntimePluginEvents_CustomizeScenarioDependencies(object sender, CustomizeScenarioDependenciesEventArgs e)
+        private void RuntimePluginEventsOnCustomizeTestThreadDependencies(object sender, CustomizeTestThreadDependenciesEventArgs e)
         {
-            var container = e.ObjectContainer;
-            
-            container.RegisterTypeAs<NUnitTraceListener, ITraceListener>();
+            e.ObjectContainer.RegisterTypeAs<NUnitTraceListener, ITraceListener>();
         }
     }
 }
