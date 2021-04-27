@@ -11,24 +11,18 @@ namespace TechTalk.SpecFlow.Events
     {
     }
 
-    public class TestThreadStartedEvent : ExecutionEvent
+    public class TestRunStartingEvent : ExecutionEvent
     {
-        public TestThreadContext TestThreadContext { get; }
-
-        public TestThreadStartedEvent(TestThreadContext testThreadContext)
-        {
-            TestThreadContext = testThreadContext;
-        }
+    }
+    public class TestRunStartedEvent : ExecutionEvent
+    {
     }
 
-    public class TestThreadFinishedEvent : ExecutionEvent
+    public class TestRunFinishingEvent : ExecutionEvent
     {
-        public TestThreadContext TestThreadContext { get; }
-
-        public TestThreadFinishedEvent(TestThreadContext testThreadContext)
-        {
-            TestThreadContext = testThreadContext;
-        }
+    }
+    public class TestRunFinishedEvent : ExecutionEvent
+    {
     }
 
     public class FeatureStartedEvent : ExecutionEvent
