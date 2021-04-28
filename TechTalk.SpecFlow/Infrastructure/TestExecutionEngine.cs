@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             FireEvents(HookType.BeforeTestRun);
             
             _testThreadExecutionEventPublisher.PublishEvent(new TestRunStartedEvent());
-
+            
         }
 
         public virtual void OnTestRunEnd()
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 _cucumberMessageSender.SendTestRunFinished(success.Result);
             }
-
+            
             _testThreadExecutionEventPublisher.PublishEvent(new TestRunFinishingEvent());
 
             FireEvents(HookType.AfterTestRun);
@@ -311,11 +311,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
             _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.Skipped;
-            
-            //TODO: how does skipping the scenario work?
+
+            // in case of skipping a Scenario, the OnScenarioStart() is not called, so publish the event here
             _testThreadExecutionEventPublisher.PublishEvent(new ScenarioStartedEvent(FeatureContext, ScenarioContext));
             _testThreadExecutionEventPublisher.PublishEvent(new ScenarioSkippedEvent());
-            _testThreadExecutionEventPublisher.PublishEvent(new ScenarioFinishedEvent(FeatureContext, ScenarioContext));
         }
 
         public virtual void Pending()
