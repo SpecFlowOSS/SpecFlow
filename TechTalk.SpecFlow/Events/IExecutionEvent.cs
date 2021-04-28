@@ -108,9 +108,6 @@ namespace TechTalk.SpecFlow.Events
     public class ScenarioSkippedEvent : ExecutionEvent
     {}
     
-    public class PendingStepDefinitionEvent : ExecutionEvent 
-    {}
-    
     public class StepSkippedEvent : ExecutionEvent
     {}
 

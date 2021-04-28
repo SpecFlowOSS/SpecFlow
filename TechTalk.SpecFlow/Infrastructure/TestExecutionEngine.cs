@@ -320,7 +320,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void Pending()
         {
-            _testThreadExecutionEventPublisher.PublishEvent(new PendingStepDefinitionEvent());
             throw _errorProvider.GetPendingStepDefinitionError();
         }
 
