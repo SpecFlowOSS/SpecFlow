@@ -27,9 +27,9 @@ namespace TechTalk.SpecFlow.Events
 
     public class FeatureStartedEvent : ExecutionEvent
     {
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public FeatureStartedEvent(FeatureContext featureContext)
+        public FeatureStartedEvent(IFeatureContext featureContext)
         {
             FeatureContext = featureContext;
         }
@@ -37,9 +37,9 @@ namespace TechTalk.SpecFlow.Events
     
     public class FeatureFinishedEvent : ExecutionEvent
     {
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public FeatureFinishedEvent(FeatureContext featureContext)
+        public FeatureFinishedEvent(IFeatureContext featureContext)
         {
             FeatureContext = featureContext;
         }
@@ -47,11 +47,11 @@ namespace TechTalk.SpecFlow.Events
     
     public class ScenarioStartedEvent : ExecutionEvent
     {
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public ScenarioContext ScenarioContext { get; }
+        public IScenarioContext ScenarioContext { get; }
 
-        public ScenarioStartedEvent(FeatureContext featureContext, ScenarioContext scenarioContext)
+        public ScenarioStartedEvent(IFeatureContext featureContext, IScenarioContext scenarioContext)
         {
             FeatureContext = featureContext;
             ScenarioContext = scenarioContext;
@@ -61,11 +61,11 @@ namespace TechTalk.SpecFlow.Events
     
     public class ScenarioFinishedEvent : ExecutionEvent
     {
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public ScenarioContext ScenarioContext { get; }
+        public IScenarioContext ScenarioContext { get; }
 
-        public ScenarioFinishedEvent(FeatureContext featureContext, ScenarioContext scenarioContext)
+        public ScenarioFinishedEvent(IFeatureContext featureContext, IScenarioContext scenarioContext)
         {
             FeatureContext = featureContext;
             ScenarioContext = scenarioContext;
@@ -74,13 +74,13 @@ namespace TechTalk.SpecFlow.Events
     
     public class StepStartedEvent : ExecutionEvent
     {
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public ScenarioContext ScenarioContext { get; }
+        public IScenarioContext ScenarioContext { get; }
 
-        public ScenarioStepContext StepContext { get; }
+        public IScenarioStepContext StepContext { get; }
 
-        public StepStartedEvent(FeatureContext featureContext, ScenarioContext scenarioContext, ScenarioStepContext stepContext)
+        public StepStartedEvent(IFeatureContext featureContext, IScenarioContext scenarioContext, IScenarioStepContext stepContext)
         {
             FeatureContext = featureContext;
             ScenarioContext = scenarioContext;
@@ -90,13 +90,13 @@ namespace TechTalk.SpecFlow.Events
     
     public class StepFinishedEvent : ExecutionEvent
     {
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public ScenarioContext ScenarioContext { get; }
+        public IScenarioContext ScenarioContext { get; }
 
-        public ScenarioStepContext StepContext { get; }
+        public IScenarioStepContext StepContext { get; }
 
-        public StepFinishedEvent(FeatureContext featureContext, ScenarioContext scenarioContext, ScenarioStepContext stepContext)
+        public StepFinishedEvent(IFeatureContext featureContext, IScenarioContext scenarioContext, IScenarioStepContext stepContext)
         {
             FeatureContext = featureContext;
             ScenarioContext = scenarioContext;
@@ -108,13 +108,13 @@ namespace TechTalk.SpecFlow.Events
     {
         public HookType HookType { get; }
         
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public ScenarioContext ScenarioContext { get; }
+        public IScenarioContext ScenarioContext { get; }
 
-        public ScenarioStepContext StepContext { get; }
+        public IScenarioStepContext StepContext { get; }
 
-        public HookStartedEvent(HookType hookType, FeatureContext featureContext, ScenarioContext scenarioContext, ScenarioStepContext stepContext)
+        public HookStartedEvent(HookType hookType, IFeatureContext featureContext, IScenarioContext scenarioContext, IScenarioStepContext stepContext)
         {
             HookType = hookType;
             FeatureContext = featureContext;
@@ -127,15 +127,15 @@ namespace TechTalk.SpecFlow.Events
     {
         public HookType HookType { get; }
 
-        public FeatureContext FeatureContext { get; }
+        public IFeatureContext FeatureContext { get; }
 
-        public ScenarioContext ScenarioContext { get; }
+        public IScenarioContext ScenarioContext { get; }
 
-        public ScenarioStepContext StepContext { get; }
+        public IScenarioStepContext StepContext { get; }
 
         public Exception HookException { get; }
 
-        public HookFinishedEvent(HookType hookType, FeatureContext featureContext, ScenarioContext scenarioContext, ScenarioStepContext stepContext, Exception hookException)
+        public HookFinishedEvent(HookType hookType, IFeatureContext featureContext, IScenarioContext scenarioContext, IScenarioStepContext stepContext, Exception hookException)
         {
             HookType = hookType;
             HookException = hookException;

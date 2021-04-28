@@ -4,9 +4,14 @@ using System.Threading;
 
 namespace TechTalk.SpecFlow
 {
-    using TechTalk.SpecFlow.Bindings;
+    public interface IScenarioStepContext : ISpecFlowContext
+    {
+        StepInfo StepInfo { get; }
 
-    public class ScenarioStepContext : SpecFlowContext
+        ScenarioExecutionStatus Status { get; set; }
+    }
+
+    public class ScenarioStepContext : SpecFlowContext, IScenarioStepContext
     {
         #region Singleton
         private static bool isCurrentDisabled = false;
