@@ -104,6 +104,46 @@ namespace TechTalk.SpecFlow.Events
         }
     }
     
+    public class HookStartedEvent : ExecutionEvent
+    {
+        public HookType HookType { get; }
+        
+        public FeatureContext FeatureContext { get; }
+
+        public ScenarioContext ScenarioContext { get; }
+
+        public ScenarioStepContext StepContext { get; }
+
+        public HookStartedEvent(HookType hookType, FeatureContext featureContext, ScenarioContext scenarioContext, ScenarioStepContext stepContext)
+        {
+            HookType = hookType;
+            FeatureContext = featureContext;
+            ScenarioContext = scenarioContext;
+            StepContext = stepContext;
+        }
+    }
+    
+    public class HookFinishedEvent : ExecutionEvent
+    {
+        public HookType HookType { get; }
+
+        public FeatureContext FeatureContext { get; }
+
+        public ScenarioContext ScenarioContext { get; }
+
+        public ScenarioStepContext StepContext { get; }
+
+        public Exception HookException { get; }
+
+        public HookFinishedEvent(HookType hookType, FeatureContext featureContext, ScenarioContext scenarioContext, ScenarioStepContext stepContext, Exception hookException)
+        {
+            HookType = hookType;
+            HookException = hookException;
+            FeatureContext = featureContext;
+            ScenarioContext = scenarioContext;
+            StepContext = stepContext;
+        }
+    }
     
     public class ScenarioSkippedEvent : ExecutionEvent
     {}

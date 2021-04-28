@@ -369,6 +369,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void FireEvents(HookType hookType)
         {
+            _testThreadExecutionEventPublisher.PublishEvent(new HookStartedEvent(hookType, FeatureContext, ScenarioContext, _contextManager.StepContext));
             var stepContext = _contextManager.GetStepContext();
 
             var matchingHooks = _bindingRegistry.GetHooks(hookType)
@@ -399,6 +400,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             //Note: plugin-hooks are still executed even if a user-hook failed with an exception
             //A plugin-hook should not throw an exception under normal circumstances, exceptions are not handled/caught here
             FireRuntimePluginTestExecutionLifecycleEvents(hookType);
+
+            _testThreadExecutionEventPublisher.PublishEvent(new HookFinishedEvent(hookType, FeatureContext, ScenarioContext, _contextManager.StepContext, hookException));
 
             //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error  
             if (hookException != null) throw hookException;
