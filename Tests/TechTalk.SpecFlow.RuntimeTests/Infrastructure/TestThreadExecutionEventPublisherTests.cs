@@ -132,20 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             _testThreadExecutionEventPublisher.Verify(te =>
                                                           te.PublishEvent(It.IsAny<StepSkippedEvent>()), Times.Once);
         }
-
-        [Fact(Skip = "Have to find a good way to check for these events")]
-        public void Should_publish_hook_events()
-        {
-            var testExecutionEngine = CreateTestExecutionEngine();
-
-            //testExecutionEngine.FireEvents
-
-            _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<HookStartedEvent>()), Times.Once);
-            _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<HookFinishedEvent>()), Times.Once);
-        }
-
+        
         [Fact]
         public void Should_publish_hook_binding_events()
         {
@@ -209,6 +196,46 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             
             _testThreadExecutionEventPublisher.Verify(te =>
                                                           te.PublishEvent(It.IsAny<ScenarioFinishedEvent>()), Times.Once);
+        }
+
+        [Fact]
+        public void Should_publish_hook_started_finished_events()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            testExecutionEngine.OnTestRunStart();
+            testExecutionEngine.OnFeatureStart(featureInfo);
+
+            testExecutionEngine.OnScenarioInitialize(scenarioInfo);
+            testExecutionEngine.OnScenarioStart();
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            testExecutionEngine.OnAfterLastStep();
+            testExecutionEngine.OnScenarioEnd();
+
+            testExecutionEngine.OnFeatureEnd();
+            testExecutionEngine.OnTestRunEnd();
+
+            AssertHookEventsForHookType(HookType.BeforeTestRun);
+            AssertHookEventsForHookType(HookType.AfterTestRun);
+            AssertHookEventsForHookType(HookType.BeforeFeature);
+            AssertHookEventsForHookType(HookType.AfterFeature);
+            AssertHookEventsForHookType(HookType.BeforeScenario);
+            AssertHookEventsForHookType(HookType.AfterScenario);
+            AssertHookEventsForHookType(HookType.BeforeStep);
+            AssertHookEventsForHookType(HookType.AfterStep);
+        }
+
+        private void AssertHookEventsForHookType(HookType hookType)
+        {
+            _testThreadExecutionEventPublisher.Verify(
+                te =>
+                    te.PublishEvent(It.Is<HookStartedEvent>(e => e.HookType == hookType)),
+                Times.Once);
+            _testThreadExecutionEventPublisher.Verify(
+                te =>
+                    te.PublishEvent(It.Is<HookFinishedEvent>(e => e.HookType == hookType)),
+                Times.Once);
         }
 
         [Fact]
