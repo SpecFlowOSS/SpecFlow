@@ -291,9 +291,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnTestRunStart();
-
-            _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<TestRunStartingEvent>()), Times.Once);
+            
             _testThreadExecutionEventPublisher.Verify(te =>
                                                           te.PublishEvent(It.IsAny<TestRunStartedEvent>()), Times.Once);
         }
@@ -304,9 +302,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnTestRunEnd();
-
-            _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<TestRunFinishingEvent>()), Times.Once);
+            
             _testThreadExecutionEventPublisher.Verify(te =>
                                                           te.PublishEvent(It.IsAny<TestRunFinishedEvent>()), Times.Once);
         }

@@ -10,17 +10,11 @@ namespace TechTalk.SpecFlow.Events
     public class ExecutionEvent : IExecutionEvent
     {
     }
-
-    public class TestRunStartingEvent : ExecutionEvent
-    {
-    }
+    
     public class TestRunStartedEvent : ExecutionEvent
     {
     }
-
-    public class TestRunFinishingEvent : ExecutionEvent
-    {
-    }
+    
     public class TestRunFinishedEvent : ExecutionEvent
     {
     }

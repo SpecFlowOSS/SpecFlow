@@ -130,12 +130,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testRunnerStartExecuted = true;
             _cucumberMessageSender.SendTestRunStarted();
             _testRunResultCollector.StartCollecting();
-            _testThreadExecutionEventPublisher.PublishEvent(new TestRunStartingEvent());
-            
-            FireEvents(HookType.BeforeTestRun);
-            
+
             _testThreadExecutionEventPublisher.PublishEvent(new TestRunStartedEvent());
-            
+
+            FireEvents(HookType.BeforeTestRun);
         }
 
         public virtual void OnTestRunEnd()
@@ -156,8 +154,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 _cucumberMessageSender.SendTestRunFinished(success.Result);
             }
-            
-            _testThreadExecutionEventPublisher.PublishEvent(new TestRunFinishingEvent());
 
             FireEvents(HookType.AfterTestRun);
             
