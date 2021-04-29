@@ -14,5 +14,10 @@ namespace TechTalk.SpecFlow.Tracing
         {
             Console.WriteLine("-> " + message);
         }
+
+        public void AddAttachment(string filePath)
+        {
+            WriteTestOutput($"Attachment added: {filePath}");
+        }
     }
 }

@@ -15,5 +15,10 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             _traceListener.WriteTestOutput(message);
         }
+
+        public void OnAttachmentAdded(string filePath)
+        {
+            _traceListener.AddAttachment(filePath);
+        }
     }
 }

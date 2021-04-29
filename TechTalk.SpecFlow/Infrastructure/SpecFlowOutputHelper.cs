@@ -32,5 +32,14 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             WriteLine(string.Format(format, args));
         }
+
+        public void AddAttachment(string filePath)
+        {
+            _testThreadExecutionEventPublisher.PublishEvent(new AttachmentAddedEvent(filePath));
+            foreach (var listener in Listeners)
+            {
+                listener.OnAttachmentAdded(filePath);
+            }
+        }
     }
 }

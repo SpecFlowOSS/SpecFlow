@@ -11,5 +11,10 @@ namespace TechTalk.SpecFlow.Tracing
         {
             //nop;
         }
+
+        public void AddAttachment(string filePath)
+        {
+            //nop;
+        }
     }
 }

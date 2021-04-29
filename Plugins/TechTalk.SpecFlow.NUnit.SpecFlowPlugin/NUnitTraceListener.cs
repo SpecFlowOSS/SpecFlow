@@ -21,5 +21,11 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
             TestContext.WriteLine("-> " + message);
             base.WriteToolOutput(message);
         }
+
+        public override void AddAttachment(string filePath)
+        {
+            TestContext.AddTestAttachment(filePath);
+            base.AddAttachment(filePath);
+        }
     }
 }
