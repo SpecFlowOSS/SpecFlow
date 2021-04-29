@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.MSTest.SpecFlowPlugin;
+﻿using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.MSTest.SpecFlowPlugin;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -25,6 +26,7 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
         private void RuntimePluginEventsOnCustomizeTestThreadDependencies(object sender, CustomizeTestThreadDependenciesEventArgs e)
         {
             e.ObjectContainer.RegisterTypeAs<MSTestTraceListener, ITraceListener>();
+            e.ObjectContainer.RegisterTypeAs<MSTestAttachmentHandler, ISpecFlowAttachmentHandler>();
         }
     }
 }

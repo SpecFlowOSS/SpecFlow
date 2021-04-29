@@ -203,11 +203,11 @@ namespace TechTalk.SpecFlow.Events
 
     public class AttachmentAddedEvent : ExecutionEvent
     {
-        public string FileName { get; }
+        public string FilePath { get; }
 
-        public AttachmentAddedEvent(string fileName)
+        public AttachmentAddedEvent(string filePath)
         {
-            FileName = fileName;
+            FilePath = filePath;
         }
     }
 }

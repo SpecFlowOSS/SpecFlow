@@ -4,6 +4,5 @@
     {
         void WriteTestOutput(string message);
         void WriteToolOutput(string message);
-        void AddAttachment(string filePath);
     }
 }

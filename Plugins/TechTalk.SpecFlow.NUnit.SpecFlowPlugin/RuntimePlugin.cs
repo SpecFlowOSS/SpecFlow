@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.NUnit.SpecFlowPlugin;
+﻿using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.NUnit.SpecFlowPlugin;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.TestFramework;
 using TechTalk.SpecFlow.Tracing;
@@ -33,6 +34,7 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
         private void RuntimePluginEventsOnCustomizeTestThreadDependencies(object sender, CustomizeTestThreadDependenciesEventArgs e)
         {
             e.ObjectContainer.RegisterTypeAs<NUnitTraceListener, ITraceListener>();
+            e.ObjectContainer.RegisterTypeAs<NUnitAttachmentHandler, ISpecFlowAttachmentHandler>();
         }
     }
 }

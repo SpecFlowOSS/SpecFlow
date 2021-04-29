@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using BoDi;
-using Moq;
+﻿using Moq;
 using TechTalk.SpecFlow.Events;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -30,17 +29,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             outputHelper.AddAttachment(filePath);
 
-            _testThreadExecutionEventPublisher.Verify(ep => ep.PublishEvent(It.Is<AttachmentAddedEvent>(m => m.FileName == filePath)), Times.Once);
+            _testThreadExecutionEventPublisher.Verify(ep => ep.PublishEvent(It.Is<AttachmentAddedEvent>(m => m.FilePath == filePath)), Times.Once);
         }
 
         private SpecFlowOutputHelper CreateSpecFlowOutputHelper()
         {
-            var containerMock = new Mock<IObjectContainer>();
-            containerMock.Setup(c => c.ResolveAll<ISpecFlowScenarioOutputListener>()).Returns(Enumerable.Empty<ISpecFlowScenarioOutputListener>());
-
             _testThreadExecutionEventPublisher = new Mock<ITestThreadExecutionEventPublisher>();
+            var traceListenerMock = new Mock<ITraceListener>();
+            var attachmentHandlerMock = new Mock<ISpecFlowAttachmentHandler>();
 
-            return new SpecFlowOutputHelper(containerMock.Object, _testThreadExecutionEventPublisher.Object);
+            return new SpecFlowOutputHelper(_testThreadExecutionEventPublisher.Object, traceListenerMock.Object, attachmentHandlerMock.Object);
         }
     }
 }

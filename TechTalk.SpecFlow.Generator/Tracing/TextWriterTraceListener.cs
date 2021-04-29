@@ -30,10 +30,5 @@ namespace TechTalk.SpecFlow.Tracing
         {
             textWriter.WriteLine(toolMessagePrefix + message);
         }
-
-        public void AddAttachment(string filePath)
-        {
-            WriteTestOutput($"Attachment added: {filePath}");
-        }
     }
 }

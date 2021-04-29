@@ -117,8 +117,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             testThreadContainer.RegisterTypeAs<TestThreadExecutionEventPublisher, ITestThreadExecutionEventPublisher>();
             
             testThreadContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
-            testThreadContainer.RegisterTypeAs<SpecFlowScenarioOutputTracer, ISpecFlowScenarioOutputListener>("tracer");
-
+            
             // needs to invoke methods so requires the context manager
             testThreadContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             testThreadContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();

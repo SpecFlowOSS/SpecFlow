@@ -23,10 +23,5 @@ namespace TechTalk.SpecFlow.Tracing
         {
             _traceListenerQueue.EnqueueMessage(_testRunner.Value, message, true);
         }
-
-        public virtual void AddAttachment(string filePath)
-        {
-            WriteTestOutput($"Attachment added: {filePath}");
-        }
     }
 }

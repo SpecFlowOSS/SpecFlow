@@ -143,11 +143,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
 
             }
-
-            public void AddAttachment(string filePath)
-            {
-                
-            }
         }
 
         

@@ -25,11 +25,5 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
             _testContext.WriteLine("-> " + message);
             base.WriteToolOutput(message);
         }
-
-        public override void AddAttachment(string filePath)
-        {
-            _testContext.AddResultFile(filePath);
-            base.AddAttachment(filePath);
-        }
     }
 }
