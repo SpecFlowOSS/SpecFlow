@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentAssertions;
 using Moq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -13,117 +12,68 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_publish_step_started_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-            SetupEventPublisher(typeof(StepStartedEvent), stepDef);
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
+            
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<StepStartedEvent>()), Times.Once);
+                    te.PublishEvent(It.Is<StepStartedEvent>(e => e.ScenarioContext.Equals(scenarioContext) &&
+                                                                 e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()) &&
+                                                                 e.StepContext.Equals(contextManagerStub.Object.StepContext))), 
+                                                      Times.Once);
         }
 
         [Fact]
         public void Should_publish_step_binding_started_event()
         {
             var stepDef = RegisterStepDefinition().Object;
-
-            _testThreadExecutionEventPublisher.Setup(te => te.PublishEvent(It.IsAny<IExecutionEvent>()))
-                                              .Callback<IExecutionEvent>(e =>
-                                              {
-                                                  if(e is StepBindingStartedEvent) VerifyStepHook(e, stepDef);
-                                              });
-
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<StepBindingStartedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<StepBindingStartedEvent>(e => 
+                                                                   e.StepDefinitionBinding.Equals(stepDef))),
+                                                      Times.Once);
         }
 
         [Fact]
         public void Should_publish_step_binding_finished_event()
         {
             var stepDef = RegisterStepDefinition().Object;
-
             TimeSpan expectedDuration = TimeSpan.FromSeconds(5);
-
-            _testThreadExecutionEventPublisher.Setup(te => te.PublishEvent(It.IsAny<IExecutionEvent>()))
-                                              .Callback<IExecutionEvent>(
-                                                  (e) =>
-                                                  {
-                                                      if (e is StepBindingFinishedEvent) VerifyStepHook(e, stepDef, expectedDuration);
-                                                  });
             methodBindingInvokerMock.Setup(i => i.InvokeBinding(stepDef, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out expectedDuration));
-
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<StepBindingFinishedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<StepBindingFinishedEvent>(e =>
+                                                                    e.StepDefinitionBinding.Equals(stepDef) && 
+                                                                    e.Duration.Equals(expectedDuration))),
+                                                      Times.Once);
         }
-
-
+        
         [Fact]
         public void Should_publish_step_finished_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-
-            _testThreadExecutionEventPublisher.Setup(te => te.PublishEvent(It.IsAny<IExecutionEvent>()))
-                                              .Callback<IExecutionEvent>(e =>
-                                              {
-                                                  if (e is StepFinishedEvent) VerifyStepHook(e, stepDef);
-                                              });
-
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
-            _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<StepFinishedEvent>()), Times.Once);
-        }
-
-
-
-        //[Fact]
-        //public void Should_publish_step_events()
-        //{
-        //    var stepDef = RegisterStepDefinition().Object;
-
-        //    TimeSpan expectedDuration = TimeSpan.FromSeconds(5);
-        //    TimeSpan executionDuration = TimeSpan.Zero;
-        //    testTracerStub.Setup(c => c.TraceStepDone(It.IsAny<BindingMatch>(), It.IsAny<object[]>(), It.IsAny<TimeSpan>()))
-        //                  .Callback<BindingMatch, object[], TimeSpan>((match, arguments, duration) => executionDuration = duration);
             
-        //    _testThreadExecutionEventPublisher.Setup(te => te.PublishEvent(It.IsAny<IExecutionEvent>()))
-        //                                      .Callback<IExecutionEvent>(e => VerifyStepHook(e, stepDef, expectedDuration));
-
-
-        //    var testExecutionEngine = CreateTestExecutionEngine();
-
-        //    methodBindingInvokerMock.Setup(i => i.InvokeBinding(stepDef, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out expectedDuration));
-
-        //    testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-
-        //    _testThreadExecutionEventPublisher.Verify(te =>
-        //                                                  te.PublishEvent(It.IsAny<StepStartedEvent>()), Times.Once);
-        //    _testThreadExecutionEventPublisher.Verify(te =>
-        //                                                  te.PublishEvent(It.IsAny<StepBindingStartedEvent>()), Times.Once);
-        //    _testThreadExecutionEventPublisher.Verify(te =>
-        //                                                  te.PublishEvent(It.IsAny<StepBindingFinishedEvent>()), Times.Once);
-        //    _testThreadExecutionEventPublisher.Verify(te =>
-        //                                                  te.PublishEvent(It.IsAny<StepFinishedEvent>()), Times.Once);
-        //}
-
+            _testThreadExecutionEventPublisher.Verify(te =>
+                te.PublishEvent(It.Is<StepFinishedEvent>(e => 
+                                                             e.ScenarioContext.Equals(scenarioContext) &&
+                                                             e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()) &&
+                                                             e.StepContext.Equals(contextManagerStub.Object.StepContext))),
+                                                      Times.Once);
+        }
         
-
         [Fact]
         public void Should_publish_step_skipped_event()
         {
-            var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
+            var testExecutionEngine = CreateTestExecutionEngine();
             //a step will be skipped if the ScenarioExecutionStatus is not OK
             scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
 
@@ -136,66 +86,55 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_publish_hook_binding_events()
         {
-            TimeSpan duration = default;
-            IHookBinding hookBinding = null;
-            _testThreadExecutionEventPublisher.Setup(te => te.PublishEvent(It.IsAny<IExecutionEvent>()))
-                                              .Callback<IExecutionEvent>(
-                                                  e =>
-                                                  {
-                                                      if (e is HookBindingFinishedEvent hbfe)
-                                                      {
-                                                          hookBinding = hbfe.HookBinding;
-                                                          duration = hbfe.Duration;
-                                                      }
-                                                  });
-
             var hookType = HookType.AfterScenario;
             TimeSpan expectedDuration = TimeSpan.FromSeconds(5);
             var expectedHookBinding = new HookBinding(new Mock<IBindingMethod>().Object, hookType, null, 1);
-
             methodBindingInvokerMock.Setup(i => i.InvokeBinding(expectedHookBinding, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out expectedDuration));
-
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.InvokeHook(methodBindingInvokerMock.Object, expectedHookBinding, hookType);
 
-            hookBinding.Should().Be(expectedHookBinding);
-            duration.Should().Be(expectedDuration);
-
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<HookBindingStartedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<HookBindingStartedEvent>(e =>
+                                                                   e.HookBinding.Equals(expectedHookBinding))),
+                                                      Times.Once);
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<HookBindingFinishedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<HookBindingFinishedEvent>(e =>
+                                                                    e.HookBinding.Equals(expectedHookBinding) &&
+                                                                    e.Duration.Equals(expectedDuration))),
+                                                      Times.Once);
         }
 
         [Fact]
         public void Should_publish_scenario_started_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-            SetupEventPublisher(typeof(ScenarioStartedEvent), stepDef);
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnScenarioInitialize(scenarioInfo);
             testExecutionEngine.OnScenarioStart();
+
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<ScenarioStartedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<ScenarioStartedEvent>(e =>
+                                                                e.ScenarioContext.Equals(scenarioContext) &&
+                                                                e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()))),
+                                                      Times.Once);
         }
 
         [Fact]
         public void Should_publish_scenario_finished_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-            SetupEventPublisher(typeof(ScenarioFinishedEvent), stepDef);
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnScenarioInitialize(scenarioInfo);
-            
             testExecutionEngine.OnScenarioStart();
             testExecutionEngine.OnAfterLastStep();
             testExecutionEngine.OnScenarioEnd();
             
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<ScenarioFinishedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<ScenarioFinishedEvent>(e =>
+                                                                 e.ScenarioContext.Equals(scenarioContext) &&
+                                                                 e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()))),
+                                                      Times.Once);
         }
 
         [Fact]
@@ -225,64 +164,55 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             AssertHookEventsForHookType(HookType.BeforeStep);
             AssertHookEventsForHookType(HookType.AfterStep);
         }
-
-        private void AssertHookEventsForHookType(HookType hookType)
-        {
-            _testThreadExecutionEventPublisher.Verify(
-                te =>
-                    te.PublishEvent(It.Is<HookStartedEvent>(e => e.HookType == hookType)),
-                Times.Once);
-            _testThreadExecutionEventPublisher.Verify(
-                te =>
-                    te.PublishEvent(It.Is<HookFinishedEvent>(e => e.HookType == hookType)),
-                Times.Once);
-        }
-
+        
         [Fact]
         public void Should_publish_scenario_skipped_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-            SetupEventPublisher(typeof(ScenarioSkippedEvent), stepDef);
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnScenarioInitialize(scenarioInfo);
-
             testExecutionEngine.OnScenarioSkipped();
             testExecutionEngine.OnAfterLastStep();
             testExecutionEngine.OnScenarioEnd();
-
+            
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<ScenarioStartedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<ScenarioStartedEvent>(e =>
+                                                                e.ScenarioContext.Equals(scenarioContext) &&
+                                                                e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()))),
+                                                      Times.Once);
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<ScenarioSkippedEvent>()), Times.Once);
+                te.PublishEvent(It.IsAny<ScenarioSkippedEvent>()), Times.Once);
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<ScenarioFinishedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<ScenarioFinishedEvent>(e =>
+                                                                 e.ScenarioContext.Equals(scenarioContext) &&
+                                                                 e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()))),
+                                                      Times.Once);
         }
 
         [Fact]
         public void Should_publish_feature_started_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-            SetupEventPublisher(typeof(FeatureStartedEvent), stepDef);
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnFeatureStart(featureInfo);
-
+            
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<FeatureStartedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<FeatureStartedEvent>(e =>
+                                                               e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()))),
+                                                      Times.Once);
         }
 
         [Fact]
         public void Should_publish_feature_finished_event()
         {
-            var stepDef = RegisterStepDefinition().Object;
-            SetupEventPublisher(typeof(FeatureFinishedEvent), stepDef);
             var testExecutionEngine = CreateTestExecutionEngine();
 
             testExecutionEngine.OnFeatureEnd();
-
+            
             _testThreadExecutionEventPublisher.Verify(te =>
-                                                          te.PublishEvent(It.IsAny<FeatureFinishedEvent>()), Times.Once);
+                te.PublishEvent(It.Is<FeatureFinishedEvent>(e => 
+                                                                e.FeatureContext.Equals(featureContainer.Resolve<FeatureContext>()))),
+                                                      Times.Once);
         }
 
         [Fact]
@@ -307,58 +237,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                                                           te.PublishEvent(It.IsAny<TestRunFinishedEvent>()), Times.Once);
         }
 
-
-        private void VerifyStepHook(IExecutionEvent executionEvent, IStepDefinitionBinding stepDefinitionBinding = null, TimeSpan duration = default)
+        private void AssertHookEventsForHookType(HookType hookType)
         {
-            switch (executionEvent)
-            {
-                case StepStartedEvent stepStartedEvent:
-                    stepStartedEvent.ScenarioContext.Should().BeEquivalentTo(scenarioContext);
-                    stepStartedEvent.FeatureContext.Should().BeEquivalentTo(featureContainer.Resolve<FeatureContext>());
-                    stepStartedEvent.StepContext.Should().BeEquivalentTo(contextManagerStub.Object.StepContext);
-                    break;
-                case StepFinishedEvent finished:
-                    finished.ScenarioContext.Should().BeEquivalentTo(scenarioContext);
-                    finished.FeatureContext.Should().BeEquivalentTo(featureContainer.Resolve<FeatureContext>());
-                    finished.StepContext.Should().BeEquivalentTo(contextManagerStub.Object.StepContext);
-                    break;
-                case StepSkippedEvent stepSkippedEvent: break;
-                case ScenarioSkippedEvent stepSkippedEvent: break;
-                case StepBindingStartedEvent stepBindingStartedEvent:
-                    stepBindingStartedEvent.StepDefinitionBinding.Should().Be(stepDefinitionBinding);
-                    break;
-                case StepBindingFinishedEvent stepBindingFinishedEvent:
-                    stepBindingFinishedEvent.StepDefinitionBinding.Should().Be(stepDefinitionBinding);
-                    stepBindingFinishedEvent.Duration.Should().Be(duration);
-                    break;
-                case ScenarioStartedEvent scenarioStarted:
-                    scenarioStarted.ScenarioContext.Should().BeEquivalentTo(scenarioContext);
-                    scenarioStarted.FeatureContext.Should().BeEquivalentTo(featureContainer.Resolve<FeatureContext>());
-                    break;
-                case ScenarioFinishedEvent scenarioFinished:
-                    scenarioFinished.ScenarioContext.Should().BeEquivalentTo(scenarioContext);
-                    scenarioFinished.FeatureContext.Should().BeEquivalentTo(featureContainer.Resolve<FeatureContext>());
-                    break;
-                case FeatureStartedEvent featureStarted:
-                    featureStarted.FeatureContext.Should().BeEquivalentTo(featureContainer.Resolve<FeatureContext>());
-                    break;
-                case FeatureFinishedEvent featureFinished:
-                    featureFinished.FeatureContext.Should().BeEquivalentTo(featureContainer.Resolve<FeatureContext>());
-                    break;
-                default: break;
-            }
-        }
-
-        private void SetupEventPublisher(Type eventType, IStepDefinitionBinding stepDefinitionBinding = null, TimeSpan duration = default)
-        {
-            _testThreadExecutionEventPublisher.Setup(te => te.PublishEvent(It.IsAny<IExecutionEvent>()))
-                                              .Callback<IExecutionEvent>(e =>
-                                              {
-                                                  if (e.GetType() == eventType)
-                                                  {
-                                                      VerifyStepHook(e, stepDefinitionBinding, duration);
-                                                  }
-                                              });
+            _testThreadExecutionEventPublisher.Verify(
+                te =>
+                    te.PublishEvent(It.Is<HookStartedEvent>(e => e.HookType == hookType)),
+                Times.Once);
+            _testThreadExecutionEventPublisher.Verify(
+                te =>
+                    te.PublishEvent(It.Is<HookFinishedEvent>(e => e.HookType == hookType)),
+                Times.Once);
         }
     }
 }
