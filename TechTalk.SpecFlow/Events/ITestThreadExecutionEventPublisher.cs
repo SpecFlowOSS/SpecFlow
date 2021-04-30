@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Events
 
         void AddListener(IExecutionEventListener listener);
 
-        void AddHandler<TEvent>(Action<TEvent> handler);
+        void AddHandler<TEvent>(Action<TEvent> handler) where TEvent: IExecutionEvent;
     }
 
     public interface IExecutionEventListener
@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Events
             _listeners.Add(listener);
         }
 
-        public void AddHandler<TEvent>(Action<TEvent> handler)
+        public void AddHandler<TEvent>(Action<TEvent> handler) where TEvent: IExecutionEvent
         {
             if (!_handlersDictionary.TryGetValue(typeof(TEvent), out var handlers))
             {
