@@ -118,8 +118,3 @@ jobs:
       PathtoPublish: '$(Build.SourcesDirectory)/binlogs'
       artifactType: container
       ArtifactName: 'SpecFlow.CI-Binlogs-${{ parameters.name }}'
-
-  - task: WhiteSource Bolt@20
-    displayName: 'WhiteSource Bolt'
-    condition: eq('${{ parameters.name }}', 'Windows')
-    timeoutInMinutes: 5
