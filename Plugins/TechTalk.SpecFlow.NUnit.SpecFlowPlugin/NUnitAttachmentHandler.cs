@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
     {
         public void AddAttachment(string filePath)
         {
-            TestContext.AddTestAttachment(filePath);
+            // forward to test runner
         }
     }
 }

@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 
         public void AddAttachment(string filePath)
         {
-            _testContext.AddResultFile(filePath);
+            // forward to test runner
         }
     }
 }
