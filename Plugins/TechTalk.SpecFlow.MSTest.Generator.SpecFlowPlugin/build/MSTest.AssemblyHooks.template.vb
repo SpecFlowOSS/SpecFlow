@@ -16,7 +16,7 @@ Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     Public Shared Sub AssemblyInitialize(testContext As TestContext)
 
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
-        Dim containerBuilder = New MsTestContainerBuilder(testContext)
+        Dim containerBuilder As New MsTestContainerBuilder(testContext)
 
         TestRunnerManager.OnTestRunStart(currentAssembly, containerBuilder)
     End Sub
