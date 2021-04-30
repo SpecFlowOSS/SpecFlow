@@ -191,7 +191,10 @@ namespace TechTalk.SpecFlow.Events
         }
     }
 
-    public class OutputAddedEvent : ExecutionEvent
+    public interface IExecutionOutputEvent
+    {}
+    
+    public class OutputAddedEvent : ExecutionEvent, IExecutionOutputEvent
     {
         public string Text { get; }
 
@@ -201,7 +204,7 @@ namespace TechTalk.SpecFlow.Events
         }
     }
 
-    public class AttachmentAddedEvent : ExecutionEvent
+    public class AttachmentAddedEvent : ExecutionEvent, IExecutionOutputEvent
     {
         public string FilePath { get; }
 
