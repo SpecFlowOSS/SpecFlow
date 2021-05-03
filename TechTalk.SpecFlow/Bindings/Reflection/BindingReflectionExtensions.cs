@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
 {
@@ -104,6 +105,12 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             if (reflectionBindingMethod == null)
                 throw new SpecFlowException("The binding method cannot be used for reflection: " + bindingMethod);
             return reflectionBindingMethod.MethodInfo;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static T[] AsArray<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable as T[] ?? enumerable.ToArray();
         }
     }
 }

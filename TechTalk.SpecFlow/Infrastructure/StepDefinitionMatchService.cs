@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (useParamMatching)
             {
                 Debug.Assert(match != null); // useParamMatching -> useRegexMatching
-                var bindingParameters = stepDefinitionBinding.Method.Parameters.ToArray();
+                var bindingParameters = stepDefinitionBinding.Method.Parameters.AsArray();
 
                 // check if the regex + extra arguments match to the binding method parameters
                 if (arguments.Length != bindingParameters.Length)

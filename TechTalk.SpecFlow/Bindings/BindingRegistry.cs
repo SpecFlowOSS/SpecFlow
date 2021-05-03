@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -23,7 +22,7 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly List<IStepDefinitionBinding> stepDefinitions = new List<IStepDefinitionBinding>();
         private readonly List<IStepArgumentTransformationBinding> stepArgumentTransformations = new List<IStepArgumentTransformationBinding>();
-        private readonly Dictionary<HookType, List<IHookBinding>> hooks = new Dictionary<HookType, List<IHookBinding>>();
+        private readonly Dictionary<HookType, HashSet<IHookBinding>> hooks = new Dictionary<HookType, HashSet<IHookBinding>>();
 
         public bool Ready { get; set; }
 
@@ -35,26 +34,34 @@ namespace TechTalk.SpecFlow.Bindings
         public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText)
         {
             //TODO: later optimize to return step definitions that has a chance to match to stepText
-            return stepDefinitions.Where(sd => sd.StepDefinitionType == stepDefinitionType);
+            foreach (IStepDefinitionBinding sd in stepDefinitions)
+            {
+                if (sd.StepDefinitionType == stepDefinitionType)
+                {
+                    yield return sd;
+                }
+            }
         }
 
         public virtual IEnumerable<IHookBinding> GetHooks()
         {
-            return hooks.Values.SelectMany(hookList => hookList);
+            foreach (var hookSet in hooks.Values)
+            {
+                foreach (IHookBinding binding in hookSet)
+                {
+                    yield return binding;
+                }
+            }
         }
 
         public virtual IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
         {
-            return GetHookList(bindingEvent);
-        }
-
-        private IEnumerable<IHookBinding> GetHookList(HookType bindingEvent)
-        {
-            List<IHookBinding> list;
-            if (hooks.TryGetValue(bindingEvent, out list))
+            if (hooks.TryGetValue(bindingEvent, out var list))
+            {
                 return list;
+            }
 
-            return Enumerable.Empty<IHookBinding>();
+            return Array.Empty<IHookBinding>();
         }
 
         public virtual IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
@@ -67,24 +74,24 @@ namespace TechTalk.SpecFlow.Bindings
             stepDefinitions.Add(stepDefinitionBinding);
         }
 
-        private List<IHookBinding> GetHookListForRegister(HookType bindingEvent)
-        {
-            List<IHookBinding> list;
-            if (!hooks.TryGetValue(bindingEvent, out list))
-            {
-                list = new List<IHookBinding>();
-                hooks.Add(bindingEvent, list);
-            }
-
-            return list;
-        }
-
         public virtual void RegisterHookBinding(IHookBinding hookBinding)
         {
-            List<IHookBinding> hookRegistry = GetHookListForRegister(hookBinding.HookType);
-
-            if (!hookRegistry.Contains(hookBinding))
-                hookRegistry.Add(hookBinding);
+            if (hooks.TryGetValue(hookBinding.HookType, out var set))
+            {
+                set.Add(hookBinding);
+            }
+            else
+            {
+#if NETCOREAPP2_1_OR_GREATER
+                set = new HashSet<IHookBinding>(1)
+#else
+                set = new HashSet<IHookBinding>
+#endif
+                {
+                    hookBinding
+                };
+                hooks.Add(hookBinding.HookType, set);
+            }
         }
 
         public virtual void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)

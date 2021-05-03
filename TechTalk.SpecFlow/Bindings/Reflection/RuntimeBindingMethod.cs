@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
@@ -7,10 +7,12 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     public class RuntimeBindingMethod : IBindingMethod
     {
         public readonly MethodInfo MethodInfo;
+        private RuntimeBindingType runtimeBindingType;
+        private IBindingParameter[] _parameters;
 
         public IBindingType Type
         {
-            get { return new RuntimeBindingType(MethodInfo.DeclaringType); }
+            get { return runtimeBindingType ??= new RuntimeBindingType(MethodInfo.DeclaringType); }
         }
 
         public IBindingType ReturnType
@@ -25,12 +27,29 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public IEnumerable<IBindingParameter> Parameters
         {
-            get { return MethodInfo.GetParameters().Select(pi => (IBindingParameter)new RuntimeBindingParameter(pi)); }
+            get { return _parameters ??= GetParameters(); }
         }
 
         public RuntimeBindingMethod(MethodInfo methodInfo)
         {
-            this.MethodInfo = methodInfo;
+            MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
+        }
+
+        private IBindingParameter[] GetParameters()
+        {
+            var parameters = MethodInfo.GetParameters();
+            if (parameters.Length == 0)
+            {
+                return Array.Empty<IBindingParameter>();
+            }
+
+            var result = new IBindingParameter[parameters.Length];
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                result[i] = new RuntimeBindingParameter(parameters[i]);
+            }
+
+            return result;
         }
 
         public override string ToString()
@@ -53,7 +72,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public override int GetHashCode()
         {
-            return (MethodInfo != null ? MethodInfo.GetHashCode() : 0);
+            return MethodInfo.GetHashCode();
         }
     }
 }
