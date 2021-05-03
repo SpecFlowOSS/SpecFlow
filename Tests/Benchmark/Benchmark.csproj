@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net5.0;net461;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(IsBaseLineBuild) == 'true'">
+    
+    <PackageReference Include="SpecFlow" Version="*" />
+    <PackageReference Include="SpecFlow.NUnit" Version="*" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="*" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>
+      $(MSBuildThisFileDirectory)/../../GeneratedNuGetPackages/$(Configuration)/
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SpecFlow" Version="*-*" />
+    <PackageReference Include="SpecFlow.NUnit" Version="*-*" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="*-*" />
+  </ItemGroup>
+
+</Project>

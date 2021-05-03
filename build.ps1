@@ -18,6 +18,10 @@ if ($appInsightsInstrumentationKey) {
   }
 }
 
+$NuGetFolder = "./GeneratedNuGetPackages/$($Configuration)"
+
+New-Item -ItemType Directory -Path $NuGetFolder
+
 Write-Host "dotnet build ./TechTalk.SpecFlow.sln -property:Configuration=$Configuration -bl:msbuild.$Configuration.binlog -nodeReuse:false -v n --no-incremental $additionalOptions"
 
 & dotnet build ./TechTalk.SpecFlow.sln -property:Configuration=$Configuration -bl:msbuild.$Configuration.binlog -nodeReuse:false -v n $additionalOptions
