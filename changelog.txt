@@ -10,7 +10,7 @@ Fixes:
 + Step argument transformations should not be executed if a previous step had an error https://github.com/SpecFlowOSS/SpecFlow/issues/2382
 + Update "dotnet new" template in sync with the Visual Studio template
 + Fix NullReferenceException during assembly loading in PluginAssemblyResolver #2344 #2403
-
++ Obsoletion property added to IBindingMethod so it is only read/assigned once
 
 3.7
 
