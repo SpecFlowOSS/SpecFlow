@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
             var container = e.ObjectContainer;
 
             container.RegisterTypeAs<XUnitTraceListener, ITraceListener>();
-            container.RegisterTypeAs<XUnitAttachmentHandler, ISpecFlowAttachmentHandler>();
+            container.RegisterTypeAs<SpecFlowAttachmentHandler, ISpecFlowAttachmentHandler>();
         }
     }
 }

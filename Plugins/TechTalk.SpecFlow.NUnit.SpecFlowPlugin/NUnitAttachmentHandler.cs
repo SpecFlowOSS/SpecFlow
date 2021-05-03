@@ -1,13 +1,26 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
 {
-    public class NUnitAttachmentHandler : ISpecFlowAttachmentHandler
+    public class NUnitAttachmentHandler : SpecFlowAttachmentHandler
     {
-        public void AddAttachment(string filePath)
+        public NUnitAttachmentHandler(ITraceListener traceListener) : base(traceListener)
         {
-            // forward to test runner
+        }
+
+        public override void AddAttachment(string filePath)
+        {
+            try
+            {
+                TestContext.AddTestAttachment(filePath);
+            }
+            catch (Exception)
+            {
+                base.AddAttachment(filePath);
+            }
         }
     }
 }

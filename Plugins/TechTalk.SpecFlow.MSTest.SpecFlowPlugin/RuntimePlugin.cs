@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
         private void RuntimePluginEventsOnCustomizeTestThreadDependencies(object sender, CustomizeTestThreadDependenciesEventArgs e)
         {
             e.ObjectContainer.RegisterTypeAs<MSTestTraceListener, ITraceListener>();
-            e.ObjectContainer.RegisterTypeAs<MSTestAttachmentHandler, ISpecFlowAttachmentHandler>();
+            e.ObjectContainer.RegisterTypeAs<SpecFlowAttachmentHandler, ISpecFlowAttachmentHandler>();
         }
     }
 }
