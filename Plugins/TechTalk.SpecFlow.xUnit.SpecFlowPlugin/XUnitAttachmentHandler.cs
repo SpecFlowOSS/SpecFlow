@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 
         public void AddAttachment(string filePath)
         {
-            _traceListener.WriteTestOutput($"Attachment added: {filePath}");
+            // forward to test runner
         }
     }
 }
