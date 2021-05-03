@@ -6,6 +6,7 @@
 name: 0.2.$(Rev:r)
 
 trigger: none
+pr: none
 
 # The time zone for cron schedules is UTC
 # Cron expression is a space-delimited expression with five entries: mm HH DD MM DW
