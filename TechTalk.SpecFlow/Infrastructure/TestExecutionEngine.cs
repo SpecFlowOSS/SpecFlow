@@ -345,6 +345,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
         protected virtual void OnSkipStep()
         {
+            _contextManager.StepContext.Status = ScenarioExecutionStatus.Skipped;
             _testTracer.TraceStepSkipped();
             _testThreadExecutionEventPublisher.PublishEvent(new StepSkippedEvent());
 
