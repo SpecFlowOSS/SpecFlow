@@ -1,5 +1,9 @@
 3.8
 
+Features:
++ Extend ISpecFlowOutputHelper with attachment handling
++ Add events (IExecutionEvent) to track what happens and when
+
 Fixes:
 + Change CultureInfoScope to readonly struct
 + Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
