@@ -27,6 +27,7 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
         {
             e.ObjectContainer.RegisterTypeAs<MSTestTraceListener, ITraceListener>();
             e.ObjectContainer.RegisterTypeAs<MSTestAttachmentHandler, ISpecFlowAttachmentHandler>();
+            e.ObjectContainer.RegisterTypeAs<MSTestTestContextProvider, IMSTestTestContextProvider>();
         }
     }
 }

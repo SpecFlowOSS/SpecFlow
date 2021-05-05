@@ -1,4 +1,5 @@
 ﻿using System;
+using BoDi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -7,18 +8,18 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 {
     public class MSTestAttachmentHandler : SpecFlowAttachmentHandler
     {
-        private readonly TestContext _testContext;
+        private readonly IMSTestTestContextProvider _testContextProvider;
 
-        public MSTestAttachmentHandler(ITraceListener traceListener, TestContext testContext) : base(traceListener)
+        public MSTestAttachmentHandler(ITraceListener traceListener, IMSTestTestContextProvider testContextProvider) : base(traceListener)
         {
-            _testContext = testContext;
+            _testContextProvider = testContextProvider;
         }
 
         public override void AddAttachment(string filePath)
         {
             try
             {
-                _testContext.AddResultFile(filePath);
+                _testContextProvider.GetTestContext().AddResultFile(filePath);
             }
             catch (Exception)
             {
