@@ -14,6 +14,7 @@ Fixes:
 + Step argument transformations should not be executed if a previous step had an error https://github.com/SpecFlowOSS/SpecFlow/issues/2382
 + Update "dotnet new" template in sync with the Visual Studio template
 + Fix NullReferenceException during assembly loading in PluginAssemblyResolver #2344 #2403
++ Update MsTest.TestFramework to 2.1.2 as minimum MsTest version
 
 
 3.7
