@@ -1,4 +1,4 @@
-After 3.7.38
+3.8
 
 Fixes:
 + Change CultureInfoScope to readonly struct
