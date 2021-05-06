@@ -10,7 +10,18 @@ using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
 {
-    public class ScenarioContext : SpecFlowContext
+    public interface IScenarioContext : ISpecFlowContext
+    {
+        ScenarioInfo ScenarioInfo { get; }
+
+        ScenarioBlock CurrentScenarioBlock { get; }
+
+        IObjectContainer ScenarioContainer { get; }
+
+        ScenarioExecutionStatus ScenarioExecutionStatus { get; }
+    }
+
+    public class ScenarioContext : SpecFlowContext, IScenarioContext
     {
         #region Singleton
         private static bool isCurrentDisabled = false;

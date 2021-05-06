@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow
 {
+    public interface ISpecFlowContext
+    {
+        Exception TestError { get; }
+    }
+
     public abstract class SpecFlowContext : Dictionary<string, object>, IDisposable
     {
         public Exception TestError { get; internal set; }
