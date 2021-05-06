@@ -7,7 +7,16 @@ using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow
 {
-    public class FeatureContext : SpecFlowContext
+    public interface IFeatureContext : ISpecFlowContext
+    {
+        FeatureInfo FeatureInfo { get; }
+
+        CultureInfo BindingCulture { get; }
+
+        IObjectContainer FeatureContainer { get; }
+    }
+
+    public class FeatureContext : SpecFlowContext, IFeatureContext
     {
         internal FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo, SpecFlowConfiguration specFlowConfiguration)
         {
