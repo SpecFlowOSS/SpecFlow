@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void AddAttachment(string filePath)
         {
-            _traceListener.WriteTestOutput($"Attachment '{filePath}' added (not forwarded to the test runner).");
+            _traceListener.WriteToolOutput($"Attachment '{filePath}' added (not forwarded to the test runner).");
         }
     }
 }
