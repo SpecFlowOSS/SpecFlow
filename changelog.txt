@@ -1,6 +1,7 @@
 3.8
 
 Features:
++ Route output API messages to tool output
 + Extend ISpecFlowOutputHelper with attachment handling
 + Add events (IExecutionEvent) to track what happens and when
 
