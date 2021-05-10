@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public void WriteLine(string message)
         {
             _testThreadExecutionEventPublisher.PublishEvent(new OutputAddedEvent(message));
-            _traceListener.WriteTestOutput(message);
+            _traceListener.WriteToolOutput(message);
         }
 
         public void WriteLine(string format, params object[] args)
