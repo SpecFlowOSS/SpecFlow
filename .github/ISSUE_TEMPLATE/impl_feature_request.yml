@@ -1,7 +1,6 @@
 ---
 name: Implementing a Feature request
 description: Discuss how to implement a feature request
-labels: 
 body:
 - type: input
   attributes:
