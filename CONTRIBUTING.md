@@ -49,7 +49,7 @@ to make a strong case to convince the community of the merits of this feature. P
 
 #### New Features
 
-If you decide to implement one of the existing feature requests or have of your own, please create an issue before to discuss what and how you are implementing the new feature. It can happen that we won't accept your change. So it is the best for all of ous, to find this out at early as possible, that we won't waste time on both sides.
+If you decide to implement one of the existing feature requests or have one of your own, please create an issue before to discuss what and how you are implementing the new feature. There is a possibility that we might not approve your changes, therefore, it is in the interest of both parties to find this out as early as possible to avoid wasting time.
 
 ## How to contribute
 
