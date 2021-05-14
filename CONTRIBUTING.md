@@ -47,6 +47,10 @@ We label issues that need help, but may not be of a critical nature or require i
 Feature requests are welcome. But please take a moment to find out whether your idea fits with the scope and aims of the project. It's up to *you*
 to make a strong case to convince the community of the merits of this feature. Please visit our [feature request page](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests) to check out the existing requests and vote on the ones already proposed by the community. Since much of the work is done by volunteers, someone who believes in the idea will have to write the code.  Please provide as much detail and context as possible. 
 
+#### New Features
+
+If you decide to implement one of the existing feature requests or have one of your own, please create an issue before to discuss what and how you are implementing the new feature. There is a possibility that we might not approve your changes, therefore, it is in the interest of both parties to find this out as early as possible to avoid wasting time.
+
 ## How to contribute
 
 As mentioned before, we do all of our development [on GitHub](https://github.com/SpecFlowOSS/SpecFlow). If you are not familiar with GitHub or pull requests please check out [this guide](https://guides.github.com/activities/hello-world/) to get started. All required information about developing SpecFlow can be found in [our documentation](https://docs.specflow.org/projects/specflow/en/latest/Contribute/Prerequisite.html).
