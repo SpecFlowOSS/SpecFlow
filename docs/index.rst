@@ -114,6 +114,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Execution/Test-Results.md
    Execution/Parallel-Execution.md
    Execution/Debugging.md
+   outputapi/outputapi.md
 
 .. toctree::
    :maxdepth: 1
@@ -172,13 +173,13 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Extend/Available-Plugins.md
    Extend/Available-Containers-&-Registrations.md
    Extend/Decorators.md
+   
 
 .. toctree::
    :maxdepth: 1
    :caption: Tools
    :hidden:
-
-   Tools/Tools.md
+   
    Tools/Generate-Tests-From-MsBuild.md   
    Tools/Cucumber-Messages.md
    Tools/Reporting.md
@@ -204,6 +205,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    legacy/Plugins-(Legacy).md
    legacy/CodedUI.md
    Guides/UpgradeSpecFlow2To3.md
+   Tools/Tools.md
 
 .. toctree::
    :maxdepth: 1
