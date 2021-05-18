@@ -6,23 +6,21 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
+    #nullable enable
     public class ContextManager : IContextManager, IDisposable
     {
         private sealed class InternalContextManager<TContext>: IDisposable where TContext : SpecFlowContext
         {
             private readonly ITestTracer testTracer;
-            private TContext instance;
-            private IObjectContainer objectContainer;
+            private TContext? instance;
+            private IObjectContainer? objectContainer;
 
             public InternalContextManager(ITestTracer testTracer)
             {
                 this.testTracer = testTracer;
             }
 
-            public TContext Instance
-            {
-                get { return instance; }
-            }
+            public TContext? Instance => instance;
 
             public void Init(TContext newInstance, IObjectContainer newObjectContainer)
             {
@@ -37,7 +35,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             public void Cleanup()
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     testTracer.TraceWarning(string.Format("The previous {0} was already disposed.", typeof(TContext).Name));
                     return;
@@ -62,9 +60,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         /// <summary>
-        /// Implementation of internal context manager which keeps a stack of contexts, rather than a single one. 
-        /// This allows the contexts to be used when a new context is created before the previous context has been completed 
-        /// which is what happens when a step calls other steps. This means that the step contexts will be reported 
+        /// Implementation of internal context manager which keeps a stack of contexts, rather than a single one.
+        /// This allows the contexts to be used when a new context is created before the previous context has been completed
+        /// which is what happens when a step calls other steps. This means that the step contexts will be reported
         /// correctly even when there is a nesting of steps calling steps calling steps.
         /// </summary>
         /// <typeparam name="TContext">A type derived from SpecFlowContext, which needs to be managed  in a way</typeparam>
@@ -78,10 +76,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 this.testTracer = testTracer;
             }
 
-            public TContext Instance
-            {
-                get { return IsEmpty ? null : instances.Peek(); }
-            }
+            public TContext? Instance => IsEmpty ? null : instances.Peek();
 
             public bool IsEmpty => instances.Count == 0;
 
@@ -122,7 +117,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IContainerBuilder containerBuilder;
 
         /// <summary>
-        /// Holds the StepDefinitionType of the last step that was executed from the actual featrure file, excluding the types of the steps that were executed during the calling of a step
+        /// Holds the StepDefinitionType of the last step that was executed from the actual feature file, excluding the types of the steps that were executed during the calling of a step
         /// </summary>
         public StepDefinitionType? CurrentTopLevelStepDefinitionType { get; private set; }
 
@@ -134,34 +129,18 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.testThreadContainer = testThreadContainer;
             this.containerBuilder = containerBuilder;
 
-            InitializeTestThreadContext();
-        }
-
-        public FeatureContext FeatureContext
-        {
-            get { return featureContextManager.Instance; }
-        }
-
-        public ScenarioContext ScenarioContext
-        {
-            get { return scenarioContextManager.Instance; }
-        }
-
-        public ScenarioStepContext StepContext 
-        {
-            get{return stepContextManager.Instance;} 
-        }
-
-        public TestThreadContext TestThreadContext { get; private set; }
-
-        private void InitializeTestThreadContext()
-        {
             // Since both TestThreadContext and ContextManager are in the same container (test thread container)
             // their lifetime is the same, so we do not need the swop infrastructure like for the other contexts.
-            // We just neet to initliaze it during contstructuion time.
-            var testThreadContext = testThreadContainer.Resolve<TestThreadContext>();
-            this.TestThreadContext = testThreadContext;
+            TestThreadContext = testThreadContainer.Resolve<TestThreadContext>();
         }
+
+        public FeatureContext? FeatureContext => featureContextManager.Instance;
+
+        public ScenarioContext? ScenarioContext => scenarioContextManager.Instance;
+
+        public ScenarioStepContext? StepContext => stepContextManager.Instance;
+
+        public TestThreadContext TestThreadContext { get; }
 
         public void InitializeFeatureContext(FeatureInfo featureInfo)
         {
@@ -180,7 +159,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var scenarioContainer = containerBuilder.CreateScenarioContainer(FeatureContext.FeatureContainer, scenarioInfo);
+            var container = FeatureContext?.FeatureContainer;
+            if (container is null)
+            {
+                throw new SpecFlowException("Feature container is unexpectedly null when initializing scenario context.");
+            }
+            var scenarioContainer = containerBuilder.CreateScenarioContainer(container, scenarioInfo);
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContextManager.Init(newContext, scenarioContainer);
 #pragma warning disable 618
@@ -199,7 +183,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void CleanupScenarioContext()
         {
-            scenarioContextManager.Cleanup();            
+            scenarioContextManager.Cleanup();
         }
 
         public void InitializeStepContext(StepInfo stepInfo)
@@ -220,9 +204,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void Dispose()
         {
-            featureContextManager?.Dispose();
-            scenarioContextManager?.Dispose();
-            stepContextManager?.Dispose();
+            featureContextManager.Dispose();
+            scenarioContextManager.Dispose();
+            stepContextManager.Dispose();
         }
     }
 }
