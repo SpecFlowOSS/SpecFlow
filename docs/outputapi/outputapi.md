@@ -2,29 +2,33 @@
 
 The SpecFlow Output API allows you to display texts and attachments in your IDE's test explorer output window and also in SpecFlow+LivingDoc.
 
-To use the SpecFlow output API interface you must inject the `ISpecFlowOutputHelper` interface via [Context Injection](https://docs.specflow.org/projects/specflow/en/latest/Bindings/Context-Injection.html):
+To use the SpecFlow output API interface you must inject the `ISpecFlowOutputHelper` interface via [Context Injection](../Bindings/Context-Injection.md):
 
 ```csharp
-private readonly ISpecFlowOutputHelper _specFlowOutputHelper;
+    private readonly ISpecFlowOutputHelper _specFlowOutputHelper;
 
-public CalculatorStepDefinitions(ISpecFlowOutputHelper outputHelper)
- {
- _outputHelper = outputHelper;
- }
+    public CalculatorStepDefinitions(ISpecFlowOutputHelper outputHelper)
+    {
+        _outputHelper = outputHelper;
+    }
 ```
 
 There are two methods available:
 
-**1-** This method simply adds text:
+### WriteLine(string text)
+
+This method adds text:
 
 ```csharp
-_specFlowOutputHelper.WriteLine("TEXT");
+    _specFlowOutputHelper.WriteLine("TEXT");
 ```
 
-**2-** This method adds an attachment and requires the file path:
+### AddAttachment(string filePath)
+
+This method adds an attachment and requires the file path:
 
 ```csharp
-_specFlowOutputHelper.AddAttachment(file path);
+    _specFlowOutputHelper.AddAttachment("filePath");
 ```
 
 *> Note: The attachment file can be stored anywhere. But it is important to keep mind that if a local file is added, it will only work on your machine and not accessible when shared with others.*
@@ -33,13 +37,13 @@ _specFlowOutputHelper.AddAttachment(file path);
 
 ## Example
 
-This example is based on the [Selenium with Page Object Model Pattern](https://docs.specflow.org/projects/specflow/en/latest/ui-automation/Selenium-with-Page-Object-Pattern.html) project which tests a simple calculator web application. You can download the repo for this example [here](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/OutputAPI).
+This example is based on the [Selenium with Page Object Model Pattern](../ui-automation/Selenium-with-Page-Object-Pattern.md) project which tests a simple calculator web application. You can download the repo for this example [here](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/OutputAPI).
 
 The `_specFlowOutputHelper.WriteLine` is used to indicate when the browser launches and closes:
 
 ![Writeline example](../_static/images/writeline.png)
 
-Since this project tests a web application using a browser, the `_specFlowOutputHelper.AddAttachment` method has been used in the logging [Hook](https://docs.specflow.org/projects/specflow/en/latest/Bindings/Hooks.html) to display the saved screen shots taken during testing:
+Since this project tests a web application using a browser, the `_specFlowOutputHelper.AddAttachment` method has been used in the logging [Hooks](../Bindings/Hooks.md) to display the saved screen shots taken during testing:
 
 ![Writeattachment example](../_static/images/writeattachment.png)
 
@@ -64,3 +68,10 @@ In SpecFlow+LivingDoc, no additional setup is required, simply [generate LivingD
 ![Output API in LivingDoc](../_static/images/livingdoc.png)
 
 *> Note: If the test output toggle is missing, it may be that you are on an older version of SpecFlow+LivingDoc, click [here](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/LivingDocGenerator/Installing-the-command-line-tool.html) to update to the latest version.*
+
+*> Note: The Output API in SpecFlow+LivingDoc supports the following four [Hooks](../Bindings/Hooks.md) :*
+
+- *BeforeScenario,*
+- *AfterScenario,*
+- *BeforeStep,*
+- *AfterStep*
