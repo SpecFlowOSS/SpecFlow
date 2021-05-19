@@ -16,7 +16,7 @@ Fixes:
 + Update "dotnet new" template in sync with the Visual Studio template
 + Fix NullReferenceException during assembly loading in PluginAssemblyResolver #2344 #2403
 + Update MsTest.TestFramework to 2.1.2 as minimum MsTest version
-
++ Improve performance of ContextManager and enable nullable
 
 3.7
 
