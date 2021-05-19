@@ -19,7 +19,7 @@ import sys, os
 # -- Project information -----------------------------------------------------
 
 project = ''
-copyright = '2020, The SpecFlow Team'
+copyright = '2021, The SpecFlow Team'
 author = 'The SpecFlow Team'
 
 

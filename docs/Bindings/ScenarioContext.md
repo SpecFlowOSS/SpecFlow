@@ -6,7 +6,7 @@ You may have at least seen the ScenarioContext from the code that SpecFlow gener
 
 ## Accessing the ScenarioContext
 
-### in Bindings
+### In Bindings
 
 To access the `ScenarioContext` you have to get it via [context injection](Context-Injection.md).
 
@@ -27,7 +27,7 @@ public class Binding
 
 Now you can access the ScenarioContext in all your Bindings with the `_scenarioContext` field.
 
-### in Hooks
+### In Hooks
 
 #### Before/AfterTestRun
 
