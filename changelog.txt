@@ -1,6 +1,3 @@
-Fixes:
-+ Auto-update livingdoc major-minor in "dotnet new" template
-
 3.8
 
 Features:
@@ -19,6 +16,7 @@ Fixes:
 + Update "dotnet new" template in sync with the Visual Studio template
 + Fix NullReferenceException during assembly loading in PluginAssemblyResolver #2344 #2403
 + Update MsTest.TestFramework to 2.1.2 as minimum MsTest version
++ Auto-update livingdoc major-minor in "dotnet new" template
 
 
 3.7
