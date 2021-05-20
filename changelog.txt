@@ -1,3 +1,6 @@
+Fixes:
++ Auto-update livingdoc major-minor in "dotnet new" template
+
 3.8
 
 Features:
