@@ -1,18 +1,54 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="..\..\..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-	  <SkipValidatePackageReferences>false</SkipValidatePackageReferences>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
 
-    <PackageReference Include="SpecFlow.NUnit" Version="*-*" />
     <PackageReference Include="nunit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-
-    <PackageReference Include="SpecFlow.ExternalData" Version="*-*" />
-    
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Plugins\TechTalk.SpecFlow.NUnit.SpecFlowPlugin\TechTalk.SpecFlow.NUnit.SpecFlowPlugin.csproj" />
+    <ProjectReference Include="..\..\SpecFlow.ExternalData.SpecFlowPlugin\SpecFlow.ExternalData.SpecFlowPlugin.csproj" />
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <PropertyGroup>
+    <_SpecFlow_Needed_MSBuildGenerator Condition=" '$(MSBuildRuntimeType)' == 'Core'">$(SpecFlow_Core_Generator_TFM)</_SpecFlow_Needed_MSBuildGenerator>
+    <_SpecFlow_Needed_MSBuildGenerator Condition=" '$(MSBuildRuntimeType)' != 'Core'">$(SpecFlow_FullFramework_Generator_TFM)</_SpecFlow_Needed_MSBuildGenerator>
+  </PropertyGroup>
+
+  <Target Name="PreBuild">
+    <MSBuild Projects="..\..\..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
+    <MSBuild Projects="..\..\SpecFlow.ExternalData.SpecFlowPlugin\SpecFlow.ExternalData.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
+  </Target>
+
+  <ItemGroup>
+    <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\..\SpecFlow.ExternalData.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\SpecFlow.ExternalData.SpecFlowPlugin.dll" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+  <!-- has to be before the PropertyGroup change-->
+  <PropertyGroup>
+    <BuildDependsOn>
+      PreBuild;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+    <RebuildDependsOn>
+      PreBuild;
+      $(RebuildDependsOn)
+    </RebuildDependsOn>
+  </PropertyGroup>
 </Project>
