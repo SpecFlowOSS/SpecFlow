@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
+    <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
+    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
+    <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

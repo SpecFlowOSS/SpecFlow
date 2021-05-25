@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
+using CsvHelper.Configuration;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
@@ -32,11 +33,14 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             return path;//TODO
         }
 
-        private DataList LoadCsvDataList(string fileContent, CultureInfo culture)
+        internal DataList LoadCsvDataList(string fileContent, CultureInfo culture)
         {
             var dataList = new DataList();
             using var reader = new StringReader(fileContent);
-            using var csv = new CsvReader(reader, culture);
+            using var csv = new CsvReader(reader, new CsvConfiguration(culture)
+            {
+                TrimOptions = TrimOptions.Trim
+            });
             
             csv.Read();
             csv.ReadHeader();
