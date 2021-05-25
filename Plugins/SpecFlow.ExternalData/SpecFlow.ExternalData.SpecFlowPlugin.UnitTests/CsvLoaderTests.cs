@@ -50,7 +50,13 @@ Juice", result.Items[2].AsDataRecord.Fields["product"].AsString);
         [Fact]
         public void Can_handle_relative_path()
         {
-            throw new NotImplementedException();
+            var sut = CreateSut();
+            var result = sut.LoadDataSource(
+                Path.GetFileName(_productsSampleFilePath), 
+                Path.Combine(Path.GetDirectoryName(_productsSampleFilePath), "Sample.feature"), 
+                null);
+
+            Assert.True(result.IsDataList);
         }
 
         [Fact]

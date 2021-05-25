@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 
         private string ResolveFilePath(string path, string sourceFilePath)
         {
-            return path;//TODO
+            if (!string.IsNullOrEmpty(sourceFilePath))
+            {
+                string sourceDirectoryName = Path.GetDirectoryName(sourceFilePath);
+                if (sourceDirectoryName != null)
+                    return Path.GetFullPath(Path.Combine(sourceDirectoryName, path));
+            }
+            return path;
         }
 
         internal DataList LoadCsvDataList(string fileContent, CultureInfo culture)

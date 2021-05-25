@@ -12,6 +12,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
     {
         private readonly ISpecificationProvider _specificationProvider;
 
+        private SpecFlowDocument _sourceDocument;
         private SpecFlowDocument _transformedDocument;
         private SpecFlowFeature _transformedFeature;
         private bool _hasTransformedScenario = false;
@@ -31,6 +32,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
 
         private void Reset()
         {
+            _sourceDocument = null;
             _transformedDocument = null;
             _transformedFeature = null;
             _featureChildren.Clear();
@@ -40,7 +42,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
         protected override void OnScenarioOutlineVisited(ScenarioOutline scenarioOutline)
         {
             //TODO: filter tags
-            var specification = _specificationProvider.GetSpecification(scenarioOutline.Tags); //TODO: add parent tags
+            var specification = _specificationProvider.GetSpecification(scenarioOutline.Tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
             if (specification == null)
             {
                 Debug.WriteLine($"No DataSource specification for '{scenarioOutline.Keyword}: {scenarioOutline.Name}'");
@@ -96,6 +98,11 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
                     feature.Name,
                     feature.Description,
                     _featureChildren.ToArray());
+        }
+
+        protected override void OnDocumentVisiting(SpecFlowDocument document)
+        {
+            _sourceDocument = document;
         }
 
         protected override void OnDocumentVisited(SpecFlowDocument document)

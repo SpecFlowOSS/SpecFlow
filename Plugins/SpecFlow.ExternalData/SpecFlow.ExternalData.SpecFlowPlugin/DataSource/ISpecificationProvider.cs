@@ -6,6 +6,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
 {
     public interface ISpecificationProvider
     {
-        ExternalDataSpecification GetSpecification(IEnumerable<Tag> tags);
+        ExternalDataSpecification GetSpecification(IEnumerable<Tag> tags, string sourceFilePath);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Gherkin.Ast;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
@@ -10,7 +11,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
     {
         private const string DATASOURCE_TAG_PREFIX = "@DataSource:";
 
-        public ExternalDataSpecification GetSpecification(IEnumerable<Tag> tags)
+        public ExternalDataSpecification GetSpecification(IEnumerable<Tag> tags, string sourceFilePath)
         {
             var dataSourceTag = tags.FirstOrDefault(t => t.Name.StartsWith(DATASOURCE_TAG_PREFIX));
             if (dataSourceTag == null) 
@@ -20,7 +21,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
             //TODO: decide on loader
             var loader = new CsvLoader();
             //TODO: get feature info
-            var dataSource = loader.LoadDataSource(dataSourcePath, null, null);
+            var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath, null);
             //TODO: verify?
             return new ExternalDataSpecification(dataSource);
         }
