@@ -21,7 +21,7 @@ Examples:
 	| Chocolate |
 	| Apple     |
 
-@DataSource:products.csv
+@DataSource:W:\SpecFlow\SpecFlow\Plugins\SpecFlow.ExternalData\sample\ExternalDataSample\Features\products.csv
 Scenario: Valid product prices are calculated
 	Given the customer has put 1 pcs of <product> to the basket
 	When the basket price is calculated

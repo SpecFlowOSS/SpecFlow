@@ -1,4 +1,5 @@
 ﻿using SpecFlow.ExternalData.SpecFlowPlugin;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Infrastructure;
@@ -18,6 +19,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
                 args.ObjectContainer.RegisterTypeAs<ExternalDataTestGenerator, ITestGenerator>();
                 args.ObjectContainer.RegisterTypeAs<ExternalDataFeaturePatcher, IExternalDataFeaturePatcher>();
                 args.ObjectContainer.RegisterTypeAs<TestDataProvider, ITestDataProvider>();
+                
+                
+                args.ObjectContainer.RegisterTypeAs<SpecificationProvider, ISpecificationProvider>();
             };
         }
     }
