@@ -13,3 +13,5 @@ It is required to add the `[Binding]` attribute to the classes where you define 
 ## Hooks
 
 [Hooks](Hooks.md) can be used to perform additional automation logic on specific events, e.g. before executing a scenario.
+
+*> **Note:** Bindings (step definitions, hooks) are global for the entire SpecFlow project.*
