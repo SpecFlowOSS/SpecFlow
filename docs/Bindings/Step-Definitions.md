@@ -10,6 +10,8 @@ public class StepDefinitions
 }
 ```
 
+*> **Note:** Bindings (step definitions, hooks) are global for the entire SpecFlow project.*
+
 For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters.  
 
 The following example shows a simple step definition that matches to the step `When I perform a simple search on 'Domain'`:
