@@ -52,7 +52,7 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_theme_options = {
     'logo_only': True,
-    'style_nav_header_background': '#e9e7ee',
+    'style_nav_header_background': '#F4F7FD',
     'analytics_id':'UA-11088967-5'
 }
 html_logo = '_static/logo.png'
