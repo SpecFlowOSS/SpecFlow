@@ -33,7 +33,7 @@ This method adds an attachment and requires the file path:
 
 *> Note: The attachment file can be stored anywhere. But it is important to keep mind that if a local file is added, it will only work on your machine and not accessible when shared with others.*
 
-*> Note: Handling of attachments depends on your runner. MStest, NUnit, and SpecFlow+ Runner currently support this feature but xUnit does **not**.*
+*> Note: Handling of attachments depends on your runner. MStest and NUnit currently support this feature but xUnit and SpecFlow+ Runner do **not**.*
 
 ## Example
 
