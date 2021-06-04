@@ -229,7 +229,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void MsTestV2GeneratorProvider_WithFeatureWithMatchingTag_ShouldNotAddDoNotParallelizeAttribute()
+        public void MsTestGeneratorProvider_WithFeatureWithMatchingTag_ShouldNotAddDoNotParallelizeAttribute()
         {
             // ARRANGE
             var document = ParseDocumentFromString(@"
@@ -251,7 +251,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
-        public void MsTestV2GeneratorProvider_WithFeatureWithNoMatchingTag_ShouldNotAddDoNotParallelizeAttribute()
+        public void MsTestGeneratorProvider_WithFeatureWithNoMatchingTag_ShouldNotAddDoNotParallelizeAttribute()
         {
             // ARRANGE
             var document = ParseDocumentFromString(@"
