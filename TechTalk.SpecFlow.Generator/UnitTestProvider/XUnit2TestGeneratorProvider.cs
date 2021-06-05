@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         protected internal const string CATEGORY_PROPERTY_NAME = "Category";
         protected internal const string IGNORE_TEST_CLASS = "IgnoreTestClass";
-        protected internal const string NONPARALLELIZABLE_COLLECTION_NAME = "NonParallelizable";
+        protected internal const string NONPARALLELIZABLE_COLLECTION_NAME = "SpecFlowNonParallelizableFeatures";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
         {

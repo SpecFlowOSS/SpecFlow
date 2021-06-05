@@ -90,7 +90,7 @@ To exclude specific features from running in parallel with any other features, s
 Note, in addition to the above configuration, xUnit requires additional configuration to ensure that non parallelizable features do not run in parallel with any other feature. This class must be defined within the test assembly:
 
 ``` C#
-[CollectionDefinition("NonParallelizable", DisableParallelization = true)]
+[CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
 public class NonParallelizableCollectionDefinition
 {
 }
