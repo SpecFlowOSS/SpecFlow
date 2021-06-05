@@ -57,5 +57,13 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             get { return (TagCollection)this["skipParallelizableMarkerForTags"]; }
             set { this["skipParallelizableMarkerForTags"] = value; }
         }
+
+        [ConfigurationProperty("addNonParallelizableMarkerForTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
+        [ConfigurationCollection(typeof(TagCollection), AddItemName = "tag")]
+        public TagCollection AddNonParallelizableMarkerForTags
+        {
+            get { return (TagCollection)this["addNonParallelizableMarkerForTags"]; }
+            set { this["addNonParallelizableMarkerForTags"] = value; }
+        }
     }
 }

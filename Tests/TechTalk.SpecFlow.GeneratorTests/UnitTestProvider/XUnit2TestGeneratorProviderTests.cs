@@ -414,7 +414,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 Given there is something");
 
             var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target" });
-            var converter = provider.CreateFeatureGenerator(new string[] { "nonparallelizable" });
+            var converter = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
@@ -437,7 +437,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 Given there is something");
 
             var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target" });
-            var converter = provider.CreateFeatureGenerator(new string[] { "nonparallelizable" });
+            var converter = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");

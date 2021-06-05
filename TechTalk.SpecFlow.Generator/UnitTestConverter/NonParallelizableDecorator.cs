@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         public NonParallelizableDecorator(ITagFilterMatcher tagFilterMatcher, SpecFlowConfiguration generatorConfiguration)
         {
             this.tagFilterMatcher = tagFilterMatcher;
-            nonParallelizableTags = generatorConfiguration.SkipParallelizableMarkerForTags;
+            nonParallelizableTags = generatorConfiguration.AddNonParallelizableMarkerForTags;
         }
 
         public int Priority
