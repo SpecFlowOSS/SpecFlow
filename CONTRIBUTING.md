@@ -39,17 +39,34 @@ Guidelines for bug reports:
 3. **Isolate and report the problem** &mdash; ideally create a reduced test
    case. Fill out the provided template.
 
-
 We label issues that need help, but may not be of a critical nature or require intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/SpecFlowOSS/SpecFlow/labels/up-for-grabs). This is a list of easier tasks that anybody who wants to get into SpecFlow development can try.
 
 #### Feature requests
 
 Feature requests are welcome. But please take a moment to find out whether your idea fits with the scope and aims of the project. It's up to *you*
-to make a strong case to convince the community of the merits of this feature. Please visit our [feature request page](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests) to check out the existing requests and vote on the ones already proposed by the community. Since much of the work is done by volunteers, someone who believes in the idea will have to write the code.  Please provide as much detail and context as possible. 
+to make a strong case to convince the community of the merits of this feature. Please visit our [feature request page](https://support.specflow.org/hc/en-us/community/topics/360000519178-Feature-Requests) to check out the existing requests and vote on the ones already proposed by the community. Since much of the work is done by volunteers, someone who believes in the idea will have to write the code.  Please provide as much detail and context as possible.
 
 #### New Features
 
 If you decide to implement one of the existing feature requests or have one of your own, please create an issue before to discuss what and how you are implementing the new feature. There is a possibility that we might not approve your changes, therefore, it is in the interest of both parties to find this out as early as possible to avoid wasting time.
+
+#### Naming Conventions and Reserved ID - NuGet Packages
+
+Microsoft has introduced [package identity verification](https://github.com/NuGet/Home/wiki/NuGet-Package-Identity-Verification#nuget-package-id-prefix-reservation) for packages on nuget.org. This will allow developers to reserve particular ID prefixes used for identification. This in turn should help users identify which packages have been submitted by the owner of the ID prefix.
+
+We have reserved the **“SpecFlow”** NuGet package prefix, which is used to identify official SpecFlow and SpecFlow+ packages. This will mean that new packages with the SpecFlow prefix can only be submitted by SpecFlow, and will indicate that these packages are official.
+
+We have also requested the **"SpecFlow.Contrib"** prefix be made publicly accessible for developers who want to release their own packages for SpecFlow. If you want to submit your own package for SpecFlow whose name begins with “SpecFlow”, you can use this prefix. This will indicate to users that the package is intended for use with SpecFlow, but is a third-party contribution.
+
+These changes will not affect existing packages using the SpecFlow prefix that have already been submitted to nuget.org. If you are the owner of such a package, you should be able to update the package as usual. You may however want to change the name of your package to reflect the new convention.
+
+In summary, here are the prefixes we have:
+
+SpecFlow.*
+
+SpecRun.*
+
+You can find out more about package IDs on [nuget.org blog](https://blog.nuget.org/20170417/Package-identity-and-trust.html).
 
 ## How to contribute
 
