@@ -1,5 +1,8 @@
 3.8
 
+Changes:
++ Update to Gherkin 19.0.3
+
 Features:
 + Route output API messages to tool output
 + Extend ISpecFlowOutputHelper with attachment handling

@@ -35,7 +35,7 @@
     <PackageReference Include="MSBuild.AdditionalTasks" Version="0.1.36" />
     <PackageReference Include="BoDi" Version="1.5.0" />
     <PackageReference Include="Utf8Json" Version="1.3.7" />
-    <PackageReference Include="Gherkin" Version="6.0.0" />
+    <PackageReference Include="Gherkin" Version="19.0.3" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
