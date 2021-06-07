@@ -22,25 +22,37 @@ There are multiple ways to achieve this:
 
 ![Rider_nav4](../_static/images/rider_nav4.gif)
 
-## Creating steps
+## Creating Steps
 
 The plugin allows you to quickly create a step and also highlights when a step is missing. To do this, click on an unbound step, click on view action list, and then click on *Create step*:
 
 ![Rider_createstep](../_static/images/rider_createstep.gif)
 
-## Test results
+### Create a New Binding Class
+
+You also have the option to create a new binding class straight from the *Create step* menu. To do this, click on an unbound step, click on view action list, and then click on *Create step* and then navigate to *Create new binding class*:
+
+![Rider_create binding](../_static/images/rider_newbinding.gif)
+
+## Test Results
 
 The SpecFlow plugin also displays the test results for a specific Gherkin step. You can see whether a test has passed or failed and also execute it by pressing the **⏵** button:
 
 ![Rider_results](../_static/images/rider_result.png)
 
-## Auto renaming
+### Failed Tests Results
+
+If a test fails, the plugin shows you the exact step at which the step failed by highlighting it and also conveniently displays the error message at feature file level. You can view this by hovering over the SpecFlow logo on the failed step:
+
+![Rider_failed results](../_static/images/rider_failedtest.png)
+
+## Auto Renaming
 
 The plugin also automatically detects any mismatch in step definition names and displays suggestions to match it to its pattern:
 
 ![Rider_match](../_static/images/rider_match.gif)
 
-## Syntax highlighting
+## Syntax Highlighting
 
 Syntax highlighting helps you quickly identify unbound steps in your feature files by underlining them:
 
@@ -52,10 +64,10 @@ The absence of a red underline indicates that the step is bound. Notice the para
 
 *> Note: Syntax highlighting colors may vary depending on your Rider theme.*
 
-## Table formatting
+## Table Formatting
 
 Tables are expanded and formatted automatically in feature files. You can use the keyboard shortcuts  **(Ctrl + Alt + Enter)** or go to ***Code ➡ Reformat Code*** to apply correct formatting on the entire feature file.
 
 ![table formatting](../_static/images/tablegif.gif)
 
-![SpecFlow logo](../_static/images/specflow_logov2.png) Please note we are always working to improve and introduce new features to make the plugin more versatile and easy to use.
+📄 Please note we are always working to improve and introduce new features to make the plugin more versatile and easy to use.
