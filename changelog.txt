@@ -1,3 +1,5 @@
++ Introduce NonParallelizableDecorator to opt out of feature level parallelization using tags #2409
+
 After 3.7.38
 
 Fixes:
