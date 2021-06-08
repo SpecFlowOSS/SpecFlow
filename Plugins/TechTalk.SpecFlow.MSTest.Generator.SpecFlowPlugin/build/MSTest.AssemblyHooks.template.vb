@@ -2,6 +2,7 @@
 
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports TechTalk.SpecFlow
+Imports TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 Imports System
 Imports System.Reflection
 Imports System.CodeDom.Compiler
@@ -15,8 +16,9 @@ Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     Public Shared Sub AssemblyInitialize(testContext As TestContext)
 
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
+        Dim containerBuilder As New MsTestContainerBuilder(testContext)
 
-        TestRunnerManager.OnTestRunStart(currentAssembly)
+        TestRunnerManager.OnTestRunStart(currentAssembly, containerBuilder)
     End Sub
 
     <AssemblyCleanup>

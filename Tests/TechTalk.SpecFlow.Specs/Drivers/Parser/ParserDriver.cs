@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using FluentAssertions;
 using Gherkin;
-using Newtonsoft.Json;
+using SpecFlow.Internal.Json;
 using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 {
     public class ParserDriver
     {
-        private readonly JsonSerializer _serializer = new JsonSerializer();
         private readonly SpecFlowGherkinParser _parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
         public string FileContent { get; set; }
         public SpecFlowDocument ParsedDocument { get; private set; }
@@ -81,22 +80,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
         {
             using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
-                SerializeDocument(feature, writer);
+                writer.Write(SerializeDocument(feature));
             }
         }
 
         private string SerializeDocument(SpecFlowDocument feature)
         {
-            using (var writer = new Utf8StringWriter())
-            {
-                SerializeDocument(feature, writer);
-                return writer.ToString();
-            }
-        }
-
-        private void SerializeDocument(SpecFlowDocument feature, TextWriter writer)
-        {
-            _serializer.Serialize(writer, feature);
+            return feature.ToJson(new JsonSerializerSettings(ignoreNullValues: false, useEnumUnderlyingValues: true));
         }
     }
 

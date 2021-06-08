@@ -1,6 +1,22 @@
+3.9-beta
+
+Features:
 + Introduce NonParallelizableDecorator to opt out of feature level parallelization using tags #2409
 
-After 3.7.38
+Changes:
++ Update to Gherkin 19.0.3
++ Replace Utf8Json with SpecFlow.Internal.Json
+
+Fixes:
++ Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
+
+
+3.8
+
+Features:
++ Route output API messages to tool output
++ Extend ISpecFlowOutputHelper with attachment handling
++ Add events (IExecutionEvent) to track what happens and when
 
 Fixes:
 + Change CultureInfoScope to readonly struct
@@ -12,6 +28,8 @@ Fixes:
 + Step argument transformations should not be executed if a previous step had an error https://github.com/SpecFlowOSS/SpecFlow/issues/2382
 + Update "dotnet new" template in sync with the Visual Studio template
 + Fix NullReferenceException during assembly loading in PluginAssemblyResolver #2344 #2403
++ Update MsTest.TestFramework to 2.1.2 as minimum MsTest version
++ Auto-update livingdoc major-minor in "dotnet new" template
 
 
 3.7

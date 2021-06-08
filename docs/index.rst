@@ -5,20 +5,6 @@ SpecFlow is a test automation solution for .NET built upon the BDD paradigm. Use
 
 SpecFlow tests are written using `Gherkin <https://cucumber.io/docs/gherkin/>`_, which allows you to write test cases using natural languages. SpecFlow uses the official Gherkin parser, which supports over 70 languages. These tests are then tied to your application code using so-called :doc:`bindings <Bindings/Bindings>`, allowing you to execute the tests using the testing framework of your choice. You can also execute your tests using SpecFlow's own dedicated test runner, SpecFlow+ Runner.
 
-==================
- What's new?
-==================
-
-.. image:: _static/images/rider.PNG
-
-
-
-We are very excited to announce that the official SpecFlow for Rider plugin is now available. Find out more `here <https://docs.specflow.org/projects/specflow/en/latest/Rider/rider-installation.html>`_
-
-.. image:: _static/images/vscodelogo.png
-
-Although there is no official SpecFlow extension for VS Code, we have put together a guide for you to setup VS code for a similar experience. Find our more `here <https://go.specflow.org/kq9>`_ 
-
 ===================
 SpecFlow components
 ===================
@@ -114,6 +100,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Execution/Test-Results.md
    Execution/Parallel-Execution.md
    Execution/Debugging.md
+   outputapi/outputapi.md
 
 .. toctree::
    :maxdepth: 1
@@ -172,13 +159,13 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Extend/Available-Plugins.md
    Extend/Available-Containers-&-Registrations.md
    Extend/Decorators.md
+   
 
 .. toctree::
    :maxdepth: 1
    :caption: Tools
    :hidden:
-
-   Tools/Tools.md
+   
    Tools/Generate-Tests-From-MsBuild.md   
    Tools/Cucumber-Messages.md
    Tools/Reporting.md
@@ -204,6 +191,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    legacy/Plugins-(Legacy).md
    legacy/CodedUI.md
    Guides/UpgradeSpecFlow2To3.md
+   Tools/Tools.md
 
 .. toctree::
    :maxdepth: 1
