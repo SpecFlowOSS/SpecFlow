@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 
@@ -96,8 +97,8 @@ namespace TechTalk.SpecFlow.Configuration
                    StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles &&
                    AllowRowTests == other.AllowRowTests && ObsoleteBehavior == other.ObsoleteBehavior && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings &&
                    MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle &&
-                   Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable &&
-                   Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags) && Equals(AddNonParallelizableMarkerForTags, other.AddNonParallelizableMarkerForTags);
+                   AdditionalStepAssemblies.SequenceEqual(other.AdditionalStepAssemblies) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable &&
+                   SkipParallelizableMarkerForTags.SequenceEqual(other.SkipParallelizableMarkerForTags) && AddNonParallelizableMarkerForTags.SequenceEqual(other.AddNonParallelizableMarkerForTags);
         }
 
         public override bool Equals(object obj)
