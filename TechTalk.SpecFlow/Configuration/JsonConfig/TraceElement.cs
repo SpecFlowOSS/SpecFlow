@@ -2,8 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using TechTalk.SpecFlow.BindingSkeletons;
-using Utf8Json;
-using Utf8Json.Formatters;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
@@ -17,7 +15,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         //[JsonProperty("minTracedDuration", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DataMember(Name = "minTracedDuration")]
         [DefaultValue(ConfigDefaults.MinTracedDuration)]
-        [JsonFormatter(typeof(TimeSpanFormatter))] //see https://github.com/neuecc/Utf8Json/issues/80
         public TimeSpan MinTracedDuration { get; set; }
 
         //[JsonProperty("stepDefinitionSkeletonStyle", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
