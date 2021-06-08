@@ -359,8 +359,6 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             attribute.Should().BeNull("Parallelizable attribute was found");
         }
 
-       
-
         public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] ignoreParallelTags = null, string[] addNonParallelizableMarkerForTags = null)
         {
             CodeNamespace code;

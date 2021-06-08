@@ -81,10 +81,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 Given there is something");
 
             var provider = new MsTestV2GeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
-            var converter = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
+            var featureGenerator = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
 
             // ACT
-            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+            var code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
             var attributes = code.Class().CustomAttributes().ToArray();
@@ -104,10 +104,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 Given there is something");
 
             var provider = new MsTestV2GeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
-            var converter = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
+            var featureGenerator = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
 
             // ACT
-            var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+            var code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             // ASSERT
             var attributes = code.Class().CustomAttributes().ToArray();
