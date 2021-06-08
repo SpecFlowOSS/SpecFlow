@@ -87,11 +87,11 @@ To access the context classes in a thread-safe way you can either use context in
 
 To exclude specific features from running in parallel with any other features, see the `addNonParallelizableMarkerForTags` [configuration](..\Installation\Configuration.md#generator) option.
 
-Note, in addition to the above configuration, xUnit requires additional configuration to ensure that non parallelizable features do not run in parallel with any other feature. This class must be defined within the test assembly:
+Please note that xUnit requires additional configuration to ensure that non parallelizable features do not run in parallel with any other feature. This configuration is automatically provided for users via the xUnit plugin (so no additional effort is required). The following class will be defined within your test assembly for you:
 
 ``` C#
 [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
-public class NonParallelizableCollectionDefinition
+public class SpecFlowNonParallelizableFeaturesCollectionDefinition
 {
 }
 ```
