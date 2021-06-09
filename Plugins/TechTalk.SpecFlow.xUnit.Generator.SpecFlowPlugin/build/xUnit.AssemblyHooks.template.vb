@@ -23,3 +23,7 @@ Public Class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture
         Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly)
     End Sub
 End Class
+
+<Global.Xunit.CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization:=True)>
+Public Class PROJECT_ROOT_NAMESPACE_SpecFlowNonParallelizableFeaturesCollectionDefinition
+End Class

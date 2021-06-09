@@ -27,6 +27,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public const bool MarkFeaturesParallelizable = false;
         public static readonly string[] SkipParallelizableMarkerForTags = new string[0];
+        public static readonly string[] AddNonParallelizableMarkerForTags = new string[0];
     }
 // ReSharper restore RedundantNameQualifier
 }

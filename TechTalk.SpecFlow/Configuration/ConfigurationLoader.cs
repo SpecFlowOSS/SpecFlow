@@ -53,6 +53,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static bool DefaultMarkFeaturesParallelizable => ConfigDefaults.MarkFeaturesParallelizable;
         public static string[] DefaultSkipParallelizableMarkerForTags => ConfigDefaults.SkipParallelizableMarkerForTags;
+        public static string[] DefaultAddNonParallelizableMarkerForTags => ConfigDefaults.AddNonParallelizableMarkerForTags;
 
         public static ObsoleteBehavior DefaultObsoleteBehavior => ConfigDefaults.ObsoleteBehavior;
 
@@ -139,6 +140,7 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowRowTests,
                 DefaultMarkFeaturesParallelizable,
                 DefaultSkipParallelizableMarkerForTags,
+                DefaultAddNonParallelizableMarkerForTags,
                 DefaultObsoleteBehavior,
                 new CucumberMessagesConfiguration()
                 );

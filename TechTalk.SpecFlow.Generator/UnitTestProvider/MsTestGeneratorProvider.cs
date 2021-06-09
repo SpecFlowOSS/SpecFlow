@@ -98,6 +98,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //Not Supported
         }
 
+        public virtual void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
+        {
+            //Not Supported            
+        }
+
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;

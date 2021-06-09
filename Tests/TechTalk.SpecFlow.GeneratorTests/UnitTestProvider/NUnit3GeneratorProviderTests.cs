@@ -288,9 +288,33 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
         }
 
         [Fact]
+        public void NUnit3TestGeneratorProvider_ShouldAddNonParallelizableAttributeWhenMatchingTag()
+        {            
+            var featureFileWithMatchingTag = @"
+            @nonparallelizable
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something";
+
+            var code = GenerateCodeNamespaceFromFeature(featureFileWithMatchingTag, false, addNonParallelizableMarkerForTags: new[] { "nonparallelizable" });
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.Should().ContainSingle(a => a.Name == "NUnit.Framework.NonParallelizableAttribute");
+        }
+
+        [Fact]
+        public void NUnit3TestGeneratorProvider_ShouldNotAddNonParallelizableAttributeWhenNoMatchingTag()
+        {
+            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile, false, addNonParallelizableMarkerForTags: new[] { "nonparallelizable" });
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.Should().NotContain(a => a.Name == "NUnit.Framework.NonParallelizableAttribute");
+        }
+
+        [Fact]
         public void NUnit3TestGeneratorProvider_ShouldAddParallelizableAttribute()
         {
-            // ARRANGE
             const string exampleFeatureFileWithTags = @"
             @tag1 @tag2 @tag3
             Feature: Sample feature file
@@ -335,9 +359,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             attribute.Should().BeNull("Parallelizable attribute was found");
         }
 
-       
-
-        public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] ignoreParallelTags = null)
+        public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] ignoreParallelTags = null, string[] addNonParallelizableMarkerForTags = null)
         {
             CodeNamespace code;
             using (var reader = new StringReader(feature))
@@ -345,7 +367,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
                 var document = parser.Parse(reader, new SpecFlowDocumentLocation("test.feature"));
 
-                var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
+                var featureGenerator = CreateFeatureGenerator(parallelCode, ignoreParallelTags, addNonParallelizableMarkerForTags);
 
                 code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
@@ -353,13 +375,13 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             return code;
         }
 
-        public IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
+        public IFeatureGenerator CreateFeatureGenerator(bool parallelCode, string[] ignoreParallelTags, string[] addNonParallelizableMarkerForTags)
         {
             var container = new GeneratorContainerBuilder().CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<GeneratorPluginInfo>());
             var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
             specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
-            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
-                                                                    Enumerable.Empty<string>().ToArray();
+            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ?? Enumerable.Empty<string>().ToArray();
+            specFlowConfiguration.AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags ?? Enumerable.Empty<string>().ToArray();
             container.RegisterInstanceAs(CreateTestGeneratorProvider());
 
             var generator = container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());

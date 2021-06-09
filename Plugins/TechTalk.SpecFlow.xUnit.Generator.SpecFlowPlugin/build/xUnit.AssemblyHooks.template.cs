@@ -25,4 +25,9 @@ public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IDispo
         global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly);
     }
 }
+
+[global::Xunit.CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
+public class PROJECT_ROOT_NAMESPACE_SpecFlowNonParallelizableFeaturesCollectionDefinition
+{
+}
 #pragma warning restore

@@ -494,5 +494,56 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             cucumberMessagesSink.Type.Should().Be("file");
             cucumberMessagesSink.Path.Should().Be(@"C:\temp\testrun.cm");
         }
+
+        [Fact]
+        public void Check_Generator_NonParallelizableMarkers_EmptyList()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                            ]
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Check_Generator_NonParallelizableMarkers_SingleTag()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                                ""tag1""
+                                            ]
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1");
+        }
+
+        [Fact]
+        public void Check_Generator_NonParallelizableMarkers_MultipleTags()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                                ""tag1"",
+                                                ""tag2""
+                                            ]
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1", "tag2");
+        }
     }
 }

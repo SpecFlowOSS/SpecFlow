@@ -30,6 +30,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
             var skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
+            var addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
             var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
             var cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
@@ -70,6 +71,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 allowRowTests = jsonConfig.Generator.AllowRowTests;
                 markFeaturesParallelizable = jsonConfig.Generator.MarkFeaturesParallelizable;
                 skipParallelizableMarkerForTags = jsonConfig.Generator.SkipParallelizableMarkerForTags?.ToArray();
+                addNonParallelizableMarkerForTags = jsonConfig.Generator.AddNonParallelizableMarkerForTags?.ToArray();
             }
 
             if (jsonConfig.Trace != null)
@@ -118,6 +120,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 allowRowTests,
                 markFeaturesParallelizable,
                 skipParallelizableMarkerForTags,
+                addNonParallelizableMarkerForTags,
                 obsoleteBehavior,
                 cucumberMessagesConfiguration
             );

@@ -1,5 +1,8 @@
 3.9-beta
 
+Features:
++ Introduce NonParallelizableDecorator to opt out of feature level parallelization using tags #2409
+
 Changes:
 + Update to Gherkin 19.0.3
 + Replace Utf8Json with SpecFlow.Internal.Json
