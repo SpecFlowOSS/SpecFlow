@@ -42,9 +42,10 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
 
    ui-automation/Selenium-with-Page-Object-Pattern.md
    Guides/PageObjectModel.md
-   Guides/DriverPattern.md   
-   Examples <https://docs.specflow.org/en/latest/Examples.html>
+   Guides/DriverPattern.md
+   Guides/multiplebrowser.md
    Getting-Started/Getting-Started-With-An-Example.md
+   Examples <https://docs.specflow.org/en/latest/Examples.html>
   
 
 .. toctree::
