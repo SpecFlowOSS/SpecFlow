@@ -71,7 +71,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 [assembly: Parallelize(Scope = ExecutionScope.ClassLevel)]
 ```
 
-Note: SpecFlow does not support scenario level parallelization with MsTest (when scenarios from the same feature execute in parallel). If you configure a higher level MsTest parallelization than "ClassLevel" your tests will fail with runtime errors.
+***>Note**: SpecFlow does not support scenario level parallelization with MsTest (when scenarios from the same feature execute in parallel). If you configure a higher level MsTest parallelization than "ClassLevel" your tests will fail with runtime errors.*
 
 ### xUnit Configuration
 
@@ -82,6 +82,19 @@ By default xUnit runs all SpecFlow features [in parallel](https://xunit.net/docs
 When using parallel execution accessing the obsolete `ScenarioContext.Current`, `FeatureContext.Current` or `ScenarioStepContext.Current` static properties is not allowed.  Accessing these static properties during parallel execution throws a `SpecFlowException`.
 
 To access the context classes in a thread-safe way you can either use context injection or the instance properties of the `Steps` base class. For further details please see the [FeatureContext](../Bindings/FeatureContext.md) and [ScenarioContext](../Bindings/ScenarioContext.md) documentation.
+
+### Excluding SpecFlow features from parallel execution
+
+To exclude specific features from running in parallel with any other features, see the `addNonParallelizableMarkerForTags` [configuration](..\Installation\Configuration.md#generator) option.
+
+Please note that xUnit requires additional configuration to ensure that non parallelizable features do not run in parallel with any other feature. This configuration is automatically provided for users via the xUnit plugin (so no additional effort is required). The following class will be defined within your test assembly for you:
+
+``` C#
+[CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
+public class SpecFlowNonParallelizableFeaturesCollectionDefinition
+{
+}
+```
 
 ## Running SpecFlow scenarios in parallel with AppDomain or Process isolation
 

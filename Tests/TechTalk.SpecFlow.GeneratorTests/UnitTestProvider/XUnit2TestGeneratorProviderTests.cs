@@ -15,6 +15,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
     public class XUnit2TestGeneratorProviderTests
     {
         private const string XUnitInlineDataAttribute = "Xunit.InlineDataAttribute";
+        private const string XUnitCollectionAttribute = "Xunit.CollectionAttribute";
         private const string SampleFeatureFile = @"
             Feature: Sample feature file
 
@@ -47,7 +48,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 ";
 
             var document = ParseDocumentFromString(sampleFeatureFile);
-            var sampleTestGeneratorProvider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target"});
+            var sampleTestGeneratorProvider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target" });
             var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
 
             // ACT
@@ -192,7 +193,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 testInitializeMethod: null,
                 testCleanupMethod: null,
                 scenarioInitializeMethod: null,
-                scenarioStartMethod:null,
+                scenarioStartMethod: null,
                 scenarioCleanupMethod: null,
                 featureBackgroundMethod: null,
                 generateRowTests: false);
@@ -213,7 +214,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                                              .FirstOrDefault(a => a.Name == "DisplayName");
 
             attribute.Should().NotBeNull();
-            
+
 
             var primitiveExpression = attribute.Value as CodePrimitiveExpression;
 
@@ -329,7 +330,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
             code.Should().NotBeNull();
-            
+
             // ASSERT
             var classConstructor = code.Class().Members().Single(m => m.Name == ".ctor");
             classConstructor.Should().NotBeNull();
@@ -353,7 +354,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             // ACT
             var code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-            
+
             // ASSERT
             code.Should().NotBeNull();
             var loggerInstance = code.Class().Members.OfType<CodeMemberField>().First(m => m.Name == @"_testOutputHelper");
@@ -388,6 +389,62 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             method.MethodName.Should().Be("RegisterInstanceAs");
             method.TypeArguments.Should().NotBeNullOrEmpty();
             method.TypeArguments[0].BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
+        }
+
+        [Fact]
+        public void XUnit2TestGeneratorProvider_ShouldHaveParallelExecutionTrait()
+        {
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target" });
+
+            provider.GetTraits()
+                    .HasFlag(UnitTestGeneratorTraits.ParallelExecution)
+                    .Should()
+                    .BeTrue("trait ParallelExecution was not found");
+        }
+
+        [Fact]
+        public void XUnit2TestGeneratorProvider_WithFeatureWithMatchingTag_ShouldAddNonParallelizableCollectionAttribute()
+        {
+            // ARRANGE
+            var document = ParseDocumentFromString(@"
+            @nonparallelizable
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something");
+
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target" });
+            var featureGenerator = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
+
+            // ACT
+            var code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var attributes = code.Class().CustomAttributes().ToArray();
+            attributes.Should()
+                .ContainSingle(a => a.Name == XUnitCollectionAttribute)
+                    .Which.Arguments.Should().BeEquivalentTo(new[] { new CodeAttributeArgument(new CodePrimitiveExpression("NonParallelizable")) });
+        }
+
+        [Fact]
+        public void XUnit2TestGeneratorProvider_WithFeatureWithNoMatchingTag_ShouldNotAddNonParallelizableCollectionAttribute()
+        {
+            // ARRANGE
+            var document = ParseDocumentFromString(@"
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something");
+
+            var provider = new XUnit2TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp), new ProjectSettings() { DefaultNamespace = "Target" });
+            var featureGenerator = provider.CreateFeatureGenerator(addNonParallelizableMarkerForTags: new string[] { "nonparallelizable" });
+
+            // ACT
+            var code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+            // ASSERT
+            var attributes = code.Class().CustomAttributes().ToArray();
+            attributes.Should().NotContain(a => a.Name == XUnitCollectionAttribute);
         }
 
         public SpecFlowDocument ParseDocumentFromString(string documentSource, CultureInfo parserCultureInfo = null)

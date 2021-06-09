@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
+            string[] addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
 
             bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
             string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
@@ -68,6 +69,11 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 if (IsSpecified(configSection.Generator.SkipParallelizableMarkerForTags))
                 {
                     skipParallelizableMarkerForTags = configSection.Generator.SkipParallelizableMarkerForTags.Select(i => i.Value).ToArray();
+                }
+
+                if (IsSpecified(configSection.Generator.AddNonParallelizableMarkerForTags))
+                {
+                    addNonParallelizableMarkerForTags = configSection.Generator.AddNonParallelizableMarkerForTags.Select(i => i.Value).ToArray();
                 }
 
                 if (IsSpecified(configSection.Generator.Dependencies))
@@ -121,6 +127,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowRowTests,
                                             markFeaturesParallelizable,
                                             skipParallelizableMarkerForTags,
+                                            addNonParallelizableMarkerForTags,
                                             obsoleteBehavior,
                                             cucumberMessagesConfiguration
                                             );
