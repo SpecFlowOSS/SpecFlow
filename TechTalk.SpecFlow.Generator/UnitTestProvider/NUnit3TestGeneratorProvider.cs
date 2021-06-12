@@ -10,7 +10,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         protected internal const string TESTFIXTURESETUP_ATTR_NUNIT3 = "NUnit.Framework.OneTimeSetUpAttribute";
         protected internal const string TESTFIXTURETEARDOWN_ATTR_NUNIT3 = "NUnit.Framework.OneTimeTearDownAttribute";
-        protected internal const string PARALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
         protected internal const string NONPARALLELIZABLE_ATTR = "NUnit.Framework.NonParallelizableAttribute";
         protected internal const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
         protected internal const string TEST_ATTR = "NUnit.Framework.TestAttribute";
