@@ -11,7 +11,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories);
         void SetTestClassIgnore(TestClassGenerationContext generationContext);
         void FinalizeTestClass(TestClassGenerationContext generationContext);
-        void SetTestClassParallelize(TestClassGenerationContext generationContext);
         void SetTestClassNonParallelizable(TestClassGenerationContext generationContext);
 
         void SetTestClassInitializeMethod(TestClassGenerationContext generationContext);
