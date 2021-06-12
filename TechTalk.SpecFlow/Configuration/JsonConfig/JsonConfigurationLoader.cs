@@ -28,8 +28,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             var additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
-            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
-            var skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
             var addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
             var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
             var cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
@@ -69,8 +67,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             {
                 allowDebugGeneratedFiles = jsonConfig.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = jsonConfig.Generator.AllowRowTests;
-                markFeaturesParallelizable = jsonConfig.Generator.MarkFeaturesParallelizable;
-                skipParallelizableMarkerForTags = jsonConfig.Generator.SkipParallelizableMarkerForTags?.ToArray();
                 addNonParallelizableMarkerForTags = jsonConfig.Generator.AddNonParallelizableMarkerForTags?.ToArray();
             }
 
@@ -118,8 +114,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 additionalStepAssemblies,
                 allowDebugGeneratedFiles,
                 allowRowTests,
-                markFeaturesParallelizable,
-                skipParallelizableMarkerForTags,
                 addNonParallelizableMarkerForTags,
                 obsoleteBehavior,
                 cucumberMessagesConfiguration
