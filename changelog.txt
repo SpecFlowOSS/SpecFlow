@@ -6,6 +6,7 @@ Features:
 Changes:
 + Update to Gherkin 19.0.3
 + Replace Utf8Json with SpecFlow.Internal.Json
++ Remove ParallelizeDecorator introduced in #746. Fixes #2442
 
 Fixes:
 + Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
