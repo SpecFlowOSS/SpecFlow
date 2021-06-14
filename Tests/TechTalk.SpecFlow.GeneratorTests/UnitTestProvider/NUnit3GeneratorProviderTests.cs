@@ -312,54 +312,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var attribute = attributes.Should().NotContain(a => a.Name == "NUnit.Framework.NonParallelizableAttribute");
         }
 
-        [Fact]
-        public void NUnit3TestGeneratorProvider_ShouldAddParallelizableAttribute()
-        {
-            const string exampleFeatureFileWithTags = @"
-            @tag1 @tag2 @tag3
-            Feature: Sample feature file
-
-            Scenario: Simple scenario
-                Given there is something
-                When I do something
-                Then something should happen";
-
-            // ACT
-            var code = GenerateCodeNamespaceFromFeature(exampleFeatureFileWithTags, true);
-
-            // ASSERT
-            var attributes = code.Class().CustomAttributes().ToArray();
-            attributes.Where(a => a.Name == "NUnit.Framework.ParallelizableAttribute")
-                      .Should().HaveCount(1, "Only one Parallelizable attribute should be set");
-        }
-
-        [Fact]
-        public void NUnit3TestGeneratorProvider_ShouldAddParallelizableAttributeBecauseThereIsNoMatchingIgnoreTag()
-        {
-            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile, true, new[] { "myOtherexternalDependencies" });
-
-            var attributes = code.Class().CustomAttributes().ToArray();
-            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
-
-            attribute.Should().NotBeNull("Parallelizable attribute was not found");
-        }
-
-        [Fact]
-        public void NUnit3TestGeneratorProvider_ShouldNotAddParallelizableAttribute()
-        {
-            const string featureFileWithParallelizeIgnore = @"
-            @externalDependencies @externalDependencies2
-            Feature: Parallelized feature file";
-
-            var code = GenerateCodeNamespaceFromFeature(featureFileWithParallelizeIgnore, true,new [] { "externalDependencies" });
-
-            var attributes = code.Class().CustomAttributes().ToArray();
-            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
-
-            attribute.Should().BeNull("Parallelizable attribute was found");
-        }
-
-        public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] ignoreParallelTags = null, string[] addNonParallelizableMarkerForTags = null)
+        public CodeNamespace GenerateCodeNamespaceFromFeature(string feature, bool parallelCode = false, string[] addNonParallelizableMarkerForTags = null)
         {
             CodeNamespace code;
             using (var reader = new StringReader(feature))
@@ -367,7 +320,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
                 var document = parser.Parse(reader, new SpecFlowDocumentLocation("test.feature"));
 
-                var featureGenerator = CreateFeatureGenerator(parallelCode, ignoreParallelTags, addNonParallelizableMarkerForTags);
+                var featureGenerator = CreateFeatureGenerator(parallelCode, addNonParallelizableMarkerForTags);
 
                 code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
@@ -375,12 +328,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             return code;
         }
 
-        public IFeatureGenerator CreateFeatureGenerator(bool parallelCode, string[] ignoreParallelTags, string[] addNonParallelizableMarkerForTags)
+        public IFeatureGenerator CreateFeatureGenerator(bool parallelCode, string[] addNonParallelizableMarkerForTags)
         {
             var container = new GeneratorContainerBuilder().CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<GeneratorPluginInfo>());
             var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
-            specFlowConfiguration.MarkFeaturesParallelizable = parallelCode;
-            specFlowConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ?? Enumerable.Empty<string>().ToArray();
             specFlowConfiguration.AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags ?? Enumerable.Empty<string>().ToArray();
             container.RegisterInstanceAs(CreateTestGeneratorProvider());
 

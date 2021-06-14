@@ -43,21 +43,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             set { this["path"] = value; }
         }
 
-        [ConfigurationProperty("markFeaturesParallelizable", DefaultValue = ConfigDefaults.MarkFeaturesParallelizable, IsRequired = false)]
-        public bool MarkFeaturesParallelizable
-        {
-            get { return (bool)this["markFeaturesParallelizable"]; }
-            set { this["markFeaturesParallelizable"] = value; }
-        }
-
-        [ConfigurationProperty("skipParallelizableMarkerForTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
-        [ConfigurationCollection(typeof(TagCollection), AddItemName = "tag")]
-        public TagCollection SkipParallelizableMarkerForTags
-        {
-            get { return (TagCollection)this["skipParallelizableMarkerForTags"]; }
-            set { this["skipParallelizableMarkerForTags"] = value; }
-        }
-
         [ConfigurationProperty("addNonParallelizableMarkerForTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
         [ConfigurationCollection(typeof(TagCollection), AddItemName = "tag")]
         public TagCollection AddNonParallelizableMarkerForTags

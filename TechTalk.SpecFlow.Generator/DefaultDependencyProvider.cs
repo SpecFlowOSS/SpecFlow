@@ -36,7 +36,6 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<DecoratorRegistry, IDecoratorRegistry>();
             container.RegisterTypeAs<IgnoreDecorator, ITestClassTagDecorator>("ignore");
             container.RegisterTypeAs<IgnoreDecorator, ITestMethodTagDecorator>("ignore");
-            container.RegisterTypeAs<ParallelizeDecorator, ITestClassDecorator>("parallelize");
             container.RegisterTypeAs<NonParallelizableDecorator, ITestClassDecorator>("nonparallelizable");
 
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp, dispose: true);
