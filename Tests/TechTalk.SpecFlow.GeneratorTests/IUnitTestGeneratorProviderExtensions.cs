@@ -24,11 +24,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             return new UnitTestFeatureGenerator(testGeneratorProvider, codeDomHelper, runtimeConfiguration, new DecoratorRegistryStub());
         }
 
-        public static IFeatureGenerator CreateFeatureGenerator(this IUnitTestGeneratorProvider testGeneratorProvider, string[] skipParallelizableMarkerForTags = null, string[] addNonParallelizableMarkerForTags = null)
+        public static IFeatureGenerator CreateFeatureGenerator(this IUnitTestGeneratorProvider testGeneratorProvider, string[] addNonParallelizableMarkerForTags = null)
         {
             var container = new GeneratorContainerBuilder().CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<GeneratorPluginInfo>());
             var specFlowConfiguration = container.Resolve<SpecFlowConfiguration>();
-            specFlowConfiguration.SkipParallelizableMarkerForTags = skipParallelizableMarkerForTags;
             specFlowConfiguration.AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags;
             container.RegisterInstanceAs(testGeneratorProvider);
 

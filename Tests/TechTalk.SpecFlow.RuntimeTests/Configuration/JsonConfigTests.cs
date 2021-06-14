@@ -24,8 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""generatorProvider"": ""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow"",
               ""runtimeProvider"": ""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow""
             },
-            ""generator"": { ""allowDebugGeneratedFiles"": false , ""markFeaturesParallelizable"": false, 
-                             ""skipParallelizableMarkerForTags"": [""mySpecialTag1"", ""mySpecialTag2""]},
+            ""generator"": { ""allowDebugGeneratedFiles"": false },
             ""runtime"": {              
               ""stopAtFirstError"": false,
               ""missingOrPendingStepsOutcome"": ""Inconclusive""
