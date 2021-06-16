@@ -1,4 +1,4 @@
-3.9-beta
+3.9
 
 Features:
 + Introduce NonParallelizableDecorator to opt out of feature level parallelization using tags #2409
