@@ -136,7 +136,7 @@ The Bookshop example automates the tests directly through the Controller of the 
 Automating below the skin provides several benefits:
 less brittle tests, less efforts for automation, better performance of the test suite.
 
-![Controller Automation](/_static/images/BookshopControllerAutomation.png)
+![Controller Automation](/_static/images/BookshopControllerAutomation2.png)
 
 #### Inside the Controller bindings
 
@@ -170,7 +170,7 @@ Sometimes the behaviour that should be validated cannot be observed on the contr
 
 In case of e2e UI automation the Given steps can open a browser with Selenium and perform the necessary preparation steps. Still, the boundaries of automation are not necessarily strict. Sometimes ensuring all preconditions through the user interface would be very hard, and it is a feasible tradeoff to manipulate the database or other underlying components directly. The When steps typically perform those key user actions on the UI that are in the focus of the scenario. And finally the Then steps can either validate the results on the UI or, again, could look into the database or internal component directly to validate the expected result.
 
-![Selenium Automation](/_static/images/BookshopSeleniumAutomation.png)
+![Selenium Automation](/_static/images/BookshopSeleniumAutomation2.png)
 
 To demonstrate this approach as well, the Bookshop example contains an alternative automation implementation for all scenarios using Selenium.
 
