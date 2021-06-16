@@ -421,9 +421,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
 
             // ASSERT
             var attributes = code.Class().CustomAttributes().ToArray();
-            attributes.Should()
-                .ContainSingle(a => a.Name == XUnitCollectionAttribute)
-                    .Which.Arguments.Should().BeEquivalentTo(new[] { new CodeAttributeArgument(new CodePrimitiveExpression("NonParallelizable")) });
+            attributes.Should().ContainSingle(a => a.Name == XUnitCollectionAttribute);
+            var collectionAttribute = attributes.Single(a => a.Name == XUnitCollectionAttribute);
+            collectionAttribute.Arguments.Should().HaveCount(1);
+            collectionAttribute.Arguments[0].Value.Should().BeEquivalentTo(new CodePrimitiveExpression("SpecFlowNonParallelizableFeatures"));
         }
 
         [Fact]
