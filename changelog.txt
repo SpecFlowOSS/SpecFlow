@@ -11,6 +11,7 @@ Changes:
 Fixes:
 + Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
 + Fix Default value deserialization from specflow.json #2239 #2439
++ Fixed context injection in static methods for Windsor plugin - Same as https://github.com/SpecFlowOSS/SpecFlow/issues/2307, but for Windsor
 
 
 3.8
