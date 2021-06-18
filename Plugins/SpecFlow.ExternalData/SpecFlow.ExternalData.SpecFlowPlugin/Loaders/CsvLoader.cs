@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
@@ -20,13 +15,32 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             
             var filePath = ResolveFilePath(path, sourceFilePath);
             var fileContent = ReadTextFileContent(filePath);
-            var records = LoadCsvDataList(fileContent, culture);
+            var records = LoadCsvDataListWithErrorHandling(fileContent, culture, filePath);
             return new DataValue(records);
+        }
+
+        private DataList LoadCsvDataListWithErrorHandling(string fileContent, CultureInfo culture, string filePath)
+        {
+            try
+            {
+                return LoadCsvDataList(fileContent, culture);
+            }
+            catch (Exception ex)
+            {
+                throw new ExternalDataPluginException($"Unable to load CSV file from '{filePath}': {ex.Message}", ex);
+            }
         }
 
         private string ReadTextFileContent(string filePath)
         {
-            return File.ReadAllText(filePath);
+            try
+            {
+                return File.ReadAllText(filePath);
+            }
+            catch (Exception ex)
+            {
+                throw new ExternalDataPluginException($"Unable to load CSV file from '{filePath}': {ex.Message}", ex);
+            }
         }
 
         private string ResolveFilePath(string path, string sourceFilePath)
@@ -46,7 +60,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             using var reader = new StringReader(fileContent);
             using var csv = new CsvReader(reader, new CsvConfiguration(culture)
             {
-                TrimOptions = TrimOptions.Trim
+                TrimOptions = TrimOptions.Trim,
+                MissingFieldFound = null,
+                BadDataFound = args => throw new ExternalDataPluginException($"Invalid data found in CSV, in row {args.Context.Parser.RawRow}, near '{args.RawRecord}'")
             });
             
             csv.Read();

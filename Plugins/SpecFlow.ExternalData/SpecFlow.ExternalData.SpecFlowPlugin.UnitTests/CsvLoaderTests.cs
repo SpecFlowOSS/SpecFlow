@@ -10,7 +10,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
     public class CsvLoaderTests
     {
         private static readonly string SampleFilesFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".", "SampleFiles");
-        private readonly string _productsSampleFilePath = Path.Combine(SampleFilesFolder, "products.csv");
+        private string _productsSampleFilePath = Path.Combine(SampleFilesFolder, "products.csv");
+
+        private string SampleFeatureFilePathInSampleFileFolder =>
+            Path.Combine(Path.GetDirectoryName(_productsSampleFilePath) ?? ".", "Sample.feature");
 
         private CsvLoader CreateSut() => new();
 
@@ -53,7 +56,7 @@ Juice", result.Items[2].AsDataRecord.Fields["product"].AsString);
             var sut = CreateSut();
             var result = sut.LoadDataSource(
                 Path.GetFileName(_productsSampleFilePath), 
-                Path.Combine(Path.GetDirectoryName(_productsSampleFilePath), "Sample.feature"), 
+                SampleFeatureFilePathInSampleFileFolder, 
                 null);
 
             Assert.True(result.IsDataList);
@@ -62,19 +65,36 @@ Juice", result.Items[2].AsDataRecord.Fields["product"].AsString);
         [Fact]
         public void Can_handle_invalid_path()
         {
-            throw new NotImplementedException();
+            var sut = CreateSut();
+            
+            Assert.Throws<ExternalDataPluginException>(() => 
+                sut.LoadDataSource(
+                    "no-such-file.csv",
+                    SampleFeatureFilePathInSampleFileFolder,
+                    null));
         }
 
         [Fact]
         public void Can_handle_invalid_csv_file_format()
         {
-            throw new NotImplementedException();
+            _productsSampleFilePath = Path.Combine(SampleFilesFolder, "products-invalid.csv");
+
+            var sut = CreateSut();
+            Assert.Throws<ExternalDataPluginException>(() => 
+                sut.LoadDataSource(_productsSampleFilePath, null, null));
         }
 
         [Fact]
-        public void Can_handle_csv_without_header_row()
+        public void Can_handle_empty_csv_with_header_only()
         {
-            throw new NotImplementedException();
+            _productsSampleFilePath = Path.Combine(SampleFilesFolder, "products-empty.csv");
+
+            var sut = CreateSut();
+            
+            var result = sut.LoadDataSource(_productsSampleFilePath, null, null);
+
+            Assert.True(result.IsDataList);
+            Assert.Equal(0, result.AsDataList.Items.Count);
         }
     }
 }
