@@ -16,7 +16,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
         private SpecFlowDocument _transformedDocument;
         private SpecFlowFeature _transformedFeature;
         private bool _hasTransformedScenario = false;
+        private bool _hasTransformedScenarioInRule = false;
         private readonly List<IHasLocation> _featureChildren = new();
+        private readonly List<IHasLocation> _ruleChildren = new();
+        private List<IHasLocation> _currentChildren;
 
         public IncludeExternalDataTransformation(ISpecificationProvider specificationProvider)
         {
@@ -36,7 +39,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             _transformedDocument = null;
             _transformedFeature = null;
             _featureChildren.Clear();
+            _ruleChildren.Clear();
             _hasTransformedScenario = false;
+            _hasTransformedScenarioInRule = false;
+            _currentChildren = _featureChildren;
         }
 
         protected override void OnScenarioOutlineVisited(ScenarioOutline scenarioOutline)
@@ -46,7 +52,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             if (specification == null)
             {
                 Debug.WriteLine($"No DataSource specification for '{scenarioOutline.Keyword}: {scenarioOutline.Name}'");
-                _featureChildren.Add(scenarioOutline);
+                _currentChildren.Add(scenarioOutline);
                 return;
             }
             Debug.Assert(specification != null); //TODO: filter?
@@ -69,12 +75,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             );
 
             _hasTransformedScenario = true;
-            _featureChildren.Add(transformedScenarioOutline);
+            _hasTransformedScenarioInRule = true;
+            _currentChildren.Add(transformedScenarioOutline);
         }
 
         protected override void OnScenarioVisited(Scenario scenario)
         {
-            _featureChildren.Add(scenario);
+            _currentChildren.Add(scenario);
         }
 
         protected override void OnBackgroundVisited(Background background)
@@ -82,9 +89,30 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             _featureChildren.Add(background);
         }
 
+        protected override void OnRuleVisiting(Rule rule)
+        {
+            _ruleChildren.Clear();
+            _hasTransformedScenarioInRule = false;
+            _currentChildren = _ruleChildren;
+        }
+
         protected override void OnRuleVisited(Rule rule)
         {
-            throw new NotImplementedException();
+            _currentChildren = _featureChildren;
+            if (_hasTransformedScenarioInRule)
+            {
+                var transformedRule = new Rule(
+                    rule.Location,
+                    rule.Keyword,
+                    rule.Name,
+                    rule.Description,
+                    _ruleChildren.ToArray());
+                _featureChildren.Add(transformedRule);
+            }
+            else
+            {
+                _featureChildren.Add(rule);
+            }
         }
 
         protected override void OnFeatureVisited(Feature feature)
