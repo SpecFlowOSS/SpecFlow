@@ -18,14 +18,12 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
 
         protected override Scenario GetTransformedScenarioOutline(ScenarioOutline scenarioOutline)
         {
-            //TODO: filter tags
             var specification = _specificationProvider.GetSpecification(scenarioOutline.Tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
             if (specification == null)
             {
                 Debug.WriteLine($"No DataSource specification for '{scenarioOutline.Keyword}: {scenarioOutline.Name}'");
                 return null;
             }
-            Debug.Assert(specification != null); //TODO: filter?
 
             var firstExamples = scenarioOutline.Examples.FirstOrDefault();
             Debug.Assert(firstExamples != null); //TODO: handle

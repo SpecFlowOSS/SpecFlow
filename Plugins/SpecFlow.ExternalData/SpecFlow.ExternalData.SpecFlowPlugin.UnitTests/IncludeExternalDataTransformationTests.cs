@@ -58,19 +58,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         }
 
         [Fact]
-        public void Should_return_a_document()
-        {
-            var document = new SpecFlowDocument(new SpecFlowFeature(new Tag[0], null, null, "Feature", "Sample feature", "", new IHasLocation[0]), new Comment[0], null);
-            _specification = new ExternalDataSpecification(new DataValue(null));
-
-            var sut = CreateSut();
-
-            var result = sut.TransformDocument(document);
-            
-            Assert.NotNull(result);
-        }
-
-        [Fact]
         public void Should_include_external_data_to_scenario_outline()
         {
             var scenarioOutline = CreateScenarioOutline();
@@ -82,25 +69,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var result = sut.TransformDocument(document);
             
             var transformedOutline = result.Feature.Children.OfType<ScenarioOutline>().FirstOrDefault();
-            Assert.NotNull(transformedOutline);
-            var examples = transformedOutline.Examples.Last();
-            Assert.Equal(3, examples.TableBody.Count());
-        }
-
-        [Fact]
-        public void Should_include_external_data_to_scenario_outline_within_a_rule()
-        {
-            var scenarioOutline = CreateScenarioOutline();
-            var rule = new Rule(null, "Rule", "My rule", null, new IHasLocation[] { scenarioOutline });
-            var document = CreateSpecFlowDocument(rule);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
-
-            var sut = CreateSut();
-
-            var result = sut.TransformDocument(document);
-            
-            var transformedOutline = result.Feature.Children.OfType<Rule>().SelectMany(r => r.Children)
-                                           .OfType<ScenarioOutline>().FirstOrDefault();
             Assert.NotNull(transformedOutline);
             var examples = transformedOutline.Examples.Last();
             Assert.Equal(3, examples.TableBody.Count());
