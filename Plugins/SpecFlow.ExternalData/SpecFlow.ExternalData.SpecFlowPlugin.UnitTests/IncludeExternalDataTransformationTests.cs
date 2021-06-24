@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Gherkin.Ast;
 using Moq;
@@ -8,6 +7,7 @@ using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
 using SpecFlow.ExternalData.SpecFlowPlugin.Transformation;
 using TechTalk.SpecFlow.Parser;
 using Xunit;
+using DataTable = SpecFlow.ExternalData.SpecFlowPlugin.DataSource.DataTable;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 {
@@ -26,22 +26,22 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 
         private IncludeExternalDataTransformation CreateSut() => new(_specificationProviderMock.Object);
 
-        private DataList CreateProductDataList()
+        private DataTable CreateProductDataList()
         {
-            return new()
+            return new(new []{"product", "price"})
             {
                 Items =
                 {
-                    new DataValue(new DataRecord(new Dictionary<string, string> { {"product", "Chocolate" }, {"price", "2.5"} })),
-                    new DataValue(new DataRecord(new Dictionary<string, string> { {"product", "Apple" }, {"price", "1.0"} })),
-                    new DataValue(new DataRecord(new Dictionary<string, string> { {"product", "Orange" }, {"price", "1.2"} })),
+                    new DataRecord(new Dictionary<string, string> { {"product", "Chocolate" }, {"price", "2.5"} }),
+                    new DataRecord(new Dictionary<string, string> { {"product", "Apple" }, {"price", "1.0"} }),
+                    new DataRecord(new Dictionary<string, string> { {"product", "Orange" }, {"price", "1.2"} }),
                 }
             };
         }
 
         private SpecFlowDocument CreateSpecFlowDocument(IHasLocation child)
         {
-            return new(new SpecFlowFeature(new Tag[0], null, null, "Feature", "Sample feature", "", new IHasLocation[] { child }), new Comment[0], 
+            return new(new SpecFlowFeature(new Tag[0], null, null, "Feature", "Sample feature", "", new[] { child }), new Comment[0], 
                        new SpecFlowDocumentLocation(DOCUMENT_PATH));
         }
 
@@ -91,7 +91,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 
             var sut = CreateSut();
 
-            var result = sut.TransformDocument(document);
+            sut.TransformDocument(document);
 
             Assert.Equal(DOCUMENT_PATH, capturedSourceFilePath);
         }

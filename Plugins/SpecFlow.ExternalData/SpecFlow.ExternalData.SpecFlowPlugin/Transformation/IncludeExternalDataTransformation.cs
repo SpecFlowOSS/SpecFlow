@@ -29,9 +29,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             Debug.Assert(firstExamples != null); //TODO: handle
             var tableHeader = firstExamples.TableHeader;
             //TODO: handle not provided columns
-            var exampleRows = specification.GetExampleRecords()
-                                           .Select(rec => new TableRow(null, tableHeader.Cells.Select(hc => new TableCell(null, rec.Fields[hc.Value].AsString)).ToArray()))
-                                           .ToArray();
+            var examplesHeaderNames = tableHeader.Cells.Select(c => c.Value).ToArray();
+
+            var exampleRecords = specification.GetExampleRecords(examplesHeaderNames);
+            var exampleRows = exampleRecords.Items
+                .Select(rec => new TableRow(null, exampleRecords.Header.Select(h => new TableCell(null, rec.Fields[h].AsString)).ToArray()))
+                .ToArray();
+            
             return new ScenarioOutline(
                 scenarioOutline.Tags.ToArray(),
                 scenarioOutline.Location,

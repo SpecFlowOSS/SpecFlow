@@ -23,31 +23,30 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var sut = CreateSut();
             var result = sut.LoadDataSource(_productsSampleFilePath, null, null);
             
-            Assert.True(result.IsDataList);
-            Assert.Equal(3, result.AsDataList.Items.Count);
-            Assert.True(result.AsDataList.Items[0].IsDataRecord);
-            Assert.Equal("Chocolate", result.AsDataList.Items[0].AsDataRecord.Fields["product"].AsString);
-            Assert.Equal("2.5", result.AsDataList.Items[0].AsDataRecord.Fields["price"].AsString);
+            Assert.True(result.IsDataTable);
+            Assert.Equal(3, result.AsDataTable.Items.Count);
+            Assert.Equal("Chocolate", result.AsDataTable.Items[0].Fields["product"].AsString);
+            Assert.Equal("2.5", result.AsDataTable.Items[0].Fields["price"].AsString);
         }
 
         [Fact]
         public void Can_read_special_csv_file()
         {
             var sut = CreateSut();
-            var result = sut.LoadCsvDataList(@"""product"",price
+            var result = sut.LoadCsvDataTable(@"""product"",price
 Chocolate,2.5
 ""One""""Two,Three "",1.0
 ""Orange
 Juice"", 1.2", CultureInfo.CurrentCulture);
 
+            Assert.Equal(new[] {"product", "price"}, result.Header);
             Assert.Equal(3, result.Items.Count);
-            Assert.True(result.Items[0].IsDataRecord);
-            Assert.Equal("Chocolate", result.Items[0].AsDataRecord.Fields["product"].AsString);
-            Assert.Equal("2.5", result.Items[0].AsDataRecord.Fields["price"].AsString);
-            Assert.Equal(@"One""Two,Three ", result.Items[1].AsDataRecord.Fields["product"].AsString);
+            Assert.Equal("Chocolate", result.Items[0].Fields["product"].AsString);
+            Assert.Equal("2.5", result.Items[0].Fields["price"].AsString);
+            Assert.Equal(@"One""Two,Three ", result.Items[1].Fields["product"].AsString);
             Assert.Equal(@"Orange
-Juice", result.Items[2].AsDataRecord.Fields["product"].AsString);
-            Assert.Equal("1.2", result.Items[2].AsDataRecord.Fields["price"].AsString);
+Juice", result.Items[2].Fields["product"].AsString);
+            Assert.Equal("1.2", result.Items[2].Fields["price"].AsString);
         }
 
         [Fact]
@@ -59,7 +58,7 @@ Juice", result.Items[2].AsDataRecord.Fields["product"].AsString);
                 SampleFeatureFilePathInSampleFileFolder, 
                 null);
 
-            Assert.True(result.IsDataList);
+            Assert.True(result.IsDataTable);
         }
 
         [Fact]
@@ -93,8 +92,8 @@ Juice", result.Items[2].AsDataRecord.Fields["product"].AsString);
             
             var result = sut.LoadDataSource(_productsSampleFilePath, null, null);
 
-            Assert.True(result.IsDataList);
-            Assert.Equal(0, result.AsDataList.Items.Count);
+            Assert.True(result.IsDataTable);
+            Assert.Equal(0, result.AsDataTable.Items.Count);
         }
     }
 }

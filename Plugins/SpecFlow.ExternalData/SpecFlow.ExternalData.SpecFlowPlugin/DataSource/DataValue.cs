@@ -9,6 +9,8 @@
         public bool IsNull => Value == null;
         public bool IsDataList => Value is DataList;
         public DataList AsDataList => (DataList)Value;
+        public bool IsDataTable => Value is DataTable;
+        public DataTable AsDataTable => (DataTable)Value;
         public bool IsDataRecord => Value is DataRecord;
         public DataRecord AsDataRecord => (DataRecord)Value;
 

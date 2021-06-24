@@ -19,5 +19,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
                 Fields.Add(field.Key, new DataValue(field.Value));
             }
         }
+
+        public DataRecord(IEnumerable<KeyValuePair<string, DataValue>> fields)
+        {
+            foreach (var field in fields)
+            {
+                Fields.Add(field.Key, field.Value);
+            }
+        }
     }
 }

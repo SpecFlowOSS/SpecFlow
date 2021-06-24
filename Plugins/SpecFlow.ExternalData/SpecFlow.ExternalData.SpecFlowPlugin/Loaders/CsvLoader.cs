@@ -15,15 +15,15 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             
             var filePath = ResolveFilePath(path, sourceFilePath);
             var fileContent = ReadTextFileContent(filePath);
-            var records = LoadCsvDataListWithErrorHandling(fileContent, culture, filePath);
+            var records = LoadCsvDataTableWithErrorHandling(fileContent, culture, filePath);
             return new DataValue(records);
         }
 
-        private DataList LoadCsvDataListWithErrorHandling(string fileContent, CultureInfo culture, string filePath)
+        private DataTable LoadCsvDataTableWithErrorHandling(string fileContent, CultureInfo culture, string filePath)
         {
             try
             {
-                return LoadCsvDataList(fileContent, culture);
+                return LoadCsvDataTable(fileContent, culture);
             }
             catch (Exception ex)
             {
@@ -54,9 +54,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             return path;
         }
 
-        internal DataList LoadCsvDataList(string fileContent, CultureInfo culture)
+        internal DataTable LoadCsvDataTable(string fileContent, CultureInfo culture)
         {
-            var dataList = new DataList();
             using var reader = new StringReader(fileContent);
             using var csv = new CsvReader(reader, new CsvConfiguration(culture)
             {
@@ -67,6 +66,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             
             csv.Read();
             csv.ReadHeader();
+            var dataTable = new DataTable(csv.HeaderRecord);
             while (csv.Read())
             {
                 var dataRecord = new DataRecord();
@@ -74,10 +74,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 {
                     dataRecord.Fields[header] = new DataValue(csv.GetField(header));
                 }
-                dataList.Items.Add(new DataValue(dataRecord));
+                dataTable.Items.Add(dataRecord);
             }
 
-            return dataList;
+            return dataTable;
         }
     }
 }
