@@ -39,13 +39,22 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             };
         }
 
-        private SpecFlowDocument CreateSpecFlowDocument(IHasLocation child)
+        private SpecFlowDocument CreateSpecFlowDocument(params IHasLocation[] children)
         {
-            return new(new SpecFlowFeature(new Tag[0], null, null, "Feature", "Sample feature", "", new[] { child }), new Comment[0], 
+            return new(new SpecFlowFeature(new Tag[0], null, null, "Feature", "Sample feature", "", children), new Comment[0], 
                        new SpecFlowDocumentLocation(DOCUMENT_PATH));
         }
 
-        private ScenarioOutline CreateScenarioOutline()
+        private ScenarioOutline CreateScenarioOutline() =>
+            CreateScenarioOutline(
+                new[]
+                {
+                    new Examples(new Tag[] { new(null, "@extag1") }, null, "Examples", "1", "", new TableRow(null, new[] { new TableCell(null, "product") }), new TableRow[0]),
+                    new Examples(new Tag[] { new(null, "@extag2") }, null, "Examples", "2", "", new TableRow(null, new[] { new TableCell(null, "product") }), new TableRow[0])
+                });
+
+
+        private ScenarioOutline CreateScenarioOutline(Examples[] examples)
         {
             return new(
                 new Tag[] { new(null, "@sotag") },
@@ -54,7 +63,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
                 "SO 1",
                 null,
                 new[] { new Step(null, "Given ", "the customer has <product>", null) },
-                new[] { new Examples(new Tag[] { new(null, "@extag") }, null, "Examples", "", "", new TableRow(null, new[] { new TableCell(null, "product") }), new TableRow[0]) });
+                examples);
         }
 
         private Scenario CreateScenario()
@@ -70,10 +79,25 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         }
 
         [Fact]
+        public void Keeps_document_as_is_when_no_transformation_needed()
+        {
+            var scenario = CreateScenario();
+            var scenarioOutline = CreateScenarioOutline();
+            var document = CreateSpecFlowDocument(scenario, scenarioOutline);
+            _specification = null; // no transformation
+
+            var sut = CreateSut();
+
+            var result = sut.TransformDocument(document);
+
+            Assert.Same(document, result);
+        }
+
+        [Fact]
         public void Should_include_external_data_to_scenario()
         {
-            var scenarioOutline = CreateScenario();
-            var document = CreateSpecFlowDocument(scenarioOutline);
+            var scenario = CreateScenario();
+            var document = CreateSpecFlowDocument(scenario);
             _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
 
             var sut = CreateSut();
@@ -101,11 +125,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.NotNull(transformedOutline);
             var examples = transformedOutline.Examples.Last();
             Assert.Equal(3, examples.TableBody.Count());
-            _specificationProviderMock.Verify(sp => sp.GetSpecification(It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenarioOutline.Tags)), It.IsAny<string>()));
         }
 
         [Fact]
-        public void Should_provide_scenario_outline_tags_and_path_for_SpecificationProvider()
+        public void Should_provide_scenario_outline_and_examples_tags_and_path_for_SpecificationProvider()
         {
             var scenarioOutline = CreateScenarioOutline();
             var document = CreateSpecFlowDocument(scenarioOutline);
@@ -117,7 +140,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             
             _specificationProviderMock.Verify(sp => 
                 sp.GetSpecification(
-                    It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenarioOutline.Tags)), 
+                    It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenarioOutline.Tags.Concat(scenarioOutline.Examples.SelectMany(e => e.Tags)))), 
                     DOCUMENT_PATH));
         }
 
@@ -136,6 +159,42 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
                 sp.GetSpecification(
                     It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenario.Tags)), 
                     DOCUMENT_PATH));
+        }
+
+        [Fact]
+        public void Should_handle_scenario_outline_with_empty_examples()
+        {
+            var scenario = CreateScenarioOutline(new Examples[0]);
+            var document = CreateSpecFlowDocument(scenario);
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+
+            var sut = CreateSut();
+
+            sut.TransformDocument(document);
+
+            var result = sut.TransformDocument(document);
+
+            var transformedOutline = result.Feature.Children.OfType<ScenarioOutline>().FirstOrDefault();
+            Assert.NotNull(transformedOutline);
+            Assert.NotSame(scenario, transformedOutline);
+        }
+
+        [Fact]
+        public void Should_handle_scenario_outline_with_null_examples()
+        {
+            var scenario = CreateScenarioOutline(null);
+            var document = CreateSpecFlowDocument(scenario);
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+
+            var sut = CreateSut();
+
+            sut.TransformDocument(document);
+
+            var result = sut.TransformDocument(document);
+
+            var transformedOutline = result.Feature.Children.OfType<ScenarioOutline>().FirstOrDefault();
+            Assert.NotNull(transformedOutline);
+            Assert.NotSame(scenario, transformedOutline);
         }
     }
 }
