@@ -15,16 +15,15 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
 
         public DataTable GetExampleRecords(string[] examplesHeaderNames)
         {
-            if (examplesHeaderNames == null) 
-                throw new NotImplementedException(); //TODO: support empty scenario outline
-
-            var headerNames = examplesHeaderNames;
-
             //TODO: handle different data sources
             //TODO: handle data sets
             //TODO: handle data fields
             Debug.Assert(DataSource.IsDataTable);
             var dataTable = DataSource.AsDataTable;
+
+            var headerNames = examplesHeaderNames ?? dataTable.Header;
+
+            //TODO: handle not provided columns
             var result = new DataTable(headerNames);
             foreach (var dataRecord in dataTable.Items)
             {

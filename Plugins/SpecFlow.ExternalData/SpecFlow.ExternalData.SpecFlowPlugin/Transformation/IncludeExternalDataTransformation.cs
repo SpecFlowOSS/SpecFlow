@@ -16,37 +16,64 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             _specificationProvider = specificationProvider;
         }
 
+        protected override Scenario GetTransformedScenario(Scenario scenario)
+        {
+            var specification = _specificationProvider.GetSpecification(scenario.Tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
+            if (specification == null)
+            {
+                Debug.WriteLine($"No DataSource specification for '{scenario.Keyword}: {scenario.Name}' (Scenario)");
+                return null;
+            }
+
+            return GetTransformedScenario(scenario, specification);
+        }
+
         protected override Scenario GetTransformedScenarioOutline(ScenarioOutline scenarioOutline)
         {
             var specification = _specificationProvider.GetSpecification(scenarioOutline.Tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
             if (specification == null)
             {
-                Debug.WriteLine($"No DataSource specification for '{scenarioOutline.Keyword}: {scenarioOutline.Name}'");
+                Debug.WriteLine($"No DataSource specification for '{scenarioOutline.Keyword}: {scenarioOutline.Name}' (Scenario Outline)");
                 return null;
             }
 
             var firstExamples = scenarioOutline.Examples.FirstOrDefault();
             Debug.Assert(firstExamples != null); //TODO: handle
             var tableHeader = firstExamples.TableHeader;
-            //TODO: handle not provided columns
             var examplesHeaderNames = tableHeader.Cells.Select(c => c.Value).ToArray();
 
+            return GetTransformedScenario(scenarioOutline, specification, examplesHeaderNames, firstExamples.Keyword);
+        }
+
+        private Scenario GetTransformedScenario(Scenario scenario, ExternalDataSpecification specification, string[] examplesHeaderNames = null, string examplesKeyword = "Examples")
+        {
             var exampleRecords = specification.GetExampleRecords(examplesHeaderNames);
             var exampleRows = exampleRecords.Items
-                .Select(rec => new TableRow(null, exampleRecords.Header.Select(h => new TableCell(null, rec.Fields[h].AsString)).ToArray()))
-                .ToArray();
-            
+                                            .Select(rec => new TableRow(null, exampleRecords.Header.Select(h => new TableCell(null, rec.Fields[h].AsString)).ToArray()))
+                                            .ToArray();
+
+            var examplesBlock = CreateExamplesBlock(exampleRecords.Header, exampleRows, examplesKeyword);
+            Examples[] examples = scenario.Examples == null ? 
+                new[] { examplesBlock } : 
+                scenario.Examples.Concat(new[] { examplesBlock }).ToArray();
+
             return new ScenarioOutline(
-                scenarioOutline.Tags.ToArray(),
-                scenarioOutline.Location,
-                scenarioOutline.Keyword,
-                scenarioOutline.Name,
-                scenarioOutline.Description,
-                scenarioOutline.Steps.ToArray(),
-                scenarioOutline.Examples.Concat(new[] { new Examples(new Tag[0], null, firstExamples.Keyword, "External Data", "", tableHeader, exampleRows) }).ToArray()
+                scenario.Tags.ToArray(),
+                scenario.Location,
+                scenario.Keyword,
+                scenario.Name,
+                scenario.Description,
+                scenario.Steps.ToArray(),
+                examples
             );
         }
 
-        protected override Scenario GetTransformedScenario(Scenario scenario) => null;
+        private Examples CreateExamplesBlock(string[] headerNames, TableRow[] exampleRows, string keyword)
+        {
+            keyword ??= "Examples"; //TODO
+            var name = "External Data"; //TODO
+            var tableHeader = new TableRow(null, headerNames.Select(h => new TableCell(null, h)).ToArray());
+            return new Examples(new Tag[0], null, keyword, name, "", tableHeader, exampleRows);
+        }
     }
 }

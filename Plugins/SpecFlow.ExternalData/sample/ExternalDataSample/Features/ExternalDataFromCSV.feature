@@ -22,10 +22,16 @@ Examples:
 	| Apple     |
 
 @DataSource:products.csv
-Scenario: Valid product prices are calculated
+Scenario Outline: Valid product prices are calculated (Outline)
 	Given the customer has put 1 pcs of <product> to the basket
 	When the basket price is calculated
 	Then the basket price should be greater than zero
 Examples: 
 	| product   |
 	| temporary |
+
+@DataSource:products.csv
+Scenario: Valid product prices are calculated
+	Given the customer has put 1 pcs of <product> to the basket
+	When the basket price is calculated
+	Then the basket price should be greater than zero

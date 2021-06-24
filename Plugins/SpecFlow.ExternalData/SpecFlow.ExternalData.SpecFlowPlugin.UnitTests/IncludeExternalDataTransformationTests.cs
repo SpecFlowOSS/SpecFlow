@@ -48,13 +48,42 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         private ScenarioOutline CreateScenarioOutline()
         {
             return new(
-                new Tag[0],
+                new Tag[] { new(null, "@sotag") },
                 null,
                 "Scenario Outline",
                 "SO 1",
                 null,
                 new[] { new Step(null, "Given ", "the customer has <product>", null) },
-                new[] { new Examples(new Tag[0], null, "Examples", "", "", new TableRow(null, new[] { new TableCell(null, "product") }), new TableRow[0]) });
+                new[] { new Examples(new Tag[] { new(null, "@extag") }, null, "Examples", "", "", new TableRow(null, new[] { new TableCell(null, "product") }), new TableRow[0]) });
+        }
+
+        private Scenario CreateScenario()
+        {
+            return new(
+                new Tag[] { new(null, "@stag") },
+                null,
+                "Scenario",
+                "S 1",
+                null,
+                new[] { new Step(null, "Given ", "the customer has stuff", null) },
+                null);
+        }
+
+        [Fact]
+        public void Should_include_external_data_to_scenario()
+        {
+            var scenarioOutline = CreateScenario();
+            var document = CreateSpecFlowDocument(scenarioOutline);
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+
+            var sut = CreateSut();
+
+            var result = sut.TransformDocument(document);
+            
+            var transformedOutline = result.Feature.Children.OfType<ScenarioOutline>().FirstOrDefault();
+            Assert.NotNull(transformedOutline);
+            var examples = transformedOutline.Examples.Last();
+            Assert.Equal(3, examples.TableBody.Count());
         }
 
         [Fact]
@@ -72,28 +101,41 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.NotNull(transformedOutline);
             var examples = transformedOutline.Examples.Last();
             Assert.Equal(3, examples.TableBody.Count());
+            _specificationProviderMock.Verify(sp => sp.GetSpecification(It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenarioOutline.Tags)), It.IsAny<string>()));
         }
 
         [Fact]
-        public void Should_provide_path_of_source_file_for_SpecificationProvider()
+        public void Should_provide_scenario_outline_tags_and_path_for_SpecificationProvider()
         {
             var scenarioOutline = CreateScenarioOutline();
             var document = CreateSpecFlowDocument(scenarioOutline);
-            string capturedSourceFilePath = "n/a";
-            _specificationProviderMock = new Mock<ISpecificationProvider>();
-            _specificationProviderMock.Setup(sp => sp.GetSpecification(It.IsAny<IEnumerable<Tag>>(), It.IsAny<string>()))
-                                      .Returns((IEnumerable<Tag> _, string sourceFilePath) =>
-                                      {
-                                          capturedSourceFilePath = sourceFilePath;
-                                          return null;
-                                      });
-
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
 
             var sut = CreateSut();
 
             sut.TransformDocument(document);
+            
+            _specificationProviderMock.Verify(sp => 
+                sp.GetSpecification(
+                    It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenarioOutline.Tags)), 
+                    DOCUMENT_PATH));
+        }
 
-            Assert.Equal(DOCUMENT_PATH, capturedSourceFilePath);
+        [Fact]
+        public void Should_provide_scenario_tags_and_path_for_SpecificationProvider()
+        {
+            var scenario = CreateScenario();
+            var document = CreateSpecFlowDocument(scenario);
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+
+            var sut = CreateSut();
+
+            sut.TransformDocument(document);
+            
+            _specificationProviderMock.Verify(sp => 
+                sp.GetSpecification(
+                    It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenario.Tags)), 
+                    DOCUMENT_PATH));
         }
     }
 }
