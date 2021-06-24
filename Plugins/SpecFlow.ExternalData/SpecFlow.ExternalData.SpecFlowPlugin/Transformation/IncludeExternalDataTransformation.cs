@@ -44,5 +44,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
                 scenarioOutline.Examples.Concat(new[] { new Examples(new Tag[0], null, firstExamples.Keyword, "External Data", "", tableHeader, exampleRows) }).ToArray()
             );
         }
+
+        protected override Scenario GetTransformedScenario(Scenario scenario) => null;
     }
 }

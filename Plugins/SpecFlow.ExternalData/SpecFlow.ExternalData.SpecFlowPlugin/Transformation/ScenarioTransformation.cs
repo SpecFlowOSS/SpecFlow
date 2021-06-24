@@ -36,24 +36,31 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
         }
 
         protected abstract Scenario GetTransformedScenarioOutline(ScenarioOutline scenarioOutline);
+        protected abstract Scenario GetTransformedScenario(Scenario scenario);
 
         protected override void OnScenarioOutlineVisited(ScenarioOutline scenarioOutline)
         {
             var transformedScenarioOutline = GetTransformedScenarioOutline(scenarioOutline);
-            if (transformedScenarioOutline == null)
+            OnScenarioVisitedInternal(scenarioOutline, transformedScenarioOutline);
+        }
+
+        protected override void OnScenarioVisited(Scenario scenario)
+        {
+            var transformedScenario = GetTransformedScenario(scenario);
+            OnScenarioVisitedInternal(scenario, transformedScenario);
+        }
+
+        private void OnScenarioVisitedInternal(Scenario scenario, Scenario transformedScenario)
+        {
+            if (transformedScenario == null)
             {
-                _currentChildren.Add(scenarioOutline);
+                _currentChildren.Add(scenario);
                 return;
             }
 
             _hasTransformedScenarioInFeature = true;
             _hasTransformedScenarioInCurrentRule = true;
-            _currentChildren.Add(transformedScenarioOutline);
-        }
-
-        protected override void OnScenarioVisited(Scenario scenario)
-        {
-            _currentChildren.Add(scenario);
+            _currentChildren.Add(transformedScenario);
         }
 
         protected override void OnBackgroundVisited(Background background)
