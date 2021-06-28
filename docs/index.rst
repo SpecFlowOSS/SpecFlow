@@ -44,6 +44,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Guides/PageObjectModel.md
    Guides/DriverPattern.md
    Guides/multiplebrowser.md
+   Guides/externaldata.md
    Getting-Started/Getting-Started-With-An-Example.md
    Examples <https://docs.specflow.org/en/latest/Examples.html>
   
