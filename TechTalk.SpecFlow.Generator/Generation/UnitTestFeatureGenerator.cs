@@ -116,7 +116,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var scenarioCleanupMethod = generationContext.ScenarioCleanupMethod;
 
-            scenarioCleanupMethod.Attributes = MemberAttributes.Public;
+            scenarioCleanupMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             scenarioCleanupMethod.Name = GeneratorConstants.SCENARIO_CLEANUP_NAME;
 
             // call collect errors
@@ -146,6 +146,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             }
 
             var featureTagsField = new CodeMemberField(typeof(string[]), GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME);
+            featureTagsField.Attributes |= MemberAttributes.Static;
             featureTagsField.InitExpression = _scenarioPartHelper.GetStringArrayExpression(generationContext.Feature.Tags);
 
             generationContext.TestClass.Members.Add(featureTagsField);
@@ -195,7 +196,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                         new CodeFieldReferenceExpression(
                             new CodeTypeReferenceExpression("ProgrammingLanguage"),
                             _codeDomHelper.TargetLanguage.ToString()),
-                        _scenarioPartHelper.GetStringArrayExpression(generationContext.Feature.Tags))));
+                        new CodeFieldReferenceExpression(null, GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME))));
 
             //testRunner.OnFeatureStart(featureInfo);
             testClassInitializeMethod.Statements.Add(
@@ -232,7 +233,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testInitializeMethod = generationContext.TestInitializeMethod;
 
-            testInitializeMethod.Attributes = MemberAttributes.Public;
+            testInitializeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             testInitializeMethod.Name = GeneratorConstants.TEST_INITIALIZE_NAME;
 
             _testGeneratorProvider.SetTestInitializeMethod(generationContext);
@@ -242,7 +243,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testCleanupMethod = generationContext.TestCleanupMethod;
 
-            testCleanupMethod.Attributes = MemberAttributes.Public;
+            testCleanupMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             testCleanupMethod.Name = GeneratorConstants.TEST_CLEANUP_NAME;
 
             _testGeneratorProvider.SetTestCleanupMethod(generationContext);
@@ -259,7 +260,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var scenarioInitializeMethod = generationContext.ScenarioInitializeMethod;
 
-            scenarioInitializeMethod.Attributes = MemberAttributes.Public;
+            scenarioInitializeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             scenarioInitializeMethod.Name = GeneratorConstants.SCENARIO_INITIALIZE_NAME;
             scenarioInitializeMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression(typeof(ScenarioInfo), "scenarioInfo"));
@@ -277,7 +278,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var scenarioStartMethod = generationContext.ScenarioStartMethod;
 
-            scenarioStartMethod.Attributes = MemberAttributes.Public;
+            scenarioStartMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             scenarioStartMethod.Name = GeneratorConstants.SCENARIO_START_NAME;
 
             //testRunner.OnScenarioStart();
