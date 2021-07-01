@@ -63,6 +63,37 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         }
 
         [Fact]
+        public void Should_get_data_source_path_from_tags()
+        {
+            var sut = CreateSut();
+
+            var result = sut.GetSpecification(new[]
+            {
+                new Tag(null, @"@DataSource:path\to\file.csv")
+            }, SOURCE_FILE_PATH);
+            
+            Assert.NotNull(result);
+            _dataSourceLoaderMock.Verify(l => l.LoadDataSource(@"path\to\file.csv", It.IsAny<string>(), It.IsAny<CultureInfo>()));
+        }
+
+        [Fact]
+        public void Should_use_last_DataSource_setting_for_duplicated_tags()
+        {
+            var sut = CreateSut();
+
+            var result = sut.GetSpecification(new[]
+            {
+                new Tag(null, @"@DataSource:path\to\file1.csv"),
+                new Tag(null, @"@DataSource:path\to\file2.csv")
+            }, SOURCE_FILE_PATH);
+
+            _dataSourceLoaderMock.Verify(l => 
+                l.LoadDataSource(@"path\to\file2.csv", It.IsAny<string>(), It.IsAny<CultureInfo>()));
+        }
+
+
+
+        [Fact]
         public void Should_pass_on_source_file_path()
         {
             var sut = CreateSut();
@@ -71,17 +102,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             
             Assert.NotNull(result);
             _dataSourceLoaderMock.Verify(l => l.LoadDataSource(It.IsAny<string>(), SOURCE_FILE_PATH, It.IsAny<CultureInfo>()));
-        }
-
-        [Fact]
-        public void Should_get_data_source_path_from_tags()
-        {
-            var sut = CreateSut();
-
-            var result = sut.GetSpecification(new[] { new Tag(null, @"@DataSource:path\to\file.csv") }, SOURCE_FILE_PATH);
-            
-            Assert.NotNull(result);
-            _dataSourceLoaderMock.Verify(l => l.LoadDataSource(@"path\to\file.csv", It.IsAny<string>(), It.IsAny<CultureInfo>()));
         }
 
         [Fact]

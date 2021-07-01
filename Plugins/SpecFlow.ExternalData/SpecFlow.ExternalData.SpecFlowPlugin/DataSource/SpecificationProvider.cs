@@ -21,9 +21,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
         public ExternalDataSpecification GetSpecification(IEnumerable<Tag> tags, string sourceFilePath)
         {
             var tagsArray = tags.ToArray();
-            //TODO: handle multiple data source tag
             var dataSourcePath = GetTagValues(tagsArray, DATA_SOURCE_TAG_PREFIX)
-                .FirstOrDefault();
+                .LastOrDefault();
             if (dataSourcePath == null)
                 return null;
 
