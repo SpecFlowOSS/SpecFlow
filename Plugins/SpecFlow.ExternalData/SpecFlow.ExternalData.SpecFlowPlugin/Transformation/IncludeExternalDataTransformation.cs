@@ -49,8 +49,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
                 return null;
             }
 
-            var firstExamples = scenarioOutline.Examples.FirstOrDefault();
-            Debug.Assert(firstExamples != null); //TODO: handle
+            var firstExamples = scenarioOutline.Examples.First();
             var tableHeader = firstExamples.TableHeader;
             var examplesHeaderNames = tableHeader.Cells.Select(c => c.Value).ToArray();
 
