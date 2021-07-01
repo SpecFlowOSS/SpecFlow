@@ -15,7 +15,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
     {
         private const string DOCUMENT_PATH = @"C:\Temp\Sample.feature";
         private ExternalDataSpecification _specification;
-        private Mock<ISpecificationProvider> _specificationProviderMock;
+        private readonly Mock<ISpecificationProvider> _specificationProviderMock;
 
         public IncludeExternalDataTransformationTests()
         {

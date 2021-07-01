@@ -6,9 +6,9 @@ Scenario: Without: Valid Chocolate price is calculated
 	When the basket price is calculated
 	Then the basket price should be greater than zero
 
-Scenario: Without: The basket price with Chocolate calculated correctly
+Scenario: Without: The basket price with Chocolate is calculated correctly
 	Given the price of Chocolate is €2.5
-	Given the customer has put 3 pcs of Chocolate to the basket
+	And the customer has put 3 pcs of Chocolate to the basket
 	When the basket price is calculated
 	Then the basket price should be €7.5
 
@@ -22,16 +22,38 @@ Examples:
 	| Apple     |
 
 @DataSource:products.csv
+Scenario: Valid product prices are calculated
+	The scenario will be treated as a scenario outline with the examples from the CSV file.
+	Given the customer has put 1 pcs of <product> to the basket
+	When the basket price is calculated
+	Then the basket price should be greater than zero
+
+@DataSource:products.csv
+Scenario: The basket price is calculated correctly
+	The scenario will be treated as a scenario outline with the examples from the CSV file.
+	The CSV file contains multile fields, including product and price.
+	Given the price of <product> is €<price>
+	And the customer has put 1 pcs of <product> to the basket
+	When the basket price is calculated
+	Then the basket price should be €<price>
+
+@DataSource:products.csv
 Scenario Outline: Valid product prices are calculated (Outline)
+	The provided product list is extended with the ones from the CSV file.
 	Given the customer has put 1 pcs of <product> to the basket
 	When the basket price is calculated
 	Then the basket price should be greater than zero
 Examples: 
-	| product   |
-	| temporary |
+	| product    |
+	| Cheesecake |
 
-@DataSource:products.csv
-Scenario: Valid product prices are calculated
+Scenario Outline: Valid product prices are calculated (Outline, example annotation)
+	The provided product list is extended with the ones from the CSV file.
 	Given the customer has put 1 pcs of <product> to the basket
 	When the basket price is calculated
 	Then the basket price should be greater than zero
+@DataSource:products.csv
+Examples: 
+	| product    |
+	| Cheesecake |
+
