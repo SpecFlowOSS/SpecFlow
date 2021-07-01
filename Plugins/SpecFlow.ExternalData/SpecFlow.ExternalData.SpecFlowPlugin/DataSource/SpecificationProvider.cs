@@ -29,8 +29,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
                 return null;
 
             var loader = _dataSourceLoaderFactory.CreateLoader();
-            //TODO: get feature culture
-            var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath, null);
+            var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath);
             var fields = GetFields(tagsArray);
 
             return new ExternalDataSpecification(dataSource, fields);

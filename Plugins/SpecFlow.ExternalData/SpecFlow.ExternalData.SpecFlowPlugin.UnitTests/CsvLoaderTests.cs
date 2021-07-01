@@ -21,7 +21,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         public void Can_read_simple_csv_file()
         {
             var sut = CreateSut();
-            var result = sut.LoadDataSource(_productsSampleFilePath, null, null);
+            var result = sut.LoadDataSource(_productsSampleFilePath, null);
             
             Assert.True(result.IsDataTable);
             Assert.Equal(3, result.AsDataTable.Items.Count);
@@ -55,8 +55,7 @@ Juice", result.Items[2].Fields["product"].AsString);
             var sut = CreateSut();
             var result = sut.LoadDataSource(
                 Path.GetFileName(_productsSampleFilePath), 
-                SampleFeatureFilePathInSampleFileFolder, 
-                null);
+                SampleFeatureFilePathInSampleFileFolder);
 
             Assert.True(result.IsDataTable);
         }
@@ -69,8 +68,7 @@ Juice", result.Items[2].Fields["product"].AsString);
             Assert.Throws<ExternalDataPluginException>(() => 
                 sut.LoadDataSource(
                     "no-such-file.csv",
-                    SampleFeatureFilePathInSampleFileFolder,
-                    null));
+                    SampleFeatureFilePathInSampleFileFolder));
         }
 
         [Fact]
@@ -80,7 +78,7 @@ Juice", result.Items[2].Fields["product"].AsString);
 
             var sut = CreateSut();
             Assert.Throws<ExternalDataPluginException>(() => 
-                sut.LoadDataSource(_productsSampleFilePath, null, null));
+                sut.LoadDataSource(_productsSampleFilePath, null));
         }
 
         [Fact]
@@ -90,7 +88,7 @@ Juice", result.Items[2].Fields["product"].AsString);
 
             var sut = CreateSut();
             
-            var result = sut.LoadDataSource(_productsSampleFilePath, null, null);
+            var result = sut.LoadDataSource(_productsSampleFilePath, null);
 
             Assert.True(result.IsDataTable);
             Assert.Equal(0, result.AsDataTable.Items.Count);

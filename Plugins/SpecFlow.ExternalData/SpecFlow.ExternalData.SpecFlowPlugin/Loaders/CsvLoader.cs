@@ -9,9 +9,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {
     public class CsvLoader : IDataSourceLoader
     {
-        public DataValue LoadDataSource(string path, string sourceFilePath, CultureInfo culture)
+        public DataValue LoadDataSource(string path, string sourceFilePath)
         {
-            culture ??= CultureInfo.CurrentCulture;
+            var culture = CultureInfo.InvariantCulture;
             
             var filePath = ResolveFilePath(path, sourceFilePath);
             var fileContent = ReadTextFileContent(filePath);

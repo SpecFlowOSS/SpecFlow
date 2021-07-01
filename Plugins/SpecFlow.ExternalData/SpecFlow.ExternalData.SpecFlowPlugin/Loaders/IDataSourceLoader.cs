@@ -6,6 +6,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {
     public interface IDataSourceLoader
     {
-        DataValue LoadDataSource(string path, string sourceFilePath, CultureInfo culture);
+        DataValue LoadDataSource(string path, string sourceFilePath);
     }
 }

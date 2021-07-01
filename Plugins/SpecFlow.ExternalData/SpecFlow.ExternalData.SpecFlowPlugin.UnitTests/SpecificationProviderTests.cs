@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using Gherkin.Ast;
 using Moq;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
@@ -73,7 +72,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             }, SOURCE_FILE_PATH);
             
             Assert.NotNull(result);
-            _dataSourceLoaderMock.Verify(l => l.LoadDataSource(@"path\to\file.csv", It.IsAny<string>(), It.IsAny<CultureInfo>()));
+            _dataSourceLoaderMock.Verify(l => l.LoadDataSource(@"path\to\file.csv", It.IsAny<string>()));
         }
 
 
@@ -103,7 +102,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             }, SOURCE_FILE_PATH);
 
             _dataSourceLoaderMock.Verify(l => 
-                l.LoadDataSource(@"path\to\file2.csv", It.IsAny<string>(), It.IsAny<CultureInfo>()));
+                l.LoadDataSource(@"path\to\file2.csv", It.IsAny<string>()));
         }
 
 
@@ -116,7 +115,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var result = sut.GetSpecification(new[] { new Tag(null, @"@DataSource:path\to\file.csv") }, SOURCE_FILE_PATH);
             
             Assert.NotNull(result);
-            _dataSourceLoaderMock.Verify(l => l.LoadDataSource(It.IsAny<string>(), SOURCE_FILE_PATH, It.IsAny<CultureInfo>()));
+            _dataSourceLoaderMock.Verify(l => l.LoadDataSource(It.IsAny<string>(), SOURCE_FILE_PATH));
         }
 
         [Fact]
