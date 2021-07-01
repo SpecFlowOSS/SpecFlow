@@ -11,6 +11,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
         private const string DATA_SOURCE_TAG_PREFIX = "@DataSource";
         private const string DISABLE_DATA_SOURCE_TAG = "@DisableDataSource";
         private const string DATA_FIELD_TAG_PREFIX = "@DataField";
+        private const string DATA_FORMAT_TAG_PREFIX = "@DataFormat";
 
         private readonly IDataSourceLoaderFactory _dataSourceLoaderFactory;
         private readonly StringComparison _tagNameComparison = StringComparison.CurrentCulture;
@@ -28,11 +29,19 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
             if (dataSourcePath == null || tagsArray.Any(t => t.Name.Equals(DISABLE_DATA_SOURCE_TAG, _tagNameComparison)))
                 return null;
 
-            var loader = _dataSourceLoaderFactory.CreateLoader(null, dataSourcePath);
+            var dataFormat = GetDataFormat(tagsArray);
+            
+            var loader = _dataSourceLoaderFactory.CreateLoader(dataFormat, dataSourcePath);
             var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath);
             var fields = GetFields(tagsArray);
 
             return new ExternalDataSpecification(dataSource, fields);
+        }
+
+        private string GetDataFormat(Tag[] tags)
+        {
+            return GetTagValues(tags, DATA_FORMAT_TAG_PREFIX)
+                .LastOrDefault();
         }
 
         private Dictionary<string, string> GetFields(Tag[] tags)

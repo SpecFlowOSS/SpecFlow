@@ -87,3 +87,10 @@ Examples:
 	| product name |
 	| Cheesecake   |
 
+@DataSource:products.csv @DataFormat:csv
+Scenario: Valid product prices are calculated (format specified)
+	The format of the file can be speicified if not detectable from the file extension.
+	Given the customer has put 1 pcs of <product> to the basket
+	When the basket price is calculated
+	Then the basket price should be greater than zero
+
