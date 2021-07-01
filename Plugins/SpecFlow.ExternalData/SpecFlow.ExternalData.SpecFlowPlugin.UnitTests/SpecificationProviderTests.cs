@@ -15,7 +15,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 
         public SpecificationProviderTests()
         {
-            _dataSourceLoaderFactoryMock.Setup(f => f.CreateLoader())
+            _dataSourceLoaderFactoryMock.Setup(f => f.CreateLoader(It.IsAny<string>(), It.IsAny<string>()))
                                         .Returns(_dataSourceLoaderMock.Object);
         }
         
@@ -95,7 +95,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var sut = CreateSut();
 
-            var result = sut.GetSpecification(new[]
+            sut.GetSpecification(new[]
             {
                 new Tag(null, @"@DataSource:path\to\file1.csv"),
                 new Tag(null, @"@DataSource:path\to\file2.csv")

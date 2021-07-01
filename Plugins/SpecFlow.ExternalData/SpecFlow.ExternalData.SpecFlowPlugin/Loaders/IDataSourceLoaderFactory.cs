@@ -2,6 +2,6 @@
 {
     public interface IDataSourceLoaderFactory
     {
-        IDataSourceLoader CreateLoader();
+        IDataSourceLoader CreateLoader(string format, string dataSourcePath);
     }
 }

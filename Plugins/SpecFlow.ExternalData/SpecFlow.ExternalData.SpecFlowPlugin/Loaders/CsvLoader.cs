@@ -7,51 +7,18 @@ using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {
-    public class CsvLoader : IDataSourceLoader
+    public class CsvLoader : FileBasedLoader
     {
-        public DataValue LoadDataSource(string path, string sourceFilePath)
+        public CsvLoader() : base("CSV", ".csv")
+        {
+        }
+        
+        protected override DataValue LoadDataSourceFromFilePath(string filePath, string sourceFilePath)
         {
             var culture = CultureInfo.InvariantCulture;
-            
-            var filePath = ResolveFilePath(path, sourceFilePath);
             var fileContent = ReadTextFileContent(filePath);
-            var records = LoadCsvDataTableWithErrorHandling(fileContent, culture, filePath);
+            var records = LoadCsvDataTable(fileContent, culture);
             return new DataValue(records);
-        }
-
-        private DataTable LoadCsvDataTableWithErrorHandling(string fileContent, CultureInfo culture, string filePath)
-        {
-            try
-            {
-                return LoadCsvDataTable(fileContent, culture);
-            }
-            catch (Exception ex)
-            {
-                throw new ExternalDataPluginException($"Unable to load CSV file from '{filePath}': {ex.Message}", ex);
-            }
-        }
-
-        private string ReadTextFileContent(string filePath)
-        {
-            try
-            {
-                return File.ReadAllText(filePath);
-            }
-            catch (Exception ex)
-            {
-                throw new ExternalDataPluginException($"Unable to load CSV file from '{filePath}': {ex.Message}", ex);
-            }
-        }
-
-        private string ResolveFilePath(string path, string sourceFilePath)
-        {
-            if (!string.IsNullOrEmpty(sourceFilePath))
-            {
-                string sourceDirectoryName = Path.GetDirectoryName(sourceFilePath);
-                if (sourceDirectoryName != null)
-                    return Path.GetFullPath(Path.Combine(sourceDirectoryName, path));
-            }
-            return path;
         }
 
         internal DataTable LoadCsvDataTable(string fileContent, CultureInfo culture)

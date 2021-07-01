@@ -28,7 +28,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
             if (dataSourcePath == null || tagsArray.Any(t => t.Name.Equals(DISABLE_DATA_SOURCE_TAG, _tagNameComparison)))
                 return null;
 
-            var loader = _dataSourceLoaderFactory.CreateLoader();
+            var loader = _dataSourceLoaderFactory.CreateLoader(null, dataSourcePath);
             var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath);
             var fields = GetFields(tagsArray);
 
