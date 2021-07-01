@@ -39,8 +39,14 @@ namespace Specs.StepDefinitions
             }
         }
 
+        private readonly ScenarioContext _scenarioContext;
         private readonly PriceCalculator _priceCalculator = new();
         private decimal _calculatedPrice;
+
+        public PricingStepDefinitions(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
 
         [Given(@"the price of (.*) is €(.*)")]
         public void GivenThePriceOfProductIs(string productName, decimal itemPrice)
@@ -52,6 +58,13 @@ namespace Specs.StepDefinitions
         public void GivenTheCustomerHasPutPcsOfProductToTheBasket(int quantity, string productName)
         {
             _priceCalculator.AddToBasket(productName, quantity);
+        }
+
+        [Given(@"the customer has put a product to the basket")]
+        public void GivenTheCustomerHasPutAProductToTheBasket()
+        {
+            var productName = _scenarioContext.ScenarioInfo.Arguments["product"]?.ToString();
+            _priceCalculator.AddToBasket(productName, 1);
         }
 
         [When(@"the basket price is calculated")]

@@ -29,6 +29,15 @@ Scenario: Valid product prices are calculated
 	Then the basket price should be greater than zero
 
 @DataSource:products.csv
+Scenario: Valid product prices are calculated (no placeholder)
+	The scenario will be treated as a scenario outline with the examples from the CSV file.
+	The product name and other values from the CSV file can be accessed from the step definitions using:
+		_scenarioContext.ScenarioInfo.Arguments["product"]
+	Given the customer has put a product to the basket
+	When the basket price is calculated
+	Then the basket price should be greater than zero
+
+@DataSource:products.csv
 Scenario: The basket price is calculated correctly
 	The scenario will be treated as a scenario outline with the examples from the CSV file.
 	The CSV file contains multile fields, including product and price.
