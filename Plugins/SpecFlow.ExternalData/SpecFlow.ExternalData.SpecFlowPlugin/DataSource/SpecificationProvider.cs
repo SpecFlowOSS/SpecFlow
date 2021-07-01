@@ -9,9 +9,11 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
     public class SpecificationProvider : ISpecificationProvider
     {
         private const string DATA_SOURCE_TAG_PREFIX = "@DataSource";
+        private const string DISABLE_DATA_SOURCE_TAG = "@DisableDataSource";
         private const string DATA_FIELD_TAG_PREFIX = "@DataField";
 
         private readonly IDataSourceLoaderFactory _dataSourceLoaderFactory;
+        private readonly StringComparison _tagNameComparison = StringComparison.CurrentCulture;
 
         public SpecificationProvider(IDataSourceLoaderFactory dataSourceLoaderFactory)
         {
@@ -23,7 +25,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
             var tagsArray = tags.ToArray();
             var dataSourcePath = GetTagValues(tagsArray, DATA_SOURCE_TAG_PREFIX)
                 .LastOrDefault();
-            if (dataSourcePath == null)
+            if (dataSourcePath == null || tagsArray.Any(t => t.Name.Equals(DISABLE_DATA_SOURCE_TAG, _tagNameComparison)))
                 return null;
 
             var loader = _dataSourceLoaderFactory.CreateLoader();
@@ -65,10 +67,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
             var prefixWithColon = prefix + ":";
             foreach (var tag in tags)
             {
-                if (tag.Name.Equals(prefix) || tag.Name.Equals(prefixWithColon)) 
+                if (tag.Name.Equals(prefix, _tagNameComparison) || tag.Name.Equals(prefixWithColon, _tagNameComparison)) 
                     throw new ExternalDataPluginException($"Invalid tag '{tag.Name}'. The tag should have a value in '{prefix}:value' form.");
                 
-                if (tag.Name.StartsWith(prefixWithColon)) 
+                if (tag.Name.StartsWith(prefixWithColon, _tagNameComparison)) 
                     yield return tag.Name.Substring(prefixWithColon.Length);
             }
         }

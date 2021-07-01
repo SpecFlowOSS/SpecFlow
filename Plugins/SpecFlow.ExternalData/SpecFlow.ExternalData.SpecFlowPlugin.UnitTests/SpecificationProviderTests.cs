@@ -76,6 +76,21 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             _dataSourceLoaderMock.Verify(l => l.LoadDataSource(@"path\to\file.csv", It.IsAny<string>(), It.IsAny<CultureInfo>()));
         }
 
+
+        [Fact]
+        public void Should_be_able_to_disable_data_source()
+        {
+            var sut = CreateSut();
+
+            var result = sut.GetSpecification(new[]
+            {
+                new Tag(null, @"@DataSource:path\to\file.csv"),
+                new Tag(null, @"@DisableDataSource")
+            }, SOURCE_FILE_PATH);
+
+            Assert.Null(result);
+        }
+
         [Fact]
         public void Should_use_last_DataSource_setting_for_duplicated_tags()
         {
