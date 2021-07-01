@@ -45,6 +45,12 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
                        new SpecFlowDocumentLocation(DOCUMENT_PATH));
         }
 
+        private SpecFlowDocument CreateSpecFlowDocumentWithFeatureTags(string[] featureTags, params IHasLocation[] children)
+        {
+            return new(new SpecFlowFeature(featureTags.Select(t => new Tag(null, t)).ToArray(), null, null, "Feature", "Sample feature", "", children), new Comment[0], 
+                       new SpecFlowDocumentLocation(DOCUMENT_PATH));
+        }
+
         private ScenarioOutline CreateScenarioOutline() =>
             CreateScenarioOutline(
                 new[]
@@ -158,6 +164,40 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             _specificationProviderMock.Verify(sp => 
                 sp.GetSpecification(
                     It.Is<IEnumerable<Tag>>(tags => tags.SequenceEqual(scenario.Tags)), 
+                    DOCUMENT_PATH));
+        }
+
+        [Fact]
+        public void Should_provide_feature_tags_for_scenarios_to_SpecificationProvider()
+        {
+            var scenario = CreateScenario();
+            var document = CreateSpecFlowDocumentWithFeatureTags(new []{ "@featureTag1", "@featureTag2" }, scenario);
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+
+            var sut = CreateSut();
+
+            sut.TransformDocument(document);
+            
+            _specificationProviderMock.Verify(sp => 
+                sp.GetSpecification(
+                    It.Is<IEnumerable<Tag>>(tags => tags.Take(document.SpecFlowFeature.Tags.Count()).SequenceEqual(document.SpecFlowFeature.Tags)), 
+                    DOCUMENT_PATH));
+        }
+
+        [Fact]
+        public void Should_provide_feature_tags_for_scenario_outlines_to_SpecificationProvider()
+        {
+            var scenarioOutline = CreateScenarioOutline();
+            var document = CreateSpecFlowDocumentWithFeatureTags(new []{ "@featureTag1", "@featureTag2" }, scenarioOutline);
+            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+
+            var sut = CreateSut();
+
+            sut.TransformDocument(document);
+            
+            _specificationProviderMock.Verify(sp => 
+                sp.GetSpecification(
+                    It.Is<IEnumerable<Tag>>(tags => tags.Take(document.SpecFlowFeature.Tags.Count()).SequenceEqual(document.SpecFlowFeature.Tags)), 
                     DOCUMENT_PATH));
         }
 

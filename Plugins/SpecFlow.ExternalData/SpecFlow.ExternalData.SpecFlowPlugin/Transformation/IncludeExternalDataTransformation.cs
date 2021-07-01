@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Gherkin.Ast;
@@ -16,9 +17,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             _specificationProvider = specificationProvider;
         }
 
+        private IEnumerable<Tag> GetSourceFeatureTags() => 
+            _sourceDocument.SpecFlowFeature.Tags ?? new Tag[0];
+
         protected override Scenario GetTransformedScenario(Scenario scenario)
         {
-            var specification = _specificationProvider.GetSpecification(scenario.Tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
+            var tags = GetSourceFeatureTags().Concat(scenario.Tags);
+            var specification = _specificationProvider.GetSpecification(tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
             if (specification == null)
             {
                 Debug.WriteLine($"No DataSource specification for '{scenario.Keyword}: {scenario.Name}' (Scenario)");
@@ -33,7 +38,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             if (scenarioOutline.Examples == null || !scenarioOutline.Examples.Any())
                 return GetTransformedScenario(scenarioOutline);
 
-            var tags = (scenarioOutline.Tags ?? new Tag[0])
+            var tags = GetSourceFeatureTags()
+                .Concat(scenarioOutline.Tags ?? new Tag[0])
                 .Concat(scenarioOutline.Examples.SelectMany(e => e.Tags ?? new Tag[0]));
             
             var specification = _specificationProvider.GetSpecification(tags, _sourceDocument.SourceFilePath); //TODO: add parent tags
