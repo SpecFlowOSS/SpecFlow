@@ -7,7 +7,7 @@ using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {
-    public class CsvLoader
+    public class CsvLoader : IDataSourceLoader
     {
         public DataValue LoadDataSource(string path, string sourceFilePath, CultureInfo culture)
         {

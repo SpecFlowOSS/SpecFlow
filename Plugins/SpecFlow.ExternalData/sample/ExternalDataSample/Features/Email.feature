@@ -1,4 +1,5 @@
-﻿Feature: User registration
+﻿@ignore
+Feature: User registration
 
 @property:email=E-mail_addresses.Valid
 Scenario Outline: recording user information on successful registration

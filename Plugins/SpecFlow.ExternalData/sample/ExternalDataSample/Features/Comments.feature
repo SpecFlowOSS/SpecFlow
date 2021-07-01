@@ -1,4 +1,5 @@
-﻿Feature: Comments
+﻿@ignore
+Feature: Comments
 
 @property:text=Lorems
 Scenario: comment wrapping

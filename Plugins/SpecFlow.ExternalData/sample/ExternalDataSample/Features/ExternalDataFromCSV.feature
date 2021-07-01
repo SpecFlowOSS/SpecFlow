@@ -57,3 +57,13 @@ Examples:
 	| product    |
 	| Cheesecake |
 
+@DataSource:products.csv @DataField:product-name=product @DataField:price-in-EUR=price
+Scenario: The basket price is calculated correctly (renamed fields)
+	The scenario will be treated as a scenario outline with the examples from the CSV file.
+	The CSV file contains multile fields, including 'product' and 'price', 
+	but those are different from the ones we want to use in the scenario ('product name' and 'price-in-EUR').
+	Given the price of <product-name> is €<price-in-EUR>
+	And the customer has put 1 pcs of <product-name> to the basket
+	When the basket price is calculated
+	Then the basket price should be €<price-in-EUR>
+
