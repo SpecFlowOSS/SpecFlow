@@ -67,3 +67,14 @@ Scenario: The basket price is calculated correctly (renamed fields)
 	When the basket price is calculated
 	Then the basket price should be €<price-in-EUR>
 
+@DataSource:products.csv @DataField:product_name=product @DataField:price-in-EUR=price
+Scenario: The basket price is calculated correctly (space in required field in outlines)
+	The scenario will be treated as a scenario outline with the examples from the CSV file.
+	The underscore (_) in the target name is used in the position of space in the required fields of the outline
+	Given the customer has put 1 pcs of <product name> to the basket
+	When the basket price is calculated
+	Then the basket price should be greater than zero
+Examples: 
+	| product name |
+	| Cheesecake   |
+

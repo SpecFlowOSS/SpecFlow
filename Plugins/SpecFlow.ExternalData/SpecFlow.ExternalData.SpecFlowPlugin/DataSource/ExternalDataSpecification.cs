@@ -33,16 +33,18 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
                     headerNames.Select(targetField => 
                         new KeyValuePair<string, DataValue>(
                             targetField, 
-                            GetSourceFieldValue(dataRecord, GetSourceField(targetField), dataTable.Header)))));
+                            GetSourceFieldValue(dataRecord, targetField, dataTable.Header)))));
             }
             return result;
         }
 
-        private DataValue GetSourceFieldValue(DataRecord dataRecord, string sourceField, string[] dataSourceFields)
+        private DataValue GetSourceFieldValue(DataRecord dataRecord, string targetField, string[] dataTableHeader)
         {
-            return dataRecord.Fields.TryGetValue(sourceField, out var value)
+            var sourceField = GetSourceField(targetField);
+            return dataRecord.Fields.TryGetValue(sourceField, out var value) ||
+                   dataRecord.Fields.TryGetValue(GetSourceField(targetField.Replace(' ', '_')), out value)
                 ? value
-                : throw new ExternalDataPluginException($"The requested field '{sourceField}' was not provided in the data source, that provides only the fields {string.Join(", ", dataSourceFields.Select(f => "'" + f + "'"))}. Try mapping source fields using '@DataField:target-field=source-field'.");
+                : throw new ExternalDataPluginException($"The requested field '{sourceField}' was not provided in the data source, that provides only the fields {string.Join(", ", GetTargetHeader(dataTableHeader).Select(f => "'" + f + "'"))}. Try mapping source fields using '@DataField:target-field=source-field'.");
         }
 
         private string GetSourceField(string targetField)

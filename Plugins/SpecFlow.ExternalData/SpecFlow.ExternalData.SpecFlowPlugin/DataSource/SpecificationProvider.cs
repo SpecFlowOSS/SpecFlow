@@ -22,14 +22,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
         {
             var tagsArray = tags.ToArray();
             //TODO: handle multiple data source tag
-            //TODO: data source tag different casing
             var dataSourcePath = GetTagValues(tagsArray, DATA_SOURCE_TAG_PREFIX)
                 .FirstOrDefault();
             if (dataSourcePath == null)
                 return null;
 
             var loader = _dataSourceLoaderFactory.CreateLoader();
-            //TODO: get feature info
+            //TODO: get feature culture
             var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath, null);
             var fields = GetFields(tagsArray);
 
