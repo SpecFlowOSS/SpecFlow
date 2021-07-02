@@ -25,6 +25,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
                 args.ObjectContainer.RegisterTypeAs<SpecificationProvider, ISpecificationProvider>();
                 args.ObjectContainer.RegisterTypeAs<DataSourceLoaderFactory, IDataSourceLoaderFactory>();
                 args.ObjectContainer.RegisterTypeAs<CsvLoader, IDataSourceLoader>("CSV");
+                args.ObjectContainer.RegisterTypeAs<ExcelLoader, IDataSourceLoader>("Excel");
             };
         }
     }
