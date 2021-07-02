@@ -1,7 +1,7 @@
 ﻿using System;
 using Gherkin.Ast;
 using Moq;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 using Xunit;
 

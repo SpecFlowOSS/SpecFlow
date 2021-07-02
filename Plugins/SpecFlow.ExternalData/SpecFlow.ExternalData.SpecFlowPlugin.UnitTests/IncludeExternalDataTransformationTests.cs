@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Gherkin.Ast;
 using Moq;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using SpecFlow.ExternalData.SpecFlowPlugin.Transformation;
 using TechTalk.SpecFlow.Parser;
 using Xunit;
-using DataTable = SpecFlow.ExternalData.SpecFlowPlugin.DataSource.DataTable;
+using DataTable = SpecFlow.ExternalData.SpecFlowPlugin.DataSources.DataTable;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 {

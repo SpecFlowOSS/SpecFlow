@@ -1,4 +1,4 @@
-﻿namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
+﻿namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class DataValue
     {

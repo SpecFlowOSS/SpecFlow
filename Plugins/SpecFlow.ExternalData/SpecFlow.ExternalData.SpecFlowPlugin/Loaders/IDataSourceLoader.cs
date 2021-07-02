@@ -1,5 +1,5 @@
 ﻿using System;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {

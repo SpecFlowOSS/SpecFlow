@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Gherkin.Ast;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using TechTalk.SpecFlow.Parser;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using BoDi;
-using Moq;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 using Xunit;
 

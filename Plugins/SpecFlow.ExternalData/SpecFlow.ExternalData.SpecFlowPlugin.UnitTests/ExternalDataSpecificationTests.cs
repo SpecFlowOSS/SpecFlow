@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using Xunit;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests

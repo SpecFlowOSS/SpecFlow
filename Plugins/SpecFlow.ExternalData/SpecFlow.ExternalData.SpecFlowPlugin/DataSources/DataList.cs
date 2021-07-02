@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
+namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class DataList
     {

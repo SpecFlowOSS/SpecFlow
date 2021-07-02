@@ -1,5 +1,5 @@
 ﻿using SpecFlow.ExternalData.SpecFlowPlugin;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;

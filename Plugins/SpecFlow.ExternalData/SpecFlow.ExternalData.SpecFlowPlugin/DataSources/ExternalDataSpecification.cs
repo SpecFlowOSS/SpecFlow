@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 
-namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
+namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class ExternalDataSpecification
     {

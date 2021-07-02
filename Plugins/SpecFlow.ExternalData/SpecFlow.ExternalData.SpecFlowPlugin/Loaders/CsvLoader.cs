@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {

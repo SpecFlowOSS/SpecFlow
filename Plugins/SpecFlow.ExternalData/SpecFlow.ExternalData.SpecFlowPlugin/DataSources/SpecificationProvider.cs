@@ -4,7 +4,7 @@ using System.Linq;
 using Gherkin.Ast;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 
-namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSource
+namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class SpecificationProvider : ISpecificationProvider
     {

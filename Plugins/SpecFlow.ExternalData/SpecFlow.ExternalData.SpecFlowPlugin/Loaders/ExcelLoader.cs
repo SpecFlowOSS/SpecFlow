@@ -3,8 +3,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using ExcelDataReader;
-using SpecFlow.ExternalData.SpecFlowPlugin.DataSource;
-using DataTable = SpecFlow.ExternalData.SpecFlowPlugin.DataSource.DataTable;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
+using DataTable = SpecFlow.ExternalData.SpecFlowPlugin.DataSources.DataTable;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 {
