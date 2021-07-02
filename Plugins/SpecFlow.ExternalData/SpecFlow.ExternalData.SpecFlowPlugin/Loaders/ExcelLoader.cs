@@ -28,6 +28,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 }
             });
 
+            var worksheetsRecord = new DataRecord();
             var resultTable = result.Tables[0];
             
             var dataTable = new DataTable(resultTable.Columns.OfType<DataColumn>().Select(c => c.ColumnName).ToArray());
@@ -42,7 +43,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 dataTable.Items.Add(dataRecord);
             }
 
-            return new DataSource(dataTable);
+            worksheetsRecord.Fields[resultTable.TableName] = new DataValue(dataTable);
+            
+            return new DataSource(worksheetsRecord, result.Tables[0].TableName);
         }
     }
 }

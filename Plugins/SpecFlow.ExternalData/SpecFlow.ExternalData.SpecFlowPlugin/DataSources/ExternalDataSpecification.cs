@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class ExternalDataSpecification
     {
         public DataValue DataSource { get; }
-        public IDictionary<string, string> Fields { get; }
+        public IDictionary<string, DataSourceSelector> SpecifiedFieldSelectors { get; }
 
-        public ExternalDataSpecification(DataValue dataSource, IDictionary<string, string> fields = null)
+        public ExternalDataSpecification(DataValue dataSource, IDictionary<string, DataSourceSelector> specifiedFieldSelectors = null)
         {
-            Fields = fields == null ? null : new ReadOnlyDictionary<string, string>(fields);
+            SpecifiedFieldSelectors = specifiedFieldSelectors == null ? null : 
+                new ReadOnlyDictionary<string, DataSourceSelector>(
+                    new Dictionary<string, DataSourceSelector>(specifiedFieldSelectors, FieldNameComparer.Value));
             DataSource = dataSource;
         }
 
@@ -26,41 +28,43 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
             var dataTable = DataSource.AsDataTable;
 
             var headerNames = examplesHeaderNames ?? GetTargetHeader(dataTable.Header);
+            var fieldSelectors = GetFieldSelectors(headerNames);
 
             var result = new DataTable(headerNames);
             foreach (var dataRecord in dataTable.Items)
             {
                 result.Items.Add(new DataRecord(
-                    headerNames.Select(targetField => 
+                    fieldSelectors.Select(targetFieldSelector => 
                         new KeyValuePair<string, DataValue>(
-                            targetField, 
-                            GetSourceFieldValue(dataRecord, targetField, dataTable.Header)))));
+                            targetFieldSelector.Key, 
+                            targetFieldSelector.Value.Evaluate(new DataValue(dataRecord))))));
+                            //GetSourceFieldValue(dataRecord, targetField, dataTable.Header)))));
             }
             return result;
         }
 
-        private DataValue GetSourceFieldValue(DataRecord dataRecord, string targetField, string[] dataTableHeader)
+        private Dictionary<string, DataSourceSelector> GetFieldSelectors(string[] headerNames)
         {
-            var sourceField = GetSourceField(targetField);
-            return dataRecord.Fields.TryGetValue(sourceField, out var value) ||
-                   dataRecord.Fields.TryGetValue(GetSourceField(targetField.Replace(' ', '_')), out value)
-                ? value
-                : throw new ExternalDataPluginException($"The requested field '{sourceField}' was not provided in the data source, that provides only the fields {string.Join(", ", GetTargetHeader(dataTableHeader).Select(f => "'" + f + "'"))}. Try mapping source fields using '@DataField:target-field=source-field'.");
+            return headerNames.ToDictionary(
+                h => h,
+                GetSourceFieldSelector);
         }
 
-        private string GetSourceField(string targetField)
+        private DataSourceSelector GetSourceFieldSelector(string targetField)
         {
-            if (Fields == null) return targetField;
-            return Fields.TryGetValue(targetField, out var sourceField) ?
-                sourceField : targetField;
+            if (SpecifiedFieldSelectors != null && 
+                SpecifiedFieldSelectors.TryGetValue(targetField, out var selector)) 
+                return selector;
+            return new FieldNameSelector(targetField);
         }
-        
+
         private string[] GetTargetHeader(string[] dataTableHeader)
         {
-            if (Fields == null) return dataTableHeader;
-            return Fields.Keys.Concat(dataTableHeader.Where(sourceField => !Fields.Any(f => FieldEquals(sourceField, f.Value)))).ToArray();
+            if (SpecifiedFieldSelectors == null) return dataTableHeader;
+            return SpecifiedFieldSelectors.Keys.Concat(dataTableHeader.Where(sourceField => !SpecifiedFieldSelectors.Values.Any(selector => FieldUsedBy(sourceField, selector)))).ToArray();
         }
 
-        private bool FieldEquals(string sourceField, string targetField) => sourceField.Equals(targetField);
+        private bool FieldUsedBy(string field, DataSourceSelector selector) 
+            => selector is FieldNameSelector fieldNameSelector && fieldNameSelector.Name.Equals(field);
     }
 }

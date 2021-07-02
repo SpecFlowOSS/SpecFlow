@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
 using Xunit;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
@@ -22,7 +24,11 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 
         private ExternalDataSpecification CreateSut(Dictionary<string, string> fields = null)
         {
-            return new(new DataValue(CreateProductDataList()), fields);
+            var selectorParser = new DataSourceSelectorParser();
+            return new(new DataValue(CreateProductDataList()), 
+                fields?.ToDictionary(
+                    f => f.Key, 
+                    f => selectorParser.Parse(f.Value)));
         }
 
         [Fact]
@@ -54,17 +60,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.Equal(headerNames, result.Header);
             Assert.Equal("Chocolate", result.Items[0].Fields["product"].Value);
             Assert.Equal("brown", result.Items[0].Fields["color"].Value);
-        }
-
-        [Fact]
-        public void Handles_when_the_requested_field_was_not_provided()
-        {
-            var sut = CreateSut();
-            var headerNames = new[] { "color", "no-such-field" };
-
-            Assert.Contains("no-such-field",
-                Assert.Throws<ExternalDataPluginException>(() =>
-                    sut.GetExampleRecords(headerNames)).Message);
         }
 
         [Fact]

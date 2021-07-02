@@ -25,12 +25,24 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var result = sut.LoadDataSource(_productsSampleFilePath, null);
 
             Assert.NotNull(result);
-            Assert.True(result.IsDataTable);
-            Assert.Equal(3, result.AsDataTable.Items.Count);
-            Assert.Equal("Chocolate", result.AsDataTable.Items[0].Fields["product"].AsString);
-            Assert.Equal("2.5", result.AsDataTable.Items[0].Fields["price"].AsString);
-            Assert.Equal("brown", result.AsDataTable.Items[0].Fields["color"].AsString);
+            Assert.True(result.IsDataRecord);
+            Assert.True(result.AsDataRecord.Fields.ContainsKey("products"));
+            var worksheetResult = result.AsDataRecord.Fields["products"];
+            Assert.True(worksheetResult.IsDataTable);
+            Assert.Equal(3, worksheetResult.AsDataTable.Items.Count);
+            Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString);
+            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString);
+            Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString);
         }
 
+        [Fact]
+        public void Returns_name_of_first_sheet_as_default_data_set()
+        {
+            var sut = CreateSut();
+            var result = sut.LoadDataSource(_productsSampleFilePath, null);
+
+            Assert.NotNull(result);
+            Assert.Equal("products", result.DefaultDataSet);
+        }
     }
 }

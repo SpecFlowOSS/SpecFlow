@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class DataRecord
     {
-        public IDictionary<string, DataValue> Fields { get; } = new Dictionary<string, DataValue>();
+        public IDictionary<string, DataValue> Fields { get; } = new Dictionary<string, DataValue>(FieldNameComparer.Value);
 
         public DataRecord()
         {

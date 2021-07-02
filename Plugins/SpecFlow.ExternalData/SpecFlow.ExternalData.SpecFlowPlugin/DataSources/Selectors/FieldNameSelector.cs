@@ -1,20 +1,29 @@
-﻿namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors
+﻿using System.Linq;
+
+namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors
 {
     public class FieldNameSelector : DataSourceSelector
     {
-        private readonly string _name;
+        public string Name { get; }
 
         public FieldNameSelector(string name)
         {
-            _name = name;
+            Name = name;
         }
 
-        public override DataValue Evaluate(DataValue dataValue)
+        public override DataValue EvaluateInternal(DataValue dataValue, bool throwException)
         {
             if (!dataValue.IsDataRecord)
-                throw new ExternalDataPluginException($"The expression '{_name}' cannot be evaluated on value '{dataValue.Value}', because it is not a record type but an '{dataValue.Value?.GetType().Name ?? "null"}'");
+                throw new ExternalDataPluginException($"The expression '{Name}' cannot be evaluated on value '{dataValue.Value}', because it is not a record type but an '{dataValue.Value?.GetType().Name ?? "null"}'");
 
-            return dataValue.AsDataRecord.Fields[_name];
+            var dataRecord = dataValue.AsDataRecord;
+            return dataRecord.Fields.TryGetValue(Name, out var value)
+                ? value
+                : throwException 
+                    ? throw new ExternalDataPluginException($"The requested field '{Name}' was not provided in the data source, that provides only the fields {string.Join(", ", dataRecord.Fields.Keys.Select(f => "'" + f + "'"))}. Try mapping source fields using '@DataField:target-field=source-field'.") 
+                    : null;
         }
+
+        public override string ToString() => Name;
     }
 }

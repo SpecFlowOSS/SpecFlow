@@ -2,6 +2,7 @@
 using Gherkin.Ast;
 using Moq;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 using Xunit;
 
@@ -21,7 +22,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         
         private SpecificationProvider CreateSut()
         {
-            return new(_dataSourceLoaderFactoryMock.Object);
+            return new(_dataSourceLoaderFactoryMock.Object, new DataSourceSelectorParser());
         }
 
         [Fact]
@@ -174,9 +175,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             }, SOURCE_FILE_PATH);
 
             Assert.NotNull(result);
-            Assert.NotNull(result.Fields);
-            Assert.Contains("target_field", result.Fields.Keys);
-            Assert.Equal("source_field", result.Fields["target_field"]);
+            Assert.NotNull(result.SpecifiedFieldSelectors);
+            Assert.Contains("target_field", result.SpecifiedFieldSelectors.Keys);
+            Assert.Equal("source_field", result.SpecifiedFieldSelectors["target_field"].ToString());
         }
 
         [Fact]
@@ -192,9 +193,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             }, SOURCE_FILE_PATH);
 
             Assert.NotNull(result);
-            Assert.NotNull(result.Fields);
-            Assert.Contains("target_field", result.Fields.Keys);
-            Assert.Equal("source_field2", result.Fields["target_field"]);
+            Assert.NotNull(result.SpecifiedFieldSelectors);
+            Assert.Contains("target_field", result.SpecifiedFieldSelectors.Keys);
+            Assert.Equal("source_field2", result.SpecifiedFieldSelectors["target_field"].ToString());
         }
 
         [Theory]
@@ -211,9 +212,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             }, SOURCE_FILE_PATH);
 
             Assert.NotNull(result);
-            Assert.NotNull(result.Fields);
-            Assert.Contains("target_field", result.Fields.Keys);
-            Assert.Equal("target_field", result.Fields["target_field"]);
+            Assert.NotNull(result.SpecifiedFieldSelectors);
+            Assert.Contains("target_field", result.SpecifiedFieldSelectors.Keys);
+            Assert.Equal("target_field", result.SpecifiedFieldSelectors["target_field"].ToString());
         }
     }
 }

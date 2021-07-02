@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gherkin.Ast;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
@@ -14,11 +15,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
         private const string DATA_FORMAT_TAG_PREFIX = "@DataFormat";
 
         private readonly IDataSourceLoaderFactory _dataSourceLoaderFactory;
+        private readonly DataSourceSelectorParser _dataSourceSelectorParser;
         private readonly StringComparison _tagNameComparison = StringComparison.CurrentCulture;
 
-        public SpecificationProvider(IDataSourceLoaderFactory dataSourceLoaderFactory)
+        public SpecificationProvider(IDataSourceLoaderFactory dataSourceLoaderFactory, DataSourceSelectorParser dataSourceSelectorParser)
         {
             _dataSourceLoaderFactory = dataSourceLoaderFactory;
+            _dataSourceSelectorParser = dataSourceSelectorParser;
         }
 
         public ExternalDataSpecification GetSpecification(IEnumerable<Tag> tags, string sourceFilePath)
@@ -44,7 +47,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
                 .LastOrDefault();
         }
 
-        private Dictionary<string, string> GetFields(Tag[] tags)
+        private Dictionary<string, DataSourceSelector> GetFields(Tag[] tags)
         {
             var dataFieldsSettings = GetSettingValues(GetTagValues(tags, DATA_FIELD_TAG_PREFIX))
                                      .GroupBy(s => s.Key, s => s.Value)
@@ -56,7 +59,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
                     fs =>
                     {
                         string value = fs.Last();
-                        return string.IsNullOrEmpty(value) ? fs.Key : value; 
+                        return _dataSourceSelectorParser.Parse(
+                            string.IsNullOrEmpty(value) ? fs.Key : value); 
                     });
         }
 
