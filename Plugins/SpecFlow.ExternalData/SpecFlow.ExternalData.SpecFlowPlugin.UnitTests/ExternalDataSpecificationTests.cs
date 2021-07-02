@@ -25,7 +25,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         private ExternalDataSpecification CreateSut(Dictionary<string, string> fields = null)
         {
             var selectorParser = new DataSourceSelectorParser();
-            return new(new DataValue(CreateProductDataList()), 
+            return new(new DataSource(CreateProductDataList()), 
                 fields?.ToDictionary(
                     f => f.Key, 
                     f => selectorParser.Parse(f.Value)));

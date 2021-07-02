@@ -104,7 +104,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenario = CreateScenario();
             var document = CreateSpecFlowDocument(scenario);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -121,7 +121,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenarioOutline = CreateScenarioOutline();
             var document = CreateSpecFlowDocument(scenarioOutline);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -138,7 +138,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenarioOutline = CreateScenarioOutline();
             var document = CreateSpecFlowDocument(scenarioOutline);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -155,7 +155,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenario = CreateScenario();
             var document = CreateSpecFlowDocument(scenario);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -172,7 +172,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenario = CreateScenario();
             var document = CreateSpecFlowDocumentWithFeatureTags(new []{ "@featureTag1", "@featureTag2" }, scenario);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -189,7 +189,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenarioOutline = CreateScenarioOutline();
             var document = CreateSpecFlowDocumentWithFeatureTags(new []{ "@featureTag1", "@featureTag2" }, scenarioOutline);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -206,7 +206,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenario = CreateScenarioOutline(new Examples[0]);
             var document = CreateSpecFlowDocument(scenario);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 
@@ -224,7 +224,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var scenario = CreateScenarioOutline(null);
             var document = CreateSpecFlowDocument(scenario);
-            _specification = new ExternalDataSpecification(new DataValue(CreateProductDataList()));
+            _specification = new ExternalDataSpecification(new DataSource(CreateProductDataList()));
 
             var sut = CreateSut();
 

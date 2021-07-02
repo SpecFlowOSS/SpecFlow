@@ -8,7 +8,7 @@ will expect the prices in format like 1,23.
 This sample shows that the culture settings are applied for the data that is being 
 read by the extenal data plugin.
 
-#@DataSource:products.xlsx
+@DataSource:products.xlsx
 Forgatókönyv: The basket price is calculated correctly
 	The scenario will be treated as a scenario outline with the examples from the CSV file.
 	The CSV file contains multile fields, including product and price.

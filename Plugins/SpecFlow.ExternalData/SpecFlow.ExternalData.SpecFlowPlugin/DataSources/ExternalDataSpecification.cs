@@ -8,10 +8,10 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class ExternalDataSpecification
     {
-        public DataValue DataSource { get; }
+        public DataSource DataSource { get; }
         public IDictionary<string, DataSourceSelector> SpecifiedFieldSelectors { get; }
 
-        public ExternalDataSpecification(DataValue dataSource, IDictionary<string, DataSourceSelector> specifiedFieldSelectors = null)
+        public ExternalDataSpecification(DataSource dataSource, IDictionary<string, DataSourceSelector> specifiedFieldSelectors = null)
         {
             SpecifiedFieldSelectors = specifiedFieldSelectors == null ? null : 
                 new ReadOnlyDictionary<string, DataSourceSelector>(
@@ -23,9 +23,16 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
         {
             //TODO: handle different data sources
             //TODO: handle data sets
-            if (!DataSource.IsDataTable) throw new NotImplementedException();
+            DataValue dataSet = DataSource;
+            if (!DataSource.IsDataTable)
+            {
+                if (DataSource.IsDataRecord && DataSource.DefaultDataSet != null) 
+                    dataSet = DataSource.AsDataRecord.Fields[DataSource.DefaultDataSet];
+                else
+                    throw new NotImplementedException();
+            }
             
-            var dataTable = DataSource.AsDataTable;
+            var dataTable = dataSet.AsDataTable;
 
             var headerNames = examplesHeaderNames ?? GetTargetHeader(dataTable.Header);
             var fieldSelectors = GetFieldSelectors(headerNames);
