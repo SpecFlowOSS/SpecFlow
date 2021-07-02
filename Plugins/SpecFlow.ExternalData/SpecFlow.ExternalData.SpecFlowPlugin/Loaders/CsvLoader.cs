@@ -13,12 +13,12 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
         {
         }
         
-        protected override DataValue LoadDataSourceFromFilePath(string filePath, string sourceFilePath)
+        protected override DataSource LoadDataSourceFromFilePath(string filePath, string sourceFilePath)
         {
             var culture = CultureInfo.InvariantCulture;
             var fileContent = ReadTextFileContent(filePath);
             var records = LoadCsvDataTable(fileContent, culture);
-            return new DataValue(records);
+            return new DataSource(records);
         }
 
         internal DataTable LoadCsvDataTable(string fileContent, CultureInfo culture)

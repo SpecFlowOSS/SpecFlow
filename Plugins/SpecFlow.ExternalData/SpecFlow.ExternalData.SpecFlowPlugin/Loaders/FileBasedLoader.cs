@@ -22,7 +22,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             return extension != null && _acceptedExtensions.Any(e => e.Equals(extension, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public virtual DataValue LoadDataSource(string path, string sourceFilePath)
+        public virtual DataSource LoadDataSource(string path, string sourceFilePath)
         {
             var filePath = ResolveFilePath(path, sourceFilePath);
             try
@@ -39,7 +39,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             }
         }
 
-        protected abstract DataValue LoadDataSourceFromFilePath(string filePath, string sourceFilePath);
+        protected abstract DataSource LoadDataSourceFromFilePath(string filePath, string sourceFilePath);
 
         private string ResolveFilePath(string path, string sourceFilePath)
         {

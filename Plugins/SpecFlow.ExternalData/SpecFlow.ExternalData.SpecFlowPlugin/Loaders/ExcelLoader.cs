@@ -15,7 +15,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
-        protected override DataValue LoadDataSourceFromFilePath(string filePath, string sourceFilePath)
+        protected override DataSource LoadDataSourceFromFilePath(string filePath, string sourceFilePath)
         {
             using var stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
             using IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream);
@@ -42,7 +42,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 dataTable.Items.Add(dataRecord);
             }
 
-            return new DataValue(dataTable);
+            return new DataSource(dataTable);
         }
     }
 }

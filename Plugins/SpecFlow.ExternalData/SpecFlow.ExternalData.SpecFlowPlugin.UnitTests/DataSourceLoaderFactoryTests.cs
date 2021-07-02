@@ -21,7 +21,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             {
             }
 
-            protected override DataValue LoadDataSourceFromFilePath(string filePath, string sourceFilePath) => throw new NotImplementedException();
+            protected override DataSource LoadDataSourceFromFilePath(string filePath, string sourceFilePath) => throw new NotImplementedException();
         }
 
         private IDataSourceLoader CreateLoader(params string[] extensions)
