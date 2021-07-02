@@ -1,5 +1,4 @@
-﻿@focus
-Feature: External Data from Excel file
+﻿Feature: External Data from Excel file
 
 @DataSource:products.xlsx
 Scenario: The basket price is calculated correctly

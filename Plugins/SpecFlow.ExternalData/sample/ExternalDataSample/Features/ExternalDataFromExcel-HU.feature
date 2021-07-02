@@ -1,5 +1,4 @@
 ﻿#language: hu-HU
-@focus
 Jellemző: External Data from Excel file (Hungarian)
 
 Hungarian uses comma (,) as decimal separator instead of dot (.), so SpecFlow
