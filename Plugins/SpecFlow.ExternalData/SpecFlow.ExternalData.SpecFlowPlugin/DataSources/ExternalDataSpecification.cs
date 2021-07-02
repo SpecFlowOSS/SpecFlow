@@ -21,7 +21,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
         {
             //TODO: handle different data sources
             //TODO: handle data sets
-            Debug.Assert(DataSource.IsDataTable);
+            if (!DataSource.IsDataTable) throw new NotImplementedException();
+            
             var dataTable = DataSource.AsDataTable;
 
             var headerNames = examplesHeaderNames ?? GetTargetHeader(dataTable.Header);
