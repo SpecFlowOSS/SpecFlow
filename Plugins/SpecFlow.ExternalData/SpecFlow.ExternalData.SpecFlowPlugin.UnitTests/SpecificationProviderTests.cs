@@ -216,5 +216,39 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.Contains("target_field", result.SpecifiedFieldSelectors.Keys);
             Assert.Equal("target_field", result.SpecifiedFieldSelectors["target_field"].ToString());
         }
+
+        [Fact]
+        public void Should_collect_data_sets_from_tags()
+        {
+            var sut = CreateSut();
+
+            var result = sut.GetSpecification(new[]
+            {
+                new Tag(null, @"@DataSource:path\to\file.csv"),
+                new Tag(null, @"@DataSet:data-set-name"),
+            }, SOURCE_FILE_PATH);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.DataSet);
+            Assert.Equal("data-set-name", result.DataSet);
+        }
+
+        [Fact]
+        public void Should_use_last_DataSet_setting_for_duplicated_target_fields()
+        {
+            var sut = CreateSut();
+
+            var result = sut.GetSpecification(new[]
+            {
+                new Tag(null, @"@DataSource:path\to\file.csv"),
+                new Tag(null, @"@DataSet:data-set-name1"),
+                new Tag(null, @"@DataSet:data-set-name2"),
+            }, SOURCE_FILE_PATH);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.DataSet);
+            Assert.Equal("data-set-name2", result.DataSet);
+        }
+
     }
 }

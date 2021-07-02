@@ -29,21 +29,23 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             });
 
             var worksheetsRecord = new DataRecord();
-            var resultTable = result.Tables[0];
-            
-            var dataTable = new DataTable(resultTable.Columns.OfType<DataColumn>().Select(c => c.ColumnName).ToArray());
 
-            foreach (DataRow resultTableRow in resultTable.Rows)
+            foreach (System.Data.DataTable resultTable in result.Tables)
             {
-                var dataRecord = new DataRecord();
-                foreach (DataColumn column in resultTable.Columns)
-                {
-                    dataRecord.Fields[column.ColumnName] = new DataValue(resultTableRow[column]);
-                }
-                dataTable.Items.Add(dataRecord);
-            }
+                var dataTable = new DataTable(resultTable.Columns.OfType<DataColumn>().Select(c => c.ColumnName).ToArray());
 
-            worksheetsRecord.Fields[resultTable.TableName] = new DataValue(dataTable);
+                foreach (DataRow resultTableRow in resultTable.Rows)
+                {
+                    var dataRecord = new DataRecord();
+                    foreach (DataColumn column in resultTable.Columns)
+                    {
+                        dataRecord.Fields[column.ColumnName] = new DataValue(resultTableRow[column]);
+                    }
+                    dataTable.Items.Add(dataRecord);
+                }
+
+                worksheetsRecord.Fields[resultTable.TableName] = new DataValue(dataTable);
+            }
             
             return new DataSource(worksheetsRecord, result.Tables[0].TableName);
         }

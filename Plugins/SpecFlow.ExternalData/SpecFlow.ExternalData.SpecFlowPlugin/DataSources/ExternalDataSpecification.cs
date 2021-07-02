@@ -9,29 +9,35 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
     public class ExternalDataSpecification
     {
         public DataSource DataSource { get; }
+        public string DataSet { get; }
         public IDictionary<string, DataSourceSelector> SpecifiedFieldSelectors { get; }
 
-        public ExternalDataSpecification(DataSource dataSource, IDictionary<string, DataSourceSelector> specifiedFieldSelectors = null)
+        public ExternalDataSpecification(DataSource dataSource, IDictionary<string, DataSourceSelector> specifiedFieldSelectors = null, string dataSet = null)
         {
             SpecifiedFieldSelectors = specifiedFieldSelectors == null ? null : 
                 new ReadOnlyDictionary<string, DataSourceSelector>(
                     new Dictionary<string, DataSourceSelector>(specifiedFieldSelectors, FieldNameComparer.Value));
             DataSource = dataSource;
+            DataSet = dataSet;
         }
 
         public DataTable GetExampleRecords(string[] examplesHeaderNames)
         {
-            //TODO: handle different data sources
-            //TODO: handle data sets
             DataValue dataSet = DataSource;
-            if (!DataSource.IsDataTable)
+            if (DataSource.IsDataRecord)
             {
-                if (DataSource.IsDataRecord && DataSource.DefaultDataSet != null) 
+                if (DataSet != null)
+                    dataSet = DataSource.AsDataRecord.Fields.TryGetValue(DataSet, out var value)?
+                            value:
+                            throw new ExternalDataPluginException($"Unable to find data set '{DataSet}' in the data source. Available data sets: {string.Join(", ", DataSource.AsDataRecord.Fields.Keys)}");
+                else if (DataSource.DefaultDataSet != null)
                     dataSet = DataSource.AsDataRecord.Fields[DataSource.DefaultDataSet];
-                else
-                    throw new NotImplementedException();
             }
             
+            //TODO: handle hierarchical data
+            if (!dataSet.IsDataTable)
+                throw new ExternalDataPluginException("Hierarchical data sources are not supported yet.");
+
             var dataTable = dataSet.AsDataTable;
 
             var headerNames = examplesHeaderNames ?? GetTargetHeader(dataTable.Header);
@@ -45,16 +51,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
                         new KeyValuePair<string, DataValue>(
                             targetFieldSelector.Key, 
                             targetFieldSelector.Value.Evaluate(new DataValue(dataRecord))))));
-                            //GetSourceFieldValue(dataRecord, targetField, dataTable.Header)))));
             }
             return result;
         }
 
         private Dictionary<string, DataSourceSelector> GetFieldSelectors(string[] headerNames)
         {
-            return headerNames.ToDictionary(
-                h => h,
-                GetSourceFieldSelector);
+            return headerNames.ToDictionary(h => h, GetSourceFieldSelector);
         }
 
         private DataSourceSelector GetSourceFieldSelector(string targetField)

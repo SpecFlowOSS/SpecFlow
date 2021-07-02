@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
+using TechTalk.SpecFlow.EnvironmentAccess;
 using Xunit;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
@@ -22,6 +23,19 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             };
         }
 
+        private DataTable CreateUserDataList()
+        {
+            return new(new []{ "name" })
+            {
+                Items =
+                {
+                    new DataRecord(new Dictionary<string, string> { {"name", "Marvin" } }),
+                    new DataRecord(new Dictionary<string, string> { {"name", "Ford" } }),
+                    new DataRecord(new Dictionary<string, string> { {"name", "Trinity" } }),
+                }
+            };
+        }
+
         private ExternalDataSpecification CreateSut(Dictionary<string, string> fields = null)
         {
             var selectorParser = new DataSourceSelectorParser();
@@ -29,6 +43,18 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
                 fields?.ToDictionary(
                     f => f.Key, 
                     f => selectorParser.Parse(f.Value)));
+        }
+
+        private ExternalDataSpecification CreateDataSetSut(string dataSet, Dictionary<string, string> fields = null)
+        {
+            var dataSetRecord = new DataRecord();
+            dataSetRecord.Fields["products"] = new DataValue(CreateProductDataList());
+            dataSetRecord.Fields["users"] = new DataValue(CreateUserDataList());
+            var selectorParser = new DataSourceSelectorParser();
+            return new(new DataSource(dataSetRecord, "products"), 
+                fields?.ToDictionary(
+                    f => f.Key, 
+                    f => selectorParser.Parse(f.Value)), dataSet);
         }
 
         [Fact]
@@ -139,5 +165,34 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.Contains("product name", result.Header);
             Assert.Equal("Chocolate", result.Items[0].Fields["product name"].Value);
         }
+
+        [Fact]
+        public void Should_return_specified_data_set()
+        {
+            var sut = CreateDataSetSut("users");
+
+            var result =
+                sut.GetExampleRecords(null);
+
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Items.Count);
+            Assert.Equal(new[] { "name" }, result.Header);
+            Assert.Equal("Marvin", result.Items[0].Fields["name"].Value);
+        }
+
+        [Fact]
+        public void Should_return_default_data_set_if_not_specified()
+        {
+            var sut = CreateDataSetSut(null);
+
+            var result =
+                sut.GetExampleRecords(null);
+
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Items.Count);
+            Assert.Contains("product", result.Header);
+            Assert.Equal("Chocolate", result.Items[0].Fields["product"].Value);
+        }
+
     }
 }

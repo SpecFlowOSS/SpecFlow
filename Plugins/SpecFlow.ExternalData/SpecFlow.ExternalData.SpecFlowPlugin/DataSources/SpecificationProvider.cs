@@ -13,6 +13,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
         private const string DISABLE_DATA_SOURCE_TAG = "@DisableDataSource";
         private const string DATA_FIELD_TAG_PREFIX = "@DataField";
         private const string DATA_FORMAT_TAG_PREFIX = "@DataFormat";
+        private const string DATA_SET_TAG_PREFIX = "@DataSet";
 
         private readonly IDataSourceLoaderFactory _dataSourceLoaderFactory;
         private readonly DataSourceSelectorParser _dataSourceSelectorParser;
@@ -33,12 +34,19 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
                 return null;
 
             var dataFormat = GetDataFormat(tagsArray);
+            var dataSet = GetDataSet(tagsArray);
             
             var loader = _dataSourceLoaderFactory.CreateLoader(dataFormat, dataSourcePath);
             var dataSource = loader.LoadDataSource(dataSourcePath, sourceFilePath);
             var fields = GetFields(tagsArray);
 
-            return new ExternalDataSpecification(dataSource, fields);
+            return new ExternalDataSpecification(dataSource, fields, dataSet);
+        }
+
+        private string GetDataSet(Tag[] tags)
+        {
+            return GetTagValues(tags, DATA_SET_TAG_PREFIX)
+                .LastOrDefault();
         }
 
         private string GetDataFormat(Tag[] tags)
