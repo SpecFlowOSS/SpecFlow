@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Gherkin.Ast;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
@@ -11,10 +12,34 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
     public class IncludeExternalDataTransformation : ScenarioTransformation
     {
         private readonly ISpecificationProvider _specificationProvider;
+        private CultureInfo _featureCultureInfo = null;
 
         public IncludeExternalDataTransformation(ISpecificationProvider specificationProvider)
         {
             _specificationProvider = specificationProvider;
+        }
+
+        protected override void OnFeatureVisiting(Feature feature)
+        {
+            base.OnFeatureVisiting(feature);
+            _featureCultureInfo = GetFeatureCultureInfo(feature.Language);
+        }
+
+        private CultureInfo GetFeatureCultureInfo(string featureLanguage)
+        {
+            try
+            {
+                if (featureLanguage == null || featureLanguage.Equals("en", StringComparison.InvariantCultureIgnoreCase)) 
+                    return new CultureInfo("en-US");
+                var result = new CultureInfo(featureLanguage);
+                if (result.IsNeutralCulture)
+                    return CultureInfo.InvariantCulture; //TODO: alternatively guess the specific culture or show an error.
+                return result;
+            }
+            catch (Exception)
+            {
+                return CultureInfo.InvariantCulture;
+            }
         }
 
         private IEnumerable<Tag> GetSourceFeatureTags() => 
@@ -60,7 +85,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
         {
             var exampleRecords = specification.GetExampleRecords(examplesHeaderNames);
             var exampleRows = exampleRecords.Items
-                                            .Select(rec => new TableRow(null, exampleRecords.Header.Select(h => new TableCell(null, rec.Fields[h].AsString)).ToArray()))
+                                            .Select(rec => new TableRow(null, exampleRecords.Header.Select(h => new TableCell(null, rec.Fields[h].AsString(_featureCultureInfo))).ToArray()))
                                             .ToArray();
 
             var examplesBlock = CreateExamplesBlock(exampleRecords.Header, exampleRows, examplesKeyword);

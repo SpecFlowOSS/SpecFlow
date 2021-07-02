@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 using Xunit;
 
@@ -12,9 +10,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
     {
         private static readonly string SampleFilesFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".", "SampleFiles");
         private readonly string _productsSampleFilePath = Path.Combine(SampleFilesFolder, "products.xlsx");
-
-        private string SampleFeatureFilePathInSampleFileFolder =>
-            Path.Combine(Path.GetDirectoryName(_productsSampleFilePath) ?? ".", "Sample.feature");
 
         private ExcelLoader CreateSut() => new();
 
@@ -30,9 +25,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var worksheetResult = result.AsDataRecord.Fields["products"];
             Assert.True(worksheetResult.IsDataTable);
             Assert.Equal(3, worksheetResult.AsDataTable.Items.Count);
-            Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString);
-            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString);
-            Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString);
+            Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString());
+            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString());
+            Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString());
         }
 
         [Fact]
@@ -47,9 +42,9 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var worksheetResult = result.AsDataRecord.Fields["products-plain"];
             Assert.True(worksheetResult.IsDataTable);
             Assert.Equal(3, worksheetResult.AsDataTable.Items.Count);
-            Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString);
-            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString);
-            Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString);
+            Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString());
+            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString());
+            Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString());
         }
 
         [Fact]

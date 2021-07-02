@@ -26,7 +26,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests.DataSources.Selectors
             var result = sut.Evaluate(new DataValue(record));
             
             Assert.NotNull(result);
-            Assert.Equal("value2", result.AsString);
+            Assert.Equal("value2", result.AsString());
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests.DataSources.Selectors
             var result = sut.Evaluate(new DataValue(record));
 
             Assert.NotNull(result);
-            Assert.Equal("Chocolate", result.AsString);
+            Assert.Equal("Chocolate", result.AsString());
         }
     }
 }

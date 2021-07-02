@@ -25,8 +25,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             
             Assert.True(result.IsDataTable);
             Assert.Equal(3, result.AsDataTable.Items.Count);
-            Assert.Equal("Chocolate", result.AsDataTable.Items[0].Fields["product"].AsString);
-            Assert.Equal("2.5", result.AsDataTable.Items[0].Fields["price"].AsString);
+            Assert.Equal("Chocolate", result.AsDataTable.Items[0].Fields["product"].AsString());
+            Assert.Equal("2.5", result.AsDataTable.Items[0].Fields["price"].AsString());
         }
 
         [Fact]
@@ -41,12 +41,12 @@ Juice"", 1.2", CultureInfo.CurrentCulture);
 
             Assert.Equal(new[] {"product", "price"}, result.Header);
             Assert.Equal(3, result.Items.Count);
-            Assert.Equal("Chocolate", result.Items[0].Fields["product"].AsString);
-            Assert.Equal("2.5", result.Items[0].Fields["price"].AsString);
-            Assert.Equal(@"One""Two,Three ", result.Items[1].Fields["product"].AsString);
+            Assert.Equal("Chocolate", result.Items[0].Fields["product"].AsString());
+            Assert.Equal("2.5", result.Items[0].Fields["price"].AsString());
+            Assert.Equal(@"One""Two,Three ", result.Items[1].Fields["product"].AsString());
             Assert.Equal(@"Orange
-Juice", result.Items[2].Fields["product"].AsString);
-            Assert.Equal("1.2", result.Items[2].Fields["price"].AsString);
+Juice", result.Items[2].Fields["product"].AsString());
+            Assert.Equal("1.2", result.Items[2].Fields["price"].AsString());
         }
 
         [Fact]

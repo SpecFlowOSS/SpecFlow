@@ -1,9 +1,12 @@
-﻿namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
+﻿using System;
+using System.Globalization;
+
+namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
 {
     public class DataValue
     {
         public object Value { get; }
-        public string AsString { get; }
+        public string AsString2 { get; }
 
         public TValue As<TValue>() => (TValue)Value;
         public bool IsNull => Value == null;
@@ -17,7 +20,14 @@
         public DataValue(object value)
         {
             Value = value;
-            AsString = value?.ToString();
+            AsString2 = value?.ToString();
+        }
+
+        public string AsString(CultureInfo cultureInfo = null)
+        {
+            if (Value == null || cultureInfo == null)
+                return Value?.ToString();
+            return Convert.ToString(Value, cultureInfo);
         }
     }
 }
