@@ -9,6 +9,7 @@
       <NuspecProperties>$(NuspecProperties);owner=$(SpecFlow_Owners)</NuspecProperties>
       
       <NuspecProperties>$(NuspecProperties);SpecFlow_Net5_TFM=$(SpecFlow_Net5_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Net6_TFM=$(SpecFlow_Net6_TFM)</NuspecProperties>
       
       <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Runtime_TFM=$(SpecFlow_FullFramework_Runtime_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Runtime_TFM=$(SpecFlow_Core_Runtime_TFM)</NuspecProperties>
@@ -18,6 +19,7 @@
             
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Tools_TFM=$(SpecFlow_Core_Tools_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Net5_Tools_TFM=$(SpecFlow_Net5_Tools_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Net6_Tools_TFM=$(SpecFlow_Net6_Tools_TFM)</NuspecProperties>
     </PropertyGroup>
   </Target>
 

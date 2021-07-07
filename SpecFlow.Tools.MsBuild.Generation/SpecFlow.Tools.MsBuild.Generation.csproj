@@ -57,7 +57,7 @@
     <Compile Include="FrameworkDependent\*.cs" />
     <None Include="FrameworkDependent\**\*.cs" />
     <Compile Include="FrameworkDependent\FullFramework\**\*.cs" Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Tools_TFM)'" />
-    <Compile Include="FrameworkDependent\DotNetCore\**\*.cs" Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Tools_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net5_Tools_TFM)'" />
+    <Compile Include="FrameworkDependent\DotNetCore\**\*.cs" Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Tools_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net5_Tools_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net6_Tools_TFM)'" />
   </ItemGroup>
 
   <ItemGroup>

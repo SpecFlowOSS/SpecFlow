@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.Analytics
                 return null;
             }
 
-            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var crypt = System.Security.Cryptography.SHA256.Create();
             var stringBuilder = new StringBuilder();
             var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(inputString));
             foreach (byte theByte in crypto)
