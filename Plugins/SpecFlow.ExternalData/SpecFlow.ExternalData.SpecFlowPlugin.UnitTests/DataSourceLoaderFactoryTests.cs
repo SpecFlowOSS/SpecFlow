@@ -29,10 +29,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             extensions ??= new[] { ".xxx" };
             var loader = new TestLoader(extensions);
             return loader;
-            //var mock = new Mock<IDataSourceLoader>();
-            //mock.Setup(l => l.AcceptsSourceFilePath(It.IsAny<string>()))
-            //    .Returns(new Func<string, bool>(path => extensions.Contains(Path.GetExtension(path)))); 
-            //return mock.Object;
         }
 
         [Fact]

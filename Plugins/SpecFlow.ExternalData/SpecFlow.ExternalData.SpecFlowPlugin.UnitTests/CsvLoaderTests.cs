@@ -33,12 +33,11 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         public void Can_read_special_csv_file()
         {
             var sut = CreateSut();
-            var result = sut.LoadCsvDataTable(@"""product"",price
-Chocolate,2.5
-""One""""Two,Three "",1.0
-""Orange
-Juice"", 1.2", CultureInfo.CurrentCulture);
+            var resultDataSource = sut.LoadDataSource(
+                "products-special.csv",
+                SampleFeatureFilePathInSampleFileFolder);
 
+            var result = resultDataSource.AsDataTable;
             Assert.Equal(new[] {"product", "price"}, result.Header);
             Assert.Equal(3, result.Items.Count);
             Assert.Equal("Chocolate", result.Items[0].Fields["product"].AsString());
