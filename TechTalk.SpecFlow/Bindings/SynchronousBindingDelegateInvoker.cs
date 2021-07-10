@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.Bindings
@@ -28,10 +29,18 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 var r = bindingDelegate.DynamicInvoke(invokeArgs);
                 if (r is Task t)
-                    await t;
+                {
+                    try
+                    {
+                        await t;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new TargetInvocationException(ex);
+                    }
+                }
                 return r;
             });
         }
-
     }
 }
