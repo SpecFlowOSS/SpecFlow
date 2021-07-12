@@ -31,6 +31,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual IObjectContainer CreateGlobalContainer(Assembly testAssembly, IRuntimeConfigurationProvider configurationProvider = null)
         {
+            System.Diagnostics.Debugger.Launch();
+
             var container = new ObjectContainer();
             container.RegisterInstanceAs<IContainerBuilder>(this);
 
@@ -146,16 +148,23 @@ namespace TechTalk.SpecFlow.Infrastructure
             var traceListener = container.Resolve<ITraceListener>();
             foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins())
             {
-                LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
+                // Should not log error if TestAssembly does not have a RuntimePlugin attribute
+                var traceMissingPluginAttribute = !testAssembly.Location.Equals(pluginPath);
+                LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener, traceMissingPluginAttribute);
             }
         }
 
-        protected virtual void LoadPlugin(string pluginPath, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
-            UnitTestProviderConfiguration unitTestProviderConfigration, ITraceListener traceListener)
+        protected virtual void LoadPlugin(
+            string pluginPath,
+            IRuntimePluginLoader pluginLoader,
+            RuntimePluginEvents runtimePluginEvents,
+            UnitTestProviderConfiguration unitTestProviderConfigration,
+            ITraceListener traceListener,
+            bool traceMissingPluginAttribute)
         {
             traceListener.WriteToolOutput($"Loading plugin {pluginPath}");
 
-            var plugin = pluginLoader.LoadPlugin(pluginPath, traceListener);
+            var plugin = pluginLoader.LoadPlugin(pluginPath, traceListener, traceMissingPluginAttribute);
             var runtimePluginParameters = new RuntimePluginParameters();
 
             plugin?.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);
