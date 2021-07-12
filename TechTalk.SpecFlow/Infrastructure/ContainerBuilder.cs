@@ -31,8 +31,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual IObjectContainer CreateGlobalContainer(Assembly testAssembly, IRuntimeConfigurationProvider configurationProvider = null)
         {
-            System.Diagnostics.Debugger.Launch();
-
             var container = new ObjectContainer();
             container.RegisterInstanceAs<IContainerBuilder>(this);
 
