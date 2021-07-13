@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
             var loader = new RuntimePluginLoader();
             var listener = new Mock<ITraceListener>();
 
-            var plugin = loader.LoadPlugin("SpecFlow.Windsor.SpecFlowPlugin.dll", listener.Object);
+            var plugin = loader.LoadPlugin("SpecFlow.Windsor.SpecFlowPlugin.dll", listener.Object, It.IsAny<bool>());
 
             plugin.Should().NotBeNull();
         }

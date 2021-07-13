@@ -11,6 +11,7 @@ Changes:
 Fixes:
 + Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
 + Fix Default value deserialization from specflow.json #2239 #2439
++ Should not log error if TestAssembly does not have a RuntimePlugin attribute #2432
 
 
 3.8
