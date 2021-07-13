@@ -6,6 +6,6 @@ namespace TechTalk.SpecFlow.Plugins
 {
     public interface IRuntimePluginLoader
     {
-        IRuntimePlugin LoadPlugin(string pluginAssemblyName, ITraceListener traceListener);
+        IRuntimePlugin LoadPlugin(string pluginAssemblyName, ITraceListener traceListener, bool traceMissingPluginAttribute);
     }
 }
