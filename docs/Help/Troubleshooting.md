@@ -81,3 +81,62 @@ To regenerate these files:
 
 * Open a feature file in your solution. If you see a popup informing you that the feature files were generated with an earlier version of SpecFlow, click on **Yes** to regenerate these files. Depending on the size of your project, this may take a while.
 * If you are using an earlier version of Visual Studio, you need to force the feature files to be regenerated. Right-click on your project, and select **Regenerate Feature Files** from the menu.
+
+## Build error due to using spaces and special characters in project name
+
+Using special characters in your project name will cause build errors as the feature files will fail to generate properly.
+
+The build error may look like this:
+
+`````
+Build started...
+1>------ Build started: Project: My proj (new), Configuration: Debug Any CPU ------
+1>SpecFlowFeatureFiles: Features\Calculator.feature
+1>SpecFlowGeneratedFiles: Features\Calculator.feature.cs
+1>C:\Work\repros\My proj\My proj (new)\obj\Debug\netcoreapp3.1\NUnit.AssemblyHooks.cs(12,22,12,23): error CS1514: { expected
+1>C:\Work\repros\My proj\My proj (new)\obj\Debug\netcoreapp3.1\NUnit.AssemblyHooks.cs(12,22,12,23): error CS1513: } expected
+1>C:\Work\repros\My proj\My proj (new)\obj\Debug\netcoreapp3.1\NUnit.AssemblyHooks.cs(12,22,12,27): error CS8400: Feature 'top-level statements' is not available in C# 8.0. Please use language version 9.0 or greater.
+1>C:\Work\repros\My proj\My proj (new)\obj\Debug\netcoreapp3.1\NUnit.AssemblyHooks.cs(12,22,12,27): error CS8803: Top-level statements must precede namespace and type declarations.
+1>C:\Work\repros\My proj\My proj (new)\obj\Debug\netcoreapp3.1\NUnit.AssemblyHooks.cs(12,26,12,27): error CS1526: A new expression requires an argument list or (), [], or {} after type
+
+.....
+`````
+
+The most obvious solution to this is to avoid using **special characters e.g. (paranthesis)** for your project name. Spaces are ok as they get replaced with underlines_.
+
+### Example
+
+If you have already created your project with special characters you can still change that. Lets take a look at an example. The below project name was created as ***My proj (new)***.
+
+- If you open the generated code you can find that although the spaces have been replaced with underscore characters the parentheses are kept in the namespace causing a compilation error. Visual Studio also highlights this invalid code.
+
+![Namespace error](../_static/images/namespaceerror.png)
+
+- If you use the SpecFlow project template there is also a binding class added already to the project. In the C# file the generated namespace is correct, because the parentheses are also automatically replaced with underscore:
+
+![Namespace error2](../_static/images/namespaceerror2.png)
+
+- However, you can see that the project is generally in an "unhealthy state" if you try to add a new C# file from Visual Studio. The new file will have a similar invalid namespace like the SpecFlow generated code:
+
+![Namespace error3](../_static/images/namespaceerror3.png)
+
+- This is caused by the default namespace of the project (go to project properties in Visual Studio). By default the root namespace equals to the project name (equals to the assembly name). However, while the parenthesis are valid in the project name and in the assembly name, these characters are not valid in the namespace. Note that the spaces are automatically replaced with underscore, but the parentheses are not:
+
+![Default Namespace](../_static/images/defaultnamespace.png)
+
+### Solution
+
+- To fix the project the default namespace should be changed to a valid namespace:
+
+![Namespace fix](../_static/images/namespacefix.png)
+
+- You can also fix the issue in the csproj file directly. The property "RootNamespace" has to be set accordingly:
+
+![csproj fix](../_static/images/csprojfix.png)
+
+- The default namespace will be applied by SpecFlow code generation and the generated classes will be valid now:
+
+![csproj fix](../_static/images/fixednamespace.png)
+
+***> Note:** if you added a C# class with the invalid default namespace you have to fix that file manually. This is the standard behavior of the default namespace, it will be used for newly created files only.
+The SpecFlow generated classes get however automatically fixed, because they are (re-)generated during the build.*
