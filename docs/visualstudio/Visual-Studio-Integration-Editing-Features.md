@@ -27,7 +27,7 @@ IntelliSense is available in feature files for the following:
 
 ![Specflow Integrated with Visual Studio and IntelliSense](/_static/images/intellisense2.png)
 
-The IntelliSense suggestions (red rectangle) for the **Given** step includes existing Given steps feature files. The entries in the list that are indicated with **"-->"** indicate that the step has been bound.
+The IntelliSense suggestions for the **Given** step includes existing Given steps feature files. The entries in the list that are indicated with **"-->"** indicate that the step has been bound.
 
 ### Code Files
 
