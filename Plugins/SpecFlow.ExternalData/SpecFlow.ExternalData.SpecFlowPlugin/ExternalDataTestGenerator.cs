@@ -11,13 +11,11 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
 {
     public class ExternalDataTestGenerator : TestGenerator
     {
-        private readonly IExternalDataFeaturePatcher _externalDataFeaturePatcher;
         private readonly IncludeExternalDataTransformation _includeExternalDataTransformation;
 
-        public ExternalDataTestGenerator(SpecFlowConfiguration specFlowConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper, IGherkinParserFactory gherkinParserFactory, IExternalDataFeaturePatcher externalDataFeaturePatcher, IncludeExternalDataTransformation includeExternalDataTransformation) 
+        public ExternalDataTestGenerator(SpecFlowConfiguration specFlowConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper, IGherkinParserFactory gherkinParserFactory, IncludeExternalDataTransformation includeExternalDataTransformation) 
             : base(specFlowConfiguration, projectSettings, testHeaderWriter, testUpToDateChecker, featureGeneratorRegistry, codeDomHelper, gherkinParserFactory)
         {
-            _externalDataFeaturePatcher = externalDataFeaturePatcher;
             _includeExternalDataTransformation = includeExternalDataTransformation;
         }
 
@@ -26,7 +24,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
         {
             var document = base.ParseContent(parser, contentReader, documentLocation);
             document = _includeExternalDataTransformation.TransformDocument(document);
-            return _externalDataFeaturePatcher.PatchDocument(document); //TODO: remove old code
+            return document; 
         }
     }
 }
