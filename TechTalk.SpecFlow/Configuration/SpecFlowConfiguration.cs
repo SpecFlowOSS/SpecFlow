@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 
@@ -29,8 +30,7 @@ namespace TechTalk.SpecFlow.Configuration
             List<string> additionalStepAssemblies,
             bool allowDebugGeneratedFiles,
             bool allowRowTests,
-            bool markFeaturesParallelizable,
-            string[] skipParallelizableMarkerForTags,
+            string[] addNonParallelizableMarkerForTags,
             ObsoleteBehavior obsoleteBehavior,
             CucumberMessagesConfiguration cucumberMessagesConfiguration)
         {
@@ -49,8 +49,7 @@ namespace TechTalk.SpecFlow.Configuration
             AdditionalStepAssemblies = additionalStepAssemblies;
             AllowDebugGeneratedFiles = allowDebugGeneratedFiles;
             AllowRowTests = allowRowTests;
-            MarkFeaturesParallelizable = markFeaturesParallelizable;
-            SkipParallelizableMarkerForTags = skipParallelizableMarkerForTags;
+            AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags;
             ObsoleteBehavior = obsoleteBehavior;
         }
 
@@ -69,11 +68,12 @@ namespace TechTalk.SpecFlow.Configuration
         //runtime settings
         public bool StopAtFirstError { get; set; }
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
+        public ObsoleteBehavior ObsoleteBehavior { get; set; }
 
+        //generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
-
-        public ObsoleteBehavior ObsoleteBehavior { get; set; }
+        public string[] AddNonParallelizableMarkerForTags { get; set; }
 
         //tracing settings
         public bool TraceSuccessfulSteps { get; set; }
@@ -83,9 +83,6 @@ namespace TechTalk.SpecFlow.Configuration
 
         public List<string> AdditionalStepAssemblies { get; set; }
 
-        public bool MarkFeaturesParallelizable { get; set; }
-        public string[] SkipParallelizableMarkerForTags { get; set; }
-
         protected bool Equals(SpecFlowConfiguration other)
         {
             return Equals(CucumberMessagesConfiguration, other.CucumberMessagesConfiguration) && ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) &&
@@ -93,8 +90,7 @@ namespace TechTalk.SpecFlow.Configuration
                    StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles &&
                    AllowRowTests == other.AllowRowTests && ObsoleteBehavior == other.ObsoleteBehavior && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings &&
                    MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle &&
-                   Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable &&
-                   Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags);
+                   AdditionalStepAssemblies.SequenceEqual(other.AdditionalStepAssemblies) && AddNonParallelizableMarkerForTags.SequenceEqual(other.AddNonParallelizableMarkerForTags);
         }
 
         public override bool Equals(object obj)
@@ -137,8 +133,7 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode * 397) ^ MinTracedDuration.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int) StepDefinitionSkeletonStyle;
                 hashCode = (hashCode * 397) ^ (AdditionalStepAssemblies != null ? AdditionalStepAssemblies.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ MarkFeaturesParallelizable.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SkipParallelizableMarkerForTags != null ? SkipParallelizableMarkerForTags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AddNonParallelizableMarkerForTags != null ? AddNonParallelizableMarkerForTags.GetHashCode() : 0);
                 return hashCode;
             }
         }

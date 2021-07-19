@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Utf8Json;
+using SpecFlow.Internal.Json;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 throw new ArgumentNullException(nameof(jsonContent));
             }
 
-            var jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonContent);
+            var jsonConfig = jsonContent.FromJson<JsonConfig>();
 
             var containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             var generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
@@ -28,8 +28,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             var additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
-            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
-            var skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
+            var addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
             var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
             var cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
@@ -68,8 +67,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             {
                 allowDebugGeneratedFiles = jsonConfig.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = jsonConfig.Generator.AllowRowTests;
-                markFeaturesParallelizable = jsonConfig.Generator.MarkFeaturesParallelizable;
-                skipParallelizableMarkerForTags = jsonConfig.Generator.SkipParallelizableMarkerForTags?.ToArray();
+                addNonParallelizableMarkerForTags = jsonConfig.Generator.AddNonParallelizableMarkerForTags?.ToArray();
             }
 
             if (jsonConfig.Trace != null)
@@ -116,8 +114,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 additionalStepAssemblies,
                 allowDebugGeneratedFiles,
                 allowRowTests,
-                markFeaturesParallelizable,
-                skipParallelizableMarkerForTags,
+                addNonParallelizableMarkerForTags,
                 obsoleteBehavior,
                 cucumberMessagesConfiguration
             );

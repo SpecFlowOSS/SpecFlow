@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using BoDi;
 using FluentAssertions;
@@ -24,8 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""generatorProvider"": ""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow"",
               ""runtimeProvider"": ""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow""
             },
-            ""generator"": { ""allowDebugGeneratedFiles"": false , ""markFeaturesParallelizable"": false, 
-                             ""skipParallelizableMarkerForTags"": [""mySpecialTag1"", ""mySpecialTag2""]},
+            ""generator"": { ""allowDebugGeneratedFiles"": false },
             ""runtime"": {              
               ""stopAtFirstError"": false,
               ""missingOrPendingStepsOutcome"": ""Inconclusive""
@@ -493,6 +493,126 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             cucumberMessagesSink.Type.Should().Be("file");
             cucumberMessagesSink.Path.Should().Be(@"C:\temp\testrun.cm");
+        }
+
+        [Fact]
+        public void Check_Generator_NonParallelizableMarkers_EmptyList()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                            ]
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Check_Generator_NonParallelizableMarkers_SingleTag()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                                ""tag1""
+                                            ]
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1");
+        }
+
+        [Fact]
+        public void Check_Generator_NonParallelizableMarkers_MultipleTags()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                                ""tag1"",
+                                                ""tag2""
+                                            ]
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1", "tag2");
+        }
+
+        [Fact]
+        public void Check_Defaults_Empty_Configuration()
+        {
+            string configAsJson = "{}";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            AssertDefaultJsonSpecFlowConfiguration(config);
+        }
+
+        [Fact]
+        public void Check_Defaults_Only_Root_Objects()
+        {
+            string configAsJson = @"{
+                ""bindingCulture"": {},
+                ""language"": {},
+                ""generator"": {},
+                ""runtime"": {},
+                ""trace"": {}
+            }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            AssertDefaultJsonSpecFlowConfiguration(config);
+        }
+
+        [Fact]
+        public void Check_Defaults_For_One_Config_Element()
+        {
+            var traceTimings = true;
+            string configAsJson = $@"{{
+                ""trace"": {{
+                    ""traceTimings"": {traceTimings}
+                }}
+            }}";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+
+            config.TraceTimings.Should().Be(traceTimings);
+            config.MinTracedDuration.Should().Be(TimeSpan.Parse(ConfigDefaults.MinTracedDuration));
+            config.StepDefinitionSkeletonStyle.Should().Be(ConfigDefaults.StepDefinitionSkeletonStyle);
+            config.TraceSuccessfulSteps.Should().Be(ConfigDefaults.TraceSuccessfulSteps);
+        }
+
+        private void AssertDefaultJsonSpecFlowConfiguration(SpecFlowConfiguration config)
+        {
+            config.ConfigSource.Should().Be(ConfigSource.Json);
+            config.FeatureLanguage.Should().Be(CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage));
+            config.BindingCulture.Should().Be(null);
+
+            //runtime
+            config.StopAtFirstError.Should().Be(ConfigDefaults.StopAtFirstError);
+            config.MissingOrPendingStepsOutcome.Should().Be(ConfigDefaults.MissingOrPendingStepsOutcome);
+            config.ObsoleteBehavior.Should().Be(ConfigDefaults.ObsoleteBehavior);
+            config.CustomDependencies.Should().NotBeNull();
+            config.CustomDependencies.Should().BeEmpty();
+
+            //generator
+            config.AllowDebugGeneratedFiles.Should().Be(ConfigDefaults.AllowDebugGeneratedFiles);
+            config.AllowRowTests.Should().Be(ConfigDefaults.AllowRowTests);
+
+            //trace
+            config.TraceTimings.Should().Be(ConfigDefaults.TraceTimings);
+            config.MinTracedDuration.Should().Be(TimeSpan.Parse(ConfigDefaults.MinTracedDuration));
+            config.StepDefinitionSkeletonStyle.Should().Be(ConfigDefaults.StepDefinitionSkeletonStyle);
+            config.TraceSuccessfulSteps.Should().Be(ConfigDefaults.TraceSuccessfulSteps);
+
+            config.AdditionalStepAssemblies.Should().NotBeNull();
+            config.AdditionalStepAssemblies.Should().BeEmpty();
         }
     }
 }

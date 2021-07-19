@@ -51,8 +51,7 @@ namespace TechTalk.SpecFlow.Configuration
         private static bool DefaultAllowRowTests => ConfigDefaults.AllowRowTests;
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
 
-        public static bool DefaultMarkFeaturesParallelizable => ConfigDefaults.MarkFeaturesParallelizable;
-        public static string[] DefaultSkipParallelizableMarkerForTags => ConfigDefaults.SkipParallelizableMarkerForTags;
+        public static string[] DefaultAddNonParallelizableMarkerForTags => ConfigDefaults.AddNonParallelizableMarkerForTags;
 
         public static ObsoleteBehavior DefaultObsoleteBehavior => ConfigDefaults.ObsoleteBehavior;
 
@@ -137,8 +136,7 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAdditionalStepAssemblies, 
                 DefaultAllowDebugGeneratedFiles, 
                 DefaultAllowRowTests,
-                DefaultMarkFeaturesParallelizable,
-                DefaultSkipParallelizableMarkerForTags,
+                DefaultAddNonParallelizableMarkerForTags,
                 DefaultObsoleteBehavior,
                 new CucumberMessagesConfiguration()
                 );

@@ -14,7 +14,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
         public Configuration.SpecFlowConfiguration LoadAppConfig(Configuration.SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException(nameof(configSection));
-            
 
             ContainerRegistrationCollection runtimeContainerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
@@ -31,11 +30,9 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
+            string[] addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
 
-            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
-            string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
             CucumberMessagesConfiguration cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
-
 
             if (IsSpecified(configSection.Language))
             {
@@ -63,11 +60,10 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             {
                 allowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = configSection.Generator.AllowRowTests;
-                markFeaturesParallelizable = configSection.Generator.MarkFeaturesParallelizable;
 
-                if (IsSpecified(configSection.Generator.SkipParallelizableMarkerForTags))
+                if (IsSpecified(configSection.Generator.AddNonParallelizableMarkerForTags))
                 {
-                    skipParallelizableMarkerForTags = configSection.Generator.SkipParallelizableMarkerForTags.Select(i => i.Value).ToArray();
+                    addNonParallelizableMarkerForTags = configSection.Generator.AddNonParallelizableMarkerForTags.Select(i => i.Value).ToArray();
                 }
 
                 if (IsSpecified(configSection.Generator.Dependencies))
@@ -119,8 +115,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             additionalStepAssemblies,
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
-                                            markFeaturesParallelizable,
-                                            skipParallelizableMarkerForTags,
+                                            addNonParallelizableMarkerForTags,
                                             obsoleteBehavior,
                                             cucumberMessagesConfiguration
                                             );

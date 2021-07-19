@@ -5,20 +5,6 @@ SpecFlow is a test automation solution for .NET built upon the BDD paradigm. Use
 
 SpecFlow tests are written using `Gherkin <https://cucumber.io/docs/gherkin/>`_, which allows you to write test cases using natural languages. SpecFlow uses the official Gherkin parser, which supports over 70 languages. These tests are then tied to your application code using so-called :doc:`bindings <Bindings/Bindings>`, allowing you to execute the tests using the testing framework of your choice. You can also execute your tests using SpecFlow's own dedicated test runner, SpecFlow+ Runner.
 
-==================
- What's new?
-==================
-
-.. image:: _static/images/rider.PNG
-
-
-
-We are very excited to announce that the official SpecFlow for Rider plugin is now available. Find out more `here <https://docs.specflow.org/projects/specflow/en/latest/Rider/rider-installation.html>`__
-
-.. image:: _static/images/vscodelogo.png
-
-Although there is no official SpecFlow extension for VS Code, we have put together a guide for you to setup VS code for a similar experience. Find our more `here <https://go.specflow.org/kq9>`__
-
 ===================
 SpecFlow components
 ===================
@@ -56,9 +42,11 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
 
    ui-automation/Selenium-with-Page-Object-Pattern.md
    Guides/PageObjectModel.md
-   Guides/DriverPattern.md   
-   Examples <https://docs.specflow.org/en/latest/Examples.html>
+   Guides/DriverPattern.md
+   Guides/multiplebrowser.md
+   Guides/externaldata.md
    Getting-Started/Getting-Started-With-An-Example.md
+   Examples <https://docs.specflow.org/en/latest/Examples.html>
   
 
 .. toctree::

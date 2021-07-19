@@ -1,7 +1,6 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
@@ -34,6 +33,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         protected internal const string CATEGORY_PROPERTY_NAME = "Category";
         protected internal const string IGNORE_TEST_CLASS = "IgnoreTestClass";
+        protected internal const string NONPARALLELIZABLE_COLLECTION_NAME = "SpecFlowNonParallelizableFeatures";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
         {
@@ -159,9 +159,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
         {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
+            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(NONPARALLELIZABLE_COLLECTION_NAME)));
         }
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)

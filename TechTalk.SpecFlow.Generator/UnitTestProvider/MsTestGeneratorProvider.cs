@@ -93,9 +93,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeVariableReferenceExpression(TESTCONTEXT_FIELD_NAME)));
         }
 
-        public void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
         {
-            //Not Supported
+            //Not Supported            
         }
 
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
