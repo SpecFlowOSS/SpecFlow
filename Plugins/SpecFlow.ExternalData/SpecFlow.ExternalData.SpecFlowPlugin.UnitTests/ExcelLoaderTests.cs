@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
@@ -26,7 +27,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.True(worksheetResult.IsDataTable);
             Assert.Equal(3, worksheetResult.AsDataTable.Items.Count);
             Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString());
-            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString());
+            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString(CultureInfo.GetCultureInfo("en-us")));
             Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString());
         }
 
@@ -43,7 +44,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             Assert.True(worksheetResult.IsDataTable);
             Assert.Equal(3, worksheetResult.AsDataTable.Items.Count);
             Assert.Equal("Chocolate", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString());
-            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString());
+            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString(CultureInfo.GetCultureInfo("en-us")));
             Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString());
         }
 
