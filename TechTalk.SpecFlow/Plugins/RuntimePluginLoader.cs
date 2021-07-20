@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Plugins
 {
     public class RuntimePluginLoader : IRuntimePluginLoader
     {
-        public IRuntimePlugin LoadPlugin(string pluginAssemblyName, ITraceListener traceListener)
+        public IRuntimePlugin LoadPlugin(string pluginAssemblyName, ITraceListener traceListener, bool traceMissingPluginAttribute)
         {
             Assembly assembly;
             try
@@ -25,7 +25,9 @@ namespace TechTalk.SpecFlow.Plugins
             var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));
             if (pluginAttribute == null)
             {
-                traceListener.WriteToolOutput(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check https://go.specflow.org/doc-plugins for details.", assembly.FullName));
+                if (traceMissingPluginAttribute)
+                    traceListener.WriteToolOutput(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check https://go.specflow.org/doc-plugins for details.", assembly.FullName));
+
                 return null;
             }
 

@@ -313,7 +313,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var pluginLoaderStub = new Mock<IRuntimePluginLoader>();
             var traceListener = container.Resolve<ITraceListener>();
-            pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<string>(), traceListener)).Returns(_pluginToReturn);
+            pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<string>(), traceListener, It.IsAny<bool>())).Returns(_pluginToReturn);
 
 
             container.RegisterInstanceAs<IRuntimePluginLocator>(runtimePluginLocator.Object);

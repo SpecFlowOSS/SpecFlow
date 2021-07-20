@@ -25,9 +25,9 @@ IntelliSense is available in feature files for the following:
 * Gherkin keywords (e.g. `Scenario`, `Given` etc.)
 * Existing steps are listed after a `Given`, `When` or `Then` statement, providing quick access to your current steps definitions. Bound steps are indicated with "-->". Note that **all the steps in all "*.feature" files** that match the current type (Given, When, Then) are displayed:  
 
-[![Specflow Integrated with Visual Studio and IntelliSense](http://specflow.org/screenshots/IntelliSense.png)](http://specflow.org/screenshots/IntelliSense.png)
+![Specflow Integrated with Visual Studio and IntelliSense](/_static/images/intellisense2.png)
 
-The IntelliSense suggestions (red rectangle) for the **Given** step include the two existing Given steps in "GetProducts.feature" and "AddProducts.feature". Step definition methods have been defined for these steps; the entries in the list contain "-->" to indicate that the step has been bound.
+The IntelliSense suggestions for the **Given** step includes existing Given steps feature files. The entries in the list that are indicated with **"-->"** indicate that the step has been bound.
 
 ### Code Files
 
@@ -49,16 +49,14 @@ Most of the items in the **Edit** menu work well with SpecFlow feature files, fo
 
 * You can comment and uncomment selected lines ('#' character) with the default shortcut for comments (Ctrl+K Ctrl+C/Ctrl+K Ctrl+U) or from the menu
 * You can use the options in the **Edit | Outlining** menu to expand and contract sections of your feature files  
-[![VS2010 Edit menu](http://specflow.org/media/outlining_editor.png)](http://specflow.org/media/outlining_editor.png) 
-
-_(click image for full size)_
+![VS2010 Edit menu](/_static/images/outlining_editor.png) 
 
 ## Table Formatting
 
 Tables in SpecFlow are also expanded and formatted automatically as you enter column names and values:
 
-[![Formatted table](http://specflow.org/screenshots/FormattedTable.png)](http://specflow.org/screenshots/FormattedTable.png)  
-_(click image for full size)_
+![Formatted table](/_static/images/tablegifvs.gif)  
+
 
 ## Document Formatting
 
