@@ -9,8 +9,12 @@ namespace SpecFlow.Windsor
     {
         public object ResolveBindingInstance(Type bindingType, IObjectContainer scenarioContainer)
         {
-            var componentContext = scenarioContainer.Resolve<IWindsorContainer>();
-            return componentContext.Resolve(bindingType);
+            if (scenarioContainer.IsRegistered<IWindsorContainer>())
+            {
+                var componentContext = scenarioContainer.Resolve<IWindsorContainer>();
+                return componentContext.Resolve(bindingType);
+            }
+            return scenarioContainer.Resolve(bindingType);
         }
     }
 }
