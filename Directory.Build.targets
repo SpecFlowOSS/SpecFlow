@@ -3,7 +3,7 @@
     <PropertyGroup>
       <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);version=$(NuGetPackageVersion)</NuspecProperties>
-      <NuspecProperties>$(NuspecProperties);SolutionDir=$(SolutionDir)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SolutionDir=$(MSBuildThisFileDirectory)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);copyright=$(SpecFlow_Copyright)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);author=$(SpecFlow_Authors)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);owner=$(SpecFlow_Owners)</NuspecProperties>
@@ -32,6 +32,6 @@
     <ItemGroup>
       <GeneratedNupkgs Include="$(PackageOutputAbsolutePath)\*.nupkg"/>
     </ItemGroup>
-    <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(SolutionDir)GeneratedNuGetPackages\$(Configuration)" />
+    <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(MSBuildThisFileDirectory)GeneratedNuGetPackages\$(Configuration)" />
   </Target>
 </Project>
