@@ -18,8 +18,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
             generatorPluginEvents.RegisterDependencies += (sender, args) =>
             {
                 args.ObjectContainer.RegisterTypeAs<ExternalDataTestGenerator, ITestGenerator>();
-                args.ObjectContainer.RegisterTypeAs<TestDataProvider, ITestDataProvider>();
-                
                 
                 args.ObjectContainer.RegisterTypeAs<SpecificationProvider, ISpecificationProvider>();
                 args.ObjectContainer.RegisterTypeAs<DataSourceLoaderFactory, IDataSourceLoaderFactory>();

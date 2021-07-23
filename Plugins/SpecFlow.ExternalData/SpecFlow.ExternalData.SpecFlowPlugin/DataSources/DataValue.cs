@@ -6,7 +6,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
     public class DataValue
     {
         public object Value { get; }
-        public string AsString2 { get; }
 
         public TValue As<TValue>() => (TValue)Value;
         public bool IsNull => Value == null;
@@ -20,7 +19,6 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.DataSources
         public DataValue(object value)
         {
             Value = value;
-            AsString2 = value?.ToString();
         }
 
         public string AsString(CultureInfo cultureInfo = null)

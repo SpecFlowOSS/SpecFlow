@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
 using SpecFlow.ExternalData.SpecFlowPlugin.DataSources.Selectors;
-using TechTalk.SpecFlow.EnvironmentAccess;
 using Xunit;
 
 namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
 {
     public class ExternalDataSpecificationTests
     {
-        private DataTable CreateProductDataList()
+        private DataTable CreateProductDataTable()
         {
             return new(new []{ "product", "price", "color"})
             {
@@ -23,7 +22,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             };
         }
 
-        private DataTable CreateUserDataList()
+        private DataTable CreateUserDataTable()
         {
             return new(new []{ "name" })
             {
@@ -39,7 +38,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         private ExternalDataSpecification CreateSut(Dictionary<string, string> fields = null)
         {
             var selectorParser = new DataSourceSelectorParser();
-            return new(new DataSource(CreateProductDataList()), 
+            return new(new DataSource(CreateProductDataTable()), 
                 fields?.ToDictionary(
                     f => f.Key, 
                     f => selectorParser.Parse(f.Value)));
@@ -48,8 +47,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         private ExternalDataSpecification CreateDataSetSut(string dataSet, Dictionary<string, string> fields = null)
         {
             var dataSetRecord = new DataRecord();
-            dataSetRecord.Fields["products"] = new DataValue(CreateProductDataList());
-            dataSetRecord.Fields["users"] = new DataValue(CreateUserDataList());
+            dataSetRecord.Fields["products"] = new DataValue(CreateProductDataTable());
+            dataSetRecord.Fields["users"] = new DataValue(CreateUserDataTable());
             var selectorParser = new DataSourceSelectorParser();
             return new(new DataSource(dataSetRecord, "products"), 
                 fields?.ToDictionary(

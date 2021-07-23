@@ -32,13 +32,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
                 if (featureLanguage == null || featureLanguage.Equals("en", StringComparison.InvariantCultureIgnoreCase)) 
                     return new CultureInfo("en-US");
                 var result = new CultureInfo(featureLanguage);
-                if (result.IsNeutralCulture)
-                    return CultureInfo.InvariantCulture; //TODO: alternatively guess the specific culture or show an error.
+                if (result.IsNeutralCulture) 
+                    CultureInfo.CreateSpecificCulture(result.Name);
                 return result;
             }
             catch (Exception)
             {
-                return CultureInfo.InvariantCulture;
+                return new CultureInfo("en-US");
             }
         }
 
@@ -106,8 +106,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
 
         private Examples CreateExamplesBlock(string[] headerNames, TableRow[] exampleRows, string keyword)
         {
-            keyword ??= "Examples"; //TODO
-            var name = "External Data"; //TODO
+            keyword ??= "External Examples";
+            var name = "External Examples";
             var tableHeader = new TableRow(null, headerNames.Select(h => new TableCell(null, h)).ToArray());
             return new Examples(new Tag[0], null, keyword, name, "", tableHeader, exampleRows);
         }
