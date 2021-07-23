@@ -8,10 +8,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Specs", "sample\ExternalDataSample\Specs.csproj", "{AF0CC299-9284-4E29-86B1-D17ADC0BB00D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{EDCBC981-F61D-4575-8C7A-2C8B391C1F21}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\docs\Guides\externaldata.md = ..\..\docs\Guides\externaldata.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{082CF7FE-F27E-4FD0-A4A7-7EB2775B6DAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlow.ExternalData.SpecFlowPlugin.UnitTests", "SpecFlow.ExternalData.SpecFlowPlugin.UnitTests\SpecFlow.ExternalData.SpecFlowPlugin.UnitTests.csproj", "{1B1BBC95-D7AD-436D-9D85-8D3654203EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlow.ExternalData.SpecFlowPlugin.UnitTests", "SpecFlow.ExternalData.SpecFlowPlugin.UnitTests\SpecFlow.ExternalData.SpecFlowPlugin.UnitTests.csproj", "{1B1BBC95-D7AD-436D-9D85-8D3654203EE9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{48B6E6EF-7528-47F8-BA76-E4E2500BE793}"
 EndProject
