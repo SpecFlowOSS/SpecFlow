@@ -34,7 +34,7 @@ The following tags can be used to specify the external source:
 
 - `@DataSet:data-set-name` - This tag is applicable to *Excel files only*. It is used to select the worksheet of the Excel file you wish to use. By **default**, the first worksheet in an Excel file is targeted.
 
-- `@DataField:name in feature file=name in source file` - This tag can be used to "rename" columns of the external data source.
+- `@DataField:name-in-feature-file=name-in-source-file` - This tag can be used to "rename" columns of the external data source.
 
 General notes on tags:
 
@@ -64,7 +64,7 @@ Scenario: Valid product prices are calculated
 
 ````
 
-- This scenario will be treated as a scenario outline similar to the above example but uses both **<product<product>>** and **<price<price>>** from the csv file:
+- This scenario will be treated as a scenario outline similar to the above example but uses both **<product<product>>** and **<price<price>>** from the CSV file:
 
 ````Gherkin
 
@@ -163,7 +163,7 @@ Scenario: The basket price is calculated correctly for other products
 
 ## Language Settings
 
-If the language is not specified the data will be exported using the default **en-US**. This setting not only affects the language but also the decimal operator as in some countries comma (,) is used as decimal separator instead of dot (.). To specify not only the language but also the country use the `#language: language-country` tag, e.g. *#language: de-AT* for *Deutsch-Austria*.
+The decimal and date values read from an Excel file will be exported using the language of the feature file (specified using the `#language` setting in the feature file or in the SpecFlow configuration file). This setting affects for example the decimal operator as in some countries comma (,) is used as decimal separator instead of dot (.). To specify not only the language but also the country use the `#language: language-country` tag, e.g. *#language: de-AT* for *Deutsch-Austria*.
 
 Example: Hungarian uses comma (,) as decimal separator instead of dot (.), so SpecFlow will expect the prices in format 1,23:
 
@@ -177,8 +177,6 @@ Jellemző: External Data from Excel file (Hungarian)
 
 @DataSource:products.xlsx
 Forgatókönyv: The basket price is calculated correctly
-	The scenario will be treated as a scenario outline with the examples from the CSV file.
-	The CSV file contains multile fields, including product and price.
 	Amennyiben the price of <product> is €<price>
 	És the customer has put 1 pcs of <product> to the basket
 	Amikor the basket price is calculated
