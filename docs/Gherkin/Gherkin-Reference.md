@@ -473,6 +473,13 @@ SpecFlow provides a rich API for manipulating tables from within step definition
 See the [Assist Namespace](../Bindings/SpecFlow-Assist-Helpers.md) reference for
 more details.
 
+## Markdown
+
+You can include markdown code in your feature files with the standard Markdown features such as bold, italic, lists etc.
+This is useful when generating documentation via the SpecFlow+ LivingDoc generator.
+
+Click [here](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/Generating/Markdown-and-Embedding-Images.html#embedding-images-markdown) to find out more.
+
 ## Spoken Languages
 
 The language you choose for Gherkin should be the same language your users and
