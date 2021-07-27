@@ -81,6 +81,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             if (_hasTransformedScenarioInCurrentRule)
             {
                 var transformedRule = new Rule(
+                    rule.Tags.ToArray(),
                     rule.Location,
                     rule.Keyword,
                     rule.Name,

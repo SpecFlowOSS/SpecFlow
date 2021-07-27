@@ -134,7 +134,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var fromScenarioOutline = CreateScenarioOutline();
             var toScenarioOutline = CreateScenarioOutline();
-            var rule = new Rule(null, "Rule", "My rule", null, new IHasLocation[] { fromScenarioOutline });
+            var rule = new Rule(null, null, "Rule", "My rule", null, new IHasLocation[] { fromScenarioOutline });
             var document = CreateSpecFlowDocument(rule);
 
             var sut = CreateSut(fromScenarioOutline, toScenarioOutline);
@@ -152,7 +152,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         {
             var fromScenarioOutline = CreateScenarioOutline();
             var toScenarioOutline = CreateScenarioOutline();
-            var rule = new Rule(null, "Rule", "My rule", null, new IHasLocation[] { CreateScenarioOutline() });
+            var rule = new Rule(null, null, "Rule", "My rule", null, new IHasLocation[] { CreateScenarioOutline() });
             var document = CreateSpecFlowDocument(fromScenarioOutline, rule);
 
             var sut = CreateSut(fromScenarioOutline, toScenarioOutline);
@@ -190,7 +190,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
             var toScenarioOutlineInRule = CreateScenarioOutline();
             _transformations.Add(fromScenarioOutline, toScenarioOutline);
             _transformations.Add(fromScenarioOutlineInRule, toScenarioOutlineInRule);
-            var rule = new Rule(null, "Rule", "My rule", null, new IHasLocation[] { fromScenarioOutlineInRule });
+            var rule = new Rule(null, null, "Rule", "My rule", null, new IHasLocation[] { fromScenarioOutlineInRule });
             var document = CreateSpecFlowDocument(fromScenarioOutline, rule);
 
             var sut = CreateSut();
