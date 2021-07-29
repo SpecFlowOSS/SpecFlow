@@ -30,7 +30,8 @@ namespace TechTalk.SpecFlow.Parser
             {
                 new DuplicateScenariosValidator(),
                 new DuplicateExamplesValidator(),
-                new MissingExamplesValidator()
+                new MissingExamplesValidator(),
+                new DuplicateExamplesColumnHeadersValidator()
             };
         }
 
