@@ -30,16 +30,34 @@ namespace TechTalk.SpecFlow.PluginTests.Infrastructure
         }
 
         [Fact]
+        public void Resolutions_are_not_forwarded_to_Windsor_before_it_is_registered()
+        {
+            var resolver = new WindsorTestObjectResolver();
+
+            var objectContainer = new Mock<IObjectContainer>();
+            var container = new Mock<IWindsorContainer>();
+            objectContainer.Setup(x => x.IsRegistered<IWindsorContainer>()).Returns(false);
+            objectContainer.Setup(x => x.Resolve<IWindsorContainer>()).Returns(container.Object);
+
+            resolver.ResolveBindingInstance(typeof(ITraceListener), objectContainer.Object);
+
+            objectContainer.Verify(x => x.Resolve(typeof(ITraceListener), It.IsAny<string>()), Times.Once);
+            container.Verify(x => x.Resolve(typeof(ITraceListener)), Times.Never);
+        }
+
+        [Fact]
         public void Resolutions_are_forwarded_to_Windsor()
         {
             var resolver = new WindsorTestObjectResolver();
 
             var objectContainer = new Mock<IObjectContainer>();
             var container = new Mock<IWindsorContainer>();
+            objectContainer.Setup(x => x.IsRegistered<IWindsorContainer>()).Returns(true);
             objectContainer.Setup(x => x.Resolve<IWindsorContainer>()).Returns(container.Object);
 
             resolver.ResolveBindingInstance(typeof(ITraceListener), objectContainer.Object);
 
+            objectContainer.Verify(x => x.Resolve(typeof(ITraceListener), It.IsAny<string>()), Times.Never);
             container.Verify(x => x.Resolve(typeof(ITraceListener)), Times.Once);
         }
 
