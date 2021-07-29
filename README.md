@@ -2,10 +2,20 @@
 
 SpecFlow is a pragmatic BDD solution for .NET. It provides test automation for .NET (.NET Framework, .NET Core and Mono), based on the Gherkin specification language and integrates to Visual Studio.
 
-- Getting started using SpecFlow: [https://specflow.org/getting-started/](https://specflow.org/getting-started/) 
+
+**Useful Links**
 - Project website: [https://www.specflow.org](https://www.specflow.org)
-- Documentation: [https://docs.specflow.org](https://docs.specflow.org)
+- [Documentation](https://specflow.org/documentation/)
+- [Getting Started](https://specflow.org/getting-started/)
+- [FAQ](https://specflow.org/documentation/FAQ/)
+- [BDD](https://specflow.org/learn/bdd/)
+- [Given-When-Then](https://specflow.org/learn/given-when-then-with-style/)
+- [SpecFlow on GitHub](https://github.com/SpecFlowOSS/SpecFlow)
+- [SpecFlow for Visual Studio on GitHub](https://github.com/SpecFlowOSS/SpecFlow.VisualStudio)
+- [SpecFlow issues on GitHub](https://github.com/SpecFlowOSS/SpecFlow/issues)
+- [Privacy Policy](https://specflow.org/privacy-policy/)
 - Discussion group in our community: [https://specflow.org/community](https://specflow.org/community) 
+
 
 For questions please post them in our [community discussion group](https://support.specflow.org/hc/en-us/community/topics).
 
