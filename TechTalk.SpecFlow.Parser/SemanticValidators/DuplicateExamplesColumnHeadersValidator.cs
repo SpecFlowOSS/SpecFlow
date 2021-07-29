@@ -13,15 +13,17 @@ namespace TechTalk.SpecFlow.Parser.SemanticValidators
                 var scenarioOutline = scenarioDefinition as ScenarioOutline;
                 if (scenarioOutline != null)
                 {
-                    var duplicateExamples = scenarioOutline.Examples
-                                                           .SelectMany(s => s.TableHeader.Cells)
-                                                           .GroupBy(g => g.Value)
-                                                           .Where(g => g.Count() > 1);
-
-                    foreach (var duplicateExample in duplicateExamples)
+                    foreach (var example in scenarioOutline.Examples)
                     {
-                        var message = $"Scenario Outline '{scenarioOutline.Name}' already contains an example column with header '{duplicateExample.Key}'";
-                        errors.Add(new SemanticParserException(message, scenarioOutline.Location));
+                        var duplicateExamples = example.TableHeader.Cells
+                                                       .GroupBy(g => g.Value)
+                                                       .Where(g => g.Count() > 1);
+
+                        foreach (var duplicateExample in duplicateExamples)
+                        {
+                            var message = $"Scenario Outline '{scenarioOutline.Name}' already contains an example column with header '{duplicateExample.Key}'";
+                            errors.Add(new SemanticParserException(message, scenarioOutline.Location));
+                        }
                     }
                 }
             }
