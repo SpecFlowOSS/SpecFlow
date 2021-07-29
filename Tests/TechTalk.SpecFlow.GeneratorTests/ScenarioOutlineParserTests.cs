@@ -93,5 +93,25 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             act.Should().NotThrow();
         }
+
+        [Fact]
+        public void Parser_throws_meaningful_exception_when_Examples_have_duplicate_header_in_Scenario_Outline()
+        {
+            var feature = @"Feature: Duplicate
+                            Scenario Outline: Duplicate Examples table headers
+                            Given I am <acting>
+                            
+                            Examples:
+                            | acting  | acting   |
+                            | driving | drinking |
+                            ";
+
+            var parser = new SpecFlowGherkinParser(CultureInfo.GetCultureInfo("en"));
+
+            Action act = () => parser.Parse(new StringReader(feature), null);
+
+            act.Should().Throw<SemanticParserException>().WithMessage("(2:29): Scenario Outline 'Duplicate Examples table headers' already contains an example column with header 'acting'")
+               .And.Location.Line.Should().Be(2);
+        }
     }
 }
