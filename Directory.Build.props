@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.3.37" PrivateAssets="all"/>
-    <None Include="$(SolutionDir)/LICENSE.txt" Pack="true" PackagePath=""/>
+    <None Include="$(MSBuildThisFileDirectory)/LICENSE.txt" Pack="true" PackagePath=""/>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -62,7 +62,7 @@
 
 
   <PropertyGroup Condition=" '$(SpecFlow_EnableStrongNameSigning)' == 'true'">
-    <SpecFlow_KeyFile>$(SolutionDir)\specflow.snk</SpecFlow_KeyFile>
+    <SpecFlow_KeyFile>$(MSBuildThisFileDirectory)\specflow.snk</SpecFlow_KeyFile>
     <SpecFlow_SignAssembly>true</SpecFlow_SignAssembly>
     <DefineConstants>$(DefineConstants);SPECFLOW_ENABLE_STRONG_NAME_SIGNING</DefineConstants>
   </PropertyGroup>
