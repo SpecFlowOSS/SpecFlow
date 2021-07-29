@@ -424,6 +424,8 @@ The steps can use `<>` delimited *parameters* that reference headers in the exam
 SpecFlow will replace these parameters with values from the table *before* it tries
 to match the step against a step definition.
 
+**> Note:** Tables used in `Examples` must have **unique headers**. Using duplicate headers will result in errors.
+
 **Hint:** In certain cases, when generating method names using the regular expression method, SpecFlow is unable to generate the correct parameter signatures for unit test logic methods without a little help. Placing single quotation marks (`'`) around placeholders (eg. `'<placeholder>'`)improves SpecFlow's ability to parse the scenario outline and generate more accurate regular expressions and test method signatures.
 
 You can also use parameters in [multiline step arguments](#step-arguments).
