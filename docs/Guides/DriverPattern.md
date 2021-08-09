@@ -59,7 +59,7 @@ public class SubmissionSteps
 {
     private readonly SubmissionPageDriver submissionPageDriver;
 
-    public SubmissionSteps(SubmissionDriver submissionDriver)
+    public SubmissionSteps(SubmissionPageDriver submissionPageDriver)
     {
         this.submissionPageDriver = submissionPageDriver;
     }
