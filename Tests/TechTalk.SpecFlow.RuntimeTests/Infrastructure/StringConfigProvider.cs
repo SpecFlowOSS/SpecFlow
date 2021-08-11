@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Configuration.AppConfig;
-using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Configuration.JsonConfig;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -12,19 +10,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         private readonly string configFileContent;
 
+        private bool IsJsonConfig => configFileContent != null && configFileContent.StartsWith("{");
+
         public StringConfigProvider(string configContent)
         {
-            this.configFileContent = configContent;
+            configFileContent = configContent;
         }
 
         public SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration)
         {
+            if (IsJsonConfig)
+            {
+                var jsonConfigurationLoader = new JsonConfigurationLoader();
+
+                return jsonConfigurationLoader.LoadJson(specFlowConfiguration, configFileContent);
+            }
+
             ConfigurationSectionHandler section = GetSection();
-            
+
             var runtimeConfigurationLoader = new AppConfigConfigurationLoader();
 
             return runtimeConfigurationLoader.LoadAppConfig(specFlowConfiguration, section);
-
         }
 
         private ConfigurationSectionHandler GetSection()
