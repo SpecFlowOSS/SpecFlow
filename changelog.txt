@@ -8,6 +8,7 @@ Changes:
 + Replace Utf8Json with SpecFlow.Internal.Json
 + Remove ParallelizeDecorator introduced in #746. Fixes #2442
 + Add semantic validator for duplicate Example column header names #2471
++ Update Available-Plugins document
 
 Fixes:
 + Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
