@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         {
             return new FeatureContext(default,
                                       new FeatureInfo(cultureInfo, default, default, default),
-                                      new SpecFlowConfiguration(default, default, default, default, cultureInfo, default, default, default, default, default, default, default, default, default, default, default, default));
+                                      new SpecFlowConfiguration(default, default, default, default, cultureInfo, default, default, default, default, default, default, default, default, default, default, default));
         }
     }
 }

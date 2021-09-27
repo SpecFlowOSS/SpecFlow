@@ -38,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <CucumberMessagesSpecFlowFeatureFiles Include="..\..\ExternalRepositories\cucumber\cucumber-messages\specs\*.feature" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MSBuild.AdditionalTasks" Version="*" />
     <PackageReference Include="Gherkin" Version="19.0.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
@@ -75,19 +71,6 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="IncludeCucumberMessagesSpecs" BeforeTargets="BeforeUpdateFeatureFilesInProject" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
-    <Copy SourceFiles="@(CucumberMessagesSpecFlowFeatureFiles)" DestinationFolder="Features/CucumberMessages" />
-    <ItemGroup>
-      <_CucumberMessagesSpecFlowFeatureFiles Include="Features/CucumberMessages/*.feature" />
-
-      <_CucumberMessagesSpecFlowFeatureFiles>
-        <CodeBehindFile>Features/CucumberMessages/%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-        <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      </_CucumberMessagesSpecFlowFeatureFiles>
-
-      <SpecFlowFeatureFiles Include="@(_CucumberMessagesSpecFlowFeatureFiles)" Exclude="@(SpecFlowFeatureFiles)" />
-    </ItemGroup>
-  </Target>
 
   <Target Name="PreBuild">
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
@@ -97,13 +80,6 @@
 
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Update="specflow.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 

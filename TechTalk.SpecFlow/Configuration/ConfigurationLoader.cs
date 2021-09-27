@@ -137,8 +137,7 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowDebugGeneratedFiles, 
                 DefaultAllowRowTests,
                 DefaultAddNonParallelizableMarkerForTags,
-                DefaultObsoleteBehavior,
-                new CucumberMessagesConfiguration()
+                DefaultObsoleteBehavior
                 );
         }
 

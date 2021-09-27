@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.CucumberMessages
+﻿namespace TechTalk.SpecFlow.Infrastructure
 {
     public interface ITestUndefinedMessageFactory
     {
