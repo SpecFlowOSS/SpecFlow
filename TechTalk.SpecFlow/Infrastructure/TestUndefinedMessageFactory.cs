@@ -4,7 +4,7 @@ using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 
-namespace TechTalk.SpecFlow.CucumberMessages
+namespace TechTalk.SpecFlow.Infrastructure
 {
     public class TestUndefinedMessageFactory : ITestUndefinedMessageFactory
     {

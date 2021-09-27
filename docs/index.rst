@@ -168,8 +168,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    :caption: Tools
    :hidden:
    
-   Tools/Generate-Tests-From-MsBuild.md   
-   Tools/Cucumber-Messages.md
+   Tools/Generate-Tests-From-MsBuild.md
    Tools/Reporting.md
 
 .. toctree::
