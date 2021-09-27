@@ -2,7 +2,7 @@
 using System.Linq;
 using TechTalk.SpecFlow.ErrorHandling;
 
-namespace TechTalk.SpecFlow.CucumberMessages
+namespace TechTalk.SpecFlow.Infrastructure
 {
     public class TestPendingMessageFactory : ITestPendingMessageFactory
     {

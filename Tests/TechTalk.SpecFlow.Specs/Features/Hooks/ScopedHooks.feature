@@ -34,7 +34,7 @@ Scenario: Two hooks for the same event are called once each
 	And the hook 'Hook2' is executed once
 	
 
-Scenario: Two hooks for diffenrent events are called once each
+Scenario: Two hooks for different events are called once each
 	Given there is a feature file in the project as
          """
 			Feature: Simple Feature

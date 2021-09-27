@@ -32,7 +32,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             string[] addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
 
-            CucumberMessagesConfiguration cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
             if (IsSpecified(configSection.Language))
             {
@@ -91,16 +90,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            if (IsSpecified(configSection.CucumberMessages))
-            {
-                cucumberMessagesConfiguration.Enabled = configSection.CucumberMessages.Enabled;
-
-                foreach (CucumberMessageSinkElement cucumberMessagesSink in configSection.CucumberMessages.Sinks)
-                {
-                    cucumberMessagesConfiguration.Sinks.Add(new CucumberMessagesSink(cucumberMessagesSink.Type, cucumberMessagesSink.Path));
-                }
-            }
-
             return new SpecFlowConfiguration(ConfigSource.AppConfig, 
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
@@ -116,8 +105,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             addNonParallelizableMarkerForTags,
-                                            obsoleteBehavior,
-                                            cucumberMessagesConfiguration
+                                            obsoleteBehavior
                                             );
         }
 
