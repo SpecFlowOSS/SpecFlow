@@ -338,7 +338,7 @@ Feature: Multiple site support
     Then I should see "Your article was published."
 ```
 
-`Background` is also supported at the `Rule` level, for example:
+<!--- `Background` is also supported at the `Rule` level, for example:
 
 ```gherkin
 Feature: Overdue tasks
@@ -361,7 +361,7 @@ Feature: Overdue tasks
   ...
 ```
 
-You can only have one set of `Background` steps per `Feature` or `Rule`. If you need different `Background` steps for different scenarios, consider breaking up your set of scenarios into more `Rule`s or more `Feature`s.
+You can only have one set of `Background` steps per `Feature` or `Rule`. If you need different `Background` steps for different scenarios, consider breaking up your set of scenarios into more `Rule`s or more `Feature`s.--->
 
 For a less explicit alternative to `Background`, check out [scoped step definitions](../Bindings/Scoped-Step-Definitions.md).
 
