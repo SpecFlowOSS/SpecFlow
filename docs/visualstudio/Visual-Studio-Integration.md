@@ -6,7 +6,7 @@ You can install the integration from [Visual Studio Gallery](https://marketplace
 
 The integration provides the following features:
 
-* [Editor](Visual-Studio-Integration-Editing-Features.md)
+* [Editor](Visual-Studio-Integration-Editing-Features.rst)
   * [Gherkin syntax highlighting](Visual-Studio-Integration-Editing-Features.html#gherkin-syntax-highlighting) in feature files, highlight unbound steps and parameters
   * [IntelliSense](Visual-Studio-Integration-Editing-Features.html#intellisense-auto-completion-for-keywords-and-steps) (auto-completion) for keywords and steps
   * [Outlining](Visual-Studio-Integration-Editing-Features.html#outlining-and-comments-in-feature-files) (folding) sections of the feature file

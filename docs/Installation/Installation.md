@@ -16,7 +16,7 @@ The process of installing the IDE Integration packages depends on your IDE.
 
 ### Visual Studio
 
-We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. Find out how to install and use this extension [here](../visualstudio/visual-studio-installation.md).
+We recommend installing the SpecFlow Visual Studio extension (IDE Integration), as this is the most convenient way of working with SpecFlow. Find out how to install and use this extension [here](https://docs.specflow.org/projects/specflow/en/latest/visualstudio/visual-studio-installation.html).
 
 ### Rider
 
