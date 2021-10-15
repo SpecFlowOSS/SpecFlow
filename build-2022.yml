@@ -28,7 +28,7 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs: 
       command: restore
-      restoreArguments: --configfile $(System.ArtifactsDirectory)\SpecFlow\s\nuget.config
+      restoreArguments: --configfile nuget.config
     displayName: 'restore'
 
   - task: PowerShell@2
