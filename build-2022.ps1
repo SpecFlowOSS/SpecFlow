@@ -20,4 +20,4 @@ if ($appInsightsInstrumentationKey) {
 
 Write-Host "dotnet build ./TechTalk.SpecFlow.sln -property:Configuration=$Configuration -bl:msbuild.$Configuration.binlog -nodeReuse:false -v n --no-incremental $additionalOptions"
 
-& dotnet build ./TechTalk.SpecFlow.sln -property:Configuration=$Configuration -bl:msbuild.$Configuration.binlog -nodeReuse:false -v n $additionalOptions
+& dotnet build ./TechTalk.SpecFlow.sln --no-restore -property:Configuration=$Configuration -bl:msbuild.$Configuration.binlog -nodeReuse:false -v n $additionalOptions
