@@ -1,0 +1,104 @@
+parameters:
+  name: ''
+  pool: ''
+  nugetVersion: 5.8.0
+  artifactFileName: ''
+  appInsightsInstrumentationKey: ''
+  publishArtifacts: true
+
+jobs:
+- job: ${{ parameters.name }}
+  pool: ${{ parameters.pool }}
+  steps:
+  - checkout: self
+    submodules: true 
+    clean: true
+
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet'
+    inputs:
+      versionSpec: ${{ parameters.nugetVersion }}
+  
+  - task: PowerShell@2
+    inputs:
+      targetType: Inline
+      pwsh: true
+      script: dotnet --info
+
+  - task: PowerShell@2
+    inputs: 
+      filePath: build-2022.ps1
+      workingDirectory: ./
+      arguments: Debug -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
+      pwsh: true
+    displayName: 'restore & build Debug'
+
+  - task: PowerShell@2
+    inputs: 
+      filePath: build-2022.ps1
+      workingDirectory: ./
+      arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
+      pwsh: true
+    displayName: 'restore & build Release'
+    
+  ### Remove the next 3 tasks when netcoreapp2.1 is no longer supported/targeted by the Project
+  - task: DotNetCoreCLI@2
+    inputs: 
+      command: publish
+      projects: '**/TechTalk.SpecFlow.GeneratorTests.csproj'
+      arguments: --no-build -f netcoreapp2.1 -o $(Build.SourcesDirectory)/Tests/TechTalk.SpecFlow.GeneratorTests/bin/Debug/netcoreapp2.1
+      publishWebProjects: false
+      zipAfterPublish: false
+      modifyOutputPath: false
+    displayName: 'Publish GeneratorTests netcoreapp2.1 tests'
+    
+  - task: DotNetCoreCLI@2
+    inputs: 
+      command: publish
+      projects: '**/TechTalk.SpecFlow.PluginTests.csproj'
+      arguments: --no-build -f netcoreapp2.1 -o $(Build.SourcesDirectory)/Tests/TechTalk.SpecFlow.PluginTests/bin/Debug/netcoreapp2.1
+      publishWebProjects: false
+      zipAfterPublish: false
+      modifyOutputPath: false
+    displayName: 'Publish PluginTests netcoreapp2.1 tests'
+    
+  - task: DotNetCoreCLI@2
+    inputs: 
+      command: publish
+      projects: '**/TechTalk.SpecFlow.RuntimeTests.csproj'
+      arguments: --no-build -f netcoreapp2.1 -o $(Build.SourcesDirectory)/Tests/TechTalk.SpecFlow.RuntimeTests/bin/Debug/netcoreapp2.1
+      publishWebProjects: false
+      zipAfterPublish: false
+      modifyOutputPath: false
+    displayName: 'Publish RuntimeTests netcoreapp2.1 tests'
+  ###
+  
+  - task: ArchiveFiles@2
+    displayName: 'Archive $(Build.SourcesDirectory)'
+    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+      archiveFile: ${{ parameters.artifactFileName }} 
+      
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: SpecFlow.CI-Sources'
+    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
+    inputs:
+      PathtoPublish: ${{ parameters.artifactFileName }} 
+      artifactType: container
+      ArtifactName: 'SpecFlow.CI-BuildResult-${{ parameters.name }}'
+      
+  - task: CopyFiles@2
+    displayName: 'Copy binlogs'
+    condition: ${{ parameters.publishArtifacts}}
+    inputs:
+      contents: '$(Build.SourcesDirectory)/*.binlog'
+      targetFolder:  '$(Build.SourcesDirectory)/binlogs'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: SpecFlow.CI-Binlogs'
+    condition: ${{ parameters.publishArtifacts}}
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/binlogs'
+      artifactType: container
+      ArtifactName: 'SpecFlow.CI-Binlogs-${{ parameters.name }}'
