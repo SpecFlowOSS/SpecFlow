@@ -22,19 +22,19 @@ jobs:
     inputs:
       versionSpec: ${{ parameters.nugetVersion }}
   
-  - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK'
-    inputs:
-      packageType: sdk
-      version: ${{ parameters.sdkVersion }}
-      includePreviewVersions: true
+  # - task: UseDotNet@2
+    # displayName: 'Use .NET Core SDK'
+    # inputs:
+      # packageType: sdk
+      # version: ${{ parameters.sdkVersion }}
+      # includePreviewVersions: true
       
-  - task: UseDotNet@2
-    displayName: 'Use .NET 5 SDK'
-    inputs:
-      packageType: sdk
-      version: ${{ parameters.net5SdkVersion }}
-      includePreviewVersions: true
+  # - task: UseDotNet@2
+    # displayName: 'Use .NET 5 SDK'
+    # inputs:
+      # packageType: sdk
+      # version: ${{ parameters.net5SdkVersion }}
+      # includePreviewVersions: true
 
   - task: UseDotNet@2
     displayName: 'Use .NET 6 SDK'
