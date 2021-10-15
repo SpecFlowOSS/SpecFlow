@@ -42,7 +42,7 @@ jobs:
 
 - template: build-2022.yml
   parameters:
-    name: Windows-2022
+    name: Windows_2022
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows-2022.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     pool:
