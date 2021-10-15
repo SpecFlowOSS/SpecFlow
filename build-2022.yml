@@ -28,7 +28,9 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs: 
       command: restore
-      restoreArguments: --configfile nuget.config
+      feedsToUse: 'config'
+      nugetConfigPath: 'nuget.config'
+      externalFeedCredentials: 'SpecFlow MyGet'
     displayName: 'restore'
 
   - task: PowerShell@2
