@@ -13,6 +13,11 @@ jobs:
   - checkout: self
     submodules: true 
     clean: true
+    
+  - task: CmdLine@2
+    displayName: 'git log'
+    inputs:
+      script: 'git log -2'
 
   - task: UseDotNet@2
     displayName: 'Use .NET Core sdk 2.1'
