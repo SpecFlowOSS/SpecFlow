@@ -43,10 +43,10 @@ jobs:
       version: '6.x'
       includePreviewVersions: true
 
-  - task: NuGetToolInstaller@1
-    displayName: 'Use NuGet'
-    inputs:
-      versionSpec: ${{ parameters.nugetVersion }}
+  # - task: NuGetToolInstaller@1
+    # displayName: 'Use NuGet'
+    # inputs:
+      # versionSpec: ${{ parameters.nugetVersion }}
   
   - task: PowerShell@2
     inputs:
