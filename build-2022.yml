@@ -17,7 +17,7 @@ jobs:
   - task: UseDotNet@2
     displayName: 'Use .NET Core sdk 2.1'
     inputs:
-      version: '2.1'
+      version: '2.1.807'
       includePreviewVersions: true
 
   - task: NuGetToolInstaller@1
