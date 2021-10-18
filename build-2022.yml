@@ -24,6 +24,12 @@ jobs:
       targetType: Inline
       pwsh: true
       script: dotnet --info
+      
+  - task: PowerShell@2
+    inputs:
+      targetType: Inline
+      pwsh: true
+      script: Get-Content .\build-2022.yml
 
   - task: DotNetCoreCLI@2
     inputs: 
@@ -94,6 +100,7 @@ jobs:
       projects: '**/TechTalk.SpecFlow.RuntimeTests.csproj'
       arguments: --no-build
     displayName: 'TechTalk.SpecFlow.RuntimeTests'
+    condition: always()
     
   - task: DotNetCoreCLI@2
     inputs: 
@@ -101,6 +108,7 @@ jobs:
       projects: '**/TechTalk.SpecFlow.GeneratorTests.csproj'
       arguments: --no-build
     displayName: 'TechTalk.SpecFlow.GeneratorTests'
+    condition: always()
     
   - task: DotNetCoreCLI@2
     inputs: 
@@ -108,6 +116,7 @@ jobs:
       projects: '**/TechTalk.SpecFlow.PluginTests.csproj'
       arguments: --no-build
     displayName: 'TechTalk.SpecFlow.PluginTests'
+    condition: always()
   
   - task: ArchiveFiles@2
     displayName: 'Archive $(Build.SourcesDirectory)'
