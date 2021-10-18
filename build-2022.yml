@@ -38,7 +38,7 @@ jobs:
     inputs:
       command: restore
       feedsToUse: config
-      nugetConfigPath: 'nuget.config'
+      nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
 
   - task: PowerShell@2
     inputs: 
