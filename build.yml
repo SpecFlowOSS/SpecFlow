@@ -18,7 +18,7 @@ jobs:
   - task: CmdLine@2
     displayName: 'git log'
     inputs:
-      script: 'git log -3'
+      script: 'git log -2'
 
   - task: NuGetToolInstaller@0
     displayName: 'Use NuGet'
