@@ -25,6 +25,18 @@ jobs:
     inputs:
       version: '3.1.x'
       includePreviewVersions: true
+      
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 5.0'
+    inputs:
+      version: '5.x'
+      includePreviewVersions: true
+      
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 6.0'
+    inputs:
+      version: '6.x'
+      includePreviewVersions: true
 
   - task: NuGetToolInstaller@1
     displayName: 'Use NuGet'
