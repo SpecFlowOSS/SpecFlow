@@ -16,7 +16,7 @@
     <tags>specflow bdd gherkin cucumber</tags>
     <copyright>$copyright$</copyright>
     <dependencies>
-      <group targetFramework="net461">
+      <group targetFramework="net48">
         <dependency id="BoDi" version="1.5.0" />
         <dependency id="Gherkin" version="19.0.3"/>
         <dependency id="System.ValueTuple" version="4.4.0" />
@@ -38,7 +38,7 @@
   <files>
     <file src="build\**\*" target="build" />
 
-    <file src="bin\$config$\net461\TechTalk.SpecFlow.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net48\TechTalk.SpecFlow.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
     <file src="TechTalk.SpecFlow.ExternalAnnotations.xml" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
 
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />

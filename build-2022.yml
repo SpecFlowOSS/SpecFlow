@@ -14,6 +14,12 @@ jobs:
     submodules: true 
     clean: true
 
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 2.1'
+    inputs:
+      version: '2.1'
+      includePreviewVersions: true
+
   - task: NuGetToolInstaller@1
     displayName: 'Use NuGet'
     inputs:
@@ -100,8 +106,8 @@ jobs:
       command: test
       projects: '**/TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests.csproj'
       arguments: --no-build
-    displayName: 'MsBuildNetSdk.IntegrationTests tests'
-   
+    displayName: 'MsBuildNetSdk.IntegrationTests tests'  
+
   - task: DotNetCoreCLI@2
     inputs: 
       command: test

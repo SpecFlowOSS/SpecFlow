@@ -55,8 +55,8 @@ By default, a .NET Core project is created with SpecFlow+ Runner configured as t
 * `framework`: Determine the target framework for the project. The following options are available:
   *  `netcoreapp3.1` (default): .NET Core 3.1
   *  `netcoreapp2.1`: .NET Core 2.1
+  *  `net6.0`: .NET 6.0
   *  `net5.0`: .NET 5.0
-  *  `net461`: .NET Framework 4.6.1
   *  `net462`: .NET Framework 4.6.2
   *  `net47`: .NET Framework 4.7
   *  `net471`: .NET Framework 4.7.1

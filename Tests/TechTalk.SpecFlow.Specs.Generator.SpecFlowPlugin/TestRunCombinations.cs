@@ -5,6 +5,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     public class TestRunCombinations
     {
         public const string TfmEnumValueNet461 = "Net461";
+        public const string TfmEnumValueNet48 = "Net48";
         public const string TfmEnumValueNetCore21 = "Netcoreapp21";
         public const string TfmEnumValueNetCore31 = "Netcoreapp31";
         public const string TfmEnumValueNet50 = "Net50";

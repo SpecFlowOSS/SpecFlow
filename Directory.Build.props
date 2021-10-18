@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SpecFlow_FullFramework_TFM>net461</SpecFlow_FullFramework_TFM>
+    <SpecFlow_FullFramework_TFM>net48</SpecFlow_FullFramework_TFM>
 
     <SpecFlow_Net6_TFM>net6.0</SpecFlow_Net6_TFM>
     

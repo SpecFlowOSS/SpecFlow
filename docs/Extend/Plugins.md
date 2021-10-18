@@ -52,10 +52,10 @@ A complete example of a Runtime plugin can be found [here](https://github.com/te
 
 The sample project is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/SampleRuntimePlugin.csproj).
 
-This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.1 and .NET Standard 2.0.
+This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.8 and .NET Standard 2.0.
 
 ``` xml
-<TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
 ```
 
 We set a different `<AssemblyName>` to add the required `.SpecFlowPlugin` suffix to the assembly name. You can also simply name your project with  `.SpecFlowPlugin` at the end.
@@ -88,7 +88,7 @@ We need to copy a different assembly to the output folder depending on the targe
 
 ``` xml
 <_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SampleRuntimePluginFramework>
-<_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SampleRuntimePluginFramework>
+<_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net48</_SampleRuntimePluginFramework>
 <_SampleRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SampleRuntimePluginFramework)\SampleRuntimePlugin.SpecFlowPlugin.dll</_SampleRuntimePluginPath>
 ```
 
@@ -133,7 +133,7 @@ The runtime plugin assemblies are also specified here, using the additional `$co
 ``` xml
     <files>
         <file src="build\**\*" target="build"/>
-        <file src="bin\$config$\net461\SampleRuntimePlugin.SpecFlowPlugin.*" target="lib\net461"/>
+        <file src="bin\$config$\net48\SampleRuntimePlugin.SpecFlowPlugin.*" target="lib\net48"/>
         <file src="bin\$config$\netstandard2.0\SampleRuntimePlugin.SpecFlowPlugin.dll" target="lib\netstandard2.0"/>
         <file src="bin\$config$\netstandard2.0\SampleRuntimePlugin.SpecFlowPlugin.pdb" target="lib\netstandard2.0"/>
     </files>

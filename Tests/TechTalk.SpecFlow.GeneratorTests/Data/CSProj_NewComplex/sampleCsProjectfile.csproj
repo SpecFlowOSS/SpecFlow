@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyName>Hacapp.Web.Tests.UI</AssemblyName>
     <RootNamespace>Hacapp.Web.Tests.UI</RootNamespace>
   </PropertyGroup>
