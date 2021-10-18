@@ -23,7 +23,7 @@ jobs:
   - task: UseDotNet@2
     displayName: 'Use .NET Core sdk 3.1'
     inputs:
-      version: '3.1.*'
+      version: '3.1.x'
       includePreviewVersions: true
 
   - task: NuGetToolInstaller@1
