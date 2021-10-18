@@ -24,20 +24,21 @@ jobs:
       targetType: Inline
       pwsh: true
       script: dotnet --info
+    displayName: 'dotnet info'
       
   - task: PowerShell@2
     inputs:
       targetType: Inline
       pwsh: true
       script: Get-Content .\build-2022.yml
+    displayName: 'dump contents'
 
   - task: DotNetCoreCLI@2
-    inputs: 
+    displayName: 'dotnet restore'
+    inputs:
       command: restore
-      feedsToUse: 'config'
+      feedsToUse: config
       nugetConfigPath: 'nuget.config'
-      externalFeedCredentials: 'SpecFlow MyGet'
-    displayName: 'restore'
 
   - task: PowerShell@2
     inputs: 
