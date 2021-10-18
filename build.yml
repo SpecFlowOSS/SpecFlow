@@ -14,6 +14,11 @@ jobs:
   - checkout: self
     submodules: true 
     clean: true
+    
+  - task: CmdLine@2
+    displayName: 'git log'
+    inputs:
+      script: 'git log -3'
 
   - task: NuGetToolInstaller@0
     displayName: 'Use NuGet'
@@ -28,10 +33,18 @@ jobs:
       includePreviewVersions: true
 
   - task: PowerShell@2
+    displayName: 'dotnet --info'
     inputs:
       targetType: Inline
       pwsh: true
       script: dotnet --info
+      
+  - task: PowerShell@2
+    inputs:
+      targetType: Inline
+      pwsh: true
+      script: dotnet restore --configfile $(Build.SourcesDirectory)\nuget.config
+    displayName: 'dotnet restore' 
 
   - task: PowerShell@2
     inputs: 
@@ -39,7 +52,7 @@ jobs:
       workingDirectory: ./
       arguments: Debug -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
-    displayName: 'restore & build Debug'
+    displayName: 'build Debug'
 
   - task: PowerShell@2
     inputs: 
@@ -47,7 +60,7 @@ jobs:
       workingDirectory: ./
       arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
-    displayName: 'restore & build Release'
+    displayName: 'build Release'
     
   ### Remove the next 3 tasks when netcoreapp2.1 is no longer supported/targeted by the Project
   - task: DotNetCoreCLI@2
