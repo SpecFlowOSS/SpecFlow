@@ -32,13 +32,13 @@ jobs:
 #    pool:
 #      name: 'Hosted macOS'
 
-- template: build.yml  
-  parameters:
-    name: Windows
-    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
-    appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
-    pool:
-      name: 'Hosted Windows 2019 with VS2019'
+# - template: build.yml  
+  # parameters:
+    # name: Windows
+    # artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
+    # appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
+    # pool:
+      # name: 'Hosted Windows 2019 with VS2019'
 
 - template: build-2022.yml
   parameters:
@@ -48,9 +48,9 @@ jobs:
     pool:
       vmImage: 'windows-2022'
 
-- template: build.yml  
-  parameters:
-    name: Linux
-    artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Linux.zip'
-    pool:
-      name: 'Hosted Ubuntu 1604'
+# - template: build.yml  
+  # parameters:
+    # name: Linux
+    # artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Linux.zip'
+    # pool:
+      # name: 'Hosted Ubuntu 1604'
