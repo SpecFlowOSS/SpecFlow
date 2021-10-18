@@ -2,8 +2,6 @@ parameters:
   name: ''
   pool: ''
   nugetVersion: 5.8.0
-  sdkVersion: 3.1.201
-  net5SdkVersion: 5.0.102
   net6SdkVersion: 6.0.100-preview.5.21302.13
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
@@ -22,20 +20,6 @@ jobs:
     inputs:
       versionSpec: ${{ parameters.nugetVersion }}
   
-  # - task: UseDotNet@2
-    # displayName: 'Use .NET Core SDK'
-    # inputs:
-      # packageType: sdk
-      # version: ${{ parameters.sdkVersion }}
-      # includePreviewVersions: true
-      
-  # - task: UseDotNet@2
-    # displayName: 'Use .NET 5 SDK'
-    # inputs:
-      # packageType: sdk
-      # version: ${{ parameters.net5SdkVersion }}
-      # includePreviewVersions: true
-
   - task: UseDotNet@2
     displayName: 'Use .NET 6 SDK'
     inputs:
