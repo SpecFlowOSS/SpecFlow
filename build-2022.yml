@@ -33,12 +33,19 @@ jobs:
       script: Get-Content .\build-2022.yml
     displayName: 'dump contents'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet restore'
+  # - task: DotNetCoreCLI@2
+    # displayName: 'dotnet restore'
+    # inputs:
+      # command: restore
+      # feedsToUse: config
+      # nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+
+  - task: PowerShell@2
     inputs:
-      command: restore
-      feedsToUse: config
-      nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+      targetType: Inline
+      pwsh: true
+      script: dotnet restore --configfile $(Build.SourcesDirectory)\nuget.config
+    displayName: 'dotnet restore' 
 
   - task: PowerShell@2
     inputs: 
