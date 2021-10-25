@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Analytics
             string userId = _userUniqueIdStore.GetUserId();
             string unitTestProvider = _unitTestProvider;
             string specFlowVersion = GetSpecFlowVersion();
-            string targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
+            string targetFramework = GetNetCoreVersion() ?? RuntimeInformation.FrameworkDescription;
             bool isDockerContainer = IsRunningInDockerContainer();
             string buildServerName = GetBuildServerName();
 
