@@ -229,8 +229,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             var useFixtureType = CreateFixtureInterface(generationContext, fixtureDataType);
 
-            CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
-
             generationContext.TestClass.BaseTypes.Add(_objectCodeTypeReference);
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
 
