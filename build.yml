@@ -2,8 +2,7 @@ parameters:
   name: ''
   pool: ''
   nugetVersion: 5.8.0
-  sdkVersion: 3.1.201
-  net5SdkVersion: 5.0.102
+  net6SdkVersion: 6.0.100-rc.2.21505.57
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
   publishArtifacts: true
@@ -15,6 +14,11 @@ jobs:
   - checkout: self
     submodules: true 
     clean: true
+    
+  - task: CmdLine@2
+    displayName: 'git log'
+    inputs:
+      script: 'git log -2'
 
   - task: NuGetToolInstaller@0
     displayName: 'Use NuGet'
@@ -22,24 +26,25 @@ jobs:
       versionSpec: ${{ parameters.nugetVersion }}
   
   - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK'
+    displayName: 'Use .NET 6 SDK'
     inputs:
       packageType: sdk
-      version: ${{ parameters.sdkVersion }}
-      includePreviewVersions: true
-      
-  - task: UseDotNet@2
-    displayName: 'Use .NET 5 SDK'
-    inputs:
-      packageType: sdk
-      version: ${{ parameters.net5SdkVersion }}
+      version: ${{ parameters.net6SdkVersion }}
       includePreviewVersions: true
 
   - task: PowerShell@2
+    displayName: 'dotnet --info'
     inputs:
       targetType: Inline
       pwsh: true
       script: dotnet --info
+      
+  - task: PowerShell@2
+    inputs:
+      targetType: Inline
+      pwsh: true
+      script: dotnet restore --configfile $(Build.SourcesDirectory)\nuget.config
+    displayName: 'dotnet restore' 
 
   - task: PowerShell@2
     inputs: 
@@ -47,7 +52,7 @@ jobs:
       workingDirectory: ./
       arguments: Debug -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
-    displayName: 'restore & build Debug'
+    displayName: 'build Debug'
 
   - task: PowerShell@2
     inputs: 
@@ -55,7 +60,7 @@ jobs:
       workingDirectory: ./
       arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
-    displayName: 'restore & build Release'
+    displayName: 'build Release'
     
   ### Remove the next 3 tasks when netcoreapp2.1 is no longer supported/targeted by the Project
   - task: DotNetCoreCLI@2

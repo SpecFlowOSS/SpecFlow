@@ -127,7 +127,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         if (onlyDotNetCore)
                         {
                             if (ShouldCompileForNetCore21(featureGenerator.Key)
-                                || ShouldCompileForNetCore31(featureGenerator.Key) || ShouldCompileForNet50(featureGenerator.Key))
+                                || ShouldCompileForNetCore31(featureGenerator.Key) || ShouldCompileForNet50(featureGenerator.Key) || ShouldCompileForNet60(featureGenerator.Key))
                             {
                                 yield return featureGenerator;
                             }
@@ -158,7 +158,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                             if (onlyDotNetCore)
                             {
                                 if (ShouldCompileForNetCore21(featureGenerator.Key)
-                                    || ShouldCompileForNetCore31(featureGenerator.Key) || ShouldCompileForNet50(featureGenerator.Key))
+                                    || ShouldCompileForNetCore31(featureGenerator.Key) || ShouldCompileForNet50(featureGenerator.Key) || ShouldCompileForNet60(featureGenerator.Key))
                                 { 
                                     yield return featureGenerator;
                                 }
@@ -186,6 +186,11 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         public bool ShouldCompileForNet50(Combination combination)
         {
             return combination.TargetFramework == TestRunCombinations.TfmEnumValueNet50;
+        }
+
+        public bool ShouldCompileForNet60(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNet60;
         }
 
         private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)

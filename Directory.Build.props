@@ -33,6 +33,8 @@
   <PropertyGroup>
     <SpecFlow_FullFramework_TFM>net461</SpecFlow_FullFramework_TFM>
 
+    <SpecFlow_Net6_TFM>net6.0</SpecFlow_Net6_TFM>
+    
     <SpecFlow_Net5_TFM>net5.0</SpecFlow_Net5_TFM>
 
     <SpecFlow_FullFramework_Runtime_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Runtime_TFM>
@@ -42,20 +44,21 @@
     <SpecFlow_Core_Generator_TFM>netcoreapp2.1</SpecFlow_Core_Generator_TFM>
 
     <SpecFlow_FullFramework_Test_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Test_TFM>
-    <SpecFlow_Core_Test_TFM>netcoreapp2.1;netcoreapp3.1;net5.0</SpecFlow_Core_Test_TFM>
+    <SpecFlow_Core_Test_TFM>netcoreapp2.1;netcoreapp3.1;net5.0;net6.0</SpecFlow_Core_Test_TFM>
 
     <SpecFlow_FullFramework_Specs_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Specs_TFM>
-    <SpecFlow_Net5_Specs_TFM>$(SpecFlow_Net5_TFM)</SpecFlow_Net5_Specs_TFM>
+    <SpecFlow_Net6_Specs_TFM>$(SpecFlow_Net6_TFM)</SpecFlow_Net6_Specs_TFM>
 
     <SpecFlow_FullFramework_Tools_TFM>$(SpecFlow_FullFramework_TFM)</SpecFlow_FullFramework_Tools_TFM>
-    <SpecFlow_Core_Tools_TFM>netcoreapp2.1</SpecFlow_Core_Tools_TFM>    
+    <SpecFlow_Core_Tools_TFM>netcoreapp2.1</SpecFlow_Core_Tools_TFM> 
     <SpecFlow_Net5_Tools_TFM>$(SpecFlow_Net5_TFM)</SpecFlow_Net5_Tools_TFM>
+    <SpecFlow_Net6_Tools_TFM>$(SpecFlow_Net6_TFM)</SpecFlow_Net6_Tools_TFM>
 
-    <SpecFlow_Runtime_TFM>$(SpecFlow_FullFramework_Runtime_TFM);$(SpecFlow_Core_Runtime_TFM);$(SpecFlow_Net5_TFM)</SpecFlow_Runtime_TFM>
-    <SpecFlow_Generator_TFM>$(SpecFlow_FullFramework_Generator_TFM);$(SpecFlow_Core_Generator_TFM);$(SpecFlow_Net5_TFM)</SpecFlow_Generator_TFM>
+    <SpecFlow_Runtime_TFM>$(SpecFlow_FullFramework_Runtime_TFM);$(SpecFlow_Core_Runtime_TFM);$(SpecFlow_Net5_TFM);$(SpecFlow_Net6_TFM)</SpecFlow_Runtime_TFM>
+    <SpecFlow_Generator_TFM>$(SpecFlow_FullFramework_Generator_TFM);$(SpecFlow_Core_Generator_TFM);$(SpecFlow_Net5_TFM);$(SpecFlow_Net6_TFM)</SpecFlow_Generator_TFM>
     <SpecFlow_Test_TFM>$(SpecFlow_FullFramework_Test_TFM);$(SpecFlow_Core_Test_TFM)</SpecFlow_Test_TFM>
-    <SpecFlow_Specs_TFM>$(SpecFlow_Net5_Specs_TFM)</SpecFlow_Specs_TFM>
-    <SpecFlow_Tools_TFM>$(SpecFlow_FullFramework_Tools_TFM);$(SpecFlow_Core_Tools_TFM);$(SpecFlow_Net5_Tools_TFM)</SpecFlow_Tools_TFM>
+    <SpecFlow_Specs_TFM>$(SpecFlow_Net6_Specs_TFM)</SpecFlow_Specs_TFM>
+    <SpecFlow_Tools_TFM>$(SpecFlow_FullFramework_Tools_TFM);$(SpecFlow_Core_Tools_TFM);$(SpecFlow_Net5_Tools_TFM);$(SpecFlow_Net6_Tools_TFM)</SpecFlow_Tools_TFM>
 
     <SpecFlow_EnableStrongNameSigning>true</SpecFlow_EnableStrongNameSigning>
   </PropertyGroup>

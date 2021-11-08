@@ -45,4 +45,4 @@ jobs:
     name: Linux
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Linux.zip'
     pool:
-      name: 'Hosted Ubuntu 1604'
+      vmImage: 'ubuntu-20.04'
