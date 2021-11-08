@@ -8,6 +8,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         public const string TfmEnumValueNetCore21 = "Netcoreapp21";
         public const string TfmEnumValueNetCore31 = "Netcoreapp31";
         public const string TfmEnumValueNet50 = "Net50";
+        public const string TfmEnumValueNet60 = "Net60";
 
         public static List<Combination> List { get; } = new List<Combination>()
         {
@@ -16,6 +17,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet461, UnitTestProvider = "xUnit", ConfigFormat = "Config"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore21, UnitTestProvider = "xUnit", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet50, UnitTestProvider = "xUnit", ConfigFormat = "Json"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet60, UnitTestProvider = "xUnit", ConfigFormat = "Json"},
 #endif
 
 #if MSTEST_SPECS
@@ -23,6 +25,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore21, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore31, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet50, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet60, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
 #endif
 
 #if NUNIT_SPECS
@@ -30,6 +33,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore21, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore31, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet50, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
+            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet60, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
 #endif
         };
     }

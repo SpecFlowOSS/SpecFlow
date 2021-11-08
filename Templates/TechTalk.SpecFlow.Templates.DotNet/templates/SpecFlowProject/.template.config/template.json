@@ -31,6 +31,10 @@
                     "description": ".NET 5.0"
                 },
                 {
+                    "choice": "net6.0",
+                    "description": ".NET 6.0"
+                },
+                {
                     "choice": "net461",
                     "description": ".NET Framework 4.6.1"
                 },

@@ -1,8 +1,7 @@
 ﻿@dotnetcore
 Feature: Build systems
 
-
-@WindowsOnly
+@globalusingdirective #MSBuild for VS2019 throws error CS8652: The feature 'global using directive' is currently in Preview and unsupported.
 Scenario: Use MSBuild for compiling
 	Given there is a scenario in a feature file
 	And all steps are bound and pass
