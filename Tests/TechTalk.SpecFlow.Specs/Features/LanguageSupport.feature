@@ -18,6 +18,7 @@ Scenario Outline: A project with a single scenario should compile successfully i
         | Total | Succeeded |
         | 1     | 1         |
 
+@globalusingdirective #MSBuild for VS2019 and Mono throws error CS8652: The feature 'global using directive' is currently in Preview and unsupported.
 Examples:
     | Description         | Language | Build Command |
     | C# with MSBuild     | C#       | MSBuild       |
