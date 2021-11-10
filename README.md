@@ -31,15 +31,15 @@ Continuous integration: [![Build Status](https://dev.azure.com/specflow/SpecFlow
 
 ## Deployment status
 
-Unit Tests: ![Unit Tests](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/80)
+Unit Tests: ![Unit Tests](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/1)
 
-General Specs: ![General Specs](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/84)
+General Specs: ![General Specs](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/76)
 
-xUnit Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/81) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/85)
+xUnit Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/71) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/73)
 
-NUnit Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/82) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/86)
+NUnit Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/77) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/74)
 
-MSTest Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/83) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/87)
+MSTest Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/78) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/75)
 
 Published to MyGet: ![Published to MyGet](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/5)
 
