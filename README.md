@@ -23,21 +23,23 @@ For issues/bugs please use the [issue tracker on GitHub](https://github.com/Spec
 
 Supported .NET Versions:
 
-- .NET Framework: >= 4.6.1
-- .NET Core: we are following the same support policy as Microsoft (<https://dotnet.microsoft.com/platform/support/policy/dotnet-core>)
+- .NET Framework: >= 4.6.1: we are following the same support policy as Microsoft (<https://dotnet.microsoft.com/platform/support/policy/dotnet-framework>)
+- .NET and .NET Core: we are following the same support policy as Microsoft (<https://dotnet.microsoft.com/platform/support/policy/dotnet-core>)
 
 ## Build status
 Continuous integration: [![Build Status](https://dev.azure.com/specflow/SpecFlow/_apis/build/status/SpecFlow.CI?branchName=master)](https://dev.azure.com/specflow/SpecFlow/_build/latest?definitionId=2&branchName=master)
 
 ## Deployment status
 
-Unit Tests: ![Unit Tests](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/1)
+Unit Tests: ![Unit Tests](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/80)
 
-xUnit Integration Tests: ![xUnit Integration Tests](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/2)
+General Specs: ![General Specs](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/84)
 
-NUnit Integration Tests: ![NUnit Integration Tests](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/3)
+xUnit Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/81) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/85)
 
-MSTest Integration Tests: ![MSTest Integration Tests](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/4)
+NUnit Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/82) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/86)
+
+MSTest Integration Tests: ![windows2022](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/83) ![windows2019](https://vsrm.dev.azure.com/specflow/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/15/87)
 
 Published to MyGet: ![Published to MyGet](https://specflow.vsrm.visualstudio.com/_apis/public/Release/badge/4d755a95-f4b3-45f5-abb5-aeccc2b85d15/1/5)
 
