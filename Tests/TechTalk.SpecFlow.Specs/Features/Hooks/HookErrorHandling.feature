@@ -46,8 +46,8 @@ Scenario: Should set the TestExecution status to TestError when a BeforeScenario
 		}
 	   """
 	When I execute the tests
-	Then the log file '..\steps.log' should contain text 'ScenarioExecutionStatus:TestError'
-	And the log file '..\steps.log' should contain text 'TestError:Error in Hook: BeforeScenario'
+	Then the log file '../steps.log' should contain text 'ScenarioExecutionStatus:TestError'
+	And the log file '../steps.log' should contain text 'TestError:Error in Hook: BeforeScenario'
 
 Scenario: Steps should be executed as skipped after a BeforeScenario hook throws
 Given there is a feature file in the project as

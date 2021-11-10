@@ -27,21 +27,27 @@ workspace:
 variables:
   sdkVersion: 3.1.201
   net5SdkVersion: 5.0.102
+  net6SdkVersion: 6.x
 
 steps:
 - checkout: self
   submodules: true
-   
+
 - task: UseDotNet@2
   displayName: 'Use .NET Core SDK: $(sdkVersion)'
   inputs:
     version: '$(sdkVersion)'
-    
+
 - task: UseDotNet@2
   displayName: 'Use .NET 5 SDK: $(net5SdkVersion)'
   inputs:
     version: '$(net5SdkVersion)'
-       
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 6 SDK: $(net6SdkVersion)'
+  inputs:
+    version: '$(net6SdkVersion)'
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build Release'
   inputs:
