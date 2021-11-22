@@ -4,7 +4,7 @@ SpecFlow supports a very simple dependency framework that is able to instantiate
 
 To use context injection:
 
-1. Create your POCOs (simple .NET classes) representing the shared data.
+1. Create your POCOs (plain old CLR object), simple .NET classes, representing the shared data.
 2. Define them as constructor parameters in every binding class that requires them.
 3. Save the constructor argument to instance fields, so you can use them in the step definitions.
 
