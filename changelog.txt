@@ -1,3 +1,8 @@
+3.10.1
+
+Changes:
++ Make the ignored tests to be decorated with the Ignore category as well.
+
 3.10
 
 Changes:
