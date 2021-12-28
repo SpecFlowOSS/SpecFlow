@@ -40,6 +40,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             generationContext.UnitTestGeneratorProvider.SetTestMethodIgnore(generationContext, testMethod);
+            generationContext.UnitTestGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, new[] { IGNORE_TAG });
         }
 
         public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext)
@@ -50,6 +51,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         public void DecorateFrom(string tagName, TestClassGenerationContext generationContext)
         {
             generationContext.UnitTestGeneratorProvider.SetTestClassIgnore(generationContext);
+            generationContext.UnitTestGeneratorProvider.SetTestClassCategories(generationContext, new[] { IGNORE_TAG });
         }
     }
 }
