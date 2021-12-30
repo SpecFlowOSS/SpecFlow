@@ -126,7 +126,8 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    :hidden:
 
    visualstudio/Visual-Studio-Integration.md
-   visualstudio/visual-studio-installation.rst   
+   visualstudio/visual-studio-installation.rst
+   visualstudio/settings-options.rst   
    visualstudio/Visual-Studio-Integration-Editing-Features.rst
    visualstudio/Visual-Studio-Integration-Navigation-Features.rst
    visualstudio/Visual-Studio-Test-Explorer-Support.md

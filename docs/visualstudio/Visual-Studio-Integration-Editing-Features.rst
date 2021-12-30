@@ -9,7 +9,7 @@ Gherkin Syntax Highlighting
 ---------------------------
 
 Various default styles have been defined for the Gherkin syntax. You can
-customise these colours in Visual Studio's settings (**Tools \| Options
+customize these colours in Visual Studio's settings (**Tools \| Options
 \| Environment \| Fonts and Colors**). The names of the corresponding
 **Display items** in the list begin with "Gherkin".
 
