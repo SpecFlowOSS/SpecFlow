@@ -64,12 +64,8 @@
             "type": "parameter",
             "description": "Provider for Unit Tests",
             "datatype": "choice",
-            "defaultValue": "specflowplusrunner",
+            "defaultValue": "nunit",
             "choices": [
-                {
-                    "choice": "specflowplusrunner",
-                    "description": "SpecFlow+ Runner"
-                },
                 {
                     "choice": "xunit",
                     "description": "xUnit"
@@ -98,10 +94,6 @@
                 "evaluator": "C++",
                 "datatype": "string",
                 "cases": [
-                    {
-                        "condition": "(unitTestProvider == 'specflowplusrunner')",
-                        "value": "<PackageReference Include=\"SpecRun.SpecFlow\" Version=\"$$$MajorMinorVersion$$$.*\" />"
-                    },
                     {
                         "condition": "(unitTestProvider == 'xunit')",
                         "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"$$$NuGetPackageVersion$$$\" />"
