@@ -262,7 +262,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestClassCleanupMethod.Name));
         }
 
-        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
+        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(friendlyTestName)));
 
