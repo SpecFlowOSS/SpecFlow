@@ -2,6 +2,7 @@
 
 Changes:
 + Remove Cucumber- Messages
++ Made XUnit2TestGeneratorProvider.SetTestMethod virtual so that it can be replaced by generator plugins
 
 3.9
 
