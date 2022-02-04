@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void GetTestRunner_without_arguments_should_return_TestRunner_instance()
         {
-            var testRunner = TestRunnerManager.GetTestRunner(TODO, containerBuilder: new RuntimeTestsContainerBuilder());
+            var testRunner = TestRunnerManager.GetTestRunnerAsync(TODO, containerBuilder: new RuntimeTestsContainerBuilder());
 
             testRunner.Should().NotBeNull();
             testRunner.Should().BeOfType<TestRunner>();
@@ -32,8 +32,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Fact]
         public void GetTestRunner_should_return_different_instances_for_different_assemblies()
         {
-            var testRunner1 = TestRunnerManager.GetTestRunner(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
-            var testRunner2 = TestRunnerManager.GetTestRunner(TODO, anotherAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            var testRunner1 = TestRunnerManager.GetTestRunnerAsync(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            var testRunner2 = TestRunnerManager.GetTestRunnerAsync(TODO, anotherAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
 
             testRunner1.Should().NotBe(testRunner2);
         }
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void OnTestRunEnd_should_fire_AfterTestRun_events()
         {
             // make sure a test runner is initialized
-            TestRunnerManager.GetTestRunner(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            TestRunnerManager.GetTestRunnerAsync(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
 
             AfterTestRunTestBinding.AfterTestRunCallCount = 0; //reset
             TestRunnerManager.OnTestRunEndAsync(thisAssembly);
@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void OnTestRunEnd_without_arguments_should_fire_AfterTestRun_events_for_calling_assembly()
         {
             // make sure a test runner is initialized
-            TestRunnerManager.GetTestRunner(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            TestRunnerManager.GetTestRunnerAsync(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
 
             AfterTestRunTestBinding.AfterTestRunCallCount = 0; //reset
             TestRunnerManager.OnTestRunEndAsync();
@@ -109,7 +109,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void OnTestRunEnd_should_not_fire_AfterTestRun_events_multiple_times()
         {
             // make sure a test runner is initialized
-            TestRunnerManager.GetTestRunner(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            TestRunnerManager.GetTestRunnerAsync(TODO, thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
 
             AfterTestRunTestBinding.AfterTestRunCallCount = 0; //reset
             TestRunnerManager.OnTestRunEndAsync(thisAssembly);
