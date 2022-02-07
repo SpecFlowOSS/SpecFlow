@@ -384,15 +384,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             var arguments = ResolveArguments(hookBinding, currentContainer);
 
             _testThreadExecutionEventPublisher.PublishEvent(new HookBindingStartedEvent(hookBinding));
-            TimeSpan duration = default;
+            var durationHolder = new DurationHolder();
 
             try
             {
-                (_, duration) = await invoker.InvokeBindingAsync(hookBinding, _contextManager, arguments, _testTracer);
+                await invoker.InvokeBindingAsync(hookBinding, _contextManager, arguments, _testTracer, durationHolder);
             }
             finally
             {
-                _testThreadExecutionEventPublisher.PublishEvent(new HookBindingFinishedEvent(hookBinding, duration));
+                _testThreadExecutionEventPublisher.PublishEvent(new HookBindingFinishedEvent(hookBinding, durationHolder.Duration));
             }
         }
 
@@ -474,7 +474,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             BindingMatch match = null;
             object[] arguments = null;
-            TimeSpan duration = TimeSpan.Zero;
+            var durationHolder = new DurationHolder();
             try
             {
                 match = GetStepMatch(stepInstance);
@@ -492,9 +492,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                     onStepStartExecuted = true;
                     await OnStepStartAsync();
-                    duration = await ExecuteStepMatchAsync(match, arguments);
+                    await ExecuteStepMatchAsync(match, arguments, durationHolder);
                     if (_specFlowConfiguration.TraceSuccessfulSteps)
-                        _testTracer.TraceStepDone(match, arguments, duration);
+                        _testTracer.TraceStepDone(match, arguments, durationHolder.Duration);
                 }
             }
             catch (PendingStepException)
@@ -520,7 +520,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             catch (Exception ex)
             {
-                _testTracer.TraceError(ex, duration);
+                _testTracer.TraceError(ex, durationHolder.Duration);
 
                 UpdateStatusOnStepFailure(ScenarioExecutionStatus.TestError, ex);
 
@@ -572,21 +572,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw _errorProvider.GetMissingStepDefinitionError();
         }
 
-        protected virtual async Task<TimeSpan> ExecuteStepMatchAsync(BindingMatch match, object[] arguments)
+        protected virtual async Task ExecuteStepMatchAsync(BindingMatch match, object[] arguments, DurationHolder durationHolder)
         {
             _testThreadExecutionEventPublisher.PublishEvent(new StepBindingStartedEvent(match.StepBinding));
             
-            TimeSpan duration = default;
-
             try
             {
-                (_, duration) = await _bindingInvoker.InvokeBindingAsync(match.StepBinding, _contextManager, arguments, _testTracer);
-
-                return duration;
+                await _bindingInvoker.InvokeBindingAsync(match.StepBinding, _contextManager, arguments, _testTracer, durationHolder);
             }
             finally
             {
-                _testThreadExecutionEventPublisher.PublishEvent(new StepBindingFinishedEvent(match.StepBinding, duration));
+                _testThreadExecutionEventPublisher.PublishEvent(new StepBindingFinishedEvent(match.StepBinding, durationHolder.Duration));
             }
         }
 

@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
             var result = sut.GetStepDefinitions();
 
-            result.Should().BeEquivalentTo(stepDefinitionBinding1, stepDefinitionBinding2);
+            result.Should().BeEquivalentTo(new List<StepDefinitionBinding> { stepDefinitionBinding1, stepDefinitionBinding2 });
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
             var result = sut.GetHooks();
 
-            result.Should().BeEquivalentTo(hook1, hook2);
+            result.Should().BeEquivalentTo(new List<HookBinding> { hook1, hook2 });
         }
     }
 }

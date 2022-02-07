@@ -275,14 +275,14 @@ namespace TechTalk.SpecFlow
 
         internal static async Task ResetAsync()
         {
+            foreach (var testRunnerManager in testRunnerManagerRegistry.Values.ToArray())
+            {
+                await testRunnerManager.DisposeAsync();
+            }
+            
             await testRunnerManagerRegistrySemaphore.WaitAsync();
             try
             {
-                foreach (var testRunnerManager in testRunnerManagerRegistry.Values.ToArray())
-                {
-                    await testRunnerManager.DisposeAsync();
-                }
-
                 testRunnerManagerRegistry.Clear();
             }
             finally

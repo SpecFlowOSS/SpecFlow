@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Bindings
             else
                 arguments = new object[] {value};
 
-            var (result, _) = await bindingInvoker.InvokeBindingAsync(stepTransformation, contextManager, arguments, testTracer);
+            var result = await bindingInvoker.InvokeBindingAsync(stepTransformation, contextManager, arguments, testTracer, new DurationHolder());
 
             return result;
         }

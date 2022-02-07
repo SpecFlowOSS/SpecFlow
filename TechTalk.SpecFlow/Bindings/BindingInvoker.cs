@@ -28,13 +28,12 @@ namespace TechTalk.SpecFlow.Bindings
             this.bindingDelegateInvoker = bindingDelegateInvoker;
         }
 
-        public virtual async Task<(object result, TimeSpan duration)> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer)
+        public virtual async Task<object> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, DurationHolder durationHolder)
         {
             MethodInfo methodInfo;
             Delegate bindingAction;
             EnsureReflectionInfo(binding, out methodInfo, out bindingAction);
             Stopwatch stopwatch = new Stopwatch();
-            TimeSpan duration;
             try
             {
                 stopwatch.Start();
@@ -49,6 +48,7 @@ namespace TechTalk.SpecFlow.Bindings
                     result = await bindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs);
 
                     stopwatch.Stop();
+                    durationHolder.Duration = stopwatch.Elapsed;
                 }
 
                 if (specFlowConfiguration.TraceTimings && stopwatch.Elapsed >= specFlowConfiguration.MinTracedDuration)
@@ -56,12 +56,12 @@ namespace TechTalk.SpecFlow.Bindings
                     testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }
 
-                return (result, stopwatch.Elapsed);
+                return result;
             }
             catch (ArgumentException ex)
             {
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw errorProvider.GetCallError(binding.Method, ex);
             }
             catch (TargetInvocationException invEx)
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Bindings
                 var ex = invEx.InnerException;
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw ex;
             }
             catch (AggregateException aggregateEx)
@@ -77,13 +77,13 @@ namespace TechTalk.SpecFlow.Bindings
                 var ex = aggregateEx.InnerExceptions.First();
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw ex;
             }
             catch (Exception)
             {
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw;
             }
         }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IAsyncDisposable
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static async Task InitializeAsync(string testClassId)
+    public async Task InitializeAsync(string testClassId)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
         await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly);

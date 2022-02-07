@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -29,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }           
 
         [Fact]
-        public void ShouldCallBindingWithSimpleConvertParam()
+        public async Task ShouldCallBindingWithSimpleConvertParam()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -37,20 +38,20 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.GivenAsync("sample step with simple convert param: 1.23"); // German uses ',' as decimal separator, but BindingCulture is english
+            await testRunner.GivenAsync("sample step with simple convert param: 1.23"); // German uses ',' as decimal separator, but BindingCulture is english
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithSimpleConvertParam(1.23));
         }
 
         [Fact]
-        public void ShouldExecuteBindingWithTheProperCulture()
+        public async Task ShouldExecuteBindingWithTheProperCulture()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindingsForArgumentConvertInEnglishCulture>();
 
             //MockRepository.ReplayAll();
 
-            testRunner.GivenAsync("argument 1.23 should be able to convert to 1.23 even though it has english localization"); // German uses ',' as decimal separator, but BindingCulture is english
+            await testRunner.GivenAsync("argument 1.23 should be able to convert to 1.23 even though it has english localization"); // German uses ',' as decimal separator, but BindingCulture is english
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.InBindingConversion("1.23", 1.23));

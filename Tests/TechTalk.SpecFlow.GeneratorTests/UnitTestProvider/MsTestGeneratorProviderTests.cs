@@ -202,7 +202,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var featureSetupCall = code
                 .Class()
                 .Members()
-                .Single(m => m.Name == "TestInitialize")
+                .Single(m => m.Name == "TestInitializeAsync")
                 .Statements
                 .OfType<CodeConditionStatement>()
                 .First()
@@ -213,7 +213,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
                 .As<CodeMethodInvokeExpression>();
 
             featureSetupCall.Should().NotBeNull();
-            featureSetupCall.Method.MethodName.Should().Be("FeatureSetup");
+            featureSetupCall.Method.MethodName.Should().Be("FeatureSetupAsync");
             featureSetupCall.Method.TargetObject.As<CodeTypeReferenceExpression>().Type.Options.Should().Be(CodeTypeReferenceOptions.GlobalReference);
         }
 

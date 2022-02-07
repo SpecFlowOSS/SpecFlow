@@ -23,6 +23,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
         protected internal const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
         protected internal const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
+        protected internal const string ASSEMBLY_FIXTURE_PARAMETER_NAME = "assemblyFixture";
+        protected internal const string ASSEMBLY_FIXTURE_FIELD_NAME = "_assemblyFixture";
         protected internal const string COLLECTION_DEF = "Xunit.Collection";
         protected internal const string COLLECTION_TAG = "xunit:collection";
         protected internal const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
@@ -56,6 +58,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             // Add a field for the ITestOutputHelper
             generationContext.TestClass.Members.Add(new CodeMemberField(OUTPUT_INTERFACE, OUTPUT_INTERFACE_FIELD_NAME));
+            generationContext.TestClass.Members.Add(new CodeMemberField(GetAssemblyFixtureTypeName(), ASSEMBLY_FIXTURE_FIELD_NAME));
 
             // Store the fixture data type for later use in constructor
             generationContext.CustomData.Add(FIXTUREDATA_PARAMETER_NAME, fixtureDataType);
@@ -96,11 +99,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor constructor)
         {
-            var typeName = $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
+            var typeName = GetAssemblyFixtureTypeName();
+
             constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
             constructor.Parameters.Add(
-                new CodeParameterDeclarationExpression(typeName, "assemblyFixture"));
+                new CodeParameterDeclarationExpression(typeName, ASSEMBLY_FIXTURE_PARAMETER_NAME));
             constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
 
@@ -108,14 +112,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
+
+            constructor.Statements.Add(
+                new CodeAssignStatement(
+                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), ASSEMBLY_FIXTURE_FIELD_NAME),
+                    new CodeVariableReferenceExpression(ASSEMBLY_FIXTURE_PARAMETER_NAME)));
         }
+
+        private string GetAssemblyFixtureTypeName() => $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
 
         protected virtual void SetTestInitializeMethod(TestClassGenerationContext generationContext, CodeMemberMethod method)
         {
-            var typeName = $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
-
             var callInitializeAsyncExpression = new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression(typeName),
+                new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), ASSEMBLY_FIXTURE_FIELD_NAME),
                 "InitializeAsync",
                 new CodePrimitiveExpression(generationContext.TestClass.Name));
 
@@ -148,6 +157,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // set [TheoryAttribute(Skip="reason")]
             theoryAttr?.Arguments.Add(new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON)));
         }
+
         public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             IEnumerable<string> collection = featureCategories.Where(f => f.StartsWith(COLLECTION_TAG, StringComparison.InvariantCultureIgnoreCase)).ToList();
@@ -172,7 +182,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             string description = Regex.Match(collection, collectionMatch, RegexOptions.IgnoreCase).Value;
             CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_DEF, description);
         }
-
 
         public virtual void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
         {
@@ -360,6 +369,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.MarkCodeMemberMethodAsAsync(disposeMethod);
             
             generationContext.TestClass.Members.Add(disposeMethod);
+
+            var callDisposeAsyncExpression = new CodeMethodInvokeExpression(
+                new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), ASSEMBLY_FIXTURE_FIELD_NAME),
+                "DisposeAsync");
+
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callDisposeAsyncExpression);
+
+            disposeMethod.Statements.Add(callDisposeAsyncExpression);
 
             var expression = new CodeMethodInvokeExpression(
                 new CodeThisReferenceExpression(),

@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
         {
             return new NotImplementedException($"{TargetLanguage} is not supported");
         }
-        
+
         public void BindTypeToSourceFile(CodeTypeDeclaration typeDeclaration, string fileName)
         {
             switch (TargetLanguage)
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                     break;
             }
         }
-        
+
         public CodeStatement GetStartRegionStatement(string regionText)
         {
             switch (TargetLanguage)
@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
             return new CodeCommentStatement("#endregion");
         }
-        
+
         public CodeStatement GetDisableWarningsPragma()
         {
             switch (TargetLanguage)
@@ -246,7 +246,7 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
             else if (expression.Method.TargetObject is CodeTypeReferenceExpression typeExpression)
             {
-                expression.Method.TargetObject = new CodeTypeReferenceExpression($"await {typeExpression.Type.BaseType}");
+                expression.Method.TargetObject = new CodeTypeReferenceExpression(new CodeTypeReference($"await {typeExpression.Type.BaseType}", typeExpression.Type.Options));
             }
             else if (expression.Method.TargetObject is CodeThisReferenceExpression thisExpression)
             {

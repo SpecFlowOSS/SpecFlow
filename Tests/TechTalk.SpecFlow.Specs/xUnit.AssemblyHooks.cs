@@ -2,27 +2,27 @@
 #pragma warning disable
 
 using System.CodeDom.Compiler;
+using System.Threading.Tasks;
 using global::System.Runtime.CompilerServices;
 
 [assembly: global::Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")]
 [assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::TechTalk_SpecFlow_Specs_XUnitAssemblyFixture))]
 
 [GeneratedCode("SpecFlow", "")]
-public class TechTalk_SpecFlow_Specs_XUnitAssemblyFixture : global::System.IDisposable
+public class TechTalk_SpecFlow_Specs_XUnitAssemblyFixture : global::System.IAsyncDisposable
 {
-    private readonly global::System.Reflection.Assembly _currentAssembly;
-
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public TechTalk_SpecFlow_Specs_XUnitAssemblyFixture()
+    public async Task InitializeAsync(string testClassId)
     {
-        _currentAssembly = typeof(TechTalk_SpecFlow_Specs_XUnitAssemblyFixture).Assembly;
-        global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly);
+        var currentAssembly = typeof(TechTalk_SpecFlow_Specs_XUnitAssemblyFixture).Assembly;
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly);
+        var currentAssembly = typeof(TechTalk_SpecFlow_Specs_XUnitAssemblyFixture).Assembly;
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 #pragma warning restore
