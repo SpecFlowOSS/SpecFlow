@@ -274,8 +274,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             var iasyncLifetimeInterface = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
 
-            CodeDomHelper.SetTypeReferenceAsInterface(iasyncLifetimeInterface);
-
             _currentFixtureDataTypeDeclaration.BaseTypes.Add(iasyncLifetimeInterface);
 
             // Task IAsyncLifetime.DisposeAsync() { <fixtureTearDownMethod>(); }
@@ -349,8 +347,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // xUnit supports test tear down through the IAsyncLifetime interface
 
             var iasyncLifetimeInterface = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
-
-            CodeDomHelper.SetTypeReferenceAsInterface(iasyncLifetimeInterface);
 
             generationContext.TestClass.BaseTypes.Add(iasyncLifetimeInterface);
 
