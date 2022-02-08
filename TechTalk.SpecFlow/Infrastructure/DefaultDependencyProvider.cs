@@ -40,7 +40,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
+#pragma warning disable CS0618
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
+#pragma warning restore CS0618
+            container.RegisterTypeAs<BindingInvoker, IAsyncBindingInvoker>();
             container.RegisterTypeAs<BindingDelegateInvoker, IBindingDelegateInvoker>();
             container.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
 

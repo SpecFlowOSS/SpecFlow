@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
+    [Obsolete("Use async version of the interface (IAsyncBindingInvoker) whenever you can")]
     public interface IBindingInvoker
     {
-        Task<object> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, DurationHolder durationHolder);
+        [Obsolete("Use async version of the method of IAsyncBindingInvoker instead")]
+        object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration);
     }
 }

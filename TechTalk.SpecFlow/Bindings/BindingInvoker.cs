@@ -15,7 +15,9 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class BindingInvoker : IBindingInvoker
+#pragma warning disable CS0618
+    public class BindingInvoker : IBindingInvoker, IAsyncBindingInvoker
+#pragma warning restore CS0618
     {
         protected readonly SpecFlowConfiguration specFlowConfiguration;
         protected readonly IErrorProvider errorProvider;
@@ -26,6 +28,15 @@ namespace TechTalk.SpecFlow.Bindings
             this.specFlowConfiguration = specFlowConfiguration;
             this.errorProvider = errorProvider;
             this.bindingDelegateInvoker = bindingDelegateInvoker;
+        }
+
+        [Obsolete("Use async version of the method instead")]
+        public object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        {
+            var durationHolder = new DurationHolder();
+            var result = InvokeBindingAsync(binding, contextManager, arguments, testTracer, durationHolder).ConfigureAwait(false).GetAwaiter().GetResult();
+            duration = durationHolder.Duration;
+            return result;
         }
 
         public virtual async Task<object> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, DurationHolder durationHolder)

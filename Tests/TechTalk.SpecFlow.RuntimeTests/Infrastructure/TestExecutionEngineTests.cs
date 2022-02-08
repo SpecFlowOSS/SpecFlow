@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IContextManager> contextManagerStub;
         private Mock<ITestTracer> testTracerStub;
         private Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
-        private Mock<IBindingInvoker> methodBindingInvokerMock;
+        private Mock<IAsyncBindingInvoker> methodBindingInvokerMock;
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<ITestObjectResolver> testObjectResolverMock;
         private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
@@ -132,11 +132,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             errorProviderStub = new Mock<IErrorProvider>();
             testTracerStub = new Mock<ITestTracer>();
             stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();
-            methodBindingInvokerMock = new Mock<IBindingInvoker>();
+            methodBindingInvokerMock = new Mock<IAsyncBindingInvoker>();
 
             obsoleteTestHandlerMock = new Mock<IObsoleteStepHandler>();
-
-         
 
             _testPendingMessageFactory = new TestPendingMessageFactory(errorProviderStub.Object);
             _testUndefinedMessageFactory = new TestUndefinedMessageFactory(stepDefinitionSkeletonProviderMock.Object, errorProviderStub.Object, specFlowConfiguration);

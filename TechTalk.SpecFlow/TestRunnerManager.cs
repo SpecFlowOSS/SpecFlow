@@ -60,6 +60,12 @@ namespace TechTalk.SpecFlow
             return testRunner;
         }
 
+        [Obsolete("Use overload of the method instead that has a string testClassId parameter")]
+        public virtual ITestRunner CreateTestRunner(int threadId)
+        {
+            return CreateTestRunner("Thread #" + threadId);
+        }
+
         protected virtual void InitializeBindingRegistry(ITestRunner testRunner)
         {
             BindingAssemblies = GetBindingAssemblies();
@@ -127,7 +133,6 @@ namespace TechTalk.SpecFlow
             try
             {
                 return GetTestRunnerWithoutExceptionHandling(testClassId);
-
             }
             catch (Exception ex)
             {

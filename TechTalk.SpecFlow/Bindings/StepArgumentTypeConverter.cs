@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.Bindings
         private readonly ITestTracer testTracer;
         private readonly IBindingRegistry bindingRegistry;
         private readonly IContextManager contextManager;
-        private readonly IBindingInvoker bindingInvoker;
+        private readonly IAsyncBindingInvoker bindingInvoker;
 
-        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager, IBindingInvoker bindingInvoker)
+        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager, IAsyncBindingInvoker bindingInvoker)
         {
             this.testTracer = testTracer;
             this.bindingRegistry = bindingRegistry;

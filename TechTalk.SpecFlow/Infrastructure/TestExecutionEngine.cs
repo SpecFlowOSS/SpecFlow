@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public class TestExecutionEngine : ITestExecutionEngine
     {
-        private readonly IBindingInvoker _bindingInvoker;
+        private readonly IAsyncBindingInvoker _bindingInvoker;
         private readonly IBindingRegistry _bindingRegistry;
         private readonly IContextManager _contextManager;
         private readonly IErrorProvider _errorProvider;
@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IContextManager contextManager,
             IStepDefinitionMatchService stepDefinitionMatchService,
-            IBindingInvoker bindingInvoker,
+            IAsyncBindingInvoker bindingInvoker,
             IObsoleteStepHandler obsoleteStepHandler,
             IAnalyticsEventProvider analyticsEventProvider, 
             IAnalyticsTransmitter analyticsTransmitter, 
@@ -378,7 +378,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected IObjectContainer TestThreadContainer { get; }
 
-        public virtual async Task InvokeHookAsync(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        public virtual async Task InvokeHookAsync(IAsyncBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
         {
             var currentContainer = GetHookContainer(hookType);
             var arguments = ResolveArguments(hookBinding, currentContainer);
