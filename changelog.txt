@@ -1,8 +1,9 @@
-3.10
+3.9.40
 
 Changes:
 + Remove Cucumber- Messages
 + Made XUnit2TestGeneratorProvider.SetTestMethod virtual so that it can be replaced by generator plugins
++ .NET 6 support
 
 3.9
 
