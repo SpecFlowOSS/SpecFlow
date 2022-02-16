@@ -244,22 +244,29 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             {
                 expression.Method.TargetObject = new CodeVariableReferenceExpression($"await {variableExpression.VariableName}");
             }
+            else if (expression.Method.TargetObject is CodeFieldReferenceExpression fieldExpression 
+                     && fieldExpression.TargetObject is CodeThisReferenceExpression thisFieldExpression)
+            {
+                expression.Method.TargetObject = new CodeFieldReferenceExpression(GetAwaitedMethodThisTargetObject(thisFieldExpression), fieldExpression.FieldName);
+            }
             else if (expression.Method.TargetObject is CodeTypeReferenceExpression typeExpression)
             {
                 expression.Method.TargetObject = new CodeTypeReferenceExpression(new CodeTypeReference($"await {typeExpression.Type.BaseType}", typeExpression.Type.Options));
             }
             else if (expression.Method.TargetObject is CodeThisReferenceExpression thisExpression)
             {
-                switch (TargetLanguage)
-                {
-                    case CodeDomProviderLanguage.VB:
-                        expression.Method.TargetObject = new CodeVariableReferenceExpression("await Me");
-                        break;
-                    case CodeDomProviderLanguage.CSharp:
-                        expression.Method.TargetObject = new CodeVariableReferenceExpression("await this");
-                        break;
-                }
+                expression.Method.TargetObject = GetAwaitedMethodThisTargetObject(expression.Method.TargetObject);
             }
+        }
+
+        private CodeExpression GetAwaitedMethodThisTargetObject(CodeExpression thisExpression)
+        {
+            return TargetLanguage switch
+            {
+                CodeDomProviderLanguage.VB => new CodeVariableReferenceExpression("await Me"),
+                CodeDomProviderLanguage.CSharp => new CodeVariableReferenceExpression("await this"),
+                _ => thisExpression
+            };
         }
     }
 }
