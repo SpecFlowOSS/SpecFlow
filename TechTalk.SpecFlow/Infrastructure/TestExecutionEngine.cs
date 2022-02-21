@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BoDi;
@@ -36,9 +35,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly ITestRunnerManager _testRunnerManager;
         private readonly IRuntimePluginTestExecutionLifecycleEventEmitter _runtimePluginTestExecutionLifecycleEventEmitter;
         private readonly ITestThreadExecutionEventPublisher _testThreadExecutionEventPublisher;
-        private CultureInfo _defaultBindingCulture = CultureInfo.CurrentCulture;
-
-        private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
 
         private bool _testRunnerEndExecuted = false;
         private object _testRunnerEndExecutedLock = new object();
@@ -152,9 +148,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             _contextManager.InitializeFeatureContext(featureInfo);
 
-            _defaultBindingCulture = FeatureContext.BindingCulture;
-            _defaultTargetLanguage = featureInfo.GenerationTargetLanguage;
-            
             _testThreadExecutionEventPublisher.PublishEvent(new FeatureStartedEvent(FeatureContext));
 
             await FireEventsAsync(HookType.BeforeFeature);

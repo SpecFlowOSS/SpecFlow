@@ -370,14 +370,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             
             generationContext.TestClass.Members.Add(disposeMethod);
 
-            var callDisposeAsyncExpression = new CodeMethodInvokeExpression(
-                new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), ASSEMBLY_FIXTURE_FIELD_NAME),
-                "DisposeAsync");
-
-            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callDisposeAsyncExpression);
-
-            disposeMethod.Statements.Add(callDisposeAsyncExpression);
-
             var expression = new CodeMethodInvokeExpression(
                 new CodeThisReferenceExpression(),
                 generationContext.TestCleanupMethod.Name);
