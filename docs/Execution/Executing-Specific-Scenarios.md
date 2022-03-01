@@ -5,6 +5,7 @@ SpecFlow converts the tags in your feature files to test case categories:
 - SpecFlow+ Runner: TestCategory
 - NUnit: Category or TestCategory
 - MSTest: TestCategory
+- VsTest: TestCategory
 - xUnit: Trait (similar functionality, SpecFlow will insert a Trait attribute with `Category` name)
 
 This category can be used to filter the test execution in your build pipeline. Note that the incorrect filter can lead to no test getting executed.
@@ -15,7 +16,7 @@ Learn more about the filters in Microsoft's [official documentation](https://doc
 
 ## Examples
 
-All the examples here are using `Category`, but if you are using `MsTest` or `SpecFlow+ Runner` then you should use `TestCategory` instead.
+All the examples here are using `Category`, but if you are using `MsTest`, `VsTest` or `SpecFlow+ Runner` then you should use `TestCategory` instead.
 
 ### How to use the filters
 
@@ -160,6 +161,7 @@ vstest.console.exe "C:\Temp\BookShop.AcceptanceTests.dll" /TestCaseFilter:"Categ
 
 The filter expression should be provided in the "Test filter criteria" setting in the `Visual Studio Test` task:
 
+Note that these images are misleading.  The Test filter MUST be TestCategory and NOT Category.
 ![Visual Studio Test task](/_static/images/task_filter1.png)
 
 ![Visual Studio Test task](/_static/images/task_filter2.png)
@@ -174,7 +176,7 @@ Alternatively you could use the dotnet task (DotNetCoreCLI) to run your tests. T
   inputs:
     command: test
     projects: 'BookShop.AcceptanceTests'
-    arguments: '--filter "Category=done"'
+    arguments: '--filter "TestCategory=done"'
 ```
 
 ```bash
@@ -183,5 +185,5 @@ Alternatively you could use the dotnet task (DotNetCoreCLI) to run your tests. T
   inputs:
     command: test
     projects: 'BookShop.AcceptanceTests'
-    arguments: '--filter "Category=us123 & Category=done"'
+    arguments: '--filter "TestCategory=us123 & TestCategory=done"'
 ```
