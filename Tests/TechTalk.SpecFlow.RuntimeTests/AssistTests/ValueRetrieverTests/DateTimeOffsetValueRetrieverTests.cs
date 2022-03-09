@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
         private const string IrrelevantKey = "Irrelevant";
         private readonly Type IrrelevantType = typeof(object);
-        
+
         public DateTimeOffsetValueRetrieverTests()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
@@ -112,6 +112,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             Retrieve_correct_nullable_value("Thursday", DateTimeOffset.MinValue);
             Retrieve_correct_value("Friday too", DateTimeOffset.MinValue);
             Retrieve_correct_nullable_value("Friday too", DateTimeOffset.MinValue);
+        }
+
+        [Fact]
+        public void Uses_provided_styles()
+        {
+            var oldStyle = DateTimeOffsetValueRetriever.DateTimeStyles;
+            try
+            {
+                DateTimeOffsetValueRetriever.DateTimeStyles = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
+
+                Retrieve_correct_value("1/1/2011 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZoneInfo.Utc.BaseUtcOffset));
+                Retrieve_correct_nullable_value("1/1/2011 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZoneInfo.Utc.BaseUtcOffset));
+                Retrieve_correct_value("1/1/2011 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZoneInfo.Utc.BaseUtcOffset));
+                Retrieve_correct_nullable_value("1/1/2011 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZoneInfo.Utc.BaseUtcOffset));
+            }
+            finally
+            {
+                DateTimeOffsetValueRetriever.DateTimeStyles = oldStyle;
+            }
         }
     }
 }

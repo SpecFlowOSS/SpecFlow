@@ -2,6 +2,7 @@
 
 Changes:
 + improve Service.GetValueRetrieverFor performance
++ Add DateTimeStyles to DateTimeValueRetriever and DateTimeOffsetValueRetriever
 
 3.9.40
 
