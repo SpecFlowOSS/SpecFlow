@@ -1,34 +1,38 @@
-﻿using TechTalk.SpecFlow.Assist.ValueRetrievers;
+﻿using System.Collections.Generic;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    internal class SpecFlowDefaultValueRetrieverList : ServiceComponentList<IValueRetriever>
+    #nullable enable
+    internal sealed class SpecFlowDefaultValueRetrieverList : ServiceComponentList<IValueRetriever>
     {
         public SpecFlowDefaultValueRetrieverList()
+            : base(new List<IValueRetriever> {
+                // Sorted by likelihood
+                new StringValueRetriever(),
+                new IntValueRetriever(),
+                new BoolValueRetriever(),
+                new LongValueRetriever(),
+                new FloatValueRetriever(),
+                new DoubleValueRetriever(),
+                new DateTimeValueRetriever(),
+                new TimeSpanValueRetriever(),
+                new GuidValueRetriever(),
+                new EnumValueRetriever(),
+                new ListValueRetriever(),
+                new ArrayValueRetriever(),
+                new ByteValueRetriever(),
+                new SByteValueRetriever(),
+                new UIntValueRetriever(),
+                new ShortValueRetriever(),
+                new UShortValueRetriever(),
+                new ULongValueRetriever(),
+                new DecimalValueRetriever(),
+                new CharValueRetriever(),
+                new DateTimeOffsetValueRetriever(),
+                new UriValueRetriever()
+            }, false)
         {
-            Register(new StringValueRetriever());
-            Register(new ByteValueRetriever());
-            Register(new SByteValueRetriever());
-            Register(new IntValueRetriever());
-            Register(new UIntValueRetriever());
-            Register(new ShortValueRetriever());
-            Register(new UShortValueRetriever());
-            Register(new LongValueRetriever());
-            Register(new ULongValueRetriever());
-            Register(new FloatValueRetriever());
-            Register(new DoubleValueRetriever());
-            Register(new DecimalValueRetriever());
-            Register(new CharValueRetriever());
-            Register(new BoolValueRetriever());
-            Register(new DateTimeValueRetriever());
-            Register(new GuidValueRetriever());
-            Register(new EnumValueRetriever());
-            Register(new TimeSpanValueRetriever());
-            Register(new DateTimeOffsetValueRetriever());
-            Register(new UriValueRetriever());
-
-            Register(new ArrayValueRetriever());
-            Register(new ListValueRetriever());
         }
     }
 }

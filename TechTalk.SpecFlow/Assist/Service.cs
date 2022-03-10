@@ -3,16 +3,18 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist
 {
+    #nullable enable
     public class Service
     {
         public ServiceComponentList<IValueComparer> ValueComparers { get; private set; }
         public ServiceComponentList<IValueRetriever> ValueRetrievers { get; private set; }
 
-        public static Service Instance { get; internal set; } = new Service();
+        public static Service Instance { get; } = new Service();
 
         public Service()
         {
-            RestoreDefaults();
+            ValueComparers = new SpecFlowDefaultValueComparerList();
+            ValueRetrievers = new SpecFlowDefaultValueRetrieverList();
         }
 
         public void RestoreDefaults()
@@ -45,12 +47,15 @@ namespace TechTalk.SpecFlow.Assist
             ValueRetrievers.Unregister(valueRetriever);
         }
 
-        public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
+        public IValueRetriever? GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
+            var keyValuePair = new KeyValuePair<string, string>(row[0], row[1]);
             foreach (var valueRetriever in ValueRetrievers)
             {
-                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType, propertyType))
+                if (valueRetriever.CanRetrieve(keyValuePair, targetType, propertyType))
+                {
                     return valueRetriever;
+                }
             }
             return null;
         }
