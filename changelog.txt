@@ -2,6 +2,7 @@
 
 Changes:
 + improve Service.GetValueRetrieverFor performance
++ Update NUnit3TestGeneratorProvider - SetTestMethod and SetRowTest are now virtual so that it can be replaced by generator plugins
 
 3.9.40
 
