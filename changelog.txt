@@ -3,6 +3,7 @@
 Changes:
 + improve Service.GetValueRetrieverFor performance
 + Add DateTimeStyles to DateTimeValueRetriever and DateTimeOffsetValueRetriever
++ Update NUnit3TestGeneratorProvider - SetTestMethod and SetRowTest are now virtual so that it can be replaced by generator plugins
 
 3.9.40
 
