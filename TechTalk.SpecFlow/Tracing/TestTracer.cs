@@ -26,6 +26,8 @@ namespace TechTalk.SpecFlow.Tracing
 
     public class TestTracer : ITestTracer
     {
+        private static readonly TimeSpan MillisecondsThreshold = TimeSpan.FromMilliseconds(300);
+
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
@@ -130,13 +132,27 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
         {
-            traceListener.WriteToolOutput("duration: {0}: {1:F1}s",
-                stepFormatter.GetMatchText(method, arguments), elapsed.TotalSeconds);
+            string matchText = stepFormatter.GetMatchText(method, arguments);
+            if (elapsed > MillisecondsThreshold)
+            {
+                traceListener.WriteToolOutput($"duration: {matchText}: {elapsed.TotalSeconds:F1}s");
+            }
+            else
+            {
+                traceListener.WriteToolOutput($"duration: {matchText}: {elapsed.TotalMilliseconds:F1}ms");
+            }
         }
 
         public void TraceDuration(TimeSpan elapsed, string text)
         {
-            traceListener.WriteToolOutput("duration: {0}: {1:F1}s", text, elapsed.TotalSeconds);
+            if (elapsed > MillisecondsThreshold)
+            {
+                traceListener.WriteToolOutput($"duration: {text}: {elapsed.TotalSeconds:F1}s");
+            }
+            else
+            {
+                traceListener.WriteToolOutput($"duration: {text}: {elapsed.TotalMilliseconds:F1}ms");
+            }
         }
     }
 }
