@@ -265,6 +265,24 @@ Examples on implementing these interfaces can be found as follows:
 * [IValueRetriever](https://github.com/techtalk/SpecFlow/tree/v2/Runtime/Assist/ValueRetrievers)
 * [IValueComparer](https://github.com/techtalk/SpecFlow/tree/v2/Runtime/Assist/ValueComparers)
 
+### Configuration
+
+Some built in classes support configuration to adjust the default behaviour.
+- [DateTimeValueRetriever](../../TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeValueRetriever.cs) and [DateTimeOffsetValueRetriever](../../TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeOffsetValueRetriever.cs) have a static DateTimeStyles property to adjust the style used to parse date times.
+
+Example of usage:
+``` csharp
+[Binding]
+public static class Hooks1
+{
+    [BeforeTestRun]
+    public static void BeforeTestRun()
+    {
+        DateTimeValueRetriever.DateTimeStyles = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
+    }
+}
+```
+
 ### NullValueRetriever (from SpecFlow 3)
 
 By default, non-specified (empty string) values are considered:
