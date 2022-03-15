@@ -2,6 +2,7 @@
 
 Changes:
 + adjust the duration output to milliseconds if it's below 300ms threshold
++ Bug Fix: Tests with @ignore tag were still being run
 
 3.9.52
 
