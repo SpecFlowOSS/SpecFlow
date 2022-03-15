@@ -20,7 +20,7 @@
 
             for (int i = 0; i < tags.Length; i++)
             {
-                if (string.Equals(tags[i], "ignored", System.StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(tags[i], "ignore", System.StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
