@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (useScopeMatching && stepDefinitionBinding.IsScoped && stepInstance.StepContext != null && !stepDefinitionBinding.BindingScope.Match(stepInstance.StepContext, out scopeMatches))
                 return BindingMatch.NonMatching;
 
-            var arguments = match == null ? new object[0] : CalculateArguments(match, stepInstance);
+            var arguments = match == null ? Array.Empty<object>() : CalculateArguments(match, stepInstance);
 
             if (useParamMatching)
             {
@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.Infrastructure
              */
 
             // there were either no regex match or it was filtered out by the param/scope matching
-            // to provide better error message for the param matching error, we re-run 
+            // to provide better error message for the param matching error, we re-run
             // the matching without scope and param check
 
             var matchesWithoutScopeCheck = GetCandidatingBindings(stepInstance, bindingCulture, useScopeMatching: false).ToList();
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             Debug.Assert(matchesWithoutScopeCheck.Count == 0);
-                
+
             var matchesWithoutParamCheck = GetCandidatingBindings(stepInstance, bindingCulture, useParamMatching: false).ToList();
             matches = matchesWithoutParamCheck;
 
@@ -166,7 +166,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var matches = bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
             // we remove duplicate maches for the same method (take the highest scope matches from each)
-            matches = matches.GroupBy(m => m.StepBinding.Method, (methodInfo, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
+            matches = matches.GroupBy(m => m.StepBinding.Method, (_, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
             return matches;
         }
     }

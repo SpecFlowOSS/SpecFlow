@@ -37,13 +37,12 @@ namespace TechTalk.SpecFlow
 
         public Table(params string[] header)
         {
-
             if (header == null || header.Length == 0)
             {
-                throw new ArgumentException(ERROR_NO_HEADER_TO_ADD, "header");
+                throw new ArgumentException(ERROR_NO_HEADER_TO_ADD, nameof(header));
             }
             for (int colIndex = 0; colIndex < header.Length; colIndex++)
-                header[colIndex] = header[colIndex] ?? string.Empty;
+                header[colIndex] ??= string.Empty;
             this.header = header;
         }
 
@@ -208,7 +207,7 @@ namespace TechTalk.SpecFlow
         internal TableRow(Table table, string[] items)
         {
             for (int colIndex = 0; colIndex < items.Length; colIndex++)
-                items[colIndex] = items[colIndex] ?? string.Empty;
+                items[colIndex] ??= string.Empty;
 
             this.table = table;
             this.items = items;
@@ -243,7 +242,7 @@ namespace TechTalk.SpecFlow
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
-            Debug.Assert(items.Length == table.Header.Count());
+            Debug.Assert(items.Length == table.Header.Count);
             int itemIndex = 0;
             foreach (string header in table.Header)
             {

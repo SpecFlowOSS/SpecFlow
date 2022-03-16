@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
     public abstract class FileBasedSkeletonTemplateProvider : ISkeletonTemplateProvider
     {
         private const string templateSeparator = ">>>";
-        private Dictionary<string, string> templates = null;
+        private Dictionary<string, string> templates;
 
         private Dictionary<string, string> GetTemplates()
         {
@@ -20,10 +20,10 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             foreach (var templateItem in templateItems.Select(ti => new StringReader(ti)).Select(reader => new { Key = reader.ReadLine(), Body = reader.ReadToEnd() }))
             {
                 if (string.IsNullOrEmpty(templateItem.Key))
-                    throw new SpecFlowException(string.Format("Invalid sftemplate file! Missing title after '{0}'.", templateSeparator));
+                    throw new SpecFlowException($"Invalid sftemplate file! Missing title after '{templateSeparator}'.");
 
                 if (templates.ContainsKey(templateItem.Key))
-                    throw new SpecFlowException(string.Format("Invalid sftemplate file! Duplicate key: '{0}'.", templateItem.Key));
+                    throw new SpecFlowException($"Invalid sftemplate file! Duplicate key: '{templateItem.Key}'.");
                 templates.Add(templateItem.Key, templateItem.Body);
             }
 
@@ -36,19 +36,18 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return "undefined template";
         }
 
-        internal protected virtual string GetTemplate(string key)
+        protected internal virtual string GetTemplate(string key)
         {
             LazyInitializer.EnsureInitialized(ref templates, GetTemplates);
 
-            string template;
-            if (!templates.TryGetValue(key, out template))
+            if (!templates.TryGetValue(key, out string template))
                 return null;
             return template;
         }
 
         public string GetStepDefinitionTemplate(ProgrammingLanguage language, bool withRegex)
         {
-            string key = string.Format("{0}/StepDefinition{1}", language, withRegex ? "Regex" : "");
+            string key = $"{language}/StepDefinition{(withRegex ? "Regex" : "")}";
             string template = GetTemplate(key);
             if (template == null)
                 return MissingTemplate(key);
@@ -58,7 +57,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         public string GetStepDefinitionClassTemplate(ProgrammingLanguage language)
         {
-            string key = string.Format("{0}/StepDefinitionClass", language);
+            string key = $"{language}/StepDefinitionClass";
             string template = GetTemplate(key);
             if (template == null)
                 return MissingTemplate(key);

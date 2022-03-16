@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         private static bool IsNullableType(Type type)
         {
-            return !type.IsValueType || 
+            return !type.IsValueType ||
                 (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
     }

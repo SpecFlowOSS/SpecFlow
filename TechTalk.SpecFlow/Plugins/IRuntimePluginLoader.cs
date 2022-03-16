@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using TechTalk.SpecFlow.Tracing;
+﻿using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Plugins
 {

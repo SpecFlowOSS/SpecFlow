@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class StepDefinitionBaseAttribute : Attribute
     {
-        public StepDefinitionType[] Types { get; private set; }
+        public StepDefinitionType[] Types { get; }
         public string Regex { get; set; }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace TechTalk.SpecFlow
 
         protected StepDefinitionBaseAttribute(string regex, StepDefinitionType[] types)
         {
-            if (types == null) throw new ArgumentNullException("types");
-            if (types.Length == 0) throw new ArgumentException("List cannot be empty", "types");
+            if (types == null) throw new ArgumentNullException(nameof(types));
+            if (types.Length == 0) throw new ArgumentException("List cannot be empty", nameof(types));
 
             Regex = regex;
             Types = types;
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-        public GivenAttribute(string regex, string culture) 
+        public GivenAttribute(string regex, string culture)
             : this(regex)
         {
             Culture = culture;
@@ -66,7 +66,8 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class WhenAttribute : StepDefinitionBaseAttribute
     {
-        public WhenAttribute() : this(null)
+        public WhenAttribute()
+            : this(null)
         {
         }
 
@@ -75,7 +76,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-        public WhenAttribute(string regex, string culture) 
+        public WhenAttribute(string regex, string culture)
             : this(regex)
         {
             Culture = culture;
@@ -96,7 +97,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-        public ThenAttribute(string regex, string culture) 
+        public ThenAttribute(string regex, string culture)
             : this(regex)
         {
             Culture = culture;
@@ -108,17 +109,17 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class StepDefinitionAttribute : StepDefinitionBaseAttribute
     {
-        public StepDefinitionAttribute() 
+        public StepDefinitionAttribute()
             : this(null)
         {
         }
 
-        public StepDefinitionAttribute(string regex) 
+        public StepDefinitionAttribute(string regex)
             : base(regex, new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then })
         {
         }
 
-        public StepDefinitionAttribute(string regex, string culture) 
+        public StepDefinitionAttribute(string regex, string culture)
             : this(regex)
         {
             Culture = culture;

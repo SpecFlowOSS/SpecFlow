@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Configuration
         public const bool AllowRowTests = true;
         public const string GeneratorPath = null;
 
-        public static readonly string[] AddNonParallelizableMarkerForTags = new string[0];
+        public static readonly string[] AddNonParallelizableMarkerForTags = Array.Empty<string>();
     }
 // ReSharper restore RedundantNameQualifier
 }

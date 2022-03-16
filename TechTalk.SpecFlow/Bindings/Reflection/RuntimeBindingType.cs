@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         protected bool Equals(RuntimeBindingType other)
         {
-            return Equals(Type, other.Type);
+            return Type == other.Type;
         }
 
         public override bool Equals(object obj)

@@ -1,4 +1,3 @@
-using System;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings

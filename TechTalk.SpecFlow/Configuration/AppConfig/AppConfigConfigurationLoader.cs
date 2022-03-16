@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            return new SpecFlowConfiguration(ConfigSource.AppConfig, 
+            return new SpecFlowConfiguration(ConfigSource.AppConfig,
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,

@@ -18,6 +18,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
         //[JsonProperty("addNonParallelizableMarkerForTags", NullValueHandling = NullValueHandling.Ignore)]
         [DataMember(Name = "addNonParallelizableMarkerForTags")]
-        public List<string> AddNonParallelizableMarkerForTags { get; set; }        
+        public List<string> AddNonParallelizableMarkerForTags { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         public IBindingSourceAttributeValueProvider[] AttributeValues { get; set; }
         public IDictionary<string, IBindingSourceAttributeValueProvider> NamedAttributeValues { get; set; }
 
-        public TValue TryGetAttributeValue<TValue>(int index, TValue defaultValue = default(TValue))
+        public TValue TryGetAttributeValue<TValue>(int index, TValue defaultValue = default)
         {
             if (AttributeValues.Length > index)
                 return AttributeValues[index].GetValue<TValue>();
@@ -27,10 +27,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                    AttributeValues.Skip(index).OfType<TValue>().ToArray();
         }
 
-        public TValue TryGetAttributeValue<TValue>(string name, TValue defaultValue = default(TValue))
+        public TValue TryGetAttributeValue<TValue>(string name, TValue defaultValue = default)
         {
-            IBindingSourceAttributeValueProvider valueProvider;
-            if (NamedAttributeValues.TryGetValue(name, out valueProvider))
+            if (NamedAttributeValues.TryGetValue(name, out var valueProvider))
                 return valueProvider.GetValue<TValue>();
 
             return defaultValue;

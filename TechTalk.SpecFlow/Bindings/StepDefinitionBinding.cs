@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using BoDi;
+﻿using BoDi;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {

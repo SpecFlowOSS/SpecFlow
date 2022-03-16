@@ -22,6 +22,6 @@ namespace TechTalk.SpecFlow.Assist
         public static IEnumerable<Projection<T>> ToProjectionOfInstance<T>(this Table table, T instance)
         {
             return new EnumerableProjection<T>(table);
-        }    
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Plugins
 
     public class CustomizeGlobalDependenciesEventArgs : ObjectContainerEventArgs
     {
-        public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, SpecFlowConfiguration specFlowConfiguration) 
+        public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, SpecFlowConfiguration specFlowConfiguration)
             : base(objectContainer)
         {
             SpecFlowConfiguration = specFlowConfiguration;

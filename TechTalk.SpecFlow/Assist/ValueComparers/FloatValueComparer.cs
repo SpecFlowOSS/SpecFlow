@@ -11,10 +11,8 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool Compare(string expectedValue, object actualValue)
         {
-            float expected;
-            if (float.TryParse(expectedValue, out expected) == false)
-                return false;
-            return Math.Abs(expected - (float) actualValue) < float.Epsilon;
+            return float.TryParse(expectedValue, out var expected) &&
+                   Math.Abs(expected - (float) actualValue) < float.Epsilon;
         }
     }
 }
