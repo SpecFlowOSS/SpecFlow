@@ -140,18 +140,18 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private void ProcessHookAttribute(BindingSourceMethod bindingSourceMethod, BindingScope[] methodScopes, BindingSourceAttribute hookAttribute)
         {
             var scopes = methodScopes.AsEnumerable();
-			
+
             string[] tags = GetTagsDefinedOnBindingAttribute(hookAttribute);
             if (tags != null)
                 scopes = scopes.Concat(tags.Select(t => new BindingScope(t, null, null)));
-            
+
 
             ApplyForScope(scopes.ToArray(), scope => ProcessHookAttribute(bindingSourceMethod, hookAttribute, scope));
         }
 
         private static string[] GetTagsDefinedOnBindingAttribute(BindingSourceAttribute hookAttribute)
         {
-            return TagsFromConstructor(hookAttribute);            
+            return TagsFromConstructor(hookAttribute);
         }
 
         private static string[] TagsFromConstructor(BindingSourceAttribute hookAttribute)
@@ -203,9 +203,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
             string typeName = hookAttribute.AttributeType.Name;
 
-            if (typeName == typeof(BeforeAttribute).Name)
+            if (typeName == nameof(BeforeAttribute))
                 return HookType.BeforeScenario;
-            if (typeName == typeof(AfterAttribute).Name)
+            if (typeName == nameof(AfterAttribute))
                 return HookType.AfterScenario;
 
             const string attributePostfix = "Attribute";
@@ -241,22 +241,19 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         protected virtual bool ValidateType(BindingSourceType bindingSourceType)
         {
-            if (!bindingSourceType.IsClass && 
-                OnValidationError("Binding types must be classes: {0}", bindingSourceType))
-                    return false;
+            if (!bindingSourceType.IsClass && OnValidationError("Binding types must be classes: {0}", bindingSourceType))
+                return false;
 
-            if (bindingSourceType.IsGenericTypeDefinition && 
-                OnValidationError("Binding types cannot be generic: {0}", bindingSourceType))
-                    return false;
+            if (bindingSourceType.IsGenericTypeDefinition && OnValidationError("Binding types cannot be generic: {0}", bindingSourceType))
+                return false;
 
             return true;
         }
 
         protected virtual bool ValidateMethod(BindingSourceMethod bindingSourceMethod)
         {
-            if (currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic && 
-                OnValidationError("Abstract binding types can have only static binding methods: {0}", bindingSourceMethod))
-                    return false;
+            if (currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic && OnValidationError("Abstract binding types can have only static binding methods: {0}", bindingSourceMethod))
+                return false;
 
             return true;
         }

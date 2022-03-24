@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Bindings;
@@ -99,8 +98,8 @@ namespace TechTalk.SpecFlow
         /// <param name="bindingType">The type of the binding class.</param>
         /// <returns>The binding class instance</returns>
         /// <remarks>
-        /// The binding classes are the classes with the [Binding] attribute, that might 
-        /// contain step definitions, hooks or step argument transformations. The method 
+        /// The binding classes are the classes with the [Binding] attribute, that might
+        /// contain step definitions, hooks or step argument transformations. The method
         /// is called when any binding method needs to be called.
         /// </remarks>
         public object GetBindingInstance(Type bindingType)

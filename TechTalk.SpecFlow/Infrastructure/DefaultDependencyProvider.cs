@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestTracer, ITestTracer>();
 
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
-            container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>(); 
+            container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>();
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<SpecFlowPath, ISpecFlowPath>();
 
             container.RegisterTypeAs<UtcDateTimeClock, IClock>();
-  
+
 
             container.RegisterTypeAs<FileUserIdStore, IUserUniqueIdStore>();
             container.RegisterTypeAs<FileService, IFileService>();
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<AppInsightsEventSerializer, IAppInsightsEventSerializer>();
             container.RegisterTypeAs<HttpClientWrapper, HttpClientWrapper>();
             container.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
-            
+
             container.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
 
             container.RegisterTypeAs<RuntimePluginTestExecutionLifecycleEvents, RuntimePluginTestExecutionLifecycleEvents>();
@@ -95,9 +95,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             testThreadContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
 
             testThreadContainer.RegisterTypeAs<TestThreadExecutionEventPublisher, ITestThreadExecutionEventPublisher>();
-            
+
             testThreadContainer.RegisterTypeAs<SpecFlowOutputHelper, ISpecFlowOutputHelper>();
-            
+
             // needs to invoke methods so requires the context manager
             testThreadContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             testThreadContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();

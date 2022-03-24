@@ -77,9 +77,8 @@ namespace TechTalk.SpecFlow.Bindings
         {
             private bool done;
             public ExceptionDispatchInfo InnerExceptionDispatchInfo { get; set; }
-            readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(false);
-            readonly Queue<Tuple<SendOrPostCallback, object>> items =
-                new Queue<Tuple<SendOrPostCallback, object>>();
+            private readonly AutoResetEvent workItemsWaiting = new(false);
+            private readonly Queue<Tuple<SendOrPostCallback, object>> items = new();
 
             public override void Send(SendOrPostCallback d, object state)
             {
@@ -135,7 +134,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         private sealed class SetSynchronizationContext: IDisposable
         {
-            private SynchronizationContext _oldContext;
+            private readonly SynchronizationContext _oldContext;
 
             public SetSynchronizationContext(SynchronizationContext synchronizationContext)
             {

@@ -52,9 +52,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             //{attribute}/{regex}/{methodName}/{parameters}
             return ApplyTemplate(template, new
                                                {
-                                                   attribute = stepInstance.StepDefinitionType, 
-                                                   regex = withRegex ? GetRegex(analyzedStepText) : "", 
-                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style, language), 
+                                                   attribute = stepInstance.StepDefinitionType,
+                                                   regex = withRegex ? GetRegex(analyzedStepText) : "",
+                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style, language),
                                                    parameters = string.Join(", ", analyzedStepText.Parameters.Select(p => ToDeclaration(language, p)).ToArray())
                                                });
         }
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return result;
         }
 
-        static private readonly Regex wordRe = new Regex(@"[\w]+");
+        private static readonly Regex wordRe = new Regex(@"[\w]+");
         private IEnumerable<string> GetWords(string text)
         {
             return wordRe.Matches(text).Cast<Match>().Select(m => m.Value);
@@ -156,41 +156,32 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         private string ToDeclaration(ProgrammingLanguage language, AnalyzedStepParameter parameter)
         {
-            switch (language)
+            return language switch
             {
-                case ProgrammingLanguage.VB:
-                    return String.Format("ByVal {0} As {1}", Keywords.EscapeVBKeyword(parameter.Name), parameter.Type);
-                case ProgrammingLanguage.CSharp:
-                    return String.Format("{1} {0}", Keywords.EscapeCSharpKeyword(parameter.Name), GetCSharpTypeName(parameter.Type));
-                case ProgrammingLanguage.FSharp:
-                    return String.Format("{0} : {1}", Keywords.EscapeFSharpKeyword(parameter.Name), GetFSharpTypeName(parameter.Type));
-                default:
-                    return String.Format("{1} {0}", parameter.Name, parameter.Type);
-            }
+                ProgrammingLanguage.VB => $"ByVal {Keywords.EscapeVBKeyword(parameter.Name)} As {parameter.Type}",
+                ProgrammingLanguage.CSharp => $"{GetCSharpTypeName(parameter.Type)} {Keywords.EscapeCSharpKeyword(parameter.Name)}",
+                ProgrammingLanguage.FSharp => $"{Keywords.EscapeFSharpKeyword(parameter.Name)} : {GetFSharpTypeName(parameter.Type)}",
+                _ => $"{parameter.Type} {parameter.Name}"
+            };
         }
 
         private string GetCSharpTypeName(string type)
         {
-            switch (type)
+            return type switch
             {
-                case "String":
-                    return "string";
-                case "Int32":
-                    return "int";
-                default:
-                    return type;
-            }
+                "String" => "string",
+                "Int32" => "int",
+                _ => type
+            };
         }
 
         private string GetFSharpTypeName(string type)
         {
-            switch (type)
+            return type switch
             {
-                case "String":
-                    return "string";
-                default:
-                    return type;
-            }
+                "String" => "string",
+                _ => type
+            };
         }
     }
 }

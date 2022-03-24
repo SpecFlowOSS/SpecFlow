@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 {
     public class AnalyzedStepText
     {
-        public readonly List<string> TextParts = new List<string>();
-        public readonly List<AnalyzedStepParameter> Parameters = new List<AnalyzedStepParameter>();
+        public readonly List<string> TextParts = new();
+        public readonly List<AnalyzedStepParameter> Parameters = new();
     }
 
     public class AnalyzedStepParameter
@@ -33,7 +33,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
     public class StepTextAnalyzer : IStepTextAnalyzer
     {
-        private List<string> usedParameterNames = new List<string>();
+        private readonly List<string> usedParameterNames = new();
+
         public AnalyzedStepText Analyze(string stepText, CultureInfo bindingCulture)
         {
             var result = new AnalyzedStepText();
@@ -86,16 +87,13 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         {
             string paramName = StepParameterNameGenerator.GenerateParameterName(value, paramIndex, usedParameterNames);
 
-            int intParamValue;
-            if (parameterType == ParameterType.Int && int.TryParse(value, NumberStyles.Integer, bindingCulture, out intParamValue))
+            if (parameterType == ParameterType.Int && int.TryParse(value, NumberStyles.Integer, bindingCulture, out _))
                 return new AnalyzedStepParameter("Int32", paramName, regexPattern);
 
-            decimal decimalParamValue;
-            if (parameterType == ParameterType.Decimal && decimal.TryParse(value, NumberStyles.Number, bindingCulture, out decimalParamValue))
+            if (parameterType == ParameterType.Decimal && decimal.TryParse(value, NumberStyles.Number, bindingCulture, out _))
                 return new AnalyzedStepParameter("Decimal", paramName, regexPattern);
 
-            DateTime dateParamValue;
-            if (parameterType == ParameterType.Date && DateTime.TryParse(value, bindingCulture, DateTimeStyles.AllowWhiteSpaces, out dateParamValue))
+            if (parameterType == ParameterType.Date && DateTime.TryParse(value, bindingCulture, DateTimeStyles.AllowWhiteSpaces, out _))
                 return new AnalyzedStepParameter("DateTime", paramName, regexPattern);
 
             return new AnalyzedStepParameter("String", paramName, regexPattern);
@@ -119,7 +117,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         private IEnumerable<CaptureWithContext> RecognizeDecimals(string stepText, CultureInfo bindingCulture)
         {
-            Regex decimalRe = new Regex(string.Format(@"-?\d+{0}\d+", bindingCulture.NumberFormat.NumberDecimalSeparator));
+            Regex decimalRe = new Regex($@"-?\d+{bindingCulture.NumberFormat.NumberDecimalSeparator}\d+");
             return decimalRe.Matches(stepText).ToCaptureWithContext(ParameterType.Decimal);
         }
 

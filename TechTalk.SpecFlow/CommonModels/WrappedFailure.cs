@@ -11,12 +11,12 @@
 
         public string GetStringOfInnerFailure()
         {
-            switch (InnerFailure)
+            return InnerFailure switch
             {
-                case WrappedFailure wrappedFailure: return wrappedFailure.ToString();
-                case Failure failure: return failure.Description;
-                default: return InnerFailure?.ToString();
-            }
+                WrappedFailure wrappedFailure => wrappedFailure.ToString(),
+                Failure failure => failure.Description,
+                _ => InnerFailure?.ToString()
+            };
         }
 
         public override string ToString()

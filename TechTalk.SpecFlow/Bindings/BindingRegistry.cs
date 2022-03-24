@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,8 +49,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         private IEnumerable<IHookBinding> GetHookList(HookType bindingEvent)
         {
-            List<IHookBinding> list;
-            if (hooks.TryGetValue(bindingEvent, out list))
+            if (hooks.TryGetValue(bindingEvent, out var list))
                 return list;
 
             return Enumerable.Empty<IHookBinding>();
@@ -69,8 +67,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         private List<IHookBinding> GetHookListForRegister(HookType bindingEvent)
         {
-            List<IHookBinding> list;
-            if (!hooks.TryGetValue(bindingEvent, out list))
+            if (!hooks.TryGetValue(bindingEvent, out var list))
             {
                 list = new List<IHookBinding>();
                 hooks.Add(bindingEvent, list);

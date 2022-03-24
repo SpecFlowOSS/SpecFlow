@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
         [DataMember(Name = "time")]
         public string EventDateTime { get; set; }
 
-        [DataMember(Name = "iKey")] 
+        [DataMember(Name = "iKey")]
         public string InstrumentationKey { get; set; }
 
         [DataMember(Name = "data")]
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
 
             EventDateTime = analyticsEvent.UtcDate.ToString("O");
 
-            TelemetryTags = new Dictionary<string, string>()
+            TelemetryTags = new Dictionary<string, string>
             {
                 { "ai.user.id", analyticsEvent.UserId },
                 { "ai.user.accountId", analyticsEvent.UserId }
@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
                 TelemetryDataItem = new TelemetryDataItem
                 {
                     EventName = analyticsEvent.EventName,
-                    Properties = new Dictionary<string, string>()
+                    Properties = new Dictionary<string, string>
                     {
                         { "UtcDate", analyticsEvent.UtcDate.ToString("O") },
                         { "UserId", analyticsEvent.UserId },
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Analytics.AppInsights
     {
         [DataMember(Name = "baseType")]
         public string ItemTypeName { get; set; }
-        
+
         [DataMember(Name = "baseData")]
         public TelemetryDataItem TelemetryDataItem { get; set; }
     }

@@ -12,13 +12,9 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public BindingMethod(IBindingType type, string name, IEnumerable<IBindingParameter> parameters, IBindingType returnType)
         {
-            if (type == null) throw new ArgumentNullException("type");
-            if (name == null) throw new ArgumentNullException("name");
-            if (parameters == null) throw new ArgumentNullException("parameters");
-
-            Type = type;
-            Name = name;
-            Parameters = parameters;
+            Type = type ?? throw new ArgumentNullException(nameof(type));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
             ReturnType = returnType;
         }
 

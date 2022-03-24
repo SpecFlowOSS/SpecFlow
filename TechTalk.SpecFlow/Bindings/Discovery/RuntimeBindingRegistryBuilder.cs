@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
             return new BindingSourceMethod
                        {
-                           BindingMethod = new RuntimeBindingMethod(methodDefinition), 
+                           BindingMethod = new RuntimeBindingMethod(methodDefinition),
                            IsPublic = methodDefinition.IsPublic,
                            IsStatic = methodDefinition.IsStatic,
                            Attributes = GetAttributes(methodDefinition.GetCustomAttributes(true).Cast<Attribute>().Where(attr => _bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName)))
@@ -111,18 +111,17 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             var mostComplexCtor = attributeType.GetConstructors(BindingFlags.Instance | BindingFlags.Public).OrderByDescending(ctor => ctor.GetParameters().Length).FirstOrDefault();
 
             return new BindingSourceAttribute
-                       {
-                           AttributeType = CreateBindingType(attributeType), 
-                           AttributeValues = mostComplexCtor == null ? new IBindingSourceAttributeValueProvider[0] : mostComplexCtor.GetParameters().Select(p => FindAttributeConstructorArg(p, namedAttributeValues)).ToArray(),
-                           NamedAttributeValues = namedAttributeValues
-                       };
+            {
+               AttributeType = CreateBindingType(attributeType),
+               AttributeValues = mostComplexCtor == null ? Array.Empty<IBindingSourceAttributeValueProvider>() : mostComplexCtor.GetParameters().Select(p => FindAttributeConstructorArg(p, namedAttributeValues)).ToArray(),
+               NamedAttributeValues = namedAttributeValues
+            };
         }
 
         private IBindingSourceAttributeValueProvider FindAttributeConstructorArg(ParameterInfo parameterInfo, Dictionary<string, IBindingSourceAttributeValueProvider> namedAttributeValues)
         {
-            IBindingSourceAttributeValueProvider result;
             var paramName = parameterInfo.Name;
-            if (namedAttributeValues.TryGetValue(paramName, out result))
+            if (namedAttributeValues.TryGetValue(paramName, out var result))
                 return result;
             if (namedAttributeValues.TryGetValue(paramName.Substring(0, 1).ToUpper() + paramName.Substring(1), out result))
                 return result;

@@ -85,11 +85,11 @@ namespace TechTalk.SpecFlow.Tracing
             switch (ex)
             {
                 case TypeInitializationException typeInitializationException:
-                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException,duration);
+                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException, duration);
                     break;
                 case ReflectionTypeLoadException reflectionTypeLoadException:
-                    WriteErrorMessage("Type Loader exceptions:",duration);
-                    FormatLoaderExceptions(reflectionTypeLoadException,duration);
+                    WriteErrorMessage("Type Loader exceptions:", duration);
+                    FormatLoaderExceptions(reflectionTypeLoadException, duration);
                     break;
             }
         }
@@ -118,8 +118,8 @@ namespace TechTalk.SpecFlow.Tracing
                 message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
             else
             {
-                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.",
-                    string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray()));
+                string preMessage = "No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: "
+                                    + $"{string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray())}.";
                 traceListener.WriteToolOutput(preMessage);
                 message.AppendLine("Change the scope or use the following code to create a new step definition:");
             }

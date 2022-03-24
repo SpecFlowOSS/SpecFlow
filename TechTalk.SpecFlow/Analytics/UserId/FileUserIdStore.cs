@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.Analytics.UserId
 
         private bool IsValidGuid(string guid)
         {
-            return Guid.TryParse(guid, out var parsedGuid);
+            return Guid.TryParse(guid, out _);
         }
 
         private string GenerateAndPersistUserId()
