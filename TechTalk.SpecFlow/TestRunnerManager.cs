@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Bindings.Discovery;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
@@ -145,8 +144,7 @@ namespace TechTalk.SpecFlow
 
         private ITestRunner GetTestRunnerWithoutExceptionHandling(int threadId)
         {
-            ITestRunner testRunner;
-            if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
+            if (!testRunnerRegistry.TryGetValue(threadId, out var testRunner))
             {
                 lock (syncRoot)
                 {
@@ -189,7 +187,7 @@ namespace TechTalk.SpecFlow
 
         public static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly = null, IContainerBuilder containerBuilder = null, bool createIfMissing = true)
         {
-            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            testAssembly ??= Assembly.GetCallingAssembly();
 
             if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out var testRunnerManager))
             {
@@ -210,7 +208,7 @@ namespace TechTalk.SpecFlow
 
         private static ITestRunnerManager CreateTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
         {
-            containerBuilder = containerBuilder ?? new ContainerBuilder();
+            containerBuilder ??= new ContainerBuilder();
 
             var container = containerBuilder.CreateGlobalContainer(testAssembly);
             var testRunnerManager = container.Resolve<ITestRunnerManager>();
@@ -220,7 +218,7 @@ namespace TechTalk.SpecFlow
 
         public static void OnTestRunEnd(Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
-            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            testAssembly ??= Assembly.GetCallingAssembly();
             var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: false, containerBuilder: containerBuilder);
             testRunnerManager?.FireTestRunEnd();
             testRunnerManager?.Dispose();
@@ -228,16 +226,16 @@ namespace TechTalk.SpecFlow
 
         public static void OnTestRunStart(Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
-            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            testAssembly ??= Assembly.GetCallingAssembly();
             var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: true, containerBuilder: containerBuilder);
             testRunnerManager.GetTestRunner(GetLogicalThreadId(null));
 
-            testRunnerManager?.FireTestRunStart();
+            testRunnerManager.FireTestRunStart();
         }
 
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null, IContainerBuilder containerBuilder = null)
         {
-            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            testAssembly ??= Assembly.GetCallingAssembly();
             managedThreadId = GetLogicalThreadId(managedThreadId);
             var testRunnerManager = GetTestRunnerManager(testAssembly, containerBuilder);
             return testRunnerManager.GetTestRunner(managedThreadId.Value);

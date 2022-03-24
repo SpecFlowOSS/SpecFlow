@@ -20,13 +20,12 @@ namespace TechTalk.SpecFlow.Bindings
         {
             var lambda = (LambdaExpression)expression;
 
-            if (lambda.Body is MethodCallExpression)
-                return ((MethodCallExpression)lambda.Body).Method;
+            if (lambda.Body is MethodCallExpression callExpression)
+                return callExpression.Method;
 
             MemberExpression memberExpression;
-            if (lambda.Body is UnaryExpression)
+            if (lambda.Body is UnaryExpression unaryExpression)
             {
-                var unaryExpression = (UnaryExpression)lambda.Body;
                 memberExpression = (MemberExpression)unaryExpression.Operand;
             }
             else memberExpression = (MemberExpression)lambda.Body;

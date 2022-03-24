@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 
@@ -15,9 +16,9 @@ namespace TechTalk.SpecFlow
         {
             Title = title;
             Description = description;
-            Tags = tags ?? new string[0];
+            Tags = tags ?? Array.Empty<string>();
             Arguments = arguments;
-            ScenarioAndFeatureTags = Tags.Concat(featureTags ?? new string[0]).ToArray();
+            ScenarioAndFeatureTags = Tags.Concat(featureTags ?? Array.Empty<string>()).ToArray();
         }
     }
 }

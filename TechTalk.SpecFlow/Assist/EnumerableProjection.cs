@@ -92,9 +92,8 @@ namespace TechTalk.SpecFlow.Assist
 
         public override bool Equals(object obj)
         {
-            if (obj is Projection<T>)
+            if (obj is Projection<T> otherProjection)
             {
-                var otherProjection = obj as Projection<T>;
                 if (item != null && otherProjection.item != null)
                 {
                     IEnumerable<string> properties = this.properties;

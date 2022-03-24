@@ -10,8 +10,8 @@ namespace TechTalk.SpecFlow
         public StepArgumentTransformationAttribute(string regex)
         {
             Regex = regex;
-        }   
-        
+        }
+
         public StepArgumentTransformationAttribute()
         {
             Regex = null;

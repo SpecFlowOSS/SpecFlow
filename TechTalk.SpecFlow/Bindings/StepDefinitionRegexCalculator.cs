@@ -27,13 +27,12 @@ namespace TechTalk.SpecFlow.Bindings
 
         private const string WordConnectorRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
 
-
         public StepDefinitionRegexCalculator(Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
             this.specFlowConfiguration = specFlowConfiguration;
         }
 
-        static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
+        private static readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
         public string CalculateRegexFromMethod(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod)
         {
             // if method name seems to contain regex, we use it as-is
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.Bindings
                     continue; //this is an error case -> overlapping parameters
 
                 if (paramPosition.Position > processedPosition)
-                { 
+                {
                     reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition, paramPosition.Position - processedPosition)));
                     reBuilder.Append(WordConnectorRe);
                 }
@@ -112,14 +111,14 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
-        private SpecFlowConfiguration specFlowConfiguration;
+        private readonly SpecFlowConfiguration specFlowConfiguration;
 
         private string CalculateWordRegex(string methodNamePart)
         {
             if (string.IsNullOrEmpty(methodNamePart))
                 return string.Empty;
 
-            return wordBoundaryRe.Replace(methodNamePart.Trim('_'), match => WordConnectorRe);
+            return wordBoundaryRe.Replace(methodNamePart.Trim('_'), _ => WordConnectorRe);
         }
 
         private class ParamSearchResult
@@ -139,7 +138,7 @@ namespace TechTalk.SpecFlow.Bindings
         private ParamSearchResult CalculateParamPosition(string methodNamePart, IBindingParameter bindingParameter, int paramIndex)
         {
             string paramName = bindingParameter.ParameterName.ToUpper();
-            var paramRegex = new Regex(string.Format(@"_?{0}_?|_?P{1}_?", paramName, paramIndex));
+            var paramRegex = new Regex($@"_?{paramName}_?|_?P{paramIndex}_?");
             var match = paramRegex.Match(methodNamePart);
             if (match.Success)
                 return new ParamSearchResult(match.Index, match.Length, paramIndex);

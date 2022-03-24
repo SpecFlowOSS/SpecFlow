@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -22,7 +20,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public string GetStepDescription(StepInstance stepInstance)
         {
-            return string.Format("{0} {1}", stepInstance.StepDefinitionType, stepInstance.Text);
+            return $"{stepInstance.StepDefinitionType} {stepInstance.Text}";
         }
 
         public string GetMatchText(BindingMatch match, object[] arguments)
@@ -32,25 +30,21 @@ namespace TechTalk.SpecFlow.Tracing
 
         public string GetMatchText(IBindingMethod method, object[] arguments)
         {
-            string argText = arguments == null ? "" : string.Join(", ", 
-                                                          arguments.Select(a => GetParamString(a)).ToArray());
-            return string.Format("{0}.{1}({2})", method.Type.Name, method.Name, argText);
+            string argText = arguments == null ? "" : string.Join(", ", arguments.Select(a => GetParamString(a)).ToArray());
+            return $"{method.Type.Name}.{method.Name}({argText})";
         }
 
         private string GetParamString(object arg)
         {
             const int maxLength = 20;
 
-            if (arg == null)
-                return "null";
-
-            if (arg is string)
-                return "\"" + arg.ToString().Replace(Environment.NewLine, @"\r\n").TrimEllipse(maxLength) + "\"";
-
-            if (arg is Table)
-                return "<table>";
-
-            return arg.ToString().TrimEllipse(maxLength);
+            return arg switch
+            {
+                null => "null",
+                string => "\"" + arg.ToString().Replace(Environment.NewLine, @"\r\n").TrimEllipse(maxLength) + "\"",
+                Table => "<table>",
+                _ => arg.ToString().TrimEllipse(maxLength)
+            };
         }
 
         public string GetStepText(StepInstance stepInstance)

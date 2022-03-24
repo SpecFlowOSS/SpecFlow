@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Tracing
 {
     internal static class LanguageHelper
     {
-        private struct KeywordSet
+        private readonly struct KeywordSet
         {
             public string DefaultKeyword
             {
@@ -81,8 +81,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static KeywordTranslation GetTranslation(CultureInfo language)
         {
-            KeywordTranslation translation;
-            if (!translationCache.TryGetValue(language, out translation))
+            if (!translationCache.TryGetValue(language, out var translation))
             {
                 translation = LoadTranslation(language);
             }
