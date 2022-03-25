@@ -1,11 +1,7 @@
-﻿using System.Globalization;
-using System.Text;
-using TechTalk.SpecFlow.Bindings;
+﻿using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    using System.Diagnostics;
-
     public interface IContextManager
     {
         TestThreadContext TestThreadContext { get; }

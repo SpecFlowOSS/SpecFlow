@@ -35,12 +35,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly ITestRunnerManager _testRunnerManager;
         private readonly IRuntimePluginTestExecutionLifecycleEventEmitter _runtimePluginTestExecutionLifecycleEventEmitter;
         private readonly ITestThreadExecutionEventPublisher _testThreadExecutionEventPublisher;
+        private readonly ITestPendingMessageFactory _testPendingMessageFactory;
+        private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
+        private readonly object _testRunnerEndExecutedLock = new object();
 
         private bool _testRunnerEndExecuted = false;
-        private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
-        private ITestPendingMessageFactory _testPendingMessageFactory;
-        private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -54,8 +54,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             IStepDefinitionMatchService stepDefinitionMatchService,
             IAsyncBindingInvoker bindingInvoker,
             IObsoleteStepHandler obsoleteStepHandler,
-            IAnalyticsEventProvider analyticsEventProvider, 
-            IAnalyticsTransmitter analyticsTransmitter, 
+            IAnalyticsEventProvider analyticsEventProvider,
+            IAnalyticsTransmitter analyticsTransmitter,
             ITestRunnerManager testRunnerManager,
             IRuntimePluginTestExecutionLifecycleEventEmitter runtimePluginTestExecutionLifecycleEventEmitter,
             ITestThreadExecutionEventPublisher testThreadExecutionEventPublisher,
@@ -137,8 +137,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual async Task OnFeatureStartAsync(FeatureInfo featureInfo)
         {
-            // if the unit test provider would execute the fixture teardown code 
-            // only delayed (at the end of the execution), we automatically close 
+            // if the unit test provider would execute the fixture teardown code
+            // only delayed (at the end of the execution), we automatically close
             // the current feature if necessary
             if (_unitTestRuntimeProvider.DelayedFixtureTearDown && FeatureContext != null)
             {
@@ -155,8 +155,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual async Task OnFeatureEndAsync()
         {
-            // if the unit test provider would execute the fixture teardown code 
-            // only delayed (at the end of the execution), we ignore the 
+            // if the unit test provider would execute the fixture teardown code
+            // only delayed (at the end of the execution), we ignore the
             // feature-end call, if the feature has been closed already
             if (_unitTestRuntimeProvider.DelayedFixtureTearDown &&
                 FeatureContext == null)
@@ -210,29 +210,20 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testTracer.TraceDuration(duration, "Scenario: " + _contextManager.ScenarioContext.ScenarioInfo.Title);
             }
 
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
+            switch (_contextManager.ScenarioContext.ScenarioExecutionStatus)
             {
-                return;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.Skipped)
-            {
-                _unitTestRuntimeProvider.TestIgnore("Scenario ignored using @Ignore tag");
-                return;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
-            {
-                string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
-                _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, pendingStepExceptionMessage);
-                return;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.UndefinedStep)
-            {
-                string undefinedStepExceptionMessage = _testUndefinedMessageFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
-                _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, undefinedStepExceptionMessage);
-                return;
+                case ScenarioExecutionStatus.OK: return;
+                case ScenarioExecutionStatus.Skipped:
+                    _unitTestRuntimeProvider.TestIgnore("Scenario ignored using @Ignore tag");
+                    return;
+                case ScenarioExecutionStatus.StepDefinitionPending:
+                    string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
+                    _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, pendingStepExceptionMessage);
+                    return;
+                case ScenarioExecutionStatus.UndefinedStep:
+                    string undefinedStepExceptionMessage = _testUndefinedMessageFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
+                    _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, undefinedStepExceptionMessage);
+                    return;
             }
 
             if (_contextManager.ScenarioContext.TestError == null)
@@ -332,9 +323,9 @@ namespace TechTalk.SpecFlow.Infrastructure
                                       hookBinding.BindingScope.Match(stepContext, out int _));
 
             //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
-            // if multiple scopes match the same method, we take the first one. 
+            // if multiple scopes match the same method, we take the first one.
             // The InvokeHook uses only the Method anyway...
-            // The only problem could be if the same method is decorated with hook attributes using different order, 
+            // The only problem could be if the same method is decorated with hook attributes using different order,
             // but in this case it is anyway impossible to tell the right ordering.
             var uniqueMatchingHooks = matchingHooks.GroupBy(hookBinding => hookBinding.Method).Select(g => g.First());
             Exception hookException = null;
@@ -358,7 +349,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             _testThreadExecutionEventPublisher.PublishEvent(new HookFinishedEvent(hookType, FeatureContext, ScenarioContext, _contextManager.StepContext, hookException));
 
-            //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error  
+            //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error
             if (hookException != null) throw hookException;
         }
 
@@ -449,11 +440,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (container == null) throw new ArgumentNullException(nameof(container));
             if (parameter == null) throw new ArgumentNullException(nameof(parameter));
 
-            var runtimeParameterType = parameter.Type as RuntimeBindingType;
-            if (runtimeParameterType == null)
-                throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
+            if (parameter.Type is RuntimeBindingType runtimeParameterType)
+            {
+                return _testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
+            }
 
-            return _testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
+            throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
+
         }
 
         private async Task ExecuteStepAsync(IContextManager contextManager, StepInstance stepInstance)

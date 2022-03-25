@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace TechTalk.SpecFlow.UnitTestProvider
+﻿namespace TechTalk.SpecFlow.UnitTestProvider
 {
     public interface IUnitTestRuntimeProvider
     {

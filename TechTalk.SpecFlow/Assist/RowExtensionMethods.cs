@@ -73,8 +73,7 @@ namespace TechTalk.SpecFlow.Assist
         public static T GetDiscreteEnum<T>(this TableRow row, string id) where T : struct, IConvertible
         {
             var value = row[id].Replace(" ", string.Empty);
-            T @enum;
-            if (Enum.TryParse(value, true, out @enum))
+            if (Enum.TryParse(value, true, out T @enum))
                 return @enum;
 
             throw new InvalidOperationException($"No enum with value {value} found in enum {typeof(T).Name}");
@@ -83,8 +82,7 @@ namespace TechTalk.SpecFlow.Assist
         public static T GetDiscreteEnum<T>(this TableRow row, string id, T defaultValue) where T : struct, IConvertible
         {
             var value = row[id].Replace(" ", string.Empty);
-            T @enum;
-            return Enum.TryParse(value, true, out @enum) ? @enum : defaultValue;
+            return Enum.TryParse(value, true, out T @enum) ? @enum : defaultValue;
         }
 
         public static TEnum GetEnumValue<TEnum>(this TableRow row, string id)
@@ -188,7 +186,7 @@ namespace TechTalk.SpecFlow.Assist
 			var instanceTable = row.ToTable();
 			return instanceTable.CreateInstance<T>();
 		}
-		
+
 		/// <summary>
 		/// Creates a new instance of <typeparamref name="T"/> from the <see cref="TableRow"/>.
 		/// </summary>
@@ -199,7 +197,7 @@ namespace TechTalk.SpecFlow.Assist
 		public static T CreateInstance<T>(this TableRow row, Func<T> methodToCreateTheInstance)
 		{
 			var instanceTable = row.ToTable();
-			return instanceTable.CreateInstance<T>(methodToCreateTheInstance);
+			return instanceTable.CreateInstance(methodToCreateTheInstance);
 		}
 
 		private static Table ToTable(this TableRow row)

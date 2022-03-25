@@ -4,7 +4,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 {
     public class BindingMethodComparer : IEqualityComparer<IBindingMethod>
     {
-        static public readonly BindingMethodComparer Instance = new BindingMethodComparer();
+        public static readonly BindingMethodComparer Instance = new();
 
         public bool Equals(IBindingMethod x, IBindingMethod y)
         {

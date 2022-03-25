@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.Bindings;
@@ -30,7 +29,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 if (instance != null)
                 {
-                    testTracer.TraceWarning(string.Format("The previous {0} was not disposed.", typeof(TContext).Name));
+                    testTracer.TraceWarning($"The previous {typeof(TContext).Name} was not disposed.");
                     DisposeInstance();
                 }
                 instance = newInstance;
@@ -41,7 +40,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 if (instance == null)
                 {
-                    testTracer.TraceWarning(string.Format("The previous {0} was already disposed.", typeof(TContext).Name));
+                    testTracer.TraceWarning($"The previous {typeof(TContext).Name} was already disposed.");
                     return;
                 }
                 DisposeInstance();
@@ -64,9 +63,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         /// <summary>
-        /// Implementation of internal context manager which keeps a stack of contexts, rather than a single one. 
-        /// This allows the contexts to be used when a new context is created before the previous context has been completed 
-        /// which is what happens when a step calls other steps. This means that the step contexts will be reported 
+        /// Implementation of internal context manager which keeps a stack of contexts, rather than a single one.
+        /// This allows the contexts to be used when a new context is created before the previous context has been completed
+        /// which is what happens when a step calls other steps. This means that the step contexts will be reported
         /// correctly even when there is a nesting of steps calling steps calling steps.
         /// </summary>
         /// <typeparam name="TContext">A type derived from SpecFlowContext, which needs to be managed  in a way</typeparam>
@@ -89,7 +88,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             public void Push(TContext newInstance)
             {
-                instances.Push(newInstance);                
+                instances.Push(newInstance);
             }
 
             public void RemoveTop()
@@ -149,9 +148,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             get { return scenarioContextManager.Instance; }
         }
 
-        public ScenarioStepContext StepContext 
+        public ScenarioStepContext StepContext
         {
-            get{return stepContextManager.Instance;} 
+            get{return stepContextManager.Instance;}
         }
 
         public TestThreadContext TestThreadContext { get; private set; }
@@ -201,7 +200,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void CleanupScenarioContext()
         {
-            scenarioContextManager.Cleanup();            
+            scenarioContextManager.Cleanup();
         }
 
         public void InitializeStepContext(StepInfo stepInfo)

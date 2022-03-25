@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             foreach (var splitValue in strings)
             {
                 var itemKeyValuePair = new KeyValuePair<string, string>(keyValuePair.Key, splitValue.Trim());
-                retriever = retriever ?? GetValueRetriever(itemKeyValuePair, targetType, itemType);
+                retriever ??= GetValueRetriever(itemKeyValuePair, targetType, itemType);
                 yield return retriever?.Retrieve(itemKeyValuePair, targetType, itemType);
             }
         }
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         protected abstract object BuildInstance(int count, IEnumerable values, Type valueType);
 
-        private IValueRetriever GetValueRetriever(KeyValuePair<string, string> keyValuePair, Type targetType, Type valueType)
+        private static IValueRetriever GetValueRetriever(KeyValuePair<string, string> keyValuePair, Type targetType, Type valueType)
         {
             foreach (var retriever in Service.Instance.ValueRetrievers)
             {

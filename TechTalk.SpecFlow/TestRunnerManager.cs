@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.Bindings.Discovery;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
@@ -143,8 +142,7 @@ namespace TechTalk.SpecFlow
 
         private ITestRunner GetTestRunnerWithoutExceptionHandling(string testClassId)
         {
-            ITestRunner testRunner;
-            if (!testRunnerRegistry.TryGetValue(testClassId, out testRunner))
+            if (!testRunnerRegistry.TryGetValue(testClassId, out var testRunner))
             {
                 lock (syncRoot)
                 {
@@ -187,7 +185,7 @@ namespace TechTalk.SpecFlow
 
         public static async Task<ITestRunnerManager> GetTestRunnerManagerAsync(Assembly testAssembly = null, IContainerBuilder containerBuilder = null, bool createIfMissing = true)
         {
-            testAssembly = testAssembly ?? GetCallingAssembly();
+            testAssembly ??= GetCallingAssembly();
 
             if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out var testRunnerManager))
             {
@@ -243,7 +241,7 @@ namespace TechTalk.SpecFlow
         
         private static ITestRunnerManager CreateTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
         {
-            containerBuilder = containerBuilder ?? new ContainerBuilder();
+            containerBuilder ??= new ContainerBuilder();
 
             var container = containerBuilder.CreateGlobalContainer(testAssembly);
             var testRunnerManager = container.Resolve<ITestRunnerManager>();
@@ -253,7 +251,7 @@ namespace TechTalk.SpecFlow
 
         public static async Task OnTestRunEndAsync(Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
-            testAssembly = testAssembly ?? GetCallingAssembly();
+            testAssembly ??= GetCallingAssembly();
             var testRunnerManager = await GetTestRunnerManagerAsync(testAssembly, createIfMissing: false, containerBuilder: containerBuilder);
             if (testRunnerManager != null)
             {
@@ -264,7 +262,7 @@ namespace TechTalk.SpecFlow
 
         public static async Task OnTestRunStartAsync(string testClassId, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
-            testAssembly = testAssembly ?? GetCallingAssembly();
+            testAssembly ??= GetCallingAssembly();
             var testRunnerManager = await GetTestRunnerManagerAsync(testAssembly, createIfMissing: true, containerBuilder: containerBuilder);
             testRunnerManager.GetTestRunner(testClassId);
 
@@ -273,7 +271,7 @@ namespace TechTalk.SpecFlow
 
         public static async Task<ITestRunner> GetTestRunnerAsync(string testClassId, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
-            testAssembly = testAssembly ?? GetCallingAssembly();
+            testAssembly ??= GetCallingAssembly();
             var testRunnerManager = await GetTestRunnerManagerAsync(testAssembly, containerBuilder);
             return testRunnerManager.GetTestRunner(testClassId);
         }

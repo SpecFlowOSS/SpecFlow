@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             {
                 return result;
             }
-            
+
             AttemptToBuildAGuidByAddingTrailingZeroes(value, out result);
             return result;
         }

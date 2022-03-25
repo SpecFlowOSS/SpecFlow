@@ -4,8 +4,8 @@
     {
         protected override char GetNonEmptyValue(string value)
         {
-            return value != null && value.Length == 1 
-                ? value[0] 
+            return value != null && value.Length == 1
+                ? value[0]
                 : '\0';
         }
     }

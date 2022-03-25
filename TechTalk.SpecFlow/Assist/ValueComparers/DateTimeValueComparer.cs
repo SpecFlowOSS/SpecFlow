@@ -11,10 +11,8 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool Compare(string expectedValue, object actualValue)
         {
-            DateTime expected;
-            if (DateTime.TryParse(expectedValue, out expected) == false)
-                return false;
-            return expected == (DateTime) actualValue;
+            return DateTime.TryParse(expectedValue, out var expected) &&
+                   expected == (DateTime)actualValue;
         }
     }
 }

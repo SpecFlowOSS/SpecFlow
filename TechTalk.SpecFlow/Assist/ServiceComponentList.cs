@@ -1,24 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
 {
+    #nullable enable
     public class ServiceComponentList<T> : IEnumerable<T>
     {
         private readonly List<T> components;
+        private T? defaultComponent;
 
-        private ValueHolder<T> defaultComponent;
-
-        private IEnumerable<T> componentsWithDefault => components.Concat(defaultComponent);
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => componentsWithDefault.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)componentsWithDefault).GetEnumerator();
+        public List<T>.Enumerator GetEnumerator() => components.GetEnumerator();
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => components.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)components).GetEnumerator();
 
         public ServiceComponentList()
         {
             components = new List<T>();
+        }
+
+        internal ServiceComponentList(List<T> initialList, bool isLastOneTheDefault)
+        {
+            components = initialList;
+            if (isLastOneTheDefault && initialList.Count > 0)
+            {
+                defaultComponent = initialList[initialList.Count - 1];
+            }
         }
 
         public void Register(T component)
@@ -33,18 +39,25 @@ namespace TechTalk.SpecFlow.Assist
 
         public void Unregister(T component)
         {
-            if (!components.Remove(component))
+            if (components.Remove(component))
             {
-                if (defaultComponent.Contains(component))
+                if (ReferenceEquals(defaultComponent, component))
                 {
-                    defaultComponent = ValueHolder<T>.Empty();
+                    defaultComponent = default;
                 }
             }
         }
 
         public void Unregister<TImpl>() where TImpl : T
         {
-            componentsWithDefault.OfType<TImpl>().ToList().ForEach(component => Unregister(component));
+            for (var index = components.Count - 1; index >= 0; index--)
+            {
+                var component = components[index];
+                if (component is TImpl)
+                {
+                    Unregister(component);
+                }
+            }
         }
 
         public void Replace(T oldComponent, T newComponent)
@@ -61,7 +74,9 @@ namespace TechTalk.SpecFlow.Assist
 
         public void SetDefault(T newComponent)
         {
-            defaultComponent = ValueHolder<T>.WithValue(newComponent);
+            ClearDefault();
+            components.Add(newComponent);
+            defaultComponent = newComponent;
         }
 
         public void SetDefault<TImpl>() where TImpl : T, new()
@@ -71,13 +86,16 @@ namespace TechTalk.SpecFlow.Assist
 
         public void ClearDefault()
         {
-            defaultComponent = ValueHolder<T>.Empty();
+            if (defaultComponent is not null)
+            {
+                Unregister(defaultComponent);
+            }
         }
 
         public void Clear()
         {
             components.Clear();
-            ClearDefault();
+            defaultComponent = default;
         }
     }
 }

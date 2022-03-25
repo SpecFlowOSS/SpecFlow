@@ -170,7 +170,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                         new CodePrimitiveExpression(scenario.Description),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_TAGS_VARIABLE_NAME),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME),
-                        new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME))));
+                        new CodeFieldReferenceExpression(null, GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME))));
 
             GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
 
@@ -242,45 +242,23 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 _scenarioPartHelper.GenerateStep(generationContext, statementsWhenScenarioIsExecuted, scenarioStep, paramToIdentifier);
             }
 
-            var isScenarioIgnoredVariable = new CodeVariableDeclarationStatement(typeof(bool), "isScenarioIgnored", new CodeDefaultValueExpression(new CodeTypeReference(typeof(bool))));
-            var isFeatureIgnoredVariable = new CodeVariableDeclarationStatement(typeof(bool), "isFeatureIgnored", new CodeDefaultValueExpression(new CodeTypeReference(typeof(bool))));
-            testMethod.Statements.Add(isScenarioIgnoredVariable);
-            testMethod.Statements.Add(isFeatureIgnoredVariable);
+            var tagsOfScenarioVariableReferenceExpression = new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_TAGS_VARIABLE_NAME);
+            var featureFileTagFieldReferenceExpression = new CodeFieldReferenceExpression(null, GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME);
 
+            var tagHelperReference = new CodeTypeReferenceExpression(nameof(TagHelper));
+            var scenarioTagIgnoredCheckStatement = new CodeMethodInvokeExpression(tagHelperReference, nameof(TagHelper.ContainsIgnoreTag), tagsOfScenarioVariableReferenceExpression);
+            var featureTagIgnoredCheckStatement = new CodeMethodInvokeExpression(tagHelperReference, nameof(TagHelper.ContainsIgnoreTag), featureFileTagFieldReferenceExpression);
 
-            var tagsOfScenarioVariableReferenceExpression = new CodeVariableReferenceExpression("tagsOfScenario");
-            var isScenarioIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isScenarioIgnored");
-            var featureFileTagFieldReferenceExpression = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME);
-            var isFeatureIgnoredVariableReferenceExpression = new CodeVariableReferenceExpression("isFeatureIgnored");
-
-            var ignoreLinqStatement = "Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any";
-            if (_codeDomHelper.TargetLanguage == CodeDomProviderLanguage.VB)
-            {
-                ignoreLinqStatement = "Where(Function(__entry) __entry IsNot Nothing).Where(Function(__entry) String.Equals(__entry, \"ignore\", StringComparison.CurrentCultureIgnoreCase)).Any";
-            }
-
-
-            var ifIsNullStatement = new CodeConditionStatement(CreateCheckForNullExpression(tagsOfScenarioVariableReferenceExpression), new CodeAssignStatement(isScenarioIgnoredVariableReferenceExpression,
-                new CodeMethodInvokeExpression(tagsOfScenarioVariableReferenceExpression, ignoreLinqStatement)));
-
-
-            var ifIsFeatureTagsNullStatement = new CodeConditionStatement(CreateCheckForNullExpression(featureFileTagFieldReferenceExpression), new CodeAssignStatement(isFeatureIgnoredVariableReferenceExpression,
-                new CodeMethodInvokeExpression(featureFileTagFieldReferenceExpression, ignoreLinqStatement)));
-
-
-            testMethod.Statements.Add(ifIsNullStatement);
-            testMethod.Statements.Add(ifIsFeatureTagsNullStatement);
-
-
-            var isScenarioOrFeatureIgnoredExpression = new CodeBinaryOperatorExpression(isScenarioIgnoredVariableReferenceExpression, CodeBinaryOperatorType.BooleanOr, isFeatureIgnoredVariableReferenceExpression);
-            var ifIsIgnoredStatement = new CodeConditionStatement(isScenarioOrFeatureIgnoredExpression, statementsWhenScenarioIsIgnored, statementsWhenScenarioIsExecuted.ToArray());
+            var ifIsIgnoredStatement = new CodeConditionStatement(
+                new CodeBinaryOperatorExpression(
+                    scenarioTagIgnoredCheckStatement,
+                    CodeBinaryOperatorType.BooleanOr,
+                    featureTagIgnoredCheckStatement),
+                statementsWhenScenarioIsIgnored,
+                statementsWhenScenarioIsExecuted.ToArray()
+                );
 
             testMethod.Statements.Add(ifIsIgnoredStatement);
-        }
-
-        private static CodeBinaryOperatorExpression CreateCheckForNullExpression(CodeExpression variableReferenceExpression)
-        {
-            return new CodeBinaryOperatorExpression(variableReferenceExpression, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null));
         }
 
         internal void GenerateScenarioInitializeCall(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod)
@@ -498,7 +476,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             string exampleSetIdentifier,
             bool rowTest = false)
         {
-            testMethod.Attributes = MemberAttributes.Public;
+            testMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             testMethod.Name = GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
             var friendlyTestName = scenarioDefinition.Name;
             if (variantName != null)

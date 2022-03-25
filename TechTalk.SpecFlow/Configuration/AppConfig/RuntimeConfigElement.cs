@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             get { return (ContainerRegistrationCollection)this["dependencies"]; }
             set { this["dependencies"] = value; }
         }
-        
+
         [ConfigurationProperty("stopAtFirstError", DefaultValue = ConfigDefaults.StopAtFirstError, IsRequired = false)]
         public bool StopAtFirstError
         {

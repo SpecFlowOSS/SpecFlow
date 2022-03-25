@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 

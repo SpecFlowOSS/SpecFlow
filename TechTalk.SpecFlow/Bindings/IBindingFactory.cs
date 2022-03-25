@@ -32,8 +32,7 @@ namespace TechTalk.SpecFlow.Bindings
         public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString,
             IBindingMethod bindingMethod, BindingScope bindingScope)
         {
-            if (regexString == null)
-                regexString = stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, bindingMethod);
+            regexString ??= stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, bindingMethod);
             return new StepDefinitionBinding(type, regexString, bindingMethod, bindingScope);
         }
 

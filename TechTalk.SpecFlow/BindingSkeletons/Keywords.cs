@@ -230,7 +230,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 "writeonly",
 "xor"
         };
-        private static List<string> CSharp { get; } = new List<string>()
+        private static List<string> CSharp { get; } = new List<string>
         {
             "abstract",
             "as",

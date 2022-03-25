@@ -117,7 +117,7 @@ Use this section to specify various test execution options.
 | ---------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | missingOrPendingStepsOutcome | Pending/Inconclusive/Ignore/Error | Determines how SpecFlow behaves if a step binding is not implemented or pending. See [Test Result](https://docs.specflow.org/projects/specflow/en/latest/Execution/Test-Results.html).<br/> **Default:** Pending |
 | obsoleteBehavior             | None/Warn/Pending/Error           | Determines how SpecFlow behaves if a step binding is marked with [Obsolete] attribute.<br/> **Default:** Warn                                                                                                    |
-| stopAtFirstError             | true/false                        | Determines whether the execution should stop when encountering the first error, or whether it should attempt to try and match subsequent steps (in order to detect missing steps).<br/> **Default:** false       |
+| stopAtFirstError             | true/false                        | Determines whether the execution of the Scenario should stop when encountering the first error, or whether it should attempt to try and match subsequent steps (in order to detect missing steps).<br/> **Default:** false       |
 
 ### `trace`
 

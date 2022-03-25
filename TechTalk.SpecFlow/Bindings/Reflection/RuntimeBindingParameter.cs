@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}", ParameterName, Type);
+            return $"{ParameterName}: {Type}";
         }
 
         protected bool Equals(RuntimeBindingParameter other)

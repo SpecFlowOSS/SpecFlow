@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
 
         public PluginDescriptor ToPluginDescriptor()
         {
-            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, 
+            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path,
                 Type, Parameters);
         }
     }

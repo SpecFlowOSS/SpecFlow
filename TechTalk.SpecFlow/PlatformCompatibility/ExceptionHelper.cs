@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Compatibility
             if (MonoHelper.IsMono)
                 MonoHelper.PreserveStackTrace(ex);
             else
-                typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
+                typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, Array.Empty<object>());
 
             return ex;
         }
