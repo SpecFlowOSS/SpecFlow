@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -28,7 +30,7 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         [Obsolete("Use async version of the method instead")]
-        public object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        public virtual object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
         {
             var durationHolder = new DurationHolder();
             var result = InvokeBindingAsync(binding, contextManager, arguments, testTracer, durationHolder).ConfigureAwait(false).GetAwaiter().GetResult();

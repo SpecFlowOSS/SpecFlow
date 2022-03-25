@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.Bindings.Discovery;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
