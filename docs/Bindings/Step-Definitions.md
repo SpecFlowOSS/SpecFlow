@@ -66,7 +66,7 @@ The `[Obsolete]` attribute from the system namespace is also supported, check [h
 * Must be a public method.
 * Can be either a static or an instance method. If it is an instance method, the containing class will be instantiated once for every scenario.
 * Cannot have `out` or `ref` parameters.
-* Cannot have a return type or have `Task` as return type.
+* Shouldn't have a return type or have `Task` as return type.
 
 ## Step Matching Styles & Rules
 
