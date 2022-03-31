@@ -29,6 +29,9 @@
     <None Include="NuGetPackageVersion.template.cs" />
     <SpecFlowFeatureFiles Remove="TestFiles/**/*.feature" />
   </ItemGroup>
+  <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\RegressionTests\GH1052.feature.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
@@ -80,6 +83,21 @@
 
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Features\RegressionTests\GH2571.feature.cs">
+      <DependentUpon>GH2571.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="Features\RegressionTests\GH2571.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
 
