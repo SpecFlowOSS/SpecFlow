@@ -33,6 +33,13 @@ namespace SpecFlow.Autofac
                         {
                             args.ObjectContainer.RegisterTypeAs<AutofacTestObjectResolver, ITestObjectResolver>();
                             args.ObjectContainer.RegisterTypeAs<ContainerBuilderFinder, IContainerBuilderFinder>();
+
+                            var containerBuilderFinder = args.ObjectContainer.Resolve<IContainerBuilderFinder>();
+                            var createGlobalContainterBuilder = containerBuilderFinder.GetCreateGlobalContainer();
+                            if (createGlobalContainterBuilder != null)
+                            {
+                                args.ObjectContainer.RegisterFactoryAs(createGlobalContainterBuilder);
+                            }
                         }
                     }
 
@@ -41,15 +48,45 @@ namespace SpecFlow.Autofac
                 }
             };
 
+            runtimePluginEvents.CustomizeTestThreadDependencies += (sender, args) =>
+            {
+                if (args.ObjectContainer.BaseContainer.IsRegistered<IContainer>())
+                {
+                    var container = args.ObjectContainer.BaseContainer.Resolve<IContainer>();
+                    args.ObjectContainer.RegisterFactoryAs(() => container.BeginLifetimeScope());
+                }
+            };
+
+            runtimePluginEvents.CustomizeFeatureDependencies += (sender, args) =>
+            {
+                if (args.ObjectContainer.BaseContainer.IsRegistered<ILifetimeScope>())
+                {
+                    var container = args.ObjectContainer.BaseContainer.Resolve<ILifetimeScope>();
+                    args.ObjectContainer.RegisterFactoryAs(() => container.BeginLifetimeScope());
+                }
+            };
+
             runtimePluginEvents.CustomizeScenarioDependencies += (sender, args) =>
             {
                 args.ObjectContainer.RegisterFactoryAs<IComponentContext>(() =>
                 {
+                    IContainer container;
                     var containerBuilderFinder = args.ObjectContainer.Resolve<IContainerBuilderFinder>();
+
+                    if (args.ObjectContainer.BaseContainer.IsRegistered<ILifetimeScope>())
+                    {
+                        container = args.ObjectContainer.Resolve<IContainer>();
+                        return container.BeginLifetimeScope(cb =>
+                        {
+                            var scenarioContainerBuilder = containerBuilderFinder.GetCreateScenarioContainerBuilderWithParameter();
+                            scenarioContainerBuilder(cb);
+                            RegisterSpecflowDependecies(args.ObjectContainer, cb);
+                        });
+                    }
                     var createScenarioContainerBuilder = containerBuilderFinder.GetCreateScenarioContainerBuilder();
                     var containerBuilder = createScenarioContainerBuilder();
                     RegisterSpecflowDependecies(args.ObjectContainer, containerBuilder);
-                    var container = containerBuilder.Build();
+                    container = containerBuilder.Build();
                     return container.BeginLifetimeScope();
                 });
             };

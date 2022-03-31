@@ -6,5 +6,9 @@ namespace SpecFlow.Autofac
     public interface IContainerBuilderFinder
     {
         Func<ContainerBuilder> GetCreateScenarioContainerBuilder();
+
+        Func<IContainer> GetCreateGlobalContainer();
+
+        Func<ContainerBuilder, object> GetCreateScenarioContainerBuilderWithParameter();
     }
 }
