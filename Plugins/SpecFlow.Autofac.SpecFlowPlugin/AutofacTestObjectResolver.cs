@@ -14,6 +14,12 @@ namespace SpecFlow.Autofac
                 var componentContext = container.Resolve<IComponentContext>();
                 return componentContext.Resolve(bindingType);
             }
+
+            if (container.IsRegistered<ILifetimeScope>())
+            {
+                var lifeTimeScope = container.Resolve<ILifetimeScope>();
+                return lifeTimeScope.Resolve(bindingType);
+            }
             return container.Resolve(bindingType);
         }
     }
