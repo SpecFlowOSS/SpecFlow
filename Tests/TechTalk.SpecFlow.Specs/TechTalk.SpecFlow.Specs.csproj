@@ -74,32 +74,14 @@
     </ItemGroup>
   </Target>
 
-
   <Target Name="PreBuild">
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
     <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
   </Target>
 
-
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
-
-
-  <ItemGroup>
-    <Compile Update="Features\RegressionTests\GH2571.feature.cs">
-      <DependentUpon>GH2571.feature</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="Features\RegressionTests\GH2571.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-  </ItemGroup>
-
 
   <PropertyGroup>
     <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
