@@ -77,7 +77,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         }
 
-
         [Given("Returns a Task")]
         public virtual Task ReturnsATask()
         {
@@ -318,10 +317,40 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.True(taskFinished);
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
             Assert.Equal("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
-            
         }
 
+        [Fact]
+        public void ShouldCallAsyncBindingThatReturnsTaskAndReportErrorArgumentException()
+        {
+            var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
+            bool taskFinished = false;
+            bindingMock.Setup(m => m.ReturnsATask()).Returns(Task.Factory.StartNew(() =>
+                    {
+                        Thread.Sleep(800);
+                        taskFinished = true;
+                        throw new ArgumentException("catch meee");
+                    }));
 
+            testRunner.Given("Returns a Task");
+            Assert.True(taskFinished);
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
+            Assert.Equal(typeof(ArgumentException), ContextManagerStub.ScenarioContext.TestError.GetType());
+            Assert.Equal("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
+        }
+
+        [Fact]
+        public void ShouldCallSyncBindingAndReportErrorArgumentException()
+        {
+            var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
+
+            bindingMock.Setup(m => m.BindingWithoutParam())
+                .Throws(new ArgumentException("catch meee"));
+
+            testRunner.Given("sample step without param");
+            GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
+            Assert.Equal(typeof(ArgumentException), ContextManagerStub.ScenarioContext.TestError.GetType());
+            Assert.Equal("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
+        }
     }
 }
