@@ -29,10 +29,7 @@
     <None Include="NuGetPackageVersion.template.cs" />
     <SpecFlowFeatureFiles Remove="TestFiles/**/*.feature" />
   </ItemGroup>
-  <ItemGroup>
-    <SpecFlowObsoleteCodeBehindFiles Remove="Features\RegressionTests\GH1052.feature.cs" />
-  </ItemGroup>
-
+   
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
