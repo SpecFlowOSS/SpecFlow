@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
             foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders, onlyFullframework, onlyDotNetCore))
             {
-                var clonedDocument = CloneDocumentAndAddTag(specFlowDocument, featureGenerator.Key.UnitTestProvider);
+                var clonedDocument = CloneDocumentAndAddTags(specFlowDocument, featureGenerator.Key);
 
 
                 var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(clonedDocument, testClassName, targetNamespace);
@@ -86,18 +86,15 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             return result;
         }
 
-        private SpecFlowDocument CloneDocumentAndAddTag(SpecFlowDocument specFlowDocument, string unitTestProvider)
+        private SpecFlowDocument CloneDocumentAndAddTags(SpecFlowDocument specFlowDocument, Combination combination)
         {
-            if (HasFeatureTag(specFlowDocument.SpecFlowFeature, unitTestProvider))
-            {
-                return specFlowDocument;
-            }
-
-
             var tags = new List<Tag>();
             var specFlowFeature = specFlowDocument.SpecFlowFeature;
             tags.AddRange(specFlowFeature.Tags);
-            tags.Add(new Tag(null, unitTestProvider));
+            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, combination.UnitTestProvider))
+                tags.Add(new Tag(null, combination.UnitTestProvider));
+            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, combination.TargetFramework))
+                tags.Add(new Tag(null, combination.TargetFramework));
             var feature = new SpecFlowFeature(tags.ToArray(),
                                               specFlowFeature.Location,
                                               specFlowFeature.Language,
