@@ -164,7 +164,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 return new CodePrimitiveExpression(text);
             }
 
-            var paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
+            var paramRe = new Regex(@"\<(?<param>[^\<\>]+)\>");
             var formatText = text.Replace("{", "{{").Replace("}", "}}");
             var arguments = new List<string>();
 

@@ -29,7 +29,7 @@
     <None Include="NuGetPackageVersion.template.cs" />
     <SpecFlowFeatureFiles Remove="TestFiles/**/*.feature" />
   </ItemGroup>
-
+   
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalRepositories\SpecFlow.TestProjectGenerator\SpecFlow.TestProjectGenerator\TechTalk.SpecFlow.TestProjectGenerator.csproj" />
     <ProjectReference Include="..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
@@ -71,17 +71,14 @@
     </ItemGroup>
   </Target>
 
-
   <Target Name="PreBuild">
     <MSBuild Projects="..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
     <MSBuild Projects="..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
   </Target>
 
-
   <ItemGroup>
     <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin.dll" />
   </ItemGroup>
-
 
   <PropertyGroup>
     <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>

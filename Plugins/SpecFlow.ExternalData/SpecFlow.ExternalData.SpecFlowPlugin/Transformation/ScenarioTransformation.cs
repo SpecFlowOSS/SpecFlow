@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Parser;
@@ -81,7 +82,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
             if (_hasTransformedScenarioInCurrentRule)
             {
                 var transformedRule = new Rule(
-                    rule.Tags.ToArray(),
+                    rule.Tags?.ToArray() ?? Array.Empty<Tag>(),
                     rule.Location,
                     rule.Keyword,
                     rule.Name,
@@ -99,7 +100,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Transformation
         {
             if (_hasTransformedScenarioInFeature)
                 _transformedFeature = new SpecFlowFeature(
-                    feature.Tags.ToArray(),
+                    feature.Tags?.ToArray() ?? Array.Empty<Tag>(),
                     feature.Location,
                     feature.Language,
                     feature.Keyword,
