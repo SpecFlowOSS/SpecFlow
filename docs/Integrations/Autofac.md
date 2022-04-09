@@ -15,72 +15,73 @@ SpecFlow plugin for using Autofac as a dependency injection framework for step d
 ```csharp
 PM> Install-Package SpecFlow.Autofac
 ```
-### 2. There are two registration scenarios:
+### 2.1. Plugin supports both registration of dependencies globally and per scenario:
   
-  ##### 2.1A When there are some dependecies that need to be shared globally for all scenarios:
+  ##### 2.2 Optionally configure dependencies that need to be shared globally for all scenarios:
   
-  Create a static method somewhere in the SpecFlow project to register global dependencies: 
-  (Recommended to put it into the `Support` folder) that returns an Autofac `IContainer` and tag it with the `[GlobalDependencies]` attribute. 
-
   Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
-  (Recommended to put it into the `Support` folder) that returns `void` and and has one parameter of Autofac `ContainerBuilder` tag it with the `[ScenarioDependencies]` attribute. 
+  (Recommended to put it into the `Support` folder) that returns `void` and and has one parameter of Autofac `ContainerBuilder`, tag it with the `[GlobalDependencies]` attribute.
 
-  ##### 2.1B When dependencies are only recquired to be resolved each time for a scenario:
+  When registering global dependencies it is also a requirement to configure scenario dependencies as well in order to register classes  marked with the `[Binding]` attribute as shown below.
+
+  Globally registered dependencies may be resolved in the `[BeforeTestRun]` and `[AfterTestRun]` methods.
+    
+  ##### 2.3 Configure dependencies to be resolved each time for a scenario:
   
-  Create a static method somewhere in the SpecFlow project  
-  (Recommended to put it into the `Support` folder) that returns an Autofac `ContainerBuilder` and tag it with the `[ScenarioDependencies]` attribute. 
+  Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
+  (Recommended to put it into the `Support` folder) that returns `void` and and has one parameter of Autofac `ContainerBuilder`, tag it with the `[ScenarioDependencies]` attribute. 
 
-  ##### 2.2 Configure your dependencies for the scenario execution within either the 2 methods or the 1 method, the two solutions cannot be used together. 
-  ##### 2.3 You also have to register the step definition classes in the `[ScenarioDependencies]` method, that you can do by either registering all public types from the SpecFlow project:
+  ##### 2.4 Configure your dependencies for the scenario execution within either the two methods `[GlobalDependencies]` and `[ScenarioDependencies]` or the single `[ScenarioDependencies]` method. 
+
+  ##### 2.5 You also have to register the step definition classes in the `[ScenarioDependencies]` method, that you can do by either registering all public types from the SpecFlow project:
 
 ```csharp
 builder.RegisterAssemblyTypes(typeof(YourClassInTheSpecFlowProject).Assembly).SingleInstance();
 ```
-  ##### 2.4 or by registering all classes marked with the `[Binding]` attribute:
+  ##### 2.6 or by registering all classes marked with the `[Binding]` attribute:
 
+  You may use a provided extension method to do this, but importing:
 ```csharp
-builder.RegisterTypes(typeof(TestDependencies).Assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(BindingAttribute))).ToArray()).SingleInstance();
+using SpecFlow.Autofac.SpecFlowPlugin;
 ```
-  ### 3. A typical dependency builder method for `[ScenarioDependencies]` probably looks like this:
+Then
+```csharp
+containerBuilder.AddSpecFlowBindings(typeof(YourClassInTheSpecFlowProject))
+```
+Or overload
+```csharp
+containerBuilder.AddSpecFlowBindings<YourClassInTheSpecFlowProject>()
+```
+
+  Or manually register like so:
+```csharp
+builder
+  .RegisterAssemblyTypes(typeof(TestDependencies).Assembly)
+  .Where(t => Attribute.IsDefined(t, typeof(BindingAttribute)))
+  .SingleInstance();
+```
+  ### 3. A typical dependency builder method for `[GlobalDependencies]` with `[ScenarioDependencies]` probably looks like this:
 
 ```csharp
 [GlobalDependencies]
-public static IContainer CreateContainer()
+public static void CreateGlobalContainer(ContainerBuilder containerBuilder)
 {
-    // create container with the runtime dependencies that will be available to all scenarios.
-    var builder = Dependencies.CreateGlobalContainerBuilder();
-    var container = builder.Build();
-    return builder.Build();
+    // Register gloabally scoped runtime dependencies
+    Dependencies.RegisterGlobalDependencies(containerBuilder);
+
+    //TODO: add Services that are shared globally.
 }
 
 [ScenarioDependencies]
-public static void CreateContainerBuilder(ContainerBuilder builder)
+public static void CreateContainerBuilder(ContainerBuilder containerBuilder)
 {
-  // create container with the runtime dependencies
-  var builder = Dependencies.RegisterScenarioDependencies(builder);
-
+  // Register scenario scoped runtime dependencies
+  Dependencies.RegisterScenarioDependencies(containerBuilder);
+  
   //TODO: add customizations, stubs required for testing
 
-  builder.RegisterTypes(typeof(TestDependencies).Assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(BindingAttribute))).ToArray()).SingleInstance();
-  
-  return builder;
+  containerBuilder.AddSpecFlowBindings<TestDependencies>()
 }
 ```
+  ### 4.   It is also possible to continue to use the original method as well, however this method is __not__ compatible with global dependency registration and can only be used on it's own.
 
-
-  ### 4. A typical dependency builder method for `[ScenarioDependencies]` probably looks like this:
-
-```csharp
-[ScenarioDependencies]
-public static ContainerBuilder CreateContainerBuilder()
-{
-  // create container with the runtime dependencies
-  var builder = Dependencies.CreateContainerBuilder();
-
-  //TODO: add customizations, stubs required for testing
-
-  builder.RegisterTypes(typeof(TestDependencies).Assembly.GetTypes().Where(t => Attribute.IsDefined(t, typeof(BindingAttribute))).ToArray()).SingleInstance();
-  
-  return builder;
-}
-```

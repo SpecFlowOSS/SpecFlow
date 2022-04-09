@@ -16,40 +16,42 @@ namespace SpecFlow.Autofac
         private readonly IBindingRegistry bindingRegistry;
         private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
         private readonly ITestAssemblyProvider testAssemblyProvider;
-        private readonly Lazy<Func<ContainerBuilder>> createScenarioContainerBuilder;
-        private readonly Lazy<Func<IContainer>> createGlobalContainerBuilder;
-        private readonly Lazy<Func<ContainerBuilder, Func<object>>> createScenarioContainerBuilderWithParameter;
+        private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createConfigureGlobalContainer;
+        private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createConfigureScenarioContainer;
+        private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createScenarioContainerBuilder;
 
         public ContainerBuilderFinder(IBindingRegistry bindingRegistry, IRuntimeBindingRegistryBuilder bindingRegistryBuilder, ITestAssemblyProvider testAssemblyProvider)
         {
             this.bindingRegistry = bindingRegistry;
             this.bindingRegistryBuilder = bindingRegistryBuilder;
             this.testAssemblyProvider = testAssemblyProvider;
-            createGlobalContainerBuilder = new Lazy<Func<IContainer>>(() => FindCreateScenarioContainerBuilder(typeof(GlobalDependenciesAttribute), typeof(IContainer), m => (IContainer)m.Invoke(null, null)), true);
-            createScenarioContainerBuilder = new Lazy<Func<ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(ContainerBuilder), m => (ContainerBuilder)m.Invoke(null, null)), true);
-            createScenarioContainerBuilderWithParameter = new Lazy<Func<ContainerBuilder, Func<object>>>(() => c => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(void), m => m.Invoke(null, new[] { c })), true);
+            static ContainerBuilder invokeVoidAndReturnBuilder(ContainerBuilder containerBuilder, MethodInfo methodInfo)
+            {
+                methodInfo.Invoke(null, new[] { containerBuilder });
+                return containerBuilder;
+            }
+            createConfigureGlobalContainer = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(GlobalDependenciesAttribute), typeof(void), invokeVoidAndReturnBuilder), true);
+            createConfigureScenarioContainer = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(void), invokeVoidAndReturnBuilder), true);
+            createScenarioContainerBuilder = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(ContainerBuilder), (c, m) => (ContainerBuilder)m.Invoke(null, null)), true);
         }
-        public Func<IContainer> GetCreateGlobalContainer()
+
+        public Func<ContainerBuilder, ContainerBuilder> GetConfigureGlobalContainer()
         {
             bindingRegistryBuilder.BuildBindingsFromAssembly(testAssemblyProvider.TestAssembly);
-            return createGlobalContainerBuilder.Value ?? null;
+            return createConfigureGlobalContainer.Value;
         }
 
-        public Func<ContainerBuilder> GetCreateScenarioContainerBuilder()
+        public Func<ContainerBuilder, ContainerBuilder> GetConfigureScenarioContainer()
         {
-            return createScenarioContainerBuilder.Value
-               ?? throw new Exception("Unable to find scenario dependencies! Mark a static method that returns a ContainerBuilder with [ScenarioDependencies]!");
+            return createConfigureScenarioContainer.Value;
         }
 
-        public Func<ContainerBuilder, object> GetCreateScenarioContainerBuilderWithParameter()
+        public Func<ContainerBuilder, ContainerBuilder> GetCreateScenarioContainerBuilder()
         {
-            var builder = createScenarioContainerBuilderWithParameter.Value;
-            return builder != null
-               ? containerBuilder => builder(containerBuilder)()
-               : throw new Exception("Unable to find scenario dependencies! Mark a static method that has a ContainerBuilder parameter and returns void with [ScenarioDependencies]!");
+            return createScenarioContainerBuilder.Value;
         }
 
-        protected virtual Func<TReturnType> FindCreateScenarioContainerBuilder<TReturnType>(Type attributeType, Type returnType, Func<MethodInfo, TReturnType> invoke)
+        protected virtual Func<ContainerBuilder, ContainerBuilder> FindCreateScenarioContainerBuilder(Type attributeType, Type returnType, Func<ContainerBuilder, MethodInfo, ContainerBuilder> invoke)
         {
             var assemblies = bindingRegistry.GetBindingAssemblies();
             foreach (var assembly in assemblies)
@@ -60,11 +62,12 @@ namespace SpecFlow.Autofac
                     {
                         if (methodInfo.ReturnType == returnType)
                         {
-                            return () => invoke(methodInfo);
+                            return (containerBuilder) => invoke(containerBuilder, methodInfo);
                         }
                     }
                 }
             }
+
             return null;
 
             //return (assemblies

@@ -16,7 +16,7 @@ namespace SpecFlow.Autofac
 
     public class AutofacPlugin : IRuntimePlugin
     {
-        private static Object _registrationLock = new Object();
+        private static readonly Object _registrationLock = new Object();
 
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
@@ -35,10 +35,11 @@ namespace SpecFlow.Autofac
                             args.ObjectContainer.RegisterTypeAs<ContainerBuilderFinder, IContainerBuilderFinder>();
 
                             var containerBuilderFinder = args.ObjectContainer.Resolve<IContainerBuilderFinder>();
-                            var createGlobalContainterBuilder = containerBuilderFinder.GetCreateGlobalContainer();
-                            if (createGlobalContainterBuilder != null)
+                            var configureGlobalContainer = containerBuilderFinder.GetConfigureGlobalContainer();
+                            if (configureGlobalContainer != null)
                             {
-                                args.ObjectContainer.RegisterFactoryAs(createGlobalContainterBuilder);
+                                var containerBuilder = configureGlobalContainer(new global::Autofac.ContainerBuilder());
+                                args.ObjectContainer.RegisterFactoryAs(() => containerBuilder.Build());
                             }
                         }
                     }
@@ -53,7 +54,7 @@ namespace SpecFlow.Autofac
                 if (args.ObjectContainer.BaseContainer.IsRegistered<IContainer>())
                 {
                     var container = args.ObjectContainer.BaseContainer.Resolve<IContainer>();
-                    args.ObjectContainer.RegisterFactoryAs(() => container.BeginLifetimeScope());
+                    args.ObjectContainer.RegisterFactoryAs(() => container.BeginLifetimeScope(nameof(TestThreadContext)));
                 }
             };
 
@@ -62,7 +63,7 @@ namespace SpecFlow.Autofac
                 if (args.ObjectContainer.BaseContainer.IsRegistered<ILifetimeScope>())
                 {
                     var container = args.ObjectContainer.BaseContainer.Resolve<ILifetimeScope>();
-                    args.ObjectContainer.RegisterFactoryAs(() => container.BeginLifetimeScope());
+                    args.ObjectContainer.RegisterFactoryAs(() => container.BeginLifetimeScope(nameof(FeatureContext)));
                 }
             };
 
@@ -70,27 +71,50 @@ namespace SpecFlow.Autofac
             {
                 args.ObjectContainer.RegisterFactoryAs<IComponentContext>(() =>
                 {
-                    IContainer container;
                     var containerBuilderFinder = args.ObjectContainer.Resolve<IContainerBuilderFinder>();
 
-                    if (args.ObjectContainer.BaseContainer.IsRegistered<ILifetimeScope>())
+                    var featureScope = GetFeatureScope(args.ObjectContainer, containerBuilderFinder);
+
+                    if (featureScope != null)
                     {
-                        container = args.ObjectContainer.Resolve<IContainer>();
-                        return container.BeginLifetimeScope(cb =>
+                        return featureScope.BeginLifetimeScope(nameof(ScenarioContext), containerBuilder =>
                         {
-                            var scenarioContainerBuilder = containerBuilderFinder.GetCreateScenarioContainerBuilderWithParameter();
-                            scenarioContainerBuilder(cb);
-                            RegisterSpecflowDependecies(args.ObjectContainer, cb);
+                            var configureScenarioContainer = containerBuilderFinder.GetConfigureScenarioContainer();
+                            RegisterSpecflowDependecies(args.ObjectContainer, configureScenarioContainer(containerBuilder));
                         });
                     }
+
                     var createScenarioContainerBuilder = containerBuilderFinder.GetCreateScenarioContainerBuilder();
-                    var containerBuilder = createScenarioContainerBuilder();
+                    if (createScenarioContainerBuilder == null)
+                    {
+                        throw new Exception("Unable to find scenario dependencies! Mark a static method that has a ContainerBuilder parameter and returns void with [ScenarioDependencies]!");
+                    }
+
+                    var containerBuilder = createScenarioContainerBuilder(null);
                     RegisterSpecflowDependecies(args.ObjectContainer, containerBuilder);
-                    container = containerBuilder.Build();
-                    return container.BeginLifetimeScope();
+                    args.ObjectContainer.RegisterFactoryAs(() => containerBuilder.Build());
+                    return args.ObjectContainer.Resolve<IContainer>().BeginLifetimeScope(nameof(ScenarioContext));
                 });
             };
         }
+        private static ILifetimeScope GetFeatureScope(ObjectContainer objectContainer, IContainerBuilderFinder containerBuilderFinder)
+        {
+            var configureScenarioContainer = containerBuilderFinder.GetConfigureScenarioContainer();
+            if (objectContainer.BaseContainer.IsRegistered<ILifetimeScope>() && configureScenarioContainer != null)
+            {
+                return objectContainer.BaseContainer.Resolve<ILifetimeScope>();
+            }
+
+            if (configureScenarioContainer != null)
+            {
+                var containerBuilder = new global::Autofac.ContainerBuilder();
+                objectContainer.RegisterFactoryAs(() => containerBuilder.Build());
+                return objectContainer.Resolve<IContainer>();
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         ///     Fix for https://github.com/gasparnagy/SpecFlow.Autofac/issues/11 Cannot resolve ScenarioInfo
