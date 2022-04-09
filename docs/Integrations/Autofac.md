@@ -20,16 +20,16 @@ PM> Install-Package SpecFlow.Autofac
   ##### 2.2 Optionally configure dependencies that need to be shared globally for all scenarios:
   
   Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
-  (Recommended to put it into the `Support` folder) that returns `void` and and has one parameter of Autofac `ContainerBuilder`, tag it with the `[GlobalDependencies]` attribute.
+  (Recommended to put it into the `Support` folder) that returns `void` and has one parameter of Autofac `ContainerBuilder`, tag it with the `[GlobalDependencies]` attribute.
 
-  When registering global dependencies it is also a requirement to configure scenario dependencies as well in order to register classes  marked with the `[Binding]` attribute as shown below.
+  When registering global dependencies, it is also a requirement to configure scenario dependencies as well in order to register classes  marked with the `[Binding]` attribute as shown below.
 
   Globally registered dependencies may be resolved in the `[BeforeTestRun]` and `[AfterTestRun]` methods.
     
   ##### 2.3 Configure dependencies to be resolved each time for a scenario:
   
   Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
-  (Recommended to put it into the `Support` folder) that returns `void` and and has one parameter of Autofac `ContainerBuilder`, tag it with the `[ScenarioDependencies]` attribute. 
+  (Recommended to put it into the `Support` folder) that returns `void` and has one parameter of Autofac `ContainerBuilder`, tag it with the `[ScenarioDependencies]` attribute. 
 
   ##### 2.4 Configure your dependencies for the scenario execution within either the two methods `[GlobalDependencies]` and `[ScenarioDependencies]` or the single `[ScenarioDependencies]` method. 
 
@@ -66,7 +66,7 @@ builder
 [GlobalDependencies]
 public static void CreateGlobalContainer(ContainerBuilder containerBuilder)
 {
-    // Register gloabally scoped runtime dependencies
+    // Register globally scoped runtime dependencies
     Dependencies.RegisterGlobalDependencies(containerBuilder);
 
     //TODO: add Services that are shared globally.
