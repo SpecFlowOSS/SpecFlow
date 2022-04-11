@@ -14,21 +14,21 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 {
     [AssemblyInitialize]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void AssemblyInitialize(TestContext testContext)
+    public static async Task AssemblyInitialize(TestContext testContext)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
         var containerBuilder = new MsTestContainerBuilder(testContext);
 
-        TestRunnerManager.OnTestRunStart(currentAssembly, containerBuilder);
+        //TODO: Review/handle parallel execution with async
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync("TBD", currentAssembly, containerBuilder);
     }
 
     [AssemblyCleanup]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void AssemblyCleanup()
+    public static async ValueTask AssemblyCleanup()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 #pragma warning restore

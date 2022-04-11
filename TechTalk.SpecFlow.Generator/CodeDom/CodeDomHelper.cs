@@ -263,7 +263,13 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
             else if (expression.Method.TargetObject is CodeTypeReferenceExpression typeExpression)
             {
-                expression.Method.TargetObject = new CodeTypeReferenceExpression(new CodeTypeReference($"await {typeExpression.Type.BaseType}", typeExpression.Type.Options));
+                string baseType = typeExpression.Type.BaseType;
+                if (typeExpression.Type.Options.HasFlag(CodeTypeReferenceOptions.GlobalReference))
+                {
+                    typeExpression.Type.Options &= ~CodeTypeReferenceOptions.GlobalReference;
+                    baseType = $"global::{baseType}";
+                }
+                expression.Method.TargetObject = new CodeTypeReferenceExpression(new CodeTypeReference($"await {baseType}", typeExpression.Type.Options));
             }
             else if (expression.Method.TargetObject is CodeThisReferenceExpression thisExpression)
             {
