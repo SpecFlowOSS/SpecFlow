@@ -13,7 +13,6 @@ using TechTalk.SpecFlow.Generator.Generation;
 using TechTalk.SpecFlow.Parser;
 using System.Globalization;
 using System.IO;
-using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -76,7 +75,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             List<CodeStatement> _statements = new List<CodeStatement>();
             
             // Creating the SUT
-            var _scenarioPartHelper = new ScenarioPartHelper(_specFlowConfiguration, _codeDomHelper, new MsTestV2GeneratorProvider(_codeDomHelper));
+            var _scenarioPartHelper = new ScenarioPartHelper(_specFlowConfiguration, _codeDomHelper);
 
 
             // ACT

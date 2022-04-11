@@ -220,11 +220,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
         }
 
-        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod testMethod)
-        {
-            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
-        }
-
         public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
         {
             CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);

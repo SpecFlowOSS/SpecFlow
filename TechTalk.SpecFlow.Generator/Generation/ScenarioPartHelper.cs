@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
-using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.Generation
@@ -15,14 +14,12 @@ namespace TechTalk.SpecFlow.Generator.Generation
     {
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly CodeDomHelper _codeDomHelper;
-        private readonly IUnitTestGeneratorProvider _testGeneratorProvider;
         private int _tableCounter;
 
-        public ScenarioPartHelper(SpecFlowConfiguration specFlowConfiguration, CodeDomHelper codeDomHelper, IUnitTestGeneratorProvider testGeneratorProvider)
+        public ScenarioPartHelper(SpecFlowConfiguration specFlowConfiguration, CodeDomHelper codeDomHelper)
         {
             _specFlowConfiguration = specFlowConfiguration;
             _codeDomHelper = codeDomHelper;
-            _testGeneratorProvider = testGeneratorProvider;
         }
 
         public void SetupFeatureBackground(TestClassGenerationContext generationContext)
@@ -36,11 +33,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             var backgroundMethod = generationContext.FeatureBackgroundMethod;
 
-            backgroundMethod.ReturnType = new CodeTypeReference(typeof(Task));
             backgroundMethod.Attributes = MemberAttributes.Public;
             backgroundMethod.Name = GeneratorConstants.BACKGROUND_NAME;
 
-            _testGeneratorProvider.MarkCodeMemberMethodAsAsync(backgroundMethod);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(backgroundMethod);
 
             var statements = new List<CodeStatement>();
             using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, background.Location))

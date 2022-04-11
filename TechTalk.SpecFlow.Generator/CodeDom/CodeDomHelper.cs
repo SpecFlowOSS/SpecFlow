@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
 
@@ -232,10 +233,21 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
 
         public void MarkCodeMemberMethodAsAsync(CodeMemberMethod method)
         {
+            if (IsVoid(method.ReturnType))
+            {
+                method.ReturnType = new CodeTypeReference($"async {typeof(Task).FullName}");
+                return;
+            }
+
             var returnTypeArgumentReferences = method.ReturnType.TypeArguments.OfType<CodeTypeReference>().ToArray();
 
             var asyncReturnType = new CodeTypeReference($"async {method.ReturnType.BaseType}", returnTypeArgumentReferences);
             method.ReturnType = asyncReturnType;
+        }
+
+        public bool IsVoid(CodeTypeReference codeTypeReference)
+        {
+            return typeof(void).FullName!.Equals(codeTypeReference.BaseType);
         }
 
         public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)

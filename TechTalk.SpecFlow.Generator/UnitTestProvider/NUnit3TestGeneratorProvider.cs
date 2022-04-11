@@ -1,6 +1,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.Generator.CodeDom;
 
@@ -144,11 +145,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
-        }
-
-        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod testMethod)
-        {
-            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
         }
 
         public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)

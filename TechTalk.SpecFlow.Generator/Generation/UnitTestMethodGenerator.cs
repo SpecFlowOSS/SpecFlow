@@ -395,11 +395,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testMethod = _codeDomHelper.CreateMethod(generationContext.TestClass);
 
-            testMethod.ReturnType = new CodeTypeReference(typeof(Task));
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = string.Format(GeneratorConstants.TEST_NAME_FORMAT, scenarioOutline.Name.ToIdentifier());
 
-            _unitTestGeneratorProvider.MarkCodeMemberMethodAsAsync(testMethod);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
             
             foreach (var pair in paramToIdentifier)
             {
@@ -461,6 +460,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             string exampleSetIdentifier = null)
         {
             var testMethod = _codeDomHelper.CreateMethod(generationContext.TestClass);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
 
             SetupTestMethod(generationContext, testMethod, scenario, additionalTags, variantName, exampleSetIdentifier);
 

@@ -260,7 +260,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var initializeMethod = new CodeMemberMethod();
             initializeMethod.PrivateImplementationType = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
             initializeMethod.Name = "InitializeAsync";
-            initializeMethod.ReturnType = new CodeTypeReference(typeof(Task));
 
             CodeDomHelper.MarkCodeMemberMethodAsAsync(initializeMethod);
 
@@ -289,7 +288,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var disposeMethod = new CodeMemberMethod();
             disposeMethod.PrivateImplementationType = iasyncLifetimeInterface;
             disposeMethod.Name = "DisposeAsync";
-            disposeMethod.ReturnType = new CodeTypeReference(typeof(Task));
 
             CodeDomHelper.MarkCodeMemberMethodAsAsync(disposeMethod);
             
@@ -306,10 +304,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            testMethod.ReturnType = new CodeTypeReference(typeof(Task));
-
-            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
-            
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(friendlyTestName)));
 
             SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
@@ -342,7 +336,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             initializeMethod.Attributes = MemberAttributes.Public;
             initializeMethod.PrivateImplementationType = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
             initializeMethod.Name = "InitializeAsync";
-            initializeMethod.ReturnType = new CodeTypeReference(typeof(Task));
 
             CodeDomHelper.MarkCodeMemberMethodAsAsync(initializeMethod);
 
@@ -364,7 +357,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var disposeMethod = new CodeMemberMethod();
             disposeMethod.PrivateImplementationType = iasyncLifetimeInterface;
             disposeMethod.Name = "DisposeAsync";
-            disposeMethod.ReturnType = new CodeTypeReference(typeof(Task));
 
             CodeDomHelper.MarkCodeMemberMethodAsAsync(disposeMethod);
             
@@ -425,11 +417,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
-        }
-
-        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod testMethod)
-        {
-            CodeDomHelper.MarkCodeMemberMethodAsAsync(testMethod);
         }
 
         public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)

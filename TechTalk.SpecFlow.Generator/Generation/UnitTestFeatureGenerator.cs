@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             _specFlowConfiguration = specFlowConfiguration;
             _decoratorRegistry = decoratorRegistry;
             _linePragmaHandler = new LinePragmaHandler(_specFlowConfiguration, _codeDomHelper);
-            _scenarioPartHelper = new ScenarioPartHelper(_specFlowConfiguration, _codeDomHelper, _testGeneratorProvider);
+            _scenarioPartHelper = new ScenarioPartHelper(_specFlowConfiguration, _codeDomHelper);
             _unitTestMethodGenerator = new UnitTestMethodGenerator(testGeneratorProvider, decoratorRegistry, _codeDomHelper, _scenarioPartHelper, _specFlowConfiguration);
         }
 
@@ -119,7 +119,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             scenarioCleanupMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             scenarioCleanupMethod.Name = GeneratorConstants.SCENARIO_CLEANUP_NAME; 
-            scenarioCleanupMethod.ReturnType = new CodeTypeReference(typeof(Task));
 
             _codeDomHelper.MarkCodeMemberMethodAsAsync(scenarioCleanupMethod);
 
@@ -170,11 +169,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testClassInitializeMethod = generationContext.TestClassInitializeMethod;
 
-            testClassInitializeMethod.ReturnType = new CodeTypeReference(typeof(Task));
             testClassInitializeMethod.Attributes = MemberAttributes.Public;
             testClassInitializeMethod.Name = GeneratorConstants.TESTCLASS_INITIALIZE_NAME;
 
-            _testGeneratorProvider.MarkCodeMemberMethodAsAsync(testClassInitializeMethod);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(testClassInitializeMethod);
             
             _testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
@@ -228,11 +226,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testClassCleanupMethod = generationContext.TestClassCleanupMethod;
 
-            testClassCleanupMethod.ReturnType = new CodeTypeReference(typeof(Task));
             testClassCleanupMethod.Attributes = MemberAttributes.Public;
             testClassCleanupMethod.Name = GeneratorConstants.TESTCLASS_CLEANUP_NAME;
 
-            _testGeneratorProvider.MarkCodeMemberMethodAsAsync(testClassCleanupMethod);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(testClassCleanupMethod);
             
             _testGeneratorProvider.SetTestClassCleanupMethod(generationContext);
 
@@ -258,7 +255,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testInitializeMethod = generationContext.TestInitializeMethod;
 
-            testInitializeMethod.ReturnType = new CodeTypeReference(typeof(Task));
             testInitializeMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             testInitializeMethod.Name = GeneratorConstants.TEST_INITIALIZE_NAME;
 
@@ -271,11 +267,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var testCleanupMethod = generationContext.TestCleanupMethod;
 
-            testCleanupMethod.ReturnType = new CodeTypeReference(typeof(Task));
             testCleanupMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             testCleanupMethod.Name = GeneratorConstants.TEST_CLEANUP_NAME;
 
-            _testGeneratorProvider.MarkCodeMemberMethodAsAsync(testCleanupMethod);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(testCleanupMethod);
             
             _testGeneratorProvider.SetTestCleanupMethod(generationContext);
 
@@ -313,11 +308,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var scenarioStartMethod = generationContext.ScenarioStartMethod;
 
-            scenarioStartMethod.ReturnType = new CodeTypeReference(typeof(Task));
             scenarioStartMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             scenarioStartMethod.Name = GeneratorConstants.SCENARIO_START_NAME;
             
-            _testGeneratorProvider.MarkCodeMemberMethodAsAsync(scenarioStartMethod);
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(scenarioStartMethod);
 
             //await testRunner.OnScenarioStartAsync();
             var testRunnerField = _scenarioPartHelper.GetTestRunnerExpression();
