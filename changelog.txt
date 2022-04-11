@@ -1,4 +1,4 @@
-3.10
+after 3.9,58
 
 Features:
 + Introduce ability to register and resolve global dependencies using Autofac
