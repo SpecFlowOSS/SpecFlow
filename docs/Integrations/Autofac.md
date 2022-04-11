@@ -15,9 +15,11 @@ SpecFlow plugin for using Autofac as a dependency injection framework for step d
 ```csharp
 PM> Install-Package SpecFlow.Autofac
 ```
-### 2.1. Plugin supports both registration of dependencies globally and per scenario:
+### 2. Create static methods somewhere in the SpecFlow project
+
+  Plugin supports both registration of dependencies globally and per scenario:
   
-  ##### 2.2 Optionally configure dependencies that need to be shared globally for all scenarios:
+  ##### 2.1 Optionally configure dependencies that need to be shared globally for all scenarios:
   
   Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
   (Recommended to put it into the `Support` folder) that returns `void` and has one parameter of Autofac `ContainerBuilder`, tag it with the `[GlobalDependencies]` attribute.
@@ -26,19 +28,19 @@ PM> Install-Package SpecFlow.Autofac
 
   Globally registered dependencies may be resolved in the `[BeforeTestRun]` and `[AfterTestRun]` methods.
     
-  ##### 2.3 Configure dependencies to be resolved each time for a scenario:
+  ##### 2.2 Configure dependencies to be resolved each time for a scenario:
   
   Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
   (Recommended to put it into the `Support` folder) that returns `void` and has one parameter of Autofac `ContainerBuilder`, tag it with the `[ScenarioDependencies]` attribute. 
 
-  ##### 2.4 Configure your dependencies for the scenario execution within either the two methods `[GlobalDependencies]` and `[ScenarioDependencies]` or the single `[ScenarioDependencies]` method. 
+  ##### 2.3 Configure your dependencies for the scenario execution within either the two methods `[GlobalDependencies]` and `[ScenarioDependencies]` or the single `[ScenarioDependencies]` method. 
 
-  ##### 2.5 You also have to register the step definition classes in the `[ScenarioDependencies]` method, that you can do by either registering all public types from the SpecFlow project:
+  ##### 2.4 You also have to register the step definition classes in the `[ScenarioDependencies]` method, that you can do by either registering all public types from the SpecFlow project:
 
 ```csharp
 builder.RegisterAssemblyTypes(typeof(YourClassInTheSpecFlowProject).Assembly).SingleInstance();
 ```
-  ##### 2.6 or by registering all classes marked with the `[Binding]` attribute:
+  ##### 2.5 or by registering all classes marked with the `[Binding]` attribute:
 
   You may use a provided extension method to do this, but importing:
 ```csharp
@@ -83,5 +85,10 @@ public static void CreateContainerBuilder(ContainerBuilder containerBuilder)
   containerBuilder.AddSpecFlowBindings<TestDependencies>()
 }
 ```
-  ### 4.   It is also possible to continue to use the original method as well, however this method is __not__ compatible with global dependency registration and can only be used on it's own.
+
+  ### 4. It is also possible to continue to use the legacy method as well, however this method is __not__ compatible with global dependency registration and can only be used on it's own like so:
+  Create a static method somewhere in the SpecFlow project to register scenario dependencies: 
+  (Recommended to put it into the `Support` folder) that returns an Autofac `ContainerBuilder` and tag it with the `[ScenarioDependencies]` attribute. 
+
+
 
