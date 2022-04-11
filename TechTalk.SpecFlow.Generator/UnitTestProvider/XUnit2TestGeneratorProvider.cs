@@ -282,12 +282,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             var iasyncLifetimeInterface = new CodeTypeReference(IASYNCLIFETIME_INTERFACE);
 
+            // have to add the explicit object base class because of VB.NET
+            _currentFixtureDataTypeDeclaration.BaseTypes.Add(typeof(object));
             _currentFixtureDataTypeDeclaration.BaseTypes.Add(iasyncLifetimeInterface);
 
             // Task IAsyncLifetime.DisposeAsync() { <fixtureTearDownMethod>(); }
             var disposeMethod = new CodeMemberMethod();
             disposeMethod.PrivateImplementationType = iasyncLifetimeInterface;
             disposeMethod.Name = "DisposeAsync";
+            disposeMethod.ImplementationTypes.Add(iasyncLifetimeInterface);
 
             CodeDomHelper.MarkCodeMemberMethodAsAsync(disposeMethod);
             
