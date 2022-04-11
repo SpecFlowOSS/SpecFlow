@@ -3,30 +3,27 @@
 
 using System.CodeDom.Compiler;
 using System.Diagnostics;
-using global::NUnit.Framework;
-using global::TechTalk.SpecFlow;
 using global::System.Runtime.CompilerServices;
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
-[SetUpFixture]
+[global::NUnit.Framework.SetUpFixture]
 public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 {
-    [OneTimeSetUp]
+    [global::NUnit.Framework.OneTimeSetUp]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public void AssemblyInitialize()
+    public async Task AssemblyInitialize()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
-
-        TestRunnerManager.OnTestRunStart(currentAssembly);
+        //TODO: Review/handle parallel execution with async
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync("TBD", currentAssembly);
     }
 
-    [OneTimeTearDown]
+    [global::NUnit.Framework.OneTimeTearDown]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public void AssemblyCleanup()
+    public async ValueTask AssemblyCleanup()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 #pragma warning restore
