@@ -172,12 +172,13 @@ namespace TechTalk.SpecFlow.Assist
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
-            var normalizedPropertyNames = new HashSet<string>(from property in typeof(T).GetProperties()
-                                                              select TEHelpers.NormalizePropertyNameToMatchAgainstAColumnName(property.Name));
-            var normalizedColumnNames = new HashSet<string>(from columnHeader in table.Header
-                                                            select TEHelpers.NormalizePropertyNameToMatchAgainstAColumnName(TEHelpers.RemoveAllCharactersThatAreNotValidInAPropertyName(columnHeader)));
-
-            var propertiesThatDoNotExist = normalizedColumnNames.Except(normalizedPropertyNames, StringComparer.OrdinalIgnoreCase).ToArray();
+            var propertyInfos = typeof(T).GetProperties();
+            var propertiesThatDoNotExist
+                = table.Header
+                    .Where(
+                        columnHeader => !propertyInfos.Any(
+                                property => TEHelpers.IsMemberMatchingToColumnName(property, columnHeader)))
+                    .ToList();
 
             if (propertiesThatDoNotExist.Any())
                 throw new ComparisonException($@"The following fields do not exist:{Environment.NewLine}{string.Join(Environment.NewLine, propertiesThatDoNotExist)}");

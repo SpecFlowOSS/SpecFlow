@@ -257,6 +257,24 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
         }
 
         [Fact]
+        public void Uses_property_aliases()
+        {
+            var table = new Table("AliasOne", "AliasTwo", "AliasThree");
+            table.AddRow("PropertyOneValue", "PropertyTwoValue", "PropertyThreeValue");
+
+            var test = new AliasedTestObject
+            {
+                PropertyOne = "PropertyOneValue",
+                PropertyTwo = "PropertyTwoValue",
+                PropertyThree = "PropertyThreeValue"
+            };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        [Fact]
         public void Can_compare_a_horizontal_table()
         {
             var table = new Table("StringProperty", "IntProperty", "DecimalProperty", "FloatProperty");
@@ -368,7 +386,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             return null;
         }
 
-        private static ComparisonTestResult ExceptionWasThrownByThisComparison(Table table, InstanceComparisonTestObject test)
+        private static ComparisonTestResult ExceptionWasThrownByThisComparison<T>(Table table, T test)
         {
             var result = new ComparisonTestResult { ExceptionWasThrown = false };
             try

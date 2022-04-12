@@ -73,7 +73,8 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool IsMemberMatchingToColumnName(MemberInfo member, string columnName)
         {
-            return member.Name.MatchesThisColumnName(columnName);
+            return member.Name.MatchesThisColumnName(columnName)
+                || IsMatchingAlias(member, columnName);
         }
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
@@ -128,16 +129,14 @@ namespace TechTalk.SpecFlow.Assist
             var properties = (from property in type.GetProperties()
                               from row in table.Rows
                               where TheseTypesMatch(type, property.PropertyType, row)
-                                    && (IsMemberMatchingToColumnName(property, row.Id())
-                                    || IsMatchingAlias(property, row.Id()))
+                                    && IsMemberMatchingToColumnName(property, row.Id())
                               select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) }).ToList();
 
             var fieldInfos = type.GetFields();
             var fields = (from field in fieldInfos
                           from row in table.Rows
                           where TheseTypesMatch(type, field.FieldType, row)
-                                && (IsMemberMatchingToColumnName(field, row.Id()) ||
-                                    IsMatchingAlias(field, row.Id()))
+                                && IsMemberMatchingToColumnName(field, row.Id())
                           select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) }).ToList();
 
             var memberHandlers = new List<MemberHandler>(properties.Capacity + fields.Count);
