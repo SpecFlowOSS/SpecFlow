@@ -3,6 +3,9 @@ after 3.9,58
 Features:
 + Introduce ability to register and resolve global dependencies using Autofac
 
+Fixes:
++ Support [TableAliases] also outside `CreateInstance`&`CreateSet`. Fixes #1384
+
 3.9.58
 
 Changes:
