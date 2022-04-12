@@ -11,11 +11,16 @@ using System.Threading.Tasks;
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IAsyncDisposable
 {
+    private int _isInitialized = 0;
+
     [MethodImpl(MethodImplOptions.NoInlining)]
     public async Task InitializeAsync(string testClassId)
     {
-        var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly);
+        if (System.Threading.Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
+        {
+            var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
+            await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly);
+        }
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
