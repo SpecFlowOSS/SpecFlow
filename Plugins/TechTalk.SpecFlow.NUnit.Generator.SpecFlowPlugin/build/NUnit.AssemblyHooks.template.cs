@@ -12,7 +12,7 @@ public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 {
     [global::NUnit.Framework.OneTimeSetUp]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async Task AssemblyInitialize()
+    public async Task AssemblyInitializeAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
         //TODO: Review/handle parallel execution with async
@@ -21,7 +21,7 @@ public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 
     [global::NUnit.Framework.OneTimeTearDown]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async ValueTask AssemblyCleanup()
+    public async ValueTask AssemblyCleanupAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
         await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);

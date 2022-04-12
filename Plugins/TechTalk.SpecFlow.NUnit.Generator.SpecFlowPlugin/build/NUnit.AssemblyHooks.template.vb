@@ -20,7 +20,7 @@ Public NotInheritable Class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 
     <OneTimeTearDown>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Private Async Function AssemblyCleanupAsync() As Task
+    Public Async Function AssemblyCleanupAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly
         Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
     End Function

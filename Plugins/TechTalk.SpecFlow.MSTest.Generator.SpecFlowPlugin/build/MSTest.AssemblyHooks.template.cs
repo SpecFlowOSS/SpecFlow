@@ -15,7 +15,7 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 {
     [AssemblyInitialize]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static async Task AssemblyInitialize(TestContext testContext)
+    public static async Task AssemblyInitializeAsync(TestContext testContext)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
         var containerBuilder = new MsTestContainerBuilder(testContext);
@@ -26,7 +26,7 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 
     [AssemblyCleanup]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static async ValueTask AssemblyCleanup()
+    public static async Task AssemblyCleanupAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
         await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
