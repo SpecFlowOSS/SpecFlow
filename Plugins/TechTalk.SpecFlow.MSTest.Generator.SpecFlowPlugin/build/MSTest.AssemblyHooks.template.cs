@@ -7,6 +7,7 @@ using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
 using global::TechTalk.SpecFlow.MSTest.SpecFlowPlugin;
 using global::System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 [TestClass]

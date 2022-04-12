@@ -4,6 +4,7 @@
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 using global::System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 [global::NUnit.Framework.SetUpFixture]
