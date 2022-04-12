@@ -267,7 +267,8 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                 if (typeExpression.Type.Options.HasFlag(CodeTypeReferenceOptions.GlobalReference))
                 {
                     typeExpression.Type.Options &= ~CodeTypeReferenceOptions.GlobalReference;
-                    baseType = $"global::{baseType}";
+                    if (TargetLanguage == CodeDomProviderLanguage.CSharp)
+                        baseType = $"global::{baseType}"; // For VB.NET, the BaseType already contains the "Global." prefix
                 }
                 expression.Method.TargetObject = new CodeTypeReferenceExpression(new CodeTypeReference($"await {baseType}", typeExpression.Type.Options));
             }

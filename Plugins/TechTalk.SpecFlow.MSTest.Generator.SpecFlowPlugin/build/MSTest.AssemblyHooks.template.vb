@@ -13,7 +13,7 @@ Imports System.Runtime.CompilerServices
 Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     <AssemblyInitialize>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Async Function AssemblyInitializeAsync(testContext As TestContext) As Task
+    Public Shared Async Function AssemblyInitializeAsync(testContext As TestContext) As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
         Dim containerBuilder As New MsTestContainerBuilder(testContext)
         'TODO: Review/handle parallel execution with async
@@ -22,7 +22,7 @@ Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 
     <AssemblyCleanup>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Async Function AssemblyCleanupAsync() As Task
+    Public Shared Async Function AssemblyCleanupAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
         Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
     End Function

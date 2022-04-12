@@ -77,7 +77,7 @@ Scenario: Scenario Outline Examples can be tagged
             [BeforeScenario]
             public void BeforeScenario()
             {
-                var scenarioTags = ScenarioContext.Current.ScenarioInfo.Tags;
+                var scenarioTags = _scenarioContext.ScenarioInfo.Tags;
 
                 if (scenarioTags.Length == 0)
                 {
