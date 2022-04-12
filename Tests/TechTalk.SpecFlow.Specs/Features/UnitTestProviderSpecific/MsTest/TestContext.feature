@@ -1,6 +1,7 @@
 ﻿@MSTest
 Feature: TestContext
 
+@focus
 Scenario: Should be able to access TestContext in Steps
     Given there is a SpecFlow project
     And a scenario 'Simple Scenario' as
