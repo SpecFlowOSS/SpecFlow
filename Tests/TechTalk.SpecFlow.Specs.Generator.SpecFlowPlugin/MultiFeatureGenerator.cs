@@ -91,10 +91,14 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             var tags = new List<Tag>();
             var specFlowFeature = specFlowDocument.SpecFlowFeature;
             tags.AddRange(specFlowFeature.Tags);
-            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, combination.UnitTestProvider))
-                tags.Add(new Tag(null, combination.UnitTestProvider));
-            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, combination.TargetFramework))
-                tags.Add(new Tag(null, combination.TargetFramework));
+            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, "@" + combination.UnitTestProvider))
+                tags.Add(new Tag(null, "@" + combination.UnitTestProvider));
+            foreach (string otherUnitTestProvider in _unitTestProviderTags.Where(utp => !utp.Equals(combination.UnitTestProvider, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                tags.RemoveAll(t => ("@" + otherUnitTestProvider).Equals(t.Name, StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, "@" + combination.TargetFramework))
+                tags.Add(new Tag(null, "@" + combination.TargetFramework));
             var feature = new SpecFlowFeature(tags.ToArray(),
                                               specFlowFeature.Location,
                                               specFlowFeature.Language,
