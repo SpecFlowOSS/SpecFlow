@@ -124,6 +124,42 @@ CLI:
 
 ![buildps1](https://raw.githubusercontent.com/SpecFlowOSS/SpecFlow/master/docs/_static/images/buildps1.png)
 
+## Running tests
+
+The SpecFlow tests are usually multi-platform tests, that means that the same test can be executed multiple times with the different platforms (e.g. .NET Framework 4.7.1, .NET 5, .NET 6). This also means that normally it is not a good idea to just "run all tests", but select a platform for development (.NET 6 is recommended) and run the tests for that one only locally. 
+
+There are unit and integration tests. The unit tests run fast, but the integration tests take more time to run.
+
+Unit test projects:
+* TechTalk.SpecFlow.RuntimeTests
+* TechTalk.SpecFlow.GeneratorTests
+* TechTalk.SpecFlow.PluginTests
+* TechTalk.SpecFlow.TestProjectGenerator.Tests
+* SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
+
+Integration test projects:
+* TechTalk.SpecFlow.MsBuildNetSdk.IntegrationTests
+* TechTalk.SpecFlow.Specs
+
+### Running the SpecFlow SpecFlow tests (Specs)
+
+SpecFlow has over 200 SpecFlow scenarios that describe all major behavior. These tests are executed end-to-end, i.e. they create sample projects and solutions, install the interim versions of SpecFlow to these projects and configure them for the particular behavior specified by the scenarios. Because of this, the execution of a single test takes approx. 10 seconds. 
+
+Although the Specs project itself is not cross-compiled for the different platforms (but always runs in .NET 6), the project is configured in a way that it generates multiple tests for each scenario, for the different platforms and the different unit test framework (MsTest, NUnit, xUnit). 
+
+The generated tests have specific categories for the platform (e.g. `Net60`) and the unit test framework (e.g. `xUnit`), so you can filter for these categories to run only one platform and only one unit test framework once. In the Visual Studio Test Window, you can use a filter expression like `Trait:xUnit Trait:Net60`. 
+
+Hints to speed up tests:
+* Always select a unit test framework and a platform category to run tests.
+* Add the `%TEMP%\SF` folder to the Microsoft Defender Antivirus exclusion list.
+* Add the following processes to the Microsoft Defender Antivirus exclusion list: dotnet.exe, MSBuild.exe, vstest.console.exe, VBCSCompiler.exe, testhost.exe, testhost.x86.exe
+* Set the `MSBUILDDISABLENODEREUSE` environment variable to `1`
+
+Other notes:
+* The Specs tests use an interim version of SpecFlow that you have just built locally. The version number of this package is calculated automatically by the git commits, so after every commit there will be a new version. You might need to do a rebuild to pick it up if you see failures related to not found SpecFlow package versions.
+* Unfortunately Visual Studio likes to lock the SpecFlow assemblies. Sometimes this is just an instance of MsBuild that you can kill with Process Explorer, but sometimes you need to restart Visual Studio unfortunately. 
+
+ 
 ## Building documentation
 
 If you do not wish to contribute by coding you can help us in documentation.

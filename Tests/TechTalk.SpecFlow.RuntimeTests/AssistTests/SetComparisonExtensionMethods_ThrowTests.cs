@@ -336,7 +336,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        protected ComparisonTestResult DetermineIfExceptionWasThrownByComparingThese(Table table, SetComparisonTestObject[] items)
+        [Fact]
+        public void Uses_property_aliases()
+        {
+            var table = new Table("AliasOne", "AliasTwo", "AliasThree");
+            table.AddRow("PropertyOneValue", "PropertyTwoValue", "PropertyThreeValue");
+
+            var items = new[]
+            {
+                new AliasedTestObject
+                {
+                    PropertyOne = "PropertyOneValue",
+                    PropertyTwo = "PropertyTwoValue",
+                    PropertyThree = "PropertyThreeValue"
+                }
+            };
+
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        protected ComparisonTestResult DetermineIfExceptionWasThrownByComparingThese<T>(Table table, T[] items)
         {
             var result = new ComparisonTestResult { ExceptionWasThrown = false };
             try
@@ -351,7 +372,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return result;
         }
 
-        protected abstract void CallComparison(Table table, SetComparisonTestObject[] items);
+        protected abstract void CallComparison<T>(Table table, T[] items);
     }
 
     
@@ -377,7 +398,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
-        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        protected override void CallComparison<T>(Table table, T[] items)
         {
             table.CompareToSet(items);
         }
@@ -406,7 +427,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
-        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        protected override void CallComparison<T>(Table table, T[] items)
         {
             table.CompareToSet(items, sequentialEquality: true);
         }

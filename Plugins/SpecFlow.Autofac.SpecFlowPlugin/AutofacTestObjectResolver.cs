@@ -7,14 +7,20 @@ namespace SpecFlow.Autofac
 {
     public class AutofacTestObjectResolver : ITestObjectResolver
     {
-        public object ResolveBindingInstance(Type bindingType, IObjectContainer scenarioContainer)
+        public object ResolveBindingInstance(Type bindingType, IObjectContainer container)
         {
-            if (scenarioContainer.IsRegistered<IComponentContext>())
+            if (container.IsRegistered<IComponentContext>())
             {
-                var componentContext = scenarioContainer.Resolve<IComponentContext>();
+                var componentContext = container.Resolve<IComponentContext>();
                 return componentContext.Resolve(bindingType);
             }
-            return scenarioContainer.Resolve(bindingType);
+
+            if (container.IsRegistered<ILifetimeScope>())
+            {
+                var lifeTimeScope = container.Resolve<ILifetimeScope>();
+                return lifeTimeScope.Resolve(bindingType);
+            }
+            return container.Resolve(bindingType);
         }
     }
 }

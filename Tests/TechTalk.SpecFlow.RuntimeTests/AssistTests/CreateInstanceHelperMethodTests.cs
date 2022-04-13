@@ -4,8 +4,8 @@ using System.Threading;
 using Xunit;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
-using TechTalk.SpecFlow.Assist.Attributes;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -408,7 +408,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("AliasOne", "AliasTwo", "AliasThree");
             table.AddRow("PropertyOne", "PropertyTwo", "PropertyThree");
 
-            var test = table.CreateInstance<AliasedClass>();
+            var test = table.CreateInstance<AliasedTestObject>();
             test.PropertyOne.Should().Be("PropertyOne");
             test.PropertyTwo.Should().Be("PropertyTwo");
             test.PropertyThree.Should().Be("PropertyThree");
@@ -420,7 +420,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("FieldAliasOne", "FieldAliasTwo", "FieldAliasThree");
             table.AddRow("FieldOne", "FieldTwo", "FieldThree");
 
-            var test = table.CreateInstance<AliasedClass>();
+            var test = table.CreateInstance<AliasedTestObject>();
             test.FieldOne.Should().Be("FieldOne");
             test.FieldTwo.Should().Be("FieldTwo");
             test.FieldThree.Should().Be("FieldThree");
@@ -432,7 +432,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("AliasOne", "AliasTwo", "AliasThree");
             table.AddRow("PropertyOne", "PropertyTwo", "PropertyThree");
 
-            var test = table.CreateInstance<AliasedClass>();
+            var test = table.CreateInstance<AliasedTestObject>();
             test.PropertyOne.Should().Be("PropertyOne");
             test.AnotherPropertyWithSameAlias.Should().Be("PropertyOne");
         }
@@ -443,7 +443,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("AliasOne", "AliasTwo", "AliasThree");
             table.AddRow("PropertyOne", "PropertyTwo", "PropertyThree");
 
-            var test = table.CreateInstance<AliasedClass>();
+            var test = table.CreateInstance<AliasedTestObject>();
             test.PropertyOne.Should().Be("PropertyOne");
             test.AliasedButTypeMismatch.Should().Be(0);
         }
@@ -456,7 +456,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("AliasTwo", "World");
             table.AddRow("AliasThree", "From Rich");
 
-            var test = table.CreateInstance<AliasedClass>();
+            var test = table.CreateInstance<AliasedTestObject>();
             test.PropertyOne.Should().Be("Hello");
             test.PropertyTwo.Should().Be("World");
             test.PropertyThree.Should().Be("From Rich");
@@ -474,7 +474,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow(middleNameAlias, "David");
             table.AddRow(lastNameAlias, "Linnell");
 
-            var test = table.CreateInstance<AliasedClass>();
+            var test = table.CreateInstance<AliasedTestObject>();
             test.PropertyOne.Should().Be("Richard");
             test.PropertyTwo.Should().Be("David");
             test.PropertyThree.Should().Be("Linnell");
@@ -490,36 +490,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             public string Look_at_me { get; set; }
             public string this_is_so_long { get; set; }
-        }
-
-        private class AliasedClass
-        {
-            [TableAliases("Alias[ ]*One", "First[ ]?Name", "^Known As$")]
-            public string PropertyOne { get; set; }
-
-            [TableAliases("Alias[ ]*Two", "Middle[ ]?Name", "^Never Known As$")]
-            public string PropertyTwo { get; set; }
-
-            [TableAliases("AliasThree")]
-            [TableAliases("Surname")]
-            [TableAliases("Last[ ]?name")]
-            [TableAliases("Dad's Last Name")]
-            public string PropertyThree { get; set; }
-
-#pragma warning disable 649
-            [TableAliases("FieldAliasOne")]
-            public string FieldOne;
-            [TableAliases("FieldAliasTwo")]
-            public string FieldTwo;
-            [TableAliases("FieldAliasThree")]
-            public string FieldThree;
-#pragma warning restore 649
-
-            [TableAliases("AliasOne")]
-            public string AnotherPropertyWithSameAlias { get; set; }
-
-            [TableAliases("AliasOne")]
-            public long AliasedButTypeMismatch { get; set; }
         }
     }
 }
