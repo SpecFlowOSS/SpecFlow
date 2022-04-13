@@ -175,19 +175,18 @@ namespace TechTalk.SpecFlow.Generator.Generation
             
             _testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
-            //testRunner = await TestRunnerManager.GetTestRunnerAsync([test_worker_id]);
+            //testRunner = TestRunnerManager.GetTestRunnerForAssembly(null, [test_worker_id]);
             var testRunnerField = _scenarioPartHelper.GetTestRunnerExpression();
 
             var testRunnerParameters = new[]
             {
+                new CodePrimitiveExpression(null),
                 _testGeneratorProvider.GetTestWorkerIdExpression()
             };
 
             var getTestRunnerExpression = new CodeMethodInvokeExpression(
                 new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
-                nameof(TestRunnerManager.GetTestRunnerAsync), testRunnerParameters);
-
-            _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(getTestRunnerExpression);
+                nameof(TestRunnerManager.GetTestRunnerForAssembly), testRunnerParameters);
 
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(

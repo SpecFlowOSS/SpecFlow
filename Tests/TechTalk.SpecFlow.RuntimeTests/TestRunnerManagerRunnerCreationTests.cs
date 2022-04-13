@@ -92,13 +92,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
             //see https://github.com/techtalk/SpecFlow/issues/638
             if (!TestEnvironmentHelper.IsBeingRunByNCrunch())
             {
-                var testRunner1 = await TestRunnerManager.GetTestRunnerAsync("0", anAssembly, new RuntimeTestsContainerBuilder());
+                var testRunner1 = TestRunnerManager.GetTestRunnerForAssembly(anAssembly, "0", new RuntimeTestsContainerBuilder());
                 await testRunner1.OnFeatureStartAsync(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "sds", "sss"));
                 testRunner1.OnScenarioInitialize(new ScenarioInfo("foo", "foo_desc", null, null));
                 await testRunner1.OnScenarioStartAsync();
                 var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
-                var testRunner2 = await TestRunnerManager.GetTestRunnerAsync("1", anAssembly, new RuntimeTestsContainerBuilder());
+                var testRunner2 = TestRunnerManager.GetTestRunnerForAssembly(anAssembly, "1", new RuntimeTestsContainerBuilder());
                 await testRunner2.OnFeatureStartAsync(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "sds", "sss"));
                 testRunner2.OnScenarioInitialize(new ScenarioInfo("foo", "foo_desc", null, null));
                 await testRunner1.OnScenarioStartAsync();
