@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow
     {
         private readonly ITestExecutionEngine _executionEngine;
 
-        public string TestClassId { get; private set; }
+        public string TestWorkerId { get; private set; }
 
         public TestRunner(ITestExecutionEngine executionEngine)
         {
@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow
 
         public void InitializeTestRunner(string testClassId)
         {
-            TestClassId = testClassId;
+            TestWorkerId = testClassId;
         }
 
         public async Task OnFeatureStartAsync(FeatureInfo featureInfo)

@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow
         Assembly TestAssembly { get; }
         Assembly[] BindingAssemblies { get; }
         bool IsMultiThreaded { get; }
-        ITestRunner GetTestRunner(string testClassId);
+        ITestRunner GetTestRunner(string workerId);
         void Initialize(Assembly testAssembly);
         Task FireTestRunEndAsync();
         Task FireTestRunStartAsync();

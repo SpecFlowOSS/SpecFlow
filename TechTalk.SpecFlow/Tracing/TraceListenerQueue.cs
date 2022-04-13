@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.Tracing
                 }
             }
 
-            _messages.Add(new TraceMessage(isToolMessgae, string.Format("#{1}: {0}", message, sourceTestRunner.TestClassId)));
+            _messages.Add(new TraceMessage(isToolMessgae, string.Format("#{1}: {0}", message, sourceTestRunner.TestWorkerId)));
         }
 
         public void Dispose()

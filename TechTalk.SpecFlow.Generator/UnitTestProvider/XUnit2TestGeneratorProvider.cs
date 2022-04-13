@@ -5,14 +5,11 @@ using System.Linq;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using BoDi;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class XUnit2TestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        private readonly ProjectSettings _projectSettings;
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
         private readonly CodeTypeReference _objectCodeTypeReference = new CodeTypeReference(typeof(object));
         protected internal const string THEORY_ATTRIBUTE = "Xunit.SkippableTheoryAttribute";
@@ -23,8 +20,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
         protected internal const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
         protected internal const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
-        protected internal const string ASSEMBLY_FIXTURE_PARAMETER_NAME = "assemblyFixture";
-        protected internal const string ASSEMBLY_FIXTURE_FIELD_NAME = "_assemblyFixture";
         protected internal const string COLLECTION_DEF = "Xunit.Collection";
         protected internal const string COLLECTION_TAG = "xunit:collection";
         protected internal const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
@@ -38,11 +33,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string IGNORE_TEST_CLASS = "IgnoreTestClass";
         protected internal const string NONPARALLELIZABLE_COLLECTION_NAME = "SpecFlowNonParallelizableFeatures";
         protected internal const string IASYNCLIFETIME_INTERFACE = "Xunit.IAsyncLifetime";
+        protected internal const string XUNITPARALLELWORKERTRACKER_INSTANCE = "TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XUnitParallelWorkerTracker.Instance";
 
-        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
+        public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
-            _projectSettings = projectSettings;
         }
 
         public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
@@ -58,7 +53,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             // Add a field for the ITestOutputHelper
             generationContext.TestClass.Members.Add(new CodeMemberField(OUTPUT_INTERFACE, OUTPUT_INTERFACE_FIELD_NAME));
-            generationContext.TestClass.Members.Add(new CodeMemberField(GetAssemblyFixtureTypeName(), ASSEMBLY_FIXTURE_FIELD_NAME));
 
             // Store the fixture data type for later use in constructor
             generationContext.CustomData.Add(FIXTUREDATA_PARAMETER_NAME, fixtureDataType);
@@ -99,12 +93,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor constructor)
         {
-            var typeName = GetAssemblyFixtureTypeName();
-
             constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
-            constructor.Parameters.Add(
-                new CodeParameterDeclarationExpression(typeName, ASSEMBLY_FIXTURE_PARAMETER_NAME));
             constructor.Parameters.Add(
                 new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
 
@@ -112,26 +102,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
-
-            constructor.Statements.Add(
-                new CodeAssignStatement(
-                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), ASSEMBLY_FIXTURE_FIELD_NAME),
-                    new CodeVariableReferenceExpression(ASSEMBLY_FIXTURE_PARAMETER_NAME)));
         }
-
-        private string GetAssemblyFixtureTypeName() => $"{_projectSettings.DefaultNamespace.Replace('.', '_')}_XUnitAssemblyFixture";
 
         protected virtual void SetTestInitializeMethod(TestClassGenerationContext generationContext, CodeMemberMethod method)
         {
-            var callInitializeAsyncExpression = new CodeMethodInvokeExpression(
-                new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), ASSEMBLY_FIXTURE_FIELD_NAME),
-                "InitializeAsync",
-                new CodePrimitiveExpression(generationContext.TestClass.Name));
-
-            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callInitializeAsyncExpression);
-
-            method.Statements.Add(callInitializeAsyncExpression);
-
             var callTestInitializeMethodExpression = new CodeMethodInvokeExpression(
                 new CodeThisReferenceExpression(),
                 generationContext.TestInitializeMethod.Name);
@@ -204,11 +178,24 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         nameof(IObjectContainer.RegisterInstanceAs),
                         new CodeTypeReference(OUTPUT_INTERFACE)),
                     new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
+
+            // Wrap FeatureTearDown:
+            // var testWorkerId = <testRunner>.TestWorkerId;
+            // <FeatureTearDown>
+            // XUnitParallelWorkerTracker.Instance.ReleaseWorker(testWorkerId);
+            generationContext.TestClassCleanupMethod.Statements.Insert(0, 
+                new CodeVariableDeclarationStatement(typeof(string), "testWorkerId", 
+                    new CodePropertyReferenceExpression(new CodeVariableReferenceExpression(generationContext.TestRunnerField.Name), "TestWorkerId")));
+            generationContext.TestClassCleanupMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeVariableReferenceExpression(XUNITPARALLELWORKERTRACKER_INSTANCE),
+                    "ReleaseWorker",
+                    new CodeVariableReferenceExpression("testWorkerId")));
         }
 
         protected virtual void IgnoreFeature(TestClassGenerationContext generationContext)
         {
-            var featureHasIgnoreTag = generationContext.CustomData.TryGetValue(IGNORE_TEST_CLASS, out var featureHasIgnoreTagValue) && (bool)featureHasIgnoreTagValue == true;
+            var featureHasIgnoreTag = generationContext.CustomData.TryGetValue(IGNORE_TEST_CLASS, out var featureHasIgnoreTagValue) && (bool)featureHasIgnoreTagValue;
 
             if (featureHasIgnoreTag)
             {
@@ -425,6 +412,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
         {
             CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+        }
+
+        public CodeExpression GetTestWorkerIdExpression()
+        {
+            // XUnitParallelWorkerTracker.Instance.GetWorkerId()
+            return new CodeMethodInvokeExpression(
+                new CodeVariableReferenceExpression(XUNITPARALLELWORKERTRACKER_INSTANCE),
+                "GetWorkerId");
         }
     }
 }

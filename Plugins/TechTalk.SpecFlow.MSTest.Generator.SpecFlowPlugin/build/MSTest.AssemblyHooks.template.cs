@@ -20,8 +20,7 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
         var containerBuilder = new MsTestContainerBuilder(testContext);
 
-        //TODO: Review/handle parallel execution with async
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync("TBD", currentAssembly, containerBuilder);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, containerBuilder: containerBuilder);
     }
 
     [AssemblyCleanup]

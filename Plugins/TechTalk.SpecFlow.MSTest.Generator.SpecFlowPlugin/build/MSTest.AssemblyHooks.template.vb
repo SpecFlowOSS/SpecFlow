@@ -16,8 +16,7 @@ Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     Public Shared Async Function AssemblyInitializeAsync(testContext As TestContext) As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
         Dim containerBuilder As New MsTestContainerBuilder(testContext)
-        'TODO: Review/handle parallel execution with async
-        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync("TBD", currentAssembly, containerBuilder)
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, Nothing, containerBuilder)
     End Function
 
     <AssemblyCleanup>

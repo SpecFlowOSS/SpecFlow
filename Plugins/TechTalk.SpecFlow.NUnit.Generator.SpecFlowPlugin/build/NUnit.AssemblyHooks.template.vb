@@ -14,8 +14,7 @@ Public NotInheritable Class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
     <MethodImpl(MethodImplOptions.NoInlining)>
     Public Async Function AssemblyInitializeAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly
-        'TODO: Review/handle parallel execution with async
-        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync("TBD", currentAssembly)
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly)
     End Function
 
     <OneTimeTearDown>

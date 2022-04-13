@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
         protected internal const string TESTCONTEXT_TYPE = "NUnit.Framework.TestContext";
         protected internal const string TESTCONTEXT_INSTANCE = "NUnit.Framework.TestContext.CurrentContext";
+        protected internal const string TESTCONTEXT_WORKERID_PROPERTY = "WorkerId";
 
         public NUnit3TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -86,8 +87,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                             nameof(ScenarioContext.ScenarioContainer)),
                         nameof(IObjectContainer.RegisterInstanceAs),
                         new CodeTypeReference(TESTCONTEXT_TYPE)),
-                    new CodeVariableReferenceExpression(TESTCONTEXT_INSTANCE)));
+                    GetTestContextExpression()));
         }
+
+        private CodeExpression GetTestContextExpression() => new CodeVariableReferenceExpression(TESTCONTEXT_INSTANCE);
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
@@ -151,5 +154,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
         }
+
+        public CodeExpression GetTestWorkerIdExpression() 
+            => new CodePropertyReferenceExpression(GetTestContextExpression(), TESTCONTEXT_WORKERID_PROPERTY);
     }
 }

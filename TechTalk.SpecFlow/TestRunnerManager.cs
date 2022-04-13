@@ -16,37 +16,40 @@ namespace TechTalk.SpecFlow
 {
     public class TestRunnerManager : ITestRunnerManager
     {
-        protected readonly IObjectContainer globalContainer;
-        protected readonly IContainerBuilder containerBuilder;
-        protected readonly SpecFlowConfiguration specFlowConfiguration;
-        protected readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
+        public const string TestRunStartWorkerId = "TestRunStart";
 
-        private readonly ITestTracer testTracer;
-        private readonly Dictionary<string, ITestRunner> testRunnerRegistry = new Dictionary<string, ITestRunner>();
-        private readonly object syncRoot = new object();
+        protected readonly IObjectContainer _globalContainer;
+        protected readonly IContainerBuilder _containerBuilder;
+        protected readonly SpecFlowConfiguration _specFlowConfiguration;
+        protected readonly IRuntimeBindingRegistryBuilder _bindingRegistryBuilder;
+        protected readonly ITestTracer _testTracer;
+
+        //TODO: Replace with ConcurrentDictionary
+        private readonly Dictionary<string, ITestRunner> testRunnerRegistry = new();
+        private readonly object syncRoot = new();
         public bool IsTestRunInitialized { get; private set; }
         private object disposeLockObj = null;
-        private readonly object createTestRunnerLockObject = new object();
+        private readonly object createTestRunnerLockObject = new();
 
         public Assembly TestAssembly { get; private set; }
         public Assembly[] BindingAssemblies { get; private set; }
 
-        public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
+        public bool IsMultiThreaded { get { return testRunnerRegistry.Count(tr => tr.Key != TestRunStartWorkerId) > 1; } }
 
         public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, SpecFlowConfiguration specFlowConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder,
             ITestTracer testTracer)
         {
-            this.globalContainer = globalContainer;
-            this.containerBuilder = containerBuilder;
-            this.specFlowConfiguration = specFlowConfiguration;
-            this.bindingRegistryBuilder = bindingRegistryBuilder;
-            this.testTracer = testTracer;
+            _globalContainer = globalContainer;
+            _containerBuilder = containerBuilder;
+            _specFlowConfiguration = specFlowConfiguration;
+            _bindingRegistryBuilder = bindingRegistryBuilder;
+            _testTracer = testTracer;
         }
 
-        public virtual ITestRunner CreateTestRunner(string testClassId)
+        public virtual ITestRunner CreateTestRunner(string testWorkerId)
         {
             var testRunner = CreateTestRunnerInstance();
-            testRunner.InitializeTestRunner(testClassId);
+            testRunner.InitializeTestRunner(testWorkerId);
 
             lock (createTestRunnerLockObject)
             {
@@ -60,29 +63,27 @@ namespace TechTalk.SpecFlow
             return testRunner;
         }
 
-        [Obsolete("Use overload of the method instead that has a string testClassId parameter")]
-        public virtual ITestRunner CreateTestRunner(int threadId)
-        {
-            return CreateTestRunner("Thread #" + threadId);
-        }
-
         protected virtual void InitializeBindingRegistry(ITestRunner testRunner)
         {
             BindingAssemblies = GetBindingAssemblies();
             BuildBindingRegistry(BindingAssemblies);
 
-            EventHandler domainUnload = delegate { OnDomainUnloadAsync().Wait(); };
-            AppDomain.CurrentDomain.DomainUnload += domainUnload;
-            AppDomain.CurrentDomain.ProcessExit += domainUnload;
+            void DomainUnload(object sender, EventArgs e)
+            {
+                OnDomainUnloadAsync().Wait();
+            }
+
+            AppDomain.CurrentDomain.DomainUnload += DomainUnload;
+            AppDomain.CurrentDomain.ProcessExit += DomainUnload;
         }
 
         protected virtual Assembly[] GetBindingAssemblies()
         {
             var bindingAssemblies = new List<Assembly> { TestAssembly };
 
-            var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
+            var assemblyLoader = _globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
-                specFlowConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
+                _specFlowConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
             return bindingAssemblies.ToArray();
         }
 
@@ -90,9 +91,9 @@ namespace TechTalk.SpecFlow
         {
             foreach (Assembly assembly in bindingAssemblies)
             {
-                bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
+                _bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
             }
-            bindingRegistryBuilder.BuildingCompleted();
+            _bindingRegistryBuilder.BuildingCompleted();
         }
 
         protected internal virtual async Task OnDomainUnloadAsync()
@@ -118,7 +119,7 @@ namespace TechTalk.SpecFlow
 
         protected virtual ITestRunner CreateTestRunnerInstance()
         {
-            var testThreadContainer = containerBuilder.CreateTestThreadContainer(globalContainer);
+            var testThreadContainer = _containerBuilder.CreateTestThreadContainer(_globalContainer);
 
             return testThreadContainer.Resolve<ITestRunner>();
         }
@@ -128,29 +129,29 @@ namespace TechTalk.SpecFlow
             TestAssembly = assignedTestAssembly;
         }
 
-        public virtual ITestRunner GetTestRunner(string testClassId)
+        public virtual ITestRunner GetTestRunner(string testWorkerId)
         {
             try
             {
-                return GetTestRunnerWithoutExceptionHandling(testClassId);
+                return GetTestRunnerWithoutExceptionHandling(testWorkerId);
             }
             catch (Exception ex)
             {
-                testTracer.TraceError(ex,TimeSpan.Zero);
+                _testTracer.TraceError(ex,TimeSpan.Zero);
                 throw;
             }
         }
 
-        private ITestRunner GetTestRunnerWithoutExceptionHandling(string testClassId)
+        private ITestRunner GetTestRunnerWithoutExceptionHandling(string testWorkerId)
         {
-            if (!testRunnerRegistry.TryGetValue(testClassId, out var testRunner))
+            if (!testRunnerRegistry.TryGetValue(testWorkerId, out var testRunner))
             {
                 lock (syncRoot)
                 {
-                    if (!testRunnerRegistry.TryGetValue(testClassId, out testRunner))
+                    if (!testRunnerRegistry.TryGetValue(testWorkerId, out testRunner))
                     {
-                        testRunner = CreateTestRunner(testClassId);
-                        testRunnerRegistry.Add(testClassId, testRunner);
+                        testRunner = CreateTestRunner(testWorkerId);
+                        testRunnerRegistry.Add(testWorkerId, testRunner);
 
                         if (IsMultiThreaded)
                         {
@@ -171,7 +172,7 @@ namespace TechTalk.SpecFlow
                 await FireTestRunEndAsync();
 
                 // this call dispose on this object, but the disposeLockObj will avoid double execution
-                globalContainer.Dispose();
+                _globalContainer.Dispose();
 
                 testRunnerRegistry.Clear();
                 await OnTestRunnerManagerDisposedAsync(this);
@@ -180,9 +181,9 @@ namespace TechTalk.SpecFlow
 
         #region Static API
 
-        private static readonly Dictionary<Assembly, ITestRunnerManager> testRunnerManagerRegistry = new Dictionary<Assembly, ITestRunnerManager>(1);
-        private static readonly SemaphoreSlim testRunnerManagerRegistrySemaphore = new SemaphoreSlim(1);
-        private const int FixedLogicalThreadId = 0;
+        //TODO: Replace with ConcurrentDictionary
+        private static readonly Dictionary<Assembly, ITestRunnerManager> testRunnerManagerRegistry = new(1);
+        private static readonly SemaphoreSlim testRunnerManagerRegistrySemaphore = new(1);
 
         public static async Task<ITestRunnerManager> GetTestRunnerManagerAsync(Assembly testAssembly = null, IContainerBuilder containerBuilder = null, bool createIfMissing = true)
         {
@@ -261,20 +262,21 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        public static async Task OnTestRunStartAsync(string testClassId, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
+        public static async Task OnTestRunStartAsync(Assembly testAssembly = null, string testWorkerId = null, IContainerBuilder containerBuilder = null)
         {
             testAssembly ??= GetCallingAssembly();
             var testRunnerManager = await GetTestRunnerManagerAsync(testAssembly, createIfMissing: true, containerBuilder: containerBuilder);
-            testRunnerManager.GetTestRunner(testClassId);
+            testRunnerManager.GetTestRunner(testWorkerId ?? TestRunStartWorkerId);
 
             await testRunnerManager.FireTestRunStartAsync();
         }
 
-        public static async Task<ITestRunner> GetTestRunnerAsync(string testClassId, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
+        public static async Task<ITestRunner> GetTestRunnerAsync(string testWorkerId = null, Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
+            testWorkerId ??= Guid.NewGuid().ToString(); //Creates a Test Runner with a unique test thread
             testAssembly ??= GetCallingAssembly();
             var testRunnerManager = await GetTestRunnerManagerAsync(testAssembly, containerBuilder);
-            return testRunnerManager.GetTestRunner(testClassId);
+            return testRunnerManager.GetTestRunner(testWorkerId);
         }
 
         internal static async Task ResetAsync()

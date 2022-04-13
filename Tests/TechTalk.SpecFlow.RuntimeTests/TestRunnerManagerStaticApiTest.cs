@@ -121,7 +121,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public async Task OnTestRunStart_should_fire_BeforeTestRun_events()
         {
             BeforeTestRunTestBinding.BeforeTestRunCallCount = 0; //reset
-            await TestRunnerManager.OnTestRunStartAsync("0", thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            await TestRunnerManager.OnTestRunStartAsync(thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
 
             BeforeTestRunTestBinding.BeforeTestRunCallCount.Should().Be(1);
         }
@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public async Task OnTestRunStart_without_arguments_should_fire_BeforeTestRun_events_for_calling_assembly()
         {
             BeforeTestRunTestBinding.BeforeTestRunCallCount = 0; //reset
-            await TestRunnerManager.OnTestRunStartAsync("0", containerBuilder: new RuntimeTestsContainerBuilder());
+            await TestRunnerManager.OnTestRunStartAsync(containerBuilder: new RuntimeTestsContainerBuilder());
 
             BeforeTestRunTestBinding.BeforeTestRunCallCount.Should().Be(1);
         }
@@ -139,8 +139,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public async Task OnTestRunStart_should_not_fire_BeforeTestRun_events_multiple_times()
         {
             BeforeTestRunTestBinding.BeforeTestRunCallCount = 0; //reset
-            await TestRunnerManager.OnTestRunStartAsync("0", thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
-            await TestRunnerManager.OnTestRunStartAsync("0", thisAssembly);
+            await TestRunnerManager.OnTestRunStartAsync(thisAssembly, containerBuilder: new RuntimeTestsContainerBuilder());
+            await TestRunnerManager.OnTestRunStartAsync(thisAssembly);
 
             BeforeTestRunTestBinding.BeforeTestRunCallCount.Should().Be(1);
         }

@@ -13,7 +13,7 @@ namespace Specs
         public async Task AssemblyInitialize()
         {
             var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
-            await TestRunnerManager.OnTestRunStartAsync("Test", currentAssembly);
+            await TestRunnerManager.OnTestRunStartAsync(currentAssembly);
         }
 
         [OneTimeTearDown]

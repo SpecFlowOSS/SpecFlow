@@ -9,17 +9,17 @@ using global::System.Runtime.CompilerServices;
 [assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::TechTalk_SpecFlow_Specs_XUnitAssemblyFixture))]
 
 [GeneratedCode("SpecFlow", "")]
-public class TechTalk_SpecFlow_Specs_XUnitAssemblyFixture : global::System.IAsyncDisposable
+public class TechTalk_SpecFlow_Specs_XUnitAssemblyFixture : global::Xunit.IAsyncLifetime
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async Task InitializeAsync(string testClassId)
+    public async Task InitializeAsync()
     {
         var currentAssembly = typeof(TechTalk_SpecFlow_Specs_XUnitAssemblyFixture).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async ValueTask DisposeAsync()
+    public async Task DisposeAsync()
     {
         var currentAssembly = typeof(TechTalk_SpecFlow_Specs_XUnitAssemblyFixture).Assembly;
         await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace TechTalk.SpecFlow;
+namespace TechTalk.SpecFlow.Infrastructure;
 
 public class BlockingSyncTestRunner : ISyncTestRunner
 {
@@ -16,6 +16,7 @@ public class BlockingSyncTestRunner : ISyncTestRunner
         asyncCall().GetAwaiter().GetResult();
     }
 
+    public string TestWorkerId => _testRunner.TestWorkerId;
     public FeatureContext FeatureContext => _testRunner.FeatureContext;
     public ScenarioContext ScenarioContext => _testRunner.ScenarioContext;
 

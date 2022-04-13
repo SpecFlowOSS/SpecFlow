@@ -10,21 +10,16 @@ Imports System.Reflection
 
 <GeneratedCode("SpecFlow", "SPECFLOW_VERSION")>
 Public Class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture
-    Implements Global.System.IAsyncDisposable
+    Implements Global.Xunit.IAsyncLifetime
 
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Async Function InitializeAsync(ByVal testClassId As String) As Task
+    Public Async Function InitializeAsync() As Task Implements Global.Xunit.IAsyncLifetime.InitializeAsync
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly
-        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly)
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly)
     End Function
 
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Function DisposeAsync() As ValueTask Implements Global.System.IAsyncDisposable.DisposeAsync
-        Return New ValueTask(DisposeAsyncAsTask())
-    End Function
-
-    <MethodImpl(MethodImplOptions.NoInlining)>
-    Private Async Function DisposeAsyncAsTask() As Task
+    Private Async Function DisposeAsync() As Task Implements Global.Xunit.IAsyncLifetime.DisposeAsync
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly
         Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
     End Function

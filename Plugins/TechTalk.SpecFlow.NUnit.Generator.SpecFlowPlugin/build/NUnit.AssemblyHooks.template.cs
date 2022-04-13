@@ -15,8 +15,7 @@ public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
     public async Task AssemblyInitializeAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
-        //TODO: Review/handle parallel execution with async
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync("TBD", currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
     }
 
     [global::NUnit.Framework.OneTimeTearDown]

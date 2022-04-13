@@ -9,22 +9,17 @@ using System.Threading.Tasks;
 [assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture))]
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
-public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IAsyncDisposable
+public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::Xunit.IAsyncLifetime
 {
-    private int _isInitialized = 0;
-
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async Task InitializeAsync(string testClassId)
+    public async Task InitializeAsync()
     {
-        if (System.Threading.Interlocked.CompareExchange(ref _isInitialized, 1, 0) == 0)
-        {
-            var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
-            await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(testClassId, currentAssembly);
-        }
+        var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async ValueTask DisposeAsync()
+    public async Task DisposeAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
         await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);

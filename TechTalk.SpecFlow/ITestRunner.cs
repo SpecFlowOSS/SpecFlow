@@ -4,7 +4,10 @@ namespace TechTalk.SpecFlow
 {
     public interface ITestRunner
     {
-        string TestClassId { get; }
+        /// <summary>
+        /// The ID of the parallel test worker processing the current scenario. How the worker ID is obtained is dependent on the test execution framework.
+        /// </summary>
+        string TestWorkerId { get; }
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
 

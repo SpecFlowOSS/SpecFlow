@@ -28,5 +28,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments);
 
         void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression);
+
+        CodeExpression GetTestWorkerIdExpression();
     }
 }

@@ -3,7 +3,6 @@ using System.CodeDom;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
@@ -176,14 +175,12 @@ namespace TechTalk.SpecFlow.Generator.Generation
             
             _testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
-            //testRunner = await TestRunnerManager.GetTestRunnerAsync([class_name]);
+            //testRunner = await TestRunnerManager.GetTestRunnerAsync([test_worker_id]);
             var testRunnerField = _scenarioPartHelper.GetTestRunnerExpression();
 
             var testRunnerParameters = new[]
             {
-                new CodePrimitiveExpression(generationContext.TestClass.Name),
-                new CodePrimitiveExpression(null),
-                new CodePrimitiveExpression(null)
+                _testGeneratorProvider.GetTestWorkerIdExpression()
             };
 
             var getTestRunnerExpression = new CodeMethodInvokeExpression(
