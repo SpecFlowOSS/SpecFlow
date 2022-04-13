@@ -2,7 +2,7 @@ parameters:
   name: ''
   pool: ''
   nugetVersion: 5.8.0
-  net6SdkVersion: 6.0.100
+  net6SdkVersion: 6.0.x
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
   publishArtifacts: true

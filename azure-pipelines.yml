@@ -38,11 +38,11 @@ jobs:
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Windows.zip'
     appInsightsInstrumentationKey: $(AppInsightsInstrumentationKey)
     pool:
-      name: 'Hosted Windows 2019 with VS2019'
+      vmImage: 'windows-latest'
 
 - template: build.yml  
   parameters:
     name: Linux
     artifactFileName: '$(Build.ArtifactStagingDirectory)/SpecFlow-Linux.zip'
     pool:
-      vmImage: 'ubuntu-20.04'
+      vmImage: 'ubuntu-latest'
