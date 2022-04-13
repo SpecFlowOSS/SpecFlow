@@ -27,7 +27,8 @@ namespace TechTalk.SpecFlow
 
         private readonly ConcurrentDictionary<string, ITestRunner> _testRunnerRegistry = new();
         public bool IsTestRunInitialized { get; private set; }
-        private object disposeLockObj = null;
+        private int _wasDisposed = 0;
+        private int _wasSingletonInstanceDisabled = 0;
         private readonly object createTestRunnerLockObject = new();
 
         public Assembly TestAssembly { get; private set; }
@@ -153,25 +154,29 @@ namespace TechTalk.SpecFlow
             if (testWorkerId == null)
                 throw new ArgumentNullException(nameof(testWorkerId));
 
-            var workerCountBefore = GetWorkerTestRunnerCount();
+            bool wasAdded = false;
 
-            return _testRunnerRegistry.GetOrAdd(
+            var testRunner = _testRunnerRegistry.GetOrAdd(
                 testWorkerId,
                 workerId =>
                 {
-                    if (workerCountBefore == 1)
-                    {
-                        FeatureContext.DisableSingletonInstance();
-                        ScenarioContext.DisableSingletonInstance();
-                        ScenarioStepContext.DisableSingletonInstance();
-                    }
+                    wasAdded = true;
                     return CreateTestRunner(workerId);
                 });
+
+            if (wasAdded && IsMultiThreaded && Interlocked.CompareExchange(ref _wasSingletonInstanceDisabled, 1, 0) == 0)
+            {
+                FeatureContext.DisableSingletonInstance();
+                ScenarioContext.DisableSingletonInstance();
+                ScenarioStepContext.DisableSingletonInstance();
+            }
+
+            return testRunner;
         }
 
         public virtual async ValueTask DisposeAsync()
         {
-            if (Interlocked.CompareExchange<object>(ref disposeLockObj, new object(), null) == null)
+            if (Interlocked.CompareExchange(ref _wasDisposed, 1, 0) == 0)
             {
                 await FireTestRunEndAsync();
 
