@@ -22,7 +22,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                    || genericType == typeof(IEnumerable<>)
                    || genericType == typeof(ICollection<>)
                    || genericType == typeof(IList<>)
-                   || genericType == typeof(IReadOnlyList<>);
+                   || genericType == typeof(IReadOnlyList<>)
+                   || genericType == typeof(IReadOnlyCollection<>);
         }
 
         protected override Type GetActualValueType(Type propertyType)
