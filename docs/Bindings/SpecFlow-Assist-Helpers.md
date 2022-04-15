@@ -221,7 +221,7 @@ Then I get back the following accounts
     | 2  | Howard     | Roark     |
 ```
 
-You can test you results with one call to CompareToSet<T>:
+You can test your results with one call to CompareToSet<T>:
 
 ``` csharp
 [Binding]
