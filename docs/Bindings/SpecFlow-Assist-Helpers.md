@@ -49,7 +49,7 @@ The `CreateInstance<T>` extension method of the `Table` class will convert a tab
 
 Deciding to use a vertical or horizontal table layout is subjective. Choose the layout that is easiest to read given the information in the table.
     
-SpecFlow matches table values to property names regardless of letter case. To SpecFlow, "BackAccount", "Bank Account", "BANK ACCOUNT" and "bank account" will all map to a property named `BankAccount`. More information on column naming is below.
+SpecFlow matches table values to property names regardless of letter case. To SpecFlow, "BankAccount", "Bank Account", "BANK ACCOUNT" and "bank account" will all map to a property named `BankAccount`. More information on column naming is below.
 
 ### Using CreateInstance with a Class
     
