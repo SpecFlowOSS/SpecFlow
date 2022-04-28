@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using BoDi;
 using TechTalk.SpecFlow.Analytics;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Tracing;
 
 namespace SpecFlow.Tools.MsBuild.Generation
 {
@@ -27,6 +29,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             objectContainer.RegisterTypeAs<ProjectCodeBehindGenerator, IProjectCodeBehindGenerator>();
             objectContainer.RegisterTypeAs<AnalyticsEventProvider, IAnalyticsEventProvider>();
+            objectContainer.RegisterTypeAs<MSBuildTraceListener, ITraceListener>();
 
             if (_generateFeatureFileCodeBehindTaskConfiguration.OverrideFeatureFileCodeBehindGenerator is null)
             {
@@ -36,6 +39,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             {
                 objectContainer.RegisterInstanceAs(_generateFeatureFileCodeBehindTaskConfiguration.OverrideFeatureFileCodeBehindGenerator);
             }
+            
 
             return objectContainer;
         }
