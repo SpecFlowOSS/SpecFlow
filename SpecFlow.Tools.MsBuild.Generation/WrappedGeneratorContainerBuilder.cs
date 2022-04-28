@@ -39,7 +39,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
             {
                 objectContainer.RegisterInstanceAs(_generateFeatureFileCodeBehindTaskConfiguration.OverrideFeatureFileCodeBehindGenerator);
             }
-            
+
+            objectContainer.Resolve<IConfigurationLoader>().TraceConfigSource(objectContainer.Resolve<ITraceListener>(), objectContainer.Resolve<SpecFlowConfiguration>());
 
             return objectContainer;
         }

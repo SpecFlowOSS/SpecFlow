@@ -1,23 +1,25 @@
-﻿using TechTalk.SpecFlow.Tracing;
+﻿using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+using TechTalk.SpecFlow.Tracing;
 
 namespace SpecFlow.Tools.MsBuild.Generation;
 
 public class MSBuildTraceListener : ITraceListener
 {
-    private readonly ITaskLoggingWrapper _taskLoggingWrapper;
+    private readonly TaskLoggingHelper _taskLoggingHelper;
 
-    public MSBuildTraceListener(ITaskLoggingWrapper taskLoggingWrapper) 
+    public MSBuildTraceListener(TaskLoggingHelper taskLoggingHelper) 
     {
-        _taskLoggingWrapper = taskLoggingWrapper;
+        _taskLoggingHelper = taskLoggingHelper;
     }
 
     public void WriteTestOutput(string message)
     {
-        _taskLoggingWrapper.LogMessage(message);
+        _taskLoggingHelper.LogMessage(MessageImportance.High, message);
     }
 
     public void WriteToolOutput(string message)
     {
-        _taskLoggingWrapper.LogMessage("-> " + message);
+        _taskLoggingHelper.LogMessage(MessageImportance.High, "-> " + message);
     }
 }
