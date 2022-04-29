@@ -66,10 +66,12 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
                 {
                     Aggregator.Run(disposable.Dispose);
                 }
+#if NET // IAsyncDisposable supported natively in .NET 5, .NET 6
                 else if (potentialDisposable is IAsyncDisposable asyncDisposable)
                 {
                     Aggregator.RunAsync(async () => await asyncDisposable.DisposeAsync());
                 }
+#endif
                 else if (potentialDisposable is IAsyncLifetime asyncLifetime)
                 {
                     Aggregator.RunAsync(async () => await asyncLifetime.DisposeAsync());

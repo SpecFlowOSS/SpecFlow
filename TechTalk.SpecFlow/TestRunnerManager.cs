@@ -174,7 +174,7 @@ namespace TechTalk.SpecFlow
             return testRunner;
         }
 
-        public virtual async ValueTask DisposeAsync()
+        public virtual async Task DisposeAsync()
         {
             if (Interlocked.CompareExchange(ref _wasDisposed, 1, 0) == 0)
             {
