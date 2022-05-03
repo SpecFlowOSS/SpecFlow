@@ -1,4 +1,10 @@
-after 3.9,58
+3.10
+
+Features:
++ Proper async/await implementation
+
+
+after 3.9.58
 
 Features:
 + Introduce ability to register and resolve global dependencies using Autofac
