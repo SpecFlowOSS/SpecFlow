@@ -3,7 +3,7 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings;
 
-public class MethodNameStepDefinitionBindingBuilder : RegexStepDefinitionBindingBuilder
+public class MethodNameStepDefinitionBindingBuilder : StepDefinitionBindingBuilderBase
 {
     private readonly IStepDefinitionRegexCalculator _stepDefinitionRegexCalculator;
 

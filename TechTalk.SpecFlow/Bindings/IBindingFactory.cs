@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Bindings
         IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope,
             int hookOrder);
 
-        IStepDefinitionBindingBuilder CreateStepDefinitionBindingBuilder(StepDefinitionType type, IBindingMethod bindingMethod, 
+        IStepDefinitionBindingBuilder CreateStepDefinitionBindingBuilder(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, 
             BindingScope bindingScope, string expressionString);
 
         IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,

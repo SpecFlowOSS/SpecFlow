@@ -17,11 +17,13 @@ public class BindingFactory : IBindingFactory
         return new HookBinding(bindingMethod, hookType, bindingScope, hookOrder);
     }
 
-    public IStepDefinitionBindingBuilder CreateStepDefinitionBindingBuilder(StepDefinitionType type, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionString)
+    public IStepDefinitionBindingBuilder CreateStepDefinitionBindingBuilder(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionString)
     {
         return expressionString == null
-            ? new MethodNameStepDefinitionBindingBuilder(stepDefinitionRegexCalculator, type, bindingMethod, bindingScope)
-            : new RegexStepDefinitionBindingBuilder(type, bindingMethod, bindingScope, expressionString);
+            ? new MethodNameStepDefinitionBindingBuilder(stepDefinitionRegexCalculator, stepDefinitionType, bindingMethod, bindingScope)
+            : CucumberExpressionStepDefinitionBindingBuilder.IsCucumberExpression(expressionString)
+                ? new CucumberExpressionStepDefinitionBindingBuilder(stepDefinitionType, bindingMethod, bindingScope, expressionString)
+                : new RegexStepDefinitionBindingBuilder(stepDefinitionType, bindingMethod, bindingScope, expressionString);
     }
 
     public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
