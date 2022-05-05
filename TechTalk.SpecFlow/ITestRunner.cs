@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
 
-        void InitializeTestRunner(string testClassId);
+        void InitializeTestRunner(string testWorkerId);
 
         Task OnTestRunStartAsync();
         Task OnTestRunEndAsync();

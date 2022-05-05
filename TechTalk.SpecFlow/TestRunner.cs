@@ -30,9 +30,9 @@ namespace TechTalk.SpecFlow
             await _executionEngine.OnTestRunStartAsync();
         }
 
-        public void InitializeTestRunner(string testClassId)
+        public void InitializeTestRunner(string testWorkerId)
         {
-            TestWorkerId = testClassId;
+            TestWorkerId = testWorkerId;
         }
 
         public async Task OnFeatureStartAsync(FeatureInfo featureInfo)

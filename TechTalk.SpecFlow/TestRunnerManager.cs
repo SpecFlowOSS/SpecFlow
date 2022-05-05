@@ -52,17 +52,20 @@ namespace TechTalk.SpecFlow
             return _testRunnerRegistry.Count - (hasTestRunStartWorker ? 1 : 0);
         }
 
-        public virtual ITestRunner CreateTestRunner(string testWorkerId)
+        public virtual ITestRunner CreateTestRunner(string testWorkerId = "default-worker")
         {
             var testRunner = CreateTestRunnerInstance();
             testRunner.InitializeTestRunner(testWorkerId);
 
-            lock (createTestRunnerLockObject)
+            if (!IsTestRunInitialized)
             {
-                if (!IsTestRunInitialized)
+                lock (createTestRunnerLockObject)
                 {
-                    InitializeBindingRegistry(testRunner);
-                    IsTestRunInitialized = true;
+                    if (!IsTestRunInitialized)
+                    {
+                        InitializeBindingRegistry(testRunner);
+                        IsTestRunInitialized = true;
+                    }
                 }
             }
 
