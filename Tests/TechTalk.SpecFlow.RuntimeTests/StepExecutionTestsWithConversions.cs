@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 using Moq;
@@ -13,20 +14,19 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     internal static class LegacyStepArgumentTypeConverterExtensions
     {
-        public static object Convert(this IStepArgumentTypeConverter converter, object value, Type typeToConvertTo, CultureInfo cultureInfo)
+        public static async Task<object> ConvertAsync(this IStepArgumentTypeConverter converter, object value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
-            return converter.Convert(value, new RuntimeBindingType(typeToConvertTo), cultureInfo);
+            return await converter.ConvertAsync(value, new RuntimeBindingType(typeToConvertTo), cultureInfo);
         }
-
 
         public static Expression<Func<IStepArgumentTypeConverter, bool>> GetCanConvertMethodFilter(object argument, Type type)
         {
             return c => c.CanConvert(argument, It.Is<IBindingType>(bt => bt.TypeEquals(type)), It.IsAny<CultureInfo>());
         }
 
-        public static Expression<Func<IStepArgumentTypeConverter, object>> GetConvertMethodFilter(object argument, Type type)
+        public static Expression<Func<IStepArgumentTypeConverter, Task<object>>> GetConvertAsyncMethodFilter(object argument, Type type)
         {
-            return c => c.Convert(It.Is<object>(s => s.Equals(argument)), It.Is<IBindingType>(bt => bt.TypeEquals(type)), It.IsAny<CultureInfo>());
+            return c => c.ConvertAsync(It.Is<object>(s => s.Equals(argument)), It.Is<IBindingType>(bt => bt.TypeEquals(type)), It.IsAny<CultureInfo>());
                 //Arg<string>.Is.Equal(argument),
                 //Arg<IBindingType>.Matches(bt => bt.TypeEquals(type)), 
                 //Arg<CultureInfo>.Is.Anything);
@@ -65,7 +65,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class StepExecutionTestsWithConversions : StepExecutionTestsBase
     {
         [Fact]
-        public void ShouldCallBindingWithSimpleConvertParam()
+        public async Task ShouldCallBindingWithSimpleConvertParam()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -73,30 +73,30 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with simple convert param: 1.23");
+            await testRunner.GivenAsync("sample step with simple convert param: 1.23");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithSimpleConvertParam(1.23));
         }
 
         [Fact]
-        public void ShouldRaiseErrorIfSimpleConvertParamFails()
+        public async Task ShouldRaiseErrorIfSimpleConvertParamFails()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with simple convert param: not-a-double");
+            await testRunner.GivenAsync("sample step with simple convert param: not-a-double");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
         }
 
         [Fact]
-        public void ShouldCallTheOnlyThatCanConvert()
+        public async Task ShouldCallTheOnlyThatCanConvert()
         {
             StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Returns(true);
             //StepArgumentTypeConverterStub.Setup(c => c.CanConvert(It.IsAny<object>(), It.IsAny<IBindingType>(), It.IsAny<CultureInfo>())).Returns(false);
-            StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter("argument", typeof(double))).Returns(1.23);
+            StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetConvertAsyncMethodFilter("argument", typeof(double))).ReturnsAsync(1.23);
 
             var (testRunner, bindingMock) = GetTestRunnerWithConverterStub<StepExecutionTestsBindingsForArgumentConvert>();
 
@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert: argument");
+            await testRunner.GivenAsync("sample step for argument convert: argument");
 
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK, ContextManagerStub.ScenarioContext.TestError?.ToString());
@@ -118,7 +118,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
        
 
         [Fact]
-        public void ShouldRaiseAmbiguousIfMultipleCanConvert()
+        public async Task ShouldRaiseAmbiguousIfMultipleCanConvert()
         {
             StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Returns(true);
             StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(int))).Returns(true);
@@ -130,14 +130,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
             
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert: argument");
+            await testRunner.GivenAsync("sample step for argument convert: argument");
 
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError, ContextManagerStub.ScenarioContext.TestError?.ToString());
         }
 
         [Fact]
-        public void ShouldCallTheOnlyThatCanConvertWithTable()
+        public async Task ShouldCallTheOnlyThatCanConvertWithTable()
         {
             Table table = new Table("h1");
 
@@ -145,8 +145,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Returns(true);
             //StepArgumentTypeConverterStub.Setup(c => c.CanConvert(It.IsAny<object>(), It.IsAny<IBindingType>(), It.IsAny<CultureInfo>())).Returns(false);
 
-            StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(Table))).Returns(table);
-            StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter("argument", typeof(double))).Returns(1.23);
+            StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetConvertAsyncMethodFilter(table, typeof(Table))).ReturnsAsync(table);
+            StepArgumentTypeConverterStub.Setup(LegacyStepArgumentTypeConverterExtensions.GetConvertAsyncMethodFilter("argument", typeof(double))).ReturnsAsync(1.23);
 
 
             var (testRunner, bindingMock) = GetTestRunnerWithConverterStub<StepExecutionTestsBindingsForArgumentConvert>();
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert with table: argument", null, table);
+            await testRunner.GivenAsync("sample step for argument convert with table: argument", null, table);
 
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK, ContextManagerStub.ScenarioContext.TestError?.ToString());
@@ -164,7 +164,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void ShouldRaiseParamErrorIfNoneCanConvert()
+        public async Task ShouldRaiseParamErrorIfNoneCanConvert()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindingsForArgumentConvert>();
 
@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
            // MockRepository.ReplayAll();
 
-            testRunner.Given("sample step for argument convert: argument");
+            await testRunner.GivenAsync("sample step for argument convert: argument");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError, ContextManagerStub.ScenarioContext.TestError?.ToString());
         }

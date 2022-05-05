@@ -54,7 +54,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 _specFlowProjectInfo.TargetFrameworks,
                 _specFlowProjectInfo.CurrentTargetFramework,
                 _specFlowProjectInfo.ProjectGuid);
-            return await _analyticsTransmitter.TransmitSpecFlowProjectCompilingEvent(projectCompilingEvent);
+            return await _analyticsTransmitter.TransmitSpecFlowProjectCompilingEventAsync(projectCompilingEvent);
         }
     }
 }

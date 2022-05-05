@@ -7,6 +7,7 @@ using global::Microsoft.VisualStudio.TestTools.UnitTesting;
 using global::TechTalk.SpecFlow;
 using global::TechTalk.SpecFlow.MSTest.SpecFlowPlugin;
 using global::System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
 [TestClass]
@@ -14,21 +15,20 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 {
     [AssemblyInitialize]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void AssemblyInitialize(TestContext testContext)
+    public static async Task AssemblyInitializeAsync(TestContext testContext)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
         var containerBuilder = new MsTestContainerBuilder(testContext);
 
-        TestRunnerManager.OnTestRunStart(currentAssembly, containerBuilder);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, containerBuilder: containerBuilder);
     }
 
     [AssemblyCleanup]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void AssemblyCleanup()
+    public static async Task AssemblyCleanupAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly);
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 #pragma warning restore

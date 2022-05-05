@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -36,27 +37,46 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
             await base.AfterTestAssemblyStartingAsync();
 
             // Go find all the AssemblyFixtureAttributes adorned on the test assembly
-            Aggregator.Run(() =>
-            {
-                var reflectionAssemblyInfo = (IReflectionAssemblyInfo)TestAssembly.Assembly;
-                var fixturesAttrs = reflectionAssemblyInfo.Assembly
-                                                          .GetCustomAttributes(typeof(AssemblyFixtureAttribute), false)
-                                                          .Cast<AssemblyFixtureAttribute>()
-                                                          .ToList();
-
-                // Instantiate all the fixtures
-                foreach (var fixtureAttr in fixturesAttrs)
+            await Aggregator.RunAsync(
+                async () =>
                 {
-                    _assemblyFixtureMappings[fixtureAttr.FixtureType] = Activator.CreateInstance(fixtureAttr.FixtureType);
-                }
-            });
+                    var reflectionAssemblyInfo = (IReflectionAssemblyInfo)TestAssembly.Assembly;
+                    var fixturesAttrs = reflectionAssemblyInfo.Assembly
+                                                              .GetCustomAttributes(typeof(AssemblyFixtureAttribute), false)
+                                                              .Cast<AssemblyFixtureAttribute>()
+                                                              .ToList();
+
+                    // Instantiate all the fixtures
+                    foreach (var fixtureAttr in fixturesAttrs)
+                    {
+                        object assemblyFixture = Activator.CreateInstance(fixtureAttr.FixtureType);
+                        if (assemblyFixture is IAsyncLifetime assemblyFixtureLifetime)
+                            await assemblyFixtureLifetime.InitializeAsync();
+                        _assemblyFixtureMappings[fixtureAttr.FixtureType] = assemblyFixture;
+                    }
+                });
         }
 
         protected override Task BeforeTestAssemblyFinishedAsync()
         {
             // Make sure we clean up everybody who is disposable, and use Aggregator.Run to isolate Dispose failures
-            foreach (var disposable in _assemblyFixtureMappings.Values.OfType<IDisposable>())
-                Aggregator.Run(disposable.Dispose);
+            foreach (var potentialDisposable in _assemblyFixtureMappings.Values)
+            {
+                if (potentialDisposable is IDisposable disposable)
+                {
+                    Aggregator.Run(disposable.Dispose);
+                }
+#if NET // IAsyncDisposable supported natively in .NET 5, .NET 6
+                else if (potentialDisposable is IAsyncDisposable asyncDisposable)
+                {
+                    Aggregator.RunAsync(async () => await asyncDisposable.DisposeAsync());
+                }
+#endif
+                else if (potentialDisposable is IAsyncLifetime asyncLifetime)
+                {
+                    Aggregator.RunAsync(async () => await asyncLifetime.DisposeAsync());
+                }
+            }
 
             return base.BeforeTestAssemblyFinishedAsync();
         }

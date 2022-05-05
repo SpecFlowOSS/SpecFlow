@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         /// <returns>An object that implements <see cref="IContextManager"/>.</returns>
         private IContextManager ResolveContextManager(ITestTracer testTracer)
         {
-            var container = this.CreateTestThreadObjectContainer(testTracer);
+            var container = CreateTestThreadObjectContainer(testTracer);
             var contextManager = container.Resolve<IContextManager>();
             return contextManager;
         }
@@ -267,9 +267,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once", StepDefinitionType.Given));
-            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize a second time, to initialize a sub step", StepDefinitionType.When));
-            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize a third time, to initialize a sub step of a sub step", StepDefinitionType.Then));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once", StepDefinitionType.Given));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize a second time, to initialize a sub step", StepDefinitionType.When));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize a third time, to initialize a sub step of a sub step", StepDefinitionType.Then));
             contextManager.CleanupStepContext(); // return from sub step of sub step
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
@@ -284,7 +284,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var contextManager = ResolveContextManager(mockTracer.Object);
             contextManager.InitializeFeatureContext(new FeatureInfo(new CultureInfo("en-US", false), string.Empty, "F", null));
 
-            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
             //// Do not call CleanupStepContext, in order to simulate an inconsistent state
             contextManager.InitializeScenarioContext(new ScenarioInfo("the next scenario", "description of the next scenario", null, null));
 
@@ -299,7 +299,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
             //// do not call CleanupStepContext to simulate inconsistent state
 
             Action disposeAction = () => ((IDisposable) contextManager).Dispose();
@@ -313,7 +313,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
             contextManager.CleanupStepContext();
 
 

@@ -131,7 +131,7 @@ namespace TechTalk.SpecFlow.Assist
             }
 
             public override string Description =>
-                $"{this.propertyName}: Property does not exist";
+                $"{propertyName}: Property does not exist";
         }
 
         private class PropertyDiffers : Difference

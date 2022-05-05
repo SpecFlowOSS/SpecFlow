@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -7,11 +8,11 @@ namespace TechTalk.SpecFlow
 {
     public abstract class Steps : IContainerDependentObject
     {
-        private const string GivenObsoleteMessage = nameof(Steps) + "." + nameof(Given) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string WhenObsoleteMessage = nameof(Steps) + "." + nameof(When) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string ThenObsoleteMessage = nameof(Steps) + "." + nameof(Then) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string ButObsoleteMessage = nameof(Steps) + "." + nameof(But) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
-        private const string AndObsoleteMessage = nameof(Steps) + "." + nameof(And) + " is obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string GivenObsoleteMessage = $"{nameof(Steps)}.{nameof(Given)} and {nameof(Steps)}.{nameof(GivenAsync)} are obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string WhenObsoleteMessage = $"{nameof(Steps)}.{nameof(When)} and {nameof(Steps)}.{nameof(WhenAsync)} are obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string ThenObsoleteMessage = $"{nameof(Steps)}.{nameof(Then)} and {nameof(Steps)}.{nameof(ThenAsync)} are obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string ButObsoleteMessage = $"{nameof(Steps)}.{nameof(And)} and {nameof(Steps)}.{nameof(AndAsync)} are obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
+        private const string AndObsoleteMessage = $"{nameof(Steps)}.{nameof(But)} and {nameof(Steps)}.{nameof(ButAsync)} are obsolete and will be removed with SpecFlow 4.0. Details: https://github.com/techtalk/SpecFlow/issues/1733";
         private IObjectContainer objectContainer;
 
         void IContainerDependentObject.SetObjectContainer(IObjectContainer container)
@@ -28,6 +29,15 @@ namespace TechTalk.SpecFlow
             {
                 AssertInitialized();
                 return objectContainer.Resolve<ITestRunner>();
+            }
+        }
+
+        protected ISyncTestRunner SyncTestRunner
+        {
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<ISyncTestRunner>();
             }
         }
 
@@ -74,6 +84,156 @@ namespace TechTalk.SpecFlow
                 throw new SpecFlowException("Container of the steps class has not been initialized!");
         }
 
+        #region GivenAsync
+        [Obsolete(GivenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task GivenAsync(string step)
+        {
+            await GivenAsync(step, null, null);
+        }
+
+        [Obsolete(GivenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task GivenAsync(string step, Table tableArg)
+        {
+            await GivenAsync(step, null, tableArg);
+        }
+
+        [Obsolete(GivenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task GivenAsync(string step, string multilineTextArg)
+        {
+            await GivenAsync(step, multilineTextArg, null);
+        }
+
+        [Obsolete(GivenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task GivenAsync(string step, string multilineTextArg, Table tableArg)
+        {
+            await TestRunner.GivenAsync(step, multilineTextArg, tableArg);
+        }
+        #endregion
+
+        #region WhenAsync
+        [Obsolete(WhenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task WhenAsync(string step)
+        {
+            await WhenAsync(step, null, null);
+        }
+
+        [Obsolete(WhenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task WhenAsync(string step, Table tableArg)
+        {
+            await WhenAsync(step, null, tableArg);
+        }
+
+        [Obsolete(WhenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task WhenAsync(string step, string multilineTextArg)
+        {
+            await WhenAsync(step, multilineTextArg, null);
+        }
+
+        [Obsolete(WhenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task WhenAsync(string step, string multilineTextArg, Table tableArg)
+        {
+            await TestRunner.WhenAsync(step, multilineTextArg, tableArg);
+        }
+        #endregion
+
+        #region ThenAsync
+        [Obsolete(ThenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ThenAsync(string step)
+        {
+            await ThenAsync(step, null, null);
+        }
+
+        [Obsolete(ThenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ThenAsync(string step, Table tableArg)
+        {
+            await ThenAsync(step, null, tableArg);
+        }
+
+        [Obsolete(ThenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ThenAsync(string step, string multilineTextArg)
+        {
+            await ThenAsync(step, multilineTextArg, null);
+        }
+
+        [Obsolete(ThenObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ThenAsync(string step, string multilineTextArg, Table tableArg)
+        {
+            await TestRunner.ThenAsync(step, multilineTextArg, tableArg);
+        }
+        #endregion
+
+        #region ButAsync
+        [Obsolete(ButObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ButAsync(string step)
+        {
+            await ButAsync(step, null, null);
+        }
+
+        [Obsolete(ButObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ButAsync(string step, Table tableArg)
+        {
+            await ButAsync(step, null, tableArg);
+        }
+
+        [Obsolete(ButObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ButAsync(string step, string multilineTextArg)
+        {
+            await ButAsync(step, multilineTextArg, null);
+        }
+
+        [Obsolete(ButObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task ButAsync(string step, string multilineTextArg, Table tableArg)
+        {
+            await TestRunner.ButAsync(step, multilineTextArg, tableArg);
+        }
+        #endregion
+
+        #region AndAsync
+        [Obsolete(AndObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task AndAsync(string step)
+        {
+            await AndAsync(step, null, null);
+        }
+
+        [Obsolete(AndObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task AndAsync(string step, Table tableArg)
+        {
+            await AndAsync(step, null, tableArg);
+        }
+
+        [Obsolete(AndObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task AndAsync(string step, string multilineTextArg)
+        {
+            await AndAsync(step, multilineTextArg, null);
+        }
+
+        [Obsolete(AndObsoleteMessage)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public async Task AndAsync(string step, string multilineTextArg, Table tableArg)
+        {
+            await TestRunner.AndAsync(step, multilineTextArg, tableArg);
+        }
+        #endregion
+
         #region Given
         [Obsolete(GivenObsoleteMessage)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -100,7 +260,7 @@ namespace TechTalk.SpecFlow
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Given(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.Given(step, multilineTextArg, tableArg, null);
+            SyncTestRunner.Given(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -130,7 +290,7 @@ namespace TechTalk.SpecFlow
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void When(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.When(step, multilineTextArg, tableArg, null);
+            SyncTestRunner.When(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -160,7 +320,7 @@ namespace TechTalk.SpecFlow
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Then(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.Then(step, multilineTextArg, tableArg, null);
+            SyncTestRunner.Then(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -190,7 +350,7 @@ namespace TechTalk.SpecFlow
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void But(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.But(step, multilineTextArg, tableArg, null);
+            SyncTestRunner.But(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -220,7 +380,7 @@ namespace TechTalk.SpecFlow
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void And(string step, string multilineTextArg, Table tableArg)
         {
-            TestRunner.And(step, multilineTextArg, tableArg, null);
+            SyncTestRunner.And(step, multilineTextArg, tableArg);
         }
         #endregion
     }

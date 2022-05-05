@@ -4,28 +4,41 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class BindingInvoker : IBindingInvoker
+#pragma warning disable CS0618
+    public class BindingInvoker : IBindingInvoker, IAsyncBindingInvoker
+#pragma warning restore CS0618
     {
-        protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        protected readonly SpecFlowConfiguration specFlowConfiguration;
         protected readonly IErrorProvider errorProvider;
-        protected readonly ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker;
+        protected readonly IBindingDelegateInvoker bindingDelegateInvoker;
 
-        public BindingInvoker(Configuration.SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker)
+        public BindingInvoker(SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, IBindingDelegateInvoker bindingDelegateInvoker)
         {
             this.specFlowConfiguration = specFlowConfiguration;
             this.errorProvider = errorProvider;
-            this.synchronousBindingDelegateInvoker = synchronousBindingDelegateInvoker;
+            this.bindingDelegateInvoker = bindingDelegateInvoker;
         }
 
+        [Obsolete("Use async version of the method instead")]
         public virtual object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        {
+            var durationHolder = new DurationHolder();
+            var result = InvokeBindingAsync(binding, contextManager, arguments, testTracer, durationHolder).ConfigureAwait(false).GetAwaiter().GetResult();
+            duration = durationHolder.Duration;
+            return result;
+        }
+
+        public virtual async Task<object> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, DurationHolder durationHolder)
         {
             EnsureReflectionInfo(binding, out _, out var bindingAction);
             Stopwatch stopwatch = new Stopwatch();
@@ -40,10 +53,10 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
 
-                    result = synchronousBindingDelegateInvoker
-                        .InvokeDelegateSynchronously(bindingAction, invokeArgs);
+                    result = await bindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs);
 
                     stopwatch.Stop();
+                    durationHolder.Duration = stopwatch.Elapsed;
                 }
 
                 if (specFlowConfiguration.TraceTimings && stopwatch.Elapsed >= specFlowConfiguration.MinTracedDuration)
@@ -51,13 +64,12 @@ namespace TechTalk.SpecFlow.Bindings
                     testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }
 
-                duration = stopwatch.Elapsed;
                 return result;
             }
             catch (ArgumentException ex)
             {
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw errorProvider.GetCallError(binding.Method, ex);
             }
             catch (TargetInvocationException invEx)
@@ -65,7 +77,7 @@ namespace TechTalk.SpecFlow.Bindings
                 var ex = invEx.InnerException;
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw ex;
             }
             catch (AggregateException aggregateEx)
@@ -73,13 +85,13 @@ namespace TechTalk.SpecFlow.Bindings
                 var ex = aggregateEx.InnerExceptions.First();
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw ex;
             }
             catch (Exception)
             {
                 stopwatch.Stop();
-                duration = stopwatch.Elapsed;
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw;
             }
         }

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
 
@@ -59,7 +60,6 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             return new NotImplementedException($"{TargetLanguage} is not supported");
         }
 
-
         public void BindTypeToSourceFile(CodeTypeDeclaration typeDeclaration, string fileName)
         {
             switch (TargetLanguage)
@@ -75,7 +75,6 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                     break;
             }
         }
-
 
         public CodeStatement GetStartRegionStatement(string regionText)
         {
@@ -100,7 +99,6 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
             }
             return new CodeCommentStatement("#endregion");
         }
-
 
         public CodeStatement GetDisableWarningsPragma()
         {
@@ -231,6 +229,63 @@ namespace TechTalk.SpecFlow.Generator.CodeDom
                     yield return CreateCommentStatement($"#indentnext {colNo - 1}");
                     break;
             }
+        }
+
+        public void MarkCodeMemberMethodAsAsync(CodeMemberMethod method)
+        {
+            if (IsVoid(method.ReturnType))
+            {
+                method.ReturnType = new CodeTypeReference($"async {typeof(Task).FullName}");
+                return;
+            }
+
+            var returnTypeArgumentReferences = method.ReturnType.TypeArguments.OfType<CodeTypeReference>().ToArray();
+
+            var asyncReturnType = new CodeTypeReference($"async {method.ReturnType.BaseType}", returnTypeArgumentReferences);
+            method.ReturnType = asyncReturnType;
+        }
+
+        public bool IsVoid(CodeTypeReference codeTypeReference)
+        {
+            return typeof(void).FullName!.Equals(codeTypeReference.BaseType);
+        }
+
+        public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
+        {
+            if (expression.Method.TargetObject is CodeVariableReferenceExpression variableExpression)
+            {
+                expression.Method.TargetObject = new CodeVariableReferenceExpression($"await {variableExpression.VariableName}");
+            }
+            else if (expression.Method.TargetObject is CodeFieldReferenceExpression fieldExpression 
+                     && fieldExpression.TargetObject is CodeThisReferenceExpression thisFieldExpression)
+            {
+                expression.Method.TargetObject = new CodeFieldReferenceExpression(GetAwaitedMethodThisTargetObject(thisFieldExpression), fieldExpression.FieldName);
+            }
+            else if (expression.Method.TargetObject is CodeTypeReferenceExpression typeExpression)
+            {
+                string baseType = typeExpression.Type.BaseType;
+                if (typeExpression.Type.Options.HasFlag(CodeTypeReferenceOptions.GlobalReference))
+                {
+                    typeExpression.Type.Options &= ~CodeTypeReferenceOptions.GlobalReference;
+                    if (TargetLanguage == CodeDomProviderLanguage.CSharp)
+                        baseType = $"global::{baseType}"; // For VB.NET, the BaseType already contains the "Global." prefix
+                }
+                expression.Method.TargetObject = new CodeTypeReferenceExpression(new CodeTypeReference($"await {baseType}", typeExpression.Type.Options));
+            }
+            else if (expression.Method.TargetObject is CodeThisReferenceExpression thisExpression)
+            {
+                expression.Method.TargetObject = GetAwaitedMethodThisTargetObject(expression.Method.TargetObject);
+            }
+        }
+
+        private CodeExpression GetAwaitedMethodThisTargetObject(CodeExpression thisExpression)
+        {
+            return TargetLanguage switch
+            {
+                CodeDomProviderLanguage.VB => new CodeVariableReferenceExpression("await Me"),
+                CodeDomProviderLanguage.CSharp => new CodeVariableReferenceExpression("await this"),
+                _ => thisExpression
+            };
         }
     }
 }

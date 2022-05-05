@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
     {
         private readonly Combination _combination;
 
-        public CustomXUnitGeneratorProvider(CodeDomHelper codeDomHelper, Combination combination, ProjectSettings projectSettings) : base(codeDomHelper, projectSettings)
+        public CustomXUnitGeneratorProvider(CodeDomHelper codeDomHelper, Combination combination, ProjectSettings projectSettings) : base(codeDomHelper)
         {
             _combination = combination;
         }
