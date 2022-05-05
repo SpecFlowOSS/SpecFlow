@@ -20,11 +20,11 @@ namespace TechTalk.SpecFlow.Analytics
             _httpClientWrapper = httpClientWrapper;
         }
 
-        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent, string instrumentationKey)
+        public async Task<IResult> TransmitEventAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey)
         {
             try
             {
-                await TransmitEventAsync(analyticsEvent, instrumentationKey);
+                await TransmitEventInternalAsync(analyticsEvent, instrumentationKey);
                 return Result.Success();
             }
             catch (Exception e)
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Analytics
             }
         }
 
-        public async Task TransmitEventAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey)
+        private async Task TransmitEventInternalAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey)
         {
             var serializedEventTelemetry = _appInsightsEventSerializer.SerializeAnalyticsEvent(analyticsEvent, instrumentationKey);
 

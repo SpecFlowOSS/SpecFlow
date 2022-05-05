@@ -3,26 +3,26 @@
 
 using System.CodeDom.Compiler;
 using global::System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 [assembly: global::Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")]
 [assembly: global::TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(typeof(global::PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture))]
 
 [GeneratedCode("SpecFlow", "SPECFLOW_VERSION")]
-public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::System.IDisposable
+public class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture : global::Xunit.IAsyncLifetime
 {
-    private readonly global::System.Reflection.Assembly _currentAssembly;
-
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture()
+    public async Task InitializeAsync()
     {
-        _currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
-        global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly);
+        var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public void Dispose()
+    public async Task DisposeAsync()
     {
-        global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly);
+        var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly;
+        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 

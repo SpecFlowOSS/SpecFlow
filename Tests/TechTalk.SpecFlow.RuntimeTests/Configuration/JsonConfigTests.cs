@@ -461,7 +461,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             config.MissingOrPendingStepsOutcome.Should().Be(ConfigDefaults.MissingOrPendingStepsOutcome);
             config.ObsoleteBehavior.Should().Be(ConfigDefaults.ObsoleteBehavior);
             config.CustomDependencies.Should().NotBeNull();
-            config.CustomDependencies.Should().BeEmpty();
+            config.CustomDependencies.Count.Should().Be(0);
 
             //generator
             config.AllowDebugGeneratedFiles.Should().Be(ConfigDefaults.AllowDebugGeneratedFiles);

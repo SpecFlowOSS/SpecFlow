@@ -2,26 +2,27 @@
 
 Imports System.CodeDom.Compiler
 Imports System.Runtime.CompilerServices
+Imports System.Threading.Tasks
+Imports System.Reflection
 
 <Assembly: Global.Xunit.TestFramework("TechTalk.SpecFlow.xUnit.SpecFlowPlugin.XunitTestFrameworkWithAssemblyFixture", "TechTalk.SpecFlow.xUnit.SpecFlowPlugin")>
 <Assembly: Global.TechTalk.SpecFlow.xUnit.SpecFlowPlugin.AssemblyFixture(GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture))>
 
 <GeneratedCode("SpecFlow", "SPECFLOW_VERSION")>
 Public Class PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture
-    Implements Global.System.IDisposable
-
-    Private ReadOnly _currentAssembly As Global.System.Reflection.Assembly
+    Implements Global.Xunit.IAsyncLifetime
 
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Sub New()
-        _currentAssembly = GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly
-        Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStart(_currentAssembly)
-    End Sub
+    Public Async Function InitializeAsync() As Task Implements Global.Xunit.IAsyncLifetime.InitializeAsync
+        Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly)
+    End Function
 
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Sub Dispose() Implements Global.System.IDisposable.Dispose
-        Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEnd(_currentAssembly)
-    End Sub
+    Private Async Function DisposeAsync() As Task Implements Global.Xunit.IAsyncLifetime.DisposeAsync
+        Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_XUnitAssemblyFixture).Assembly
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
+    End Function
 End Class
 
 <Global.Xunit.CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization:=True)>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
 using Moq;
@@ -11,209 +12,210 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     public partial class TestExecutionEngineTests
     {
         private const string SimulatedErrorMessage = "simulated error";
+
         private void RegisterFailingHook(List<IHookBinding> hooks)
         {
-            TimeSpan duration;
             var hookMock = CreateHookMock(hooks);
-            methodBindingInvokerMock.Setup(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration))
-                                    .Throws(new Exception(SimulatedErrorMessage));
+            methodBindingInvokerMock.Setup(i => i.InvokeBindingAsync(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, It.IsAny<DurationHolder>()))
+                                    .ThrowsAsync(new Exception(SimulatedErrorMessage));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforetestrun()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforetestrun()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
-            testExecutionEngine.OnTestRunStart();
+            await testExecutionEngine.OnTestRunStartAsync();
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforetestrun_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforetestrun_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
             RegisterFailingHook(beforeTestRunEvents);
-            Action act = () => testExecutionEngine.OnTestRunStart();
+            Func<Task> act = async () => await testExecutionEngine.OnTestRunStartAsync();
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
+
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_aftertestrun()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_aftertestrun()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
-            testExecutionEngine.OnTestRunEnd();
+            await testExecutionEngine.OnTestRunEndAsync();
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_aftertestrun_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_aftertestrun_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
             RegisterFailingHook(afterTestRunEvents);
-            Action act = () => testExecutionEngine.OnTestRunEnd();
+            Func<Task> act = async () => await testExecutionEngine.OnTestRunEndAsync();
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterTestRun, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforefeature()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforefeature()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
-            testExecutionEngine.OnFeatureStart(featureInfo);
+            await testExecutionEngine.OnFeatureStartAsync(featureInfo);
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforefeature_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforefeature_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
             RegisterFailingHook(beforeFeatureEvents);
-            Action act = () => testExecutionEngine.OnFeatureStart(featureInfo);
+            Func<Task> act = async () => await testExecutionEngine.OnFeatureStartAsync(featureInfo);
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeFeature, It.IsAny<IObjectContainer>()));
         }
 
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterfeature()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_afterfeature()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
-            testExecutionEngine.OnFeatureEnd();
+            await testExecutionEngine.OnFeatureEndAsync();
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterfeature_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_afterfeature_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
             RegisterFailingHook(afterFeatureEvents);
-            Action act = () => testExecutionEngine.OnFeatureEnd();
+            Func<Task> act = async () => await testExecutionEngine.OnFeatureEndAsync();
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterFeature, It.IsAny<IObjectContainer>()));
         }
 
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforescenario()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforescenario()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
-            testExecutionEngine.OnScenarioStart();
+            await testExecutionEngine.OnScenarioStartAsync();
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforescenario_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforescenario_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
             RegisterFailingHook(beforeScenarioEvents);
-            Action act = () =>
+            Func<Task> act = async () =>
             {
                 //NOTE: the exception will be re-thrown in the OnAfterLastStep
-                testExecutionEngine.OnScenarioStart();
-                testExecutionEngine.OnAfterLastStep(); 
+                await testExecutionEngine.OnScenarioStartAsync();
+                await testExecutionEngine.OnAfterLastStepAsync(); 
             };
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeScenario, It.IsAny<IObjectContainer>()));
         }
 
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterscenario()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_afterscenario()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
-            testExecutionEngine.OnScenarioEnd();
+            await testExecutionEngine.OnScenarioEndAsync();
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterscenario_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_afterscenario_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
 
             RegisterFailingHook(afterScenarioEvents);
-            Action act = () => testExecutionEngine.OnScenarioEnd();
+            Func<Task> act = async () => await testExecutionEngine.OnScenarioEndAsync();
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterScenario, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforestep()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforestep()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_beforestep_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_beforestep_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
             RegisterFailingHook(beforeStepEvents);
 
-            Action act = () =>
+            Func<Task> act = async () =>
             {
                 //NOTE: the exception will be re-thrown in the OnAfterLastStep
-                testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-                testExecutionEngine.OnAfterLastStep();
+                await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
+                await testExecutionEngine.OnAfterLastStepAsync();
             };
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.BeforeStep, It.IsAny<IObjectContainer>()));
         }
 
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterstep()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_afterstep()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
         }
         
         [Fact]
-        public void Should_emit_runtime_plugin_test_execution_lifecycle_event_afterstep_after_hook_error_and_throw_error()
+        public async Task Should_emit_runtime_plugin_test_execution_lifecycle_event_afterstep_after_hook_error_and_throw_error()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterStepDefinition();
             RegisterFailingHook(afterStepEvents);
 
-            Action act = () =>
+            Func<Task> act = async () =>
             {
                 //NOTE: the exception will be re-thrown in the OnAfterLastStep
-                testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-                testExecutionEngine.OnAfterLastStep();
+                await testExecutionEngine.StepAsync(StepDefinitionKeyword.Given, null, "foo", null, null);
+                await testExecutionEngine.OnAfterLastStepAsync();
             };
 
-            act.Should().Throw<Exception>().WithMessage(SimulatedErrorMessage);
+            await act.Should().ThrowAsync<Exception>().WithMessage(SimulatedErrorMessage);
             _runtimePluginTestExecutionLifecycleEventEmitter.Verify(e => e.RaiseExecutionLifecycleEvent(HookType.AfterStep, It.IsAny<IObjectContainer>()));
         }
 

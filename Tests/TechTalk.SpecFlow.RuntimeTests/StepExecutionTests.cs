@@ -105,13 +105,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class StepExecutionTests : StepExecutionTestsBase
     {
         [Fact]
-        public void ShouldCallBindingWithoutParameter()
+        public async Task ShouldCallBindingWithoutParameter()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
             
             //bindingInstance.Expect(b => b.BindingWithoutParam());
 
-            testRunner.Given("sample step without param");
+            await testRunner.GivenAsync("sample step without param");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
 
@@ -119,11 +119,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void ShouldCallBindingSingleParameter()
+        public async Task ShouldCallBindingSingleParameter()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
-            testRunner.Given("sample step with single param");
+            await testRunner.GivenAsync("sample step with single param");
             
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             
@@ -132,13 +132,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void ShouldCallBindingMultipleParameter()
+        public async Task ShouldCallBindingMultipleParameter()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
             //bindingInstance.Expect(b => b.BindingWithMultipleParam("multi", "ple"));
 
-            testRunner.Given("sample step with multiple param");
+            await testRunner.GivenAsync("sample step with multiple param");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             
@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void ShouldCallBindingWithTableParameter()
+        public async Task ShouldCallBindingWithTableParameter()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -155,14 +155,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with table param", null, table);
+            await testRunner.GivenAsync("sample step with table param", null, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithTableParam(table));
         }
 
         [Fact]
-        public void ShouldCallBindingWithMlStringParam()
+        public async Task ShouldCallBindingWithMlStringParam()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -171,14 +171,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with multi-line string param", mlString, null);
+            await testRunner.GivenAsync("sample step with multi-line string param", mlString, null);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithMlStringParam(mlString));
         }
 
         [Fact]
-        public void ShouldCallBindingWithTableAndMlStringParam()
+        public async Task ShouldCallBindingWithTableAndMlStringParam()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -188,14 +188,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with table and multi-line string param", mlString, table);
+            await testRunner.GivenAsync("sample step with table and multi-line string param", mlString, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithTableAndMlStringParam(mlString, table));
         }
 
         [Fact]
-        public void ShouldCallBindingWithMixedParams()
+        public async Task ShouldCallBindingWithMixedParams()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -205,26 +205,26 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with mixed params", mlString, table);
+            await testRunner.GivenAsync("sample step with mixed params", mlString, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.BindingWithMixedParams("mixed", mlString, table));
         }
 
         [Fact]
-        public void ShouldRaiseAmbiguousIfMultipleMatch()
+        public async Task ShouldRaiseAmbiguousIfMultipleMatch()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsAmbiguousBindings>();
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step without param");
+            await testRunner.GivenAsync("sample step without param");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError);
         }
 
         [Fact]
-        public void ShouldDistinguishByTableParam_CallWithoutTable()
+        public async Task ShouldDistinguishByTableParam_CallWithoutTable()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -232,14 +232,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("Distinguish by table param");
+            await testRunner.GivenAsync("Distinguish by table param");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.DistinguishByTableParam1());
         }
 
         [Fact]
-        public void ShouldDistinguishByTableParam_CallWithTable()
+        public async Task ShouldDistinguishByTableParam_CallWithTable()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -248,26 +248,26 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("Distinguish by table param", null, table);
+            await testRunner.GivenAsync("Distinguish by table param", null, table);
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.OK);
             bindingMock.Verify(x => x.DistinguishByTableParam2(table));
         }
 
         [Fact]
-        public void ShouldRaiseBindingErrorIfWrongParamNumber()
+        public async Task ShouldRaiseBindingErrorIfWrongParamNumber()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with wrong param number");
+            await testRunner.GivenAsync("sample step with wrong param number");
 
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.BindingError);
         }
 
         [Fact]
-        public void ShouldCallBindingThatReturnsTask()
+        public async Task ShouldCallBindingThatReturnsTask()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -287,13 +287,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("Returns a Task");
+            await testRunner.GivenAsync("Returns a Task");
             Assert.True(taskFinished);
 
         }
 
         [Fact]
-        public void ShouldCallBindingThatReturnsTaskAndReportError()
+        public async Task ShouldCallBindingThatReturnsTaskAndReportError()
         {
             var (testRunner, bindingMock) = GetTestRunnerFor<StepExecutionTestsBindings>();
 
@@ -314,14 +314,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             //MockRepository.ReplayAll();
 
-            testRunner.Given("Returns a Task");
+            await testRunner.GivenAsync("Returns a Task");
             Assert.True(taskFinished);
             GetLastTestStatus().Should().Be(ScenarioExecutionStatus.TestError);
             Assert.Equal("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
             
         }
-
-
-
     }
 }

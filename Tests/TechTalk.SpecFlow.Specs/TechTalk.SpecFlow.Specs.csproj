@@ -7,7 +7,7 @@
     <TargetFrameworks>$(SpecFlow_Specs_TFM)</TargetFrameworks>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
     <AssemblyOriginatorKeyFile>$(SpecFlow_KeyFile)</AssemblyOriginatorKeyFile>
-    <SignAssembly>$(SpecFlow_EnableStrongNameSigning)</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <PublicSign>$(SpecFlow_PublicSign)</PublicSign>
     <PackageId>TechTalk.SpecFlow.Specs</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>

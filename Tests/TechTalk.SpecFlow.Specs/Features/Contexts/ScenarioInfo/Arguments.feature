@@ -8,12 +8,12 @@ Scenario: Scenario arguments are empty for regular scenario
 		using TechTalk.SpecFlow;
 
 		[Binding]
-		public class A
+		public class A : Steps
 		{
 			[Then("B")]
 			public void B()
 			{
-				if (ScenarioContext.Current.ScenarioInfo.Arguments.Count != 0) throw new Exception("Scenario arguments are not empty");
+				if (ScenarioContext.ScenarioInfo.Arguments.Count != 0) throw new Exception("Scenario arguments are not empty");
 			}
 		}
         """	
