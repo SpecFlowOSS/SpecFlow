@@ -73,12 +73,6 @@
     <None Include="Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
   <Target Name="RunTokenReplace" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' OR '$(BuildingProject)' == 'true'">
     <ReplaceTextInFileTask InputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.template.cs" OutputFile="$(SolutionDir)TechTalk.SpecFlow\Analytics\AppInsights\AppInsightsInstrumentationKey.cs" TextToReplace="&lt;InstrumentationKeyGoesHere&gt;" TextToReplaceWith="$(AppInsightsInstrumentationKey)" WriteOnlyWhenChanged="true" />
     <ItemGroup>
