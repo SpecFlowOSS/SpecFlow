@@ -24,13 +24,6 @@ public class BindingFactory : IBindingFactory
             : new RegexStepDefinitionBindingBuilder(type, bindingMethod, bindingScope, expressionString);
     }
 
-    public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString,
-        IBindingMethod bindingMethod, BindingScope bindingScope)
-    {
-        regexString ??= stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, bindingMethod);
-        return new StepDefinitionBinding(type, regexString, bindingMethod, bindingScope);
-    }
-
     public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
         IBindingMethod bindingMethod)
     {

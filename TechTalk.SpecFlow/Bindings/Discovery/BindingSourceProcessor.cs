@@ -240,8 +240,6 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             {
                 var stepDefinitionBindingBuilder = bindingFactory.CreateStepDefinitionBindingBuilder(stepDefinitionType, bindingSourceMethod.BindingMethod, scope, regex);
                 _stepDefinitionBindingBuilders.Add(stepDefinitionBindingBuilder);
-                //var stepDefinitionBinding = bindingFactory.CreateStepBinding(stepDefinitionType, regex, bindingSourceMethod.BindingMethod, scope);
-                //ProcessStepDefinitionBinding(stepDefinitionBinding);
             }
         }
 

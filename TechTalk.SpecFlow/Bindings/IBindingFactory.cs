@@ -10,9 +10,6 @@ namespace TechTalk.SpecFlow.Bindings
         IStepDefinitionBindingBuilder CreateStepDefinitionBindingBuilder(StepDefinitionType type, IBindingMethod bindingMethod, 
             BindingScope bindingScope, string expressionString);
 
-        IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString,
-            IBindingMethod bindingMethod, BindingScope bindingScope);
-
         IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
             IBindingMethod bindingMethod);
     }

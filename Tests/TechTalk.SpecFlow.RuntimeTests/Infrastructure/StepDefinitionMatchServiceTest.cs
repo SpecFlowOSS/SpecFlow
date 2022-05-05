@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using Moq;
 using Xunit;
 using TechTalk.SpecFlow.Bindings;
@@ -65,13 +63,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -79,14 +75,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_and_non_matching_scopes()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("m1"), null));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("m2"), new BindingScope("non-matching-tag", null, null)));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod("m1")));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod("m2"), new BindingScope("non-matching-tag", null, null)));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -94,13 +88,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_with_parameters()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStringParam(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStringParam()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -108,14 +100,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_with_parameters_even_if_there_is_a_DataTable_overload()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStringParam(), null));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethodWithDataTableParam(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethodWithStringParam()));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethodWithDataTableParam()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -123,13 +113,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_with_object_parameters()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithObjectParam(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethodWithObjectParam()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -138,14 +126,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_proper_match_with_object_parameters_even_if_there_is_a_DataTable_overload()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethodWithObjectParam(), null));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethodWithDataTableParam(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethodWithObjectParam()));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethodWithDataTableParam()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -153,13 +139,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_fail_when_scope_errors_with_single_match()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod(), new BindingScope("non-matching-tag", null, null)));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod(), new BindingScope("non-matching-tag", null, null)));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out var ambiguityReason, out _);
 
             result.Success.Should().BeFalse();
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousScopes);
@@ -168,29 +152,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_fail_when_scope_errors_with_multiple_matches()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy1"), new BindingScope("non-matching-tag", null, null)));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy2"), new BindingScope("other-non-matching-tag", null, null)));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod("dummy1"), new BindingScope("non-matching-tag", null, null)));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod("dummy2"), new BindingScope("other-non-matching-tag", null, null)));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out var ambiguityReason, out _);
 
             result.Success.Should().BeFalse();
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousScopes);
         }
 
         [Fact] // in case of single parameter error, we pretend success - the error will be displayed runtime
-        public void Should_GetBestMatch_succeed_when_paramter_errors_with_single_match()
+        public void Should_GetBestMatch_succeed_when_parameter_errors_with_single_match()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethod(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethod()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue(); 
         }
@@ -198,14 +178,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_fail_when_parameter_errors_with_multiple_matches()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethod("dummy1"), null));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "(.*)", CreateBindingMethod("dummy2"), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethod("dummy1")));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "(.*)", CreateBindingMethod("dummy2")));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out var ambiguityReason, out _);
 
             result.Success.Should().BeFalse();
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.ParameterErrors);
@@ -214,14 +192,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_fail_when_multiple_matches()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy1"), null));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy2"), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod("dummy1")));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod("dummy2")));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out var ambiguityReason, out _);
 
             result.Success.Should().BeFalse();
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousSteps);
@@ -230,14 +206,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_multiple_matches_are_on_the_same_method()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy"), null));
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, ".*", CreateBindingMethod("dummy"), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod()));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, ".*", CreateBindingMethod()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out _, out _);
 
             result.Success.Should().BeTrue();
         }
@@ -245,13 +219,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Fact]
         public void Should_GetBestMatch_succeed_when_no_matching_step_definitions()
         {
-            whenStepDefinitions.Add(new StepDefinitionBinding(StepDefinitionType.When, "non-maching-regex", CreateBindingMethod(), null));
+            whenStepDefinitions.Add(StepDefinitionHelper.CreateRegex(StepDefinitionType.When, "non-maching-regex", CreateBindingMethod()));
 
             var sut = CreateSUT();
 
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
+            var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out var ambiguityReason, out _);
 
             result.Success.Should().BeFalse();
             ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.None);
