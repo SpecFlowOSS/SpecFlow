@@ -3,6 +3,7 @@ Feature: Cucumber expressions
 
 Rule: Shoud support Cucumber expressions
 
+@ignore
 Scenario: Simple Cucumber expresions are used for Step Definitions
 	Given a scenario 'Simple Scenario' as
          """

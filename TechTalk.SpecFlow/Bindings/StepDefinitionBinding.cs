@@ -17,7 +17,7 @@ public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
 
     public string ValidationErrorMessage { get; }
 
-    public Regex Regex { get; }
+    public Regex Regex => Expression?.Regex;
 
     public IExpression Expression { get; }
 
@@ -39,7 +39,7 @@ public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
         : base(bindingMethod)
     {
         StepDefinitionType = stepDefinitionType;
-        Regex = null;
+        Expression = null;
         BindingScope = bindingScope;
         SourceExpression = sourceExpression;
         ExpressionType = expressionType;
