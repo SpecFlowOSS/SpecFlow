@@ -22,7 +22,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
 
             BindingSourceType bindingSourceType = new BindingSourceType
             {
-                
                 Attributes = new[]
                 {
                     CreateBindingSourceAttribute("BindingAttribute", "TechTalk.SpecFlow.BindingAttribute")
@@ -39,6 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             //ACT
             sut.ProcessType(bindingSourceType);
             sut.ProcessMethod(bindingSourceMethod);
+            sut.BuildingCompleted();
 
             //ASSERT
             var binding = sut.StepDefinitionBindings.Should().ContainSingle().Subject;
