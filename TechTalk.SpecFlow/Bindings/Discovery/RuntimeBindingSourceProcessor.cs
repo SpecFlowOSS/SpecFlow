@@ -5,7 +5,6 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public interface IRuntimeBindingSourceProcessor : IBindingSourceProcessor
     {
-        void BuildingCompleted();
     }
 
     public class RuntimeBindingSourceProcessor : BindingSourceProcessor, IRuntimeBindingSourceProcessor
@@ -52,8 +51,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             return base.ValidateHook(bindingSourceMethod, hookAttribute, hookType);
         }
 
-        public void BuildingCompleted()
+        public override void BuildingCompleted()
         {
+            base.BuildingCompleted();
             bindingRegistry.Ready = true;
         }
     }

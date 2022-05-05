@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Bindings
 {
+    //TODO[cukeex]: remove
     internal static class RegexFactory
     {
         private static RegexOptions RegexOptions = RegexOptions.CultureInvariant;
