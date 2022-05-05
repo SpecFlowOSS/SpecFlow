@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using CucumberExpressions;
 
 namespace TechTalk.SpecFlow.Bindings;
 
@@ -10,4 +11,5 @@ public interface IStepDefinitionBinding : IScopedBinding, IBinding
     bool IsValid { get; }
     string ValidationErrorMessage { get; }
     Regex Regex { get; }
+    IExpression Expression { get; }
 }

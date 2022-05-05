@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings;
@@ -27,14 +28,21 @@ public abstract class StepDefinitionBindingBuilderBase : IStepDefinitionBindingB
         yield return BuildSingle();
     }
 
+    protected virtual RegularExpression CreateExpression(out string expressionType)
+    {
+        var regexSource = GetRegexSource(out expressionType);
+        var regex = new Regex(regexSource, RegexOptions.CultureInvariant);
+        var expression = new RegularExpression(regex);
+        return expression;
+    }
+
     public virtual IStepDefinitionBinding BuildSingle()
     {
         string expressionType = StepDefinitionExpressionTypes.Unknown;
         try
         {
-            var regexSource = GetRegexSource(out expressionType);
-            var regex = new Regex(regexSource, RegexOptions.CultureInvariant);
-            return new StepDefinitionBinding(_stepDefinitionType, regex, _bindingMethod, _bindingScope, expressionType, _sourceExpression);
+            var expression = CreateExpression(out expressionType);
+            return new StepDefinitionBinding(_stepDefinitionType, _bindingMethod, _bindingScope, expressionType, _sourceExpression, expression);
         }
         catch (Exception ex)
         {

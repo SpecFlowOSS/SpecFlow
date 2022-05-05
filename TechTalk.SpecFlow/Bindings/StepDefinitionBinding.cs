@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings;
@@ -18,17 +19,19 @@ public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
 
     public Regex Regex { get; }
 
+    public IExpression Expression { get; }
+
     public BindingScope BindingScope { get; }
     public bool IsScoped => BindingScope != null;
 
-    public StepDefinitionBinding(StepDefinitionType stepDefinitionType, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionType, string sourceExpression)
+    public StepDefinitionBinding(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionType, string sourceExpression, IExpression expression)
         : base(bindingMethod)
     {
         StepDefinitionType = stepDefinitionType;
-        Regex = regex ?? throw new ArgumentNullException(nameof(regex));
         BindingScope = bindingScope;
-        SourceExpression = sourceExpression;
-        ExpressionType = expressionType;
+        ExpressionType = expressionType ?? throw new ArgumentNullException(nameof(expressionType));
+        SourceExpression = sourceExpression ?? throw new ArgumentNullException(nameof(sourceExpression));
+        Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         ValidationErrorMessage = null;
     }
 
