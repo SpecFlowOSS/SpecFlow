@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using FluentAssertions;
+using TechTalk.SpecFlow.RuntimeTests.ErrorHandling;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -30,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         private StepDefinitionMatchService CreateSUT()
         {
-            return new StepDefinitionMatchService(bindingRegistryMock.Object, stepArgumentTypeConverterMock.Object);
+            return new StepDefinitionMatchService(bindingRegistryMock.Object, stepArgumentTypeConverterMock.Object, new StubErrorProvider());
         }
 
         private static BindingMethod CreateBindingMethod(string name = "dummy")

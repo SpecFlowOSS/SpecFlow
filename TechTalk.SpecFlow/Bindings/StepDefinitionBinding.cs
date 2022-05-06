@@ -13,9 +13,9 @@ public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
 
     public string ExpressionType { get; }
 
-    public bool IsValid => ValidationErrorMessage == null;
+    public bool IsValid => ErrorMessage == null;
 
-    public string ValidationErrorMessage { get; }
+    public string ErrorMessage { get; }
 
     public Regex Regex => Expression?.Regex;
 
@@ -32,7 +32,7 @@ public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
         ExpressionType = expressionType ?? throw new ArgumentNullException(nameof(expressionType));
         SourceExpression = sourceExpression ?? throw new ArgumentNullException(nameof(sourceExpression));
         Expression = expression ?? throw new ArgumentNullException(nameof(expression));
-        ValidationErrorMessage = null;
+        ErrorMessage = null;
     }
 
     private StepDefinitionBinding(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionType, string sourceExpression, string errorMessage)
@@ -43,7 +43,7 @@ public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
         BindingScope = bindingScope;
         SourceExpression = sourceExpression;
         ExpressionType = expressionType;
-        ValidationErrorMessage = errorMessage;
+        ErrorMessage = errorMessage;
     }
 
     public static StepDefinitionBinding CreateInvalid(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod,

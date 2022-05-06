@@ -9,7 +9,7 @@ public interface IStepDefinitionBinding : IScopedBinding, IBinding
     string SourceExpression { get; }
     string ExpressionType { get; }
     bool IsValid { get; }
-    string ValidationErrorMessage { get; }
+    string ErrorMessage { get; }
     Regex Regex { get; }
     IExpression Expression { get; }
 }
