@@ -17,13 +17,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
             
         }
 
-        [Given("sample step with (single) param")]
+        [Given("^sample step with (single) param$")]
         public virtual void BindingWithSingleParam(string param)
         {
             
         }
 
-        [Given("sample step with (multi)(ple) param")]
+        [Given("^sample step with (multi)(ple) param$")]
         public virtual void BindingWithMultipleParam(string param1, string param2)
         {
             
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         }
 
-        [Given("sample step with (mixed) params")]
+        [Given("^sample step with (mixed) params$")]
         public virtual void BindingWithMixedParams(string param1, string multiLineString, Table table)
         {
 

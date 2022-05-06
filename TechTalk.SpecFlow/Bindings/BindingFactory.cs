@@ -1,14 +1,17 @@
-﻿using TechTalk.SpecFlow.Bindings.Reflection;
+﻿using TechTalk.SpecFlow.Bindings.CucumberExpressions;
+using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings;
 
 public class BindingFactory : IBindingFactory
 {
     private readonly IStepDefinitionRegexCalculator stepDefinitionRegexCalculator;
+    private readonly ICucumberExpressionStepDefinitionBindingBuilderFactory _cucumberExpressionStepDefinitionBindingBuilderFactory;
 
-    public BindingFactory(IStepDefinitionRegexCalculator stepDefinitionRegexCalculator)
+    public BindingFactory(IStepDefinitionRegexCalculator stepDefinitionRegexCalculator, ICucumberExpressionStepDefinitionBindingBuilderFactory cucumberExpressionStepDefinitionBindingBuilderFactory)
     {
         this.stepDefinitionRegexCalculator = stepDefinitionRegexCalculator;
+        _cucumberExpressionStepDefinitionBindingBuilderFactory = cucumberExpressionStepDefinitionBindingBuilderFactory;
     }
 
     public IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope,
@@ -22,7 +25,7 @@ public class BindingFactory : IBindingFactory
         return expressionString == null
             ? new MethodNameStepDefinitionBindingBuilder(stepDefinitionRegexCalculator, stepDefinitionType, bindingMethod, bindingScope)
             : CucumberExpressionStepDefinitionBindingBuilder.IsCucumberExpression(expressionString)
-                ? new CucumberExpressionStepDefinitionBindingBuilder(stepDefinitionType, bindingMethod, bindingScope, expressionString)
+                ? _cucumberExpressionStepDefinitionBindingBuilderFactory.Create(stepDefinitionType, bindingMethod, bindingScope, expressionString)
                 : new RegexStepDefinitionBindingBuilder(stepDefinitionType, bindingMethod, bindingScope, expressionString);
     }
 

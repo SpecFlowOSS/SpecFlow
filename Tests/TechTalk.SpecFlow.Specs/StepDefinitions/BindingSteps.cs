@@ -61,10 +61,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddStepBinding(projectName, stepDefinition);
         }
 
-        [Given(@"the following hooks?")]
-        [Given(@"the following step definitions?")]
-        [Given(@"the following step argument transformations?")]
-        [Given(@"the following binding methods?")]
+        [Given(@"the following hook(s)")]
+        [Given(@"the following step definition(s)")]
+        [Given(@"the following step argument transformation(s)")]
+        [Given(@"the following binding method(s)")]
         public void GivenTheFollowingBindings(string bindingCode)
         {
             _projectsDriver.AddStepBinding(bindingCode);

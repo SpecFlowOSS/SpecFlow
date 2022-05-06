@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings;
@@ -9,7 +11,15 @@ public class RegexStepDefinitionBindingBuilder : StepDefinitionBindingBuilderBas
     {
     }
 
-    protected override string GetRegexSource(out string expressionType)
+    protected override IExpression CreateExpression(out string expressionType)
+    {
+        var regexSource = GetRegexSource(out expressionType);
+        var regex = new Regex(regexSource, RegexOptions.CultureInvariant);
+        var expression = new RegularExpression(regex);
+        return expression;
+    }
+
+    protected virtual string GetRegexSource(out string expressionType)
     {
         expressionType = StepDefinitionExpressionTypes.RegularExpression;
         var regex = _sourceExpression;

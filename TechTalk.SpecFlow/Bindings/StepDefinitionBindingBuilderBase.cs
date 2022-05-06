@@ -21,20 +21,12 @@ public abstract class StepDefinitionBindingBuilderBase : IStepDefinitionBindingB
         _sourceExpression = sourceExpression;
     }
 
-    protected abstract string GetRegexSource(out string expressionType);
-
     public virtual IEnumerable<IStepDefinitionBinding> Build()
     {
         yield return BuildSingle();
     }
 
-    protected virtual RegularExpression CreateExpression(out string expressionType)
-    {
-        var regexSource = GetRegexSource(out expressionType);
-        var regex = new Regex(regexSource, RegexOptions.CultureInvariant);
-        var expression = new RegularExpression(regex);
-        return expression;
-    }
+    protected abstract IExpression CreateExpression(out string expressionType);
 
     public virtual IStepDefinitionBinding BuildSingle()
     {

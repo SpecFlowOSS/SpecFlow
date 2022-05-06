@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Analytics.AppInsights;
 using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.EnvironmentAccess;
@@ -39,6 +40,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<SpecFlowAttributesFilter, ISpecFlowAttributesFilter>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
+            container.RegisterTypeAs<CucumberExpressionStepDefinitionBindingBuilderFactory, ICucumberExpressionStepDefinitionBindingBuilderFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
 #pragma warning disable CS0618
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
