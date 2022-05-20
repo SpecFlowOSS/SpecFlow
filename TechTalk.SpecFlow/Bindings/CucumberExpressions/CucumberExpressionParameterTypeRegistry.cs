@@ -11,6 +11,7 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
 {
     private readonly IBindingRegistry _bindingRegistry;
     private readonly Lazy<Dictionary<string, ISpecFlowCucumberExpressionParameterType>> _parameterTypesByName;
+    private readonly HashSet<IBindingType> _consideredParameterTypes = new();
 
     public CucumberExpressionParameterTypeRegistry(IBindingRegistry bindingRegistry)
     {
@@ -65,6 +66,8 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, guidBindingType),
         };
 
+        var enumTypes = GetEnumTypesUsedInParameters();
+
         //TODO[cukeex]: support strings without custom converters
         var convertQuotedStringMethod = new RuntimeBindingMethod(GetType().GetMethod(nameof(ConvertQuotedString)));
         _bindingRegistry.RegisterStepArgumentTransformationBinding(new CucumberExpressionParameterTypeBinding(ParameterTypeConstants.StringParameterRegexDoubleQuote, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
@@ -73,6 +76,7 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
         var userTransformations = _bindingRegistry.GetStepTransformations().Select(t => new UserDefinedCucumberExpressionParameterTypeTransformation(t));
 
         var parameterTypes = builtInTransformations.Cast<ICucumberExpressionParameterTypeTransformation>()
+                                                   .Concat(enumTypes)
                                                    .Concat(userTransformations)
                                                    .GroupBy(t => new Tuple<IBindingType, string>(t.TargetType, t.Name))
                                                    .Select(g => new CucumberExpressionParameterType(g.Key.Item2 ?? g.Key.Item1.Name, g.Key.Item1, g))
@@ -81,6 +85,19 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
         DumpParameterTypes(parameterTypes);
 
         return parameterTypes;
+    }
+
+    private IEnumerable<ICucumberExpressionParameterTypeTransformation> GetEnumTypesUsedInParameters()
+    {
+        var enumParameterTypes = _consideredParameterTypes
+                                 .OfType<RuntimeBindingType>()
+                                 .Where(t => t.Type.IsEnum);
+        foreach (var enumParameterType in enumParameterTypes)
+        {
+            yield return new BuiltInCucumberExpressionParameterTypeTransformation(
+                CucumberExpressionParameterType.MatchAllRegex,
+                enumParameterType);
+        }
     }
 
     [Conditional("DEBUG")]
@@ -103,5 +120,15 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
     public IEnumerable<IParameterType> GetParameterTypes()
     {
         return _parameterTypesByName.Value.Values;
+    }
+
+    public void OnBindingMethodProcessed(IBindingMethod bindingMethod)
+    {
+        var parameterTypes = bindingMethod.Parameters
+                             .Select(p => p.Type);
+        foreach (var parameterType in parameterTypes)
+        {
+            _consideredParameterTypes.Add(parameterType);
+        }
     }
 }

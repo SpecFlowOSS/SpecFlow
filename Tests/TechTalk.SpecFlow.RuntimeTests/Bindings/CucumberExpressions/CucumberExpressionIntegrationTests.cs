@@ -14,6 +14,12 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Bindings.CucumberExpressions;
 
+public enum SampleColorEnum
+{
+    Yellow,
+    Brown
+}
+
 public class CucumberExpressionIntegrationTests
 {
     public class SampleBindings
@@ -40,7 +46,14 @@ public class CucumberExpressionIntegrationTests
         {
             ExecutedParams.Add((doubleParam, typeof(double)));
         }
-
+        public void StepDefWithDecimalParam(decimal decimalParam)
+        {
+            ExecutedParams.Add((decimalParam, typeof(decimal)));
+        }
+        public void StepDefWithEnumParam(SampleColorEnum enumParam)
+        {
+            ExecutedParams.Add((enumParam, typeof(SampleColorEnum)));
+        }
     }
 
     public class TestDependencyProvider : DefaultDependencyProvider
@@ -183,12 +196,25 @@ public class CucumberExpressionIntegrationTests
     }
 
     [Fact]
-    public async void Should_match_step_with_float_parameter()
+    public async void Should_match_step_with_float_parameter_to_double()
     {
         var expression = "I have {float} cucumbers in my belly";
-        var stepText = "I have 42 cucumbers in my belly";
-        var expectedParam = (42.0, typeof(double));
+        var stepText = "I have 42.1 cucumbers in my belly";
+        var expectedParam = (42.1, typeof(double));
         var methodName = nameof(SampleBindings.StepDefWithDoubleParam);
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
+    [Fact]
+    public async void Should_match_step_with_float_parameter_to_decimal()
+    {
+        var expression = "I have {float} cucumbers in my belly";
+        var stepText = "I have 42.1 cucumbers in my belly";
+        var expectedParam = (42.1m, typeof(decimal));
+        var methodName = nameof(SampleBindings.StepDefWithDecimalParam);
 
         var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
 
@@ -222,5 +248,17 @@ public class CucumberExpressionIntegrationTests
         sampleBindings.ExecutedParams.Should().Contain(expectedParam);
     }
 
-    //TODO[cukeex]: enum
+    // enum support
+    [Fact]
+    public async void Should_match_step_with_enum_parameter()
+    {
+        var expression = "I have {SampleColorEnum} cucumbers in my belly";
+        var stepText = "I have Yellow cucumbers in my belly";
+        var expectedParam = (SampleColorEnum.Yellow, typeof(SampleColorEnum));
+        var methodName = nameof(SampleBindings.StepDefWithEnumParam);
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
 }

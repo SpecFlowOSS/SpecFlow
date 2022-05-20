@@ -20,6 +20,7 @@ public class CucumberExpressionStepDefinitionBindingBuilderFactory
 
     public CucumberExpressionStepDefinitionBindingBuilder Create(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, BindingScope bindingScope, string sourceExpression)
     {
+        _cucumberExpressionParameterTypeRegistry.OnBindingMethodProcessed(bindingMethod);
         return new CucumberExpressionStepDefinitionBindingBuilder(_cucumberExpressionParameterTypeRegistry, stepDefinitionType, bindingMethod, bindingScope, sourceExpression);
     }
 }
