@@ -47,7 +47,9 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, objectBindingType, name: string.Empty, useForSnippets: false),
             new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.IntParameterRegex, intBindingType, ParameterTypeConstants.IntParameterName, weight: 1000),
             new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.FloatParameterRegex, doubleBindingType, ParameterTypeConstants.FloatParameterName),
-            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, ParameterTypeConstants.WordParameterName, useForSnippets: false),
+            //TODO[cukeex]: fix constant in cuke ex
+            //new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, ParameterTypeConstants.WordParameterName, useForSnippets: false),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, "word", useForSnippets: false),
 
             // other types supported by SpecFlow by default: Make them accessible with type name (e.g. Int32)
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, boolBindingType),
@@ -63,6 +65,7 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, guidBindingType),
         };
 
+        //TODO[cukeex]: support strings without custom converters
         var convertQuotedStringMethod = new RuntimeBindingMethod(GetType().GetMethod(nameof(ConvertQuotedString)));
         _bindingRegistry.RegisterStepArgumentTransformationBinding(new CucumberExpressionParameterTypeBinding(ParameterTypeConstants.StringParameterRegexDoubleQuote, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
         _bindingRegistry.RegisterStepArgumentTransformationBinding(new CucumberExpressionParameterTypeBinding(ParameterTypeConstants.StringParameterRegexApostrophe, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
