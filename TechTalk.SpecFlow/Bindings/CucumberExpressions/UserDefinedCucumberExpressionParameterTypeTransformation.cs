@@ -8,7 +8,7 @@ public class UserDefinedCucumberExpressionParameterTypeTransformation : ICucumbe
 {
     private readonly IStepArgumentTransformationBinding _stepArgumentTransformationBinding;
 
-    public string Name => GetProvidedTransformationTypeName(_stepArgumentTransformationBinding);
+    public string Name => _stepArgumentTransformationBinding.Name;
     public string Regex { get; }
     public IBindingType TargetType => _stepArgumentTransformationBinding.Method.ReturnType;
     public bool UseForSnippets => true;
@@ -18,12 +18,6 @@ public class UserDefinedCucumberExpressionParameterTypeTransformation : ICucumbe
     {
         _stepArgumentTransformationBinding = stepArgumentTransformationBinding;
         Regex = GetCucumberExpressionRegex(stepArgumentTransformationBinding);
-    }
-
-    private static string GetProvidedTransformationTypeName(IStepArgumentTransformationBinding transformationBinding)
-    {
-        // later IStepArgumentTransformationBinding could capture name
-        return transformationBinding is CucumberExpressionParameterTypeBinding parameterTypeBinding ? parameterTypeBinding.Name : null; 
     }
 
     private string GetCucumberExpressionRegex(IStepArgumentTransformationBinding stepArgumentTransformationBinding)

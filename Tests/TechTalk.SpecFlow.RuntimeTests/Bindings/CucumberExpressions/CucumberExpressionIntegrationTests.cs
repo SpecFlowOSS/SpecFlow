@@ -326,4 +326,22 @@ public class CucumberExpressionIntegrationTests
         sampleBindings.ExecutedParams.Should().Contain(expectedParam);
     }
 
+
+    [Fact]
+    public async void Should_match_step_with_custom_parameter_with_custom_name()
+    {
+        var expression = "there is a {user} registered";
+        var stepText = "there is a user Marvin registered";
+        var expectedParam = (new SampleUser("Marvin"), typeof(SampleUser));
+        var methodName = nameof(SampleBindings.StepDefWithCustomClassParam);
+        IStepArgumentTransformationBinding transformation = new StepArgumentTransformationBinding(
+            "user ([A-Z][a-z]+)", 
+            new RuntimeBindingMethod(typeof(SampleUser).GetMethod(nameof(SampleUser.Create))),
+            "user");
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText, new[] { transformation});
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
 }

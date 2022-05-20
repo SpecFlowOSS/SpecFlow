@@ -30,8 +30,8 @@ public class BindingFactory : IBindingFactory
     }
 
     public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
-        IBindingMethod bindingMethod)
+        IBindingMethod bindingMethod, string parameterTypeName = null)
     {
-        return new StepArgumentTransformationBinding(regexString, bindingMethod);
+        return new StepArgumentTransformationBinding(regexString, bindingMethod, parameterTypeName);
     }
 }

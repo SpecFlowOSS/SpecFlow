@@ -11,6 +11,6 @@ namespace TechTalk.SpecFlow.Bindings
             BindingScope bindingScope, string expressionString);
 
         IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
-            IBindingMethod bindingMethod);
+            IBindingMethod bindingMethod, string parameterTypeName = null);
     }
 }

@@ -70,8 +70,8 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
 
         //TODO[cukeex]: support strings without custom converters
         var convertQuotedStringMethod = new RuntimeBindingMethod(GetType().GetMethod(nameof(ConvertQuotedString)));
-        _bindingRegistry.RegisterStepArgumentTransformationBinding(new CucumberExpressionParameterTypeBinding(ParameterTypeConstants.StringParameterRegexDoubleQuote, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
-        _bindingRegistry.RegisterStepArgumentTransformationBinding(new CucumberExpressionParameterTypeBinding(ParameterTypeConstants.StringParameterRegexApostrophe, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
+        _bindingRegistry.RegisterStepArgumentTransformationBinding(new StepArgumentTransformationBinding(ParameterTypeConstants.StringParameterRegexDoubleQuote, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
+        _bindingRegistry.RegisterStepArgumentTransformationBinding(new StepArgumentTransformationBinding(ParameterTypeConstants.StringParameterRegexApostrophe, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
 
         var userTransformations = _bindingRegistry.GetStepTransformations().Select(t => new UserDefinedCucumberExpressionParameterTypeTransformation(t));
 
