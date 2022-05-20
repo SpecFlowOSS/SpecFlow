@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
@@ -18,6 +19,42 @@ public enum SampleColorEnum
 {
     Yellow,
     Brown
+}
+
+public class SampleUser
+{
+    public string UserName { get; }
+
+    public SampleUser(string userName)
+    {
+        UserName = userName;
+    }
+
+    public static SampleUser Create(string userName) => new(userName);
+
+    protected bool Equals(SampleUser other) => UserName == other.UserName;
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj))
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        if (obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        return Equals((SampleUser)obj);
+    }
+
+    public override int GetHashCode() => UserName.GetHashCode();
 }
 
 public class CucumberExpressionIntegrationTests
@@ -54,6 +91,10 @@ public class CucumberExpressionIntegrationTests
         {
             ExecutedParams.Add((enumParam, typeof(SampleColorEnum)));
         }
+        public void StepDefWithCustomClassParam(SampleUser userParam)
+        {
+            ExecutedParams.Add((userParam, typeof(SampleUser)));
+        }
     }
 
     public class TestDependencyProvider : DefaultDependencyProvider
@@ -66,7 +107,7 @@ public class CucumberExpressionIntegrationTests
         }
     }
 
-    private async Task<SampleBindings> PerformStepExecution(string methodName, string expression, string stepText)
+    private async Task<SampleBindings> PerformStepExecution(string methodName, string expression, string stepText, IStepArgumentTransformationBinding[] transformations = null, Action<IBindingRegistry> onBindingRegistryPreparation = null)
     {
         var containerBuilder = new ContainerBuilder(new TestDependencyProvider());
         var globalContainer = containerBuilder.CreateGlobalContainer(GetType().Assembly);
@@ -74,6 +115,11 @@ public class CucumberExpressionIntegrationTests
         var engine = testThreadContainer.Resolve<ITestExecutionEngine>();
 
         var bindingSourceProcessor = globalContainer.Resolve<IRuntimeBindingSourceProcessor>();
+
+        var bindingRegistry = globalContainer.Resolve<IBindingRegistry>();
+        transformations?.ToList().ForEach(binding => bindingRegistry.RegisterStepArgumentTransformationBinding(binding));
+        onBindingRegistryPreparation?.Invoke(bindingRegistry);
+
         var bindingSourceMethod = new BindingSourceMethod
         {
             BindingMethod = new RuntimeBindingMethod(typeof(SampleBindings).GetMethod(methodName)),
@@ -261,4 +307,23 @@ public class CucumberExpressionIntegrationTests
 
         sampleBindings.ExecutedParams.Should().Contain(expectedParam);
     }
+
+    // custom type conversion support
+
+    [Fact]
+    public async void Should_match_step_with_custom_parameter_with_type_name()
+    {
+        var expression = "there is a {SampleUser} registered";
+        var stepText = "there is a user Marvin registered";
+        var expectedParam = (new SampleUser("Marvin"), typeof(SampleUser));
+        var methodName = nameof(SampleBindings.StepDefWithCustomClassParam);
+        IStepArgumentTransformationBinding transformation = new StepArgumentTransformationBinding(
+            "user ([A-Z][a-z]+)", 
+            new RuntimeBindingMethod(typeof(SampleUser).GetMethod(nameof(SampleUser.Create))));
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText, new[] { transformation});
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
 }
