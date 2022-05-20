@@ -44,6 +44,6 @@ public class CucumberExpressionStepDefinitionBindingBuilder : StepDefinitionBind
     protected override IExpression CreateExpression(out string expressionType)
     {
         expressionType = StepDefinitionExpressionTypes.CucumberExpression;
-        return new CucumberExpression(_sourceExpression, _cucumberExpressionParameterTypeRegistry);
+        return new SpecFlowCucumberExpression(_sourceExpression, _cucumberExpressionParameterTypeRegistry);
     }
 }

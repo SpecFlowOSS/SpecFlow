@@ -46,14 +46,14 @@ public class CucumberExpressionStepDefinitionBindingBuilderTests
     }
 
     //TODO[cukeex]: figure out what to expect
-    //[Fact]
-    //public void Should_build_from_expression_with_string_param()
-    //{
-    //    var sut = CreateSut("there is a user {string} registered");
+    [Fact]
+    public void Should_build_from_expression_with_string_param()
+    {
+        var sut = CreateSut("there is a user {string} registered");
 
-    //    var result = sut.BuildSingle();
+        var result = sut.BuildSingle();
 
-    //    result.ExpressionType.Should().Be(StepDefinitionExpressionTypes.CucumberExpression);
-    //    result.Regex?.ToString().Should().Be(@"^there is a user () registered$");
-    //}
+        result.ExpressionType.Should().Be(StepDefinitionExpressionTypes.CucumberExpression);
+        result.Regex?.ToString().Should().Be(@"^there is a user () registered$");
+    }
 }
