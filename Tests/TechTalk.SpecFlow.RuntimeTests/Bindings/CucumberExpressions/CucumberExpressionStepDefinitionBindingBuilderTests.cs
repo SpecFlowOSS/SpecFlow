@@ -54,6 +54,6 @@ public class CucumberExpressionStepDefinitionBindingBuilderTests
         var result = sut.BuildSingle();
 
         result.ExpressionType.Should().Be(StepDefinitionExpressionTypes.CucumberExpression);
-        result.Regex?.ToString().Should().Be(@"^there is a user () registered$");
+        result.Regex?.ToString().Should().Be(@"^there is a user (?:(?:""([^""\\]*(?:\\.[^""\\]*)*)"")|(?:'([^'\\]*(?:\\.[^'\\]*)*)')) registered$");
     }
 }

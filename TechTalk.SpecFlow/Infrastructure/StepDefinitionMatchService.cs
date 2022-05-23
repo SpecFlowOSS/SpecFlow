@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private object[] CalculateArguments(Match match, StepInstance stepInstance)
         {
-            var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            var regexArgs = match.Groups.Cast<Group>().Skip(1).Where(g => g.Success).Select(g => g.Value);
             var arguments = regexArgs.Cast<object>().ToList();
             if (stepInstance.MultilineTextArgument != null)
                 arguments.Add(stepInstance.MultilineTextArgument);

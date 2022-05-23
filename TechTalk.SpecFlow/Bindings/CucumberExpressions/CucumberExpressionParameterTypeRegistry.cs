@@ -52,8 +52,7 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
             //new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, ParameterTypeConstants.WordParameterName, useForSnippets: false),
             new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, "word", useForSnippets: false),
 
-            //new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.StringParameterRegexDoubleQuote, doubleBindingType, ParameterTypeConstants.StringParameterName),
-            //new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.StringParameterRegexApostrophe, doubleBindingType, ParameterTypeConstants.StringParameterName),
+            //the regex specified here will be ignored because of the special string type handling implemented in SpecFlowCucumberExpression
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, doubleBindingType, ParameterTypeConstants.StringParameterName),
 
             // other types supported by SpecFlow by default: Make them accessible with type name (e.g. Int32)
@@ -71,11 +70,6 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
         };
 
         var enumTypes = GetEnumTypesUsedInParameters();
-
-        //TODO[cukeex]: support strings without custom converters
-        //var convertQuotedStringMethod = new RuntimeBindingMethod(GetType().GetMethod(nameof(ConvertQuotedString)));
-        //_bindingRegistry.RegisterStepArgumentTransformationBinding(new StepArgumentTransformationBinding(ParameterTypeConstants.StringParameterRegexDoubleQuote, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
-        //_bindingRegistry.RegisterStepArgumentTransformationBinding(new StepArgumentTransformationBinding(ParameterTypeConstants.StringParameterRegexApostrophe, convertQuotedStringMethod, ParameterTypeConstants.StringParameterName));
 
         var userTransformations = _bindingRegistry.GetStepTransformations().Select(t => new UserDefinedCucumberExpressionParameterTypeTransformation(t));
 
