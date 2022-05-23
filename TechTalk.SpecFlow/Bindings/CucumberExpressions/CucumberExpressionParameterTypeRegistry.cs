@@ -73,11 +73,11 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
 
         var userTransformations = _bindingRegistry.GetStepTransformations().Select(t => new UserDefinedCucumberExpressionParameterTypeTransformation(t));
 
-        var parameterTypes = builtInTransformations.Cast<ICucumberExpressionParameterTypeTransformation>()
+        var parameterTypes = builtInTransformations
                                                    .Concat(enumTypes)
                                                    .Concat(userTransformations)
-                                                   .GroupBy(t => new Tuple<IBindingType, string>(t.TargetType, t.Name))
-                                                   .Select(g => new CucumberExpressionParameterType(g.Key.Item2 ?? g.Key.Item1.Name, g.Key.Item1, g))
+                                                   .GroupBy(t => (t.TargetType, t.Name))
+                                                   .Select(g => new CucumberExpressionParameterType(g.Key.Name ?? g.Key.TargetType.Name, g.Key.TargetType, g))
                                                    .ToDictionary(pt => pt.Name, pt => (ISpecFlowCucumberExpressionParameterType)pt);
 
         DumpParameterTypes(parameterTypes);

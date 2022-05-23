@@ -190,7 +190,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private void ProcessStepArgumentTransformationAttribute(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepArgumentTransformationAttribute)
         {
             string regex = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(0) ?? stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Regex));
-            string name = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(0) ?? stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Name));
+            string name = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Name));
 
             if (!ValidateStepArgumentTransformation(bindingSourceMethod, stepArgumentTransformationAttribute))
                 return;
