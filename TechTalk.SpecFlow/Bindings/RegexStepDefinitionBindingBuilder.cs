@@ -14,7 +14,7 @@ public class RegexStepDefinitionBindingBuilder : StepDefinitionBindingBuilderBas
     protected override IExpression CreateExpression(out string expressionType)
     {
         var regexSource = GetRegexSource(out expressionType);
-        var regex = new Regex(regexSource, RegexOptions.CultureInvariant);
+        var regex = RegexFactory.CreateRegexForBindings(regexSource);
         var expression = new RegularExpression(regex);
         return expression;
     }
@@ -22,9 +22,6 @@ public class RegexStepDefinitionBindingBuilder : StepDefinitionBindingBuilderBas
     protected virtual string GetRegexSource(out string expressionType)
     {
         expressionType = StepDefinitionExpressionTypes.RegularExpression;
-        var regex = _sourceExpression;
-        if (!regex.StartsWith("^")) regex = "^" + regex;
-        if (!regex.EndsWith("$")) regex += "$";
-        return regex;
+        return RegexFactory.GetWholeTextMatchRegexSource(_sourceExpression);
     }
 }

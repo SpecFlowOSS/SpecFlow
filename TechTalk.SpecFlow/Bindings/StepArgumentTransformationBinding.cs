@@ -17,8 +17,15 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         public StepArgumentTransformationBinding(string regexString, IBindingMethod bindingMethod, string name = null)
-            : this(RegexFactory.Create(regexString), bindingMethod, name)
+            : this(CreateRegexOrNull(regexString), bindingMethod, name)
         {
+        }
+
+        private static Regex CreateRegexOrNull(string regexString)
+        {
+            if (regexString == null)
+                return null;
+            return RegexFactory.CreateWholeTextRegexForBindings(regexString);
         }
     }
 }
