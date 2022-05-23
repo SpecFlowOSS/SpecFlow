@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using TechTalk.SpecFlow.Bindings;
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             //ARRANGE
             var sut = CreateBindingSourceProcessor();
 
-            BindingSourceType bindingSourceType = new BindingSourceType
+            var bindingSourceType = new BindingSourceType
             {
                 Attributes = new[]
                 {
@@ -28,11 +29,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
                 },
             };
 
-            BindingSourceMethod bindingSourceMethod = new BindingSourceMethod();
-            bindingSourceMethod.Attributes = new[]
+            var bindingSourceMethod = new BindingSourceMethod
             {
-                CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute")
-                    .WithValue("an authenticated user"),
+                BindingMethod = CreateBindingMethodStub(),
+                Attributes = new[]
+                {
+                    CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute")
+                        .WithValue("an authenticated user"),
+                }
             };
 
             //ACT
@@ -47,10 +51,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             binding.Regex.IsMatch("an authenticated user").Should().BeTrue();
         }
 
-        private static BindingSourceAttribute CreateBindingSourceAttribute(string name, string fullName) => new BindingSourceAttribute
+        private static BindingSourceAttribute CreateBindingSourceAttribute(string name, string fullName) => new()
         {
             AttributeType = new BindingType(name, fullName, "default"),
-            AttributeValues = new IBindingSourceAttributeValueProvider[0],
+            AttributeValues = Array.Empty<IBindingSourceAttributeValueProvider>(),
             NamedAttributeValues = new Dictionary<string, IBindingSourceAttributeValueProvider>()
         };
 
@@ -58,6 +62,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         {
             //NOTE: BindingSourceProcessor is abstract, to test its base functionality we need to instantiate a subclass
             return new BindingSourceProcessorStub();
+        }
+
+        private BindingMethod CreateBindingMethodStub()
+        {
+            var bindingType = new BindingType("MyType", "MyProject.MyType", "MyProject");
+            return new BindingMethod(bindingType, "MyMethod", Array.Empty<IBindingParameter>(), RuntimeBindingType.Void);
         }
     }
 
