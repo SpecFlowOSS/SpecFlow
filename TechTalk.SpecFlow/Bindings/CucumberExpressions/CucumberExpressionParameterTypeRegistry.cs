@@ -80,8 +80,6 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
                                                    .Select(g => new CucumberExpressionParameterType(g.Key.Name ?? g.Key.TargetType.Name, g.Key.TargetType, g))
                                                    .ToDictionary(pt => pt.Name, pt => (ISpecFlowCucumberExpressionParameterType)pt);
 
-        DumpParameterTypes(parameterTypes);
-
         return parameterTypes;
     }
 
@@ -95,16 +93,6 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
             yield return new BuiltInCucumberExpressionParameterTypeTransformation(
                 CucumberExpressionParameterType.MatchAllRegex,
                 enumParameterType);
-        }
-    }
-
-    [Conditional("DEBUG")]
-    private static void DumpParameterTypes(Dictionary<string, ISpecFlowCucumberExpressionParameterType> parameterTypes)
-    {
-        foreach (var parameterType in parameterTypes)
-        {
-            Console.WriteLine(
-                $"PT: {parameterType.Key}, transformations: {string.Join(",", parameterType.Value.Transformations.Select(t => t.Regex))}, Regexps: {string.Join(",", parameterType.Value.RegexStrings)}");
         }
     }
 
