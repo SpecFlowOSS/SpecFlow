@@ -1,9 +1,6 @@
-﻿Feature: Put feature-title here
-	Put feature description here
+﻿Feature: Verify Test
 
-Background:
-    Given Put your Background here
-
-Scenario: Put your Scenario here
-	When Put your Action here
-    Then Put your Condition here
+Scenario: Check if Verify is working
+	When I try Verify with SpecFlow
+	Then it works
+    

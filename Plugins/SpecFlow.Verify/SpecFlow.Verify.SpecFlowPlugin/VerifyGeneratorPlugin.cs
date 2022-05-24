@@ -13,11 +13,9 @@ namespace SpecFlow.Verify.SpecFlowPlugin
         public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters,
             UnitTestProviderConfiguration unitTestProviderConfiguration)
         {
-            
-
             generatorPluginEvents.RegisterDependencies += (sender, args) =>
             {
-                args.ObjectContainer.RegisterTypeAs<VerifyDecorator, ITestClassTagDecorator>("verify");
+                args.ObjectContainer.RegisterTypeAs<VerifyDecorator, ITestClassDecorator>("verify");
             };
         }
     }

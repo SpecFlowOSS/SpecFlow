@@ -4,7 +4,7 @@ using TechTalk.SpecFlow.Generator.UnitTestConverter;
 
 namespace SpecFlow.Verify.SpecFlowPlugin;
 
-public class VerifyDecorator : ITestClassTagDecorator
+public class VerifyDecorator : ITestClassDecorator
 {
     private readonly CodeDomHelper _codeDomHelper;
 
@@ -13,16 +13,13 @@ public class VerifyDecorator : ITestClassTagDecorator
         _codeDomHelper = codeDomHelper;
     }
 
-    public int Priority { get; }
+    public int Priority { get; } = 0;
 
-    public bool RemoveProcessedTags { get; }
+    public bool CanDecorateFrom(TestClassGenerationContext generationContext) => true;
 
-    public bool ApplyOtherDecoratorsForProcessedTags { get; }
-
-    public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext) => true;
-
-    public void DecorateFrom(string tagName, TestClassGenerationContext generationContext)
+    public void DecorateFrom(TestClassGenerationContext generationContext)
     {
         _codeDomHelper.AddAttribute(generationContext.TestClass, "UsesVerify");
+
     }
 }
