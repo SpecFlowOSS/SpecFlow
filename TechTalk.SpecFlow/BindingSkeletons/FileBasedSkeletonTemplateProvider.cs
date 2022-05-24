@@ -45,9 +45,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return template;
         }
 
-        public string GetStepDefinitionTemplate(ProgrammingLanguage language, bool withRegex)
+        public string GetStepDefinitionTemplate(ProgrammingLanguage language, bool withExpression)
         {
-            string key = $"{language}/StepDefinition{(withRegex ? "Regex" : "")}";
+            string key = $"{language}/StepDefinition{(withExpression ? "Expression" : "")}";
             string template = GetTemplate(key);
             if (template == null)
                 return MissingTemplate(key);

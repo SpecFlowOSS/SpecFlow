@@ -46,17 +46,50 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         public virtual string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style, CultureInfo bindingCulture)
         {
-            var withRegex = style == StepDefinitionSkeletonStyle.RegexAttribute;
-            var template = templateProvider.GetStepDefinitionTemplate(language, withRegex);
+            var withExpression = style == StepDefinitionSkeletonStyle.RegexAttribute || style == StepDefinitionSkeletonStyle.CucumberExpressionAttribute;
+            var template = templateProvider.GetStepDefinitionTemplate(language, withExpression);
             var analyzedStepText = Analyze(stepInstance, bindingCulture);
             //{attribute}/{regex}/{methodName}/{parameters}
             return ApplyTemplate(template, new
                                                {
                                                    attribute = stepInstance.StepDefinitionType,
-                                                   regex = withRegex ? GetRegex(analyzedStepText) : "",
+                                                   expression = withExpression ? GetExpression(analyzedStepText, style, language) : "",
                                                    methodName = GetMethodName(stepInstance, analyzedStepText, style, language),
                                                    parameters = string.Join(", ", analyzedStepText.Parameters.Select(p => ToDeclaration(language, p)).ToArray())
                                                });
+        }
+
+        private string GetExpression(AnalyzedStepText analyzedStepText, StepDefinitionSkeletonStyle style, ProgrammingLanguage programmingLanguage)
+        {
+            switch (style)
+            {
+                case StepDefinitionSkeletonStyle.RegexAttribute:
+                    var regex = GetRegex(analyzedStepText);
+                    var stringPrefix = programmingLanguage == ProgrammingLanguage.VB ? "" : "@";
+                    return $"{stringPrefix}\"{regex}\"";
+                case StepDefinitionSkeletonStyle.CucumberExpressionAttribute:
+                    var cucumberExpression = GetCucumberExpression(analyzedStepText);
+                    return $"\"{cucumberExpression}\"";
+                default: 
+                    return "";
+            }
+        }
+
+        private string GetCucumberExpression(AnalyzedStepText stepText)
+        {
+            StringBuilder result = new StringBuilder();
+
+            result.Append(EscapeRegex(stepText.TextParts[0]));
+            for (int i = 1; i < stepText.TextParts.Count; i++)
+            {
+                var parameter = stepText.Parameters[i - 1];
+                result.AppendFormat("{{{0}}}", parameter.CucumberExpressionTypeName ?? parameter.Type);
+                result.Append(EscapeRegex(stepText.TextParts[i]));
+            }
+
+            return result.ToString();
+
+            throw new NotImplementedException();
         }
 
         private AnalyzedStepText Analyze(StepInstance stepInstance, CultureInfo bindingCulture)
@@ -81,6 +114,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             switch (style)
             {
                 case StepDefinitionSkeletonStyle.RegexAttribute:
+                case StepDefinitionSkeletonStyle.CucumberExpressionAttribute:
                     return keyword.ToIdentifier() + string.Concat(analyzedStepText.TextParts.ToArray()).ToIdentifier();
                 case StepDefinitionSkeletonStyle.MethodNameUnderscores:
                     return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsUnderscored, "_{0}");
@@ -137,7 +171,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             result.Append(EscapeRegex(stepText.TextParts[0]));
             for (int i = 1; i < stepText.TextParts.Count; i++)
             {
-                result.AppendFormat("({0})", stepText.Parameters[i-1].RegexPattern);
+                var parameter = stepText.Parameters[i - 1];
+                result.Append($"{parameter.WrapText}({parameter.RegexPattern}){parameter.WrapText}");
                 result.Append(EscapeRegex(stepText.TextParts[i]));
             }
 
