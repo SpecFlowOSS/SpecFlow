@@ -2,6 +2,8 @@
 
 SpecFlow's behavior can be configured extensively. How to configure SpecFlow depends on the version of SpecFlow you are using.
 
+Note: bear in mind that, although this article is meant to address features default language configuration, you may define  language directly on the top of your feature. For further details, refer to [Gerkin's #language directive]( https://docs.specflow.org/projects/specflow/en/latest/Gherkin/Feature-Language.html)
+
 ## SpecFlow 3.x
 
 Starting with SpecFlow 3, you can use the `specflow.json` file to configure it. It is mandatory for .NET Core projects and it is recommended for .NET Framework projects.  
