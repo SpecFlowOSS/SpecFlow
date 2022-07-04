@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <MetaTemplate Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**"/>
+    <MetaTemplate Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
     <Compile Remove="**\*" />
     <Content Include="templates\SpecFlowProject\Drivers\Driver.cs" />
     <Content Include="templates\SpecFlowProject\Hooks\Hook.cs" />
@@ -63,12 +63,9 @@
   </ItemGroup>
 
   <Target Name="PopulateMetaTemplate" AfterTargets="CoreCompile">
-    <WriteLinesToFile
-      File="$(OutDir)\templates\%(MetaTemplate.RecursiveDir)\%(MetaTemplate.FileName)%(MetaTemplate.Extension)"
-      Lines="$([System.IO.File]::ReadAllText(%(MetaTemplate.FullPath)).Replace('$$$NuGetPackageVersion$$$',$(NuGetPackageVersion)).Replace('$$$MajorMinorVersion$$$',$(MajorMinorVersion)))"
-      Overwrite="true"/>
+    <WriteLinesToFile File="$(OutDir)\templates\%(MetaTemplate.RecursiveDir)\%(MetaTemplate.FileName)%(MetaTemplate.Extension)" Lines="$([System.IO.File]::ReadAllText(%(MetaTemplate.FullPath)).Replace('$$$NuGetPackageVersion$$$',$(NuGetPackageVersion)).Replace('$$$MajorMinorVersion$$$',$(MajorMinorVersion)))" Overwrite="true" />
       <ItemGroup>
-        <Content Include="$(OutDir)\templates\**\*" PackagePath="content"/>
+        <Content Include="$(OutDir)\templates\**\*" PackagePath="content" />
       </ItemGroup>
   </Target>
   

@@ -44,6 +44,10 @@
     <PackageReference Include="Microsoft.Build.Framework" Version="15.8.166" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.8.166" />
     <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Update="Microsoft.VisualStudio.Composition" Version="15.8.98" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem" Version="15.8.243" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.8.243" />
