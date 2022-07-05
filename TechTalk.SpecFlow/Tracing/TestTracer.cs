@@ -32,13 +32,17 @@ namespace TechTalk.SpecFlow.Tracing
         private readonly IStepFormatter stepFormatter;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        private readonly IColorOutputTheme colorOutputTheme;
+        private readonly IColorOutputHelper colorOutputHelper;
 
-        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, Configuration.SpecFlowConfiguration specFlowConfiguration)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, Configuration.SpecFlowConfiguration specFlowConfiguration, IColorOutputTheme colorOutputTheme, IColorOutputHelper colorOutputHelper)
         {
             this.traceListener = traceListener;
             this.stepFormatter = stepFormatter;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
             this.specFlowConfiguration = specFlowConfiguration;
+            this.colorOutputTheme = colorOutputTheme;
+            this.colorOutputHelper = colorOutputHelper;
         }
 
         public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
@@ -49,13 +53,17 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceWarning(string text)
         {
-            traceListener.WriteToolOutput("warning: {0}", text);
+            traceListener.WriteToolOutput("{0}: {1}", colorOutputHelper.Colorize("done", colorOutputTheme.Warning), text);
         }
 
         public void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration)
         {
-            traceListener.WriteToolOutput("done: {0} ({1:F1}s)",
-                stepFormatter.GetMatchText(match, arguments), duration.TotalSeconds);
+            traceListener.WriteToolOutput(
+                "{0}: {1} ({2:F1}s)",
+                colorOutputHelper.Colorize("done", colorOutputTheme.Done),
+                stepFormatter.GetMatchText(match, arguments),
+                duration.TotalSeconds
+            );
         }
 
         public void TraceStepSkipped()
@@ -65,13 +73,14 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceStepPending(BindingMatch match, object[] arguments)
         {
-            traceListener.WriteToolOutput("pending: {0}",
+            traceListener.WriteToolOutput("{0}: {1}",
+                colorOutputHelper.Colorize("pending", colorOutputTheme.Warning),
                 stepFormatter.GetMatchText(match, arguments));
         }
 
         public void TraceBindingError(BindingException ex)
         {
-            traceListener.WriteToolOutput("binding error: {0}", ex.Message);
+            traceListener.WriteToolOutput("{0}: {1}", colorOutputHelper.Colorize("binding error", colorOutputTheme.Error), ex.Message);
         }
 
         public void TraceError(Exception ex, TimeSpan duration)
@@ -108,7 +117,12 @@ namespace TechTalk.SpecFlow.Tracing
 
         private void WriteErrorMessage(string ex,TimeSpan duration)
         {
-            traceListener.WriteToolOutput("error: {0} ({1:F1}s)", ex, duration.TotalSeconds);
+            traceListener.WriteToolOutput(
+                "{0}: {1} ({2:F1}s)",
+                colorOutputHelper.Colorize("error", colorOutputTheme.Error),
+                ex,
+                duration.TotalSeconds
+            );
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)

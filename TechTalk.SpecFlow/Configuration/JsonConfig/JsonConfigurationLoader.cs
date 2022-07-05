@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
             bool traceTimings = specFlowConfiguration.TraceTimings;
             var minTracedDuration = specFlowConfiguration.MinTracedDuration;
+            bool coloredOutput = specFlowConfiguration.ColoredOutput;
             var stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             var additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
@@ -75,6 +76,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 traceTimings = jsonConfig.Trace.TraceTimings;
                 minTracedDuration = jsonConfig.Trace.MinTracedDuration;
                 stepDefinitionSkeletonStyle = jsonConfig.Trace.StepDefinitionSkeletonStyle;
+                coloredOutput = jsonConfig.Trace.ColoredOutput;
             }
 
             if (jsonConfig.StepAssemblies != null)
@@ -101,7 +103,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 allowDebugGeneratedFiles,
                 allowRowTests,
                 addNonParallelizableMarkerForTags,
-                obsoleteBehavior
+                obsoleteBehavior,
+                coloredOutput
             );
         }
     }

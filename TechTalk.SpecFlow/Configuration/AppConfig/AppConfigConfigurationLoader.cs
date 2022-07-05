@@ -27,6 +27,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            bool coloredOutput = specFlowConfiguration.ColoredOutput;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
@@ -82,6 +83,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 traceTimings = configSection.Trace.TraceTimings;
                 minTracedDuration = configSection.Trace.MinTracedDuration;
                 stepDefinitionSkeletonStyle = configSection.Trace.StepDefinitionSkeletonStyle;
+                coloredOutput = configSection.Trace.ColoredOutput;
             }
 
             foreach (var element in configSection.StepAssemblies)
@@ -105,7 +107,8 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
                                             addNonParallelizableMarkerForTags,
-                                            obsoleteBehavior
+                                            obsoleteBehavior,
+                                            coloredOutput
                                             );
         }
 
