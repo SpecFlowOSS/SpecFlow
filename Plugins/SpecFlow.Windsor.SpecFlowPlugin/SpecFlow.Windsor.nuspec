@@ -18,19 +18,19 @@
     <dependencies>
       <group targetFramework=".NETFramework4.6.1">
         <dependency id="SpecFlow" version="[$version$]" />
-        <dependency id="Castle.Windsor" version="5.0.1" />
+        <dependency id="Castle.Windsor" version="5.1.2" />
       </group>
       <group targetFramework=".NETStandard2.0">
         <dependency id="SpecFlow" version="[$version$]" />
-        <dependency id="Castle.Windsor" version="5.0.1" />
+        <dependency id="Castle.Windsor" version="5.1.2" />
       </group>
       <group targetFramework="net5.0">
         <dependency id="SpecFlow" version="[$version$]" />
-        <dependency id="Castle.Windsor" version="5.0.1" />
+        <dependency id="Castle.Windsor" version="5.1.2" />
       </group>
       <group targetFramework="net6.0">
         <dependency id="SpecFlow" version="[$version$]" />
-        <dependency id="Castle.Windsor" version="5.0.1" />
+        <dependency id="Castle.Windsor" version="5.1.2" />
       </group>
 
     </dependencies>
