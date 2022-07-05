@@ -31,7 +31,9 @@ namespace TechTalk.SpecFlow.Configuration
             bool allowDebugGeneratedFiles,
             bool allowRowTests,
             string[] addNonParallelizableMarkerForTags,
-            ObsoleteBehavior obsoleteBehavior)
+            ObsoleteBehavior obsoleteBehavior,
+            bool coloredOutput
+        )
         {
             ConfigSource = configSource;
             CustomDependencies = customDependencies;
@@ -49,6 +51,7 @@ namespace TechTalk.SpecFlow.Configuration
             AllowRowTests = allowRowTests;
             AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags;
             ObsoleteBehavior = obsoleteBehavior;
+            ColoredOutput = coloredOutput;
         }
 
         public ConfigSource ConfigSource { get; set; }
@@ -71,6 +74,7 @@ namespace TechTalk.SpecFlow.Configuration
         public string[] AddNonParallelizableMarkerForTags { get; set; }
 
         //tracing settings
+        public bool ColoredOutput { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }

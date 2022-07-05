@@ -41,6 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
     <trace traceSuccessfulSteps=""true""
            traceTimings=""false""
            minTracedDuration=""0:0:0.1""
+           coloredOutput=""false""
            listener=""TechTalk.SpecFlow.Tracing.DefaultListener, TechTalk.SpecFlow""
             />
 </specFlow>")]
@@ -198,6 +199,30 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
 
             runtimeConfig.TraceTimings.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Check_Trace_coloredOutput_as_True()
+        {
+            string config = @"<specflow><trace coloredOutput=""true"" /></specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+
+            runtimeConfig.ColoredOutput.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Check_Trace_coloredOutput_as_False()
+        {
+            string config = @"<specflow><trace coloredOutput=""false"" /></specflow>";
+
+            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
+
+            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
+
+            runtimeConfig.ColoredOutput.Should().BeFalse();
         }
 
         [Fact]

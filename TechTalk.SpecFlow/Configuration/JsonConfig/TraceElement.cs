@@ -22,6 +22,11 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [DefaultValue(ConfigDefaults.StepDefinitionSkeletonStyle)]
         public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set; }
 
+        //[JsonProperty("ColoredOutput", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        [DataMember(Name = "ColoredOutput")]
+        [DefaultValue(ConfigDefaults.ColoredOutput)]
+        public bool ColoredOutput { get; set; }
+
         //[JsonProperty("traceSuccessfulSteps", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DataMember(Name = "traceSuccessfulSteps")]
         [DefaultValue(ConfigDefaults.TraceSuccessfulSteps)]

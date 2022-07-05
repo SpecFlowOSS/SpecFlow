@@ -295,6 +295,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         }
 
         [Fact]
+        public void Check_Trace_ColoredOutput_as_False()
+        {
+            string config = @"{
+                                ""trace"": { ""coloredOutput"": false }
+                            }";
+
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+
+            runtimeConfig.ColoredOutput.Should().Be(false);
+        }
+
+        [Fact]
+        public void Check_Trace_ColoredOutput_as_True()
+        {
+            string config = @"{
+                                ""trace"": { ""coloredOutput"": true }
+                            }";
+
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+
+            runtimeConfig.ColoredOutput.Should().Be(true);
+        }
+
+        [Fact]
         public void Check_StepAssemblies_IsEmpty()
         {
             string config = @"{
