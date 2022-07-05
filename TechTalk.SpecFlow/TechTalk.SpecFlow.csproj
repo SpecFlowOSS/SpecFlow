@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net6_TFM)'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />    
