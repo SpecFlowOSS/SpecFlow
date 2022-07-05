@@ -103,6 +103,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Execution/Parallel-Execution.md
    Execution/Debugging.md
    outputapi/outputapi.md
+   Execution/Color-Output.md
 
 .. toctree::
    :maxdepth: 1
