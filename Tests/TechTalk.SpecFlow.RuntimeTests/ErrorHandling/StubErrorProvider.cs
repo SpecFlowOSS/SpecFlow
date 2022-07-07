@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.ErrorHandling
     internal class StubErrorProvider : ErrorProvider
     {
         public StubErrorProvider() : 
-            base(new StepFormatter(), ConfigurationLoader.GetDefault(), GetStubUnitTestProvider())
+            base(new StepFormatter(new ColorOutputHelper(ConfigurationLoader.GetDefault()), new ColorOutputTheme()), ConfigurationLoader.GetDefault(), GetStubUnitTestProvider())
         {
         }
 
