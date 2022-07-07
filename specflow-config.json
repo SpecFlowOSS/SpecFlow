@@ -5,6 +5,9 @@
 
   Changelog:
 
+  1.1
+  - Added "CucumberExpressionAttribute" to trace/stepDefinitionSkeletonStyle and set it is as default.
+
   1.0
   - Initial SpecFlow configuration schema containing SpecFlow v3.9 settings and IDE settings
   
@@ -109,8 +112,8 @@
         "stepDefinitionSkeletonStyle": {
           "description": "Specifies the default step definition style.",
           "type": "string",
-          "default": "RegexAttribute",
-          "enum": [ "RegexAttribute", "MethodNameUnderscores", "MethodNamePascalCase", "MethodNameRegex" ]
+          "default": "CucumberExpressionAttribute",
+          "enum": [ "CucumberExpressionAttribute", "RegexAttribute", "MethodNameUnderscores", "MethodNamePascalCase", "MethodNameRegex" ]
         }
       }
     },
