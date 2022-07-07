@@ -60,6 +60,8 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
    Installation/Configuration.md
    Installation/Project-and-Item-Templates.md
    Installation/Unit-Test-Providers.md
+   Installation/Breaking-Changes-with-SpecFlow-4.0.md
+   Guides/UpgradeSpecFlow3To4.md
    Installation/Breaking-Changes-with-SpecFlow-3.0.md
 
 .. toctree::
@@ -77,6 +79,7 @@ You can find a number of step- by- step guides to start with SpecFlow `here <htt
 
    Bindings/Bindings.md
    Bindings/Step-Definitions.md
+   Bindings/Cucumber-Expressions.md
    Bindings/Hooks.md
    Bindings/Asynchronous-Bindings.md
    Bindings/Scoped-Step-Definitions.md
