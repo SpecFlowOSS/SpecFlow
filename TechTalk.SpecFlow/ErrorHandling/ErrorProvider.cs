@@ -128,7 +128,11 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding)
         {
-            return new BindingException($"Invalid step definition! The step definition method '{GetMethodText(stepDefinitionBinding.Method)}' is invalid: {stepDefinitionBinding.ErrorMessage}.");
+            var upgradeMessage = 
+                stepDefinitionBinding.ExpressionType == StepDefinitionExpressionTypes.CucumberExpression ? 
+                $"{Environment.NewLine}If this error comes after upgrading to SpecFlow v4, check the upgrade guide: https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html" :
+                "";
+            return new BindingException($"Invalid step definition! The step definition method '{GetMethodText(stepDefinitionBinding.Method)}' is invalid: {stepDefinitionBinding.ErrorMessage}.{upgradeMessage}");
         }
     }
 }
