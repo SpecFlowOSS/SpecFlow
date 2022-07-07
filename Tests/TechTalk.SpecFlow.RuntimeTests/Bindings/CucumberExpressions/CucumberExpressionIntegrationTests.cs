@@ -79,6 +79,10 @@ public class CucumberExpressionIntegrationTests
             ExecutedParams.Add((intParam, typeof(int)));
         }
         
+        public void StepDefWithFloatParam(float doubleParam)
+        {
+            ExecutedParams.Add((doubleParam, typeof(float)));
+        }
         public void StepDefWithDoubleParam(double doubleParam)
         {
             ExecutedParams.Add((doubleParam, typeof(double)));
@@ -94,6 +98,11 @@ public class CucumberExpressionIntegrationTests
         public void StepDefWithCustomClassParam(SampleUser userParam)
         {
             ExecutedParams.Add((userParam, typeof(SampleUser)));
+        }
+
+        public int ConvertFortyTwo()
+        {
+            return 42;
         }
     }
 
@@ -242,12 +251,51 @@ public class CucumberExpressionIntegrationTests
     }
 
     [Fact]
+    public async void Should_match_step_with_float_parameter()
+    {
+        var expression = "I have {float} cucumbers in my belly";
+        var stepText = "I have 42.1 cucumbers in my belly";
+        var expectedParam = ((float)42.1, typeof(float));
+        var methodName = nameof(SampleBindings.StepDefWithFloatParam);
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
+    [Fact]
     public async void Should_match_step_with_float_parameter_to_double()
     {
         var expression = "I have {float} cucumbers in my belly";
         var stepText = "I have 42.1 cucumbers in my belly";
         var expectedParam = (42.1, typeof(double));
         var methodName = nameof(SampleBindings.StepDefWithDoubleParam);
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
+    [Fact]
+    public async void Should_match_step_with_double_parameter()
+    {
+        var expression = "I have {double} cucumbers in my belly";
+        var stepText = "I have 42.1 cucumbers in my belly";
+        var expectedParam = (42.1, typeof(double));
+        var methodName = nameof(SampleBindings.StepDefWithDoubleParam);
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
+    [Fact]
+    public async void Should_match_step_with_decimal_parameter()
+    {
+        var expression = "I have {decimal} cucumbers in my belly";
+        var stepText = "I have 42.1 cucumbers in my belly";
+        var expectedParam = (42.1m, typeof(decimal));
+        var methodName = nameof(SampleBindings.StepDefWithDecimalParam);
 
         var sampleBindings = await PerformStepExecution(methodName, expression, stepText);
 
@@ -344,4 +392,35 @@ public class CucumberExpressionIntegrationTests
         sampleBindings.ExecutedParams.Should().Contain(expectedParam);
     }
 
+    [Fact]
+    public async void Should_match_step_with_customized_built_in_parameter_with_type_name()
+    {
+        var expression = "I have {Int32} cucumbers in my belly";
+        var stepText = "I have forty two cucumbers in my belly";
+        var expectedParam = (42, typeof(int));
+        var methodName = nameof(SampleBindings.StepDefWithIntParam);
+        IStepArgumentTransformationBinding transformation = new StepArgumentTransformationBinding(
+            "forty two",
+            new RuntimeBindingMethod(typeof(SampleBindings).GetMethod(nameof(SampleBindings.ConvertFortyTwo))));
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText, new[] { transformation });
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
+
+    [Fact]
+    public async void Should_match_step_with_customized_built_in_parameter_with_simple_name()
+    {
+        var expression = "I have {int} cucumbers in my belly";
+        var stepText = "I have forty two cucumbers in my belly";
+        var expectedParam = (42, typeof(int));
+        var methodName = nameof(SampleBindings.StepDefWithIntParam);
+        IStepArgumentTransformationBinding transformation = new StepArgumentTransformationBinding(
+            "forty two",
+            new RuntimeBindingMethod(typeof(SampleBindings).GetMethod(nameof(SampleBindings.ConvertFortyTwo))));
+
+        var sampleBindings = await PerformStepExecution(methodName, expression, stepText, new[] { transformation });
+
+        sampleBindings.ExecutedParams.Should().Contain(expectedParam);
+    }
 }

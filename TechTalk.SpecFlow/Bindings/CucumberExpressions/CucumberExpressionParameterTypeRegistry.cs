@@ -44,35 +44,52 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
 
         var builtInTransformations = new[]
         {
-            // official cucumber expression types
+            // official cucumber expression special expression parameter types ({}, {word})
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, objectBindingType, name: string.Empty, useForSnippets: false),
-            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.IntParameterRegex, intBindingType, ParameterTypeConstants.IntParameterName, weight: 1000),
-            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.FloatParameterRegex, doubleBindingType, ParameterTypeConstants.FloatParameterName),
             new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, ParameterTypeConstants.WordParameterName, useForSnippets: false),
 
-            //the regex specified here will be ignored because of the special string type handling implemented in SpecFlowCucumberExpression
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, doubleBindingType, ParameterTypeConstants.StringParameterName),
+            // official cucumber expression string expression parameter type ({string})
+            // The regex '.*' specified here will be ignored because of the special string type handling implemented in SpecFlowCucumberExpression
+            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, stringBindingType, ParameterTypeConstants.StringParameterName),
 
-            // other types supported by SpecFlow by default: Make them accessible with type name (e.g. Int32)
+            // other types supported by SpecFlow by default: Make them accessible with type name (e.g. {Guid})
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.IntParameterRegex, byteBindingType),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.IntParameterRegex, shortBindingType),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.IntParameterRegex, intBindingType),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.IntParameterRegex, longBindingType),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.FloatParameterRegex, doubleBindingType),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.FloatParameterRegex, floatBindingType),
+            new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.FloatParameterRegex, decimalBindingType),
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, boolBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, byteBindingType),
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, charBindingType),
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, dateTimeBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, decimalBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, doubleBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, floatBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, shortBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, intBindingType),
-            new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, longBindingType),
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, guidBindingType),
         };
 
+        // cucumber expression aliases for supported types ({int}, {float}, {double}, {decimal})
+        var aliases = new Dictionary<IBindingType, string>
+        {
+            { intBindingType, "int" }, // official
+            { floatBindingType, "float" }, // official
+            { doubleBindingType, "double" }, // custom for .NET
+            { decimalBindingType, "decimal" } // custom for .NET
+        };
+
+        var aliasTransformations = builtInTransformations.Select(t => aliases.TryGetValue(t.TargetType, out var alias) ? new { Transformation = t, Alias = alias } : null)
+                                                         .Where(t => t != null)
+                                                         .Select(t => new BuiltInCucumberExpressionParameterTypeTransformation(t.Transformation.Regex, t.Transformation.TargetType, t.Alias))
+                                                         .ToArray();
+
+        // cucumber expression parameter type support for enums with type name, using the built-in enum transformation (e.g. {Color})
         var enumTypes = GetEnumTypesUsedInParameters();
 
-        var userTransformations = _bindingRegistry.GetStepTransformations().Select(t => new UserDefinedCucumberExpressionParameterTypeTransformation(t));
+        // get custom user transformations (both for built-in types and for custom types)
+        var userTransformations = _bindingRegistry.GetStepTransformations()
+                                                  .SelectMany(t => GetUserTransformations(t, aliases));
 
         var parameterTypes = builtInTransformations
                                                    .Concat(enumTypes)
+                                                   .Concat(aliasTransformations)
                                                    .Concat(userTransformations)
                                                    .GroupBy(t => (t.TargetType, t.Name))
                                                    .Select(g => new CucumberExpressionParameterType(g.Key.Name ?? g.Key.TargetType.Name, g.Key.TargetType, g))
@@ -81,8 +98,19 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
         return parameterTypes;
     }
 
+    private IEnumerable<UserDefinedCucumberExpressionParameterTypeTransformation> GetUserTransformations(IStepArgumentTransformationBinding t, Dictionary<IBindingType, string> aliases)
+    {
+        yield return new UserDefinedCucumberExpressionParameterTypeTransformation(t);
+
+        // If the custom user transformations is for a built-in type, we also expose it with the
+        // short name (e.g {int}) and not only with the type name (e.g. {Int32}).
+        if (aliases.TryGetValue(t.Method.ReturnType, out var alias))
+            yield return new UserDefinedCucumberExpressionParameterTypeTransformation(t, alias);
+    }
+
     private IEnumerable<ICucumberExpressionParameterTypeTransformation> GetEnumTypesUsedInParameters()
     {
+        // As we don't have a full list of possible enums, we collect all enums that are used as parameters of the step definitions.
         var enumParameterTypes = _consideredParameterTypes
                                  .OfType<RuntimeBindingType>()
                                  .Where(t => t.Type.IsEnum);

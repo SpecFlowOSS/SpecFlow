@@ -7,16 +7,18 @@ namespace TechTalk.SpecFlow.Bindings.CucumberExpressions;
 public class UserDefinedCucumberExpressionParameterTypeTransformation : ICucumberExpressionParameterTypeTransformation
 {
     private readonly IStepArgumentTransformationBinding _stepArgumentTransformationBinding;
+    private readonly string _customName;
 
-    public string Name => _stepArgumentTransformationBinding.Name;
+    public string Name => _customName ?? _stepArgumentTransformationBinding.Name;
     public string Regex { get; }
     public IBindingType TargetType => _stepArgumentTransformationBinding.Method.ReturnType;
     public bool UseForSnippets => true;
     public int Weight => 0;
 
-    public UserDefinedCucumberExpressionParameterTypeTransformation(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
+    public UserDefinedCucumberExpressionParameterTypeTransformation(IStepArgumentTransformationBinding stepArgumentTransformationBinding, string customName = null)
     {
         _stepArgumentTransformationBinding = stepArgumentTransformationBinding;
+        _customName = customName;
         Regex = GetCucumberExpressionRegex(stepArgumentTransformationBinding);
     }
 
