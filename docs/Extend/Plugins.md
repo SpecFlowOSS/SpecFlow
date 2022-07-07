@@ -283,4 +283,4 @@ You can add them with following PackageReference to your project:
 
 ## Plugin Developer Channel
 
-We have set up a Discord channel for plugin developers [here](https://go.specflow.org/join-plugin-development-on-discord). If you have any questions regarding the development of plugins for SpecFlow, this is the place to ask them.
+We have set up a Discord channel for plugin developers [here](https://discord.com/invite/xQMrjDXx7a). If you have any questions regarding the development of plugins for SpecFlow, this is the place to ask them.

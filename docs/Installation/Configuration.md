@@ -2,6 +2,8 @@
 
 SpecFlow's behavior can be configured extensively. How to configure SpecFlow depends on the version of SpecFlow you are using.
 
+Note: bear in mind that, although this article is meant to address features default language configuration, you may define  language directly on the top of your feature. For further details, refer to [Gerkin's #language directive]( https://docs.specflow.org/projects/specflow/en/latest/Gherkin/Feature-Language.html)
+
 ## SpecFlow 3.x
 
 Starting with SpecFlow 3, you can use the `specflow.json` file to configure it. It is mandatory for .NET Core projects and it is recommended for .NET Framework projects.  
@@ -123,12 +125,13 @@ Use this section to specify various test execution options.
 
 Use this section to determine the SpecFlow trace output.
 
-| Attribute                   | Value                                                                     | Description                                                                                                                                                                    |
-| --------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| traceSuccessfulSteps        | true/false                                                                | Determines whether SpecFlow should trace successful step binding executions. <br/>**Default:** true                                                                            |
-| traceTimings                | true/false                                                                | Determines whether SpecFlow should trace execution time of the binding methods (only if the execution time is longer than the minTracedDuration value).<br/>**Default:** false |
-| minTracedDuration           | TimeSpan (0:0:0.1)                                                        | Specifies a threshold for tracing the binding execution times.<br/>**Default:** 0:0:0.1 (100 ms)                                                                               |
-| stepDefinitionSkeletonStyle | RegexAttribute/MethodNameUnderscores/MethodNamePascalCase/MethodNameRegex | Specifies the default [step definition style](../Bindings/Step-Definitions.html#step-matching-styles-rules).<br/>**Default:** RegexAttribute                                   |
+| Attribute                   | Value                                                                     | Description                                                                                                                                                                                                                                                                                                                                   |
+|-----------------------------|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| traceSuccessfulSteps        | true/false                                                                | Determines whether SpecFlow should trace successful step binding executions. <br/>**Default:** true                                                                                                                                                                                                                                           |
+| traceTimings                | true/false                                                                | Determines whether SpecFlow should trace execution time of the binding methods (only if the execution time is longer than the minTracedDuration value).<br/>**Default:** false                                                                                                                                                                |
+| minTracedDuration           | TimeSpan (0:0:0.1)                                                        | Specifies a threshold for tracing the binding execution times.<br/>**Default:** 0:0:0.1 (100 ms)                                                                                                                                                                                                                                              |
+| stepDefinitionSkeletonStyle | RegexAttribute/MethodNameUnderscores/MethodNamePascalCase/MethodNameRegex | Specifies the default [step definition style](../Bindings/Step-Definitions.html#step-matching-styles-rules).<br/>**Default:** RegexAttribute                                                                                                                                                                                                  |
+| coloredOutput               | true/false                                                                | Determine whether SpecFlow should color the test result output. See [Color Test Result Output](../Execution/Color-Output.md) for more details<br/>**Default:** false<br/>When this setting is enable you can disable color, for example to run it on a build server that does not support colors, with the environment variable `NO_COLOR=1` |
 
 ### `stepAssemblies`
 

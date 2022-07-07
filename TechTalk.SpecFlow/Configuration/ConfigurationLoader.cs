@@ -52,6 +52,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static ObsoleteBehavior DefaultObsoleteBehavior => ConfigDefaults.ObsoleteBehavior;
 
+        public static bool DefaultColoredOutput => ConfigDefaults.ColoredOutput;
+
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
         public bool HasJsonConfig
@@ -129,7 +131,8 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowDebugGeneratedFiles,
                 DefaultAllowRowTests,
                 DefaultAddNonParallelizableMarkerForTags,
-                DefaultObsoleteBehavior
+                DefaultObsoleteBehavior,
+                DefaultColoredOutput
                 );
         }
 

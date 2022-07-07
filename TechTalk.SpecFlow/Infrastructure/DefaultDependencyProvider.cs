@@ -30,6 +30,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>();
+            container.RegisterTypeAs<ColorOutputTheme, IColorOutputTheme>();
+            container.RegisterTypeAs<ColorOutputHelper, IColorOutputHelper>();
 
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
             container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>();

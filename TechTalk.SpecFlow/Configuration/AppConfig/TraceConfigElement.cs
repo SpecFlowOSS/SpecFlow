@@ -40,5 +40,12 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             get { return (StepDefinitionSkeletonStyle)this["stepDefinitionSkeletonStyle"]; }
             set { this["stepDefinitionSkeletonStyle"] = value; }
         }
+
+        [ConfigurationProperty("coloredOutput", IsRequired = false, DefaultValue = ConfigDefaults.ColoredOutput)]
+        public bool ColoredOutput
+        {
+            get { return (bool)this["coloredOutput"]; }
+            set { this["coloredOutput"] = value; }
+        }
     }
 }
