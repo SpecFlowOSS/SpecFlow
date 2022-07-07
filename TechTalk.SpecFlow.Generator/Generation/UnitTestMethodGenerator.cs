@@ -3,7 +3,6 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Threading.Tasks;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
@@ -33,33 +32,46 @@ namespace TechTalk.SpecFlow.Generator.Generation
             _specFlowConfiguration = specFlowConfiguration;
         }
 
+        private IEnumerable<ScenarioDefinitionInFeatureFile> GetScenarioDefinitions(SpecFlowFeature feature)
+        {
+            IEnumerable<ScenarioDefinitionInFeatureFile> GetScenarioDefinitionsOfRule(IEnumerable<IHasLocation> items, Rule rule)
+                => items.OfType<StepsContainer>()
+                        .Where(child => child is not Background)
+                        .Select(sd => new ScenarioDefinitionInFeatureFile(sd, feature, rule));
+
+            return 
+                GetScenarioDefinitionsOfRule(feature.Children, null)
+                    .Concat(feature.Children.OfType<Rule>().SelectMany(rule => GetScenarioDefinitionsOfRule(rule.Children, rule)));
+        }
+
         public void CreateUnitTests(SpecFlowFeature feature, TestClassGenerationContext generationContext)
         {
-            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
+            foreach (var scenarioDefinition in GetScenarioDefinitions(feature))
             {
-                CreateUnitTest(feature, generationContext, scenarioDefinition);
+                CreateUnitTest(generationContext, scenarioDefinition);
             }
         }
 
-        private void CreateUnitTest(SpecFlowFeature feature, TestClassGenerationContext generationContext, StepsContainer scenarioDefinition)
+        private void CreateUnitTest(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinitionInFeatureFile)
         {
-            if (string.IsNullOrEmpty(scenarioDefinition.Name))
+            if (string.IsNullOrEmpty(scenarioDefinitionInFeatureFile.ScenarioDefinition.Name))
             {
                 throw new TestGeneratorException("The scenario must have a title specified.");
             }
 
-            if (scenarioDefinition is ScenarioOutline scenarioOutline)
+            if (scenarioDefinitionInFeatureFile.IsScenarioOutline)
             {
-                GenerateScenarioOutlineTest(generationContext, scenarioOutline, feature);
+                GenerateScenarioOutlineTest(generationContext, scenarioDefinitionInFeatureFile);
             }
             else
             {
-                GenerateTest(generationContext, (Scenario)scenarioDefinition, feature);
+                GenerateTest(generationContext, scenarioDefinitionInFeatureFile);
             }
         }
 
-        private void GenerateScenarioOutlineTest(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, SpecFlowFeature feature)
+        private void GenerateScenarioOutlineTest(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinitionInFeatureFile)
         {
+            var scenarioOutline = scenarioDefinitionInFeatureFile.ScenarioOutline;
             ValidateExampleSetConsistency(scenarioOutline);
 
             var paramToIdentifier = CreateParamToIdentifierMapping(scenarioOutline);
@@ -75,13 +87,13 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 GenerateScenarioOutlineExamplesAsIndividualMethods(scenarioOutline, generationContext, scenarioOutlineTestMethod, paramToIdentifier);
             }
 
-            GenerateTestBody(generationContext, scenarioOutline, scenarioOutlineTestMethod, feature, exampleTagsParam, paramToIdentifier);
+            GenerateTestBody(generationContext, scenarioDefinitionInFeatureFile, scenarioOutlineTestMethod, exampleTagsParam, paramToIdentifier);
         }
 
-        private void GenerateTest(TestClassGenerationContext generationContext, Scenario scenario, SpecFlowFeature feature)
+        private void GenerateTest(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinitionInFeatureFile)
         {
-            var testMethod = CreateTestMethod(generationContext, scenario, null);
-            GenerateTestBody(generationContext, scenario, testMethod, feature);
+            var testMethod = CreateTestMethod(generationContext, scenarioDefinitionInFeatureFile.ScenarioDefinition, null);
+            GenerateTestBody(generationContext, scenarioDefinitionInFeatureFile, testMethod);
         }
 
         private void ValidateExampleSetConsistency(ScenarioOutline scenarioOutline)
@@ -115,19 +127,21 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
         private void GenerateTestBody(
             TestClassGenerationContext generationContext,
-            StepsContainer scenario,
+            ScenarioDefinitionInFeatureFile scenarioDefinitionInFeatureFile,
             CodeMemberMethod testMethod,
-            SpecFlowFeature feature,
             CodeExpression additionalTagsExpression = null, ParameterSubstitution paramToIdentifier = null)
         {
+            var scenarioDefinition = scenarioDefinitionInFeatureFile.ScenarioDefinition;
+            var feature = scenarioDefinitionInFeatureFile.Feature;
+
             //call test setup
             //ScenarioInfo scenarioInfo = new ScenarioInfo("xxxx", tags...);
             CodeExpression tagsExpression;
             if (additionalTagsExpression == null)
             {
-                tagsExpression = _scenarioPartHelper.GetStringArrayExpression(scenario.GetTags());
+                tagsExpression = _scenarioPartHelper.GetStringArrayExpression(scenarioDefinition.GetTags());
             }
-            else if (!scenario.HasTags())
+            else if (!scenarioDefinition.HasTags())
             {
                 tagsExpression = additionalTagsExpression;
             }
@@ -138,7 +152,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 // if (tags2 != null)
                 //   tags = Enumerable.ToArray(Enumerable.Concat(tags1, tags1));
                 testMethod.Statements.Add(
-                    new CodeVariableDeclarationStatement(typeof(string[]), "__tags", _scenarioPartHelper.GetStringArrayExpression(scenario.GetTags())));
+                    new CodeVariableDeclarationStatement(typeof(string[]), "__tags", _scenarioPartHelper.GetStringArrayExpression(scenarioDefinition.GetTags())));
                 tagsExpression = new CodeVariableReferenceExpression("__tags");
                 testMethod.Statements.Add(
                     new CodeConditionStatement(
@@ -166,15 +180,15 @@ namespace TechTalk.SpecFlow.Generator.Generation
             testMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(typeof(ScenarioInfo), "scenarioInfo",
                     new CodeObjectCreateExpression(typeof(ScenarioInfo),
-                        new CodePrimitiveExpression(scenario.Name),
-                        new CodePrimitiveExpression(scenario.Description),
+                        new CodePrimitiveExpression(scenarioDefinition.Name),
+                        new CodePrimitiveExpression(scenarioDefinition.Description),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_TAGS_VARIABLE_NAME),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME),
                         new CodeFieldReferenceExpression(null, GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME))));
 
-            GenerateScenarioInitializeCall(generationContext, scenario, testMethod);
+            GenerateScenarioInitializeCall(generationContext, scenarioDefinition, testMethod);
 
-            GenerateTestMethodBody(generationContext, scenario, testMethod, paramToIdentifier, feature);
+            GenerateTestMethodBody(generationContext, scenarioDefinition, testMethod, paramToIdentifier, feature);
 
             GenerateScenarioCleanupMethodCall(generationContext, testMethod);
         }
@@ -328,7 +342,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 foreach (var example in exampleSet.TableBody.Select((r, i) => new { Row = r, Index = i }))
                 {
                     var variantName = useFirstColumnAsName ? example.Row.Cells.First().Value : string.Format("Variant {0}", example.Index);
-                    GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenarioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row, exampleSet.Tags, variantName);
+                    GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenarioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row, exampleSet.Tags.ToArray(), variantName);
                 }
 
                 exampleSetIndex++;
@@ -383,12 +397,13 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
         private bool CanUseFirstColumnAsName(IEnumerable<Gherkin.Ast.TableRow> tableBody)
         {
-            if (tableBody.Any(r => !r.Cells.Any()))
+            var tableBodyArray = tableBody.ToArray();
+            if (tableBodyArray.Any(r => !r.Cells.Any()))
             {
                 return false;
             }
 
-            return tableBody.Select(r => r.Cells.First().Value.ToIdentifier()).Distinct().Count() == tableBody.Count();
+            return tableBodyArray.Select(r => r.Cells.First().Value.ToIdentifier()).Distinct().Count() == tableBodyArray.Length;
         }
 
         private CodeMemberMethod CreateScenarioOutlineTestMethod(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, ParameterSubstitution paramToIdentifier)
@@ -412,12 +427,12 @@ namespace TechTalk.SpecFlow.Generator.Generation
         private void GenerateScenarioOutlineTestVariant(
             TestClassGenerationContext generationContext,
             ScenarioOutline scenarioOutline,
-            CodeMemberMethod scenatioOutlineTestMethod,
+            CodeMemberMethod scenarioOutlineTestMethod,
             IEnumerable<KeyValuePair<string, string>> paramToIdentifier,
             string exampleSetTitle,
             string exampleSetIdentifier,
             Gherkin.Ast.TableRow row,
-            IEnumerable<Tag> exampleSetTags,
+            Tag[] exampleSetTags,
             string variantName)
         {
             var testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);
@@ -433,7 +448,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             {
                 var callTestMethodExpression = new CodeMethodInvokeExpression(
                     new CodeThisReferenceExpression(),
-                    scenatioOutlineTestMethod.Name,
+                    scenarioOutlineTestMethod.Name,
                     argumentExpressions.ToArray());
 
                 _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(callTestMethodExpression);
@@ -444,7 +459,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             testMethod.Statements.AddRange(statements.ToArray());
 
             //_linePragmaHandler.AddLineDirectiveHidden(testMethod.Statements);
-            var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells.ElementAt(paramIndex).Value)).ToList();
+            var arguments = paramToIdentifier.Select((pToId, paramIndex) => new KeyValuePair<string, string>(pToId.Key, row.Cells.ElementAt(paramIndex).Value)).ToList();
 
             // Use the identifier of the example set (e.g. ExampleSet0, ExampleSet1) if we have it.
             // Otherwise, use the title of the example set provided by the user in the feature file.
@@ -476,6 +491,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             string exampleSetIdentifier,
             bool rowTest = false)
         {
+            // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
             testMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             testMethod.Name = GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
             var friendlyTestName = scenarioDefinition.Name;
