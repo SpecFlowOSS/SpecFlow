@@ -1,4 +1,4 @@
-﻿@focus
+﻿@basicExecution
 Feature: Basic scenario execution
 
 Background: 

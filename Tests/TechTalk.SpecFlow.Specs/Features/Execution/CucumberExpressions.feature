@@ -1,4 +1,4 @@
-﻿@focus
+﻿@cucumberExpressions
 Feature: Cucumber expressions
 
 Rule: Shoud support Cucumber expressions
