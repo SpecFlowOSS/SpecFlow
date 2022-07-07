@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -30,7 +31,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public RuntimeBindingMethod(MethodInfo methodInfo)
         {
-            this.MethodInfo = methodInfo;
+            this.MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
         }
 
         public override string ToString()

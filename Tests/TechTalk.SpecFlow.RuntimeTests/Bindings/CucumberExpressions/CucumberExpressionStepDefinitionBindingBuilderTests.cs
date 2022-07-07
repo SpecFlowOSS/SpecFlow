@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Reflection;
+using FluentAssertions;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -18,7 +20,7 @@ public class CucumberExpressionStepDefinitionBindingBuilderTests
 
     private CucumberExpressionStepDefinitionBindingBuilder CreateSut(string sourceExpression, StepDefinitionType stepDefinitionType = StepDefinitionType.Given, IBindingMethod bindingMethod = null, BindingScope bindingScope = null)
     {
-        bindingMethod ??= new RuntimeBindingMethod(GetType().GetMethod(nameof(SampleBindingMethod)));
+        bindingMethod ??= new RuntimeBindingMethod(GetType().GetMethod(nameof(SampleBindingMethod), BindingFlags.NonPublic | BindingFlags.Instance));
         return new CucumberExpressionStepDefinitionBindingBuilder(
             new CucumberExpressionParameterTypeRegistry(new BindingRegistry()),
             stepDefinitionType,
@@ -69,5 +71,28 @@ public class CucumberExpressionStepDefinitionBindingBuilderTests
 
         result.ExpressionType.Should().Be(StepDefinitionExpressionTypes.CucumberExpression);
         result.Regex?.ToString().Should().Be(@"^there is a user (?:(?:""([^""\\]*(?:\\.[^""\\]*)*)"")|(?:'([^'\\]*(?:\\.[^'\\]*)*)')) registered$");
+    }
+
+    [Obsolete("this is deprecated", false)]
+    // ReSharper disable once UnusedMember.Local
+    private void SampleBindingMethod_Obsolete()
+    {
+        //nop
+    }
+
+    [Fact]
+    public void Should_create_binding_that_can_be_detected_as_obsolete()
+    {
+        var runtimeBindingMethod = new RuntimeBindingMethod(GetType().GetMethod(nameof(SampleBindingMethod) + "_Obsolete", BindingFlags.NonPublic | BindingFlags.Instance));
+        var sut = CreateSut("simple expression", bindingMethod: 
+                            runtimeBindingMethod);
+
+        var result = sut.BuildSingle();
+
+        result.ExpressionType.Should().Be(StepDefinitionExpressionTypes.CucumberExpression);
+        result.Regex?.ToString().Should().Be("^simple expression$");
+
+        var obsoletion = new BindingObsoletion(result);
+        obsoletion.IsObsolete.Should().BeTrue();
     }
 }
