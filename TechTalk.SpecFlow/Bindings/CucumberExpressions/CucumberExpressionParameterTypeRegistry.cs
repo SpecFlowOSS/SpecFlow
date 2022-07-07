@@ -71,7 +71,9 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
         {
             { intBindingType, "int" }, // official
             { floatBindingType, "float" }, // official
-            { doubleBindingType, "double" }, // custom for .NET
+            { doubleBindingType, "double" }, // official
+            { byteBindingType, "byte" }, // official
+            { longBindingType, "long" }, // official
             { decimalBindingType, "decimal" } // custom for .NET
         };
 
