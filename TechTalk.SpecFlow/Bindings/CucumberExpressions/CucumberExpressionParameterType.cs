@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Bindings.CucumberExpressions;
 
 public class CucumberExpressionParameterType : ISpecFlowCucumberExpressionParameterType
 {
-    internal const string MatchAllRegex = @"(.*)";
+    internal const string MatchAllRegex = @".*";
 
     public string Name { get; }
     public IBindingType TargetType { get; }

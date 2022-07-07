@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -49,7 +48,8 @@ public class CucumberExpressionParameterTypeRegistry : IParameterTypeRegistry
             new BuiltInCucumberExpressionParameterTypeTransformation(ParameterTypeConstants.WordParameterRegex, stringBindingType, ParameterTypeConstants.WordParameterName, useForSnippets: false),
 
             // official cucumber expression string expression parameter type ({string})
-            // The regex '.*' specified here will be ignored because of the special string type handling implemented in SpecFlowCucumberExpression
+            // The regex '.*' specified here will be ignored because of the special string type handling implemented in SpecFlowCucumberExpression.
+            // See SpecFlowCucumberExpression.HandleStringType for detailed explanation.
             new BuiltInCucumberExpressionParameterTypeTransformation(CucumberExpressionParameterType.MatchAllRegex, stringBindingType, ParameterTypeConstants.StringParameterName),
 
             // other types supported by SpecFlow by default: Make them accessible with type name (e.g. {Guid})

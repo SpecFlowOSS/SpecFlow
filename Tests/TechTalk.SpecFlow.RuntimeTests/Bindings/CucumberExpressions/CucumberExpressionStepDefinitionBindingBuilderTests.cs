@@ -8,10 +8,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.CucumberExpressions;
 
 public class CucumberExpressionStepDefinitionBindingBuilderTests
 {
+    // The different parameter types are tested in integration of a cucumber expression match,
+    // see CucumberExpressionIntegrationTests class.
+
     private void SampleBindingMethod()
     {
         //nop
     }
+
     private CucumberExpressionStepDefinitionBindingBuilder CreateSut(string sourceExpression, StepDefinitionType stepDefinitionType = StepDefinitionType.Given, IBindingMethod bindingMethod = null, BindingScope bindingScope = null)
     {
         bindingMethod ??= new RuntimeBindingMethod(GetType().GetMethod(nameof(SampleBindingMethod)));
@@ -45,7 +49,17 @@ public class CucumberExpressionStepDefinitionBindingBuilderTests
         result.Regex?.ToString().Should().Be(@"^I have (-?\d+) cucumbers in my belly$");
     }
 
-    //TODO[cukeex]: figure out what to expect
+    [Fact]
+    public void Should_build_from_expression_with_DateTime_param()
+    {
+        var sut = CreateSut("I have eaten cucumbers on {DateTime}");
+
+        var result = sut.BuildSingle();
+
+        result.ExpressionType.Should().Be(StepDefinitionExpressionTypes.CucumberExpression);
+        result.Regex?.ToString().Should().Be(@"^I have eaten cucumbers on (.*)$");
+    }
+
     [Fact]
     public void Should_build_from_expression_with_string_param()
     {
