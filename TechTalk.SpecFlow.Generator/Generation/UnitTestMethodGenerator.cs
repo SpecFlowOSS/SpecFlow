@@ -136,6 +136,19 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             //call test setup
             //ScenarioInfo scenarioInfo = new ScenarioInfo("xxxx", tags...);
+            CodeExpression inheritedTagsExpression;
+            var featureTagsExpression = new CodeFieldReferenceExpression(null, GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME);
+            if (scenarioDefinitionInFeatureFile.Rule != null && scenarioDefinitionInFeatureFile.Rule.Tags.Any())
+            {
+                var tagHelperReference = new CodeTypeReferenceExpression(nameof(TagHelper));
+                var ruleTagsExpression = _scenarioPartHelper.GetStringArrayExpression(scenarioDefinitionInFeatureFile.Rule.Tags);
+                inheritedTagsExpression = new CodeMethodInvokeExpression(tagHelperReference, nameof(TagHelper.CombineTags), featureTagsExpression, ruleTagsExpression);
+            }
+            else
+            {
+                inheritedTagsExpression = featureTagsExpression;
+            }
+
             CodeExpression tagsExpression;
             if (additionalTagsExpression == null)
             {
@@ -184,7 +197,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                         new CodePrimitiveExpression(scenarioDefinition.Description),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_TAGS_VARIABLE_NAME),
                         new CodeVariableReferenceExpression(GeneratorConstants.SCENARIO_ARGUMENTS_VARIABLE_NAME),
-                        new CodeFieldReferenceExpression(null, GeneratorConstants.FEATURE_TAGS_VARIABLE_NAME))));
+                        inheritedTagsExpression)));
 
             GenerateScenarioInitializeCall(generationContext, scenarioDefinition, testMethod);
 
