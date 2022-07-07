@@ -34,7 +34,10 @@ public class CucumberExpressionStepDefinitionBindingBuilder : StepDefinitionBind
         if (CommonRegexStepDefPatterns.IsMatch(cucumberExpressionCandidate))
             return false;
 
-        //TODO[cukeex]: consider this once more 
+        // These are special constructs that usually happen in regex, but not valid
+        // in Cucumber Expressions => If they exist, we treat the expression as regex.
+        // - \d+
+        // - \.
         if (ExtendedRegexStepDefPatterns.IsMatch(cucumberExpressionCandidate))
             return false;
 

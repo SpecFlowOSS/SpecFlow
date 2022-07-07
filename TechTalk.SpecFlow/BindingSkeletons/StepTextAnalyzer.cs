@@ -56,8 +56,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 if (paramMatch.Capture.Index < textIndex)
                     continue;
 
-                const string singleQuoteRegexPattern = "[^']*";
-                const string doubleQuoteRegexPattern = "[^\"\"]*";
+                const string singleQuoteRegexPattern = ".*"; // earlier it was "[^']*"
+                const string doubleQuoteRegexPattern = ".*"; // earlier it was "[^\"\"]*"
                 const string defaultRegexPattern = ".*";
 
                 string regexPattern = defaultRegexPattern;
@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 switch (value.Substring(0, Math.Min(value.Length, 1)))
                 {
                     case "\"":
-                        regexPattern = doubleQuoteRegexPattern; //TODO[cukeex]: this code was not working and provided .* regex, shall we keep that?
+                        regexPattern = doubleQuoteRegexPattern;
                         value = value.Substring(1, value.Length - 2);
                         wrapText = "\"";
                         break;

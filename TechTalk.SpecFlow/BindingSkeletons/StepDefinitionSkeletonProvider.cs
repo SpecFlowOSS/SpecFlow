@@ -88,8 +88,6 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             }
 
             return result.ToString();
-
-            throw new NotImplementedException();
         }
 
         private AnalyzedStepText Analyze(StepInstance stepInstance, CultureInfo bindingCulture)
@@ -168,6 +166,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         {
             StringBuilder result = new StringBuilder();
 
+            result.Append("^");
             result.Append(EscapeRegex(stepText.TextParts[0]));
             for (int i = 1; i < stepText.TextParts.Count; i++)
             {
@@ -175,6 +174,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 result.Append($"{parameter.WrapText}({parameter.RegexPattern}){parameter.WrapText}");
                 result.Append(EscapeRegex(stepText.TextParts[i]));
             }
+            result.Append("$");
 
             return result.ToString();
         }
