@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using Xunit;
@@ -213,7 +214,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromType(typeof (ScopedHookExample));
+            BuildCompleteBindingFromType(builder, typeof (ScopedHookExample));
 
             Assert.Equal(4, bindingSourceProcessorStub.HookBindings.Count(s => s.HookOrder == 10000));
         }
@@ -223,7 +224,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromType(typeof (PrioritizedHookExample));
+            BuildCompleteBindingFromType(builder, typeof (PrioritizedHookExample));
 
             Assert.Equal(1,
                 bindingSourceProcessorStub.HookBindings.Count(
@@ -293,7 +294,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            BuildCompleteBindingFromAssembly(builder);
             Assert.Equal(1,
                 bindingSourceProcessorStub.StepArgumentTransformationBindings.Count(
                     s =>
@@ -301,18 +302,30 @@ namespace TechTalk.SpecFlow.RuntimeTests
                         s.Regex.Match("").Success == false));
         }
 
+        private static void BuildCompleteBindingFromAssembly(RuntimeBindingRegistryBuilder builder)
+        {
+            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.BuildingCompleted();
+        }
+
+        private static void BuildCompleteBindingFromType(RuntimeBindingRegistryBuilder builder, Type type)
+        {
+            builder.BuildBindingsFromType(type);
+            builder.BuildingCompleted();
+        }
+
         [Fact]
         public void ShouldFindScopedExampleConverter()
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            BuildCompleteBindingFromAssembly(builder);
 
             Assert.Equal(2,
-                bindingSourceProcessorStub.StepDefinitionBindings.Count(
-                    s =>
-                        s.StepDefinitionType == StepDefinitionType.Then &&
-                        s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped));
+                         bindingSourceProcessorStub.StepDefinitionBindings.Count(
+                             s =>
+                                 s.StepDefinitionType == StepDefinitionType.Then &&
+                                 s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped));
             Assert.Equal(0,
                 bindingSourceProcessorStub.StepDefinitionBindings.Count(
                     s =>
@@ -325,7 +338,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            BuildCompleteBindingFromAssembly(builder);
 
             Assert.Equal(1,
                 bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag2BeforeScenario" && s.IsScoped));
@@ -336,7 +349,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            BuildCompleteBindingFromAssembly(builder);
 
             Assert.Equal(2,
                 bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag34BeforeScenario" && s.IsScoped));
@@ -347,7 +360,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            BuildCompleteBindingFromAssembly(builder);
 
             Assert.Equal(1,
                 bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag1BeforeScenario" && s.IsScoped));
@@ -358,7 +371,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromType(typeof(BindingClassWithStepDefinitionAttributes));
+            BuildCompleteBindingFromType(builder, typeof(BindingClassWithStepDefinitionAttributes));
 
             Assert.Equal(3, bindingSourceProcessorStub.StepDefinitionBindings.Count);
             Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));
@@ -371,7 +384,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromType(typeof(BindingClassWithTranslatedStepDefinitionAttributes));
+            BuildCompleteBindingFromType(builder, typeof(BindingClassWithTranslatedStepDefinitionAttributes));
 
             Assert.Equal(3, bindingSourceProcessorStub.StepDefinitionBindings.Count);
             Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));
@@ -384,7 +397,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub, new SpecFlowAttributesFilter());
 
-            builder.BuildBindingsFromType(typeof(BindingClassWithCustomStepDefinitionAttribute));
+            BuildCompleteBindingFromType(builder, typeof(BindingClassWithCustomStepDefinitionAttribute));
 
             Assert.Equal(2, bindingSourceProcessorStub.StepDefinitionBindings.Count);
             Assert.Equal(1, bindingSourceProcessorStub.StepDefinitionBindings.Count(b => b.StepDefinitionType == StepDefinitionType.Given));

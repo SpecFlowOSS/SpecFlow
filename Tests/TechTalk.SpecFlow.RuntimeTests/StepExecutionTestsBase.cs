@@ -140,6 +140,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                         var builder = (RuntimeBindingRegistryBuilder)container.Resolve<IRuntimeBindingRegistryBuilder>();
                         foreach (var bindingType in bindingTypes)
                             builder.BuildBindingsFromType(bindingType);
+                        builder.BuildingCompleted();
 
                         registerMocks?.Invoke(container);
                     });

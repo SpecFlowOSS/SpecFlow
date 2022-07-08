@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Configuration
         public const bool TraceSuccessfulSteps = true;
         public const bool TraceTimings = false;
         public const string MinTracedDuration = "0:0:0.1";
-        public const StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle = TechTalk.SpecFlow.BindingSkeletons.StepDefinitionSkeletonStyle.RegexAttribute;
+        public const StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle = TechTalk.SpecFlow.BindingSkeletons.StepDefinitionSkeletonStyle.CucumberExpressionAttribute;
         public const ObsoleteBehavior ObsoleteBehavior = Configuration.ObsoleteBehavior.Warn;
         public const bool ColoredOutput = false;
 

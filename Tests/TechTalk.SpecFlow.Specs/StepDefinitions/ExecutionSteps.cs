@@ -39,8 +39,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _compilationDriver.SetBuildTool(buildTool);
         }
 
-        [When(@"I build the solution using '(dotnet msbuild|dotnet build|MSBuild)'")]
-        [When(@"I compile the solution using '(dotnet msbuild|dotnet build|MSBuild)'")]
+        [When(@"^I build the solution using '(dotnet msbuild|dotnet build|MSBuild)'$")]
+        [When(@"^I compile the solution using '(dotnet msbuild|dotnet build|MSBuild)'$")]
         public void WhenIBuildTheSolutionUsing(BuildTool buildTool)
         {
             _compilationDriver.CompileSolution(buildTool);

@@ -11,6 +11,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         [Description("Method name - pascal case")]
         MethodNamePascalCase = 2,
         [Description("Method name as regulare expression (F#)")]
-        MethodNameRegex = 3
+        MethodNameRegex = 3,
+        [Description("Cucumber expressions in attributes")]
+        CucumberExpressionAttribute = 4,
     }
 }
