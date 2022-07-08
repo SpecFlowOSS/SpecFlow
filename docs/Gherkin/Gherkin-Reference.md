@@ -92,9 +92,9 @@ Tags are markers that can be assigned to features and scenarios. Assigning a tag
 
 If supported by the [unit test framework](../Installation/Unit-Test-Providers.md), SpecFlow generates categories from the tags. The generated category name is the same as the tag's name, but without the leading `@`. You can filter and group the tests to be executed using these unit test categories. For example, you can tag crucial tests with `@important`, and then execute these tests more frequently.
 
-If your unit test framework does not support categories, you can still use tags to implement special logic for tagged scenarios in [bindings](../Bindings/Bindings.md) by querying the `ScenarioContext.Current.ScenarioInfo.Tags` property.
+If your unit test framework does not support categories, you can still use tags to implement special logic for tagged scenarios in [bindings](../Bindings/Bindings.md) by querying the `ScenarioContext.ScenarioInfo.Tags` property.
 
-Scenario and Feature level tags are available by querying the `ScenarioInfo.ScenarioAndFeatureTags` property.
+Scenario, Rule and Feature level tags are available by querying the `ScenarioInfo.CombinedTags` property.
 
 SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test](../Execution/Test-Results.html#ignored-tests) method from scenarios with this tag.
 
@@ -110,12 +110,15 @@ You can write anything you like, as long as no line starts with a keyword.
 The (optional) `Rule` keyword has been part of Gherkin since v6. 
 
 **Support in SpecFlow**
-Currently the Visual Studio Extension does not support the `Rule` keyword. If you use it, your syntax highlighting will be broken.
+
+To be able to work with rules in Visual Studio, you have to use Visual Studio 2022 or use the "Deveroom" extension for Visual Studio 2017 and 2019. Otherwise the syntax highlighting will be broken.
 
 The purpose of the `Rule` keyword is to represent one *business rule* that should be implemented.
 It provides additional information for a feature.
 A `Rule` is used to group together several scenarios
 that belong to this *business rule*. A `Rule` should contain one or more scenarios that illustrate the particular rule.
+
+From SpecFlow v4, you can also add tags on rules that will be inherited to all scenarios within that rule (like feature tags).
 
 For example:
 
@@ -136,6 +139,7 @@ Feature: Highlander
       Given there is only 1 ninja alive
       Then he (or she) will live forever ;-)
 
+  @edge_case
   Rule: There can be Two (in some cases)
 
     Scenario: Two -- Dead and Reborn as Phoenix
