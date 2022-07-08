@@ -2,6 +2,11 @@
 
 Features:
 + Add an option to colorize test result output
++ Support Rule tags (can be used for hook filters, scoping and access through 'ScenarioInfo.CombinedTags')
+
+Changes:
++ 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
+
 
 3.10
 
