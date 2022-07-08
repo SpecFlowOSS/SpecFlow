@@ -1,4 +1,6 @@
-﻿namespace TechTalk.SpecFlow
+﻿using System.Linq;
+
+namespace TechTalk.SpecFlow
 {
     #nullable enable
     /// <summary>
@@ -26,6 +28,16 @@
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Combines feature tags and rule tags in a way that both can be null or empty. Duplicates are removed.
+        /// </summary>
+        public static string[]? CombineTags(string[]? featureTags, string[]? ruleTags)
+        {
+            if (featureTags == null) return ruleTags;
+            if (ruleTags == null) return featureTags;
+            return featureTags.Concat(ruleTags).Distinct().ToArray();
         }
     }
 }

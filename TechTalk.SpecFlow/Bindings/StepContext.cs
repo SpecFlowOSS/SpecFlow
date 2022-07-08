@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 
@@ -25,15 +25,9 @@ namespace TechTalk.SpecFlow.Bindings
         public StepContext(FeatureInfo featureInfo, ScenarioInfo scenarioInfo)
         {
             Language = featureInfo == null ? CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage) : featureInfo.Language;
-            FeatureTitle = featureInfo == null ? null : featureInfo.Title;
-            ScenarioTitle = scenarioInfo == null ? null : scenarioInfo.Title; 
-
-            var tags = Enumerable.Empty<string>();
-            if (featureInfo != null && featureInfo.Tags != null)
-                tags = tags.Concat(featureInfo.Tags);
-            if (scenarioInfo != null && scenarioInfo.Tags != null)
-                tags = tags.Concat(scenarioInfo.Tags).Distinct();
-            Tags = tags;
+            FeatureTitle = featureInfo?.Title;
+            ScenarioTitle = scenarioInfo?.Title; 
+            Tags = scenarioInfo != null ? scenarioInfo.CombinedTags : featureInfo != null ? featureInfo.Tags : Array.Empty<string>();
         }
     }
 }
