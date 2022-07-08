@@ -1,7 +1,7 @@
 ﻿@cucumberExpressions
 Feature: Cucumber expressions
 
-Rule: Shoud support Cucumber expressions
+Rule: Should support Cucumber expressions
 
 Scenario: Cucumber expresions are used for Step Definitions
 	Given a scenario 'Simple Scenario' as
