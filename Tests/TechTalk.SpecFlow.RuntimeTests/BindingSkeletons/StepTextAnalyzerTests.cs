@@ -33,9 +33,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.Analyze("I \"did\" something", bindingCulture);
             result.Parameters.Count.Should().Be(1);
             result.Parameters[0].Name.Should().Be("did");
+            result.Parameters[0].WrapText.Should().Be("\"");
+            result.Parameters[0].CucumberExpressionTypeName.Should().Be("string");
             result.TextParts.Count.Should().Be(2);
-            result.TextParts[0].Should().Be("I \"");
-            result.TextParts[1].Should().Be("\" something");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something");
         }
 
         [Fact]
@@ -46,9 +48,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.Analyze("I 'did' something", bindingCulture);
             result.Parameters.Count.Should().Be(1);
             result.Parameters[0].Name.Should().Be("did");
+            result.Parameters[0].WrapText.Should().Be("'");
+            result.Parameters[0].CucumberExpressionTypeName.Should().Be("string");
             result.TextParts.Count.Should().Be(2);
-            result.TextParts[0].Should().Be("I '");
-            result.TextParts[1].Should().Be("' something");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something");
         }
 
         [Fact]
@@ -72,9 +76,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.Analyze("I 'do \" something' really \" strange", bindingCulture);
             result.Parameters.Count.Should().Be(1);
             result.Parameters[0].Name.Should().Be("p0");
+            result.Parameters[0].WrapText.Should().Be("'");
             result.TextParts.Count.Should().Be(2);
-            result.TextParts[0].Should().Be("I '");
-            result.TextParts[1].Should().Be("' really \" strange");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" really \" strange");
         }
 
         [Fact]
@@ -84,9 +89,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
             var result = sut.Analyze("I 'do 42 something' foo", bindingCulture);
             result.Parameters.Count.Should().Be(1);
+            result.Parameters[0].WrapText.Should().Be("'");
             result.TextParts.Count.Should().Be(2);
-            result.TextParts[0].Should().Be("I '");
-            result.TextParts[1].Should().Be("' foo");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" foo");
         }
 
         [Fact]
@@ -101,6 +107,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[0].Should().Be("I have ");
             result.TextParts[1].Should().Be(" bars");
             result.Parameters[0].Type.Should().Be("Int32");
+            result.Parameters[0].CucumberExpressionTypeName.Should().Be("int");
         }
 
         [Theory]
@@ -118,6 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters.Count.Should().Be(1);
             result.Parameters[0].Name.Should().Be("p0");
             result.Parameters[0].Type.Should().Be("DateTime");
+            result.Parameters[0].CucumberExpressionTypeName.Should().Be("DateTime");
             result.TextParts.Count.Should().Be(2);
             result.TextParts[0].Should().Be("Zombie apocalypse is expected at ");
             result.TextParts[1].Should().Be("");
@@ -135,6 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[0].Should().Be("I have ");
             result.TextParts[1].Should().Be(" bars");
             result.Parameters[0].Type.Should().Be("Decimal");
+            result.Parameters[0].CucumberExpressionTypeName.Should().Be("float");
         }
 
         [Fact]
@@ -145,11 +154,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.Analyze("I \"did\" something with \"multiple\" parameters", bindingCulture);
             result.Parameters.Count.Should().Be(2);
             result.Parameters[0].Name.Should().Be("did");
+            result.Parameters[0].WrapText.Should().Be("\"");
             result.Parameters[1].Name.Should().Be("multiple");
+            result.Parameters[1].WrapText.Should().Be("\"");
             result.TextParts.Count.Should().Be(3);
-            result.TextParts[0].Should().Be("I \"");
-            result.TextParts[1].Should().Be("\" something with \"");
-            result.TextParts[2].Should().Be("\" parameters");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something with ");
+            result.TextParts[2].Should().Be(" parameters");
         }
 
         [Fact]
@@ -215,9 +226,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters[0].Name.Should().Be("did");
             result.Parameters[1].Name.Should().Be("mUlTiPLe");
             result.TextParts.Count.Should().Be(3);
-            result.TextParts[0].Should().Be("I \"");
-            result.TextParts[1].Should().Be("\" something with \"");
-            result.TextParts[2].Should().Be("\" parameters");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something with ");
+            result.TextParts[2].Should().Be(" parameters");
         }
 
         [Fact]
@@ -229,8 +240,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Parameters.Count.Should().Be(1);
             result.Parameters[0].Name.Should().Be("dö");
             result.TextParts.Count.Should().Be(2);
-            result.TextParts[0].Should().Be("I \"");
-            result.TextParts[1].Should().Be("\" something ");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something ");
         }
 
         [Fact]
@@ -241,9 +252,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.Analyze("I \"\" something ", bindingCulture);
             result.Parameters.Count.Should().Be(1);
             result.Parameters[0].Name.Should().Be("p0");
+            result.Parameters[0].WrapText.Should().Be("\"");
             result.TextParts.Count.Should().Be(2);
-            result.TextParts[0].Should().Be("I \"");
-            result.TextParts[1].Should().Be("\" something ");
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something ");
         }
     }
 }

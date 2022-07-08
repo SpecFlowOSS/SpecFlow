@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -26,18 +27,20 @@ namespace TechTalk.SpecFlow.Infrastructure
 
     public class StepDefinitionMatchService : IStepDefinitionMatchService
     {
-        private readonly IBindingRegistry bindingRegistry;
-        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
+        private readonly IBindingRegistry _bindingRegistry;
+        private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
+        private readonly IErrorProvider _errorProvider;
 
-        public StepDefinitionMatchService(IBindingRegistry bindingRegistry, IStepArgumentTypeConverter stepArgumentTypeConverter)
+        public StepDefinitionMatchService(IBindingRegistry bindingRegistry, IStepArgumentTypeConverter stepArgumentTypeConverter, IErrorProvider errorProvider)
         {
-            this.bindingRegistry = bindingRegistry;
-            this.stepArgumentTypeConverter = stepArgumentTypeConverter;
+            _bindingRegistry = bindingRegistry;
+            _stepArgumentTypeConverter = stepArgumentTypeConverter;
+            _errorProvider = errorProvider;
         }
 
         private object[] CalculateArguments(Match match, StepInstance stepInstance)
         {
-            var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            var regexArgs = match.Groups.Cast<Group>().Skip(1).Where(g => g.Success).Select(g => g.Value);
             var arguments = regexArgs.Cast<object>().ToList();
             if (stepInstance.MultilineTextArgument != null)
                 arguments.Add(stepInstance.MultilineTextArgument);
@@ -52,12 +55,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (value.GetType().IsAssignableTo(typeToConvertTo))
                 return true;
 
-            return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, bindingCulture);
+            return _stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, bindingCulture);
         }
 
         public bool Ready
         {
-            get { return bindingRegistry.Ready; }
+            get { return _bindingRegistry.Ready; }
         }
 
         public BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
@@ -69,8 +72,14 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return BindingMatch.NonMatching;
 
             Match match = null;
-            if (useRegexMatching && stepDefinitionBinding.Regex != null && !(match = stepDefinitionBinding.Regex.Match(stepInstance.Text)).Success)
-                return BindingMatch.NonMatching;
+            if (useRegexMatching)
+            {
+                if (!stepDefinitionBinding.IsValid)
+                    throw _errorProvider.GetInvalidStepDefinitionError(stepDefinitionBinding);
+                match = stepDefinitionBinding.Regex.Match(stepInstance.Text);
+                if (!match.Success)
+                    return BindingMatch.NonMatching;
+            }
 
             int scopeMatches = 0;
             if (useScopeMatching && stepDefinitionBinding.IsScoped && stepInstance.StepContext != null && !stepDefinitionBinding.BindingScope.Match(stepInstance.StepContext, out scopeMatches))
@@ -164,7 +173,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected IEnumerable<BindingMatch> GetCandidatingBindings(StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
-            var matches = bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
+            var matches = _bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
             // we remove duplicate maches for the same method (take the highest scope matches from each)
             matches = matches.GroupBy(m => m.StepBinding.Method, (_, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
             return matches;

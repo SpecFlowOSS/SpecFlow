@@ -1,5 +1,4 @@
 ﻿@xUnit @NUnit3 @MSTest
-@focus
 Feature: In-AppDomain Parallel Execution
 
 Background:

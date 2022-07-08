@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         private Regex AssertRegex(string regexText)
         {
             regexText.Should().NotBeNullOrWhiteSpace("null, empty or whitespace-only regex is not valid for step definitions");
-            return RegexFactory.Create(regexText); // uses the same regex creation as real step definitions
+            return RegexFactory.CreateWholeTextRegexForBindings(regexText); // uses the same regex creation as real step definitions
         }
 
         private Regex CallCalculateRegexFromMethodAndAssertRegex(StepDefinitionRegexCalculator sut, StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod)

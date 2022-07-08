@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public readonly List<IHookBinding> HookBindings = new List<IHookBinding>();
         public readonly List<IStepArgumentTransformationBinding> StepArgumentTransformationBindings = new List<IStepArgumentTransformationBinding>();
 
-        public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(ConfigurationLoader.GetDefault())))
+        public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(ConfigurationLoader.GetDefault()), new CucumberExpressionStepDefinitionBindingBuilderFactory(new CucumberExpressionParameterTypeRegistry(new BindingRegistry()))))
         {
         }
 
@@ -28,11 +29,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected override void ProcessStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
         {
             StepArgumentTransformationBindings.Add(stepArgumentTransformationBinding);
-        }
-
-        public void BuildingCompleted()
-        {
-            //nop
         }
     }
 }

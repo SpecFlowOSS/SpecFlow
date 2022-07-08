@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -19,14 +16,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         {
             var sut = new BindingRegistry();
 
-            var stepDefinitionBinding1 = new StepDefinitionBinding(StepDefinitionType.Given, @"foo.*", new Mock<IBindingMethod>().Object, null);
-            var stepDefinitionBinding2 = new StepDefinitionBinding(StepDefinitionType.When, @"bar.*", new Mock<IBindingMethod>().Object, null);
+            var stepDefinitionBinding1 = StepDefinitionHelper.CreateRegex(StepDefinitionType.Given, @"foo.*");
+            var stepDefinitionBinding2 = StepDefinitionHelper.CreateRegex(StepDefinitionType.When, @"bar.*");
             sut.RegisterStepDefinitionBinding(stepDefinitionBinding1);
             sut.RegisterStepDefinitionBinding(stepDefinitionBinding2);
 
             var result = sut.GetStepDefinitions();
 
-            result.Should().BeEquivalentTo(new List<StepDefinitionBinding> { stepDefinitionBinding1, stepDefinitionBinding2 });
+            result.Should().BeEquivalentTo(new List<IStepDefinitionBinding> { stepDefinitionBinding1, stepDefinitionBinding2 });
         }
 
         [Fact]

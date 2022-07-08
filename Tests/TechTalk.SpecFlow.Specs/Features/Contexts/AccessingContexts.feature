@@ -1,6 +1,5 @@
 ﻿Feature: Accessing Contexts
 
-@focus
 Scenario: The obsolete ScenarioContext.Current can be accessed from a non-parallel execution
 	Given the following step definition
 		"""
