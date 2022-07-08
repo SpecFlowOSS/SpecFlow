@@ -61,39 +61,7 @@ jobs:
       arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
     displayName: 'build Release'
-    
-  ### Remove the next 3 tasks when netcoreapp2.1 is no longer supported/targeted by the Project
-  - task: DotNetCoreCLI@2
-    inputs: 
-      command: publish
-      projects: '**/TechTalk.SpecFlow.GeneratorTests.csproj'
-      arguments: --no-build -f netcoreapp2.1 -o $(Build.SourcesDirectory)/Tests/TechTalk.SpecFlow.GeneratorTests/bin/Debug/netcoreapp2.1
-      publishWebProjects: false
-      zipAfterPublish: false
-      modifyOutputPath: false
-    displayName: 'Publish GeneratorTests netcoreapp2.1 tests'
-    
-  - task: DotNetCoreCLI@2
-    inputs: 
-      command: publish
-      projects: '**/TechTalk.SpecFlow.PluginTests.csproj'
-      arguments: --no-build -f netcoreapp2.1 -o $(Build.SourcesDirectory)/Tests/TechTalk.SpecFlow.PluginTests/bin/Debug/netcoreapp2.1
-      publishWebProjects: false
-      zipAfterPublish: false
-      modifyOutputPath: false
-    displayName: 'Publish PluginTests netcoreapp2.1 tests'
-    
-  - task: DotNetCoreCLI@2
-    inputs: 
-      command: publish
-      projects: '**/TechTalk.SpecFlow.RuntimeTests.csproj'
-      arguments: --no-build -f netcoreapp2.1 -o $(Build.SourcesDirectory)/Tests/TechTalk.SpecFlow.RuntimeTests/bin/Debug/netcoreapp2.1
-      publishWebProjects: false
-      zipAfterPublish: false
-      modifyOutputPath: false
-    displayName: 'Publish RuntimeTests netcoreapp2.1 tests'
-  ###
-  
+     
   - task: ArchiveFiles@2
     displayName: 'Archive $(Build.SourcesDirectory)'
     condition: and(succeeded(), ${{ parameters.publishArtifacts}})

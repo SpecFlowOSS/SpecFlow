@@ -89,8 +89,9 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             // ASSERT
             var attributes = code.Class().CustomAttributes().ToArray();
             attributes.Should()
-                .ContainSingle(a => a.Name == "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute")
-                    .Which.Arguments.Should().BeEmpty();
+                      .ContainSingle(a => a.Name == "Microsoft.VisualStudio.TestTools.UnitTesting.DoNotParallelizeAttribute")
+                      .Which.Arguments.Count.Should()
+                      .Be(0);
         }
 
         [Fact]
