@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.Infrastructure
+﻿namespace TechTalk.SpecFlow
 {
     public interface ISpecFlowOutputHelper
     {

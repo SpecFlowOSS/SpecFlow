@@ -3,6 +3,9 @@
 Features:
 + Add an option to colorize test result output
 
+Changes:
++ The interface ISpecFlowOutputHelper has been moved to the TechTalk.SpecFlow namespace (from TechTalk.SpecFlow.Infrastructure).
+
 3.10
 
 Features:
