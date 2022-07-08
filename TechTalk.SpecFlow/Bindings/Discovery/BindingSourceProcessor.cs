@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private BindingSourceType currentBindingSourceType = null;
         private BindingScope[] typeScopes = null;
+        private List<IStepDefinitionBindingBuilder> _stepDefinitionBindingBuilders = new();
 
         protected BindingSourceProcessor(IBindingFactory bindingFactory)
         {
@@ -59,6 +60,14 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
             currentBindingSourceType = null;
             typeScopes = null;
+        }
+
+        public virtual void BuildingCompleted()
+        {
+            foreach (var stepDefinitionBinding in _stepDefinitionBindingBuilders.SelectMany(builder => builder.Build()))
+            {
+                ProcessStepDefinitionBinding(stepDefinitionBinding);
+            }
         }
 
         private IEnumerable<BindingScope> GetScopes(IEnumerable<BindingSourceAttribute> attributes)
@@ -180,12 +189,13 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private void ProcessStepArgumentTransformationAttribute(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepArgumentTransformationAttribute)
         {
-            string regex = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(0) ?? stepArgumentTransformationAttribute.TryGetAttributeValue<string>("Regex");
+            string regex = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(0) ?? stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Regex));
+            string name = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Name));
 
             if (!ValidateStepArgumentTransformation(bindingSourceMethod, stepArgumentTransformationAttribute))
                 return;
 
-            var stepArgumentTransformationBinding = bindingFactory.CreateStepArgumentTransformation(regex, bindingSourceMethod.BindingMethod);
+            var stepArgumentTransformationBinding = bindingFactory.CreateStepArgumentTransformation(regex, bindingSourceMethod.BindingMethod, name);
 
             ProcessStepArgumentTransformationBinding(stepArgumentTransformationBinding);
         }
@@ -229,8 +239,8 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
             foreach (var stepDefinitionType in stepDefinitionTypes)
             {
-                var stepDefinitionBinding = bindingFactory.CreateStepBinding(stepDefinitionType, regex, bindingSourceMethod.BindingMethod, scope);
-                ProcessStepDefinitionBinding(stepDefinitionBinding);
+                var stepDefinitionBindingBuilder = bindingFactory.CreateStepDefinitionBindingBuilder(stepDefinitionType, bindingSourceMethod.BindingMethod, scope, regex);
+                _stepDefinitionBindingBuilders.Add(stepDefinitionBindingBuilder);
             }
         }
 

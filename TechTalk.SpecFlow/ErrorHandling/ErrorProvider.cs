@@ -23,15 +23,16 @@ namespace TechTalk.SpecFlow.ErrorHandling
         Exception GetTooManyBindingParamError(int maxParam);
         Exception GetNonStaticEventError(IBindingMethod method);
         Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion);
+        Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding);
     }
 
     internal class ErrorProvider : IErrorProvider
     {
         private readonly IStepFormatter stepFormatter;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
-        private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        private readonly SpecFlowConfiguration specFlowConfiguration;
 
-        public ErrorProvider(IStepFormatter stepFormatter, Configuration.SpecFlowConfiguration specFlowConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
+        public ErrorProvider(IStepFormatter stepFormatter, SpecFlowConfiguration specFlowConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
         {
             this.stepFormatter = stepFormatter;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -123,6 +124,15 @@ namespace TechTalk.SpecFlow.ErrorHandling
         public Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion)
         {
             throw new BindingException(bindingObsoletion.Message);
+        }
+
+        public Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding)
+        {
+            var upgradeMessage = 
+                stepDefinitionBinding.ExpressionType == StepDefinitionExpressionTypes.CucumberExpression ? 
+                $"{Environment.NewLine}If this error comes after upgrading to SpecFlow v4, check the upgrade guide: https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html" :
+                "";
+            return new BindingException($"Invalid step definition! The step definition method '{GetMethodText(stepDefinitionBinding.Method)}' is invalid: {stepDefinitionBinding.ErrorMessage}.{upgradeMessage}");
         }
     }
 }

@@ -1,0 +1,281 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  /*
+
+  Changelog:
+
+  1.1
+  - Added "CucumberExpressionAttribute" to trace/stepDefinitionSkeletonStyle and set it is as default.
+
+  1.0
+  - Initial SpecFlow configuration schema containing SpecFlow v3.9 settings and IDE settings
+  
+  */
+
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "language": {
+      "description": "Use this section to define the default language for feature files and other language-related settings. For more details see https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#language",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "feature": {
+          "description": "The default language of feature files added to the project. We recommend using specific culture names (e.g.: \"en-US\") rather than generic (neutral) cultures (e.g.: \"en\").",
+          "type": "string",
+          "default": "en-US"
+        }
+      }
+    },
+    "bindingCulture": {
+      "description": "Use this section to define the culture for executing binding methods and converting step arguments. For more details see https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#bindingculture",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "description": "Specifies the culture to be used to execute binding methods and convert step arguments. If not specified, the feature language is used. We recommend using specific culture names (e.g.: \"en-US\") rather than generic (neutral) cultures (e.g.: \"en\").",
+          "type": "string",
+          "default": "not specified"
+        }
+      }
+    },
+    "generator": {
+      "description": "Use this section to define unit test generation options. For more details see https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#generator",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "allowDebugGeneratedFiles": {
+          "description": "By default, the debugger is configured to step through the generated code. This helps you debug your feature files and bindings. Disable this option by setting this attribute to \"true\".",
+          "type": "boolean",
+          "default": false
+        },
+        "allowRowTests": {
+          "description": "Determines whether \"row tests\" should be generated for scenario outlines. This setting is ignored if the unit test framework does not support row based testing.",
+          "type": "boolean",
+          "default": false
+        },
+        "addNonParallelizableMarkerForTags": {
+          "description": "Defines a set of tags, any of which specify that a feature should be excluded from running in parallel with any other feature. For mor details see https://docs.specflow.org/projects/specflow/en/latest/Execution/Parallel-Execution.html",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "runtime": {
+      "description": "Use this section to specify various test execution options. For more details see https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#runtime",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "missingOrPendingStepsOutcome": {
+          "description": "Determines how SpecFlow behaves if a step binding is not implemented or pending.",
+          "type": "string",
+          "default": "Pending",
+          "enum": [ "Pending", "Inconclusive", "Ignore", "Error" ]
+        },
+        "obsoleteBehavior": {
+          "description": "Determines how SpecFlow behaves if a step binding is marked with [Obsolete] attribute.",
+          "type": "string",
+          "default": "Warn",
+          "enum": [ "None", "Warn", "Pending", "Error" ]
+        },
+        "stopAtFirstError": {
+          "description": "Determines whether the execution should stop when encountering the first error, or whether it should attempt to try and match subsequent steps (in order to detect missing steps).",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "trace": {
+      "description": "Use this section to determine the SpecFlow trace output. For more details see https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#trace",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "traceSuccessfulSteps": {
+          "description": "Determines whether SpecFlow should trace successful step binding executions.",
+          "type": "boolean",
+          "default": true
+        },
+        "traceTimings": {
+          "description": "Determines whether SpecFlow should trace execution time of the binding methods (only if the execution time is longer than the minTracedDuration value).",
+          "type": "boolean",
+          "default": false
+        },
+        "minTracedDuration": {
+          "description": "Specifies a threshold for tracing the binding execution times. Example: 0:0:0.1 (100 ms)",
+          "type": "string",
+          "default": "0:0:0.1"
+        },
+        "stepDefinitionSkeletonStyle": {
+          "description": "Specifies the default step definition style.",
+          "type": "string",
+          "default": "CucumberExpressionAttribute",
+          "enum": [ "CucumberExpressionAttribute", "RegexAttribute", "MethodNameUnderscores", "MethodNamePascalCase", "MethodNameRegex" ]
+        }
+      }
+    },
+    "stepAssemblies": {
+      "description": "This section can be used to configure additional assemblies that contain external binding assemblies. The assembly of the SpecFlow project (the project containing the feature files) is automatically included. The binding assemblies must be placed in the output folder (e.g. bin/Debug) of the SpecFlow project, for example by adding a reference to the assembly from the project. For more details see https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#stepassemblies",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "assembly": {
+            "description": "The name of the assembly containing bindings.",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ide": {
+      "description": "This section contains all the extension configurations related to the IDE.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "specFlow": {
+          "$ref": "#/definitions/SpecFlow"
+        },
+        "traceability": {
+          "$ref": "#/definitions/Traceability"
+        },
+        "editor": {
+          "$ref": "#/definitions/Editor"
+        }
+      }
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "SpecFlow": {
+      "description": "Settings related to SpecFlow projects",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "isSpecFlowProject": {
+          "description": "Enables the project to be handled as SpecFlow project. (Default: [detect automatically])",
+          "type": "boolean"
+        },
+        "generatorFolder": {
+          "description": "The path of the SpecFlow generator folder used by the project, that is usually the 'tools' folder of the SpecFlow NuGet package, e.g. '..\\MyDependencies\\SpecFlow.2.3.0\\tools'. (Default: [detect from the installed SpecFlow NuGet package])",
+          "type": "string"
+        },
+        "configFilePath": {
+          "description": "The path of the SpecFlow configuration file (App.config or specflow.json) used by the project, e.g. 'specflow.json'. (Default: [detect config file automatically])",
+          "type": "string"
+        },
+        "version": {
+          "description": "The SpecFlow version used by the project, e.g. '2.3.1'. (Default: [detect version automatically])",
+          "type": "string",
+          "pattern": "^(?:\\.?[0-9]+){2,}(?:\\-[\\-a-z0-9]*)?$"
+        },
+        "traits": {
+          "description": "The list of the SpecFlow-related project traits. The possible traits are: 'MsBuildGeneration', 'XUnitAdapter', 'DesignTimeFeatureFileGeneration', e.g. '[\"XUnitAdapter\"]'. (Default: [detect from the installed NuGet packages])",
+          "type": "array",
+          "items": {
+            "enum": [ "None", "MsBuildGeneration", "XUnitAdapter", "DesignTimeFeatureFileGeneration" ]
+          }
+        }
+      }
+    },
+
+    "Traceability": {
+      "description": "Settings for traceability of scenarios, see http://speclink.me/deveroomtraceability for details.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tagLinks": {
+          "description": "List of tags patterns that should be converted to an external URL",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "Tag pattern configuration",
+            "additionalProperties": false,
+            "properties": {
+              "tagPattern": {
+                "description": "A regular expression that matches to the tag name (without leading '@' sign). The identifier of the artifacts should be matched with a named regex group. E.g. 'issue\\\\:(?<id>\\\\d+)'. ",
+                "type": "string"
+              },
+              "urlTemplate": {
+                "description": "An URL template to generate the external link. It can contain parameters in an '{paramName}' format, where 'paramName' refers to the regular expression group name in the 'tagPattern'. E.g. 'https://github.com/me/my-project/issues/{id}'",
+                "type": "string"
+              }
+            },
+            "required": [ "tagPattern", "urlTemplate" ]
+          }
+        }
+      }
+    },
+
+    "Editor": {
+      "description": "This section contains all the Editor related configurations.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "showStepCompletionAfterStepKeywords": {
+          "description": "Determines whether the extension should suggest step completions.",
+          "type": "boolean",
+          "default": true
+        },
+        "gherkinFormat": {
+          "description": "Provides settings for formatting Gherkin feature files",
+          "type": "object",
+          "additionalItems": true,
+          "properties": {
+            "indentFeatureChildren": {
+              "description": "Specifies whether child elements of Feature (Background, Rule, Scenario, Scenario Outline) should be indented.",
+              "type": "boolean",
+              "default": false
+            },
+            "indentRuleChildren": {
+              "description": "Specifies whether child elements fo Rule (Background, Scenario, Scenario Outline) should be indented.",
+              "type": "boolean",
+              "default": false
+            },
+            "indentSteps": {
+              "description": "Specifies whether steps of scenarios should be indented.",
+              "type": "boolean",
+              "default": true
+            },
+            "indentAndSteps": {
+              "description": "Specifies whether the 'And' and 'But' steps of the scenarios should have an additional indentation.",
+              "type": "boolean",
+              "default": false
+            },
+            "indentDataTable": {
+              "description": "Specifies whether DataTable arguments should be indented within the step.",
+              "type": "boolean",
+              "default": true
+            },
+            "indentDocString": {
+              "description": "Specifies whether DocString arguments should be indented within the step.",
+              "type": "boolean",
+              "default": true
+            },
+            "indentExamples": {
+              "description": "Specifies whether the Examples block should be indented within the Scenario Outline.",
+              "type": "boolean",
+              "default": false
+            },
+            "indentExamplesTable": {
+              "description": "Specifies whether the Examples table should be indented within the Examples block.",
+              "type": "boolean",
+              "default": true
+            },
+            "tableCellPaddingSize": {
+              "description": "The number of space characters to be used on each sides as table cell padding.",
+              "type": "integer",
+              "default": 1
+            }
+          }
+        }
+      }
+    } 
+  }
+}

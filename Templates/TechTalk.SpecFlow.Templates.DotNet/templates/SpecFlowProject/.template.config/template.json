@@ -19,10 +19,6 @@
             "replaces": "$target$",
             "choices": [
                 {
-                    "choice": "netcoreapp2.1",
-                    "description": ".NET Core 2.1"
-                },
-                {
                     "choice": "netcoreapp3.1",
                     "description": ".NET Core 3.1"
                 },

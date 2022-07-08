@@ -1,12 +1,14 @@
-3.11
+4.0
 
 Features:
 + Add an option to colorize test result output
++ Support for using Cucumber Expressions for step definitions.
 + Support Rule tags (can be used for hook filters, scoping and access through 'ScenarioInfo.CombinedTags')
 
 Changes:
++ Existing step definition expressions detected to be either regular or cucumber expression. Check https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html for potential upgrade issues.
++ Default step definition skeletons are generating cucumber expressions.
 + 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
-
 
 3.10
 
