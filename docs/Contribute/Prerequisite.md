@@ -5,5 +5,6 @@
         - ASP.NET and web development
         - .NET desktop development
         - .NET Core cross- platform development
-- .NET Core SDK 2.1
 - .NET Core SDK 3.1
+- .NET 5 SDK
+- .NET 6 SDK

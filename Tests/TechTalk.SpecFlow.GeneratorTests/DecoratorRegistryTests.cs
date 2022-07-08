@@ -187,7 +187,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             List<string> unprocessedTags;
             registry.DecorateTestClass(CreateGenerationContext("foo"), out unprocessedTags);
 
-            executionOrder.Should().Equal(new object[] { "foo2", "foo1" });
+            executionOrder.Should().Equal(new[] { "foo2", "foo1" });
         }
 
         [Fact]

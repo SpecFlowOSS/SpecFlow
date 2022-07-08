@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -30,9 +30,10 @@
     <ProjectReference Include="..\TechTalk.SpecFlow.MSTest.SpecFlowPlugin\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.csproj" />
   </ItemGroup>
 
+
   <Target Name="WriteAssemblyHooksVersion" AfterTargets="GetBuildVersion" BeforeTargets="BeforeCompile" Condition="$(DesignTimeBuild) != 'true' or '$(BuildingProject)' == 'true'">
-    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true"/>
-    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true"/>
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.template.cs" OutputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.cs" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true" />
+    <ReplaceTextInFileTask InputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.template.vb" OutputFile="$(MSBuildThisFileDirectory)\build\MSTest.AssemblyHooks.vb" TextToReplace="SPECFLOW_VERSION" TextToReplaceWith="$(NuGetPackageVersion)" WriteOnlyWhenChanged="true" />
   </Target>
   
 </Project>

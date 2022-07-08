@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceWarning(string text)
         {
-            traceListener.WriteToolOutput("{0}: {1}", colorOutputHelper.Colorize("done", colorOutputTheme.Warning), text);
+            traceListener.WriteToolOutput("{0}: {1}", colorOutputHelper.Colorize("warning", colorOutputTheme.Warning), text);
         }
 
         public void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration)

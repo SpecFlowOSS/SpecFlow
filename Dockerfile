@@ -9,7 +9,7 @@ RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsof
     && apt update \
     && apt install apt-transport-https -y \
     && apt update
-RUN apt install dotnet-sdk-2.1 -y
+RUN apt install dotnet-sdk-3.1 -y
 
 # RUN git clone --recurse-submodules--single-branch --branch updateLinuxBuild -j8 https://github.com/techtalk/SpecFlow.git /src \
 #     && ls -la
