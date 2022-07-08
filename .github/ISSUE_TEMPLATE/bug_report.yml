@@ -27,6 +27,7 @@ body:
   attributes:
     label: .NET Implementation
     options:
+      - .NET 6.0
       - .NET 5.0
       - .NET Core 3.1
       - .NET Core 3.0

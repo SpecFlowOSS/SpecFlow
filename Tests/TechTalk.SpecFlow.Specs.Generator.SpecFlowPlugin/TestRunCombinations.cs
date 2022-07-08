@@ -16,21 +16,18 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "Old", TargetFramework = TfmEnumValueNet461, UnitTestProvider = "xUnit", ConfigFormat = "Config"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet461, UnitTestProvider = "xUnit", ConfigFormat = "Config"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore31, UnitTestProvider = "xUnit", ConfigFormat = "Json"},
-            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet50, UnitTestProvider = "xUnit", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet60, UnitTestProvider = "xUnit", ConfigFormat = "Json"},
 #endif
 
 #if MSTEST_SPECS
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet461, UnitTestProvider = "MSTest", ConfigFormat = "Config"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore31, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
-            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet50, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet60, UnitTestProvider = "MSTest", ConfigFormat = "Json"},
 #endif
 
 #if NUNIT_SPECS
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet461, UnitTestProvider = "NUnit3", ConfigFormat = "Config"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNetCore31, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
-            new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet50, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
             new Combination() {ProgrammingLanguage = "CSharp", ProjectFormat = "New", TargetFramework = TfmEnumValueNet60, UnitTestProvider = "NUnit3", ConfigFormat = "Json"},
 #endif
         };

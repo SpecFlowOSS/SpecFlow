@@ -28,9 +28,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.8.166" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.8.166" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-    <PackageReference Include="FluentAssertions" Version="5.4.2" />
-    <PackageReference Include="Moq" Version="4.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <PackageReference Include="Moq" Version="4.17.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -42,9 +42,17 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_FullFramework_Runtime_TFM)'">
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(SpecFlow_Core_Runtime_TFM)' Or '$(TargetFramework)' == '$(SpecFlow_Net6_TFM)'">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
-    <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    
+    <PackageReference Include="Xunit.SkippableFact" Version="1.4.13" />
   </ItemGroup>
 
   

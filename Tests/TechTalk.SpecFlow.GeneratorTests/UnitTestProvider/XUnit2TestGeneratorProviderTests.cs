@@ -386,7 +386,8 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             method.TargetObject.Should().BeOfType<CodePropertyReferenceExpression>()
                   .Which.PropertyName.Should().Be("ScenarioContainer");
             method.MethodName.Should().Be("RegisterInstanceAs");
-            method.TypeArguments.Should().NotBeNullOrEmpty();
+            method.TypeArguments.Should().NotBeNull();
+            method.TypeArguments.Count.Should().BeGreaterThan(0);  
             method.TypeArguments[0].BaseType.Should().Be("Xunit.Abstractions.ITestOutputHelper");
         }
 
@@ -422,7 +423,7 @@ namespace TechTalk.SpecFlow.GeneratorTests.UnitTestProvider
             var attributes = code.Class().CustomAttributes().ToArray();
             attributes.Should().ContainSingle(a => a.Name == XUnitCollectionAttribute);
             var collectionAttribute = attributes.Single(a => a.Name == XUnitCollectionAttribute);
-            collectionAttribute.Arguments.Should().HaveCount(1);
+            collectionAttribute.Arguments.Count.Should().Be(1);
             collectionAttribute.Arguments[0].Value.Should().BeEquivalentTo(new CodePrimitiveExpression("SpecFlowNonParallelizableFeatures"));
         }
 
