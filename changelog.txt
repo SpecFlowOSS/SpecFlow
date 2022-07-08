@@ -1,7 +1,12 @@
-3.11
+4.0
 
 Features:
 + Add an option to colorize test result output
++ Support for using Cucumber Expressions for step definitions.
+
+Changes:
++ Existing step definition expressions detected to be either regular or cucumber expression. Check https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html for potential upgrade issues.
++ Default step definition skeletons are generating cucumber expressions.
 
 3.10
 
