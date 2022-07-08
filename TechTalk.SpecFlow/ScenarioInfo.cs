@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow
         public string Title { get; private set; }
         public string Description { get; private set; }
 
-        public ScenarioInfo(string title, string description, string[] tags, IOrderedDictionary arguments, params string[] inheritedTags)
+        public ScenarioInfo(string title, string description, string[] tags, IOrderedDictionary arguments, string[] inheritedTags = null)
         {
             Title = title;
             Description = description;
