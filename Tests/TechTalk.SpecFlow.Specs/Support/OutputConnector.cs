@@ -1,5 +1,4 @@
-﻿using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.TestProjectGenerator;
+﻿using TechTalk.SpecFlow.TestProjectGenerator;
 
 namespace TechTalk.SpecFlow.Specs.Support
 {
