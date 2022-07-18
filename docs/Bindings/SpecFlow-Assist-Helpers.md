@@ -358,6 +358,9 @@ public static class Hooks1
 ```
 
 ### NullValueRetriever (from SpecFlow 3)
+    
+.. tip ::
+    If you are not looking to transform data from `Table` objects, but rather looking to transform values in your step definitions, you'll likely want to look at [Step Argument Conversions]() instead.
 
 By default, non-specified (empty string) values are considered:
 
