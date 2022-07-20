@@ -16,7 +16,7 @@ Next, you will have to choose the project you want to debug. Select the project 
 
 **3-** Open a new Terminal and enter the below into the terminal and hit Enter to set it up for debugging:
 
-``` csharp
+``` powershell
 $env:VSTEST_HOST_DEBUG=1
 ```
 
