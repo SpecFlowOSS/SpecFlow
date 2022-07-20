@@ -80,7 +80,13 @@ namespace SpecFlow.Autofac
                         return featureScope.BeginLifetimeScope(nameof(ScenarioContext), containerBuilder =>
                         {
                             var configureScenarioContainer = containerBuilderFinder.GetConfigureScenarioContainer();
-                            RegisterSpecflowDependecies(args.ObjectContainer, configureScenarioContainer(containerBuilder));
+
+                            if (configureScenarioContainer != null)
+                            {
+                                containerBuilder = configureScenarioContainer(containerBuilder);
+                            }
+
+                            RegisterSpecflowDependecies(args.ObjectContainer, containerBuilder);
                         });
                     }
 
@@ -97,12 +103,20 @@ namespace SpecFlow.Autofac
                 });
             };
         }
+
         private static ILifetimeScope GetFeatureScope(ObjectContainer objectContainer, IContainerBuilderFinder containerBuilderFinder)
         {
             var configureScenarioContainer = containerBuilderFinder.GetConfigureScenarioContainer();
             if (objectContainer.BaseContainer.IsRegistered<ILifetimeScope>() && configureScenarioContainer != null)
             {
                 return objectContainer.BaseContainer.Resolve<ILifetimeScope>();
+            }
+
+            var lifetimeScope = containerBuilderFinder.GetLifetimeScope();
+
+            if (lifetimeScope != null)
+            {
+                return lifetimeScope();
             }
 
             if (configureScenarioContainer != null)

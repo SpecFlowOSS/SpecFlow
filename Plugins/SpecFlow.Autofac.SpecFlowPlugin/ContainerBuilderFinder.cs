@@ -19,6 +19,7 @@ namespace SpecFlow.Autofac
         private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createConfigureGlobalContainer;
         private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createConfigureScenarioContainer;
         private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createScenarioContainerBuilder;
+        private readonly Lazy<Func<ILifetimeScope>> getLifetimeScope;
 
         public ContainerBuilderFinder(IBindingRegistry bindingRegistry, IRuntimeBindingRegistryBuilder bindingRegistryBuilder, ITestAssemblyProvider testAssemblyProvider)
         {
@@ -33,6 +34,7 @@ namespace SpecFlow.Autofac
             createConfigureGlobalContainer = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(GlobalDependenciesAttribute), typeof(void), invokeVoidAndReturnBuilder), true);
             createConfigureScenarioContainer = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(void), invokeVoidAndReturnBuilder), true);
             createScenarioContainerBuilder = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(ContainerBuilder), (c, m) => (ContainerBuilder)m.Invoke(null, null)), true);
+            getLifetimeScope = new Lazy<Func<ILifetimeScope>>(() => FindLifetimeScope(typeof(ScenarioDependenciesAttribute), typeof(ILifetimeScope), m => (ILifetimeScope)m.Invoke(null, null)));
         }
 
         public Func<ContainerBuilder, ContainerBuilder> GetConfigureGlobalContainer()
@@ -51,30 +53,36 @@ namespace SpecFlow.Autofac
             return createScenarioContainerBuilder.Value;
         }
 
+        public Func<ILifetimeScope> GetLifetimeScope()
+        {
+            return getLifetimeScope.Value;
+        }
+
+        protected virtual Func<ILifetimeScope> FindLifetimeScope(Type attributeType, Type returnType, Func<MethodInfo, ILifetimeScope> invoke)
+        {
+            var method = GetMethod(attributeType, returnType);
+
+            return method == null
+                ? null
+                : () => invoke(method);
+        }
+
         protected virtual Func<ContainerBuilder, ContainerBuilder> FindCreateScenarioContainerBuilder(Type attributeType, Type returnType, Func<ContainerBuilder, MethodInfo, ContainerBuilder> invoke)
         {
-            var assemblies = bindingRegistry.GetBindingAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                foreach (var type in assembly.GetTypes())
-                {
-                    foreach (var methodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).Where(m => Attribute.IsDefined(m, attributeType)))
-                    {
-                        if (methodInfo.ReturnType == returnType)
-                        {
-                            return (containerBuilder) => invoke(containerBuilder, methodInfo);
-                        }
-                    }
-                }
-            }
+            var method = GetMethod(attributeType, returnType);
 
-            return null;
+            return method == null
+                ? null
+                : containerBuilder => invoke(containerBuilder, method);
+        }
 
-            //return (assemblies
-            //    .SelectMany(assembly => assembly.GetTypes(), (_, type) => type)
-            //    .SelectMany(
-            //        type => type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).Where(m => Attribute.IsDefined(m, typeof (ScenarioDependenciesAttribute))),
-            //        (_, methodInfo) => (Func<ContainerBuilder>) (() => (ContainerBuilder) methodInfo.Invoke(null, null)))).FirstOrDefault();
+        private MethodInfo GetMethod(Type attributeType, Type returnType)
+        {
+            return bindingRegistry.GetBindingAssemblies()
+                                  .SelectMany(x => x.GetTypes())
+                                  .SelectMany(x => x.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+                                  .Where(x => x.ReturnType == returnType)
+                                  .FirstOrDefault(x => Attribute.IsDefined(x, attributeType));
         }
     }
 }
