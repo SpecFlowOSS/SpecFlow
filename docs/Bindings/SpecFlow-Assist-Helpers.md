@@ -342,8 +342,7 @@ Examples on implementing these interfaces can be found as follows:
 ### Configuration
 
 Some built in classes support configuration to adjust the default behaviour.
-
-- [DateTimeValueRetriever](../../TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeValueRetriever.cs) and [DateTimeOffsetValueRetriever](../../TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeOffsetValueRetriever.cs) have a static DateTimeStyles property to adjust the style used to parse date times.
+- [DateTimeValueRetriever](https://github.com/SpecFlowOSS/SpecFlow/blob/master/TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeValueRetriever.cs) and [DateTimeOffsetValueRetriever](https://github.com/SpecFlowOSS/SpecFlow/blob/master/TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeOffsetValueRetriever.cs) have a static DateTimeStyles property to adjust the style used to parse date times.
 
 Example of usage:
 
