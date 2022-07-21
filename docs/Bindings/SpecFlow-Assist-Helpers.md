@@ -342,6 +342,7 @@ Examples on implementing these interfaces can be found as follows:
 ### Configuration
 
 Some built in classes support configuration to adjust the default behaviour.
+
 - [DateTimeValueRetriever](https://github.com/SpecFlowOSS/SpecFlow/blob/master/TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeValueRetriever.cs) and [DateTimeOffsetValueRetriever](https://github.com/SpecFlowOSS/SpecFlow/blob/master/TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeOffsetValueRetriever.cs) have a static DateTimeStyles property to adjust the style used to parse date times.
 
 Example of usage:
@@ -360,8 +361,7 @@ public static class Hooks1
 
 ### NullValueRetriever (from SpecFlow 3)
 
-.. note::
-   If you are not looking to transform data from `Table` objects, but rather looking to transform values in your step definitions, you'll likely want to look at [Step Argument Conversions](https://docs.specflow.org/projects/specflow/en/latest/Bindings/Step-Argument-Conversions.html) instead.
+**NOTE:** If you are not looking to transform data from `Table` objects, but rather looking to transform values in your step definitions, you'll likely want to look at [Step Argument Conversions](https://docs.specflow.org/projects/specflow/en/latest/Bindings/Step-Argument-Conversions.html) instead.
 
 By default, non-specified (empty string) values are considered:
 
