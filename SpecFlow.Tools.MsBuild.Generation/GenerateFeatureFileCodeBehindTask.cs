@@ -35,6 +35,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string TargetFrameworks { get; set; }
         public string TargetFramework { get; set; }
         public string ProjectGuid { get; set; }
+        public string SpecFlowConfigFileName { get; set; }
 
         public override bool Execute()
         {
@@ -44,7 +45,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
 
             var msbuildInformationProvider = new MSBuildInformationProvider(MSBuildVersion);
             var generateFeatureFileCodeBehindTaskConfiguration = new GenerateFeatureFileCodeBehindTaskConfiguration(AnalyticsTransmitter, CodeBehindGenerator);
-            var generateFeatureFileCodeBehindTaskInfo = new SpecFlowProjectInfo(generatorPlugins, featureFiles, ProjectPath, ProjectFolder, ProjectGuid, AssemblyName, OutputPath, RootNamespace, TargetFrameworks, TargetFramework);
+            var generateFeatureFileCodeBehindTaskInfo = new SpecFlowProjectInfo(generatorPlugins, featureFiles, ProjectPath, ProjectFolder, ProjectGuid, AssemblyName, OutputPath, RootNamespace, TargetFrameworks, TargetFramework, SpecFlowConfigFileName);
 
             using (var taskRootContainer = generateFeatureFileCodeBehindTaskContainerBuilder.BuildRootContainer(Log, generateFeatureFileCodeBehindTaskInfo, msbuildInformationProvider, generateFeatureFileCodeBehindTaskConfiguration))
             {

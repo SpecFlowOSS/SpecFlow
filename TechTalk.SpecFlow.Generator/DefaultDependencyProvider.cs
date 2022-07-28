@@ -46,6 +46,10 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<SpecFlowGherkinParserFactory, IGherkinParserFactory>();
             
             container.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
+            if (!container.IsRegistered<SpecFlowConfigFileNameProvider>())
+            {
+                container.RegisterInstanceAs(new SpecFlowConfigFileNameProvider());
+            }
 
             RegisterUnitTestGeneratorProviders(container);
         }

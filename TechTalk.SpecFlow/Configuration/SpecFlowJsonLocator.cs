@@ -5,25 +5,32 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public class SpecFlowJsonLocator : ISpecFlowJsonLocator
     {
-        public const string JsonConfigurationFileName = "specflow.json";
+        private readonly SpecFlowConfigFileNameProvider _configFileNameProvider;
+
+        public SpecFlowJsonLocator(SpecFlowConfigFileNameProvider configFileNameProvider)
+        {
+            _configFileNameProvider = configFileNameProvider;
+        }
 
         public string GetSpecFlowJsonFilePath()
         {
-            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, JsonConfigurationFileName);
+            string jsonFileName = _configFileNameProvider.ConfigFileName;
+
+            var specflowJsonFileInAppDomainBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, jsonFileName);
 
             if (File.Exists(specflowJsonFileInAppDomainBaseDirectory))
             {
                 return specflowJsonFileInAppDomainBaseDirectory;
             }
 
-            var specflowJsonFileTwoDirectoriesUp = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", JsonConfigurationFileName);
+            var specflowJsonFileTwoDirectoriesUp = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", jsonFileName);
 
             if (File.Exists(specflowJsonFileTwoDirectoriesUp))
             {
                 return specflowJsonFileTwoDirectoriesUp;
             }
 
-            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, JsonConfigurationFileName);
+            var specflowJsonFileInCurrentDirectory = Path.Combine(Environment.CurrentDirectory, jsonFileName);
 
             if (File.Exists(specflowJsonFileInCurrentDirectory))
             {

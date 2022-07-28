@@ -25,6 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         {
             var attribute = from type in specFlowAssembly.GetTypes()
                             where type.IsSubclassOf(typeof(Attribute))
+                            where type != typeof(SpecFlowConfigFileAttribute)
                             where !type.IsAbstract
                             where type.IsPublic
                             where type.IsClass
@@ -37,6 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         {
             var attribute = from type in specFlowAssembly.GetTypes()
                             where type.IsSubclassOf(typeof(Attribute))
+                            where type != typeof(SpecFlowConfigFileAttribute)
                             where !type.IsAbstract
                             where type.IsPublic
                             where type.IsClass

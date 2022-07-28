@@ -12,11 +12,13 @@ namespace TechTalk.SpecFlow.Generator.Project
     {
         private readonly IGeneratorConfigurationProvider _configurationLoader;
         private readonly ProjectLanguageReader _languageReader;
+        private readonly SpecFlowConfigFileNameProvider _configFileNameProvider;
 
-        public ProjectReader(IGeneratorConfigurationProvider configurationLoader, ProjectLanguageReader languageReader)
+        public ProjectReader(IGeneratorConfigurationProvider configurationLoader, ProjectLanguageReader languageReader, SpecFlowConfigFileNameProvider configFileNameProvider)
         {
             _configurationLoader = configurationLoader;
             _languageReader = languageReader;
+            _configFileNameProvider = configFileNameProvider;
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath, string rootNamespace)
@@ -49,7 +51,7 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         private SpecFlowConfigurationHolder GetSpecFlowConfigurationHolder(string projectFolder)
         {
-            string jsonConfigPath = Path.Combine(projectFolder, "specflow.json");
+            string jsonConfigPath = Path.Combine(projectFolder, _configFileNameProvider.ConfigFileName);
             if (File.Exists(jsonConfigPath))
             {
                 var configFileContent = File.ReadAllText(jsonConfigPath);

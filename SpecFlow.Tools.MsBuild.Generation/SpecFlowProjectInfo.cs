@@ -16,7 +16,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
             string outputPath,
             string rootNamespace,
             string targetFrameworks,
-            string currentTargetFramework)
+            string currentTargetFramework,
+            string specFlowConfigFileName)
         {
             GeneratorPlugins = generatorPlugins;
             FeatureFiles = FileFilter.GetValidFiles(featureFiles);
@@ -28,6 +29,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             ProjectGuid = projectGuid;
             ProjectAssemblyName = projectAssemblyName;
             ProjectPath = projectPath;
+            SpecFlowConfigFileName = specFlowConfigFileName;
         }
 
         public IReadOnlyCollection<GeneratorPluginInfo> GeneratorPlugins { get; }
@@ -49,6 +51,8 @@ namespace SpecFlow.Tools.MsBuild.Generation
         public string TargetFrameworks { get; }
 
         public string CurrentTargetFramework { get; }
+
+        public string SpecFlowConfigFileName { get; }
 
     }
 }

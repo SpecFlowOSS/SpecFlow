@@ -18,12 +18,14 @@ namespace TechTalk.SpecFlow.Configuration
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
         private readonly ISpecFlowJsonLocator _specFlowJsonLocator;
+        private readonly SpecFlowConfigFileNameProvider _configFileNameProvider;
 
-        public ConfigurationLoader(ISpecFlowJsonLocator specFlowJsonLocator)
+        public ConfigurationLoader(ISpecFlowJsonLocator specFlowJsonLocator, SpecFlowConfigFileNameProvider specFlowConfigFileNameProvider)
         {
             _specFlowJsonLocator = specFlowJsonLocator;
             _jsonConfigurationLoader = new JsonConfigurationLoader();
             _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
+            _configFileNameProvider = specFlowConfigFileNameProvider;
         }
 
         private static CultureInfo DefaultFeatureLanguage => CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
@@ -106,7 +108,7 @@ namespace TechTalk.SpecFlow.Configuration
                     traceListener.WriteToolOutput("Using app.config");
                     break;
                 case ConfigSource.Json:
-                    traceListener.WriteToolOutput("Using specflow.json");
+                    traceListener.WriteToolOutput($"Using {_configFileNameProvider.ConfigFileName}");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

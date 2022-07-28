@@ -90,6 +90,16 @@
       <SpecFlow_TargetFrameworks>$(TargetFrameworks)</SpecFlow_TargetFrameworks>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(SpecFlowConfigFileName)' == '' ">
+      <SpecFlowConfigFileName>specflow.json</SpecFlowConfigFileName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <AssemblyAttribute Include="TechTalk.SpecFlow.SpecFlowConfigFileAttribute">
+        <_Parameter1>$(SpecFlowConfigFileName)</_Parameter1>
+      </AssemblyAttribute>
+    </ItemGroup>
+
     <GenerateFeatureFileCodeBehindTask
       ProjectPath="$(MSBuildProjectFullPath)"
       OutputPath="$(SpecFlowCodeBehindOutputPath)"
@@ -102,6 +112,7 @@
       TargetFrameworks="$(SpecFlow_TargetFrameworks)"
       TargetFramework="$(SpecFlow_TargetFramework)"
       ProjectGuid="$(ProjectGuid)"
+      SpecFlowConfigFileName="$(SpecFlowConfigFileName)"
       >
 
       <Output TaskParameter="GeneratedFiles" ItemName="SpecFlowGeneratedFiles" />

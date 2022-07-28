@@ -22,9 +22,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void CanLoadConfigFromConfigFile()
         {
             var specFlowJsonLocatorMock = new Mock<ISpecFlowJsonLocator>();
+            var configFileNameProviderMock = new Mock<SpecFlowConfigFileNameProvider>();
 
             var runtimeConfiguration = ConfigurationLoader.GetDefault();
-            var configurationLoader = new ConfigurationLoader(specFlowJsonLocatorMock.Object);
+            var configurationLoader = new ConfigurationLoader(specFlowJsonLocatorMock.Object, configFileNameProviderMock.Object);
 
             runtimeConfiguration = configurationLoader.Load(runtimeConfiguration);
         }

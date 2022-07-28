@@ -15,12 +15,8 @@
 
   <Target Name="CopySpecFlowJsonToOutput" >
 
-    <PropertyGroup>
-      <SpecFlowJson>specflow.json</SpecFlowJson>
-    </PropertyGroup>
-
-    <ItemGroup Condition="Exists($(SpecFlowJson))">
-      <None Include="$(SpecFlowJson)" CopyToOutputDirectory="PreserveNewest" />
+    <ItemGroup Condition="Exists($(SpecFlowConfigFileName))">
+      <None Include="$(SpecFlowConfigFileName)" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
   </Target>

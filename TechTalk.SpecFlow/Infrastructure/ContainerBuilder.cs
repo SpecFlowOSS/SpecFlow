@@ -38,6 +38,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             var testAssemblyProvider = container.Resolve<ITestAssemblyProvider>();
             testAssemblyProvider.RegisterTestAssembly(testAssembly);
 
+            var configFileAttribute = testAssembly.GetCustomAttribute<SpecFlowConfigFileAttribute>();
+            container.RegisterInstanceAs(new SpecFlowConfigFileNameProvider(configFileAttribute?.SpecFlowJsonFileName));
+
             if (configurationProvider != null)
                 container.RegisterInstanceAs(configurationProvider);
 

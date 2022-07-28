@@ -51,6 +51,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             objectContainer.RegisterTypeAs<GeneratorConfigurationProvider, IGeneratorConfigurationProvider>();
             objectContainer.RegisterTypeAs<ProjectReader, ISpecFlowProjectReader>();
             objectContainer.RegisterTypeAs<SpecFlowJsonLocator, ISpecFlowJsonLocator>();
+            objectContainer.RegisterInstanceAs(new SpecFlowConfigFileNameProvider(specFlowProjectInfo.SpecFlowConfigFileName));
 
             if (generateFeatureFileCodeBehindTaskConfiguration.OverrideAnalyticsTransmitter is null)
             {

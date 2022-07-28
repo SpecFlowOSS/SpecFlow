@@ -19,11 +19,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
             string projectFilePath = Path.Combine(directoryName, csprojPath);
 
             var specFlowJsonLocatorMock = new Mock<ISpecFlowJsonLocator>();
+            var configFileNameProviderMock = new Mock<SpecFlowConfigFileNameProvider>();
             
-            var configurationLoader = new ConfigurationLoader(specFlowJsonLocatorMock.Object);
+            var configurationLoader = new ConfigurationLoader(specFlowJsonLocatorMock.Object, configFileNameProviderMock.Object);
             var generatorConfigurationProvider = new GeneratorConfigurationProvider(configurationLoader);
             var projectLanguageReader = new ProjectLanguageReader();
-            var reader = new ProjectReader(generatorConfigurationProvider, projectLanguageReader);
+            var reader = new ProjectReader(generatorConfigurationProvider, projectLanguageReader, configFileNameProviderMock.Object);
 
             var specFlowProjectFile = reader.ReadSpecFlowProject(projectFilePath, rootNamespace);
 

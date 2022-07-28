@@ -125,4 +125,13 @@ namespace TechTalk.SpecFlow
             Culture = culture;
         }
     }
+
+    [AttributeUsage(AttributeTargets.Assembly)]
+    public class SpecFlowConfigFileAttribute : Attribute
+    {
+        public string SpecFlowJsonFileName;
+
+        public SpecFlowConfigFileAttribute() { }
+        public SpecFlowConfigFileAttribute(string fileName) { SpecFlowJsonFileName = fileName; }
+    }
 }
