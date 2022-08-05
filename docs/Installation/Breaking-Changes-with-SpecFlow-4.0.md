@@ -13,3 +13,38 @@ In case your regular expression is wrongly detected as cucumber expression, you 
 ```
 
 For potential migration problems of your existing SpecFlow codebase with regular expressions, please check the [Upgrade from SpecFlow 3.* to 4.*](../Guides/UpgradeSpecFlow3To4.md) guide.
+
+## Removed calling other steps with string
+
+As announced ages ago (https://github.com/SpecFlowOSS/SpecFlow/issues/1733) we have removed the capability to call a step from a step like this:
+
+``` csharp
+[Binding]
+public class CallingStepsFromStepDefinitionSteps : Steps
+{
+  [Given(@"the user (.*) exists")]
+  public void GivenTheUserExists(string name)
+  {
+    // ...
+  }
+
+  [Given(@"I log in as (.*)")]
+  public void GivenILogInAs(string name)
+  {
+    // ...
+  }
+
+  [Given(@"(.*) is logged in")]
+  public void GivenIsLoggedIn(string name)
+  {
+    Given(string.Format("the user {0} exists", name));
+    Given(string.Format("I log in as {0}", name));
+  }
+}
+```
+
+This is not anymore possible as the methods are now removed.
+
+If you are using this feature, you have two options:
+- refactor to the [Driver Pattern](../Guides/DriverPattern.md)
+- call the methods directly
