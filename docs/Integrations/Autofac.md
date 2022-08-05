@@ -96,8 +96,8 @@ public static void CreateContainerBuilder(ContainerBuilder containerBuilder)
   so be sure to pair this use-case with the `CreateContainerBuilder` method above to add your step bindings.
 
 ```csharp
-[ScenarioDependencies]
-public static ILifetimeScope GetLifetimeScope()
+[FeatureDependencies]
+public static ILifetimeScope GetFeatureLifetimeScope()
 {
     // TODO: Add any top-level dependencies here, though note that usually step bindings
 	//       should be declared in the Configure method below, as this will ensure they
@@ -110,7 +110,6 @@ public static void ConfigureContainerBuilder(ContainerBuilder containerBuilder)
 {
     //TODO: add customizations, stubs required for testing
 
-    containerBuilder.AddSpecFlowBindings<TestDependencies>();
     containerBuilder.AddSpecFlowBindings<TestDependencies>();
 }
 ```

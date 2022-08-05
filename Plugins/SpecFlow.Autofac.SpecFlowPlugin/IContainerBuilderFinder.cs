@@ -11,6 +11,6 @@ namespace SpecFlow.Autofac
 
         Func<ContainerBuilder, ContainerBuilder> GetCreateScenarioContainerBuilder();
 
-        Func<ILifetimeScope> GetLifetimeScope();
+        Func<ILifetimeScope> GetFeatureLifetimeScope();
     }
 }

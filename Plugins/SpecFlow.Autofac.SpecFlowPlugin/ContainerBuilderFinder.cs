@@ -10,7 +10,6 @@ using ContainerBuilder = Autofac.ContainerBuilder;
 
 namespace SpecFlow.Autofac
 {
-
     public class ContainerBuilderFinder : IContainerBuilderFinder
     {
         private readonly IBindingRegistry bindingRegistry;
@@ -19,7 +18,7 @@ namespace SpecFlow.Autofac
         private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createConfigureGlobalContainer;
         private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createConfigureScenarioContainer;
         private readonly Lazy<Func<ContainerBuilder, ContainerBuilder>> createScenarioContainerBuilder;
-        private readonly Lazy<Func<ILifetimeScope>> getLifetimeScope;
+        private readonly Lazy<Func<ILifetimeScope>> getFeatureLifetimeScope;
 
         public ContainerBuilderFinder(IBindingRegistry bindingRegistry, IRuntimeBindingRegistryBuilder bindingRegistryBuilder, ITestAssemblyProvider testAssemblyProvider)
         {
@@ -34,7 +33,7 @@ namespace SpecFlow.Autofac
             createConfigureGlobalContainer = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(GlobalDependenciesAttribute), typeof(void), invokeVoidAndReturnBuilder), true);
             createConfigureScenarioContainer = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(void), invokeVoidAndReturnBuilder), true);
             createScenarioContainerBuilder = new Lazy<Func<ContainerBuilder, ContainerBuilder>>(() => FindCreateScenarioContainerBuilder(typeof(ScenarioDependenciesAttribute), typeof(ContainerBuilder), (c, m) => (ContainerBuilder)m.Invoke(null, null)), true);
-            getLifetimeScope = new Lazy<Func<ILifetimeScope>>(() => FindLifetimeScope(typeof(ScenarioDependenciesAttribute), typeof(ILifetimeScope), m => (ILifetimeScope)m.Invoke(null, null)));
+            getFeatureLifetimeScope = new Lazy<Func<ILifetimeScope>>(() => FindLifetimeScope(typeof(FeatureDependenciesAttribute), typeof(ILifetimeScope), m => (ILifetimeScope)m.Invoke(null, null)));
         }
 
         public Func<ContainerBuilder, ContainerBuilder> GetConfigureGlobalContainer()
@@ -53,9 +52,9 @@ namespace SpecFlow.Autofac
             return createScenarioContainerBuilder.Value;
         }
 
-        public Func<ILifetimeScope> GetLifetimeScope()
+        public Func<ILifetimeScope> GetFeatureLifetimeScope()
         {
-            return getLifetimeScope.Value;
+            return getFeatureLifetimeScope.Value;
         }
 
         protected virtual Func<ILifetimeScope> FindLifetimeScope(Type attributeType, Type returnType, Func<MethodInfo, ILifetimeScope> invoke)
