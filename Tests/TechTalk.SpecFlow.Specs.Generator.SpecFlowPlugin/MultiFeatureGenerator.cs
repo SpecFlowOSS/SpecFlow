@@ -118,7 +118,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (onlyFullframework)
                     {
-                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet461)
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValuenet462)
                         {
                             yield return featureGenerator;
                         }
@@ -149,7 +149,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyFullframework)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet461)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValuenet462)
                             {
                                 yield return featureGenerator;
                             }
