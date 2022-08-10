@@ -16,7 +16,7 @@
     <license type="file">LICENSE.txt</license>
     <tags>specflow castle windsor di dependency injection</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.6.1">
+      <group targetFramework=".NETFramework4.6.2">
         <dependency id="SpecFlow" version="[$version$]" />
         <dependency id="Castle.Windsor" version="5.1.2" />
       </group>
@@ -34,7 +34,7 @@
 
   <files>
     <file src="build\**\*" target="build" />
-    <file src="bin\$config$\net461\SpecFlow.Windsor.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net462\SpecFlow.Windsor.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\SpecFlow.Windsor.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\SpecFlow.Windsor.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\net6.0\SpecFlow.Windsor.SpecFlowPlugin.*" target="lib\$SpecFlow_Net6_TFM$" />

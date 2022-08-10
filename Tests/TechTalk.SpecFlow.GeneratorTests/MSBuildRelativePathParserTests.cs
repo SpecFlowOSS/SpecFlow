@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         public MSBuildRelativePathParserTests()
         {
-#if NET461
+#if NET462
             string assemblyLocation = GetType().Assembly.CodeBase;
 #else
             string assemblyLocation = GetType().Assembly.Location;

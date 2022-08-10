@@ -16,7 +16,7 @@
     <tags>specflow mstest</tags>
     <copyright>$copyright$</copyright>
     <dependencies>
-      <group targetFramework=".NETFramework4.6.1">
+      <group targetFramework=".NETFramework4.6.2">
         <dependency id="SpecFlow" version="[$version$]" />
         <dependency id="SpecFlow.Tools.MsBuild.Generation" version="[$version$]" />
         <dependency id="MSTest.TestFramework" version="2.1.2" />
@@ -36,12 +36,12 @@
 
   <files>
     <file src="build\**\*" exclude="build\*.template.*" target="build" />
-    <file src="bin\$config$\net461\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net462\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
     <file src="bin\$config$\netcoreapp3.1\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netcoreapp3.1\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\net6.0\TechTalk.SpecFlow.MSTest.SpecFlowPlugin.*" target="lib\$SpecFlow_Net6_TFM$" />
 
-    <file src="bin\$config$\net461\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.*" target="build\$SpecFlow_FullFramework_Generator_TFM$" />
+    <file src="bin\$config$\net462\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.*" target="build\$SpecFlow_FullFramework_Generator_TFM$" />
     <file src="bin\$config$\netcoreapp3.1\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.dll" target="build\$SpecFlow_Core_Generator_TFM$" />
     <file src="bin\$config$\netcoreapp3.1\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.pdb" target="build\$SpecFlow_Core_Generator_TFM$" />
     <file src="bin\$config$\net6.0\TechTalk.SpecFlow.MSTest.Generator.SpecFlowPlugin.*" target="build\$SpecFlow_Net6_TFM$" />

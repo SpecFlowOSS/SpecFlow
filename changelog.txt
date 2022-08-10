@@ -1,5 +1,10 @@
 4.0
 
+Breaking Changes:
++ Removed the ability to call steps from steps via string - https://github.com/SpecFlowOSS/SpecFlow/issues/1733
++ Removed .NET Core 2.1 support (min .NET Core version: 3.1)
++ Removed .NET Framework 4.6.1 support (min .NET Framework version: 4.6.2)
+
 Features:
 + Add an option to colorize test result output
 + Support for using Cucumber Expressions for step definitions.
@@ -10,7 +15,7 @@ Changes:
 + Default step definition skeletons are generating cucumber expressions.
 + 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
 + The interface ISpecFlowOutputHelper has been moved to the TechTalk.SpecFlow namespace (from TechTalk.SpecFlow.Infrastructure).
-+ Removed the ability to call steps from steps via string - https://github.com/SpecFlowOSS/SpecFlow/issues/1733
+
 
 3.10
 
