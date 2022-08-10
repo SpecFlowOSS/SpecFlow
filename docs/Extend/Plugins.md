@@ -11,7 +11,7 @@ This information only applies to SpecFlow 3. For legacy information on plugins f
 
 ## Runtime plugins
 
-Runtime plugins need to target .NET Framework 4.6.1 and .NET Standard 2.0.
+Runtime plugins need to target .NET Framework 4.6.2 and .NET Standard 2.0.
 SpecFlow searches for files that end with `.SpecFlowPlugin.dll` in the following locations:
 
 * The folder containing your `TechTalk.SpecFlow.dll` file
@@ -52,7 +52,7 @@ A complete example of a Runtime plugin can be found [here](https://github.com/te
 
 The sample project is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/SampleRuntimePlugin.csproj).
 
-This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.1 and .NET Standard 2.0.
+This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.2 and .NET Standard 2.0.
 
 ``` xml
 <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
@@ -267,7 +267,7 @@ A complete example of a NuGet package that contains a runtime and generator plug
 
 ### Building Plugins on non-Windows machines
 
-For building .NET 4.6.1 projects on non- Windows machines, the .NET Framework reference assemblies are needed.
+For building .NET 4.6.2 projects on non- Windows machines, the .NET Framework reference assemblies are needed.
 
 You can add them with following PackageReference to your project:
 

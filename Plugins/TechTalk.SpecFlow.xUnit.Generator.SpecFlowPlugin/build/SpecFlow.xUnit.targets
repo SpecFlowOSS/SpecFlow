@@ -17,11 +17,11 @@
   <PropertyGroup>
 
     <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' == 'Core'" >netcoreapp3.1</_SpecFlow_xUnitGeneratorPlugin>
-    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'" >net461</_SpecFlow_xUnitGeneratorPlugin>
+    <_SpecFlow_xUnitGeneratorPlugin Condition=" '$(MSBuildRuntimeType)' != 'Core'" >net462</_SpecFlow_xUnitGeneratorPlugin>
     <_SpecFlow_xUnitGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SpecFlow_xUnitGeneratorPlugin)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll</_SpecFlow_xUnitGeneratorPluginPath>
 
     <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SpecFlow_xUnitRuntimePlugin>
-    <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SpecFlow_xUnitRuntimePlugin>
+    <_SpecFlow_xUnitRuntimePlugin Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net462</_SpecFlow_xUnitRuntimePlugin>
     <_SpecFlow_xUnitRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SpecFlow_xUnitRuntimePlugin)\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.dll</_SpecFlow_xUnitRuntimePluginPath>
 
     <SourceSpecFlowAssemblyHooksFile Condition="'$(SourceSpecFlowAssemblyHooksFile)' == ''">$(MSBuildThisFileDirectory)xUnit.AssemblyHooks$(DefaultLanguageSourceExtension)</SourceSpecFlowAssemblyHooksFile>
