@@ -1,42 +1,10 @@
-﻿using System.Collections;
-using TechTalk.SpecFlow;
-using System.Linq;
+﻿using TechTalk.SpecFlow;
 
 namespace SpecFlow.Verify.SpecFlowPlugin.IntegrationTest.Steps;
 
 [Binding]
 internal class Steps
 {
-    private readonly FeatureContext _featureContext;
-    private readonly ScenarioContext _scenarioContext;
-
-    public Steps(ScenarioContext scenarioContext, FeatureContext featureContext)
-    {
-        _scenarioContext = scenarioContext;
-        _featureContext = featureContext;
-    }
-
-    [BeforeScenario]
-    public void SetupVerify()
-    {
-        VerifierSettings.DerivePathInfo(
-            (sourceFile, projectDirectory, type, method) =>
-            {
-                string scenarioInfoTitle = _scenarioContext.ScenarioInfo.Title;
-
-                foreach (DictionaryEntry scenarioInfoArgument in _scenarioContext.ScenarioInfo.Arguments)
-                {
-                    scenarioInfoTitle += "_" + scenarioInfoArgument.Value;
-                }
-                
-                return new PathInfo(
-                    Path.Combine(projectDirectory, _featureContext.FeatureInfo.FolderPath),
-                    _featureContext.FeatureInfo.Title,
-                    scenarioInfoTitle);
-            });
-        
-    }
-
     [When("I try Verify with SpecFlow")]
     public async Task ITryVerifyWithSpecFlow()
     {
