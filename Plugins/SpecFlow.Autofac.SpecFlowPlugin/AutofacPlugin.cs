@@ -72,12 +72,14 @@ namespace SpecFlow.Autofac
                 }
                 else if (args.ObjectContainer.BaseContainer.IsRegistered<ILifetimeScope>())
                 {
-                    featureScope = args.ObjectContainer.BaseContainer.Resolve<ILifetimeScope>();
+                    var testThreadScope = args.ObjectContainer.BaseContainer.Resolve<ILifetimeScope>();
+
+                    featureScope = testThreadScope.BeginLifetimeScope(nameof(FeatureContext));
                 }
 
                 if (featureScope != null)
                 {
-                    args.ObjectContainer.RegisterFactoryAs(() => featureScope.BeginLifetimeScope(nameof(FeatureContext)));
+                    args.ObjectContainer.RegisterInstanceAs(featureScope);
                 }
             };
 
