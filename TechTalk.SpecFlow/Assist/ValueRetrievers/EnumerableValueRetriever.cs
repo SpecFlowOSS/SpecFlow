@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             foreach (var splitValue in strings)
             {
                 var itemKeyValuePair = new KeyValuePair<string, string>(keyValuePair.Key, splitValue.Trim());
-                retriever ??= GetValueRetriever(itemKeyValuePair, targetType, itemType);
+                retriever = GetValueRetriever(itemKeyValuePair, targetType, itemType);
                 yield return retriever?.Retrieve(itemKeyValuePair, targetType, itemType);
             }
         }
