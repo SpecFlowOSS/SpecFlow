@@ -13,21 +13,17 @@ Imports System.Runtime.CompilerServices
 Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     <AssemblyInitialize>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Shared Sub AssemblyInitialize(testContext As TestContext)
-
+    Public Shared Async Function AssemblyInitializeAsync(testContext As TestContext) As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
         Dim containerBuilder As New MsTestContainerBuilder(testContext)
-
-        TestRunnerManager.OnTestRunStart(currentAssembly, containerBuilder)
-    End Sub
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, Nothing, containerBuilder)
+    End Function
 
     <AssemblyCleanup>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Shared Sub AssemblyCleanup()
-
+    Public Shared Async Function AssemblyCleanupAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly)
-    End Sub
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
+    End Function
 
 End Class

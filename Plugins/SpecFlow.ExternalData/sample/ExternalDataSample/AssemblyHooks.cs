@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace Specs
@@ -9,17 +10,17 @@ namespace Specs
     public class NUnitAssemblyHooks
     {
         [OneTimeSetUp]
-        public void AssemblyInitialize()
+        public async Task AssemblyInitialize()
         {
             var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
-            TestRunnerManager.OnTestRunStart(currentAssembly);
+            await TestRunnerManager.OnTestRunStartAsync(currentAssembly);
         }
 
         [OneTimeTearDown]
-        public void AssemblyCleanup()
+        public async Task AssemblyCleanup()
         {
             var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
-            TestRunnerManager.OnTestRunEnd(currentAssembly);
+            await TestRunnerManager.OnTestRunEndAsync(currentAssembly);
         }
     }
 }

@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Analytics.AppInsights;
 using TechTalk.SpecFlow.Analytics.UserId;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.EnvironmentAccess;
@@ -29,6 +30,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>();
+            container.RegisterTypeAs<ColorOutputTheme, IColorOutputTheme>();
+            container.RegisterTypeAs<ColorOutputHelper, IColorOutputHelper>();
 
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
             container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>();
@@ -39,9 +42,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<SpecFlowAttributesFilter, ISpecFlowAttributesFilter>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
+            container.RegisterTypeAs<CucumberExpressionStepDefinitionBindingBuilderFactory, ICucumberExpressionStepDefinitionBindingBuilderFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
+#pragma warning disable CS0618
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
-            container.RegisterTypeAs<SynchronousBindingDelegateInvoker, ISynchronousBindingDelegateInvoker>();
+#pragma warning restore CS0618
+            container.RegisterTypeAs<BindingInvoker, IAsyncBindingInvoker>();
+            container.RegisterTypeAs<BindingDelegateInvoker, IBindingDelegateInvoker>();
             container.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
 
             container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider>();
@@ -91,6 +98,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public virtual void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
         {
             testThreadContainer.RegisterTypeAs<TestRunner, ITestRunner>();
+            testThreadContainer.RegisterTypeAs<BlockingSyncTestRunner, ISyncTestRunner>();
             testThreadContainer.RegisterTypeAs<ContextManager, IContextManager>();
             testThreadContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
 

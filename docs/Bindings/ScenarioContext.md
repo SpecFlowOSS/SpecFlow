@@ -131,15 +131,21 @@ There are some type-safe extension methods that help you to manage the contents 
 In the .feature file:
 
 ```gherkin
-@showUpInScenarioInfo @andThisToo
+@feature_tag
+Feature: My feature
 
+@rule_tag
+Rule: My rule
+
+@scenario_tag1 @scenario_tag2
 Scenario: Showing information of the scenario
 
 When I execute any scenario
 Then the ScenarioInfo contains the following information
-    | Field | Value                               |
-    | Tags  | showUpInScenarioInfo, andThisToo    |
-    | Title | Showing information of the scenario |
+    | Field         | Value                                               |
+    | Title         | Showing information of the scenario                 |
+    | Tags          | scenario_tag1, scenario_tag2                        |
+    | CombinedTags  | scenario_tag1, scenario_tag2, feature_tag, rule_tag |
 ```
 
 and in the step definition:
@@ -149,6 +155,7 @@ private class ScenarioInformation
 {
     public string Title { get; set; }
     public string[] Tags { get; set; }
+    public string[] CombinedTags { get; set; }
 }
 
 [When(@"I execute any scenario")]
@@ -166,10 +173,8 @@ public void ScenarioInfoContainsInterestingInformation(Table table)
 
     // Assertions
     si.Title.Should().Equal(fromStep.Title);
-    for (var i = 0; i < si.Tags.Length -1; i++)
-    {
-        si.Tags[i].Should().Equal(fromStep.Tags[i]);
-    }
+    si.Tags.Should().BeEquivalentTo(fromStep.Tags);
+    si.CombinedTags.Should().BeEquivalentTo(fromStep.CombinedTags);
 }
 ```
 

@@ -1,6 +1,6 @@
 # Calling Steps from Step Definitions
 
-**Note: This feature will be deprecated with SpecFlow 3.1 and removed in a future version (probably 4.0). Details about it can be found [here](https://github.com/SpecFlowOSS/SpecFlow/issues/1733).**
+**Note: This feature was removed in SpecFlow 4.0. Details about it can be found [here](https://github.com/SpecFlowOSS/SpecFlow/issues/1733).**
 
 It is possible to call steps from within [Step Definitions](Step-Definitions.md):
 

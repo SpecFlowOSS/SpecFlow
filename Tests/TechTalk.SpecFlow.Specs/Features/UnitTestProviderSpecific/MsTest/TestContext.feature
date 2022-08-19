@@ -12,7 +12,7 @@ Scenario: Should be able to access TestContext in Steps
         [When(@"I do something")]
         public void WhenIDoSomething()
         {
-        System.Console.WriteLine(ScenarioContext.Current.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
+        System.Console.WriteLine(_scenarioContext.ScenarioContainer.Resolve<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>().TestName);
         }
         """
     When I execute the tests

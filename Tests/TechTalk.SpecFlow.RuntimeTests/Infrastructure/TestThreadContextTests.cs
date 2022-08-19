@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         public ContextManager CreateContextManager(IObjectContainer testThreadContainer = null)
         {
-            return new ContextManager(new Mock<ITestTracer>().Object, testThreadContainer ?? this.TestThreadContainer, ContainerBuilderStub);
+            return new ContextManager(new Mock<ITestTracer>().Object, testThreadContainer ?? TestThreadContainer, ContainerBuilderStub);
         }
 
         [Fact]

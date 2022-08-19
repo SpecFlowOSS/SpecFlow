@@ -12,5 +12,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         bool ProcessType(BindingSourceType bindingSourceType);
         void ProcessMethod(BindingSourceMethod bindingSourceMethod);
         void ProcessTypeDone();
+
+        void BuildingCompleted();
     }
 }

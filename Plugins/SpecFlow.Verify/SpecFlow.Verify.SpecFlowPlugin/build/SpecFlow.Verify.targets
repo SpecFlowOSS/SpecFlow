@@ -1,0 +1,9 @@
+﻿<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_VerifyGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netcoreapp2.1</_VerifyGeneratorPluginFramework>
+    <_VerifyGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' != 'Core'">net462</_VerifyGeneratorPluginFramework>
+
+    <_VerifyGeneratorPluginPath>$(MSBuildThisFileDirectory)$(_VerifyGeneratorPluginFramework)\SpecFlow.Verify.SpecFlowPlugin.dll</_VerifyGeneratorPluginPath>
+
+  </PropertyGroup>
+</Project>

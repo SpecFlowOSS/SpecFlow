@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             //ASSERT
 
             //That the generated statements includes a Given method invocation
-            var _givenStatements = _statements.OfType<CodeExpressionStatement>().Select(ces => ces.Expression).OfType<CodeMethodInvokeExpression>().Where(m => m.Method.MethodName == "Given");
+            var _givenStatements = _statements.OfType<CodeExpressionStatement>().Select(ces => ces.Expression).OfType<CodeMethodInvokeExpression>().Where(m => m.Method.MethodName.StartsWith("Given"));
             var _firstGivenStatement = _givenStatements.First();
             _firstGivenStatement.Should().NotBeNull();
 

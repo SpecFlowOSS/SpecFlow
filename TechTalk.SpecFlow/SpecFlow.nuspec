@@ -16,19 +16,21 @@
     <tags>specflow bdd gherkin cucumber</tags>
     <copyright>$copyright$</copyright>
     <dependencies>
-      <group targetFramework="net461">
+      <group targetFramework="net462">
         <dependency id="BoDi" version="1.5.0" />
         <dependency id="Gherkin" version="19.0.3"/>
-        <dependency id="System.ValueTuple" version="4.4.0" />
+        <dependency id="Cucumber.CucumberExpressions" version="16.0.0"/>
+        <dependency id="System.ValueTuple" version="4.5.0" />
         <dependency id="SpecFlow.Internal.Json" version="1.0.8" />
       </group>
 
       <group targetFramework="netstandard2.0">
-        <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
-        <dependency id="Microsoft.Extensions.DependencyModel" version="1.0.3" />
+        <dependency id="System.Configuration.ConfigurationManager" version="4.4.1" />
+        <dependency id="Microsoft.Extensions.DependencyModel" version="6.0.0" />
         <dependency id="System.Runtime.Loader" version="4.3.0" />
         <dependency id="BoDi" version="1.5.0" />
         <dependency id="Gherkin" version="19.0.3"/>
+        <dependency id="Cucumber.CucumberExpressions" version="16.0.0"/>
         <dependency id="System.Net.Http" version="4.3.4" />
         <dependency id="SpecFlow.Internal.Json" version="1.0.8" />
       </group>
@@ -38,7 +40,7 @@
   <files>
     <file src="build\**\*" target="build" />
 
-    <file src="bin\$config$\net461\TechTalk.SpecFlow.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net462\TechTalk.SpecFlow.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
     <file src="TechTalk.SpecFlow.ExternalAnnotations.xml" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
 
     <file src="bin\$config$\netstandard2.0\TechTalk.SpecFlow.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />

@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             Container = new GeneratorContainerBuilder().CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.Default, null), new ProjectSettings(), Enumerable.Empty<GeneratorPluginInfo>());
             UnitTestGeneratorProviderMock = new Mock<IUnitTestGeneratorProvider>();
+            UnitTestGeneratorProviderMock.Setup(utp => utp.GetTestWorkerIdExpression()).Returns(new CodePrimitiveExpression(null));
             Container.RegisterInstanceAs(UnitTestGeneratorProviderMock.Object);
         }
 

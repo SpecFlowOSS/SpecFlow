@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and are pending")]
         public void GivenAllStepsAreBoundAndArePending(ScenarioBlock scenarioBlock)
         {
-            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "ScenarioContext.Current.Pending();", "ScenarioContext.Current.Pending()");
+            _projectsDriver.AddStepBinding(scenarioBlock.ToString(), ".*", "throw new PendingStepException();", "ScenarioContext.Current.Pending()");
         }
 
         [Given(@"the following step definition in the project '(.*)'")]
@@ -61,10 +61,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _projectsDriver.AddStepBinding(projectName, stepDefinition);
         }
 
-        [Given(@"the following hooks?")]
-        [Given(@"the following step definitions?")]
-        [Given(@"the following step argument transformations?")]
-        [Given(@"the following binding methods?")]
+        [Given(@"the following hook(s)")]
+        [Given(@"the following step definition(s)")]
+        [Given(@"the following step argument transformation(s)")]
+        [Given(@"the following binding method(s)")]
         public void GivenTheFollowingBindings(string bindingCode)
         {
             _projectsDriver.AddStepBinding(bindingCode);

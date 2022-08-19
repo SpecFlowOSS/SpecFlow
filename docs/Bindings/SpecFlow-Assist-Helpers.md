@@ -15,9 +15,9 @@ When  helper methods expect a generic type (usually denoted as `<T>` in the meth
 ## CreateInstance<T>
 
 The `CreateInstance<T>` extension method of the `Table` class will convert a table in your scenario to a single instance of a class. The class used to convert the table is specified by the generic type `T` in the method signature `CreateInstance<T>`. You can use two different table layouts in your scenarios with the `CreateInstance<T>` method.
-    
+
 - **Vertical Tables**
-    
+
   A vertical table consists of two columns where values in the first column match property names, and values of the second column are the values assigned to those properties. The header row of the table is ignored. Header cells may be named to suit your use case.
 
   ```gherkin
@@ -32,9 +32,9 @@ The `CreateInstance<T>` extension method of the `Table` class will convert a tab
   ```
   
   This layout is desirable for tables containing many values making the vertical layout easier to read.
-    
+
 - **Horizontal Tables**
-    
+
   A horizontal table consists of a header row where the header cells match property names, and subsequent data rows contain the values assigned to those properties. In order to convert a horizontal table to a single instance of a class, the table must only contain the header row and one data row.
 
   ```gherkin
@@ -42,17 +42,17 @@ The `CreateInstance<T>` extension method of the `Table` class will convert a tab
       | Name      | Birthdate | Height In Inches | Bank Account Balance | # Header row (property names)
       | John Galt | 2/2/1902  | 72               | 1234.56              | # Data row (property values)
   ```
-    
+
   This layout is desirable when the table does not require too many values. This helps save vertical space by consuming more horizontal space in your feature file.
-    
+
   **Important: use the `CreateSet<T>` method described below to create a collection of objects if more than one data row is needed.**
 
 Deciding to use a vertical or horizontal table layout is subjective. Choose the layout that is easiest to read given the information in the table.
-    
+
 SpecFlow matches table values to property names regardless of letter case. To SpecFlow, "BankAccount", "Bank Account", "BANK ACCOUNT" and "bank account" will all map to a property named `BankAccount`. More information on column naming is below.
 
 ### Using CreateInstance with a Class
-    
+
 You can map a table to a custom class you write. The following example will map the tables described above in the vertical or horizontal layouts. First, create the class:
 
 ```csharp
@@ -64,16 +64,16 @@ class Account
     public decimal BankAccountBalance { get; set; }
 }
 ```
- 
+
 Remember that property names should match values in the table in your scenario. SpecFlow requires properties to have both a public getter and a public setter. Most built-in .NET types are converted automatically. This includes the following types:
 
 - `int` and `int?`
 - `decimal` and `decimal?`
 - `bool` and `bool?`
 - `DateTime` and `DateTime?`
-    
+
 Plus [many more][supported-types].
-    
+
 The name of the class is put in place of the generic type `T` in the call to `CreateInstance<T>`. An example step definition is below.
 
 ```csharp
@@ -92,7 +92,7 @@ public void GivenIEnteredTheFollowingDataIntoTheNewAccountForm(Table table)
 The `CreateInstance<T>` method will create the Account object and set properties according to what can be read from the table. Table cell values are strings by default. These strings are converted to the type specified for each property of the destination class. For example, the string `"1234.56"` in the table is converted to a decimal value before being assigned to the `BankAccountBalance` property.
 
 ### Using CreateInstance with ValueTuple
-    
+
 Alternatively you can use ValueTuples and destructuring:
 
 ``` csharp
@@ -112,7 +112,7 @@ public void GivenIEnteredTheFollowingDataIntoTheNewAccountForm(Table table)
 **Scenarios with more than 7 properties are not currently supported when converting to ValueTuple, and you will receive an exception if you try to map more than 7 properties.**
 
 The next section describes how to convert a horizontal table with more than one data row to a collection of objects.
-    
+
 ## CreateSet<T>
 
 The `CreateSet<T>` extension method of the `Table` class converts the table into an enumerable set of objects. For example, assume you have the following step:
@@ -125,7 +125,7 @@ Given these products exist
 ```
 
 And you want to map rows in that table to the following class:
-    
+
 ```csharp
 public class Product
 {
@@ -248,16 +248,16 @@ public class AccountSteps
 In this example, `CompareToSet<T>` checks that two accounts are returned, and only tests the properties you defined in the table. **It does not test the order of the objects, only that one was found that matches.**  If no record matching the properties in your table is found, an exception is thrown that includes the row number(s) that do not match up.
 
 ### Comparing Sets When Order Matters
-    
+
 In use cases where the order should match, pass `true` as the second argument to `CompareToSet`:
-    
+
 ```csharp
 table.CompareToSet<Account>(accounts, true);
 //                                    ^^^^
 ```
 
 In addition to throwing an exception if property values do not match, SpecFlow will throw an exception if the order of the accounts doesn't match your expectations. This is useful when the order of things is determined by business rules, or in use cases like search results.
-    
+
 ## Column naming
 
 The SpecFlow Assist helpers use the values in your table to determine what properties to set in your object. However, the names of the columns do not need to match exactly - whitespace and casing is ignored. For example, the following two tables are treated as identical:
@@ -274,7 +274,7 @@ This allows you to make your tables more readable to others.
 
 ## Aliasing
 
-*Note: Available with version 2.3 and later*
+_Note: Available with version 2.3 and later_
 
 If you have properties in your objects that are known by different terms within the business domain, these can be Aliased in your model by applying the attribute `TableAliases`. This attribute takes a collection of aliases as regular expressions that can be used to refer to the property in question.
 
@@ -336,15 +336,17 @@ public static class Hooks1
 
 Examples on implementing these interfaces can be found as follows:
 
-* [IValueRetriever](https://github.com/techtalk/SpecFlow/tree/v2/Runtime/Assist/ValueRetrievers)
-* [IValueComparer](https://github.com/techtalk/SpecFlow/tree/v2/Runtime/Assist/ValueComparers)
+- [IValueRetriever](https://github.com/techtalk/SpecFlow/tree/v2/Runtime/Assist/ValueRetrievers)
+- [IValueComparer](https://github.com/techtalk/SpecFlow/tree/v2/Runtime/Assist/ValueComparers)
 
 ### Configuration
 
 Some built in classes support configuration to adjust the default behaviour.
-- [DateTimeValueRetriever](../../TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeValueRetriever.cs) and [DateTimeOffsetValueRetriever](../../TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeOffsetValueRetriever.cs) have a static DateTimeStyles property to adjust the style used to parse date times.
+
+- [DateTimeValueRetriever](https://github.com/SpecFlowOSS/SpecFlow/blob/master/TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeValueRetriever.cs) and [DateTimeOffsetValueRetriever](https://github.com/SpecFlowOSS/SpecFlow/blob/master/TechTalk.SpecFlow/Assist/ValueRetrievers/DateTimeOffsetValueRetriever.cs) have a static DateTimeStyles property to adjust the style used to parse date times.
 
 Example of usage:
+
 ``` csharp
 [Binding]
 public static class Hooks1
@@ -359,11 +361,13 @@ public static class Hooks1
 
 ### NullValueRetriever (from SpecFlow 3)
 
+**NOTE:** If you are not looking to transform data from `Table` objects, but rather looking to transform values in your step definitions, you'll likely want to look at [Step Argument Conversions](https://docs.specflow.org/projects/specflow/en/latest/Bindings/Step-Argument-Conversions.html) instead.
+
 By default, non-specified (empty string) values are considered:
 
-* An empty string for `String` and `System.Uri` values
-* A null value for `Nullable<>` primitive types
-* An error for non-nullable primitive types
+- An empty string for `String` and `System.Uri` values
+- A null value for `Nullable<>` primitive types
+- An error for non-nullable primitive types
 
 To specify null values explicitly, add a `NullValueRetriever` to the set of registered retrievers, specifying the text to be treated as a null value, e.g.:
 

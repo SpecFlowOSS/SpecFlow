@@ -12,18 +12,16 @@ Imports System.Runtime.CompilerServices
 Public NotInheritable Class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
     <OneTimeSetUp>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Shared Sub AssemblyInitialize()
+    Public Async Function AssemblyInitializeAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunStart(currentAssembly)
-    End Sub
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly)
+    End Function
 
     <OneTimeTearDown>
     <MethodImpl(MethodImplOptions.NoInlining)>
-    Public Shared Sub AssemblyCleanup()
+    Public Async Function AssemblyCleanupAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly)
-    End Sub
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
+    End Function
 
 End Class

@@ -11,7 +11,7 @@ This information only applies to SpecFlow 3. For legacy information on plugins f
 
 ## Runtime plugins
 
-Runtime plugins need to target .NET Framework 4.6.1 and .NET Standard 2.0.
+Runtime plugins need to target .NET Framework 4.6.2 and .NET Standard 2.0.
 SpecFlow searches for files that end with `.SpecFlowPlugin.dll` in the following locations:
 
 * The folder containing your `TechTalk.SpecFlow.dll` file
@@ -52,7 +52,7 @@ A complete example of a Runtime plugin can be found [here](https://github.com/te
 
 The sample project is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/SampleRuntimePlugin.csproj).
 
-This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.1 and .NET Standard 2.0.
+This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.2 and .NET Standard 2.0.
 
 ``` xml
 <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
@@ -141,7 +141,7 @@ The runtime plugin assemblies are also specified here, using the additional `$co
 
 ## Generator plugins
 
-Generator plugins need to target .NET Framework 4.7.1 and .NET Core 2.1.
+Generator plugins need to target .NET Framework 4.7.1 and .NET Core 3.1.
 The MSBuild task needs to know which generator plugins it should use. You therefore have to add your generator plugin to the `SpecFlowGeneratorPlugins` ItemGroup.
 This is passed to the MSBuild task as a parameter and later used to load the plugins.
 
@@ -175,7 +175,7 @@ We use a NuSpec file (SamplePlugin.nuspec) to provide all information for the Nu
 
 ``` xml
 <PropertyGroup>
-    <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net471;netcoreapp3.1</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NuspecFile>$(MSBuildThisFileDirectory)SamplePlugin.nuspec</NuspecFile>
     <AssemblyName>SampleGeneratorPlugin.SpecFlowPlugin</AssemblyName>
@@ -199,7 +199,7 @@ Because the `$(MSBuildRuntimeType)` property is only available in imported `targ
 
 ``` xml
 <PropertyGroup>
-    <_SampleGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netecoreapp2.1</_SampleGeneratorPluginFramework>
+    <_SampleGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netecoreapp3.1</_SampleGeneratorPluginFramework>
     <_SampleGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SampleGeneratorPluginFramework>
     <_SampleGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SampleGeneratorPluginFramework)\SampleGeneratorPlugin.SpecFlowPlugin.dll</_SampleGeneratorPluginPath>
 </PropertyGroup>
@@ -244,8 +244,8 @@ It is important to ensure that they are not added to the `lib` folder. If this w
 <files>
     <file src="build\**\*" target="build"/>
     <file src="bin\$config$\net471\SampleGeneratorPlugin.SpecFlowPlugin.*" target="build\net471"/>
-    <file src="bin\$config$\netcoreapp2.1\SampleGeneratorPlugin.SpecFlowPlugin.dll" target="build\netcoreapp2.1"/>
-    <file src="bin\$config$\netcoreapp2.1\SampleGeneratorPlugin.SpecFlowPlugin.pdb" target="build\netcoreapp2.1"/>
+    <file src="bin\$config$\netcoreapp3.1\SampleGeneratorPlugin.SpecFlowPlugin.dll" target="build\netcoreapp3.1"/>
+    <file src="bin\$config$\netcoreapp3.1\SampleGeneratorPlugin.SpecFlowPlugin.pdb" target="build\netcoreapp3.1"/>
 </files>
 ```
 
@@ -267,7 +267,7 @@ A complete example of a NuGet package that contains a runtime and generator plug
 
 ### Building Plugins on non-Windows machines
 
-For building .NET 4.6.1 projects on non- Windows machines, the .NET Framework reference assemblies are needed.
+For building .NET 4.6.2 projects on non- Windows machines, the .NET Framework reference assemblies are needed.
 
 You can add them with following PackageReference to your project:
 
@@ -283,4 +283,4 @@ You can add them with following PackageReference to your project:
 
 ## Plugin Developer Channel
 
-We have set up a Discord channel for plugin developers [here](https://go.specflow.org/join-plugin-development-on-discord). If you have any questions regarding the development of plugins for SpecFlow, this is the place to ask them.
+We have set up a Discord channel for plugin developers [here](https://discord.com/invite/xQMrjDXx7a). If you have any questions regarding the development of plugins for SpecFlow, this is the place to ask them.

@@ -67,8 +67,8 @@
 
 
   <PropertyGroup>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp2.1</_SpecFlow_TaskFolder>
-    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net461</_SpecFlow_TaskFolder>
+    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_SpecFlow_TaskFolder)' == ''">netcoreapp3.1</_SpecFlow_TaskFolder>
+    <_SpecFlow_TaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' And '$(_SpecFlow_TaskFolder)' == ''">net462</_SpecFlow_TaskFolder>
     <_SpecFlow_TaskAssembly Condition=" '$(_SpecFlow_TaskAssembly)' == '' ">..\tasks\$(_SpecFlow_TaskFolder)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
   </PropertyGroup>
 

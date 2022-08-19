@@ -1,0 +1,47 @@
+﻿<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SpecFlow.Verify</id>
+    <version>$version$</version>
+    <title>SpecFlow.Verify</title>
+    <authors>$author$</authors>
+    <owners>$owner$</owners>
+    <description>Package to use Verify with SpecFlow</description>
+    <summary>Package to use Verify with SpecFlow</summary>
+    <language>en-US</language>
+    <projectUrl>https://www.specflow.org</projectUrl>
+    <icon>images\specflow-icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <tags>specflow externaldata json</tags>
+    <copyright>$copyright$</copyright>
+
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Verify" version="17.7.0" />
+      </group>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Verify" version="17.7.0" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Verify" version="17.7.0" />
+      </group>
+    </dependencies>
+
+  </metadata>
+  <files>
+    <file src="build\**\*" target="build"/>
+
+    <file src="bin\$config$\net462\**\*" target="build\net462"/>
+    <file src="bin\$config$\netcoreapp3.1\*" target="build\netcoreapp3.1"/>
+
+    <file src="bin\$config$\net462\SpecFlow.Verify.SpecFlowPlugin.*" target="lib\net462"/>
+    <file src="bin\$config$\netcoreapp3.1\SpecFlow.Verify.SpecFlowPlugin.*" target="lib\netcoreapp3.1"/>
+    <file src="bin\$config$\net6.0\SpecFlow.Verify.SpecFlowPlugin.*" target="lib\net6.0"/>
+
+    <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
+    <file src="$SolutionDir$specflow-icon.png" target="images\" />
+  </files>
+</package>

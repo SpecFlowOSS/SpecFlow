@@ -16,6 +16,18 @@ namespace TechTalk.SpecFlow.Tracing
 
     internal class StepFormatter : IStepFormatter
     {
+        private readonly IColorOutputHelper colorOutputHelper;
+        private readonly IColorOutputTheme colorOutputTheme;
+
+        public StepFormatter(
+            IColorOutputHelper colorOutputHelper,
+            IColorOutputTheme colorOutputTheme
+        )
+        {
+            this.colorOutputHelper = colorOutputHelper;
+            this.colorOutputTheme = colorOutputTheme;
+        }
+
         public const string INDENT = "  ";
 
         public string GetStepDescription(StepInstance stepInstance)
@@ -51,10 +63,10 @@ namespace TechTalk.SpecFlow.Tracing
         {
             StringBuilder result = new StringBuilder();
             if (stepInstance.Keyword != null)
-                result.Append(stepInstance.Keyword);
+                result.Append(colorOutputHelper.Colorize(stepInstance.Keyword, colorOutputTheme.Keyword));
             else
             {
-                result.Append(LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionKeyword));
+                result.Append(colorOutputHelper.Colorize(LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionKeyword), colorOutputTheme.Keyword));
                 result.Append(" ");
             }
             result.AppendLine(stepInstance.Text);
