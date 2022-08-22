@@ -91,4 +91,26 @@ public static void CreateContainerBuilder(ContainerBuilder containerBuilder)
   (Recommended to put it into the `Support` folder) that returns an Autofac `ContainerBuilder` and tag it with the `[ScenarioDependencies]` attribute. 
 
 
+  ### 5. If you have an existing container, built and owned by your application under test, you can use that instead of letting SpecFlow manage your container
+  Create a static method in your SpecFlow project to return a lifetime scope from your container. Note that SpecFlow creates a second scope under yours, 
+  so be sure to pair this use-case with the `CreateContainerBuilder` method above to add your step bindings.
+
+```csharp
+[FeatureDependencies]
+public static ILifetimeScope GetFeatureLifetimeScope()
+{
+    // TODO: Add any top-level dependencies here, though note that usually step bindings
+	//       should be declared in the Configure method below, as this will ensure they
+	//       are in the correct scope to inject ScenarioContext etc.
+    return containerScope.BeginLifetimeScope();
+}
+
+[ScenarioDependencies]
+public static void ConfigureContainerBuilder(ContainerBuilder containerBuilder)
+{
+    //TODO: add customizations, stubs required for testing
+
+    containerBuilder.AddSpecFlowBindings<TestDependencies>();
+}
+```
 

@@ -20,6 +20,7 @@ namespace SpecFlow.Autofac
                 var lifeTimeScope = container.Resolve<ILifetimeScope>();
                 return lifeTimeScope.Resolve(bindingType);
             }
+
             return container.Resolve(bindingType);
         }
     }
