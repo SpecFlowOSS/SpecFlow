@@ -12,6 +12,7 @@
 
 | Name | Description | Download |
 |---|---|---|
+|[ReportPortal.SpecFlow](https://github.com/reportportal/agent-net-specflow)|ReportPortal test automation analytics platform and real-time reporting, powered by Machine Learning. [Read more...](https://reportportal.io)|<a href="https://www.nuget.org/packages/ReportPortal.SpecFlow">![](https://img.shields.io/nuget/v/ReportPortal.SpecFlow.svg)</a>|
 |[Specflow.Allure](https://github.com/allure-framework/allure-csharp)|Generates Allure report result files for SpecFlow test run. [Read more...](https://github.com/allure-framework/allure-csharp/wiki/SpecFlow-Adapter)|<a href="https://www.nuget.org/packages/Specflow.Allure/">![](https://img.shields.io/nuget/v/Specflow.Allure.svg)</a>|
 |[xRetry.SpecFlow](https://github.com/JoshKeegan/xRetry)|SpecFlow plugin for retrying flickering test case scenarios (e.g. when dependent on networking). [Read more...](https://github.com/JoshKeegan/xRetry)|<a href="https://www.nuget.org/packages/xRetry.SpecFlow/">![](https://img.shields.io/nuget/v/xRetry.SpecFlow.svg)</a>|
 | [SpecBind](https://github.com/dpiessens/specbind) | Bridges the SpecFlow and popular UI automation frameworks to simplify acceptance tests. [Read more...](https://github.com/dpiessens/specbind)|SpecBind.CodedUI <a href="https://www.nuget.org/packages/SpecBind.CodedUI/">![](https://img.shields.io/nuget/v/SpecBind.CodedUI.svg)</a><br/>SpecBind.Selenium <a href="https://www.nuget.org/packages/SpecBind.Selenium/">![](https://img.shields.io/nuget/v/SpecBind.Selenium.svg)</a>|
