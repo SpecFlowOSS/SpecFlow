@@ -30,6 +30,7 @@ Features:
 
 Fixes:
 + Support [TableAliases] also outside `CreateInstance`&`CreateSet`. Fixes #1384
++ EnumerableValueRetriever resolves a ValueRetriever for each element in the enumeration instead of reusing the ValueRetriever of the first item in the list. Fixes #2626
 
 3.9.58
 
