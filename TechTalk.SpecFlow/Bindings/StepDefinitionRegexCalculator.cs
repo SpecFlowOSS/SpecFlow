@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             // if method name seems to contain regex, we use it as-is
             if (nonIdentifierRe.Match(bindingMethod.Name).Success)
-                return bindingMethod.Name;
+                return RegexFactory.GetWholeTextMatchRegexSource(bindingMethod.Name);
 
             string methodName = bindingMethod.Name;
             methodName = RemoveStepPrefix(stepDefinitionType, methodName);
@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Bindings
             var parameters = bindingMethod.Parameters.ToArray();
 
             int processedPosition = 0;
-            var reBuilder = new StringBuilder("(?i)");
+            var reBuilder = new StringBuilder("^(?i)");
             foreach (var paramPosition in parameters.Select((p, i) => CalculateParamPosition(methodName, p, i)).Where(pp => pp.Position >= 0).OrderBy(pp => pp.Position))
             {
                 if (paramPosition.Position < processedPosition)
@@ -63,6 +63,7 @@ namespace TechTalk.SpecFlow.Bindings
 
             reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition)));
             reBuilder.Append(WordConnectorRe);
+            reBuilder.Append("$");
 
             return reBuilder.ToString();
         }
