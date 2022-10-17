@@ -7,7 +7,7 @@ SpecFlow is a pragmatic BDD solution for .NET. It provides test automation for .
 - Project website: [https://www.specflow.org](https://www.specflow.org)
 - [Documentation](https://specflow.org/documentation/)
 - [Getting Started](https://specflow.org/getting-started/)
-- [FAQ](https://specflow.org/documentation/FAQ/)
+- [FAQ](https://docs.specflow.org/en/latest/faqs.html)
 - [BDD](https://specflow.org/learn/bdd/)
 - [Given-When-Then](https://specflow.org/learn/given-when-then-with-style/)
 - [SpecFlow on GitHub](https://github.com/SpecFlowOSS/SpecFlow)
