@@ -202,7 +202,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().Be(resultUser);
         }
 
-#if !NETFRAMEWORK
         [Fact]
         public async Task StepArgumentTypeConverterShouldUseAsyncValueTaskUserConverterForConversion()
         {
@@ -220,7 +219,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var result = await stepArgumentTypeConverter.ConvertAsync("user xyz", typeof(User), new CultureInfo("en-US", false));
             result.Should().Be(resultUser);
         }
-#endif
 
         private StepArgumentTypeConverter CreateStepArgumentTypeConverter()
         {

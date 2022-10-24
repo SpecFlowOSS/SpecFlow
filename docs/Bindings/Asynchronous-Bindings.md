@@ -22,3 +22,5 @@ public async Task HttpClientGet(string url)
 ```
 
 From SpecFlow v4 you can also use asynchronous [step argument transformations](Step-Argument-Conversions.md).
+
+From SpecFlow v4 you can also use [ValueTask](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.valuetask?view=net-6.0) and [ValueTask<T>](https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.valuetask-1?view=net-6.0) return types.

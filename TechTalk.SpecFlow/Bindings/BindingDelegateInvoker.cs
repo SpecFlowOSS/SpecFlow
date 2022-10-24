@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Bindings
     {
         public virtual async Task<object> InvokeDelegateAsync(Delegate bindingDelegate, object[] invokeArgs)
         {
-            if (typeof(Task).IsAssignableFrom(bindingDelegate.Method.ReturnType))
+            if (AsyncMethodHelper.IsAwaitable(bindingDelegate.Method.ReturnType))
                 return await InvokeBindingDelegateAsync(bindingDelegate, invokeArgs);
             return InvokeBindingDelegateSync(bindingDelegate, invokeArgs);
         }
@@ -19,10 +19,10 @@ namespace TechTalk.SpecFlow.Bindings
 
         protected virtual async Task<object> InvokeBindingDelegateAsync(Delegate bindingDelegate, object[] invokeArgs)
         {
-            var r = bindingDelegate.DynamicInvoke(invokeArgs);
-            if (r is Task t)
-                await t;
-            return r;
+            var result = bindingDelegate.DynamicInvoke(invokeArgs);
+            if (AsyncMethodHelper.IsAwaitableAsTask(result, out var task))
+                await task;
+            return result;
         }
     }
 }
