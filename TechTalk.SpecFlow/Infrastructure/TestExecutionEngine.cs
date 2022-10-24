@@ -539,6 +539,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual BindingMatch GetStepMatch(StepInstance stepInstance)
         {
+            if (!_bindingRegistry.IsValid)
+                throw _errorProvider.GetInvalidBindingRegistryError(_bindingRegistry.GetErrorMessages());
+
             var match = _stepDefinitionMatchService.GetBestMatch(stepInstance, FeatureContext.BindingCulture, out var ambiguityReason, out var candidatingMatches);
 
             if (match.Success)
@@ -549,7 +552,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (ambiguityReason == StepDefinitionAmbiguityReason.AmbiguousSteps)
                     throw _errorProvider.GetAmbiguousMatchError(candidatingMatches, stepInstance);
 
-                if (ambiguityReason == StepDefinitionAmbiguityReason.ParameterErrors) // ambiguouity, because of param error
+                if (ambiguityReason == StepDefinitionAmbiguityReason.ParameterErrors) // ambiguity, because of param error
                     throw _errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
 

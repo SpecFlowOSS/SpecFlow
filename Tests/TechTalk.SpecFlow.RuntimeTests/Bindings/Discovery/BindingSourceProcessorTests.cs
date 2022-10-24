@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             };
 
             //ACT
-            sut.ProcessType(bindingSourceType);
+            sut.ProcessType(bindingSourceType).Should().BeTrue();
             sut.ProcessMethod(bindingSourceMethod);
             sut.BuildingCompleted();
 
@@ -50,6 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         {
             var bindingSourceType = new BindingSourceType
             {
+                IsClass = true,
                 Attributes = new[]
                 {
                     CreateBindingSourceAttribute("BindingAttribute", "TechTalk.SpecFlow.BindingAttribute")
@@ -80,13 +81,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         [Binding]
         class StepDefClassWithAsyncVoid
         {
-            public static bool WasInvokedAsyncVoidStepDef = false;
-
             [Given("an authenticated user")]
             public async void AsyncVoidStepDef()
             {
                 await Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
-                WasInvokedAsyncVoidStepDef = true;
             }
         }
 
@@ -98,7 +96,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             var bindingSourceMethod = CreateBindingSourceMethod(typeof(StepDefClassWithAsyncVoid), nameof(StepDefClassWithAsyncVoid.AsyncVoidStepDef),
                 CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute").WithValue("an authenticated user"));
 
-            sut.ProcessType(CreateDummyBindingSourceType());
+            sut.ProcessType(CreateDummyBindingSourceType()).Should().BeTrue();
             sut.ProcessMethod(bindingSourceMethod);
             sut.BuildingCompleted();
 

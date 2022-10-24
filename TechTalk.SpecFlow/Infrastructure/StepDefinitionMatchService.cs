@@ -139,7 +139,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         protected virtual StepDefinitionAmbiguityReason OnNoMatch(StepInstance stepInstance, CultureInfo bindingCulture, out List<BindingMatch> matches)
         {
             /*
-            //HACK: since out param matching does not support agrument converters yet, we rather show more results than "no match"
+            //HACK: since out param matching does not support argument converters yet, we rather show more results than "no match"
             matches = GetCandidatingBindings(stepInstance, useParamMatching: false).ToList();
              */
 
@@ -162,19 +162,19 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             if (matchesWithoutParamCheck.Count == 1)
             {
-                // no ambiguouity, but param error -> execute will find it out
+                // no ambiguity, but param error -> execute will find it out
                 return StepDefinitionAmbiguityReason.None;
             }
-            if (matchesWithoutParamCheck.Count > 1) // ambiguouity, because of param error
+            if (matchesWithoutParamCheck.Count > 1) // ambiguity, because of param error
                 return StepDefinitionAmbiguityReason.ParameterErrors;
 
-            return StepDefinitionAmbiguityReason.None; // no ambiguouity: simple missing step definition
+            return StepDefinitionAmbiguityReason.None; // no ambiguity: simple missing step definition
         }
 
         protected IEnumerable<BindingMatch> GetCandidatingBindings(StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
             var matches = _bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
-            // we remove duplicate maches for the same method (take the highest scope matches from each)
+            // we remove duplicate matches for the same method (take the highest scope matches from each)
             matches = matches.GroupBy(m => m.StepBinding.Method, (_, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
             return matches;
         }

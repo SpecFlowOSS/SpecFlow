@@ -21,9 +21,9 @@ namespace TechTalk.SpecFlow.ErrorHandling
         PendingStepException GetPendingStepDefinitionError();
         void ThrowPendingError(ScenarioExecutionStatus testStatus, string message);
         Exception GetTooManyBindingParamError(int maxParam);
-        Exception GetNonStaticEventError(IBindingMethod method);
         Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion);
         Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding);
+        Exception GetInvalidBindingRegistryError(IEnumerable<string> getErrorMessages);
     }
 
     internal class ErrorProvider : IErrorProvider
@@ -116,11 +116,6 @@ namespace TechTalk.SpecFlow.ErrorHandling
             return new BindingException($"Binding methods with more than {maxParam} parameters are not supported");
         }
 
-        public Exception GetNonStaticEventError(IBindingMethod method)
-        {
-            throw new BindingException($"The binding methods for before/after feature and before/after test run events must be static! {GetMethodText(method)}");
-        }
-
         public Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion)
         {
             throw new BindingException(bindingObsoletion.Message);
@@ -133,6 +128,11 @@ namespace TechTalk.SpecFlow.ErrorHandling
                 $"{Environment.NewLine}If this error comes after upgrading to SpecFlow v4, check the upgrade guide: https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html" :
                 "";
             return new BindingException($"Invalid step definition! The step definition method '{GetMethodText(stepDefinitionBinding.Method)}' is invalid: {stepDefinitionBinding.ErrorMessage}.{upgradeMessage}");
+        }
+
+        public Exception GetInvalidBindingRegistryError(IEnumerable<string> errorMessages)
+        {
+            throw new BindingException("Binding error(s) found: " + Environment.NewLine + string.Join(Environment.NewLine, errorMessages));
         }
     }
 }

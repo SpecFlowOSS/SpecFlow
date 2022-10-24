@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public RuntimeBindingType(Type type)
         {
-            this.Type = type;
+            Type = type;
         }
 
         public bool IsAssignableTo(IBindingType baseType)
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public override string ToString()
         {
-            return "[" + Type + "]";
+            return Type.ToString();
         }
 
         protected bool Equals(RuntimeBindingType other)
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((RuntimeBindingType) obj);
         }
 
@@ -45,6 +45,6 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             return (Type != null ? Type.GetHashCode() : 0);
         }
 
-        public static readonly RuntimeBindingType Void = new RuntimeBindingType(typeof(void));
+        public static readonly RuntimeBindingType Void = new(typeof(void));
     }
 }

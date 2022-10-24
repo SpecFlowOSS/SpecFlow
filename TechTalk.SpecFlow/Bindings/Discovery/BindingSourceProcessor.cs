@@ -8,17 +8,17 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public abstract class BindingSourceProcessor : IBindingSourceProcessor
     {
-        public static string BINDING_ATTR = typeof(BindingAttribute).FullName;
+        public static string BindingAttributeFullName = typeof(BindingAttribute).FullName;
 
-        private readonly IBindingFactory bindingFactory;
+        private readonly IBindingFactory _bindingFactory;
 
-        private BindingSourceType currentBindingSourceType = null;
-        private BindingScope[] typeScopes = null;
-        private List<IStepDefinitionBindingBuilder> _stepDefinitionBindingBuilders = new();
+        private BindingSourceType _currentBindingSourceType = null;
+        private BindingScope[] _typeScopes = null;
+        private readonly List<IStepDefinitionBindingBuilder> _stepDefinitionBindingBuilders = new();
 
         protected BindingSourceProcessor(IBindingFactory bindingFactory)
         {
-            this.bindingFactory = bindingFactory;
+            _bindingFactory = bindingFactory;
         }
 
         public bool CanProcessTypeAttribute(string attributeTypeName)
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private static bool IsPotentialBindingClass(IEnumerable<string> attributeTypeNames)
         {
-            return attributeTypeNames.Any(attr => attr.Equals(BINDING_ATTR, StringComparison.InvariantCulture));
+            return attributeTypeNames.Any(attr => attr.Equals(BindingAttributeFullName, StringComparison.InvariantCulture));
         }
 
         public bool PreFilterType(IEnumerable<string> attributeTypeNames)
@@ -43,23 +43,27 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public bool ProcessType(BindingSourceType bindingSourceType)
         {
-            typeScopes = null;
+            _typeScopes = null;
 
             if (!IsBindingType(bindingSourceType))
                 return false;
 
-            if (!ValidateType(bindingSourceType))
+            var validationResult = ValidateType(bindingSourceType);
+            if (!validationResult.IsValid)
+            {
+                OnValidationError(validationResult, true);
                 return false;
+            }
 
-            currentBindingSourceType = bindingSourceType;
-            typeScopes = GetScopes(bindingSourceType.Attributes).ToArray();
+            _currentBindingSourceType = bindingSourceType;
+            _typeScopes = GetScopes(bindingSourceType.Attributes).ToArray();
             return true;
         }
 
         public void ProcessTypeDone()
         {
-            currentBindingSourceType = null;
-            typeScopes = null;
+            _currentBindingSourceType = null;
+            _typeScopes = null;
         }
 
         public virtual void BuildingCompleted()
@@ -110,7 +114,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public void ProcessMethod(BindingSourceMethod bindingSourceMethod)
         {
-            var methodScopes = typeScopes.Concat(GetScopes(bindingSourceMethod.Attributes)).ToArray();
+            var methodScopes = _typeScopes.Concat(GetScopes(bindingSourceMethod.Attributes)).ToArray();
 
             ProcessStepDefinitions(bindingSourceMethod, methodScopes);
             ProcessHooks(bindingSourceMethod, methodScopes);
@@ -174,10 +178,14 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             HookType hookType = GetHookType(hookAttribute);
             int order = GetHookOrder(hookAttribute);
 
-            if (!ValidateHook(bindingSourceMethod, hookAttribute, hookType))
+            var validationResult = ValidateHook(bindingSourceMethod, hookAttribute, hookType);
+            if (!validationResult.IsValid)
+            {
+                OnValidationError(validationResult, true);
                 return;
+            }
 
-            var hookBinding = bindingFactory.CreateHookBinding(bindingSourceMethod.BindingMethod, hookType, scope, order);
+            var hookBinding = _bindingFactory.CreateHookBinding(bindingSourceMethod.BindingMethod, hookType, scope, order);
 
             ProcessHookBinding(hookBinding);
         }
@@ -192,10 +200,14 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             string regex = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(0) ?? stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Regex));
             string name = stepArgumentTransformationAttribute.TryGetAttributeValue<string>(nameof(StepArgumentTransformationAttribute.Name));
 
-            if (!ValidateStepArgumentTransformation(bindingSourceMethod, stepArgumentTransformationAttribute))
+            var validationResult = ValidateStepArgumentTransformation(bindingSourceMethod, stepArgumentTransformationAttribute);
+            if (!validationResult.IsValid)
+            {
+                OnValidationError(validationResult, true);
                 return;
+            }
 
-            var stepArgumentTransformationBinding = bindingFactory.CreateStepArgumentTransformation(regex, bindingSourceMethod.BindingMethod, name);
+            var stepArgumentTransformationBinding = _bindingFactory.CreateStepArgumentTransformation(regex, bindingSourceMethod.BindingMethod, name);
 
             ProcessStepArgumentTransformationBinding(stepArgumentTransformationBinding);
         }
@@ -234,61 +246,94 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             var stepDefinitionTypes = GetStepDefinitionTypes(stepDefinitionAttribute);
             string regex = stepDefinitionAttribute.TryGetAttributeValue<string>(0);
 
-            if (!ValidateStepDefinition(bindingSourceMethod, stepDefinitionAttribute))
+            var validationResult = ValidateStepDefinition(bindingSourceMethod, stepDefinitionAttribute);
+            if (!validationResult.IsValid)
+            {
+                OnValidationError(validationResult, false);
+                foreach (var stepDefinitionType in stepDefinitionTypes)
+                {
+                    _stepDefinitionBindingBuilders.Add(new InvalidStepDefinitionBindingBuilder(
+                        stepDefinitionType, bindingSourceMethod.BindingMethod, scope, regex, validationResult.CombinedErrorMessages));
+                }
                 return;
+            }
 
             foreach (var stepDefinitionType in stepDefinitionTypes)
             {
-                var stepDefinitionBindingBuilder = bindingFactory.CreateStepDefinitionBindingBuilder(stepDefinitionType, bindingSourceMethod.BindingMethod, scope, regex);
+                var stepDefinitionBindingBuilder = _bindingFactory.CreateStepDefinitionBindingBuilder(stepDefinitionType, bindingSourceMethod.BindingMethod, scope, regex);
                 _stepDefinitionBindingBuilders.Add(stepDefinitionBindingBuilder);
             }
         }
 
-        protected virtual bool OnValidationError(string messageFormat, params object[] arguments)
+        protected readonly struct BindingValidationResult
         {
-            return false;
+            public static BindingValidationResult Valid = new();
+            public static BindingValidationResult Error(string errorMessage) => new (errorMessage);
+
+            public List<string> ErrorMessages { get; }
+
+            private BindingValidationResult(string errorMessage)
+            {
+                ErrorMessages = new List<string> { errorMessage };
+            }
+
+            public bool IsValid => ErrorMessages == null || ErrorMessages.Count == 0;
+
+            public string CombinedErrorMessages => string.Join(", ", ErrorMessages);
+
+            public static BindingValidationResult operator +(BindingValidationResult r1, BindingValidationResult r2)
+            {
+                if (r1.IsValid) return r2;
+                if (r2.IsValid) return r1;
+                var result = new BindingValidationResult();
+                result.ErrorMessages.AddRange(r1.ErrorMessages);
+                result.ErrorMessages.AddRange(r2.ErrorMessages);
+                return result;
+            }
         }
 
-        protected virtual bool ValidateType(BindingSourceType bindingSourceType)
+        protected virtual void OnValidationError(BindingValidationResult validationResult, bool genericBindingError)
         {
-            if (!bindingSourceType.IsClass && OnValidationError("Binding types must be classes: {0}", bindingSourceType))
-                return false;
-
-            if (bindingSourceType.IsGenericTypeDefinition && OnValidationError("Binding types cannot be generic: {0}", bindingSourceType))
-                return false;
-
-            return true;
+            //nop;
         }
 
-        protected virtual bool ValidateMethod(BindingSourceMethod bindingSourceMethod)
+        protected virtual BindingValidationResult ValidateType(BindingSourceType bindingSourceType)
         {
-            if (currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic && OnValidationError("Abstract binding types can have only static binding methods: {0}", bindingSourceMethod))
-                return false;
-
-            if (AsyncMethodHelper.IsAsyncVoid(bindingSourceMethod.BindingMethod) && OnValidationError("Invalid binding method '{0}': async void methods are not supported. Please use 'async Task'.", bindingSourceMethod))
-                return false;
-
-            return true;
+            var result = BindingValidationResult.Valid;
+            if (!bindingSourceType.IsClass)
+                result += BindingValidationResult.Error($"Binding types must be classes: {bindingSourceType}");
+            if (bindingSourceType.IsGenericTypeDefinition)
+                result += BindingValidationResult.Error($"Binding types cannot be generic: {bindingSourceType}");
+            return result;
         }
 
-        protected virtual bool ValidateStepDefinition(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepDefinitionAttribute)
+        protected virtual BindingValidationResult ValidateMethod(BindingSourceMethod bindingSourceMethod)
         {
-            if (!ValidateMethod(bindingSourceMethod))
-                return false;
+            var result = BindingValidationResult.Valid;
+            if (_currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic)
+                result += BindingValidationResult.Error($"Abstract binding types can only have static binding methods: {bindingSourceMethod}");
+            if (AsyncMethodHelper.IsAsyncVoid(bindingSourceMethod.BindingMethod))
+                result += BindingValidationResult.Error($"Invalid binding method '{bindingSourceMethod}': async void methods are not supported. Please use 'async Task'.");
 
-            return true;
+            return result;
         }
 
-        protected virtual bool ValidateHook(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute hookAttribute, HookType hookType)
+        protected virtual BindingValidationResult ValidateStepDefinition(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepDefinitionAttribute)
         {
-            if (!ValidateMethod(bindingSourceMethod))
-                return false;
+            var result = BindingValidationResult.Valid;
+            result += ValidateMethod(bindingSourceMethod);
+            return result;
+        }
 
-            if (!IsScenarioSpecificHook(hookType) && !bindingSourceMethod.IsStatic &&
-                OnValidationError("The binding methods for before/after feature and before/after test run events must be static! {0}", bindingSourceMethod))
-                return false;
+        protected virtual BindingValidationResult ValidateHook(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute hookAttribute, HookType hookType)
+        {
+            var result = BindingValidationResult.Valid;
+            result += ValidateMethod(bindingSourceMethod);
 
-            return true;
+            if (!IsScenarioSpecificHook(hookType) && !bindingSourceMethod.IsStatic)
+                result += BindingValidationResult.Error($"The binding methods for before/after feature and before/after test run events must be static: {bindingSourceMethod}");
+
+            return result;
         }
 
         protected bool IsScenarioSpecificHook(HookType hookType)
@@ -302,12 +347,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                 hookType == HookType.AfterStep;
         }
 
-        protected virtual bool ValidateStepArgumentTransformation(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepArgumentTransformationAttribute)
+        protected virtual BindingValidationResult ValidateStepArgumentTransformation(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepArgumentTransformationAttribute)
         {
-            if (!ValidateMethod(bindingSourceMethod))
-                return false;
-
-            return true;
+            var result = BindingValidationResult.Valid;
+            result += ValidateMethod(bindingSourceMethod);
+            return result;
         }
 
         protected abstract void ProcessStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding);

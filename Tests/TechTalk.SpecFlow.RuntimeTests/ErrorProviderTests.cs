@@ -259,18 +259,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Fact]
-        public void GetNonStaticEventError_Throws_BindingException_with_message_containing_full_assembly_name_method_name_and_parameters_types()
+        public void GetInvalidBindingRegistryError_Throws_BindingException_with_message_containing_all_errors()
         {
-            const string methodName = "WhenIAdd";
-            const string methodBindingTypeName = "CalculatorSteps";
-            const string methodBindingTypeFullName = "StepsAssembly1.CalculatorSteps";
-            const string parameter1Type = "Int32";
-
             var errorProvider = CreateErrorProvider();
 
-            var bindingMethod = CreateBindingMethod(methodName, methodBindingTypeName, methodBindingTypeFullName, parameter1Type);
-
-            Assert.Throws<BindingException>(() => errorProvider.GetNonStaticEventError(bindingMethod));
+            Assert.Throws<BindingException>(() => errorProvider.GetInvalidBindingRegistryError(new []{ "error1", "error2"}));
         }
     }
 }
