@@ -24,26 +24,18 @@ namespace TechTalk.SpecFlow.Bindings
 
         private static bool IsValueTask(Type type)
         {
-#if NETFRAMEWORK
-            return false;
-#else
             return typeof(ValueTask).IsAssignableFrom(type) || IsValueTaskOfT(type, out _);
-#endif
         }
 
         private static bool IsValueTaskOfT(Type type, out Type typeArg)
         {
             typeArg = null;
-#if NETFRAMEWORK
-            return false;
-#else
             var isTaskOfT = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueTask<>);
             if (isTaskOfT)
             {
                 typeArg = type.GetGenericArguments()[0];
             }
             return isTaskOfT;
-#endif
         }
 
         private static bool IsAwaitableOfT(Type type, out Type typeArg)
@@ -63,7 +55,6 @@ namespace TechTalk.SpecFlow.Bindings
                 task = taskObject;
                 return true;
             }
-#if !NETFRAMEWORK
             if (obj is ValueTask valueTask)
             {
                 task = valueTask.AsTask();
@@ -76,7 +67,6 @@ namespace TechTalk.SpecFlow.Bindings
                 task = (Task)asTaskMethod!.Invoke(obj, Array.Empty<object>());
                 return true;
             }
-#endif
 
             task = null;
             return false;

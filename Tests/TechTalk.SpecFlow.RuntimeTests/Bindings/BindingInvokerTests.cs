@@ -107,7 +107,6 @@ public class BindingInvokerTests
         }
     }
 
-    #if !NETFRAMEWORK
     [Fact]
     public async Task Async_methods_of_ValueTask_return_type_can_be_invoked()
     {
@@ -133,7 +132,6 @@ public class BindingInvokerTests
         var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<StepDefClassWithValueTask>();
         stepDefClass.WasInvokedAsyncValueTaskOfTStepDef.Should().BeTrue();
     }
-    #endif
 
     #endregion
 }
