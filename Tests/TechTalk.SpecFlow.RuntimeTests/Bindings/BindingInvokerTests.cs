@@ -85,4 +85,53 @@ public class BindingInvokerTests
         var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<SampleStepDefClass>();
         stepDefClass.CapturedValue.Should().Be("42");
     }
+
+    #region ValueTask related tests
+
+    class StepDefClassWithValueTask
+    {
+        public bool WasInvokedAsyncValueTaskStepDef = false;
+        public bool WasInvokedAsyncValueTaskOfTStepDef = false;
+
+        public async ValueTask AsyncValueTaskStepDef()
+        {
+            await Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
+            WasInvokedAsyncValueTaskStepDef = true;
+        }
+
+        public async ValueTask<string> AsyncValueTaskOfTStepDef()
+        {
+            await Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
+            WasInvokedAsyncValueTaskOfTStepDef = true;
+            return "foo";
+        }
+    }
+
+    [Fact]
+    public async Task Async_methods_of_ValueTask_return_type_can_be_invoked()
+    {
+        var sut = CreateSut();
+        var contextManager = CreateContextManagerWith();
+
+        // call step definition methods
+        await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithValueTask), nameof(StepDefClassWithValueTask.AsyncValueTaskStepDef));
+
+        // this is how to get THE instance of the step definition class
+        var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<StepDefClassWithValueTask>();
+        stepDefClass.WasInvokedAsyncValueTaskStepDef.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Async_methods_of_ValueTaskOfT_return_type_can_be_invoked()
+    {
+        var sut = CreateSut();
+        var contextManager = CreateContextManagerWith();
+
+        await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithValueTask), nameof(StepDefClassWithValueTask.AsyncValueTaskOfTStepDef));
+
+        var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<StepDefClassWithValueTask>();
+        stepDefClass.WasInvokedAsyncValueTaskOfTStepDef.Should().BeTrue();
+    }
+
+    #endregion
 }
