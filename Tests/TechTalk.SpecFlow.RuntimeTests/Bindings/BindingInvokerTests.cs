@@ -134,4 +134,33 @@ public class BindingInvokerTests
     }
 
     #endregion
+
+    #region Async void related tests
+
+    class StepDefClassWithAsyncVoid
+    {
+        public static bool WasInvokedAsyncVoidStepDef = false;
+
+        public async void AsyncVoidStepDef()
+        {
+            await Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
+            WasInvokedAsyncVoidStepDef = true;
+        }
+    }
+
+    [Fact]
+    public async Task Async_void_binding_methods_are_not_supported()
+    {
+        var sut = CreateSut();
+        var contextManager = CreateContextManagerWith();
+
+        await FluentActions.Awaiting(() => InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithAsyncVoid), nameof(StepDefClassWithAsyncVoid.AsyncVoidStepDef)))
+                           .Should()
+                           .ThrowAsync<SpecFlowException>()
+                           .WithMessage("*async void*");
+
+        StepDefClassWithAsyncVoid.WasInvokedAsyncVoidStepDef.Should().BeFalse();
+    }
+
+    #endregion
 }

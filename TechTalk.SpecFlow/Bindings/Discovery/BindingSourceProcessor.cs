@@ -265,6 +265,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             if (currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic && OnValidationError("Abstract binding types can have only static binding methods: {0}", bindingSourceMethod))
                 return false;
 
+            if (AsyncMethodHelper.IsAsyncVoid(bindingSourceMethod.BindingMethod) && OnValidationError("Invalid binding method '{0}': async void methods are not supported. Please use 'async Task'.", bindingSourceMethod))
+                return false;
+
             return true;
         }
 
