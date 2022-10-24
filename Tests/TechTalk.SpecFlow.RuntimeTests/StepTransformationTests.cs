@@ -38,6 +38,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
             return new User {Name = name};
         }
 
+        [StepArgumentTransformation("user (w+)")]
+        public async ValueTask<User> AsyncCreateValueTask(string name)
+        {
+            await Task.Yield();
+            return new User {Name = name};
+        }
+
         [StepArgumentTransformation]
         public IEnumerable<User> CreateUsers(Table table)
         {
@@ -182,6 +189,25 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod(nameof(UserCreator.AsyncCreate)));
+            var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
+            stepTransformations.Add(stepTransformationBinding);
+            var resultUser = new User();
+            methodBindingInvokerStub
+                .Setup(i => i.InvokeBindingAsync(stepTransformationBinding, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), It.IsAny<DurationHolder>()))
+                .ReturnsAsync(resultUser);
+
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
+
+            var result = await stepArgumentTypeConverter.ConvertAsync("user xyz", typeof(User), new CultureInfo("en-US", false));
+            result.Should().Be(resultUser);
+        }
+
+
+        [Fact]
+        public async Task StepArgumentTypeConverterShouldUseAsyncValueTaskUserConverterForConversion()
+        {
+            UserCreator stepTransformationInstance = new UserCreator();
+            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod(nameof(UserCreator.AsyncCreateValueTask)));
             var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
             stepTransformations.Add(stepTransformationBinding);
             var resultUser = new User();
