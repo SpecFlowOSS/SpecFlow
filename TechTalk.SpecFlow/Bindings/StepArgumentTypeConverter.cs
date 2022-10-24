@@ -96,7 +96,8 @@ namespace TechTalk.SpecFlow.Bindings
 
         private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object valueToConvert, IBindingType typeToConvertTo)
         {
-            if (!stepTransformationBinding.Method.ReturnType.TypeEquals(typeToConvertTo))
+            var awaitableReturnType = stepTransformationBinding.Method.GetAwaitableReturnType();
+            if (!awaitableReturnType.TypeEquals(typeToConvertTo))
                 return false;
 
             if (stepTransformationBinding.Regex != null && valueToConvert is string stringValue)
