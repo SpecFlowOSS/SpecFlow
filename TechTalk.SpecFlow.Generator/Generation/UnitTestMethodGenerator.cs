@@ -256,10 +256,12 @@ namespace TechTalk.SpecFlow.Generator.Generation
             {
                 using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statementsWhenScenarioIsExecuted, generationContext.Document.SourceFilePath, generationContext.Feature.Background.Location))
                 {
-                    statementsWhenScenarioIsExecuted.Add(new CodeExpressionStatement(
-                        new CodeMethodInvokeExpression(
-                            new CodeThisReferenceExpression(),
-                            generationContext.FeatureBackgroundMethod.Name)));
+                    var backgroundMethodCallExpression = new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        generationContext.FeatureBackgroundMethod.Name);
+
+                    _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(backgroundMethodCallExpression);
+                    statementsWhenScenarioIsExecuted.Add(new CodeExpressionStatement(backgroundMethodCallExpression));
                 }
             }
 
