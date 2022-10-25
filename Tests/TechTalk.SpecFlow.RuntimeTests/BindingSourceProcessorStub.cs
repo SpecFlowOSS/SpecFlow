@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Discovery;
@@ -11,7 +12,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public readonly List<IStepDefinitionBinding> StepDefinitionBindings = new();
         public readonly List<IHookBinding> HookBindings = new();
         public readonly List<IStepArgumentTransformationBinding> StepArgumentTransformationBindings = new();
-        public readonly List<string> ValidationErrors = new();
+        public readonly List<string> GeneralErrorMessages = new();
+        public readonly List<string> BindingSpecificErrorMessages = new();
+
+        public IEnumerable<string> ValidationErrors => GeneralErrorMessages.Concat(BindingSpecificErrorMessages);
 
         public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(ConfigurationLoader.GetDefault()), new CucumberExpressionStepDefinitionBindingBuilderFactory(new CucumberExpressionParameterTypeRegistry(new BindingRegistry()))))
         {
@@ -32,10 +36,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             StepArgumentTransformationBindings.Add(stepArgumentTransformationBinding);
         }
 
-        protected override bool OnValidationError(string messageFormat, params object[] arguments)
+        protected override void OnValidationError(BindingValidationResult validationResult, bool genericBindingError)
         {
-            ValidationErrors.Add(string.Format(messageFormat, arguments));
-            return base.OnValidationError(messageFormat, arguments);
+            if (genericBindingError)
+                GeneralErrorMessages.AddRange(validationResult.ErrorMessages);
+            else
+                BindingSpecificErrorMessages.AddRange(validationResult.ErrorMessages);
         }
     }
 }
