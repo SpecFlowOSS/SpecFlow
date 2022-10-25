@@ -277,6 +277,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                 ErrorMessages = new List<string> { errorMessage };
             }
 
+            private BindingValidationResult(List<string> errorMessages)
+            {
+                ErrorMessages = new List<string>(errorMessages);
+            }
+
             public bool IsValid => ErrorMessages == null || ErrorMessages.Count == 0;
 
             public string CombinedErrorMessages => string.Join(", ", ErrorMessages);
@@ -285,8 +290,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             {
                 if (r1.IsValid) return r2;
                 if (r2.IsValid) return r1;
-                var result = new BindingValidationResult();
-                result.ErrorMessages.AddRange(r1.ErrorMessages);
+                var result = new BindingValidationResult(r1.ErrorMessages);
                 result.ErrorMessages.AddRange(r2.ErrorMessages);
                 return result;
             }

@@ -22,17 +22,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             //ARRANGE
             var sut = CreateBindingSourceProcessor();
 
-            var bindingSourceType = CreateDummyBindingSourceType();
-
-            var bindingSourceMethod = new BindingSourceMethod
-            {
-                BindingMethod = CreateBindingMethodStub(),
-                Attributes = new[]
-                {
-                    CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute")
-                        .WithValue("an authenticated user"),
-                }
-            };
+            var bindingSourceType = CreateSyntheticBindingSourceType();
+            var bindingSourceMethod = CreateSyntheticStepDefBindingSourceMethod();
 
             //ACT
             sut.ProcessType(bindingSourceType).Should().BeTrue();
@@ -46,7 +37,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             binding.Regex.IsMatch("an authenticated user").Should().BeTrue();
         }
 
-        private BindingSourceType CreateDummyBindingSourceType()
+        private BindingSourceMethod CreateSyntheticStepDefBindingSourceMethod()
+        {
+            return new BindingSourceMethod
+            {
+                BindingMethod = CreateSyntheticBindingMethod(),
+                Attributes = new[]
+                {
+                    CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute")
+                        .WithValue("an authenticated user"),
+                }
+            };
+        }
+
+        private BindingSourceMethod CreateSyntheticHookBindingSourceMethod(HookType hookType)
+        {
+            return new BindingSourceMethod
+            {
+                BindingMethod = CreateSyntheticBindingMethod(),
+                Attributes = new[]
+                {
+                    CreateBindingSourceAttribute($"{hookType}Attribute", $"TechTalk.SpecFlow.{hookType}Attribute")
+                }
+            };
+        }
+
+        private BindingSourceType CreateSyntheticBindingSourceType()
         {
             var bindingSourceType = new BindingSourceType
             {
@@ -72,7 +88,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             return new BindingSourceProcessorStub();
         }
 
-        private BindingMethod CreateBindingMethodStub()
+        private BindingMethod CreateSyntheticBindingMethod()
         {
             var bindingType = new BindingType("MyType", "MyProject.MyType", "MyProject");
             return new BindingMethod(bindingType, "MyMethod", Array.Empty<IBindingParameter>(), RuntimeBindingType.Void);
@@ -96,11 +112,67 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             var bindingSourceMethod = CreateBindingSourceMethod(typeof(StepDefClassWithAsyncVoid), nameof(StepDefClassWithAsyncVoid.AsyncVoidStepDef),
                 CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute").WithValue("an authenticated user"));
 
-            sut.ProcessType(CreateDummyBindingSourceType()).Should().BeTrue();
+            sut.ProcessType(CreateSyntheticBindingSourceType()).Should().BeTrue();
             sut.ProcessMethod(bindingSourceMethod);
             sut.BuildingCompleted();
 
-            sut.ValidationErrors.Should().Contain((m) => m.Contains("async void"));
+            sut.ValidationErrors.Should().Contain(m => m.Contains("async void"));
+        }
+
+        [Theory]
+        [InlineData(false, false, "Binding types must be classes")]
+        [InlineData(true, true, "Binding types cannot be generic")]
+        public void Binding_type_errors_should_be_captured(bool isClass, bool isGenericTypeDefinition, string expectedError)
+        {
+            var sut = CreateBindingSourceProcessor();
+
+            var bindingSourceType = CreateSyntheticBindingSourceType();
+            // make it invalid
+            bindingSourceType.IsClass = isClass;
+            bindingSourceType.IsGenericTypeDefinition = isGenericTypeDefinition;
+
+            sut.ProcessType(bindingSourceType).Should().BeFalse();
+            sut.BuildingCompleted();
+
+            sut.ValidationErrors.Should().Contain(m => m.Contains(expectedError));
+        }
+
+        [Theory]
+        [InlineData(true, false, "Abstract binding types can only have static binding methods")]
+        public void Binding_method_errors_should_be_captured(bool isClassAbstract, bool isMethodStatic, string expectedError)
+        {
+            var sut = CreateBindingSourceProcessor();
+
+            var bindingSourceType = CreateSyntheticBindingSourceType();
+            bindingSourceType.IsAbstract = isClassAbstract;
+            var bindingSourceMethod = CreateSyntheticStepDefBindingSourceMethod();
+            bindingSourceMethod.IsStatic = isMethodStatic;
+
+            sut.ProcessType(bindingSourceType).Should().BeTrue();
+            sut.ProcessMethod(bindingSourceMethod);
+            sut.BuildingCompleted();
+
+            sut.ValidationErrors.Should().Contain(m => m.Contains(expectedError));
+        }
+
+        [Theory]
+        [InlineData(HookType.BeforeTestRun)]
+        [InlineData(HookType.AfterTestRun)]
+        [InlineData(HookType.BeforeFeature)]
+        [InlineData(HookType.AfterFeature)]
+        public void Non_static_feature_and_test_run_hook_errors_should_be_captured(HookType hookType)
+        {
+            var sut = CreateBindingSourceProcessor();
+
+            var bindingSourceType = CreateSyntheticBindingSourceType();
+            var bindingSourceMethod = CreateSyntheticHookBindingSourceMethod(hookType);
+            bindingSourceMethod.IsStatic = false;
+
+            sut.ProcessType(bindingSourceType).Should().BeTrue();
+            sut.ProcessMethod(bindingSourceMethod);
+            sut.BuildingCompleted();
+
+            sut.ValidationErrors.Should().Contain(m => m.Contains("The binding methods for before/after feature and before/after test run events must be static"));
         }
 
         private static BindingSourceMethod CreateBindingSourceMethod(Type bindingType, string methodName, params BindingSourceAttribute[] attributes)
