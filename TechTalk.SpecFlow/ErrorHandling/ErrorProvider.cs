@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
         Exception GetTooManyBindingParamError(int maxParam);
         Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion);
         Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding);
-        Exception GetInvalidBindingRegistryError(IEnumerable<string> getErrorMessages);
+        Exception GetInvalidBindingRegistryError(IEnumerable<(BindingErrorType ErrorType, string Message)> errors);
     }
 
     internal class ErrorProvider : IErrorProvider
@@ -130,9 +130,9 @@ namespace TechTalk.SpecFlow.ErrorHandling
             return new BindingException($"Invalid step definition! The step definition method '{GetMethodText(stepDefinitionBinding.Method)}' is invalid: {stepDefinitionBinding.ErrorMessage}.{upgradeMessage}");
         }
 
-        public Exception GetInvalidBindingRegistryError(IEnumerable<string> errorMessages)
+        public Exception GetInvalidBindingRegistryError(IEnumerable<(BindingErrorType ErrorType, string Message)> errors)
         {
-            throw new BindingException("Binding error(s) found: " + Environment.NewLine + string.Join(Environment.NewLine, errorMessages));
+            throw new BindingException("Binding error(s) found: " + Environment.NewLine + string.Join(Environment.NewLine, errors.Select(e => e.Message)));
         }
     }
 }

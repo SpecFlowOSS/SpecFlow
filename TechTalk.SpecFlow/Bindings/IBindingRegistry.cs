@@ -12,11 +12,11 @@ namespace TechTalk.SpecFlow.Bindings
         IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null);
         IEnumerable<IHookBinding> GetHooks(HookType bindingEvent);
         IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations();
-        IEnumerable<string> GetErrorMessages();
+        IEnumerable<(BindingErrorType ErrorType, string Message)> GetErrorMessages();
 
         void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding);
         void RegisterHookBinding(IHookBinding hookBinding);
         void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding);
-        void RegisterGenericBindingError(string errorMessage);
+        void RegisterGenericBindingError(BindingErrorType errorType, string errorMessage);
     }
 }

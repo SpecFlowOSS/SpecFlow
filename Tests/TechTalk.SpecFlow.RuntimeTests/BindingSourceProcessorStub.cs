@@ -43,5 +43,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             else
                 BindingSpecificErrorMessages.AddRange(validationResult.ErrorMessages);
         }
+
+        public void RegisterTypeLoadError(string errorMessage)
+        {
+            GeneralErrorMessages.Add(errorMessage);
+        }
     }
 }

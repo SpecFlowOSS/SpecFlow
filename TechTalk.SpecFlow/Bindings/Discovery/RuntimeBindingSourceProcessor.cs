@@ -4,6 +4,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public interface IRuntimeBindingSourceProcessor : IBindingSourceProcessor
     {
+        void RegisterTypeLoadError(string errorMessage);
     }
 
     public class RuntimeBindingSourceProcessor : BindingSourceProcessor, IRuntimeBindingSourceProcessor
@@ -41,7 +42,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             {
                 _testTracer.TraceWarning($"Invalid binding: {errorMessage}");
                 if (genericBindingError)
-                    _bindingRegistry.RegisterGenericBindingError(errorMessage);
+                    _bindingRegistry.RegisterGenericBindingError(BindingErrorType.BindingError, errorMessage);
             }
 
             base.OnValidationError(validationResult, genericBindingError);
@@ -51,6 +52,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
             base.BuildingCompleted();
             _bindingRegistry.Ready = true;
+        }
+
+        public void RegisterTypeLoadError(string errorMessage)
+        {
+            _bindingRegistry.RegisterGenericBindingError(BindingErrorType.TypeLoadError, errorMessage);
         }
     }
 }

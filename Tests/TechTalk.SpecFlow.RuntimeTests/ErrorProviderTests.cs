@@ -263,7 +263,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var errorProvider = CreateErrorProvider();
 
-            Assert.Throws<BindingException>(() => errorProvider.GetInvalidBindingRegistryError(new []{ "error1", "error2"}));
+            Assert.Throws<BindingException>(() => errorProvider.GetInvalidBindingRegistryError(new[] { (BindingErrorType.BindingError, "error1"), (BindingErrorType.BindingError, "error2") }));
         }
     }
 }
