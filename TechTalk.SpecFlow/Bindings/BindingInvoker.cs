@@ -117,6 +117,9 @@ namespace TechTalk.SpecFlow.Bindings
 
         protected virtual Delegate CreateMethodDelegate(MethodInfo method)
         {
+            if (AsyncMethodHelper.IsAsyncVoid(method)) 
+                throw new SpecFlowException($"Invalid binding method '{method.DeclaringType!.FullName}.{method.Name}()': async void methods are not supported. Please use 'async Task'.");
+
             List<ParameterExpression> parameters = new List<ParameterExpression>();
             parameters.Add(Expression.Parameter(typeof(IContextManager), "__contextManager"));
             parameters.AddRange(method.GetParameters().Select(parameterInfo => Expression.Parameter(parameterInfo.ParameterType, parameterInfo.Name)));
