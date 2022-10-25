@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
@@ -21,13 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             //ARRANGE
             var sut = CreateBindingSourceProcessor();
 
-            var bindingSourceType = new BindingSourceType
-            {
-                Attributes = new[]
-                {
-                    CreateBindingSourceAttribute("BindingAttribute", "TechTalk.SpecFlow.BindingAttribute")
-                },
-            };
+            var bindingSourceType = CreateDummyBindingSourceType();
 
             var bindingSourceMethod = new BindingSourceMethod
             {
@@ -51,6 +46,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
             binding.Regex.IsMatch("an authenticated user").Should().BeTrue();
         }
 
+        private BindingSourceType CreateDummyBindingSourceType()
+        {
+            var bindingSourceType = new BindingSourceType
+            {
+                Attributes = new[]
+                {
+                    CreateBindingSourceAttribute("BindingAttribute", "TechTalk.SpecFlow.BindingAttribute")
+                },
+            };
+            return bindingSourceType;
+        }
+
         private static BindingSourceAttribute CreateBindingSourceAttribute(string name, string fullName) => new()
         {
             AttributeType = new BindingType(name, fullName, "default"),
@@ -68,6 +75,46 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         {
             var bindingType = new BindingType("MyType", "MyProject.MyType", "MyProject");
             return new BindingMethod(bindingType, "MyMethod", Array.Empty<IBindingParameter>(), RuntimeBindingType.Void);
+        }
+
+        [Binding]
+        class StepDefClassWithAsyncVoid
+        {
+            public static bool WasInvokedAsyncVoidStepDef = false;
+
+            [Given("an authenticated user")]
+            public async void AsyncVoidStepDef()
+            {
+                await Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
+                WasInvokedAsyncVoidStepDef = true;
+            }
+        }
+
+        [Fact]
+        public async Task Async_void_binding_methods_are_not_supported()
+        {
+            var sut = CreateBindingSourceProcessor();
+
+            var bindingSourceMethod = CreateBindingSourceMethod(typeof(StepDefClassWithAsyncVoid), nameof(StepDefClassWithAsyncVoid.AsyncVoidStepDef),
+                CreateBindingSourceAttribute("GivenAttribute", "TechTalk.SpecFlow.GivenAttribute").WithValue("an authenticated user"));
+
+            sut.ProcessType(CreateDummyBindingSourceType());
+            sut.ProcessMethod(bindingSourceMethod);
+            sut.BuildingCompleted();
+
+            sut.ValidationErrors.Should().Contain((m) => m.Contains("async void"));
+        }
+
+        private static BindingSourceMethod CreateBindingSourceMethod(Type bindingType, string methodName, params BindingSourceAttribute[] attributes)
+        {
+            var methodInfo = bindingType.GetMethod(methodName);
+            return new BindingSourceMethod
+            {
+                BindingMethod = new RuntimeBindingMethod(methodInfo),
+                IsPublic = methodInfo!.IsPublic,
+                IsStatic = methodInfo!.IsStatic,
+                Attributes = attributes ?? Array.Empty<BindingSourceAttribute>()
+            };
         }
     }
 

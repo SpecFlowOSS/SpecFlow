@@ -4,6 +4,7 @@ Breaking Changes:
 + Removed the ability to call steps from steps via string - https://github.com/SpecFlowOSS/SpecFlow/issues/1733
 + Removed .NET Core 2.1 support (min .NET Core version: 3.1)
 + Removed .NET Framework 4.6.1 support (min .NET Framework version: 4.6.2)
++ Bindigns declared as 'async void' are not allowed. Use 'async Task' instead.
 
 Features:
 + Add an option to colorize test result output

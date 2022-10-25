@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
@@ -83,6 +85,20 @@ namespace TechTalk.SpecFlow.Bindings
             }
 
             return returnType;
+        }
+
+        public static bool IsAsyncVoid(MethodInfo methodInfo)
+        {
+            return 
+                methodInfo.ReturnType == typeof(void) &&
+                methodInfo.GetCustomAttribute<AsyncStateMachineAttribute>() != null;
+        }
+
+        public static bool IsAsyncVoid(IBindingMethod bindingMethod)
+        {
+            if (bindingMethod is RuntimeBindingMethod runtimeBindingMethod) 
+                return IsAsyncVoid(runtimeBindingMethod.MethodInfo);
+            return false;
         }
     }
 }
