@@ -44,12 +44,11 @@ namespace TechTalk.SpecFlow.Bindings
             return result;
         }
 
-        // this method must not be async because that would discard the ExecutionContext changes during execution!
+        // Important: this method MUST NOT be async because that would discard the ExecutionContext changes during execution!
         private Task<object> CreateDelegateInvocationTask(Delegate bindingDelegate, object[] invokeArgs)
         {
             if (AsyncMethodHelper.IsAwaitable(bindingDelegate.Method.ReturnType))
                 return InvokeBindingDelegateAsync(bindingDelegate, invokeArgs);
-
             return Task.FromResult(InvokeBindingDelegateSync(bindingDelegate, invokeArgs));
         }
 
@@ -58,16 +57,12 @@ namespace TechTalk.SpecFlow.Bindings
             return bindingDelegate.DynamicInvoke(invokeArgs);
         }
 
-        // this method must not be async because that would discard the ExecutionContext changes during execution!
+        // Important: this method MUST NOT be async because that would discard the ExecutionContext changes during execution!
         private Task<object> InvokeBindingDelegateAsync(Delegate bindingDelegate, object[] invokeArgs)
         {
             var result = bindingDelegate.DynamicInvoke(invokeArgs);
             if (AsyncMethodHelper.IsAwaitableAsTask(result, out var task))
-            {
-                if (task is Task<object> taskOfObj)
-                    return taskOfObj;
-                return task.ContinueWith(_ => (object)null);
-            }
+                return AsyncMethodHelper.ConvertToTaskOfObject(task);
             return Task.FromResult(result);
         }
     }

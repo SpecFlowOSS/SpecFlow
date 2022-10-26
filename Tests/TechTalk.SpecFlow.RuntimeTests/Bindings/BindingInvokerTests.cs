@@ -32,22 +32,6 @@ public class BindingInvokerTests
         return new BindingInvoker(ConfigurationLoader.GetDefault(), new StubErrorProvider(), new BindingDelegateInvoker());
     }
 
-    class SampleStepDefClass
-    {
-        public string CapturedValue = null;
-
-        public void SampleSyncStepDef(int someParam)
-        {
-            _testOutputHelperInstance.WriteLine($"some info here: {someParam}");
-        }
-
-        public async Task SampleAsyncStepDef(string otherParam)
-        {
-            _testOutputHelperInstance.WriteLine($"some info here: {otherParam}");
-            CapturedValue = otherParam;
-        }
-    }
-
     class TestableMethodBinding : MethodBinding
     {
         public TestableMethodBinding(IBindingMethod bindingMethod) : base(bindingMethod)
@@ -55,11 +39,11 @@ public class BindingInvokerTests
         }
     }
 
-    private async Task InvokeBindingAsync(BindingInvoker sut, IContextManager contextManager, Type stepDefType, string methodName, params object[] args)
+    private async Task<object> InvokeBindingAsync(BindingInvoker sut, IContextManager contextManager, Type stepDefType, string methodName, params object[] args)
     {
         var testTracerMock = new Mock<ITestTracer>();
         var setMethodBinding = new TestableMethodBinding(new RuntimeBindingMethod(stepDefType.GetMethod(methodName)));
-        await sut.InvokeBindingAsync(setMethodBinding, contextManager, args, testTracerMock.Object, new DurationHolder());
+        return await sut.InvokeBindingAsync(setMethodBinding, contextManager, args, testTracerMock.Object, new DurationHolder());
     }
 
     private IContextManager CreateContextManagerWith()
@@ -72,21 +56,79 @@ public class BindingInvokerTests
         return contextManager;
     }
 
-    [Fact]
-    public async Task Sample_binding_invoker_test()
+    #region Generic invokation tests
+
+    class GenericStepDefClass
     {
-        _testOutputHelper.WriteLine("starting sample test");
+        public bool WasInvoked = false;
+        public int CapturedIntParam = 0;
+        public string CapturedStringParam = null;
+
+        public void SyncStepDef(int intParam, string stringParam)
+        {
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+        }
+
+        public async Task AsyncStepDef(int intParam, string stringParam)
+        {
+            await Task.Delay(10);
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+        }
+
+        public async Task<int> AsyncConverter(int intParam, string stringParam)
+        {
+            await Task.Delay(10);
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            return 42;
+        }
+
+        public async Task<int> AsyncConverterWithoutAwait(int intParam, string stringParam)
+        {
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            return 42;
+        }
+
+        public int SyncConverter(int intParam, string stringParam)
+        {
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            return 42;
+        }
+    }
+
+
+    [Theory]
+    [InlineData(nameof(GenericStepDefClass.SyncStepDef), null)]
+    [InlineData(nameof(GenericStepDefClass.AsyncStepDef), null)]
+    [InlineData(nameof(GenericStepDefClass.SyncConverter), 42)]
+    [InlineData(nameof(GenericStepDefClass.AsyncConverter), 42)]
+    [InlineData(nameof(GenericStepDefClass.AsyncConverterWithoutAwait), 42)]
+    public async Task Can_invoke_different_methods(string methodName, object expectedResult)
+    {
         var sut = CreateSut();
         var contextManager = CreateContextManagerWith();
 
         // call step definition methods
-        await InvokeBindingAsync(sut, contextManager, typeof(SampleStepDefClass), nameof(SampleStepDefClass.SampleSyncStepDef), 42);
-        await InvokeBindingAsync(sut, contextManager, typeof(SampleStepDefClass), nameof(SampleStepDefClass.SampleAsyncStepDef), "42");
+        var result = await InvokeBindingAsync(sut, contextManager, typeof(GenericStepDefClass), methodName, 24, "foo");
 
         // this is how to get THE instance of the step definition class
-        var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<SampleStepDefClass>();
-        stepDefClass.CapturedValue.Should().Be("42");
+        var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<GenericStepDefClass>();
+        stepDefClass.WasInvoked.Should().BeTrue();
+        stepDefClass.CapturedIntParam.Should().Be(24);
+        stepDefClass.CapturedStringParam.Should().Be("foo");
+        result.Should().Be(expectedResult);
     }
+
+    #endregion
 
     #region ValueTask related tests
 
@@ -309,8 +351,6 @@ public class BindingInvokerTests
     [InlineData("Case 2/b", AsyncLocalType.CtorInitialized, null, "Async", "42")]
     [InlineData("Case 2x/a", AsyncLocalType.CtorInitialized, "Sync", "Sync", "42")]
     [InlineData("Case 2x/b", AsyncLocalType.CtorInitialized, "Async", "Async", "42")]
-    //[InlineData("Case 3/a", AsyncLocalType.StaticCtorInitialized, null, "Sync", "42")]
-    //[InlineData("Case 3/b", AsyncLocalType.StaticCtorInitialized, null, "Async", "42")]
     [InlineData("Case 4/a", AsyncLocalType.Uninitialized, "Async", "Sync", null)]
     [InlineData("Case 4/b", AsyncLocalType.Uninitialized, "Async", "Async", null)]
     [InlineData("Case 6/a", AsyncLocalType.Boxed, "Sync", "Sync", "42")]
