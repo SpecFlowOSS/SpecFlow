@@ -336,7 +336,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 {
                     await InvokeHookAsync(_bindingInvoker, hookBinding, hookType);
                 }
-        }
+            }
             catch (Exception hookExceptionCaught)
             {
                 hookException = hookExceptionCaught;

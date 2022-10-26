@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IBindingDelegateInvoker
     {
-        Task<object> InvokeDelegateAsync(Delegate bindingDelegate, object[] invokeArgs);
+        Task<object> InvokeDelegateAsync(Delegate bindingDelegate, object[] invokeArgs, ExecutionContextHolder executionContext);
     }
 }

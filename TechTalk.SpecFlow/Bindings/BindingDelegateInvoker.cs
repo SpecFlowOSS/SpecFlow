@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,9 +7,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class BindingDelegateInvoker : IBindingDelegateInvoker
     {
-        private ExecutionContext _executionContext = null;
-
-        public virtual async Task<object> InvokeDelegateAsync(Delegate bindingDelegate, object[] invokeArgs)
+        public virtual async Task<object> InvokeDelegateAsync(Delegate bindingDelegate, object[] invokeArgs, ExecutionContextHolder executionContext)
         {
             // To be able to simulate the behavior of sequential async or sync steps in a test, we need to ensure that
             // the next step continues with the ExecutionContext that the previous step finished with. 
@@ -26,11 +25,12 @@ namespace TechTalk.SpecFlow.Bindings
 
             try
             {
-                return await InvokeInExecutionContext(_executionContext, () => CreateDelegateInvocationTask(bindingDelegate, invokeArgs));
+                return await InvokeInExecutionContext(executionContext?.Value, () => CreateDelegateInvocationTask(bindingDelegate, invokeArgs));
             }
             finally
             {
-                _executionContext = ExecutionContext.Capture();
+                if (executionContext != null)
+                    executionContext.Value = ExecutionContext.Capture();
             }
         }
 

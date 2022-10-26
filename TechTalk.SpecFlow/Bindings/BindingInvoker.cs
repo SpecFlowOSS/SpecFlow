@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
@@ -53,7 +55,8 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
 
-                    result = await bindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs);
+                    var executionContextHolder = GetExecutionContextHolder(contextManager);
+                    result = await bindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs, executionContextHolder);
 
                     stopwatch.Stop();
                     durationHolder.Duration = stopwatch.Elapsed;
@@ -94,6 +97,14 @@ namespace TechTalk.SpecFlow.Bindings
                 durationHolder.Duration = stopwatch.Elapsed;
                 throw;
             }
+        }
+
+        private ExecutionContextHolder GetExecutionContextHolder(IContextManager contextManager)
+        {
+            var scenarioContext = contextManager.ScenarioContext;
+            if (scenarioContext == null)
+                return null;
+            return scenarioContext.ScenarioContainer.Resolve<ExecutionContextHolder>();
         }
 
         protected virtual CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
