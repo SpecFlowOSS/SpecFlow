@@ -103,8 +103,41 @@ public class BindingInvokerTests
             CapturedStringParam = stringParam;
             return 42;
         }
-    }
 
+        public void SyncStepDefWithException(int intParam, string stringParam)
+        {
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            throw new Exception("simulated error");
+        }
+
+        public async Task AsyncStepDefWithException(int intParam, string stringParam)
+        {
+            await Task.Delay(10);
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            throw new Exception("simulated error");
+        }
+
+        public async Task AsyncStepDefWithoutAwaitWithException(int intParam, string stringParam)
+        {
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            throw new Exception("simulated error");
+        }
+
+        public async Task<int> AsyncConverterWithException(int intParam, string stringParam)
+        {
+            await Task.Delay(10);
+            WasInvoked = true;
+            CapturedIntParam = intParam;
+            CapturedStringParam = stringParam;
+            throw new Exception("simulated error");
+        }
+    }
 
     [Theory]
     [InlineData(nameof(GenericStepDefClass.SyncStepDef), null)]
@@ -126,6 +159,27 @@ public class BindingInvokerTests
         stepDefClass.CapturedIntParam.Should().Be(24);
         stepDefClass.CapturedStringParam.Should().Be("foo");
         result.Should().Be(expectedResult);
+    }
+
+    [Theory]
+    [InlineData(nameof(GenericStepDefClass.SyncStepDefWithException), typeof(Exception))]
+    [InlineData(nameof(GenericStepDefClass.AsyncStepDefWithException), typeof(Exception))]
+    [InlineData(nameof(GenericStepDefClass.AsyncStepDefWithoutAwaitWithException), typeof(Exception))]
+    [InlineData(nameof(GenericStepDefClass.AsyncConverterWithException), typeof(Exception))]
+    public async Task Can_invoke_different_failing_methods(string methodName, Type expectedExceptionType)
+    {
+        var sut = CreateSut();
+        var contextManager = CreateContextManagerWith();
+
+        // call step definition methods
+        var ex = await Assert.ThrowsAsync(expectedExceptionType, () => InvokeBindingAsync(sut, contextManager, typeof(GenericStepDefClass), methodName, 24, "foo"));
+        _testOutputHelper.WriteLine(ex.ToString());
+
+        // this is how to get THE instance of the step definition class
+        var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<GenericStepDefClass>();
+        stepDefClass.WasInvoked.Should().BeTrue();
+        stepDefClass.CapturedIntParam.Should().Be(24);
+        stepDefClass.CapturedStringParam.Should().Be("foo");
     }
 
     #endregion

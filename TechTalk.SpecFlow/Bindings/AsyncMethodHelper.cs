@@ -111,12 +111,20 @@ namespace TechTalk.SpecFlow.Bindings
         public static Task<object> ConvertToTaskOfObject(Task task)
         {
             if (task.GetType() == typeof(Task))
-                return task.ContinueWith(_ => (object)null);
+                return ConvertTaskOfT(task, false);
             if (task is Task<object> taskOfObj)
                 return taskOfObj;
             if (IsTaskOfT(task.GetType(), out _))
-                return task.ContinueWith(t => t.GetType().GetProperty(nameof(Task<object>.Result))!.GetValue(t));
-            return task.ContinueWith(_ => (object)null); // e.g. when this is a TaskBuilder
+                return ConvertTaskOfT(task, true);
+            return ConvertTaskOfT(task, false);
+        }
+
+        // We are allowed to have async method here, because the synchronous part of the task (that might have changed the ExecutionContext)
+        // has been executed already.
+        private static async Task<object> ConvertTaskOfT(Task task, bool getValue)
+        {
+            await task;
+            return getValue ? task.GetType().GetProperty(nameof(Task<object>.Result))!.GetValue(task) : null;
         }
     }
 }
