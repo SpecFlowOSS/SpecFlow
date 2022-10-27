@@ -18,6 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings;
 
 public class BindingInvokerTests
 {
+    // ReSharper disable once NotAccessedField.Local
     private static ITestOutputHelper _testOutputHelperInstance;
     private readonly ITestOutputHelper _testOutputHelper;
 
@@ -268,107 +269,64 @@ public class BindingInvokerTests
     {
         Uninitialized,
         CtorInitialized,
-        StaticCtorInitialized,
         Boxed
     }
 
     class StepDefClassWithAsyncLocal
     {
-        private readonly AsyncLocal<string> UninitializedAsyncLocal = new();
-        private readonly AsyncLocal<string> CtorInitializedAsyncLocal = new(ValueChangedHandler) { Value = "42" };
-        private static readonly AsyncLocal<string> StaticCtorInitializedAsyncLocal = new() { Value = "42" };
-        private readonly AsyncLocal<StrongBox<string>> BoxedAsyncLocal = new(ValueChangedHandlerBoxed) { Value = new StrongBox<string>("42") };
-
-        private static void ValueChangedHandler(AsyncLocalValueChangedArgs<string> obj)
-        {
-            _testOutputHelperInstance?.WriteLine($"{obj.PreviousValue} -> {obj.CurrentValue} ThreadContextChanged: {obj.ThreadContextChanged}");
-            //_testOutputHelperInstance?.WriteLine(Environment.StackTrace);
-        }
-
-        private static void ValueChangedHandlerBoxed(AsyncLocalValueChangedArgs<StrongBox<string>> obj)
-        {
-            //_testOutputHelperInstance.WriteLine($"{obj.PreviousValue} -> {obj.CurrentValue} ({obj.ThreadContextChanged})");
-        }
+        private readonly AsyncLocal<string> _uninitializedAsyncLocal = new();
+        private readonly AsyncLocal<string> _ctorInitializedAsyncLocal = new() { Value = "ctor-value" };
+        private readonly AsyncLocal<StrongBox<string>> _boxedAsyncLocal = new() { Value = new StrongBox<string>("ctor-value") };
 
         public string LoadedValue { get; set; }
 
+        // ReSharper disable once UnusedMember.Local
         public void SetAsyncLocal_Sync(AsyncLocalType asyncLocalType)
         {
             switch (asyncLocalType)
             {
                 case AsyncLocalType.Uninitialized:
-                    UninitializedAsyncLocal.Value = "42";
+                    _uninitializedAsyncLocal.Value = "42";
                     break;
                 case AsyncLocalType.CtorInitialized:
-                    CtorInitializedAsyncLocal.Value = "42";
-                    break;
-                case AsyncLocalType.StaticCtorInitialized:
-                    StaticCtorInitializedAsyncLocal.Value = "42";
+                    _ctorInitializedAsyncLocal.Value = "42";
                     break;
                 case AsyncLocalType.Boxed:
-                    BoxedAsyncLocal.Value!.Value = "42";
+                    _boxedAsyncLocal.Value!.Value = "42";
                     break;
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         public async Task SetAsyncLocal_Async(AsyncLocalType asyncLocalType)
         {
             switch (asyncLocalType)
             {
                 case AsyncLocalType.Uninitialized:
-                    UninitializedAsyncLocal.Value = "42";
+                    _uninitializedAsyncLocal.Value = "42";
                     break;
                 case AsyncLocalType.CtorInitialized:
-                    CtorInitializedAsyncLocal.Value = "42";
-                    break;
-                case AsyncLocalType.StaticCtorInitialized:
-                    StaticCtorInitializedAsyncLocal.Value = "42";
+                    _ctorInitializedAsyncLocal.Value = "42";
                     break;
                 case AsyncLocalType.Boxed:
-                    BoxedAsyncLocal.Value!.Value = "42";
+                    _boxedAsyncLocal.Value!.Value = "42";
                     break;
             }
             await Task.Delay(1);
-        }
-
-        public void GetAsyncLocal_Sync(AsyncLocalType asyncLocalType, string expectedResult)
-        {
-            LoadedValue = "GetAsyncLocal_Sync";
-            switch (asyncLocalType)
-            {
-                case AsyncLocalType.Uninitialized:
-                    LoadedValue = UninitializedAsyncLocal.Value;
-                    break;
-                case AsyncLocalType.CtorInitialized:
-                    LoadedValue = CtorInitializedAsyncLocal.Value;
-                    break;
-                case AsyncLocalType.StaticCtorInitialized:
-                    LoadedValue = StaticCtorInitializedAsyncLocal.Value;
-                    break;
-                case AsyncLocalType.Boxed:
-                    LoadedValue = BoxedAsyncLocal.Value?.Value;
-                    break;
-            }
-            Assert.Equal(expectedResult, LoadedValue);
         }
 
         public async Task GetAsyncLocal_Async(AsyncLocalType asyncLocalType, string expectedResult)
         {
-            _testOutputHelperInstance.WriteLine("reading");
-            LoadedValue = "GetAsyncLocal_Async";
             switch (asyncLocalType)
             {
                 case AsyncLocalType.Uninitialized:
-                    LoadedValue = UninitializedAsyncLocal.Value;
+                    LoadedValue = _uninitializedAsyncLocal.Value;
                     break;
                 case AsyncLocalType.CtorInitialized:
-                    LoadedValue = CtorInitializedAsyncLocal.Value;
-                    break;
-                case AsyncLocalType.StaticCtorInitialized:
-                    LoadedValue = StaticCtorInitializedAsyncLocal.Value;
+                    LoadedValue = _ctorInitializedAsyncLocal.Value;
                     break;
                 case AsyncLocalType.Boxed:
-                    LoadedValue = BoxedAsyncLocal.Value?.Value;
+                    LoadedValue = _boxedAsyncLocal.Value?.Value;
                     break;
             }
             Assert.Equal(expectedResult, LoadedValue);
@@ -376,44 +334,16 @@ public class BindingInvokerTests
         }
     }
 
-
-    [Fact]
-    public async Task Test1()
-    {
-        var sut = CreateSut();
-        var contextManager = CreateContextManagerWith();
-
-        var al = AsyncLocalType.CtorInitialized;
-
-        //contextManager.ScenarioContext.ScenarioContainer.Resolve<StepDefClass>();
-
-        _testOutputHelper.WriteLine("M1");
-        await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithAsyncLocal), nameof(StepDefClassWithAsyncLocal.SetAsyncLocal_Sync), al);
-        _testOutputHelper.WriteLine("/M1");
-        _testOutputHelper.WriteLine("M2");
-        await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithAsyncLocal), nameof(StepDefClassWithAsyncLocal.GetAsyncLocal_Async), al, "42");
-        _testOutputHelper.WriteLine("/M2");
-
-        var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<StepDefClassWithAsyncLocal>();
-        stepDefClass.LoadedValue.Should().Be("42");
-    }
-
     [Theory]
-    [InlineData("Case 1/a", AsyncLocalType.Uninitialized, "Sync", "Sync", "42")]
-    [InlineData("Case 1/b", AsyncLocalType.Uninitialized, "Sync", "Async", "42")]
-    [InlineData("Case 2/a", AsyncLocalType.CtorInitialized, null, "Sync", "42")]
-    [InlineData("Case 2/b", AsyncLocalType.CtorInitialized, null, "Async", "42")]
-    [InlineData("Case 2x/a", AsyncLocalType.CtorInitialized, "Sync", "Sync", "42")]
-    [InlineData("Case 2x/b", AsyncLocalType.CtorInitialized, "Async", "Async", "42")]
-    [InlineData("Case 4/a", AsyncLocalType.Uninitialized, "Async", "Sync", null)]
-    [InlineData("Case 4/b", AsyncLocalType.Uninitialized, "Async", "Async", null)]
-    [InlineData("Case 6/a", AsyncLocalType.Boxed, "Sync", "Sync", "42")]
-    [InlineData("Case 6/b", AsyncLocalType.Boxed, "Sync", "Async", "42")]
-    [InlineData("Case 7/a", AsyncLocalType.Boxed, null, "Sync", "42")]
-    [InlineData("Case 7/b", AsyncLocalType.Boxed, null, "Async", "42")]
-    [InlineData("Case 8/a", AsyncLocalType.Boxed, "Async", "Sync", "42")]
-    [InlineData("Case 8/b", AsyncLocalType.Boxed, "Async", "Async", "42")]
-    public async Task ExecutionContext_is_flowing_down_correctly_to_step_definitions(string description, AsyncLocalType asyncLocalType, string setAs, string getAs, string expectedResult)
+    [InlineData("Value is initialized in ctor", AsyncLocalType.CtorInitialized, null, "ctor-value")]
+    [InlineData("Value is initialized in ctor and also set in sync step def", AsyncLocalType.CtorInitialized, "Sync", "42")]
+    [InlineData("Value is initialized in ctor and also set in async step def", AsyncLocalType.CtorInitialized, "Async", "ctor-value")] // the change in async step def is discarded
+    [InlineData("Value is set in sync step def", AsyncLocalType.Uninitialized, "Sync", "42")]
+    [InlineData("Value is set in async step def", AsyncLocalType.Uninitialized, "Async", null)] // the change in async step def is discarded
+    [InlineData("Boxed value is initialized in ctor", AsyncLocalType.Boxed, null, "ctor-value")]
+    [InlineData("Boxed value is initialized in ctor and also set in sync step def", AsyncLocalType.Boxed, "Sync", "42")]
+    [InlineData("Boxed value is initialized in ctor and also set in async step def", AsyncLocalType.Boxed, "Async", "42")] // the change in async step def is preserved because of boxing
+    public async Task ExecutionContext_is_flowing_down_correctly_to_step_definitions(string description, AsyncLocalType asyncLocalType, string setAs, string expectedResult)
     {
         _testOutputHelper.WriteLine(description);
         var sut = CreateSut();
@@ -421,7 +351,7 @@ public class BindingInvokerTests
 
         if (setAs != null)
             await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithAsyncLocal), "SetAsyncLocal_" + setAs, asyncLocalType);
-        await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithAsyncLocal), "GetAsyncLocal_" + getAs, asyncLocalType, expectedResult);
+        await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassWithAsyncLocal), nameof(StepDefClassWithAsyncLocal.GetAsyncLocal_Async), asyncLocalType, expectedResult);
 
         var stepDefClass = contextManager.ScenarioContext.ScenarioContainer.Resolve<StepDefClassWithAsyncLocal>();
         stepDefClass.LoadedValue.Should().Be(expectedResult, $"Error was not propagated for {description}");
