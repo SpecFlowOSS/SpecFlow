@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                     .Concat(feature.Children.OfType<Rule>().SelectMany(rule => GetScenarioDefinitionsOfRule(rule.Children, rule)));
         }
 
-        public void CreateUnitTests(SpecFlowFeature feature, TestClassGenerationContext generationContext)
+         public void CreateUnitTests(SpecFlowFeature feature, TestClassGenerationContext generationContext)
         {
             foreach (var scenarioDefinition in GetScenarioDefinitions(feature))
             {
@@ -265,6 +265,12 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 }
             }
 
+            if (_scenarioPartHelper.TryDoesThisScenarioBelongToARule(scenario, generationContext.Feature, out Rule rule))
+            {
+                IList<CodeStatement> ruleBackgroundStatements;
+                var hasRuleBackground = generationContext.RuleBackgroundStatements.TryGetValue(rule.Name, out ruleBackgroundStatements);
+                if (hasRuleBackground) statementsWhenScenarioIsExecuted.AddRange(ruleBackgroundStatements);
+            }
 
             foreach (var scenarioStep in scenario.Steps)
             {

@@ -55,6 +55,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             SetupScenarioStartMethod(generationContext);
             SetupScenarioInitializeMethod(generationContext);
             _scenarioPartHelper.SetupFeatureBackground(generationContext);
+            _scenarioPartHelper.SetupRuleBackgroundsStatements(feature, generationContext);
             SetupScenarioCleanupMethod(generationContext);
 
             SetupTestInitializeMethod(generationContext);

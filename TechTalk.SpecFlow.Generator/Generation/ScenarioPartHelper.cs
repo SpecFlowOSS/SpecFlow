@@ -50,6 +50,59 @@ namespace TechTalk.SpecFlow.Generator.Generation
             backgroundMethod.Statements.AddRange(statements.ToArray());
             
         }
+        #region Rule Background Support
+
+        public void SetupRuleBackgroundsStatements(SpecFlowFeature feature, TestClassGenerationContext generationContext)
+        {
+            foreach (var ruleBackgroundDefinition in GetRulesWithBackgroundDefinitions(feature))
+            {
+                SetupRuleBackground(generationContext, ruleBackgroundDefinition.Rule, ruleBackgroundDefinition.ScenarioDefinition);
+            }
+        }
+
+        public void SetupRuleBackground(TestClassGenerationContext generationContext, Rule rule, StepsContainer background)
+        {
+            if (background == null) return;
+
+            var ruleName = rule.Name;
+
+            var statements = new List<CodeStatement>();
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, background.Location))
+            {
+                foreach (var step in background.Steps)
+                {
+                    GenerateStep(generationContext, statements, step, null);
+                }
+            }
+
+            generationContext.RuleBackgroundStatements[ruleName] = statements;
+
+        }
+
+        public bool TryDoesThisScenarioBelongToARule(StepsContainer scenario, SpecFlowFeature feature, out Rule rule)
+        {
+            var scenarioName = scenario.Name;
+            foreach (var r in feature.Children.OfType<Rule>())
+            {
+                var scenarioBelongingToRule = r.Children.OfType<StepsContainer>().Where(sc => sc is not Background).Where(sc => sc.Name == scenarioName).FirstOrDefault();
+
+                if (scenarioBelongingToRule != null)
+                {
+                    rule = r;
+                    return true;
+                }
+            }
+
+            rule = null;
+            return false;
+        }
+
+        private IEnumerable<ScenarioDefinitionInFeatureFile> GetRulesWithBackgroundDefinitions(SpecFlowFeature feature)
+        {
+            return feature.Children.OfType<Rule>().SelectMany(rule => rule.Children.OfType<StepsContainer>().Where(child => child is Background).Select(sd => new ScenarioDefinitionInFeatureFile(sd, feature, rule)));
+        }
+
+        #endregion
 
         public void GenerateStep(TestClassGenerationContext generationContext, List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
         {
