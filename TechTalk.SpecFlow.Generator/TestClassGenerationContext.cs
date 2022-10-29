@@ -22,7 +22,6 @@ namespace TechTalk.SpecFlow.Generator
         public CodeMemberMethod ScenarioStartMethod { get; private set; }
         public CodeMemberMethod ScenarioCleanupMethod { get; private set; }
         public CodeMemberMethod FeatureBackgroundMethod { get; private set; }
-        public IDictionary<string, IList<CodeStatement>> RuleBackgroundStatements { get; private set; }
         public CodeMemberField TestRunnerField { get; private set; }
 
         public bool GenerateRowTests { get; private set; }
@@ -43,8 +42,7 @@ namespace TechTalk.SpecFlow.Generator
             CodeMemberMethod scenarioStartMethod,
             CodeMemberMethod scenarioCleanupMethod,
             CodeMemberMethod featureBackgroundMethod,
-            bool generateRowTests,
-            [System.Runtime.InteropServices.Optional] IDictionary<string, IList<CodeStatement>> ruleBackgroundStatements)
+            bool generateRowTests)
         {
             UnitTestGeneratorProvider = unitTestGeneratorProvider;
             Document = document;
@@ -62,7 +60,6 @@ namespace TechTalk.SpecFlow.Generator
             GenerateRowTests = generateRowTests;
 
             CustomData = new Dictionary<string, object>();
-            RuleBackgroundStatements = ruleBackgroundStatements ?? new Dictionary<string, IList<CodeStatement>>();
         }
     }
 }

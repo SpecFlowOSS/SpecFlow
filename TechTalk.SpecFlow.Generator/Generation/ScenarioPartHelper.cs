@@ -51,20 +51,9 @@ namespace TechTalk.SpecFlow.Generator.Generation
             
         }
         #region Rule Background Support
-
-        public void SetupRuleBackgroundsStatements(SpecFlowFeature feature, TestClassGenerationContext generationContext)
+        private IEnumerable<CodeStatement> GenerateBackgroundStatements(TestClassGenerationContext generationContext, Rule rule, StepsContainer background)
         {
-            foreach (var ruleBackgroundDefinition in GetRulesWithBackgroundDefinitions(feature))
-            {
-                SetupRuleBackground(generationContext, ruleBackgroundDefinition.Rule, ruleBackgroundDefinition.ScenarioDefinition);
-            }
-        }
-
-        public void SetupRuleBackground(TestClassGenerationContext generationContext, Rule rule, StepsContainer background)
-        {
-            if (background == null) return;
-
-            var ruleName = rule.Name;
+            if (background == null) return new List<CodeStatement>();
 
             var statements = new List<CodeStatement>();
             using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, background.Location))
@@ -75,8 +64,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 }
             }
 
-            generationContext.RuleBackgroundStatements[ruleName] = statements;
-
+            return statements;
         }
 
         public bool TryDoesThisScenarioBelongToARule(StepsContainer scenario, SpecFlowFeature feature, out Rule rule)
@@ -101,7 +89,14 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             return feature.Children.OfType<Rule>().SelectMany(rule => rule.Children.OfType<StepsContainer>().Where(child => child is Background).Select(sd => new ScenarioDefinitionInFeatureFile(sd, feature, rule)));
         }
+        
+        public IEnumerable<CodeStatement> GenerateBackgroundStatementsForRule(TestClassGenerationContext context, SpecFlowFeature feature, Rule rule)
+        {
+            var backgroundDefinition = GetRulesWithBackgroundDefinitions(feature).Where(rd => rd.Rule.Name == rule.Name).FirstOrDefault();
+            if (backgroundDefinition == null) return new List<CodeStatement>();
 
+            return GenerateBackgroundStatements(context, rule, backgroundDefinition.ScenarioDefinition);
+        }
         #endregion
 
         public void GenerateStep(TestClassGenerationContext generationContext, List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
