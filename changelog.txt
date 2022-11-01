@@ -18,6 +18,7 @@ Changes:
 + Default step definition skeletons are generating cucumber expressions.
 + 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
 + The interface ISpecFlowOutputHelper has been moved to the TechTalk.SpecFlow namespace (from TechTalk.SpecFlow.Infrastructure).
++ The Dictionary behind ScenarioContext, FeatureContext and ScenarioStepContext to store custom data in is now thread-safe
 
 
 3.10

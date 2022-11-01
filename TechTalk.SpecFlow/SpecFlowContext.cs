@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace TechTalk.SpecFlow
 {
@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow
         Exception TestError { get; }
     }
 
-    public abstract class SpecFlowContext : Dictionary<string, object>, IDisposable
+    public abstract class SpecFlowContext : ConcurrentDictionary<string, object>, IDisposable
     {
         public Exception TestError { get; internal set; }
 
