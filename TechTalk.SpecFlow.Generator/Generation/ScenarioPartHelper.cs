@@ -51,7 +51,25 @@ namespace TechTalk.SpecFlow.Generator.Generation
             
         }
         #region Rule Background Support
-        private IEnumerable<CodeStatement> GenerateBackgroundStatements(TestClassGenerationContext generationContext, Rule rule, StepsContainer background)
+
+        public void GenerateRuleBackgroundStepsApplicableForThisScenario(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinition, List<CodeStatement> statementsWhenScenarioIsExecuted)
+        {
+            if (scenarioDefinition.Rule != null)
+            {
+                var rule = scenarioDefinition.Rule;
+                IEnumerable<CodeStatement> ruleBackgroundStatements = GenerateBackgroundStatementsForRule(generationContext, rule);
+                statementsWhenScenarioIsExecuted.AddRange(ruleBackgroundStatements);
+            }
+        }
+
+        private IEnumerable<CodeStatement> GenerateBackgroundStatementsForRule(TestClassGenerationContext context, Rule rule)
+        {
+            var background = rule.Children.OfType<Background>().FirstOrDefault();
+
+            return GenerateBackgroundStatements(context, background);
+        }
+
+        private IEnumerable<CodeStatement> GenerateBackgroundStatements(TestClassGenerationContext generationContext, StepsContainer background)
         {
             if (background == null) return new List<CodeStatement>();
 
@@ -67,36 +85,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
             return statements;
         }
 
-        public bool TryDoesThisScenarioBelongToARule(StepsContainer scenario, SpecFlowFeature feature, out Rule rule)
-        {
-            var scenarioName = scenario.Name;
-            foreach (var r in feature.Children.OfType<Rule>())
-            {
-                var scenarioBelongingToRule = r.Children.OfType<StepsContainer>().Where(sc => sc is not Background).Where(sc => sc.Name == scenarioName).FirstOrDefault();
-
-                if (scenarioBelongingToRule != null)
-                {
-                    rule = r;
-                    return true;
-                }
-            }
-
-            rule = null;
-            return false;
-        }
-
-        private IEnumerable<ScenarioDefinitionInFeatureFile> GetRulesWithBackgroundDefinitions(SpecFlowFeature feature)
-        {
-            return feature.Children.OfType<Rule>().SelectMany(rule => rule.Children.OfType<StepsContainer>().Where(child => child is Background).Select(sd => new ScenarioDefinitionInFeatureFile(sd, feature, rule)));
-        }
-        
-        public IEnumerable<CodeStatement> GenerateBackgroundStatementsForRule(TestClassGenerationContext context, SpecFlowFeature feature, Rule rule)
-        {
-            var backgroundDefinition = GetRulesWithBackgroundDefinitions(feature).Where(rd => rd.Rule.Name == rule.Name).FirstOrDefault();
-            if (backgroundDefinition == null) return new List<CodeStatement>();
-
-            return GenerateBackgroundStatements(context, rule, backgroundDefinition.ScenarioDefinition);
-        }
         #endregion
 
         public void GenerateStep(TestClassGenerationContext generationContext, List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)

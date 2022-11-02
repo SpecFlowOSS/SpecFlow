@@ -201,7 +201,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
 
             GenerateScenarioInitializeCall(generationContext, scenarioDefinition, testMethod);
 
-            GenerateTestMethodBody(generationContext, scenarioDefinition, testMethod, paramToIdentifier, feature);
+            GenerateTestMethodBody(generationContext, scenarioDefinitionInFeatureFile, testMethod, paramToIdentifier, feature);
 
             GenerateScenarioCleanupMethodCall(generationContext, testMethod);
         }
@@ -238,8 +238,10 @@ namespace TechTalk.SpecFlow.Generator.Generation
             }
         }
 
-        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, StepsContainer scenario, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier, SpecFlowFeature feature)
+        internal void GenerateTestMethodBody(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinition, CodeMemberMethod testMethod, ParameterSubstitution paramToIdentifier, SpecFlowFeature feature)
         {
+            var scenario = scenarioDefinition.Scenario;
+
             var statementsWhenScenarioIsIgnored = new CodeStatement[] { new CodeExpressionStatement(CreateTestRunnerSkipScenarioCall()) };
 
             var callScenarioStartMethodExpression = new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), generationContext.ScenarioStartMethod.Name);
@@ -265,11 +267,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 }
             }
 
-            if (_scenarioPartHelper.TryDoesThisScenarioBelongToARule(scenario, generationContext.Feature, out Rule rule))
-            {
-                IEnumerable<CodeStatement> ruleBackgroundStatements = _scenarioPartHelper.GenerateBackgroundStatementsForRule(generationContext, generationContext.Feature, rule);
-                statementsWhenScenarioIsExecuted.AddRange(ruleBackgroundStatements);
-            }
+            _scenarioPartHelper.GenerateRuleBackgroundStepsApplicableForThisScenario(generationContext, scenarioDefinition, statementsWhenScenarioIsExecuted);
 
             foreach (var scenarioStep in scenario.Steps)
             {
