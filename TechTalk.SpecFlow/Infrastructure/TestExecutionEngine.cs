@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.Analytics;
@@ -350,7 +351,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testThreadExecutionEventPublisher.PublishEvent(new HookFinishedEvent(hookType, FeatureContext, ScenarioContext, _contextManager.StepContext, hookException));
 
             //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error
-            if (hookException != null) throw hookException;
+            if (hookException != null) ExceptionDispatchInfo.Capture(hookException).Throw();
         }
 
         private void FireRuntimePluginTestExecutionLifecycleEvents(HookType hookType)
