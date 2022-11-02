@@ -66,19 +66,14 @@ namespace TechTalk.SpecFlow.Generator.Generation
         {
             var background = rule.Children.OfType<Background>().FirstOrDefault();
 
-            return GenerateBackgroundStatements(context, background);
-        }
-
-        private IEnumerable<CodeStatement> GenerateBackgroundStatements(TestClassGenerationContext generationContext, StepsContainer background)
-        {
             if (background == null) return new List<CodeStatement>();
 
             var statements = new List<CodeStatement>();
-            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, background.Location))
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, context.Document.SourceFilePath, background.Location))
             {
                 foreach (var step in background.Steps)
                 {
-                    GenerateStep(generationContext, statements, step, null);
+                    GenerateStep(context, statements, step, null);
                 }
             }
 
