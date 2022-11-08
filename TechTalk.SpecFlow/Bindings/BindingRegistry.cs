@@ -4,19 +4,12 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public enum BindingErrorType
-    {
-        TypeLoadError,
-        BindingError,
-        StepDefinitionError,
-    }
-
     public class BindingRegistry : IBindingRegistry
     {
         private readonly List<IStepDefinitionBinding> _stepDefinitions = new();
         private readonly List<IStepArgumentTransformationBinding> _stepArgumentTransformations = new();
         private readonly Dictionary<HookType, List<IHookBinding>> _hooks = new();
-        private readonly List<(BindingErrorType ErrorType, string Message)> _genericBindingErrors = new();
+        private readonly List<BindingError> _genericBindingErrors = new();
 
         public bool Ready { get; set; }
 
@@ -56,14 +49,14 @@ namespace TechTalk.SpecFlow.Bindings
             return _stepArgumentTransformations;
         }
 
-        public IEnumerable<(BindingErrorType ErrorType, string Message)> GetErrorMessages()
+        public IEnumerable<BindingError> GetErrorMessages()
         {
             foreach (var genericBindingError in _genericBindingErrors)
                 yield return genericBindingError;
 
             foreach (var stepDefinitionBinding in _stepDefinitions.Where(sd => !sd.IsValid))
             {
-                yield return (BindingErrorType.StepDefinitionError, stepDefinitionBinding.ErrorMessage);
+                yield return new BindingError(BindingErrorType.StepDefinitionError, stepDefinitionBinding.ErrorMessage);
             }
         }
 
@@ -96,9 +89,9 @@ namespace TechTalk.SpecFlow.Bindings
             _stepArgumentTransformations.Add(stepArgumentTransformationBinding);
         }
 
-        public void RegisterGenericBindingError(BindingErrorType errorType, string errorMessage)
+        public void RegisterGenericBindingError(BindingError error)
         {
-            _genericBindingErrors.Add((errorType, errorMessage));
+            _genericBindingErrors.Add(error);
         }
     }
 }

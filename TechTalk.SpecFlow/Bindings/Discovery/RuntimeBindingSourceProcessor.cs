@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             {
                 _testTracer.TraceWarning($"Invalid binding: {errorMessage}");
                 if (genericBindingError)
-                    _bindingRegistry.RegisterGenericBindingError(BindingErrorType.BindingError, errorMessage);
+                    _bindingRegistry.RegisterGenericBindingError(new BindingError(BindingErrorType.BindingError, errorMessage));
             }
 
             base.OnValidationError(validationResult, genericBindingError);
@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public void RegisterTypeLoadError(string errorMessage)
         {
-            _bindingRegistry.RegisterGenericBindingError(BindingErrorType.TypeLoadError, errorMessage);
+            _bindingRegistry.RegisterGenericBindingError(new BindingError(BindingErrorType.TypeLoadError, errorMessage));
         }
     }
 }
