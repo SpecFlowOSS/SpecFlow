@@ -1,3 +1,4 @@
+@gherkin6
 Feature: Rule Background Steps Execution
 
     Scenario: Should be able to execute scenarios in Rules that have backgrounds
@@ -11,6 +12,11 @@ Feature: Rule Background Steps Execution
 
 			    [Given("something first as background")]
 			    public void GivenSomethingFirst() {
+                    global::Log.LogStep();
+                }
+
+                [When("I do something")]
+                public void WhenSomethingDone() {
                     global::Log.LogStep();
                 }
 		     }
@@ -27,7 +33,6 @@ Feature: Rule Background Steps Execution
             """
 
 
-        Given all steps are bound and pass
         When I execute the tests
         Then the binding method 'GivenSomethingFirst' is executed
 
@@ -86,6 +91,12 @@ Feature: Rule Background Steps Execution
                         throw new ApplicationException("Second Background Step should not have been executed");
                     }
                 }
+
+                [When("I do something")]
+                public void WhenSomethingDone() {
+                    global::Log.LogStep();
+                }
+
 		     }
 		     """
         Given there is a feature file in the project as
@@ -111,6 +122,5 @@ Feature: Rule Background Steps Execution
 
             """
 
-        Given all steps are bound and pass
         When I execute the tests
         Then all tests should pass
