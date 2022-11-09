@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public override string ToString()
         {
-            return $"[{AssemblyName}:{FullName}]";
+            return $"{AssemblyName}:{FullName}";
         }
 
         protected bool Equals(BindingType other)
