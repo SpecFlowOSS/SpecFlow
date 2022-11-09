@@ -9,5 +9,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         public bool IsStatic { get; set; }
 
         public BindingSourceAttribute[] Attributes { get; set; }
+
+        public override string ToString() => BindingMethod.ToString();
     }
 }

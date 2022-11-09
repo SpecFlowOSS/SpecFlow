@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
@@ -75,17 +76,10 @@ namespace TechTalk.SpecFlow.Bindings
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 stopwatch.Stop();
                 durationHolder.Duration = stopwatch.Elapsed;
-                throw ex;
-            }
-            catch (AggregateException aggregateEx)
-            {
-                var ex = aggregateEx.InnerExceptions.First();
-                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
-                stopwatch.Stop();
-                durationHolder.Duration = stopwatch.Elapsed;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                //hack,hack,hack - the compiler doesn't recognize that ExceptionDispatchInfo.Throw() exits the method; the next line will never be executed
                 throw ex;
             }
             catch (Exception)
