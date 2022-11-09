@@ -15,13 +15,20 @@ namespace TechTalk.SpecFlow.Bindings
 
         private static bool IsTaskOfT(Type type, out Type typeArg)
         {
-            typeArg = null;
-            var isTaskOfT = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Task<>);
-            if (isTaskOfT)
+            while (type != null)
             {
-                typeArg = type.GetGenericArguments()[0];
+                var isTaskOfT = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Task<>);
+                if (isTaskOfT)
+                {
+                    typeArg = type.GetGenericArguments()[0];
+                    if (typeArg != typeof(void) && typeArg.FullName != "System.Threading.Tasks.VoidTaskResult")
+                        return true;
+                }
+                type = type.BaseType;
             }
-            return isTaskOfT;
+
+            typeArg = null;
+            return false;
         }
 
         private static bool IsValueTask(Type type)
@@ -99,6 +106,25 @@ namespace TechTalk.SpecFlow.Bindings
             if (bindingMethod is RuntimeBindingMethod runtimeBindingMethod) 
                 return IsAsyncVoid(runtimeBindingMethod.MethodInfo);
             return false;
+        }
+
+        public static Task<object> ConvertToTaskOfObject(Task task)
+        {
+            if (task.GetType() == typeof(Task))
+                return ConvertTaskOfT(task, false);
+            if (task is Task<object> taskOfObj)
+                return taskOfObj;
+            if (IsTaskOfT(task.GetType(), out _))
+                return ConvertTaskOfT(task, true);
+            return ConvertTaskOfT(task, false);
+        }
+
+        // We are allowed to have async method here, because the synchronous part of the task (that might have changed the ExecutionContext)
+        // has been executed already.
+        private static async Task<object> ConvertTaskOfT(Task task, bool getValue)
+        {
+            await task;
+            return getValue ? task.GetType().GetProperty(nameof(Task<object>.Result))!.GetValue(task) : null;
         }
     }
 }
