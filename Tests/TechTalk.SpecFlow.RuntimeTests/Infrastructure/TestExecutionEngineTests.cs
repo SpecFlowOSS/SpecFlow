@@ -127,6 +127,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenario)).Returns(afterScenarioEvents);
             
             bindingRegistryStub.Setup(br => br.GetStepTransformations()).Returns(stepTransformations);
+            bindingRegistryStub.Setup(br => br.IsValid).Returns(true);
 
             specFlowConfiguration = ConfigurationLoader.GetDefault();
             errorProviderStub = new Mock<IErrorProvider>();
