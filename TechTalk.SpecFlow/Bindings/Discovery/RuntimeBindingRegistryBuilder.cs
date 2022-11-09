@@ -20,9 +20,28 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         public void BuildBindingsFromAssembly(Assembly assembly)
         {
-            foreach (var type in assembly.GetTypes())
+            var assemblyTypes = GetAssemblyTypes(assembly, out var typeLoadErrors);
+            foreach (var type in assemblyTypes)
             {
                 BuildBindingsFromType(type);
+            }
+            if (typeLoadErrors != null)
+                foreach (string typeLoadError in typeLoadErrors)
+                    _bindingSourceProcessor.RegisterTypeLoadError(typeLoadError);
+        }
+
+        protected virtual Type[] GetAssemblyTypes(Assembly assembly, out string[] typeLoadErrors)
+        {
+            typeLoadErrors = Array.Empty<string>();
+            //source: https://haacked.com/archive/2012/07/23/get-all-types-in-an-assembly.aspx/
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                typeLoadErrors = e.LoaderExceptions.Select(loaderException => loaderException.ToString()).ToArray();
+                return e.Types.Where(t => t != null).ToArray();
             }
         }
 
