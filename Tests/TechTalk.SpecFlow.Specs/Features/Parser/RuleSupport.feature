@@ -32,24 +32,3 @@ Scenario: Should be able to execute a simple passing scenario
     Then the execution summary should contain
         | Total | 
         | 5     | 
-
-
-
-    Scenario: Should be able to execute scenarios in Rules that have backgrounds
-    Given there is a feature file in the project as
-        """
-            Feature: Simple Feature
-            Rule: first rule
-            Background: first rule background
-                Given something
-            
-            Scenario: Scenario for the first rule
-                When I do something
-
-        """
-    Given all steps are bound and pass
-    When I execute the tests
-    Then the execution summary should contain
-        | Total | 
-        | 1    | 
-
