@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BoDi;
 using FluentAssertions;
@@ -358,4 +360,117 @@ public class BindingInvokerTests
     }
 
     #endregion   
+
+    #region Exception Handling related tests - regression tests for SF2649
+    public enum ExceptionKind
+    {
+        Normal,
+        Aggregate
+    }
+
+    public enum InnerExceptionContentKind
+    {
+        WithInnerException,
+        WithoutInnerException
+    }
+
+    public enum StepDefInvocationStyle
+    {
+        Sync,
+        Async
+    }
+
+    class StepDefClassThatThrowsExceptions
+    {
+        public async Task AsyncThrow(ExceptionKind kindOfExceptionToThrow, InnerExceptionContentKind innerExceptionKind)
+        {
+            await Task.Run(() => ConstructAndThrowSync(kindOfExceptionToThrow, innerExceptionKind));
+        }
+
+        public void SyncThrow(ExceptionKind kindOfExceptionToThrow, InnerExceptionContentKind innerExceptionKind)
+        {
+            ConstructAndThrowSync(kindOfExceptionToThrow, innerExceptionKind);
+        }
+
+        private void ConstructAndThrowSync(ExceptionKind typeOfExceptionToThrow, InnerExceptionContentKind innerExceptionContentKind)
+        {
+            switch (typeOfExceptionToThrow, innerExceptionContentKind)
+            {
+                case (ExceptionKind.Normal, InnerExceptionContentKind.WithoutInnerException):
+                    throw new Exception("Normal Exception message (No InnerException expected).");
+
+                case (ExceptionKind.Aggregate, InnerExceptionContentKind.WithoutInnerException):
+                    throw new AggregateException("AggregateEx (without Inners)");
+
+                case (ExceptionKind.Normal, InnerExceptionContentKind.WithInnerException):
+                    try
+                    {
+                        throw new Exception("This is the message from the Inner Exception");
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Normal Exception (with InnerException)", e);
+                    }
+
+                case (ExceptionKind.Aggregate, InnerExceptionContentKind.WithInnerException):
+                    {
+                        var tasks = new List<Task>
+                        {
+                            Task.Run(async () => throw new Exception("This is the first Exception embedded in the AggregateException")),
+                            Task.Run(async () => throw new Exception("This is the second Exception embedded in the AggregateException"))
+                        };
+                        var continuation = Task.WhenAll(tasks);
+                        
+                        // This will throw an AggregateException with two Inner Exceptions
+                        continuation.Wait();
+                        return;
+                    }
+             }
+
+        }
+    }
+
+    [Theory]
+    [InlineData(StepDefInvocationStyle.Sync, InnerExceptionContentKind.WithoutInnerException)]
+    [InlineData(StepDefInvocationStyle.Sync, InnerExceptionContentKind.WithInnerException)]
+    [InlineData(StepDefInvocationStyle.Async, InnerExceptionContentKind.WithoutInnerException)]
+    [InlineData(StepDefInvocationStyle.Async, InnerExceptionContentKind.WithInnerException)]
+    public async Task InvokeBindingAsync_WhenStepDefThrowsExceptions_ProperlyPreservesExceptionContext(StepDefInvocationStyle style, InnerExceptionContentKind inner)
+    {
+        _testOutputHelper.WriteLine($"starting Exception Handling test: {style}, {inner}");
+        var sut = CreateSut();
+        var contextManager = CreateContextManagerWith();
+
+        string methodToInvoke;
+        ExceptionKind kindOfExceptionToThrow;
+        Exception thrown;
+
+        // call step definition methods
+        if (style == StepDefInvocationStyle.Sync)
+        {
+            methodToInvoke = nameof(StepDefClassThatThrowsExceptions.SyncThrow);
+            kindOfExceptionToThrow = ExceptionKind.Normal;
+            thrown = await Assert.ThrowsAsync<Exception>(async () => await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassThatThrowsExceptions), methodToInvoke, kindOfExceptionToThrow, inner));
+        }
+        else // if (style == StepDefInvocationStyle.Async)
+        {
+            methodToInvoke = nameof(StepDefClassThatThrowsExceptions.AsyncThrow);
+            kindOfExceptionToThrow = ExceptionKind.Aggregate;
+            thrown = await Assert.ThrowsAsync<AggregateException>(async () => await InvokeBindingAsync(sut, contextManager, typeof(StepDefClassThatThrowsExceptions), methodToInvoke, kindOfExceptionToThrow, inner));
+        }
+
+        _testOutputHelper.WriteLine($"Exception detail: {thrown}");
+
+        // Assert that the InnerException detail is preserved
+        if (inner == InnerExceptionContentKind.WithInnerException)
+        {
+            if (thrown is AggregateException) (thrown as AggregateException).InnerExceptions.Count.Should().BeGreaterThan(1);
+            else thrown.InnerException.Should().NotBeNull();
+        }
+
+        // Assert that the stack trace properly shows that the exception came from the throwing method (and not hidden by the SpecFlow infrastructure)
+        thrown.StackTrace.Should().Contain(methodToInvoke);
+    }
+    #endregion
+
 }
