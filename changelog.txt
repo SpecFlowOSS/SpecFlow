@@ -12,6 +12,7 @@ Features:
 + Support Rule tags (can be used for hook filters, scoping and access through 'ScenarioInfo.CombinedTags')
 + Support for async step argument transformations. Fixes #2230
 + Support for ValueTask and ValueTask<T> binding methods (step definitions, hooks, step argument transformations)
++ Rules now support Background blocks
 + Collect binding errors (type load, binding, step definition) and report them as exception when any of the tests are executed.
 
 Changes:
