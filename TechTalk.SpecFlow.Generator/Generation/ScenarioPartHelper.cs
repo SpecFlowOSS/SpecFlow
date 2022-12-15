@@ -50,6 +50,37 @@ namespace TechTalk.SpecFlow.Generator.Generation
             backgroundMethod.Statements.AddRange(statements.ToArray());
             
         }
+        #region Rule Background Support
+
+        public void GenerateRuleBackgroundStepsApplicableForThisScenario(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinition, List<CodeStatement> statementsWhenScenarioIsExecuted)
+        {
+            if (scenarioDefinition.Rule != null)
+            {
+                var rule = scenarioDefinition.Rule;
+                IEnumerable<CodeStatement> ruleBackgroundStatements = GenerateBackgroundStatementsForRule(generationContext, rule);
+                statementsWhenScenarioIsExecuted.AddRange(ruleBackgroundStatements);
+            }
+        }
+
+        private IEnumerable<CodeStatement> GenerateBackgroundStatementsForRule(TestClassGenerationContext context, Rule rule)
+        {
+            var background = rule.Children.OfType<Background>().FirstOrDefault();
+
+            if (background == null) return new List<CodeStatement>();
+
+            var statements = new List<CodeStatement>();
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, context.Document.SourceFilePath, background.Location))
+            {
+                foreach (var step in background.Steps)
+                {
+                    GenerateStep(context, statements, step, null);
+                }
+            }
+
+            return statements;
+        }
+
+        #endregion
 
         public void GenerateStep(TestClassGenerationContext generationContext, List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
         {
