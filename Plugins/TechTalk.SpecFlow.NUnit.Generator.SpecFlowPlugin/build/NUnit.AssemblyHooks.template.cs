@@ -12,18 +12,18 @@ public class PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks
 {
     [global::NUnit.Framework.OneTimeSetUp]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async Task AssemblyInitializeAsync()
+    public Task AssemblyInitializeAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
+        return global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
     }
 
     [global::NUnit.Framework.OneTimeTearDown]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async ValueTask AssemblyCleanupAsync()
+    public ValueTask AssemblyCleanupAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_NUnitAssemblyHooks).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
+        return global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 #pragma warning restore

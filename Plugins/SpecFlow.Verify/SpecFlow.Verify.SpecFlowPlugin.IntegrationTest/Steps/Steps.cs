@@ -6,15 +6,15 @@ namespace SpecFlow.Verify.SpecFlowPlugin.IntegrationTest.Steps;
 internal class Steps
 {
     [When("I try Verify with SpecFlow")]
-    public async Task ITryVerifyWithSpecFlow()
+    public Task ITryVerifyWithSpecFlow()
     {
-        await Verifier.Verify("value");
+        return Verifier.Verify("value");
     }
 
     [When(@"I try Verify with SpecFlow for Parameter '([^']*)'")]
-    public async Task WhenITryVerifyWithSpecFlowForParameter(string p0)
+    public Task WhenITryVerifyWithSpecFlowForParameter(string p0)
     {
-        await Verifier.Verify("value");
+        return Verifier.Verify("value");
     }
 
     [Then("it works")]

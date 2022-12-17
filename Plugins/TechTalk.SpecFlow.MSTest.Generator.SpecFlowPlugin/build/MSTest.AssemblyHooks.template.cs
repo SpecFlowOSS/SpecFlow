@@ -15,20 +15,20 @@ public class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
 {
     [AssemblyInitialize]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static async Task AssemblyInitializeAsync(TestContext testContext)
+    public static Task AssemblyInitializeAsync(TestContext testContext)
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
         var containerBuilder = new MsTestContainerBuilder(testContext);
 
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, containerBuilder: containerBuilder);
+        return global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, containerBuilder: containerBuilder);
     }
 
     [AssemblyCleanup]
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static async Task AssemblyCleanupAsync()
+    public static Task AssemblyCleanupAsync()
     {
         var currentAssembly = typeof(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
+        return global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 #pragma warning restore

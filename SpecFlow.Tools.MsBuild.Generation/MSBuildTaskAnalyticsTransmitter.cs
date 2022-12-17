@@ -46,7 +46,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
         }
 
-        public async Task<IResult> TransmitProjectCompilingEventAsync()
+        public Task<IResult> TransmitProjectCompilingEventAsync()
         {
             var projectCompilingEvent = _analyticsEventProvider.CreateProjectCompilingEvent(
                 _msBuildInformationProvider.GetMSBuildVersion(),
@@ -54,7 +54,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 _specFlowProjectInfo.TargetFrameworks,
                 _specFlowProjectInfo.CurrentTargetFramework,
                 _specFlowProjectInfo.ProjectGuid);
-            return await _analyticsTransmitter.TransmitSpecFlowProjectCompilingEventAsync(projectCompilingEvent);
+            return _analyticsTransmitter.TransmitSpecFlowProjectCompilingEventAsync(projectCompilingEvent);
         }
     }
 }

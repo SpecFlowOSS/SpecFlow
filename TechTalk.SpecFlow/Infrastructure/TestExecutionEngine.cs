@@ -283,16 +283,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             await FireScenarioEventsAsync(HookType.AfterScenarioBlock);
         }
 
-        protected virtual async Task OnStepStartAsync()
+        protected virtual Task OnStepStartAsync()
         {
-            await FireScenarioEventsAsync(HookType.BeforeStep);
+            return FireScenarioEventsAsync(HookType.BeforeStep);
         }
 
-        protected virtual async Task OnStepEndAsync()
+        protected virtual Task OnStepEndAsync()
         {
-            await FireScenarioEventsAsync(HookType.AfterStep);
+            return FireScenarioEventsAsync(HookType.AfterStep);
         }
-        
+
         protected virtual void OnSkipStep()
         {
             _contextManager.StepContext.Status = ScenarioExecutionStatus.Skipped;
@@ -309,9 +309,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         #region Step/event execution
 
-        protected virtual async Task FireScenarioEventsAsync(HookType bindingEvent)
+        protected virtual Task FireScenarioEventsAsync(HookType bindingEvent)
         {
-            await FireEventsAsync(bindingEvent);
+            return FireEventsAsync(bindingEvent);
         }
 
         private async Task FireEventsAsync(HookType hookType)

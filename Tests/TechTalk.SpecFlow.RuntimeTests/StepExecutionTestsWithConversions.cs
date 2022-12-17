@@ -14,9 +14,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     internal static class LegacyStepArgumentTypeConverterExtensions
     {
-        public static async Task<object> ConvertAsync(this IStepArgumentTypeConverter converter, object value, Type typeToConvertTo, CultureInfo cultureInfo)
+        public static Task<object> ConvertAsync(this IStepArgumentTypeConverter converter, object value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
-            return await converter.ConvertAsync(value, new RuntimeBindingType(typeToConvertTo), cultureInfo);
+            return converter.ConvertAsync(value, new RuntimeBindingType(typeToConvertTo), cultureInfo);
         }
 
         public static Expression<Func<IStepArgumentTypeConverter, bool>> GetCanConvertMethodFilter(object argument, Type type)

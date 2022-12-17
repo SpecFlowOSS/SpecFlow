@@ -10,17 +10,17 @@ namespace Specs
     public class NUnitAssemblyHooks
     {
         [OneTimeSetUp]
-        public async Task AssemblyInitialize()
+        public Task AssemblyInitialize()
         {
             var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
-            await TestRunnerManager.OnTestRunStartAsync(currentAssembly);
+            return TestRunnerManager.OnTestRunStartAsync(currentAssembly);
         }
 
         [OneTimeTearDown]
-        public async Task AssemblyCleanup()
+        public Task AssemblyCleanup()
         {
             var currentAssembly = typeof(NUnitAssemblyHooks).Assembly;
-            await TestRunnerManager.OnTestRunEndAsync(currentAssembly);
+            return TestRunnerManager.OnTestRunEndAsync(currentAssembly);
         }
     }
 }

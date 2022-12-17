@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 #endif
                 else if (potentialDisposable is IAsyncLifetime asyncLifetime)
                 {
-                    Aggregator.RunAsync(async () => await asyncLifetime.DisposeAsync());
+                    Aggregator.RunAsync(() => asyncLifetime.DisposeAsync());
                 }
             }
 
