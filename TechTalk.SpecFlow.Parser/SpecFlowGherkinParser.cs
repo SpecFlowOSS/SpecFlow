@@ -79,13 +79,13 @@ namespace TechTalk.SpecFlow.Parser
 
             }
 
-            protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
+            protected override Step CreateStep(Location location, string keyword, StepKeywordType keywordType, string text, StepArgument argument, AstNode node)
             {
                 var token = node.GetToken(TokenType.StepLine);
                 var stepKeyword = GetStepKeyword(token.MatchedGherkinDialect, keyword);
                 scenarioBlock = stepKeyword.ToScenarioBlock() ?? scenarioBlock;
 
-                return new SpecFlowStep(location, keyword, text, argument, stepKeyword, scenarioBlock);
+                return new SpecFlowStep(location, keyword, keywordType, text, argument, stepKeyword, scenarioBlock);
             }
 
             private void ResetBlock()
