@@ -59,9 +59,7 @@ namespace TechTalk.SpecFlow.Bindings
             else
                 arguments = new[] {value};
 
-            var result = await bindingInvoker.InvokeBindingAsync(stepTransformation, contextManager, arguments, testTracer, new DurationHolder());
-
-            return result;
+            return await bindingInvoker.InvokeBindingAsync(stepTransformation, contextManager, arguments, testTracer, new DurationHolder());
         }
 
         private async Task<object[]> GetStepTransformationArgumentsFromRegexAsync(IStepArgumentTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)

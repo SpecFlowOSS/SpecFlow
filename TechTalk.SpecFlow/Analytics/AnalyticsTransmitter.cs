@@ -16,14 +16,14 @@ namespace TechTalk.SpecFlow.Analytics
             _environmentSpecFlowTelemetryChecker = environmentSpecFlowTelemetryChecker;
         }
 
-        public async Task<IResult> TransmitSpecFlowProjectCompilingEventAsync(SpecFlowProjectCompilingEvent projectCompilingEvent)
+        public Task<IResult> TransmitSpecFlowProjectCompilingEventAsync(SpecFlowProjectCompilingEvent projectCompilingEvent)
         {
-            return await TransmitEventAsync(projectCompilingEvent);
+            return TransmitEventAsync(projectCompilingEvent);
         }
 
-        public async Task<IResult> TransmitSpecFlowProjectRunningEventAsync(SpecFlowProjectRunningEvent projectRunningEvent)
+        public Task<IResult> TransmitSpecFlowProjectRunningEventAsync(SpecFlowProjectRunningEvent projectRunningEvent)
         {
-            return await TransmitEventAsync(projectRunningEvent);
+            return TransmitEventAsync(projectRunningEvent);
         }
 
         public async Task<IResult> TransmitEventAsync(IAnalyticsEvent analyticsEvent)

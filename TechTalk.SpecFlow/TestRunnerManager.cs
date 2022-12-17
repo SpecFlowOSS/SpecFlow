@@ -105,9 +105,9 @@ namespace TechTalk.SpecFlow
             _bindingRegistryBuilder.BuildingCompleted();
         }
 
-        protected internal virtual async Task OnDomainUnloadAsync()
+        protected internal virtual Task OnDomainUnloadAsync()
         {
-            await DisposeAsync();
+            return DisposeAsync();
         }
 
         public async Task FireTestRunEndAsync()
@@ -261,13 +261,13 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        public static async Task OnTestRunStartAsync(Assembly testAssembly = null, string testWorkerId = null, IContainerBuilder containerBuilder = null)
+        public static Task OnTestRunStartAsync(Assembly testAssembly = null, string testWorkerId = null, IContainerBuilder containerBuilder = null)
         {
             testAssembly ??= GetCallingAssembly();
             var testRunnerManager = GetTestRunnerManager(testAssembly, createIfMissing: true, containerBuilder: containerBuilder);
             testRunnerManager.GetTestRunner(testWorkerId ?? TestRunStartWorkerId);
 
-            await testRunnerManager.FireTestRunStartAsync();
+            return testRunnerManager.FireTestRunStartAsync();
         }
 
         public static ITestRunner GetTestRunnerForAssembly(Assembly testAssembly = null, string testWorkerId = null, IContainerBuilder containerBuilder = null)
