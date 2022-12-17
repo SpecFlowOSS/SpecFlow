@@ -12,17 +12,17 @@ using System.Threading.Tasks;
 public class XUnitAssemblyFixture : global::Xunit.IAsyncLifetime
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         var currentAssembly = typeof(XUnitAssemblyFixture).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
+        return global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public async Task DisposeAsync()
+    public Task DisposeAsync()
     {
         var currentAssembly = typeof(XUnitAssemblyFixture).Assembly;
-        await global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
+        return global::TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly);
     }
 }
 

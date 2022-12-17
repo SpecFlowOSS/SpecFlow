@@ -42,11 +42,11 @@ public class BindingInvokerTests
         }
     }
 
-    private async Task<object> InvokeBindingAsync(BindingInvoker sut, IContextManager contextManager, Type stepDefType, string methodName, params object[] args)
+    private Task<object> InvokeBindingAsync(BindingInvoker sut, IContextManager contextManager, Type stepDefType, string methodName, params object[] args)
     {
         var testTracerMock = new Mock<ITestTracer>();
         var setMethodBinding = new TestableMethodBinding(new RuntimeBindingMethod(stepDefType.GetMethod(methodName)));
-        return await sut.InvokeBindingAsync(setMethodBinding, contextManager, args, testTracerMock.Object, new DurationHolder());
+        return sut.InvokeBindingAsync(setMethodBinding, contextManager, args, testTracerMock.Object, new DurationHolder());
     }
 
     private IContextManager CreateContextManagerWith()
@@ -300,7 +300,7 @@ public class BindingInvokerTests
         }
 
         // ReSharper disable once UnusedMember.Local
-        public async Task SetAsyncLocal_Async(AsyncLocalType asyncLocalType)
+        public Task SetAsyncLocal_Async(AsyncLocalType asyncLocalType)
         {
             switch (asyncLocalType)
             {
@@ -314,10 +314,10 @@ public class BindingInvokerTests
                     _boxedAsyncLocal.Value!.Value = "42";
                     break;
             }
-            await Task.Delay(1);
+            return Task.Delay(1);
         }
 
-        public async Task GetAsyncLocal_Async(AsyncLocalType asyncLocalType, string expectedResult)
+        public Task GetAsyncLocal_Async(AsyncLocalType asyncLocalType, string expectedResult)
         {
             switch (asyncLocalType)
             {
@@ -332,7 +332,7 @@ public class BindingInvokerTests
                     break;
             }
             Assert.Equal(expectedResult, LoadedValue);
-            await Task.Delay(1);
+            return Task.Delay(1);
         }
     }
 
@@ -382,9 +382,9 @@ public class BindingInvokerTests
 
     class StepDefClassThatThrowsExceptions
     {
-        public async Task AsyncThrow(ExceptionKind kindOfExceptionToThrow, InnerExceptionContentKind innerExceptionKind)
+        public Task AsyncThrow(ExceptionKind kindOfExceptionToThrow, InnerExceptionContentKind innerExceptionKind)
         {
-            await Task.Run(() => ConstructAndThrowSync(kindOfExceptionToThrow, innerExceptionKind));
+            return Task.Run(() => ConstructAndThrowSync(kindOfExceptionToThrow, innerExceptionKind));
         }
 
         public void SyncThrow(ExceptionKind kindOfExceptionToThrow, InnerExceptionContentKind innerExceptionKind)

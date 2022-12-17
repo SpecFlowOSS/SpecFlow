@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private readonly Assembly thisAssembly = Assembly.GetExecutingAssembly();
         private readonly Assembly anotherAssembly = typeof(TestRunnerManager).Assembly;
 
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
-            await TestRunnerManager.ResetAsync();
+            return TestRunnerManager.ResetAsync();
         }
 
         [Fact]

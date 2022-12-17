@@ -98,9 +98,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings.Discovery
         class StepDefClassWithAsyncVoid
         {
             [Given("an authenticated user")]
-            public async void AsyncVoidStepDef()
+            public Task AsyncVoidStepDef()
             {
-                await Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
+                return Task.Delay(50); // we need to wait a bit otherwise the assertion passes even if the method is called sync
             }
         }
 
