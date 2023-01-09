@@ -21,6 +21,7 @@ Changes:
 + 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
 + The interface ISpecFlowOutputHelper has been moved to the TechTalk.SpecFlow namespace (from TechTalk.SpecFlow.Infrastructure).
 + BugFix: SF2649 - AggregateExceptions thrown by async StepDefinition methods are no longer consumed; but passed along to the test host.
++ Continue to load step assemblies even if one fails to load (Fixes https://github.com/SpecFlowOSS/SpecFlow.VS/issues/109)
 
 
 3.10

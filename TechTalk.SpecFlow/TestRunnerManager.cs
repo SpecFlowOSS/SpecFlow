@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -92,7 +93,21 @@ namespace TechTalk.SpecFlow
 
             var assemblyLoader = _globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
-                _specFlowConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
+                _specFlowConfiguration.AdditionalStepAssemblies.Select(stepAssembly =>
+                {
+                    try
+                    {
+                        return assemblyLoader.Load(stepAssembly);
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        // log exception and continue with the next assembly
+                        _testTracer.TraceError(ex, TimeSpan.Zero);
+                    }
+
+                    return null;
+                })
+                .Where(x => x != null));
             return bindingAssemblies.ToArray();
         }
 
