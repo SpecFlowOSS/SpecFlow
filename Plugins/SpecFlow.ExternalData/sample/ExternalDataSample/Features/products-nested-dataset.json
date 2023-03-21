@@ -1,0 +1,45 @@
+﻿{
+    "products":
+    [
+        {
+           "product": "Chocolate",
+            "price": "2.5",
+            "color": "brown",
+            "ingredients":
+            [
+                {
+                    "name": "sugar",
+                    "value": "150mg"
+                },
+                {
+                    "name": "cacao",
+                    "value": "50mg"
+                }
+            ]
+        },
+        {
+          "product": "Apple",
+          "price": "1.0",
+          "color": "red",
+           "ingredients":
+            [
+                {
+                    "name": "sugar",
+                    "value": "70mg"
+                }
+            ]
+        },
+        {
+          "product": "Orange",
+          "price": "1.2",
+          "color": "orange",
+          "ingredients":
+            [
+                {
+                    "name": "sugar",
+                    "value": "50mg"
+                }
+            ]
+        }
+    ]
+}
