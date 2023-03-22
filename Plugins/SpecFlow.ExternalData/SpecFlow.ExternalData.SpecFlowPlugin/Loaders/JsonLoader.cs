@@ -23,7 +23,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
 
         private List<string> DetermineDataSets(JObject jsonObject, string dataSetPrepend)
         {
-            var dataSets = new HashSet<string>();
+            var dataSets = new List<string>();
             foreach (var array in GetArraysFromObject(jsonObject))
             {
                 var firstArrayObject = array.Children().First().ToObject<JObject>();
@@ -36,7 +36,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 foreach (var nestedDataSetPath in DetermineDataSets(firstArrayObject, dataSetPath)) dataSets.Add(nestedDataSetPath);
             }
 
-            return dataSets.ToList();
+            return dataSets;
         }
 
         private static IEnumerable<JToken> GetArraysFromObject(JObject jsonObject)
