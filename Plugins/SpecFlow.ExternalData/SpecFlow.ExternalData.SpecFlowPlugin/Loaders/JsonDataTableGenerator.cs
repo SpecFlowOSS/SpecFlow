@@ -12,7 +12,6 @@ public class JsonDataTableGenerator
         try
         {
             var header = GenerateHeader(originalJson, objectPath);
-
             var dataTable = new DataTable(header.ToArray());
             var records = GenerateRecordsFromNestedObjects(originalJson, objectPath, new List<DataRecord>());
             foreach (var record in records)
@@ -24,46 +23,6 @@ public class JsonDataTableGenerator
         {
             throw new ExternalDataPluginException($"Unable to flatten {objectPath} into DataTable");
         }
-    }
-
-    private List<DataRecord> GenerateRecordsFromNestedObjects(JObject currentObject, string[] objectPath,
-        List<DataRecord> currentRecords)
-    {
-        if (objectPath.Length == 0)
-            return currentRecords;
-
-        if (currentObject[objectPath.First()] == null) 
-            return currentRecords;
-
-        var objectArray = currentObject[objectPath.First()].ToObject<JArray>();
-        var remainingObjects = objectPath.Skip(1).ToArray();
-
-        var result = new List<DataRecord>();
-        foreach (var jObject in objectArray.Select(i => i.ToObject<JObject>()))
-        {
-            var intermediateResult = new List<DataRecord>();
-            var objectProperties = GetPropertiesExcludingNestedArrayObjects(jObject, remainingObjects);
-
-            var objectRecord = new DataRecord();
-            foreach (var property in objectProperties)
-                objectRecord.Fields[property.Name] = new DataValue(property.Value);
-
-            if (currentRecords.Any())
-            {
-                foreach (var record in currentRecords)
-                {
-                    var updatedRecord = new DataRecord(record.Fields);
-                    objectRecord.Fields.ToList().ForEach(x => updatedRecord.Fields.Add(x.Key, x.Value));
-                    intermediateResult.Add(updatedRecord);
-                }
-            }
-            else
-                intermediateResult.Add(objectRecord);
-
-            result.AddRange(GenerateRecordsFromNestedObjects(jObject, remainingObjects, intermediateResult));
-        }
-
-        return result;
     }
 
     private static List<string> GenerateHeader(JObject originalJson, string[] objectPath)
@@ -84,14 +43,61 @@ public class JsonDataTableGenerator
                 throw new ExternalDataPluginException("Empty object arrays are not supported");
 
             currentObject = currentObjectArray.First.ToObject<JObject>();
-            header.AddRange(GetPropertiesExcludingNestedArrayObjects(currentObject, objectPath).Select(p => p.Name));
+            header.AddRange(GetPropertiesExcludingToBeFlattenedArrayObject(currentObject, objectPath).Select(p => p.Name));
         }
 
         return header;
     }
 
+    private List<DataRecord> GenerateRecordsFromNestedObjects(JObject currentObject, string[] dataSetObjectPath,
+        List<DataRecord> currentRecords)
+    {
+        if (dataSetObjectPath.Length == 0)
+            return currentRecords;
 
-    private static List<JProperty> GetPropertiesExcludingNestedArrayObjects(JObject childJson,
+        var objectArrayPropertyName = dataSetObjectPath.First();
+        var remainingObjectArrays = dataSetObjectPath.Skip(1).ToArray();
+
+        var objectArray = currentObject[objectArrayPropertyName]?.ToObject<JArray>();
+        if (objectArray == null) 
+            throw new ExternalDataPluginException($"Expected object array property {objectArrayPropertyName} inside {currentObject}");
+        
+        var result = new List<DataRecord>();
+        foreach (var jObject in objectArray.Select(i => i.ToObject<JObject>()))
+        {
+            
+            var objectProperties = GetPropertiesExcludingToBeFlattenedArrayObject(jObject, remainingObjectArrays);
+
+            var objectRecord = new DataRecord();
+            foreach (var property in objectProperties)
+                objectRecord.Fields[property.Name] = new DataValue(property.Value);
+
+            List<DataRecord> intermediateResult;
+            if (currentRecords.Any())
+                intermediateResult = AppendFieldsToCurrentDataRecords(currentRecords, objectRecord);
+            else
+                intermediateResult = new List<DataRecord> { objectRecord };
+
+            result.AddRange(GenerateRecordsFromNestedObjects(jObject, remainingObjectArrays, intermediateResult));
+        }
+
+        return result;
+    }
+
+    private static List<DataRecord> AppendFieldsToCurrentDataRecords(List<DataRecord> currentRecords, DataRecord objectRecord)
+    {
+        var result = new List<DataRecord>();
+        foreach (var record in currentRecords)
+        {
+            var updatedRecord = new DataRecord(record.Fields);
+            objectRecord.Fields.ToList().ForEach(x => updatedRecord.Fields.Add(x.Key, x.Value));
+            result.Add(updatedRecord);
+        }
+
+        return result;
+    }
+    
+    private static List<JProperty> GetPropertiesExcludingToBeFlattenedArrayObject(JObject childJson,
         string[] remainingDataSets)
     {
         return childJson.Properties().Where(p => p.Name != remainingDataSets.FirstOrDefault()).ToList();
