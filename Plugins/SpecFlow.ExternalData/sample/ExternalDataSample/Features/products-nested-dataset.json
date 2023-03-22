@@ -18,10 +18,10 @@
             ]
         },
         {
-           "product": "Apple",
-           "color": "red",
-           "total price": "2.5",
-           "varieties":
+            "product": "Apple",
+            "color": "red",
+            "total price": "2.5",
+            "varieties":
             [
                 {
                     "name": "Pink Lady",
@@ -34,10 +34,10 @@
            ]
         },
         {
-          "product": "Orange",
-          "color": "orange",
-          "total price": "2.9",
-          "varieties":
+            "product": "Orange",
+            "color": "orange",
+            "total price": "2.9",
+            "varieties":
             [
                 {
                     "name": "Seville Orange",

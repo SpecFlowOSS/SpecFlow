@@ -17,9 +17,9 @@
             ]
         },
         {
-           "product": "Apple",
-           "color": "red",
-           "varieties":
+            "product": "Apple",
+            "color": "red",
+            "varieties":
             [
                 {
                     "name": "Pink Lady",
@@ -32,9 +32,9 @@
            ]
         },
         {
-          "product": "Orange",
-          "color": "orange",
-          "varieties":
+            "product": "Orange",
+            "color": "orange",
+            "varieties":
             [
                 {
                     "name": "Seville Orange",
