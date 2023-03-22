@@ -11,8 +11,8 @@ Scenario: The basket price is calculated correctly
 
 @DataSource:products.json @DataSet:other_products
 Scenario: The basket price is calculated correctly for other products
-	The scenario will be treated as a scenario outline with the examples from the Excel file.
-	The "other_products" sheet is used from the Excel file.
+	The scenario will be treated as a scenario outline with the examples from the json file.
+	The "other_products" object array is used from the json file.
 	Given the price of <product> is €<price>
 	And the customer has put 1 pcs of <product> to the basket
 	When the basket price is calculated
