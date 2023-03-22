@@ -27,13 +27,15 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             foreach (var array in GetArraysFromObject(jsonObject))
             {
                 var firstArrayObject = array.Children().First().ToObject<JObject>();
-                if (firstArrayObject == null) throw new ExternalDataPluginException("Empty arrays are not supported, as they would lead to sparse scenario examples");
+                if (firstArrayObject == null)
+                    throw new ExternalDataPluginException("Empty arrays are not supported, as they would lead to sparse scenario examples");
 
                 var dataSetPath = string.IsNullOrWhiteSpace(dataSetPrepend) ? array.Path : $"{dataSetPrepend}.{array.Path}";
 
                 dataSets.Add(dataSetPath);
 
-                foreach (var nestedDataSetPath in DetermineDataSets(firstArrayObject, dataSetPath)) dataSets.Add(nestedDataSetPath);
+                foreach (var nestedDataSetPath in DetermineDataSets(firstArrayObject, dataSetPath))
+                    dataSets.Add(nestedDataSetPath);
             }
 
             return dataSets;

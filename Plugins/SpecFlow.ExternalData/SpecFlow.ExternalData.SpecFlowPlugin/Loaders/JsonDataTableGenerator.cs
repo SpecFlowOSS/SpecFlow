@@ -34,11 +34,13 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             {
                 var currentObjectArray = currentObject[objectPath.First()]?.ToObject<JArray>();
 
-                if (currentObjectArray == null) throw new ExternalDataPluginException($"Expected {objectPath.First()} to be in json object");
+                if (currentObjectArray == null)
+                    throw new ExternalDataPluginException($"Expected {objectPath.First()} to be in json object");
 
                 objectPath = objectPath.Skip(1).ToArray();
 
-                if (currentObjectArray.First == null) throw new ExternalDataPluginException("Empty object arrays are not supported");
+                if (currentObjectArray.First == null)
+                    throw new ExternalDataPluginException("Empty object arrays are not supported");
 
                 currentObject = currentObjectArray.First.ToObject<JObject>();
                 header.AddRange(GetPropertiesExcludingToBeFlattenedArrayObject(currentObject, objectPath).Select(p => p.Name));
@@ -52,13 +54,15 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
             string[] dataSetObjectPath,
             List<DataRecord> currentRecords)
         {
-            if (dataSetObjectPath.Length == 0) return currentRecords;
+            if (dataSetObjectPath.Length == 0)
+                return currentRecords;
 
             var objectArrayPropertyName = dataSetObjectPath.First();
             var remainingObjectArrays = dataSetObjectPath.Skip(1).ToArray();
 
             var objectArray = currentObject[objectArrayPropertyName]?.ToObject<JArray>();
-            if (objectArray == null) throw new ExternalDataPluginException($"Expected object array property {objectArrayPropertyName} inside {currentObject}");
+            if (objectArray == null)
+                throw new ExternalDataPluginException($"Expected object array property {objectArrayPropertyName} inside {currentObject}");
 
             var result = new List<DataRecord>();
             foreach (var jObject in objectArray.Select(i => i.ToObject<JObject>()))
@@ -67,7 +71,8 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 var objectProperties = GetPropertiesExcludingToBeFlattenedArrayObject(jObject, remainingObjectArrays);
 
                 var objectRecord = new DataRecord();
-                foreach (var property in objectProperties) objectRecord.Fields[property.Name] = new DataValue(property.Value);
+                foreach (var property in objectProperties)
+                    objectRecord.Fields[property.Name] = new DataValue(property.Value);
 
                 List<DataRecord> intermediateResult;
                 if (currentRecords.Any())
