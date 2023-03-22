@@ -37,6 +37,23 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.UnitTests
         }
 
         [Fact]
+        public void Can_handle_properties_with_spaces()
+        {
+            var sut = CreateSut();
+            var result = sut.LoadDataSource(_productsSampleFilePath, null);
+            
+            Assert.NotNull(result);
+            Assert.True(result.IsDataRecord);
+            Assert.True(result.AsDataRecord.Fields.ContainsKey("other products"));
+            var worksheetResult = result.AsDataRecord.Fields["other products"];
+            Assert.True(worksheetResult.IsDataTable);
+            Assert.Equal(2, worksheetResult.AsDataTable.Items.Count);
+            Assert.Equal("Cookie", worksheetResult.AsDataTable.Items[0].Fields["product"].AsString());
+            Assert.Equal("2.5", worksheetResult.AsDataTable.Items[0].Fields["price"].AsString(CultureInfo.GetCultureInfo("en-us")));
+            Assert.Equal("brown", worksheetResult.AsDataTable.Items[0].Fields["color"].AsString());
+        }
+
+        [Fact]
         public void Can_handle_relative_path()
         {
             var sut = CreateSut();

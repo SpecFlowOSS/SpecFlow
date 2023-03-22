@@ -30,7 +30,7 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin.Loaders
                 if (firstArrayObject == null)
                     throw new ExternalDataPluginException("Empty arrays are not supported, as they would lead to sparse scenario examples");
 
-                var dataSetPath = string.IsNullOrWhiteSpace(dataSetPrepend) ? array.Path : $"{dataSetPrepend}.{array.Path}";
+                var dataSetPath = string.IsNullOrWhiteSpace(dataSetPrepend) ? ((JProperty)array.Parent!).Name : $"{dataSetPrepend}.{array.Path}";
 
                 dataSets.Add(dataSetPath);
 
