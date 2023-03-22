@@ -2,44 +2,52 @@
     "products":
     [
         {
-           "product": "Chocolate",
-            "price": "2.5",
+            "product": "Chocolate",
             "color": "brown",
-            "ingredients":
+            "total price": "3.15",
+            "varieties":
             [
                 {
-                    "name": "sugar",
-                    "value": "150mg"
+                    "name": "Dark Chocolate",
+                    "price": "1.6"
                 },
                 {
-                    "name": "cacao",
-                    "value": "50mg"
+                    "name": "Milk Chocolate",
+                    "price": "1.55"
                 }
             ]
         },
         {
-          "product": "Apple",
-          "price": "1.0",
-          "color": "red",
-           "ingredients":
+           "product": "Apple",
+           "color": "red",
+           "total price": "2.5",
+           "varieties":
             [
                 {
-                    "name": "sugar",
-                    "value": "70mg"
+                    "name": "Pink Lady",
+                    "price": "1.0"
+                },
+                {
+                    "name": "Fuji",
+                    "price": "1.5"
                 }
-            ]
+           ]
         },
         {
           "product": "Orange",
-          "price": "1.2",
           "color": "orange",
-          "ingredients":
+          "total price": "2.9",
+          "varieties":
             [
                 {
-                    "name": "sugar",
-                    "value": "50mg"
+                    "name": "Seville Orange",
+                    "price": "1.3"
+                },
+                {
+                    "name": "Tangerine",
+                    "price": "1.6"
                 }
-            ]
+           ]
         }
     ]
 }
