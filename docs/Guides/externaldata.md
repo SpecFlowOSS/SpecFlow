@@ -19,6 +19,10 @@ Simply download the [NuGet package](https://www.nuget.org/packages/SpecFlow.Exte
 
 ***> Note:** Both XLSX and XLS is supported (plugin uses [ExcelDataReader](https://github.com/ExcelDataReader/ExcelDataReader) to parse the files).*
 
+- JSON files (format 'JSON', extension .json)
+
+***> Note:** Object arrays and nested object arrays are supported (plugin uses [JObject.Parse](https://github.com/JamesNK/Newtonsoft.Json/blob/master/Src/Newtonsoft.Json/Linq/JObject.cs) to parse the files).*
+
 ## Tags
 
 The following tags can be used to specify the external source:
@@ -32,7 +36,7 @@ The following tags can be used to specify the external source:
 
 - `@DataFormat:format` - This tag only needs to be used if the format cannot be identified from the file extension.
 
-- `@DataSet:data-set-name` - This tag is applicable to *Excel files only*. It is used to select the worksheet of the Excel file you wish to use. By **default**, the first worksheet in an Excel file is targeted.
+- `@DataSet:data-set-name` - This tag is applicable to *Excel and Json files only*. For Excel it is used to select the worksheet of the Excel file you wish to use. By **default**, the first worksheet in an Excel file is targeted. For Json it is used to select the object array you wish to use. By **default**, the first object array in a Json file is targeted.
 
 - `@DataField:name-in-feature-file=name-in-source-file` - This tag can be used to "rename" columns of the external data source.
 
@@ -161,7 +165,8 @@ Scenario: The basket price is calculated correctly for other products
 
 ````
 
-## Language Settings
+
+#### Language Settings
 
 The decimal and date values read from an Excel file will be exported using the language of the feature file (specified using the `#language` setting in the feature file or in the SpecFlow configuration file). This setting affects for example the decimal operator as in some countries comma (,) is used as decimal separator instead of dot (.). To specify not only the language but also the country use the `#language: language-country` tag, e.g. *#language: de-AT* for *Deutsch-Austria*.
 
@@ -183,3 +188,45 @@ Forgatókönyv: The basket price is calculated correctly
 	Akkor the basket price should be €<price>
 
 ````
+
+### Json files
+
+You can use Json files the same way as you do with Excel files with some minor differences:
+
+- Only Object arrays and nested Object are supported. Arrays of simple types, empty arrays, etc. are not supported.
+
+- Json files with multiple object arrays are supported, you can use the `@DataSet:array-property-name` to select the object array you wish to target. The plugin uses the **first** object array by **default**. Nested object arrays can be specified by appending property names using a '.'.
+
+- Use underscores in the `@DataSet` tag instead of spaces if the array property name name contains spaces.
+
+The below example shows a Json file with object arrays and we wish to target the last array labelled *"other products"*. We do this by using the `@DataSet:other_products` tag. Note the use of (_) instead of space:
+
+![product json](/_static/images/jsonDatasetWithSpace.png)
+
+````Gherkin
+
+@DataSource:products.json @DataSet:other_products
+Scenario: The basket price is calculated correctly for other products
+	Given the price of <product> is €<price>
+	And the customer has put 1 pcs of <product> to the basket
+	When the basket price is calculated
+	Then the basket price should be €<price>
+
+````
+
+The below example shows a Json file with nested object arrays and we wish to target the inner array labelled *"varieties"*. We do this by using the `@DataSet:products.varieties` tag. Note the use of . to append nested property names:
+
+![product.varieties json](/_static/images/jsonDatasetWithNestedObjectArrays.png)
+
+````Gherkin
+
+@DataSource:products-nested-dataset.json @DataSet:products.varieties
+Scenario: The basket price is calculated correctly for products.varieties in nested products json
+	Given the price of <product> is €<price>
+	And the customer has put 1 pcs of <product> to the basket
+	When the basket price is calculated
+	Then the basket price should be €<price>
+
+
+````
+
