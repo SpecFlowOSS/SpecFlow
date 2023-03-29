@@ -30,6 +30,88 @@ If you need to execute specific steps once per test run, rather than once per th
 
 You can annotate a single method with multiple attributes.
 
+## Using Hooks with Constructor Injection
+
+You can use [context injection](Context-Injection.md) to access scenario level dependencies in your hook class using constructor injection.
+For example you can get the `ScenarioContext` injected in the constructor:
+
+``` csharp
+[Binding]
+public class MyHooks
+{
+    private ScenarioContext _scenarioContext;
+
+    public MyHooks(ScenarioContext scenarioContext)
+    {
+        _scenarioContext = scenarioContext;
+    }
+
+    [BeforeScenario]
+    public void SetupTestUsers()
+    {
+        //_scenarioContext...
+    }
+}
+```
+
+Note: for static hook methods you can use parameter injection.
+
+## Using Hooks with Parameter Injection
+
+You can add parameters to your hook method that will be automatically injected by SpecFlow.
+For example you can get the `ScenarioContext` injected as parameter in the BeforeScenario hook.
+
+``` csharp
+[Binding]
+public class MyHooks
+{
+    [BeforeScenario]
+    public void SetupTestUsers(ScenarioContext scenarioContext)
+    {
+        //scenarioContext...
+    }
+}
+```
+
+Parameter injection is especially useful for hooks that must be implemented as static methods.
+
+``` csharp
+[Binding]
+public class Hooks
+{
+    [BeforeFeature]
+    public static void SetupStuffForFeatures(FeatureContext featureContext)
+    {
+        Console.WriteLine("Starting " + featureContext.FeatureInfo.Title);
+    }
+}
+```
+
+In the BeforeTestRun hook you can resolve test thread specific or global services/dependencies as parameters.
+
+``` csharp
+[BeforeTestRun]
+public static void BeforeTestRunInjection(ITestRunnerManager testRunnerManager, ITestRunner testRunner)
+{
+    //All parameters are resolved from the test thread container automatically.
+    //Since the global container is the base container of the test thread container, globally registered services can be also injected.
+
+    //ITestRunManager from global container
+    var location = testRunnerManager.TestAssembly.Location;
+    
+    //ITestRunner from test thread container
+    var threadId = testRunner.ThreadId;
+}
+```
+
+Depending on the type of the hook the parameters are resolved from a container with the corresponding lifecycle.
+
+| Attribute | Container |
+|-----------|-----------|
+| [BeforeTestRun]<br/>[AfterTestRun] | TestThreadContainer |
+| [BeforeFeature]<br/>[AfterFeature] | FeatureContainer    |
+| [BeforeScenario]<br/>[AfterScenario]<br/>[BeforeScenarioBlock]<br/>[AfterScenarioBlock]<br/>[BeforeStep]<br/>[AfterStep]| ScenarioContainer |
+
 ## Hook Execution Order
 
 By default the hooks of the same type (e.g. two `[BeforeScenario]` hook) are executed in an unpredictable order. If you need to ensure a specific execution order, you can specify the `Order` property in the hook's attributes.
@@ -50,9 +132,11 @@ public void LoginUser()
 
 The number indicates the order, not the priority, i.e. the hook with the lowest number is always executed first.
 
-If no order is specified, the default value is 1000. However, we do not recommend on relying on the value to order your tests and recommend specifying the order explicitly for each hook.
+If no order is specified, the default value is 10000. However, we do not recommend on relying on the value to order your tests and recommend specifying the order explicitly for each hook.
 
 **Note:** If a hook throws an unhandled exception, subsequent hooks of the same type are not executed. If you want to ensure that all hooks of the same types are executed, you need to handle your exceptions manually.
+
+**Note:** If a `BeforeScenario` throws an unhandled exception then all the scenario steps will be marked as skipped and the `ScenarioContext.ScenarioExecutionStatus` will be set to `TestError`.
 
 ## Tag Scoping
 

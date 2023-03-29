@@ -1,0 +1,58 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+name: 0.2.$(Rev:r)
+
+trigger: none
+pr: none
+
+# The time zone for cron schedules is UTC
+# Cron expression is a space-delimited expression with five entries: mm HH DD MM DW
+schedules:
+- cron: "00 4 * * Mon-Fri"
+  displayName: SpecFlow Nightly build
+  branches:
+    include:
+    - master
+  always: true
+
+pool:
+  vmImage: 'windows-latest'
+  
+workspace:
+  clean: 'all'
+
+variables:
+  sdkVersion: 3.1.201
+  net5SdkVersion: 5.0.102
+  net6SdkVersion: 6.x
+
+steps:
+- checkout: self
+  submodules: true
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core SDK: $(sdkVersion)'
+  inputs:
+    version: '$(sdkVersion)'
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 5 SDK: $(net5SdkVersion)'
+  inputs:
+    version: '$(net5SdkVersion)'
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 6 SDK: $(net6SdkVersion)'
+  inputs:
+    version: '$(net6SdkVersion)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build Release'
+  inputs:
+    projects: TechTalk.SpecFlow.sln
+    arguments: --configuration Release
+
+- task: WhiteSource Bolt@20
+  displayName: 'WhiteSource Bolt - SpecFlow'

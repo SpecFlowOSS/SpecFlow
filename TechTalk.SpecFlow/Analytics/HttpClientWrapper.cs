@@ -4,11 +4,8 @@ namespace TechTalk.SpecFlow.Analytics
 {
     public class HttpClientWrapper
     {
-        public HttpClientWrapper()
-        {
-            HttpClient = new HttpClient();
-        }
+        private HttpClient httpClient;
 
-        public HttpClient HttpClient { get; private set; }
+        public HttpClient HttpClient => httpClient ??= new HttpClient();
     }
 }

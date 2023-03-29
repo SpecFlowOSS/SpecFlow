@@ -141,7 +141,35 @@ Examples:
     | AfterScenarioBlock  | 0     |
     | BeforeScenario      | 0     |
     | AfterScenario       | 0     |
-    | BeforeFeature       | 1     |
-    | AfterFeature        | 1     |
-    | BeforeTestRun       | 1     |
-    | AfterTestRun        | 1     |
+    
+    
+Scenario Outline: For ignored Features no Feature Hooks (and no Scenario hooks) are called
+    Given there is a feature file in the project as
+        """
+        @ignore
+        Feature: Feature 1
+        
+        Scenario: Scenario 1
+            Given there is something
+            When I do something
+            Then something should happen
+        
+        """
+    And a hook 'HookFor<event>' for '<event>'
+    And all steps are bound and pass
+    When I execute the tests
+    Then the hook 'HookFor<event>' is executed <count> times
+
+Examples: no feature hooks are called
+    | event               | count |
+    | BeforeFeature       | 0     |
+    | AfterFeature        | 0     |
+    
+Examples: no scenario hooks are called
+    | event               | count |
+    | BeforeStep          | 0     |
+    | AfterStep           | 0     |
+    | BeforeScenarioBlock | 0     |
+    | AfterScenarioBlock  | 0     |
+    | BeforeScenario      | 0     |
+    | AfterScenario       | 0     |

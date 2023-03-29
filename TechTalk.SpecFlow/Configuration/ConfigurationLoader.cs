@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using BoDi;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Configuration.JsonConfig;
-using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Configuration
@@ -51,10 +48,11 @@ namespace TechTalk.SpecFlow.Configuration
         private static bool DefaultAllowRowTests => ConfigDefaults.AllowRowTests;
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
 
-        public static bool DefaultMarkFeaturesParallelizable => ConfigDefaults.MarkFeaturesParallelizable;
-        public static string[] DefaultSkipParallelizableMarkerForTags => ConfigDefaults.SkipParallelizableMarkerForTags;
+        public static string[] DefaultAddNonParallelizableMarkerForTags => ConfigDefaults.AddNonParallelizableMarkerForTags;
 
         public static ObsoleteBehavior DefaultObsoleteBehavior => ConfigDefaults.ObsoleteBehavior;
+
+        public static bool DefaultColoredOutput => ConfigDefaults.ColoredOutput;
 
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
@@ -72,18 +70,13 @@ namespace TechTalk.SpecFlow.Configuration
             if (!specFlowConfigurationHolder.HasConfiguration)
                 return GetDefault();
 
-            switch (specFlowConfigurationHolder.ConfigSource)
+            return specFlowConfigurationHolder.ConfigSource switch
             {
-                case ConfigSource.Default:
-                    return GetDefault();
-                case ConfigSource.AppConfig:
-                    return LoadAppConfig(specFlowConfiguration,
-                        ConfigurationSectionHandler.CreateFromXml(specFlowConfigurationHolder.Content));
-                case ConfigSource.Json:
-                    return LoadJson(specFlowConfiguration, specFlowConfigurationHolder.Content);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                ConfigSource.Default => GetDefault(),
+                ConfigSource.AppConfig => LoadAppConfig(specFlowConfiguration, ConfigurationSectionHandler.CreateFromXml(specFlowConfigurationHolder.Content)),
+                ConfigSource.Json => LoadJson(specFlowConfiguration, specFlowConfigurationHolder.Content),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration)
@@ -124,23 +117,22 @@ namespace TechTalk.SpecFlow.Configuration
         public static SpecFlowConfiguration GetDefault()
         {
             return new SpecFlowConfiguration(ConfigSource.Default,
-                new ContainerRegistrationCollection(), 
-                new ContainerRegistrationCollection(), 
-                DefaultFeatureLanguage, 
-                DefaultBindingCulture, 
-                DefaultStopAtFirstError, 
+                new ContainerRegistrationCollection(),
+                new ContainerRegistrationCollection(),
+                DefaultFeatureLanguage,
+                DefaultBindingCulture,
+                DefaultStopAtFirstError,
                 DefaultMissingOrPendingStepsOutcome,
-                DefaultTraceSuccessfulSteps, 
-                DefaultTraceTimings, 
+                DefaultTraceSuccessfulSteps,
+                DefaultTraceTimings,
                 DefaultMinTracedDuration,
-                DefaultStepDefinitionSkeletonStyle, 
-                DefaultAdditionalStepAssemblies, 
-                DefaultAllowDebugGeneratedFiles, 
+                DefaultStepDefinitionSkeletonStyle,
+                DefaultAdditionalStepAssemblies,
+                DefaultAllowDebugGeneratedFiles,
                 DefaultAllowRowTests,
-                DefaultMarkFeaturesParallelizable,
-                DefaultSkipParallelizableMarkerForTags,
+                DefaultAddNonParallelizableMarkerForTags,
                 DefaultObsoleteBehavior,
-                new CucumberMessagesConfiguration()
+                DefaultColoredOutput
                 );
         }
 
@@ -171,6 +163,6 @@ namespace TechTalk.SpecFlow.Configuration
             return _jsonConfigurationLoader.LoadJson(specFlowConfiguration, jsonContent);
         }
 
-        
+
     }
 }

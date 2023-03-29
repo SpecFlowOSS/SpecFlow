@@ -27,4 +27,4 @@ Note: The navigation and the binding analysis features of the SpecFlow editor pr
 
 ## Examples
 
-An example can be found at <https://github.com/techtalk/SpecFlow-Examples/tree/master/BowlingKata/BowlingKata-Fsharp>
+An example can be found [here](https://github.com/SpecFlowOSS/SpecFlow-Examples/tree/master/BowlingKata/BowlingKata-Fsharp).

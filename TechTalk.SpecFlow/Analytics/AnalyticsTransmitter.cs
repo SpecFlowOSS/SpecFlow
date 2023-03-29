@@ -8,30 +8,32 @@ namespace TechTalk.SpecFlow.Analytics
         private readonly IAnalyticsTransmitterSink _analyticsTransmitterSink;
         private readonly IEnvironmentSpecFlowTelemetryChecker _environmentSpecFlowTelemetryChecker;
 
+        public bool IsEnabled => _environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled();
+
         public AnalyticsTransmitter(IAnalyticsTransmitterSink analyticsTransmitterSink, IEnvironmentSpecFlowTelemetryChecker environmentSpecFlowTelemetryChecker)
         {
             _analyticsTransmitterSink = analyticsTransmitterSink;
             _environmentSpecFlowTelemetryChecker = environmentSpecFlowTelemetryChecker;
         }
 
-        public async Task<IResult> TransmitSpecFlowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent)
+        public async Task<IResult> TransmitSpecFlowProjectCompilingEventAsync(SpecFlowProjectCompilingEvent projectCompilingEvent)
         {
-            return await TransmitEvent(projectCompilingEvent);
+            return await TransmitEventAsync(projectCompilingEvent);
         }
 
-        public async Task<IResult> TransmitSpecFlowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent)
+        public async Task<IResult> TransmitSpecFlowProjectRunningEventAsync(SpecFlowProjectRunningEvent projectRunningEvent)
         {
-            return await TransmitEvent(projectRunningEvent);
+            return await TransmitEventAsync(projectRunningEvent);
         }
 
-        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent)
+        public async Task<IResult> TransmitEventAsync(IAnalyticsEvent analyticsEvent)
         {
-            if (!_environmentSpecFlowTelemetryChecker.IsSpecFlowTelemetryEnabled())
+            if (!IsEnabled)
             {
                 return Result.Success();
             }
 
-            return await _analyticsTransmitterSink.TransmitEvent(analyticsEvent);
+            return await _analyticsTransmitterSink.TransmitEventAsync(analyticsEvent);
         }
     }
 }

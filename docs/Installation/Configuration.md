@@ -2,12 +2,16 @@
 
 SpecFlow's behavior can be configured extensively. How to configure SpecFlow depends on the version of SpecFlow you are using.
 
+Note: bear in mind that, although this article is meant to address features default language configuration, you may define  language directly on the top of your feature. For further details, refer to [Gerkin's #language directive]( https://docs.specflow.org/projects/specflow/en/latest/Gherkin/Feature-Language.html)
+
 ## SpecFlow 3.x
 
 Starting with SpecFlow 3, you can use the `specflow.json` file to configure it. It is mandatory for .NET Core projects and it is recommended for .NET Framework projects.  
 When using the .NET Framework, you can still use the `app.config` file, as with earlier versions of SpecFlow.
 
 If both the `specflow.json` and `app.config` files are available in a project, `specflow.json` takes precedence.
+
+Please make sure that the **Copy to Output Directory property** of `specflow.json` is set to either **Copy always** or **Copy if newer**. Otherwise `specflow.json` might not get copied to the Output Directory, which results in the configuration specified in `specflow.json` taking no effect during test execution.
 
 ## SpecFlow 2.x
 
@@ -27,6 +31,7 @@ The following 2 examples show the same option defined in the `specflow.json` and
 
 ```json
 {
+  "$schema": "https://specflow.org/specflow-config.json",
   "language": {
     "feature": "de-AT"
   }
@@ -57,9 +62,9 @@ All SpecFlow configuration options have a default setting. Simple SpecFlow proje
 
 ### SpecFlow 3
 
-Yu can only configure your unit provider by adding the corresponding packages to your project. You will therefore need to add **one** of the following NuGet packages to your project to configure the unit test provider:
+You can only configure your unit provider by adding the corresponding packages to your project. You will therefore need to add **one** of the following NuGet packages to your project to configure the unit test provider:
 
-- SpecRun.SpecFlow-3.3.0
+- SpecRun.SpecFlow
 - SpecFlow.xUnit
 - SpecFlow.MsTest
 - SpecFlow.NUnit
@@ -101,32 +106,33 @@ Use this section to define the culture for executing binding methods and convert
 
 Use this section to define unit test generation options.
 
-| Attribute                | Value      | Description                                                                                                                                                                                                                                          |
-| ------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| allowDebugGeneratedFiles | true/false | By default, the debugger is configured to step through the generated code. This helps you debug your feature files and bindings (see [Debugging Tests]()). Disabled this option by setting this attribute to “true”.<br/> **Default:** false         |
-| allowRowTests            | true/false | Determines whether "row tests" should be generated for [scenario outlines](../Gherkin/Gherkin-Reference.md). This setting is ignored if the [unit test framework](Unit-Test-Providers.md) does not support row based testing.<br/> **Default:** true |
+| Attribute                         | Value        | Description                                                                                                                                                                                                                                                                                                                                                                    |
+| --------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| allowDebugGeneratedFiles          | true/false   | By default, the debugger is configured to step through the generated code. This helps you debug your feature files and bindings (see [Debugging Tests]()). Disabled this option by setting this attribute to “true”.<br/> **Default:** false                                                                                                                                   |
+| allowRowTests                     | true/false   | Determines whether "row tests" should be generated for [scenario outlines](https://docs.specflow.org/projects/specflow/en/latest/Gherkin/Gherkin-Reference.html). This setting is ignored if the [unit test framework](https://docs.specflow.org/projects/specflow/en/latest/Installation/Unit-Test-Providers.html) does not support row based testing.<br/> **Default:** true |
+| addNonParallelizableMarkerForTags | List of tags | Defines a set of tags, any of which specify that a feature should be excluded from running in parallel with any other feature. See [Parallel Execution](../Execution/Parallel-Execution.md).<br/> **Default:** empty                                                                                                                                                           |
 
 ### `runtime`
 
 Use this section to specify various test execution options.
 
-| Attribute                    | Value                     | Description                                                                                                                                                                                                |
-| ---------------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dependencies                 | custom dependencies       | Specifies custom dependencies for the SpecFlow runtime. See [Plugins](../Extend/Plugins.md) for details.<br/>**Default:** not specified                                                                    |
-| missingOrPendingStepsOutcome | Inconclusive/Ignore/Error | Determines how SpecFlow behaves if a step binding is not implemented or pending. See [Test Result](../Execution/Test-Results.md).<br/> **Default:** Inconclusive                                           |
-| obsoleteBehavior             | None/Warn/Pending/Error   | how SpecFlow behaves if a step binding is marked with [Obsolete] attribute.<br/> **Default:** Warn                                                                                                         |
-| stopAtFirstError             | true/false                | Determines whether the execution should stop when encountering the first error, or whether it should attempt to try and match subsequent steps (in order to detect missing steps).<br/> **Default:** false |
+| Attribute                    | Value                             | Description                                                                                                                                                                                                      |
+| ---------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| missingOrPendingStepsOutcome | Pending/Inconclusive/Ignore/Error | Determines how SpecFlow behaves if a step binding is not implemented or pending. See [Test Result](https://docs.specflow.org/projects/specflow/en/latest/Execution/Test-Results.html).<br/> **Default:** Pending |
+| obsoleteBehavior             | None/Warn/Pending/Error           | Determines how SpecFlow behaves if a step binding is marked with [Obsolete] attribute.<br/> **Default:** Warn                                                                                                    |
+| stopAtFirstError             | true/false                        | Determines whether the execution of the Scenario should stop when encountering the first error, or whether it should attempt to try and match subsequent steps (in order to detect missing steps).<br/> **Default:** false       |
 
 ### `trace`
 
 Use this section to determine the SpecFlow trace output.
 
-| Attribute                   | Value                                                                     | Description                                                                                                                                                                    |
-| --------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| traceSuccessfulSteps        | true/false                                                                | Determines whether SpecFlow should trace successful step binding executions. <br/>**Default:** true                                                                            |
-| traceTimings                | true/false                                                                | Determines whether SpecFlow should trace execution time of the binding methods (only if the execution time is longer than the minTracedDuration value).<br/>**Default:** false |
-| minTracedDuration           | TimeSpan (0:0:0.1)                                                        | Specifies a threshold for tracing the binding execution times.<br/>**Default:** 0:0:0.1 (100 ms)                                                                               |
-| stepDefinitionSkeletonStyle | RegexAttribute/MethodNameUnderscores/MethodNamePascalCase/MethodNameRegex | Specifies the default [step definition style](../Bindings/Step-Definitions.html#step-matching-styles-rules).<br/>**Default:** RegexAttribute                                   |
+| Attribute                   | Value                                                                     | Description                                                                                                                                                                                                                                                                                                                                   |
+|-----------------------------|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| traceSuccessfulSteps        | true/false                                                                | Determines whether SpecFlow should trace successful step binding executions. <br/>**Default:** true                                                                                                                                                                                                                                           |
+| traceTimings                | true/false                                                                | Determines whether SpecFlow should trace execution time of the binding methods (only if the execution time is longer than the minTracedDuration value).<br/>**Default:** false                                                                                                                                                                |
+| minTracedDuration           | TimeSpan (0:0:0.1)                                                        | Specifies a threshold for tracing the binding execution times.<br/>**Default:** 0:0:0.1 (100 ms)                                                                                                                                                                                                                                              |
+| stepDefinitionSkeletonStyle | CucumberExpressionAttribute/RegexAttribute/MethodNameUnderscores/MethodNamePascalCase/MethodNameRegex | Specifies the default [step definition style](../Bindings/Step-Definitions.html#step-matching-styles-rules).<br/>**Default:** CucumberExpressionAttribute (from v4), RegexAttribute (in v3 or earlier)                                                                                                                                                                                                 |
+| coloredOutput               | true/false                                                                | Determine whether SpecFlow should color the test result output. See [Color Test Result Output](../Execution/Color-Output.md) for more details<br/>**Default:** false<br/>When this setting is enable you can disable color, for example to run it on a build server that does not support colors, with the environment variable `NO_COLOR=1` |
 
 ### `stepAssemblies`
 
@@ -136,11 +142,14 @@ The following example registers an additional binding assembly (MySharedBindings
 
 **specflow.json example:**
 
-```
+```json
 {
-    "stepAssemblies": [
-        { "assembly": "MySharedBindings" }
-    ]
+  "$schema": "https://specflow.org/specflow-config.json",
+  "stepAssemblies": [
+    {
+      "assembly": "MySharedBindings"
+    }
+  ]
 }
 ```
 

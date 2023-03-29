@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Analytics
             string userId = _userUniqueIdStore.GetUserId();
             string unitTestProvider = _unitTestProvider;
             string specFlowVersion = GetSpecFlowVersion();
-            string targetFramework = GetNetCoreVersion() ?? Environment.Version.ToString();
+            string targetFramework = GetNetCoreVersion() ?? RuntimeInformation.FrameworkDescription;
             bool isDockerContainer = IsRunningInDockerContainer();
             string buildServerName = GetBuildServerName();
 
@@ -119,6 +119,8 @@ namespace TechTalk.SpecFlow.Analytics
                 { "SEMAPHORE", "SEMAPHORE" },
                 { "BROWSERSTACK_USERNAME", "BrowserStack" },
                 { "CF_BUILD_ID", "Codefresh" },
+                { "TentacleVersion", "Octopus Deploy" },
+
                 { "CI_NAME", "CodeShip" }
             };
 
@@ -150,7 +152,7 @@ namespace TechTalk.SpecFlow.Analytics
                 return null;
             }
 
-            var crypt = new System.Security.Cryptography.SHA256Managed();
+            var crypt = System.Security.Cryptography.SHA256.Create();
             var stringBuilder = new StringBuilder();
             var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(inputString));
             foreach (byte theByte in crypto)
@@ -164,7 +166,7 @@ namespace TechTalk.SpecFlow.Analytics
         private string GetNetCoreVersion()
         {
             var assembly = typeof(System.Runtime.GCSettings).GetTypeInfo().Assembly;
-            var assemblyPath = assembly.CodeBase.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+            var assemblyPath = assembly.Location.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
             int netCoreAppIndex = Array.IndexOf(assemblyPath, "Microsoft.NETCore.App");
             if (netCoreAppIndex > 0 && netCoreAppIndex < assemblyPath.Length - 2)
             {

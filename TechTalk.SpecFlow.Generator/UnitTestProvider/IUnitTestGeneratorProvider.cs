@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories);
         void SetTestClassIgnore(TestClassGenerationContext generationContext);
         void FinalizeTestClass(TestClassGenerationContext generationContext);
-        void SetTestClassParallelize(TestClassGenerationContext generationContext);
+        void SetTestClassNonParallelizable(TestClassGenerationContext generationContext);
 
         void SetTestClassInitializeMethod(TestClassGenerationContext generationContext);
         void SetTestClassCleanupMethod(TestClassGenerationContext generationContext);
@@ -26,5 +26,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle);
         void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored);
         void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments);
+
+        void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression);
+
+        CodeExpression GetTestWorkerIdExpression();
     }
 }

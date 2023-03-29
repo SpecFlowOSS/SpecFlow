@@ -2,20 +2,25 @@
 
 ## .NET
 
+### .NET
+
+- .NET 5
+- .NET 6
+
 ### .NET Core
 
-- .NET Core 2.1 or .NET Core 3.1
+- .NET Core 3.1
 
 ### .NET Framework
 
-- &gt;= .NET Framework 4.6.1
+- &gt;= .NET Framework 4.6.2
 
 ## Visual Studio
 
 ### Version
 
-- Visual Studio 2017 **or**
-- Visual Studio 2019
+- Visual Studio 2019 **or**
+- Visual Studio 2022
 
 We recommend using always the latest version of Visual Studio
 

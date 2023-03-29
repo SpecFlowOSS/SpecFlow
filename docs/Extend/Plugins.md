@@ -7,11 +7,11 @@ SpecFlow supports the following types of plugins:
 
 All types of plugins are created in a similar way.
 
-This information only applies to SpecFlow 3. For legacy information on plugins for previous versions, see [Plugins (Legacy)](Plugins-(Legacy).md). With SpecFlow 3, we have changed how you configure which plugins are used. They are no longer configured in your `app.config` (or `specflow.json`).
+This information only applies to SpecFlow 3. For legacy information on plugins for previous versions, see [Plugins (Legacy)](https://docs.specflow.org/projects/specflow/en/latest/legacy/plugins-(Legacy).html). With SpecFlow 3, we have changed how you configure which plugins are used. They are no longer configured in your `app.config` (or `specflow.json`).
 
 ## Runtime plugins
 
-Runtime plugins need to target .NET Framework 4.6.1 and .NET Standard 2.0.
+Runtime plugins need to target .NET Framework 4.6.2 and .NET Standard 2.0.
 SpecFlow searches for files that end with `.SpecFlowPlugin.dll` in the following locations:
 
 * The folder containing your `TechTalk.SpecFlow.dll` file
@@ -21,7 +21,14 @@ SpecFlow loads plugins in the order they are found in the folder.
 
 ### Create a runtime plugin
 
+You can create your `RuntimePlugin` in a separate project, or in the same project where your tests are.
+
+Optional:
+
 1. Create a new class library for your plugin.
+
+Mandatory:
+
 1. Add the SpecFlow NuGet package to your project.
 1. Define a class that implements the `IRuntimePlugin` interface (defined in TechTalk.SpecFlow.Plugins).
 1. Flag your assembly with the `RuntimePlugin` attribute for the plugin to be identified by SpecFlow plugin loader. The following example demonstrates a `MyNewPlugin` class that implements the `IRuntimePlugin` interface:  
@@ -45,7 +52,7 @@ A complete example of a Runtime plugin can be found [here](https://github.com/te
 
 The sample project is [here](https://github.com/techtalk/SpecFlow-Examples/blob/master/Plugins/RuntimeOnlyPlugin/RuntimePlugin/SampleRuntimePlugin.csproj).
 
-This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.1 and .NET Standard 2.0.
+This project targets multiple frameworks, so the project file uses `<TargetFrameworks>` instead of `<TargetFramework>`. Our target frameworks are .NET 4.6.2 and .NET Standard 2.0.
 
 ``` xml
 <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
@@ -81,7 +88,7 @@ We need to copy a different assembly to the output folder depending on the targe
 
 ``` xml
 <_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETCoreApp' ">netstandard2.0</_SampleRuntimePluginFramework>
-<_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net45</_SampleRuntimePluginFramework>
+<_SampleRuntimePluginFramework Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">net461</_SampleRuntimePluginFramework>
 <_SampleRuntimePluginPath>$(MSBuildThisFileDirectory)\..\lib\$(_SampleRuntimePluginFramework)\SampleRuntimePlugin.SpecFlowPlugin.dll</_SampleRuntimePluginPath>
 ```
 
@@ -126,7 +133,7 @@ The runtime plugin assemblies are also specified here, using the additional `$co
 ``` xml
     <files>
         <file src="build\**\*" target="build"/>
-        <file src="bin\$config$\net45\SampleRuntimePlugin.SpecFlowPlugin.*" target="lib\net45"/>
+        <file src="bin\$config$\net461\SampleRuntimePlugin.SpecFlowPlugin.*" target="lib\net461"/>
         <file src="bin\$config$\netstandard2.0\SampleRuntimePlugin.SpecFlowPlugin.dll" target="lib\netstandard2.0"/>
         <file src="bin\$config$\netstandard2.0\SampleRuntimePlugin.SpecFlowPlugin.pdb" target="lib\netstandard2.0"/>
     </files>
@@ -134,7 +141,7 @@ The runtime plugin assemblies are also specified here, using the additional `$co
 
 ## Generator plugins
 
-Generator plugins need to target .NET Framework 4.7.1 and .NET Core 2.1.
+Generator plugins need to target .NET Framework 4.7.1 and .NET Core 3.1.
 The MSBuild task needs to know which generator plugins it should use. You therefore have to add your generator plugin to the `SpecFlowGeneratorPlugins` ItemGroup.
 This is passed to the MSBuild task as a parameter and later used to load the plugins.
 
@@ -168,7 +175,7 @@ We use a NuSpec file (SamplePlugin.nuspec) to provide all information for the Nu
 
 ``` xml
 <PropertyGroup>
-    <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net471;netcoreapp3.1</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NuspecFile>$(MSBuildThisFileDirectory)SamplePlugin.nuspec</NuspecFile>
     <AssemblyName>SampleGeneratorPlugin.SpecFlowPlugin</AssemblyName>
@@ -192,7 +199,7 @@ Because the `$(MSBuildRuntimeType)` property is only available in imported `targ
 
 ``` xml
 <PropertyGroup>
-    <_SampleGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netecoreapp2.1</_SampleGeneratorPluginFramework>
+    <_SampleGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' == 'Core'">netecoreapp3.1</_SampleGeneratorPluginFramework>
     <_SampleGeneratorPluginFramework Condition=" '$(MSBuildRuntimeType)' != 'Core'">net471</_SampleGeneratorPluginFramework>
     <_SampleGeneratorPluginPath>$(MSBuildThisFileDirectory)\$(_SampleGeneratorPluginFramework)\SampleGeneratorPlugin.SpecFlowPlugin.dll</_SampleGeneratorPluginPath>
 </PropertyGroup>
@@ -237,8 +244,8 @@ It is important to ensure that they are not added to the `lib` folder. If this w
 <files>
     <file src="build\**\*" target="build"/>
     <file src="bin\$config$\net471\SampleGeneratorPlugin.SpecFlowPlugin.*" target="build\net471"/>
-    <file src="bin\$config$\netstandard2.0\SampleGeneratorPlugin.SpecFlowPlugin.dll" target="build\netcoreapp2.1"/>
-    <file src="bin\$config$\netstandard2.0\SampleGeneratorPlugin.SpecFlowPlugin.pdb" target="build\netcoreapp2.1"/>
+    <file src="bin\$config$\netcoreapp3.1\SampleGeneratorPlugin.SpecFlowPlugin.dll" target="build\netcoreapp3.1"/>
+    <file src="bin\$config$\netcoreapp3.1\SampleGeneratorPlugin.SpecFlowPlugin.pdb" target="build\netcoreapp3.1"/>
 </files>
 ```
 
@@ -255,6 +262,25 @@ You can simply combine the contents of the `.targets` and `.props` file to a sin
 
 A complete example of a NuGet package that contains a runtime and generator plugin can be found [here](https://github.com/techtalk/SpecFlow-Examples/tree/master/Plugins/CombinedPlugin).
 
+
+## Tips & Tricks
+
+### Building Plugins on non-Windows machines
+
+For building .NET 4.6.2 projects on non- Windows machines, the .NET Framework reference assemblies are needed.
+
+You can add them with following PackageReference to your project:
+
+``` xml
+<ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+</ItemGroup>
+
+```
+
 ## Plugin Developer Channel
 
-We have set up a Gitter channel for plugin developers here. If you questions regarding the development of plugins for SpecFlow, this is the place to ask them.
+We have set up a Discord channel for plugin developers [here](https://discord.com/invite/xQMrjDXx7a). If you have any questions regarding the development of plugins for SpecFlow, this is the place to ask them.

@@ -1,6 +1,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.Generator.CodeDom;
 
@@ -10,7 +11,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         protected internal const string TESTFIXTURESETUP_ATTR_NUNIT3 = "NUnit.Framework.OneTimeSetUpAttribute";
         protected internal const string TESTFIXTURETEARDOWN_ATTR_NUNIT3 = "NUnit.Framework.OneTimeTearDownAttribute";
-        protected internal const string PARALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
+        protected internal const string NONPARALLELIZABLE_ATTR = "NUnit.Framework.NonParallelizableAttribute";
         protected internal const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
         protected internal const string TEST_ATTR = "NUnit.Framework.TestAttribute";
         protected internal const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
@@ -21,6 +22,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected internal const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
         protected internal const string TESTCONTEXT_TYPE = "NUnit.Framework.TestContext";
         protected internal const string TESTCONTEXT_INSTANCE = "NUnit.Framework.TestContext.CurrentContext";
+        protected internal const string TESTCONTEXT_WORKERID_PROPERTY = "WorkerId";
 
         public NUnit3TestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -56,9 +58,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR_NUNIT3);
         }
 
-        public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassNonParallelizable(TestClassGenerationContext generationContext)
         {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, PARALLELIZABLE_ATTR, new CodeAttributeArgument(new CodePrimitiveExpression(generationContext.TestClass.Name)));
+            CodeDomHelper.AddAttribute(generationContext.TestClass, NONPARALLELIZABLE_ATTR);
         }
 
         public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
@@ -85,8 +87,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                             nameof(ScenarioContext.ScenarioContainer)),
                         nameof(IObjectContainer.RegisterInstanceAs),
                         new CodeTypeReference(TESTCONTEXT_TYPE)),
-                    new CodeVariableReferenceExpression(TESTCONTEXT_INSTANCE)));
+                    GetTestContextExpression()));
         }
+
+        private CodeExpression GetTestContextExpression() => new CodeVariableReferenceExpression(TESTCONTEXT_INSTANCE);
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
@@ -98,7 +102,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(generationContext.TestCleanupMethod, TESTTEARDOWN_ATTR);
         }
 
-        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
+        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
@@ -109,7 +113,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
         }
 
-        public void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             SetTestMethod(generationContext, testMethod, scenarioTitle);
         }
@@ -145,5 +149,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             // doing nothing since we support RowTest
         }
+
+        public void MarkCodeMethodInvokeExpressionAsAwait(CodeMethodInvokeExpression expression)
+        {
+            CodeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+        }
+
+        public CodeExpression GetTestWorkerIdExpression() 
+            => new CodePropertyReferenceExpression(GetTestContextExpression(), TESTCONTEXT_WORKERID_PROPERTY);
     }
 }

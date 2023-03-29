@@ -2,27 +2,28 @@
 
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports TechTalk.SpecFlow
+Imports TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 Imports System
 Imports System.Reflection
 Imports System.CodeDom.Compiler
+Imports System.Runtime.CompilerServices
 
 <GeneratedCode("SpecFlow", "SPECFLOW_VERSION")>
 <TestClass>
 Public NotInheritable Class PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks
     <AssemblyInitialize>
-    Public Shared Sub AssemblyInitialize(testContext As TestContext)
-
+    <MethodImpl(MethodImplOptions.NoInlining)>
+    Public Shared Async Function AssemblyInitializeAsync(testContext As TestContext) As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunStart(currentAssembly)
-    End Sub
+        Dim containerBuilder As New MsTestContainerBuilder(testContext)
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunStartAsync(currentAssembly, Nothing, containerBuilder)
+    End Function
 
     <AssemblyCleanup>
-    Public Shared Sub AssemblyCleanup()
-
+    <MethodImpl(MethodImplOptions.NoInlining)>
+    Public Shared Async Function AssemblyCleanupAsync() As Task
         Dim currentAssembly As Assembly = GetType(PROJECT_ROOT_NAMESPACE_MSTestAssemblyHooks).Assembly
-
-        TestRunnerManager.OnTestRunEnd(currentAssembly)
-    End Sub
+        Await Global.TechTalk.SpecFlow.TestRunnerManager.OnTestRunEndAsync(currentAssembly)
+    End Function
 
 End Class

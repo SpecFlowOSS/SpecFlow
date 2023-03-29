@@ -1,15 +1,15 @@
-﻿using System;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
+﻿using System.Text.RegularExpressions;
+using CucumberExpressions;
 
-namespace TechTalk.SpecFlow.Bindings
+namespace TechTalk.SpecFlow.Bindings;
+
+public interface IStepDefinitionBinding : IScopedBinding, IBinding
 {
-    public interface IStepDefinitionBinding : IScopedBinding, IBinding
-    {
-        StepDefinitionType StepDefinitionType { get; }
-        Regex Regex { get; }
-    }
+    StepDefinitionType StepDefinitionType { get; }
+    string SourceExpression { get; }
+    string ExpressionType { get; }
+    bool IsValid { get; }
+    string ErrorMessage { get; }
+    Regex Regex { get; }
+    IExpression Expression { get; }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using BoDi;
 using FluentAssertions;
@@ -14,7 +15,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
     public class JsonConfigTests
     {
         [Theory]
-        [InlineData(@"{
+        [InlineData(
+            @"{
             ""language"": {
               ""feature"": ""en"",
               ""tool"": ""en""
@@ -24,8 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""generatorProvider"": ""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow"",
               ""runtimeProvider"": ""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow""
             },
-            ""generator"": { ""allowDebugGeneratedFiles"": false , ""markFeaturesParallelizable"": false, 
-                             ""skipParallelizableMarkerForTags"": [""mySpecialTag1"", ""mySpecialTag2""]},
+            ""generator"": { ""allowDebugGeneratedFiles"": false },
             ""runtime"": {              
               ""stopAtFirstError"": false,
               ""missingOrPendingStepsOutcome"": ""Inconclusive""
@@ -35,16 +36,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
               ""traceTimings"": false,
               ""minTracedDuration"": ""0:0:0.1"",
               ""listener"": ""TechTalk.SpecFlow.Tracing.DefaultListener, TechTalk.SpecFlow""
-            },
-            ""cucumber-messages"":
-            {
-                ""enabled"": false,
-                ""sinks"":
-                [
-                    { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" },
-                    { ""type"": ""file"", ""path"": ""testrun.cm"" },
-                    { ""type"": ""file"", ""path"": ""%temp%\testrun.cm"" }
-                ]
             }
         }")]
 
@@ -304,6 +295,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         }
 
         [Fact]
+        public void Check_Trace_ColoredOutput_as_False()
+        {
+            string config = @"{
+                                ""trace"": { ""coloredOutput"": false }
+                            }";
+
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+
+            runtimeConfig.ColoredOutput.Should().Be(false);
+        }
+
+        [Fact]
+        public void Check_Trace_ColoredOutput_as_True()
+        {
+            string config = @"{
+                                ""trace"": { ""coloredOutput"": true }
+                            }";
+
+
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
+
+            runtimeConfig.ColoredOutput.Should().Be(true);
+        }
+
+        [Fact]
         public void Check_StepAssemblies_IsEmpty()
         {
             string config = @"{
@@ -366,133 +383,124 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.AdditionalStepAssemblies[1].Should().Be("testEntry2");
         }
 
-
         [Fact]
-        public void Check_CucumberMessages_NotConfigured_EnabledIsFalse()
+        public void Check_Generator_NonParallelizableMarkers_EmptyList()
         {
-            string config = @"{
-                            }";
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                            ]
+                                        }
+                                    }";
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
-        }
-
-
-        [Fact]
-        public void Check_CucumberMessages_EmptyTag_EnabledIsFalse()
-        {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                }
-                            }";
-
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEmpty();
         }
 
         [Fact]
-        public void Check_CucumberMessages_Enabled_True()
+        public void Check_Generator_NonParallelizableMarkers_SingleTag()
         {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                    ""enabled"": true
-                                }
-                            }";
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                                ""tag1""
+                                            ]
+                                        }
+                                    }";
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeTrue();
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1");
         }
 
         [Fact]
-        public void Check_CucumberMessages_Enabled_False()
+        public void Check_Generator_NonParallelizableMarkers_MultipleTags()
         {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                    ""enabled"": false
-                                }
-                            }";
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""addNonParallelizableMarkerForTags"":
+                                            [
+                                                ""tag1"",
+                                                ""tag2""
+                                            ]
+                                        }
+                                    }";
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Enabled.Should().BeFalse();
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1", "tag2");
         }
 
         [Fact]
-        public void Check_CucumberMessages_Sinks_EmptyList()
+        public void Check_Defaults_Empty_Configuration()
         {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                    ""enabled"": false,
-                                    ""sinks"":
-                                    [
-                                    ]
-                                }
-                            }";
+            string configAsJson = "{}";
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Sinks.Should().BeEmpty();
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            AssertDefaultJsonSpecFlowConfiguration(config);
         }
 
         [Fact]
-        public void Check_CucumberMessages_Sinks_ListOneEntry()
+        public void Check_Defaults_Only_Root_Objects()
         {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                    ""enabled"": false,
-                                    ""sinks"":
-                                    [
-                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" }
-                                    ]
-                                }
-                            }";
+            string configAsJson = @"{
+                ""bindingCulture"": {},
+                ""language"": {},
+                ""generator"": {},
+                ""runtime"": {},
+                ""trace"": {}
+            }";
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(1);
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            AssertDefaultJsonSpecFlowConfiguration(config);
         }
 
         [Fact]
-        public void Check_CucumberMessages_Sinks_ListMultipleEntry()
+        public void Check_Defaults_For_One_Config_Element()
         {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                    ""enabled"": false,
-                                    ""sinks"":
-                                    [
-                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" },
-                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" },
-                                        { ""type"": ""file"", ""path"": ""C:\temp\testrun.cm"" }
-                                    ]
-                                }
-                            }";
+            var traceTimings = true;
+            string configAsJson = $@"{{
+                ""trace"": {{
+                    ""traceTimings"": {traceTimings}
+                }}
+            }}";
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            runtimeConfig.CucumberMessagesConfiguration.Sinks.Count.Should().Be(3);
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+
+            config.TraceTimings.Should().Be(traceTimings);
+            config.MinTracedDuration.Should().Be(TimeSpan.Parse(ConfigDefaults.MinTracedDuration));
+            config.StepDefinitionSkeletonStyle.Should().Be(ConfigDefaults.StepDefinitionSkeletonStyle);
+            config.TraceSuccessfulSteps.Should().Be(ConfigDefaults.TraceSuccessfulSteps);
         }
 
-        [Fact]
-        public void Check_CucumberMessages_Sinks_DataOfEntry()
+        private void AssertDefaultJsonSpecFlowConfiguration(SpecFlowConfiguration config)
         {
-            string config = @"{
-                                ""cucumber-messages"":
-                                {
-                                    ""enabled"": false,
-                                    ""sinks"":
-                                    [
-                                        { ""type"": ""file"", ""path"": ""C:\\temp\\testrun.cm"" }
-                                    ]
-                                }
-                            }";
+            config.ConfigSource.Should().Be(ConfigSource.Json);
+            config.FeatureLanguage.Should().Be(CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage));
+            config.BindingCulture.Should().Be(null);
 
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-            var cucumberMessagesSink = runtimeConfig.CucumberMessagesConfiguration.Sinks.First();
+            //runtime
+            config.StopAtFirstError.Should().Be(ConfigDefaults.StopAtFirstError);
+            config.MissingOrPendingStepsOutcome.Should().Be(ConfigDefaults.MissingOrPendingStepsOutcome);
+            config.ObsoleteBehavior.Should().Be(ConfigDefaults.ObsoleteBehavior);
+            config.CustomDependencies.Should().NotBeNull();
+            config.CustomDependencies.Count.Should().Be(0);
 
-            cucumberMessagesSink.Type.Should().Be("file");
-            cucumberMessagesSink.Path.Should().Be(@"C:\temp\testrun.cm");
+            //generator
+            config.AllowDebugGeneratedFiles.Should().Be(ConfigDefaults.AllowDebugGeneratedFiles);
+            config.AllowRowTests.Should().Be(ConfigDefaults.AllowRowTests);
+
+            //trace
+            config.TraceTimings.Should().Be(ConfigDefaults.TraceTimings);
+            config.MinTracedDuration.Should().Be(TimeSpan.Parse(ConfigDefaults.MinTracedDuration));
+            config.StepDefinitionSkeletonStyle.Should().Be(ConfigDefaults.StepDefinitionSkeletonStyle);
+            config.TraceSuccessfulSteps.Should().Be(ConfigDefaults.TraceSuccessfulSteps);
+
+            config.AdditionalStepAssemblies.Should().NotBeNull();
+            config.AdditionalStepAssemblies.Should().BeEmpty();
         }
-    }
+   }
 }

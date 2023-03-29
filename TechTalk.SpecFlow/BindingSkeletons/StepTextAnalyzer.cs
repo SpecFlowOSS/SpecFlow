@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 {
     public class AnalyzedStepText
     {
-        public readonly List<string> TextParts = new List<string>();
-        public readonly List<AnalyzedStepParameter> Parameters = new List<AnalyzedStepParameter>();
+        public readonly List<string> TextParts = new();
+        public readonly List<AnalyzedStepParameter> Parameters = new();
     }
 
     public class AnalyzedStepParameter
@@ -17,12 +17,16 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         public readonly string Type;
         public readonly string Name;
         public readonly string RegexPattern;
+        public readonly string WrapText;
+        public readonly string CucumberExpressionTypeName;
 
-        public AnalyzedStepParameter(string type, string name, string regexPattern = null)
+        public AnalyzedStepParameter(string type, string name, string regexPattern = null, string cucumberExpressionTypeName = null, string wrapText = "")
         {
-            this.Type = type;
-            this.Name = name;
-            this.RegexPattern = regexPattern;
+            Type = type;
+            Name = name;
+            RegexPattern = regexPattern;
+            CucumberExpressionTypeName = cucumberExpressionTypeName;
+            WrapText = wrapText;
         }
     }
 
@@ -33,7 +37,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
     public class StepTextAnalyzer : IStepTextAnalyzer
     {
-        private List<string> usedParameterNames = new List<string>();
+        private readonly List<string> usedParameterNames = new();
+
         public AnalyzedStepText Analyze(string stepText, CultureInfo bindingCulture)
         {
             var result = new AnalyzedStepText();
@@ -51,57 +56,55 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 if (paramMatch.Capture.Index < textIndex)
                     continue;
 
-                const string singleQuoteRegexPattern = "[^']*";
-                const string doubleQuoteRegexPattern = "[^\"\"]*";
+                const string singleQuoteRegexPattern = ".*"; // earlier it was "[^']*"
+                const string doubleQuoteRegexPattern = ".*"; // earlier it was "[^\"\"]*"
                 const string defaultRegexPattern = ".*";
 
                 string regexPattern = defaultRegexPattern;
                 string value = paramMatch.Capture.Value;
                 int index = paramMatch.Capture.Index;
+                string wrapText = "";
 
-                switch (value.Substring(0, 1))
+                switch (value.Substring(0, Math.Min(value.Length, 1)))
                 {
                     case "\"":
                         regexPattern = doubleQuoteRegexPattern;
                         value = value.Substring(1, value.Length - 2);
-                        index++;
+                        wrapText = "\"";
                         break;
                     case "'":
                         regexPattern = singleQuoteRegexPattern;
                         value = value.Substring(1, value.Length - 2);
-                        index++;
+                        wrapText = "'";
                         break;
                 }
 
                 result.TextParts.Add(stepText.Substring(textIndex, index - textIndex));
-                result.Parameters.Add(AnalyzeParameter(value, bindingCulture, result.Parameters.Count, regexPattern, paramMatch.ParameterType));
-                textIndex = index + value.Length;
+                result.Parameters.Add(AnalyzeParameter(value, bindingCulture, result.Parameters.Count, regexPattern, paramMatch.ParameterType, wrapText));
+                textIndex = index + paramMatch.Capture.Length;
             }
 
             result.TextParts.Add(stepText.Substring(textIndex));
             return result;
         }
 
-        private AnalyzedStepParameter AnalyzeParameter(string value, CultureInfo bindingCulture, int paramIndex, string regexPattern, ParameterType parameterType)
+        private AnalyzedStepParameter AnalyzeParameter(string value, CultureInfo bindingCulture, int paramIndex, string regexPattern, ParameterType parameterType, string wrapText)
         {
             string paramName = StepParameterNameGenerator.GenerateParameterName(value, paramIndex, usedParameterNames);
 
-            int intParamValue;
-            if (parameterType == ParameterType.Int && int.TryParse(value, NumberStyles.Integer, bindingCulture, out intParamValue))
-                return new AnalyzedStepParameter("Int32", paramName, regexPattern);
+            if (parameterType == ParameterType.Int && int.TryParse(value, NumberStyles.Integer, bindingCulture, out _))
+                return new AnalyzedStepParameter("Int32", paramName, regexPattern, "int", wrapText);
 
-            decimal decimalParamValue;
-            if (parameterType == ParameterType.Decimal && decimal.TryParse(value, NumberStyles.Number, bindingCulture, out decimalParamValue))
-                return new AnalyzedStepParameter("Decimal", paramName, regexPattern);
+            if (parameterType == ParameterType.Decimal && decimal.TryParse(value, NumberStyles.Number, bindingCulture, out _))
+                return new AnalyzedStepParameter("Decimal", paramName, regexPattern, "float", wrapText);
 
-            DateTime dateParamValue;
-            if (parameterType == ParameterType.Date && DateTime.TryParse(value, bindingCulture, DateTimeStyles.AllowWhiteSpaces, out dateParamValue))
-                return new AnalyzedStepParameter("DateTime", paramName, regexPattern);
+            if (parameterType == ParameterType.Date && DateTime.TryParse(value, bindingCulture, DateTimeStyles.AllowWhiteSpaces, out _))
+                return new AnalyzedStepParameter("DateTime", paramName, regexPattern, "DateTime", wrapText);
 
-            return new AnalyzedStepParameter("String", paramName, regexPattern);
+            return new AnalyzedStepParameter("String", paramName, regexPattern, "string", wrapText);
         }
 
-        private static readonly Regex quotesRe = new Regex(@"""+(?<param>.*?)""+|'+(?<param>.*?)'+|(?<param>\<.*?\>)");
+        private static readonly Regex quotesRe = new Regex(@"(?<param>"".*?"")|(?<param>'.*?')|(?<param>\<.*?\>)");
         private IEnumerable<CaptureWithContext> RecognizeQuotedTexts(string stepText)
         {
             return quotesRe.Matches(stepText)
@@ -119,7 +122,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         private IEnumerable<CaptureWithContext> RecognizeDecimals(string stepText, CultureInfo bindingCulture)
         {
-            Regex decimalRe = new Regex(string.Format(@"-?\d+{0}\d+", bindingCulture.NumberFormat.NumberDecimalSeparator));
+            Regex decimalRe = new Regex($@"-?\d+{bindingCulture.NumberFormat.NumberDecimalSeparator}\d+");
             return decimalRe.Matches(stepText).ToCaptureWithContext(ParameterType.Decimal);
         }
 

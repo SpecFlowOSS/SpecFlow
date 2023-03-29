@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
         private const string IrrelevantKey = "Irrelevant";
         private readonly Type IrrelevantType = typeof(object);
-        
+
         public DateTimeOffsetValueRetrieverTests()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
@@ -70,22 +70,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Returns_the_date_when_value_represents_a_valid_date()
         {
             var date1 = new DateTime(2011, 1, 1);
-            Retrieve_correct_value("2011-01-01", new DateTimeOffset(2011, 1, 1, 0, 0, 0, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
-            Retrieve_correct_nullable_value("2011-01-01", new DateTimeOffset(2011, 1, 1, 0, 0, 0, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
+            Retrieve_correct_value("2011-01-01", new DateTimeOffset(2011, 1, 1, 0, 0, 0, TimeZoneInfo.Local.GetUtcOffset(date1)));
+            Retrieve_correct_nullable_value("2011-01-01", new DateTimeOffset(2011, 1, 1, 0, 0, 0, TimeZoneInfo.Local.GetUtcOffset(date1)));
             var date2 = new DateTime(2013, 12, 5);
-            Retrieve_correct_value("2013-12-05", new DateTimeOffset(2013, 12, 5, 0, 0, 0, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
-            Retrieve_correct_nullable_value("2013-12-05", new DateTimeOffset(2013, 12, 5, 0, 0, 0, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
+            Retrieve_correct_value("2013-12-05", new DateTimeOffset(2013, 12, 5, 0, 0, 0, TimeZoneInfo.Local.GetUtcOffset(date2)));
+            Retrieve_correct_nullable_value("2013-12-05", new DateTimeOffset(2013, 12, 5, 0, 0, 0, TimeZoneInfo.Local.GetUtcOffset(date2)));
         }
 
         [Fact]
         public void Returns_the_date_and_time_when_value_represents_a_valid_datetime()
         {
             var date1 = new DateTime(2011, 1, 1);
-            Retrieve_correct_value("2011-01-01 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
-            Retrieve_correct_nullable_value("2011-01-01 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
+            Retrieve_correct_value("2011-01-01 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZoneInfo.Local.GetUtcOffset(date1)));
+            Retrieve_correct_nullable_value("2011-01-01 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZoneInfo.Local.GetUtcOffset(date1)));
             var date2 = new DateTime(2011, 1, 1);
-            Retrieve_correct_value("2011-01-01 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
-            Retrieve_correct_nullable_value("2011-01-01 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
+            Retrieve_correct_value("2011-01-01 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZoneInfo.Local.GetUtcOffset(date2)));
+            Retrieve_correct_nullable_value("2011-01-01 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZoneInfo.Local.GetUtcOffset(date2)));
         }
 
         [Fact]
@@ -94,11 +94,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR", false);
 
 			var date1 = new DateTime(2011, 5, 1);
-            Retrieve_correct_value("01/05/2011 15:16:17", new DateTimeOffset(2011, 5, 1, 15, 16, 17, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
-            Retrieve_correct_nullable_value("01/05/2011 15:16:17", new DateTimeOffset(2011, 5, 1, 15, 16, 17, TimeZone.CurrentTimeZone.GetUtcOffset(date1)));
+            Retrieve_correct_value("01/05/2011 15:16:17", new DateTimeOffset(2011, 5, 1, 15, 16, 17, TimeZoneInfo.Local.GetUtcOffset(date1)));
+            Retrieve_correct_nullable_value("01/05/2011 15:16:17", new DateTimeOffset(2011, 5, 1, 15, 16, 17, TimeZoneInfo.Local.GetUtcOffset(date1)));
 		    var date2 = new DateTime(2011, 5, 1);
-            Retrieve_correct_value("01/05/2011 5:6:7", new DateTimeOffset(2011, 5, 1, 5, 6, 7, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
-            Retrieve_correct_nullable_value("01/05/2011 5:6:7", new DateTimeOffset(2011, 5, 1, 5, 6, 7, TimeZone.CurrentTimeZone.GetUtcOffset(date2)));
+            Retrieve_correct_value("01/05/2011 5:6:7", new DateTimeOffset(2011, 5, 1, 5, 6, 7, TimeZoneInfo.Local.GetUtcOffset(date2)));
+            Retrieve_correct_nullable_value("01/05/2011 5:6:7", new DateTimeOffset(2011, 5, 1, 5, 6, 7, TimeZoneInfo.Local.GetUtcOffset(date2)));
 		}
 
 		[Fact]
@@ -112,6 +112,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             Retrieve_correct_nullable_value("Thursday", DateTimeOffset.MinValue);
             Retrieve_correct_value("Friday too", DateTimeOffset.MinValue);
             Retrieve_correct_nullable_value("Friday too", DateTimeOffset.MinValue);
+        }
+
+        [Fact]
+        public void Uses_provided_styles()
+        {
+            var oldStyle = DateTimeOffsetValueRetriever.DateTimeStyles;
+            try
+            {
+                DateTimeOffsetValueRetriever.DateTimeStyles = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
+
+                Retrieve_correct_value("1/1/2011 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZoneInfo.Utc.BaseUtcOffset));
+                Retrieve_correct_nullable_value("1/1/2011 15:16:17", new DateTimeOffset(2011, 1, 1, 15, 16, 17, TimeZoneInfo.Utc.BaseUtcOffset));
+                Retrieve_correct_value("1/1/2011 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZoneInfo.Utc.BaseUtcOffset));
+                Retrieve_correct_nullable_value("1/1/2011 5:6:7", new DateTimeOffset(2011, 1, 1, 5, 6, 7, TimeZoneInfo.Utc.BaseUtcOffset));
+            }
+            finally
+            {
+                DateTimeOffsetValueRetriever.DateTimeStyles = oldStyle;
+            }
         }
     }
 }

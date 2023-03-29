@@ -14,12 +14,24 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- Because templates trigger NU5128, because they need a targetframework, but don't have files in the lib folder for it-->
+    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
+    <MetaTemplate Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
     <Compile Remove="**\*" />
-    <None Include="$(SolutionDir)specflow-icon.png" Pack="true" PackagePath="images"/>
+    <Content Include="templates\SpecFlowProject\Drivers\Driver.cs" />
+    <Content Include="templates\SpecFlowProject\Hooks\Hook.cs" />
+    <Content Include="templates\SpecFlowProject\Steps\CalculatorStepDefinitions.cs" />
+    <Content Include="templates\specflow-feature\.template.config\template.json" />
+    <Content Include="templates\specflow-json\.template.config\template.json" />
+    <Content Include="templates\specflow-plus-profile\.template.config\template.json" />
+    <Content Include="templates\SpecFlowProject\.template.config\dotnetcli.host.json" />
+    <Content Include="templates\SpecFlowProject\.template.config\template.json" />
+    <None Include="$(SolutionDir)specflow-icon.png" Pack="true" PackagePath="images" />
+    <None Include="templates\SpecFlowProject\Template.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,4 +62,11 @@
     </Content>
   </ItemGroup>
 
-</Project>
+  <Target Name="PopulateMetaTemplate" AfterTargets="CoreCompile">
+    <WriteLinesToFile File="$(OutDir)\templates\%(MetaTemplate.RecursiveDir)\%(MetaTemplate.FileName)%(MetaTemplate.Extension)" Lines="$([System.IO.File]::ReadAllText(%(MetaTemplate.FullPath)).Replace('$$$NuGetPackageVersion$$$',$(NuGetPackageVersion)).Replace('$$$MajorMinorVersion$$$',$(MajorMinorVersion)))" Overwrite="true" />
+      <ItemGroup>
+        <Content Include="$(OutDir)\templates\**\*" PackagePath="content" />
+      </ItemGroup>
+  </Target>
+  
+</Project> 

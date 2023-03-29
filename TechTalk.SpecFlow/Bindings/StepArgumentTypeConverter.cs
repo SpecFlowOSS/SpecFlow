@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
@@ -10,20 +11,14 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IStepArgumentTypeConverter
-    {
-        object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
-        bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
-    }
-
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
     {
         private readonly ITestTracer testTracer;
         private readonly IBindingRegistry bindingRegistry;
         private readonly IContextManager contextManager;
-        private readonly IBindingInvoker bindingInvoker;
+        private readonly IAsyncBindingInvoker bindingInvoker;
 
-        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager, IBindingInvoker bindingInvoker)
+        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager, IAsyncBindingInvoker bindingInvoker)
         {
             this.testTracer = testTracer;
             this.bindingRegistry = bindingRegistry;
@@ -36,86 +31,98 @@ namespace TechTalk.SpecFlow.Bindings
             var stepTransformations = bindingRegistry.GetStepTransformations().Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
             if (stepTransformations.Length > 1 && traceWarning)
             {
-                testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));
+                testTracer.TraceWarning($"Multiple step transformation matches to the input ({value}, target type: {typeToConvertTo}). We use the first.");
             }
 
             return stepTransformations.Length > 0 ? stepTransformations[0] : null;
         }
 
-        public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
+        public async Task<object> ConvertAsync(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
-            if (value == null) throw new ArgumentNullException("value");
-            
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
             if (stepTransformation != null)
-                return DoTransform(stepTransformation, value, cultureInfo);
+                return await DoTransformAsync(stepTransformation, value, cultureInfo);
 
-            var convertToType = typeToConvertTo as RuntimeBindingType;
-            if (convertToType != null && convertToType.Type.IsAssignableFrom(value.GetType()))
+            if (typeToConvertTo is RuntimeBindingType convertToType && convertToType.Type.IsInstanceOfType(value))
                 return value;
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        private object DoTransform(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
+        private async Task<object> DoTransformAsync(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
         {
             object[] arguments;
-            if (stepTransformation.Regex != null && value is string)
-                arguments = GetStepTransformationArgumentsFromRegex(stepTransformation, (string)value, cultureInfo);
+            if (stepTransformation.Regex != null && value is string stringValue)
+                arguments = await GetStepTransformationArgumentsFromRegexAsync(stepTransformation, stringValue, cultureInfo);
             else
-                arguments = new object[] {value};
+                arguments = new[] {value};
 
-            TimeSpan duration;
-            return bindingInvoker.InvokeBinding(stepTransformation, contextManager, arguments, testTracer, out duration);
+            var result = await bindingInvoker.InvokeBindingAsync(stepTransformation, contextManager, arguments, testTracer, new DurationHolder());
+
+            return result;
         }
 
-        private object[] GetStepTransformationArgumentsFromRegex(IStepArgumentTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)
+        private async Task<object[]> GetStepTransformationArgumentsFromRegexAsync(IStepArgumentTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)
         {
             var match = stepTransformation.Regex.Match(stepSnippet);
-            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToList();
             var bindingParameters = stepTransformation.Method.Parameters.ToArray();
-            return argumentStrings
-                .Select((arg, argIndex) => this.Convert(arg, bindingParameters[argIndex].Type, cultureInfo))
-                .ToArray();
+            
+            var result = new object[argumentStrings.Count];
+
+            for (int i = 0; i < argumentStrings.Count; i++)
+            {
+                result[i] = await ConvertAsync(argumentStrings[i], bindingParameters[i].Type, cultureInfo);
+            }
+
+            return result;
         }
 
         public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
-            if (value == null) throw new ArgumentNullException("value");           
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, false);
             if (stepTransformation != null)
                 return true;
 
-            var convertToType = typeToConvertTo as RuntimeBindingType;
-            if (convertToType != null && convertToType.Type.IsAssignableFrom(value.GetType()))
+            if (typeToConvertTo is RuntimeBindingType convertToType && convertToType.Type.IsInstanceOfType(value))
                 return true;
 
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object value, IBindingType typeToConvertTo)
+        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object valueToConvert, IBindingType typeToConvertTo)
         {
-            if (!stepTransformationBinding.Method.ReturnType.TypeEquals(typeToConvertTo))
+            var awaitableReturnType = stepTransformationBinding.Method.GetAwaitableReturnType();
+            if (!awaitableReturnType.TypeEquals(typeToConvertTo))
                 return false;
 
-            if (stepTransformationBinding.Regex != null && value is string)
-                return stepTransformationBinding.Regex.IsMatch((string) value);
-            return true;
+            if (stepTransformationBinding.Regex != null && valueToConvert is string stringValue)
+                return stepTransformationBinding.Regex.IsMatch(stringValue);
+
+            var transformationFirstArgumentTypeName = stepTransformationBinding.Method.Parameters.FirstOrDefault()?.Type.FullName;
+
+            var isTableStepTransformation = transformationFirstArgumentTypeName == typeof(Table).FullName;
+            var valueIsTable = valueToConvert is Table;
+
+            return isTableStepTransformation == valueIsTable;
         }
 
         private static object ConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
         {
-            if (!(typeToConvertTo is RuntimeBindingType))
+            if (typeToConvertTo is not RuntimeBindingType runtimeBindingType)
                 throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
 
-            return ConvertSimple(((RuntimeBindingType) typeToConvertTo).Type, value, cultureInfo);
+            return ConvertSimple(runtimeBindingType.Type, value, cultureInfo);
         }
 
         private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
-            if (typeToConvertTo.IsEnum && value is string)
-                return ConvertToAnEnum(typeToConvertTo, (string) value);
+            if (typeToConvertTo.IsEnum && value is string stringValue)
+                return ConvertToAnEnum(typeToConvertTo, stringValue);
 
             if (typeToConvertTo == typeof(Guid?) && string.IsNullOrEmpty(value as string))
                 return null;
@@ -123,15 +130,15 @@ namespace TechTalk.SpecFlow.Bindings
             if (typeToConvertTo == typeof(Guid) || typeToConvertTo == typeof(Guid?))
                 return new GuidValueRetriever().GetValue(value as string);
 
-            return TryConvertWithTypeConverter(typeToConvertTo, value, cultureInfo, out var convertedValue) 
-                ? convertedValue : 
+            return TryConvertWithTypeConverter(typeToConvertTo, value, cultureInfo, out var convertedValue)
+                ? convertedValue :
                 System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
         }
 
         private static bool TryConvertWithTypeConverter(Type typeToConvertTo, object value, CultureInfo cultureInfo, out object result)
         {
             var typeConverter = TypeDescriptor.GetConverter(typeToConvertTo);
-            
+
             if (typeConverter.CanConvertFrom(value.GetType()))
             {
                 try

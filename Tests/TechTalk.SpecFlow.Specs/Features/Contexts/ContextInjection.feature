@@ -37,7 +37,7 @@ Background:
 		{
 			private object _lock = new object();
 
-			public DisposableContext(TechTalk.SpecFlow.Infrastructure.ISpecFlowOutputHelper outputHelper)
+			public DisposableContext(ISpecFlowOutputHelper outputHelper)
 			{
 				outputHelper.WriteLine("DisposableContext");
 			}

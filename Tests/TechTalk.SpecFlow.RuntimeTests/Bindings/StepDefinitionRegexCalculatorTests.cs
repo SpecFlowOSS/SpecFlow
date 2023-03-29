@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         private Regex AssertRegex(string regexText)
         {
             regexText.Should().NotBeNullOrWhiteSpace("null, empty or whitespace-only regex is not valid for step definitions");
-            return RegexFactory.Create(regexText); // uses the same regex creation as real step definitions
+            return RegexFactory.CreateRegexForBindings(regexText); // uses the same regex creation as real step definitions
         }
 
         private Regex CallCalculateRegexFromMethodAndAssertRegex(StepDefinitionRegexCalculator sut, StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod)
@@ -54,6 +54,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         {
             var match = regex.Match(text);
             match.Success.Should().BeTrue("the calculated regex ({0}) should match text <{1}>", regex.ToString().Replace("{", "<").Replace("}", ">"), text);
+            return match;
+        }
+
+        private Match AssertDoesNotMatch(Regex regex, string text)
+        {
+            var match = regex.Match(text);
+            match.Success.Should().BeFalse("the calculated regex ({0}) should not match text <{1}>", regex.ToString().Replace("{", "<").Replace("}", ">"), text);
             return match;
         }
 
@@ -75,6 +82,34 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
                 CreateBindingMethod(methodName));
 
             AssertMatches(result, "I do something");
+        }
+
+        [Theory]
+        [InlineData("When_I_do")]
+        [InlineData("WhenIDo")]
+        [InlineData("When_do_something")]
+        [InlineData("WhenDoSomething")]
+        [InlineData("When_do")]
+        public void DoesNotRecognizeSubstringMatch(string methodName)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When, 
+                CreateBindingMethod(methodName));
+
+            AssertDoesNotMatch(result, "I do something");
+        }
+
+        [Theory]
+        [InlineData("Given_the_feature_file_source_is_specified_as_the_list_of_files")]
+        public void DoesNotRecognizeSubstringMatchX(string methodName)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When, 
+                CreateBindingMethod(methodName));
+
+            AssertDoesNotMatch(result, "the feature file source is specified as the list of files from STDIN");
         }
 
         [Theory]

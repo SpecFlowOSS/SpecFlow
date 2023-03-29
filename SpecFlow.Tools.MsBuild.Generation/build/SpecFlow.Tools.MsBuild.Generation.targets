@@ -79,7 +79,9 @@
   <Target Name="AfterGenerateSpecFlowCodeBehindFiles">
     <!-- include any generated SpecFlow files in the compilation of the project if not included yet -->
     <ItemGroup>
-      <EmbeddedResource Include="@(SpecFlowFeatureFiles)" />
+      <EmbeddedResource Include="@(SpecFlowFeatureFiles)">
+        <LogicalName>%(SpecFlowFeatureFiles.Identity)</LogicalName>
+      </EmbeddedResource>
     </ItemGroup>
   </Target>
 </Project>

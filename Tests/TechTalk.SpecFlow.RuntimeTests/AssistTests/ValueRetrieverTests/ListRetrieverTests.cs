@@ -20,6 +20,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                 typeof(ICollection<>),
                 typeof(IList<>),
                 typeof(List<>),
+                typeof(IReadOnlyList<>),
+                typeof(IReadOnlyCollection<>),
             };
             
             return propertyTypeDefinitions.Select(x => x.MakeGenericType(valueType));

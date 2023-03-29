@@ -15,11 +15,12 @@
 
   <Target Name="CopySpecFlowJsonToOutput" >
 
-    <ItemGroup>
-      <None Condition="'%(None.Filename)' == 'specflow.json'" >
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        <Visible>true</Visible>
-      </None>
+    <PropertyGroup>
+      <SpecFlowJson>specflow.json</SpecFlowJson>
+    </PropertyGroup>
+
+    <ItemGroup Condition="Exists($(SpecFlowJson))">
+      <None Include="$(SpecFlowJson)" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
   </Target>

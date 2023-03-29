@@ -1,6 +1,5 @@
 ﻿using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.TestProjectGenerator;
-using TechTalk.SpecFlow.TestProjectGenerator.CucumberMessages;
 using TechTalk.SpecFlow.TestProjectGenerator.Driver;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -10,20 +9,17 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly ConfigurationDriver _configurationDriver;
         private readonly XmlConfigurationParserDriver _xmlConfigurationParserDriver;
-        private readonly JsonConfigurationLoaderDriver _jsonConfigurationLoaderDriver;
         private readonly ConfigurationLoaderDriver _configurationLoaderDriver;
         private readonly TestSuiteSetupDriver _testSuiteSetupDriver;
 
         public SpecFlowConfigurationSteps(
             ConfigurationDriver configurationDriver,
             XmlConfigurationParserDriver xmlConfigurationParserDriver,
-            JsonConfigurationLoaderDriver jsonConfigurationLoaderDriver,
             ConfigurationLoaderDriver configurationLoaderDriver,
             TestSuiteSetupDriver testSuiteSetupDriver)
         {
             _configurationDriver = configurationDriver;
             _xmlConfigurationParserDriver = xmlConfigurationParserDriver;
-            _jsonConfigurationLoaderDriver = jsonConfigurationLoaderDriver;
             _configurationLoaderDriver = configurationLoaderDriver;
             _testSuiteSetupDriver = testSuiteSetupDriver;
         }
@@ -99,6 +95,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void GivenTheTypeIsRegisteredAsInSpecFlowRuntimeConfiguration(string typeName, string interfaceName)
         {
             _configurationDriver.AddRuntimeRegisterDependency(typeName, interfaceName);
+        }
+        
+        [Given(@"there is a scenario")]
+        public void GivenThereIsAScenario()
+        {
+            _testSuiteSetupDriver.AddScenarios(1);
         }
     }
 }

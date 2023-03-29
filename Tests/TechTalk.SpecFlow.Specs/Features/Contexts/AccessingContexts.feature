@@ -1,5 +1,24 @@
 ﻿Feature: Accessing Contexts
 
+Scenario: The obsolete ScenarioContext.Current can be accessed from a non-parallel execution
+	Given the following step definition
+		"""
+		[When(@"the ScenarioContext.Current is accessed")]
+		public void WhenTheScenarioContextCurrentIsAccessed()
+		{
+			if (ScenarioContext.Current == null)
+				throw new Exception("ScenarioContext.Current is null"); 						 
+		}
+		"""
+	And a scenario 'Sample scenario' as
+		"""	
+		When the ScenarioContext.Current is accessed
+		"""
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |
+
 Scenario: Should be able to inject ScenarioContext
 	Given the following binding class
         """

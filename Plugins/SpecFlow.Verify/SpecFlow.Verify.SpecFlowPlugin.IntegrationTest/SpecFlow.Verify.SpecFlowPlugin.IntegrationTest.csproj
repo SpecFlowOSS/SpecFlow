@@ -1,0 +1,69 @@
+﻿<Project>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="..\..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>true</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Verify.Xunit" Version="17.7.0" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Plugins\TechTalk.SpecFlow.xUnit.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.SpecFlowPlugin.csproj" />
+    <ProjectReference Include="..\SpecFlow.Verify.SpecFlowPlugin\SpecFlow.Verify.SpecFlowPlugin.csproj" />
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <PropertyGroup>
+    <_SpecFlow_Needed_MSBuildGenerator Condition=" '$(MSBuildRuntimeType)' == 'Core'">$(SpecFlow_Core_Generator_TFM)</_SpecFlow_Needed_MSBuildGenerator>
+    <_SpecFlow_Needed_MSBuildGenerator Condition=" '$(MSBuildRuntimeType)' != 'Core'">$(SpecFlow_FullFramework_Generator_TFM)</_SpecFlow_Needed_MSBuildGenerator>
+  </PropertyGroup>
+
+  <Target Name="PreBuild">
+    <MSBuild Projects="..\..\..\SpecFlow.Tools.MsBuild.Generation\SpecFlow.Tools.MsBuild.Generation.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
+    <MSBuild Projects="..\..\..\Plugins\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
+    <MSBuild Projects="..\SpecFlow.Verify.SpecFlowPlugin\SpecFlow.Verify.SpecFlowPlugin.csproj" ContinueOnError="false" Properties="TargetFramework=$(_SpecFlow_Needed_MSBuildGenerator)" />
+  </Target>
+
+  <ItemGroup>
+    <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\SpecFlow.Verify.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\SpecFlow.Verify.SpecFlowPlugin.dll" />
+    <SpecFlowGeneratorPlugins Include="$(MSBuildThisFileDirectory)..\..\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\TechTalk.SpecFlow.xUnit.Generator.SpecFlowPlugin.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\" />
+    <Folder Include="StepDefinitions\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <_SpecFlow_TaskAssembly>..\..\SpecFlow.Tools.MsBuild.Generation\bin\$(Configuration)\$(_SpecFlow_Needed_MSBuildGenerator)\SpecFlow.Tools.MsBuild.Generation.dll</_SpecFlow_TaskAssembly>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\SpecFlow.Tools.MsBuild.Generation\build\SpecFlow.Tools.MsBuild.Generation.targets" />
+  <!-- has to be before the PropertyGroup change-->
+  <PropertyGroup>
+    <BuildDependsOn>
+      PreBuild;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+    <RebuildDependsOn>
+      PreBuild;
+      $(RebuildDependsOn)
+    </RebuildDependsOn>
+  </PropertyGroup>
+</Project>

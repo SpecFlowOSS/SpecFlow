@@ -1,64 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow.ErrorHandling;
-using TechTalk.SpecFlow.Tracing;
+﻿using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public interface IRuntimeBindingSourceProcessor : IBindingSourceProcessor
     {
-        void BuildingCompleted();
+        void RegisterTypeLoadError(string errorMessage);
     }
 
     public class RuntimeBindingSourceProcessor : BindingSourceProcessor, IRuntimeBindingSourceProcessor
     {
-        private readonly IBindingRegistry bindingRegistry;
-        private readonly IErrorProvider errorProvider;
-        private readonly ITestTracer testTracer;
+        private readonly IBindingRegistry _bindingRegistry;
+        private readonly ITestTracer _testTracer;
 
-        public RuntimeBindingSourceProcessor(IBindingFactory bindingFactory, IBindingRegistry bindingRegistry, IErrorProvider errorProvider, ITestTracer testTracer) : base(bindingFactory)
+        public RuntimeBindingSourceProcessor(IBindingFactory bindingFactory, IBindingRegistry bindingRegistry, ITestTracer testTracer) : base(bindingFactory)
         {
-            this.bindingRegistry = bindingRegistry;
-            this.errorProvider = errorProvider;
-            this.testTracer = testTracer;
+            _bindingRegistry = bindingRegistry;
+            _testTracer = testTracer;
         }
 
         protected override void ProcessStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
         {
-            bindingRegistry.RegisterStepDefinitionBinding(stepDefinitionBinding);
+            _bindingRegistry.RegisterStepDefinitionBinding(stepDefinitionBinding);
         }
 
         protected override void ProcessHookBinding(IHookBinding hookBinding)
         {
-            bindingRegistry.RegisterHookBinding(hookBinding);
+            _bindingRegistry.RegisterHookBinding(hookBinding);
         }
 
         protected override void ProcessStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
         {
-            bindingRegistry.RegisterStepArgumentTransformationBinding(stepArgumentTransformationBinding);
+            _bindingRegistry.RegisterStepArgumentTransformationBinding(stepArgumentTransformationBinding);
         }
 
-        protected override bool OnValidationError(string messageFormat, params object[] arguments)
+        protected override void OnValidationError(BindingValidationResult validationResult, bool genericBindingError)
         {
-            testTracer.TraceWarning("Invalid binding: " + string.Format(messageFormat, arguments));
-            return false; //TODO: currently this is a warning only (hence return false), in v2 this will be changed
+            if (validationResult.IsValid)
+                return;
+
+            foreach (string errorMessage in validationResult.ErrorMessages)
+            {
+                _testTracer.TraceWarning($"Invalid binding: {errorMessage}");
+                if (genericBindingError)
+                    _bindingRegistry.RegisterGenericBindingError(new BindingError(BindingErrorType.BindingError, errorMessage));
+            }
+
+            base.OnValidationError(validationResult, genericBindingError);
         }
 
-        protected override bool ValidateHook(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute hookAttribute, HookType hookType)
+        public override void BuildingCompleted()
         {
-            //TODO: this call will be refactored when binding error detecttion will be improved in v2 - currently implemented here for backwards compatibility
-            if (!IsScenarioSpecificHook(hookType) &&
-                !bindingSourceMethod.IsStatic)
-                throw errorProvider.GetNonStaticEventError(bindingSourceMethod.BindingMethod);
-
-            return base.ValidateHook(bindingSourceMethod, hookAttribute, hookType);
+            base.BuildingCompleted();
+            _bindingRegistry.Ready = true;
         }
 
-        public void BuildingCompleted()
+        public void RegisterTypeLoadError(string errorMessage)
         {
-            bindingRegistry.Ready = true;
+            _bindingRegistry.RegisterGenericBindingError(new BindingError(BindingErrorType.TypeLoadError, errorMessage));
         }
     }
 }

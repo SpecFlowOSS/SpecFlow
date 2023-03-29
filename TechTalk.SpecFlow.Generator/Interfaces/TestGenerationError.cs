@@ -47,22 +47,10 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
                    $"\tBaseDirectory: {AppDomain.CurrentDomain.BaseDirectory}" + Environment.NewLine +
                    Environment.NewLine +
                    "Loaded Assemblies:" + Environment.NewLine +
-                   "Fullname | Location | Codebase" + Environment.NewLine +
-                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {TryGetLocation(a)} | {TryGetCodeBase(a)}").OrderBy(s => s)) + Environment.NewLine +
+                   "Fullname | Location" + Environment.NewLine +
+                   string.Join(Environment.NewLine, AppDomain.CurrentDomain.GetAssemblies().Select(a => $"{a.FullName} | {TryGetLocation(a)}").OrderBy(s => s)) + Environment.NewLine +
                    Environment.NewLine +
                    ex;
-        }
-
-        private static string TryGetCodeBase(Assembly a)
-        {
-            try
-            {
-                return a.CodeBase;
-            }
-            catch (Exception )
-            {
-                return "unknown";
-            }
         }
 
         private static string TryGetLocation(Assembly a)

@@ -1,8 +1,8 @@
 parameters:
   name: ''
   pool: ''
-  nugetVersion: 5.1.0
-  sdkVersion: 3.1.201
+  nugetVersion: 5.8.0
+  net6SdkVersion: 6.0.x
   artifactFileName: ''
   appInsightsInstrumentationKey: ''
   publishArtifacts: true
@@ -14,26 +14,37 @@ jobs:
   - checkout: self
     submodules: true 
     clean: true
+    
+  - task: CmdLine@2
+    displayName: 'git log'
+    inputs:
+      script: 'git log -2'
 
   - task: NuGetToolInstaller@0
     displayName: 'Use NuGet'
     inputs:
       versionSpec: ${{ parameters.nugetVersion }}
-
   
   - task: UseDotNet@2
-    displayName: 'Use .NET Core SDK'
+    displayName: 'Use .NET 6 SDK'
     inputs:
       packageType: sdk
-      version: ${{ parameters.sdkVersion }}
+      version: ${{ parameters.net6SdkVersion }}
       includePreviewVersions: true
 
   - task: PowerShell@2
+    displayName: 'dotnet --info'
     inputs:
       targetType: Inline
       pwsh: true
       script: dotnet --info
-
+      
+  - task: PowerShell@2
+    inputs:
+      targetType: Inline
+      pwsh: true
+      script: dotnet restore --configfile $(Build.SourcesDirectory)\nuget.config
+    displayName: 'dotnet restore' 
 
   - task: PowerShell@2
     inputs: 
@@ -41,8 +52,7 @@ jobs:
       workingDirectory: ./
       arguments: Debug -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
-
-    displayName: 'restore & build Debug'
+    displayName: 'build Debug'
 
   - task: PowerShell@2
     inputs: 
@@ -50,27 +60,34 @@ jobs:
       workingDirectory: ./
       arguments: Release -appInsightsInstrumentationKey '${{ parameters.appInsightsInstrumentationKey }}'
       pwsh: true
-
-    displayName: 'restore & build Release'
-
+    displayName: 'build Release'
+     
   - task: ArchiveFiles@2
     displayName: 'Archive $(Build.SourcesDirectory)'
-    condition: ${{ parameters.publishArtifacts}}
+    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)'
-
       archiveFile: ${{ parameters.artifactFileName }} 
-
-
+      
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: SpecFlow.CI-BuildResult'
-    condition: ${{ parameters.publishArtifacts}}
+    displayName: 'Publish Artifact: SpecFlow.CI-Sources'
+    condition: and(succeeded(), ${{ parameters.publishArtifacts}})
     inputs:
       PathtoPublish: ${{ parameters.artifactFileName }} 
       artifactType: container
-      ArtifactName: 'SpecFlow.CI-BuildResult'
-
-  - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@19
-    displayName: 'WhiteSource Bolt'
+      ArtifactName: 'SpecFlow.CI-BuildResult-${{ parameters.name }}'
+      
+  - task: CopyFiles@2
+    displayName: 'Copy binlogs'
+    condition: ${{ parameters.publishArtifacts}}
     inputs:
-      advance: true 
+      contents: '$(Build.SourcesDirectory)/*.binlog'
+      targetFolder:  '$(Build.SourcesDirectory)/binlogs'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: SpecFlow.CI-Binlogs'
+    condition: ${{ parameters.publishArtifacts}}
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/binlogs'
+      artifactType: container
+      ArtifactName: 'SpecFlow.CI-Binlogs-${{ parameters.name }}'

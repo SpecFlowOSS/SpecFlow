@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 
@@ -7,11 +9,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     public class BindingSourceProcessorStub : BindingSourceProcessor, IRuntimeBindingSourceProcessor
     {
-        public readonly List<IStepDefinitionBinding> StepDefinitionBindings = new List<IStepDefinitionBinding>();
-        public readonly List<IHookBinding> HookBindings = new List<IHookBinding>();
-        public readonly List<IStepArgumentTransformationBinding> StepArgumentTransformationBindings = new List<IStepArgumentTransformationBinding>();
+        public readonly List<IStepDefinitionBinding> StepDefinitionBindings = new();
+        public readonly List<IHookBinding> HookBindings = new();
+        public readonly List<IStepArgumentTransformationBinding> StepArgumentTransformationBindings = new();
+        public readonly List<string> GeneralErrorMessages = new();
+        public readonly List<string> BindingSpecificErrorMessages = new();
 
-        public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(ConfigurationLoader.GetDefault())))
+        public IEnumerable<string> ValidationErrors => GeneralErrorMessages.Concat(BindingSpecificErrorMessages);
+
+        public BindingSourceProcessorStub() : base(new BindingFactory(new StepDefinitionRegexCalculator(ConfigurationLoader.GetDefault()), new CucumberExpressionStepDefinitionBindingBuilderFactory(new CucumberExpressionParameterTypeRegistry(new BindingRegistry()))))
         {
         }
 
@@ -30,9 +36,17 @@ namespace TechTalk.SpecFlow.RuntimeTests
             StepArgumentTransformationBindings.Add(stepArgumentTransformationBinding);
         }
 
-        public void BuildingCompleted()
+        protected override void OnValidationError(BindingValidationResult validationResult, bool genericBindingError)
         {
-            //nop
+            if (genericBindingError)
+                GeneralErrorMessages.AddRange(validationResult.ErrorMessages);
+            else
+                BindingSpecificErrorMessages.AddRange(validationResult.ErrorMessages);
+        }
+
+        public void RegisterTypeLoadError(string errorMessage)
+        {
+            GeneralErrorMessages.Add(errorMessage);
         }
     }
 }

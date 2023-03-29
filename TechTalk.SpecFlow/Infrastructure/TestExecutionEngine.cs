@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Threading.Tasks;
 using BoDi;
-using Io.Cucumber.Messages;
 using TechTalk.SpecFlow.Analytics;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.CommonModels;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.CucumberMessages;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Events;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -21,20 +19,14 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public class TestExecutionEngine : ITestExecutionEngine
     {
-        private readonly IBindingInvoker _bindingInvoker;
+        private readonly IAsyncBindingInvoker _bindingInvoker;
         private readonly IBindingRegistry _bindingRegistry;
         private readonly IContextManager _contextManager;
         private readonly IErrorProvider _errorProvider;
         private readonly IObsoleteStepHandler _obsoleteStepHandler;
-        private readonly ICucumberMessageSender _cucumberMessageSender;
-        private readonly ITestResultFactory _testResultFactory;
-        private readonly ITestPendingMessageFactory _testPendingMessageFactory;
-        private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
-        private readonly ITestRunResultCollector _testRunResultCollector;
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly IStepDefinitionMatchService _stepDefinitionMatchService;
-        private readonly IStepErrorHandler[] _stepErrorHandlers;
         private readonly IStepFormatter _stepFormatter;
         private readonly ITestObjectResolver _testObjectResolver;
         private readonly ITestTracer _testTracer;
@@ -43,14 +35,13 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IAnalyticsTransmitter _analyticsTransmitter;
         private readonly ITestRunnerManager _testRunnerManager;
         private readonly IRuntimePluginTestExecutionLifecycleEventEmitter _runtimePluginTestExecutionLifecycleEventEmitter;
-        private CultureInfo _defaultBindingCulture = CultureInfo.CurrentCulture;
-
-        private ProgrammingLanguage _defaultTargetLanguage = ProgrammingLanguage.CSharp;
+        private readonly ITestThreadExecutionEventPublisher _testThreadExecutionEventPublisher;
+        private readonly ITestPendingMessageFactory _testPendingMessageFactory;
+        private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
+        private readonly object _testRunnerEndExecutedLock = new object();
 
         private bool _testRunnerEndExecuted = false;
-        private object _testRunnerEndExecutedLock = new object();
         private bool _testRunnerStartExecuted = false;
-        
 
         public TestExecutionEngine(
             IStepFormatter stepFormatter,
@@ -62,18 +53,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             IUnitTestRuntimeProvider unitTestRuntimeProvider,
             IContextManager contextManager,
             IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers,
-            IBindingInvoker bindingInvoker,
+            IAsyncBindingInvoker bindingInvoker,
             IObsoleteStepHandler obsoleteStepHandler,
-            ICucumberMessageSender cucumberMessageSender,
-            ITestResultFactory testResultFactory,
-            ITestPendingMessageFactory testPendingMessageFactory,
-            ITestUndefinedMessageFactory testUndefinedMessageFactory,
-            ITestRunResultCollector testRunResultCollector, 
-            IAnalyticsEventProvider analyticsEventProvider, 
-            IAnalyticsTransmitter analyticsTransmitter, 
+            IAnalyticsEventProvider analyticsEventProvider,
+            IAnalyticsTransmitter analyticsTransmitter,
             ITestRunnerManager testRunnerManager,
             IRuntimePluginTestExecutionLifecycleEventEmitter runtimePluginTestExecutionLifecycleEventEmitter,
+            ITestThreadExecutionEventPublisher testThreadExecutionEventPublisher,
+            ITestPendingMessageFactory testPendingMessageFactory,
+            ITestUndefinedMessageFactory testUndefinedMessageFactory,
             ITestObjectResolver testObjectResolver = null,
             IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
@@ -86,51 +74,52 @@ namespace TechTalk.SpecFlow.Infrastructure
             _testTracer = testTracer;
             _stepFormatter = stepFormatter;
             _stepArgumentTypeConverter = stepArgumentTypeConverter;
-            _stepErrorHandlers = stepErrorHandlers?.Values.ToArray();
             _stepDefinitionMatchService = stepDefinitionMatchService;
             _testObjectResolver = testObjectResolver;
             TestThreadContainer = testThreadContainer;
             _obsoleteStepHandler = obsoleteStepHandler;
-            _cucumberMessageSender = cucumberMessageSender;
-            _testResultFactory = testResultFactory;
-            _testPendingMessageFactory = testPendingMessageFactory;
-            _testUndefinedMessageFactory = testUndefinedMessageFactory;
-            _testRunResultCollector = testRunResultCollector;
             _analyticsEventProvider = analyticsEventProvider;
             _analyticsTransmitter = analyticsTransmitter;
             _testRunnerManager = testRunnerManager;
             _runtimePluginTestExecutionLifecycleEventEmitter = runtimePluginTestExecutionLifecycleEventEmitter;
+            _testThreadExecutionEventPublisher = testThreadExecutionEventPublisher;
+            _testPendingMessageFactory = testPendingMessageFactory;
+            _testUndefinedMessageFactory = testUndefinedMessageFactory;
         }
 
         public FeatureContext FeatureContext => _contextManager.FeatureContext;
 
         public ScenarioContext ScenarioContext => _contextManager.ScenarioContext;
 
-        public virtual void OnTestRunStart()
+        public virtual async Task OnTestRunStartAsync()
         {
             if (_testRunnerStartExecuted)
             {
                 return;
             }
 
-            try
+            if (_analyticsTransmitter.IsEnabled)
             {
-                var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
-                var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
-                _analyticsTransmitter.TransmitSpecFlowProjectRunningEvent(projectRunningEvent);
-            }
-            catch (Exception)
-            {
-                // catch all exceptions since we do not want to break anything
+                try
+                {
+                    var testAssemblyName = _testRunnerManager.TestAssembly.GetName().Name;
+                    var projectRunningEvent = _analyticsEventProvider.CreateProjectRunningEvent(testAssemblyName);
+                    await _analyticsTransmitter.TransmitSpecFlowProjectRunningEventAsync(projectRunningEvent);
+                }
+                catch (Exception)
+                {
+                    // catch all exceptions since we do not want to break anything
+                }
             }
 
             _testRunnerStartExecuted = true;
-            _cucumberMessageSender.SendTestRunStarted();
-            _testRunResultCollector.StartCollecting();
-            FireEvents(HookType.BeforeTestRun);
+
+            _testThreadExecutionEventPublisher.PublishEvent(new TestRunStartedEvent());
+
+            await FireEventsAsync(HookType.BeforeTestRun);
         }
 
-        public virtual void OnTestRunEnd()
+        public virtual async Task OnTestRunEndAsync()
         {
             lock (_testRunnerEndExecutedLock)
             {
@@ -142,44 +131,39 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testRunnerEndExecuted = true;
             }
 
-            var testRunResultResult = _testRunResultCollector.GetCurrentResult();
-
-            if (testRunResultResult is ISuccess<TestRunResult> success)
-            {
-                _cucumberMessageSender.SendTestRunFinished(success.Result);
-            }
-
-            FireEvents(HookType.AfterTestRun);
+            await FireEventsAsync(HookType.AfterTestRun);
+            
+            _testThreadExecutionEventPublisher.PublishEvent(new TestRunFinishedEvent());
         }
 
-        public virtual void OnFeatureStart(FeatureInfo featureInfo)
+        public virtual async Task OnFeatureStartAsync(FeatureInfo featureInfo)
         {
-            // if the unit test provider would execute the fixture teardown code 
-            // only delayed (at the end of the execution), we automatically close 
+            // if the unit test provider would execute the fixture teardown code
+            // only delayed (at the end of the execution), we automatically close
             // the current feature if necessary
             if (_unitTestRuntimeProvider.DelayedFixtureTearDown && FeatureContext != null)
             {
-                OnFeatureEnd();
+                await OnFeatureEndAsync();
             }
 
 
             _contextManager.InitializeFeatureContext(featureInfo);
 
-            _defaultBindingCulture = FeatureContext.BindingCulture;
-            _defaultTargetLanguage = featureInfo.GenerationTargetLanguage;
-            FireEvents(HookType.BeforeFeature);
+            _testThreadExecutionEventPublisher.PublishEvent(new FeatureStartedEvent(FeatureContext));
+
+            await FireEventsAsync(HookType.BeforeFeature);
         }
 
-        public virtual void OnFeatureEnd()
+        public virtual async Task OnFeatureEndAsync()
         {
-            // if the unit test provider would execute the fixture teardown code 
-            // only delayed (at the end of the execution), we ignore the 
+            // if the unit test provider would execute the fixture teardown code
+            // only delayed (at the end of the execution), we ignore the
             // feature-end call, if the feature has been closed already
             if (_unitTestRuntimeProvider.DelayedFixtureTearDown &&
                 FeatureContext == null)
                 return;
 
-            FireEvents(HookType.AfterFeature);
+            await FireEventsAsync(HookType.AfterFeature);
 
             if (_specFlowConfiguration.TraceTimings)
             {
@@ -187,6 +171,8 @@ namespace TechTalk.SpecFlow.Infrastructure
                 var duration = FeatureContext.Stopwatch.Elapsed;
                 _testTracer.TraceDuration(duration, "Feature: " + FeatureContext.FeatureInfo.Title);
             }
+
+            _testThreadExecutionEventPublisher.PublishEvent(new FeatureFinishedEvent(FeatureContext));
 
             _contextManager.CleanupFeatureContext();
         }
@@ -196,15 +182,27 @@ namespace TechTalk.SpecFlow.Infrastructure
             _contextManager.InitializeScenarioContext(scenarioInfo);
         }
 
-        public virtual void OnScenarioStart()
+        public virtual async Task OnScenarioStartAsync()
         {
-            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
-            FireScenarioEvents(HookType.BeforeScenario);
+            _testThreadExecutionEventPublisher.PublishEvent(new ScenarioStartedEvent(FeatureContext, ScenarioContext));
+
+            try
+            {
+                await FireScenarioEventsAsync(HookType.BeforeScenario);
+            }
+            catch (Exception ex)
+            {
+                if (_contextManager.ScenarioContext != null)
+                {
+                    _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
+                    _contextManager.ScenarioContext.TestError = ex;
+                }
+            }
         }
 
-        public virtual void OnAfterLastStep()
+        public virtual async Task OnAfterLastStepAsync()
         {
-            HandleBlockSwitch(ScenarioBlock.None);
+            await HandleBlockSwitchAsync(ScenarioBlock.None);
 
             if (_specFlowConfiguration.TraceTimings)
             {
@@ -213,42 +211,20 @@ namespace TechTalk.SpecFlow.Infrastructure
                 _testTracer.TraceDuration(duration, "Scenario: " + _contextManager.ScenarioContext.ScenarioInfo.Title);
             }
 
-            var testResultResult = _testResultFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
-            switch (testResultResult)
+            switch (_contextManager.ScenarioContext.ScenarioExecutionStatus)
             {
-                case ISuccess<TestResult> success:
-                    _cucumberMessageSender.SendTestCaseFinished(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
-                    _testRunResultCollector.CollectTestResultForScenario(_contextManager.ScenarioContext.ScenarioInfo, success.Result);
-                    break;
-
-                case IFailure failure:
-                    _testTracer.TraceWarning(failure.ToString());
-                    break;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
-            {
-                return;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.Skipped)
-            {
-                _unitTestRuntimeProvider.TestIgnore("Scenario ignored using @Ignore tag");
-                return;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.StepDefinitionPending)
-            {
-                string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
-                _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, pendingStepExceptionMessage);
-                return;
-            }
-
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.UndefinedStep)
-            {
-                string undefinedStepExceptionMessage = _testUndefinedMessageFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
-                _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, undefinedStepExceptionMessage);
-                return;
+                case ScenarioExecutionStatus.OK: return;
+                case ScenarioExecutionStatus.Skipped:
+                    _unitTestRuntimeProvider.TestIgnore("Scenario ignored using @Ignore tag");
+                    return;
+                case ScenarioExecutionStatus.StepDefinitionPending:
+                    string pendingStepExceptionMessage = _testPendingMessageFactory.BuildFromScenarioContext(_contextManager.ScenarioContext);
+                    _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, pendingStepExceptionMessage);
+                    return;
+                case ScenarioExecutionStatus.UndefinedStep:
+                    string undefinedStepExceptionMessage = _testUndefinedMessageFactory.BuildFromContext(_contextManager.ScenarioContext, _contextManager.FeatureContext);
+                    _errorProvider.ThrowPendingError(_contextManager.ScenarioContext.ScenarioExecutionStatus, undefinedStepExceptionMessage);
+                    return;
             }
 
             if (_contextManager.ScenarioContext.TestError == null)
@@ -260,21 +236,30 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw _contextManager.ScenarioContext.TestError;
         }
 
-        public virtual void OnScenarioEnd()
+        public virtual async Task OnScenarioEndAsync()
         {
-            if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
+            try
             {
-                FireScenarioEvents(HookType.AfterScenario);
+                if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
+                {
+                    await FireScenarioEventsAsync(HookType.AfterScenario);
+                }
+                _testThreadExecutionEventPublisher.PublishEvent(new ScenarioFinishedEvent(FeatureContext, ScenarioContext));
             }
-
-            _contextManager.CleanupScenarioContext();
+            finally
+            {
+                _contextManager.CleanupScenarioContext();
+            }
         }
 
         public virtual void OnScenarioSkipped()
         {
             // after discussing the placement of message sending points, this placement causes far less effort than rewriting the whole logic
-            _cucumberMessageSender.SendTestCaseStarted(_contextManager.ScenarioContext.ScenarioInfo);
             _contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.Skipped;
+
+            // in case of skipping a Scenario, the OnScenarioStart() is not called, so publish the event here
+            _testThreadExecutionEventPublisher.PublishEvent(new ScenarioStartedEvent(FeatureContext, ScenarioContext));
+            _testThreadExecutionEventPublisher.PublishEvent(new ScenarioSkippedEvent());
         }
 
         public virtual void Pending()
@@ -282,34 +267,38 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw _errorProvider.GetPendingStepDefinitionError();
         }
 
-        protected virtual void OnBlockStart(ScenarioBlock block)
+        protected virtual async Task OnBlockStartAsync(ScenarioBlock block)
         {
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(HookType.BeforeScenarioBlock);
+            await FireScenarioEventsAsync(HookType.BeforeScenarioBlock);
         }
 
-        protected virtual void OnBlockEnd(ScenarioBlock block)
+        protected virtual async Task OnBlockEndAsync(ScenarioBlock block)
         {
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(HookType.AfterScenarioBlock);
+            await FireScenarioEventsAsync(HookType.AfterScenarioBlock);
         }
 
-        protected virtual void OnStepStart()
+        protected virtual async Task OnStepStartAsync()
         {
-            FireScenarioEvents(HookType.BeforeStep);
+            await FireScenarioEventsAsync(HookType.BeforeStep);
         }
 
-        protected virtual void OnStepEnd()
+        protected virtual async Task OnStepEndAsync()
         {
-            FireScenarioEvents(HookType.AfterStep);
+            await FireScenarioEventsAsync(HookType.AfterStep);
         }
+        
         protected virtual void OnSkipStep()
         {
+            _contextManager.StepContext.Status = ScenarioExecutionStatus.Skipped;
             _testTracer.TraceStepSkipped();
+            _testThreadExecutionEventPublisher.PublishEvent(new StepSkippedEvent());
+
 
             var skippedStepHandlers = _contextManager.ScenarioContext.ScenarioContainer.ResolveAll<ISkippedStepHandler>().ToArray();
             foreach (var skippedStepHandler in skippedStepHandlers)
@@ -320,13 +309,14 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         #region Step/event execution
 
-        protected virtual void FireScenarioEvents(HookType bindingEvent)
+        protected virtual async Task FireScenarioEventsAsync(HookType bindingEvent)
         {
-            FireEvents(bindingEvent);
+            await FireEventsAsync(bindingEvent);
         }
 
-        private void FireEvents(HookType hookType)
+        private async Task FireEventsAsync(HookType hookType)
         {
+            _testThreadExecutionEventPublisher.PublishEvent(new HookStartedEvent(hookType, FeatureContext, ScenarioContext, _contextManager.StepContext));
             var stepContext = _contextManager.GetStepContext();
 
             var matchingHooks = _bindingRegistry.GetHooks(hookType)
@@ -334,34 +324,61 @@ namespace TechTalk.SpecFlow.Infrastructure
                                       hookBinding.BindingScope.Match(stepContext, out int _));
 
             //HACK: The InvokeHook requires an IHookBinding that contains the scope as well
-            // if multiple scopes mathching for the same method, we take the first one. 
+            // if multiple scopes match the same method, we take the first one.
             // The InvokeHook uses only the Method anyway...
-            // The only problem could be if the same method is decorated with hook attributes using different order, 
+            // The only problem could be if the same method is decorated with hook attributes using different order,
             // but in this case it is anyway impossible to tell the right ordering.
             var uniqueMatchingHooks = matchingHooks.GroupBy(hookBinding => hookBinding.Method).Select(g => g.First());
-            foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
+            Exception hookException = null;
+            try
             {
-                InvokeHook(_bindingInvoker, hookBinding, hookType);
+                //Note: if a (user-)hook throws an exception the subsequent hooks of the same type are not executed
+                foreach (var hookBinding in uniqueMatchingHooks.OrderBy(x => x.HookOrder))
+                {
+                    await InvokeHookAsync(_bindingInvoker, hookBinding, hookType);
+                }
+            }
+            catch (Exception hookExceptionCaught)
+            {
+                hookException = hookExceptionCaught;
+                SetHookError(hookType, hookException);
             }
 
+            //Note: plugin-hooks are still executed even if a user-hook failed with an exception
+            //A plugin-hook should not throw an exception under normal circumstances, exceptions are not handled/caught here
             FireRuntimePluginTestExecutionLifecycleEvents(hookType);
+
+            _testThreadExecutionEventPublisher.PublishEvent(new HookFinishedEvent(hookType, FeatureContext, ScenarioContext, _contextManager.StepContext, hookException));
+
+            //Note: the (user-)hook exception (if any) will be thrown after the plugin hooks executed to fail the test with the right error
+            if (hookException != null) ExceptionDispatchInfo.Capture(hookException).Throw();
         }
 
         private void FireRuntimePluginTestExecutionLifecycleEvents(HookType hookType)
         {
             //We pass a container corresponding the type of event
             var container = GetHookContainer(hookType);
-            _runtimePluginTestExecutionLifecycleEventEmitter.RasiseExecutionLifecycleEvent(hookType, container);
+            _runtimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent(hookType, container);
         }
 
         protected IObjectContainer TestThreadContainer { get; }
 
-        public virtual void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        public virtual async Task InvokeHookAsync(IAsyncBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
         {
             var currentContainer = GetHookContainer(hookType);
             var arguments = ResolveArguments(hookBinding, currentContainer);
 
-            invoker.InvokeBinding(hookBinding, _contextManager, arguments, _testTracer, out _);
+            _testThreadExecutionEventPublisher.PublishEvent(new HookBindingStartedEvent(hookBinding));
+            var durationHolder = new DurationHolder();
+
+            try
+            {
+                await invoker.InvokeBindingAsync(hookBinding, _contextManager, arguments, _testTracer, durationHolder);
+            }
+            finally
+            {
+                _testThreadExecutionEventPublisher.PublishEvent(new HookBindingFinishedEvent(hookBinding, durationHolder.Duration));
+            }
         }
 
         private IObjectContainer GetHookContainer(HookType hookType)
@@ -385,6 +402,33 @@ namespace TechTalk.SpecFlow.Infrastructure
             return currentContainer;
         }
 
+        private SpecFlowContext GetHookContext(HookType hookType)
+        {
+            switch (hookType)
+            {
+                case HookType.BeforeTestRun:
+                case HookType.AfterTestRun:
+                    return _contextManager.TestThreadContext;
+                case HookType.BeforeFeature:
+                case HookType.AfterFeature:
+                    return _contextManager.FeatureContext;
+                default: // scenario scoped hooks
+                    return _contextManager.ScenarioContext;
+            }
+        }
+
+        private void SetHookError(HookType hookType, Exception hookException)
+        {
+            var context = GetHookContext(hookType);
+            if (context != null && context.TestError == null)
+                context.TestError = hookException;
+
+            if (context is ScenarioContext scenarioContext)
+            {
+                scenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
+            }
+        }
+
         private object[] ResolveArguments(IHookBinding hookBinding, IObjectContainer currentContainer)
         {
             if (hookBinding.Method == null || !hookBinding.Method.Parameters.Any())
@@ -397,16 +441,18 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (container == null) throw new ArgumentNullException(nameof(container));
             if (parameter == null) throw new ArgumentNullException(nameof(parameter));
 
-            var runtimeParameterType = parameter.Type as RuntimeBindingType;
-            if (runtimeParameterType == null)
-                throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
+            if (parameter.Type is RuntimeBindingType runtimeParameterType)
+            {
+                return _testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
+            }
 
-            return _testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
+            throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
+
         }
 
-        private void ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
+        private async Task ExecuteStepAsync(IContextManager contextManager, StepInstance stepInstance)
         {
-            HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
+            await HandleBlockSwitchAsync(stepInstance.StepDefinitionType.ToScenarioBlock());
 
             _testTracer.TraceStep(stepInstance, true);
 
@@ -415,12 +461,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             BindingMatch match = null;
             object[] arguments = null;
+            var durationHolder = new DurationHolder();
             try
             {
                 match = GetStepMatch(stepInstance);
                 contextManager.StepContext.StepInfo.BindingMatch = match;
                 contextManager.StepContext.StepInfo.StepInstance = stepInstance;
-                arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
                 {
@@ -428,13 +474,14 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
                 else
                 {
+                    arguments = await GetExecuteArgumentsAsync(match);
                     _obsoleteStepHandler.Handle(match);
 
                     onStepStartExecuted = true;
-                    OnStepStart();
-                    TimeSpan duration = ExecuteStepMatch(match, arguments);
+                    await OnStepStartAsync();
+                    await ExecuteStepMatchAsync(match, arguments, durationHolder);
                     if (_specFlowConfiguration.TraceSuccessfulSteps)
-                        _testTracer.TraceStepDone(match, arguments, duration);
+                        _testTracer.TraceStepDone(match, arguments, durationHolder.Duration);
                 }
             }
             catch (PendingStepException)
@@ -446,32 +493,23 @@ namespace TechTalk.SpecFlow.Infrastructure
                 contextManager.ScenarioContext.PendingSteps.Add(
                     _stepFormatter.GetMatchText(match, arguments));
 
-                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.StepDefinitionPending)
-                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.StepDefinitionPending;
+                UpdateStatusOnStepFailure(ScenarioExecutionStatus.StepDefinitionPending, null);
             }
             catch (MissingStepDefinitionException)
             {
-                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.UndefinedStep)
-                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.UndefinedStep;
+                UpdateStatusOnStepFailure(ScenarioExecutionStatus.UndefinedStep, null);
             }
             catch (BindingException ex)
             {
                 _testTracer.TraceBindingError(ex);
-                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.BindingError)
-                {
-                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.BindingError;
-                    contextManager.ScenarioContext.TestError = ex;
-                }
+                UpdateStatusOnStepFailure(ScenarioExecutionStatus.BindingError, ex);
+
             }
             catch (Exception ex)
             {
-                _testTracer.TraceError(ex);
+                _testTracer.TraceError(ex, durationHolder.Duration);
 
-                if (contextManager.ScenarioContext.ScenarioExecutionStatus < ScenarioExecutionStatus.TestError)
-                {
-                    contextManager.ScenarioContext.ScenarioExecutionStatus = ScenarioExecutionStatus.TestError;
-                    contextManager.ScenarioContext.TestError = ex;
-                }
+                UpdateStatusOnStepFailure(ScenarioExecutionStatus.TestError, ex);
 
                 if (_specFlowConfiguration.StopAtFirstError)
                     throw;
@@ -480,13 +518,31 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 if (onStepStartExecuted)
                 {
-                    OnStepEnd();
+                    await OnStepEndAsync();
+                }
+            }
+        }
+
+        private void UpdateStatusOnStepFailure(ScenarioExecutionStatus stepStatus, Exception exception)
+        {
+            _contextManager.StepContext.Status = stepStatus;
+
+            if (_contextManager.ScenarioContext.ScenarioExecutionStatus < stepStatus)
+            {
+                _contextManager.ScenarioContext.ScenarioExecutionStatus = stepStatus;
+
+                if (exception != null)
+                {
+                    _contextManager.ScenarioContext.TestError = exception;
                 }
             }
         }
 
         protected virtual BindingMatch GetStepMatch(StepInstance stepInstance)
         {
+            if (!_bindingRegistry.IsValid)
+                throw _errorProvider.GetInvalidBindingRegistryError(_bindingRegistry.GetErrorMessages());
+
             var match = _stepDefinitionMatchService.GetBestMatch(stepInstance, FeatureContext.BindingCulture, out var ambiguityReason, out var candidatingMatches);
 
             if (match.Success)
@@ -497,7 +553,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (ambiguityReason == StepDefinitionAmbiguityReason.AmbiguousSteps)
                     throw _errorProvider.GetAmbiguousMatchError(candidatingMatches, stepInstance);
 
-                if (ambiguityReason == StepDefinitionAmbiguityReason.ParameterErrors) // ambiguouity, because of param error
+                if (ambiguityReason == StepDefinitionAmbiguityReason.ParameterErrors) // ambiguity, because of param error
                     throw _errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
 
@@ -506,34 +562,21 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw _errorProvider.GetMissingStepDefinitionError();
         }
 
-        protected virtual TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        protected virtual async Task ExecuteStepMatchAsync(BindingMatch match, object[] arguments, DurationHolder durationHolder)
         {
-            TimeSpan duration = TimeSpan.Zero;
+            _testThreadExecutionEventPublisher.PublishEvent(new StepBindingStartedEvent(match.StepBinding));
+            
             try
             {
-                _bindingInvoker.InvokeBinding(match.StepBinding, _contextManager, arguments, _testTracer, out duration);
+                await _bindingInvoker.InvokeBindingAsync(match.StepBinding, _contextManager, arguments, _testTracer, durationHolder);
             }
-            catch (Exception ex)
+            finally
             {
-                if (_stepErrorHandlers != null)
-                {
-                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepContext, ex);
-                    foreach (var stepErrorHandler in _stepErrorHandlers)
-                    {
-                        stepErrorHandler.OnStepFailure(this, stepFailureEventArgs);
-                    }
-
-                    if (stepFailureEventArgs.IsHandled)
-                        return duration;
-                }
-
-                throw;
+                _testThreadExecutionEventPublisher.PublishEvent(new StepBindingFinishedEvent(match.StepBinding, durationHolder.Duration));
             }
-
-            return duration;
         }
 
-        private void HandleBlockSwitch(ScenarioBlock block)
+        private async Task HandleBlockSwitchAsync(ScenarioBlock block)
         {
             if (_contextManager == null)
             {
@@ -548,53 +591,59 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (_contextManager.ScenarioContext.CurrentScenarioBlock != block)
             {
                 if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
-                    OnBlockEnd(_contextManager.ScenarioContext.CurrentScenarioBlock);
+                    await OnBlockEndAsync(_contextManager.ScenarioContext.CurrentScenarioBlock);
 
                 _contextManager.ScenarioContext.CurrentScenarioBlock = block;
 
                 if (_contextManager.ScenarioContext.ScenarioExecutionStatus == ScenarioExecutionStatus.OK)
-                    OnBlockStart(_contextManager.ScenarioContext.CurrentScenarioBlock);
+                    await OnBlockStartAsync(_contextManager.ScenarioContext.CurrentScenarioBlock);
             }
         }
 
-        private object[] GetExecuteArguments(BindingMatch match)
+        private async Task<object[]> GetExecuteArgumentsAsync(BindingMatch match)
         {
             var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
             if (match.Arguments.Length != bindingParameters.Length)
                 throw _errorProvider.GetParameterCountError(match, match.Arguments.Length);
 
-            var arguments = match.Arguments.Select(
-                    (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
-                .ToArray();
+            var arguments = new object[match.Arguments.Length];
+
+            for (var i = 0; i < match.Arguments.Length; i++)
+            {
+                arguments[i] = await ConvertArg(match.Arguments[i], bindingParameters[i].Type);
+            }
 
             return arguments;
         }
 
-        private object ConvertArg(object value, IBindingType typeToConvertTo)
+        private async Task<object> ConvertArg(object value, IBindingType typeToConvertTo)
         {
             Debug.Assert(value != null);
             Debug.Assert(typeToConvertTo != null);
 
-            return _stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
+            return await _stepArgumentTypeConverter.ConvertAsync(value, typeToConvertTo, FeatureContext.BindingCulture);
         }
 
         #endregion
 
         #region Given-When-Then
 
-        public virtual void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
+        public virtual async Task StepAsync(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
         {
             StepDefinitionType stepDefinitionType = stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But
                 ? GetCurrentBindingType()
                 : (StepDefinitionType) stepDefinitionKeyword;
             _contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg));
+            _testThreadExecutionEventPublisher.PublishEvent(new StepStartedEvent(FeatureContext, ScenarioContext, _contextManager.StepContext));
+
             try
             {
                 var stepInstance = new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, _contextManager.GetStepContext());
-                ExecuteStep(_contextManager, stepInstance);
+                await ExecuteStepAsync(_contextManager, stepInstance);
             }
             finally
             {
+                _testThreadExecutionEventPublisher.PublishEvent(new StepFinishedEvent(FeatureContext, ScenarioContext, _contextManager.StepContext));
                 _contextManager.CleanupStepContext();
             }
         }

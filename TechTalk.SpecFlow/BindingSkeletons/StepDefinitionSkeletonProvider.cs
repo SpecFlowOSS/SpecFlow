@@ -46,17 +46,48 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         public virtual string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style, CultureInfo bindingCulture)
         {
-            var withRegex = style == StepDefinitionSkeletonStyle.RegexAttribute;
-            var template = templateProvider.GetStepDefinitionTemplate(language, withRegex);
+            var withExpression = style == StepDefinitionSkeletonStyle.RegexAttribute || style == StepDefinitionSkeletonStyle.CucumberExpressionAttribute;
+            var template = templateProvider.GetStepDefinitionTemplate(language, withExpression);
             var analyzedStepText = Analyze(stepInstance, bindingCulture);
             //{attribute}/{regex}/{methodName}/{parameters}
             return ApplyTemplate(template, new
                                                {
-                                                   attribute = stepInstance.StepDefinitionType, 
-                                                   regex = withRegex ? GetRegex(analyzedStepText) : "", 
-                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style, language), 
+                                                   attribute = stepInstance.StepDefinitionType,
+                                                   expression = withExpression ? GetExpression(analyzedStepText, style, language) : "",
+                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style, language),
                                                    parameters = string.Join(", ", analyzedStepText.Parameters.Select(p => ToDeclaration(language, p)).ToArray())
                                                });
+        }
+
+        private string GetExpression(AnalyzedStepText analyzedStepText, StepDefinitionSkeletonStyle style, ProgrammingLanguage programmingLanguage)
+        {
+            switch (style)
+            {
+                case StepDefinitionSkeletonStyle.RegexAttribute:
+                    var regex = GetRegex(analyzedStepText);
+                    var stringPrefix = programmingLanguage == ProgrammingLanguage.VB ? "" : "@";
+                    return $"{stringPrefix}\"{regex}\"";
+                case StepDefinitionSkeletonStyle.CucumberExpressionAttribute:
+                    var cucumberExpression = GetCucumberExpression(analyzedStepText);
+                    return $"\"{cucumberExpression}\"";
+                default: 
+                    return "";
+            }
+        }
+
+        private string GetCucumberExpression(AnalyzedStepText stepText)
+        {
+            StringBuilder result = new StringBuilder();
+
+            result.Append(EscapeRegex(stepText.TextParts[0]));
+            for (int i = 1; i < stepText.TextParts.Count; i++)
+            {
+                var parameter = stepText.Parameters[i - 1];
+                result.AppendFormat("{{{0}}}", parameter.CucumberExpressionTypeName ?? parameter.Type);
+                result.Append(EscapeRegex(stepText.TextParts[i]));
+            }
+
+            return result.ToString();
         }
 
         private AnalyzedStepText Analyze(StepInstance stepInstance, CultureInfo bindingCulture)
@@ -69,7 +100,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return result;
         }
 
-        static private readonly Regex wordRe = new Regex(@"[\w]+");
+        private static readonly Regex wordRe = new Regex(@"[\w]+");
         private IEnumerable<string> GetWords(string text)
         {
             return wordRe.Matches(text).Cast<Match>().Select(m => m.Value);
@@ -81,6 +112,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             switch (style)
             {
                 case StepDefinitionSkeletonStyle.RegexAttribute:
+                case StepDefinitionSkeletonStyle.CucumberExpressionAttribute:
                     return keyword.ToIdentifier() + string.Concat(analyzedStepText.TextParts.ToArray()).ToIdentifier();
                 case StepDefinitionSkeletonStyle.MethodNameUnderscores:
                     return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsUnderscored, "_{0}");
@@ -134,12 +166,15 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         {
             StringBuilder result = new StringBuilder();
 
+            result.Append("^");
             result.Append(EscapeRegex(stepText.TextParts[0]));
             for (int i = 1; i < stepText.TextParts.Count; i++)
             {
-                result.AppendFormat("({0})", stepText.Parameters[i-1].RegexPattern);
+                var parameter = stepText.Parameters[i - 1];
+                result.Append($"{parameter.WrapText}({parameter.RegexPattern}){parameter.WrapText}");
                 result.Append(EscapeRegex(stepText.TextParts[i]));
             }
+            result.Append("$");
 
             return result.ToString();
         }
@@ -156,41 +191,32 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         private string ToDeclaration(ProgrammingLanguage language, AnalyzedStepParameter parameter)
         {
-            switch (language)
+            return language switch
             {
-                case ProgrammingLanguage.VB:
-                    return String.Format("ByVal {0} As {1}", Keywords.EscapeVBKeyword(parameter.Name), parameter.Type);
-                case ProgrammingLanguage.CSharp:
-                    return String.Format("{1} {0}", Keywords.EscapeCSharpKeyword(parameter.Name), GetCSharpTypeName(parameter.Type));
-                case ProgrammingLanguage.FSharp:
-                    return String.Format("{0} : {1}", Keywords.EscapeFSharpKeyword(parameter.Name), GetFSharpTypeName(parameter.Type));
-                default:
-                    return String.Format("{1} {0}", parameter.Name, parameter.Type);
-            }
+                ProgrammingLanguage.VB => $"ByVal {Keywords.EscapeVBKeyword(parameter.Name)} As {parameter.Type}",
+                ProgrammingLanguage.CSharp => $"{GetCSharpTypeName(parameter.Type)} {Keywords.EscapeCSharpKeyword(parameter.Name)}",
+                ProgrammingLanguage.FSharp => $"{Keywords.EscapeFSharpKeyword(parameter.Name)} : {GetFSharpTypeName(parameter.Type)}",
+                _ => $"{parameter.Type} {parameter.Name}"
+            };
         }
 
         private string GetCSharpTypeName(string type)
         {
-            switch (type)
+            return type switch
             {
-                case "String":
-                    return "string";
-                case "Int32":
-                    return "int";
-                default:
-                    return type;
-            }
+                "String" => "string",
+                "Int32" => "int",
+                _ => type
+            };
         }
 
         private string GetFSharpTypeName(string type)
         {
-            switch (type)
+            return type switch
             {
-                case "String":
-                    return "string";
-                default:
-                    return type;
-            }
+                "String" => "string",
+                _ => type
+            };
         }
     }
 }

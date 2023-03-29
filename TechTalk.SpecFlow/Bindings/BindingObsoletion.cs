@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private const string defaultObsoletionMessage = "it is marked with ObsoleteAttribute but no custom message was provided.";
 
-        private string message;
-        private string methodName;
+        private readonly string message;
+        private readonly string methodName;
 
         public BindingObsoletion(IStepDefinitionBinding stepBinding)
         {
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 IsObsolete = true;
                 message = possibleObsoletionAttribute.Message ?? defaultObsoletionMessage;
-                methodName = stepBinding?.Method.Name;
+                methodName = stepBinding.Method.Name;
             }
         }
 

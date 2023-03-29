@@ -19,7 +19,7 @@ import sys, os
 # -- Project information -----------------------------------------------------
 
 project = ''
-copyright = '2020, The SpecFlow Team'
+copyright = '2021, The SpecFlow Team'
 author = 'The SpecFlow Team'
 
 
@@ -28,7 +28,7 @@ author = 'The SpecFlow Team'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark',  "sphinx_rtd_theme",  "sphinx_markdown_tables", "sphinx_search.extension", "sphinx_sitemap_dev"]
+extensions = ['recommonmark',  "sphinx_rtd_theme",  "sphinx_markdown_tables", "sphinx_search.extension", "sphinx_sitemap_dev",'sphinx_copybutton','sphinx_tabs.tabs']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -52,16 +52,18 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_theme_options = {
     'logo_only': True,
-    'style_nav_header_background': '#e9e7ee',
+    'style_nav_header_background': '#F4F7FD',
     'analytics_id':'UA-11088967-5'
 }
 html_logo = '_static/logo.png'
 html_css_files = [
-    'css/custom.css'
+    'css/custom.css',
+    'css/copybutton.css'
 ]
 
 html_js_files = [
     'js/hotjar.js',
+    'js/serversidetracking.js'
 ]
 
 html_baseurl = 'https://docs.specflow.org/projects/specflow/'

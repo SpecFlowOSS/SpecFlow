@@ -92,9 +92,11 @@ Tags are markers that can be assigned to features and scenarios. Assigning a tag
 
 If supported by the [unit test framework](../Installation/Unit-Test-Providers.md), SpecFlow generates categories from the tags. The generated category name is the same as the tag's name, but without the leading `@`. You can filter and group the tests to be executed using these unit test categories. For example, you can tag crucial tests with `@important`, and then execute these tests more frequently.
 
-If your unit test framework does not support categories, you can still use tags to implement special logic for tagged scenarios in [bindings](../Bindings/Bindings.md) by querying the `ScenarioContext.Current.ScenarioInfo.Tags` property.
+If your unit test framework does not support categories, you can still use tags to implement special logic for tagged scenarios in [bindings](../Bindings/Bindings.md) by querying the `ScenarioContext.ScenarioInfo.Tags` property.
 
-SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test](../Execution/Test-Result.html#ignored-tests) method from scenarios with this tag.
+Scenario, Rule and Feature level tags are available by querying the `ScenarioInfo.CombinedTags` property.
+
+SpecFlow treats the `@ignore` tag as a special tag. SpecFlow generates an [ignored unit test](../Execution/Test-Results.html#ignored-tests) method from scenarios with this tag.
 
 ### Descriptions
 
@@ -108,12 +110,15 @@ You can write anything you like, as long as no line starts with a keyword.
 The (optional) `Rule` keyword has been part of Gherkin since v6. 
 
 **Support in SpecFlow**
-Currently the Visual Studio Extension does not support the `Rule` keyword. If you use it, your syntax highlighting will be broken.
+
+To be able to work with rules in Visual Studio, you have to use Visual Studio 2022 or use the "Deveroom" extension for Visual Studio 2017 and 2019. Otherwise the syntax highlighting will be broken.
 
 The purpose of the `Rule` keyword is to represent one *business rule* that should be implemented.
 It provides additional information for a feature.
 A `Rule` is used to group together several scenarios
 that belong to this *business rule*. A `Rule` should contain one or more scenarios that illustrate the particular rule.
+
+From SpecFlow v4, you can also add tags on rules that will be inherited to all scenarios within that rule (like feature tags).
 
 For example:
 
@@ -134,6 +139,7 @@ Feature: Highlander
       Given there is only 1 ninja alive
       Then he (or she) will live forever ;-)
 
+  @edge_case
   Rule: There can be Two (in some cases)
 
     Scenario: Two -- Dead and Reborn as Phoenix
@@ -336,7 +342,7 @@ Feature: Multiple site support
     Then I should see "Your article was published."
 ```
 
-`Background` is also supported at the `Rule` level, for example:
+<!--- `Background` is also supported at the `Rule` level, for example:
 
 ```gherkin
 Feature: Overdue tasks
@@ -359,7 +365,7 @@ Feature: Overdue tasks
   ...
 ```
 
-You can only have one set of `Background` steps per `Feature` or `Rule`. If you need different `Background` steps for different scenarios, consider breaking up your set of scenarios into more `Rule`s or more `Feature`s.
+You can only have one set of `Background` steps per `Feature` or `Rule`. If you need different `Background` steps for different scenarios, consider breaking up your set of scenarios into more `Rule`s or more `Feature`s.--->
 
 For a less explicit alternative to `Background`, check out [scoped step definitions](../Bindings/Scoped-Step-Definitions.md).
 
@@ -422,6 +428,8 @@ The steps can use `<>` delimited *parameters* that reference headers in the exam
 SpecFlow will replace these parameters with values from the table *before* it tries
 to match the step against a step definition.
 
+**> Note:** Tables used in `Examples` must have **unique headers**. Using duplicate headers will result in errors.
+
 **Hint:** In certain cases, when generating method names using the regular expression method, SpecFlow is unable to generate the correct parameter signatures for unit test logic methods without a little help. Placing single quotation marks (`'`) around placeholders (eg. `'<placeholder>'`)improves SpecFlow's ability to parse the scenario outline and generate more accurate regular expressions and test method signatures.
 
 You can also use parameters in [multiline step arguments](#step-arguments).
@@ -470,6 +478,13 @@ Just like `Doc Strings`, `Data Tables` will be passed to the step definition as 
 SpecFlow provides a rich API for manipulating tables from within step definitions.
 See the [Assist Namespace](../Bindings/SpecFlow-Assist-Helpers.md) reference for
 more details.
+
+## Markdown
+
+You can include markdown code in your feature files with the standard Markdown features such as bold, italic, lists etc.
+This is useful when generating documentation via the SpecFlow+ LivingDoc generator.
+
+Click [here](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/Generating/Markdown-and-Embedding-Images.html#embedding-images-markdown) to find out more.
 
 ## Spoken Languages
 

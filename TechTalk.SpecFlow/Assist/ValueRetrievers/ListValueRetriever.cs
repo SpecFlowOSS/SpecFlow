@@ -21,7 +21,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return genericType == typeof(List<>)
                    || genericType == typeof(IEnumerable<>)
                    || genericType == typeof(ICollection<>)
-                   || genericType == typeof(IList<>);
+                   || genericType == typeof(IList<>)
+                   || genericType == typeof(IReadOnlyList<>)
+                   || genericType == typeof(IReadOnlyCollection<>);
         }
 
         protected override Type GetActualValueType(Type propertyType)
@@ -31,12 +33,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         protected override object BuildInstance(int count, IEnumerable values, Type valueType)
         {
-            return GetMethod().MakeGenericMethod(valueType).Invoke(this, new [] { values });
+            return GetMethod().MakeGenericMethod(valueType).Invoke(null, new object[] { values });
         }
 
-        private MethodInfo GetMethod() => toListMethodInfo = toListMethodInfo ??  typeof(ListValueRetriever).GetMethod(nameof(ToList), BindingFlags.NonPublic | BindingFlags.Instance);
+        private MethodInfo GetMethod() => toListMethodInfo ??= typeof(ListValueRetriever).GetMethod(nameof(ToList), BindingFlags.NonPublic | BindingFlags.Static);
 
-        private List<T> ToList<T>(IEnumerable values)
+        private static List<T> ToList<T>(IEnumerable values)
         {
             return values.Cast<T>().ToList();
         }

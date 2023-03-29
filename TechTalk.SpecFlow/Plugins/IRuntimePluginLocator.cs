@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Plugins
 {
     public interface IRuntimePluginLocator
     {
         IReadOnlyList<string> GetAllRuntimePlugins();
-        IReadOnlyList<string> GetAllRuntimePlugins(string testAssemblyLocation);
     }
 }

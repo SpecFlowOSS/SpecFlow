@@ -27,11 +27,11 @@ namespace SpecFlow.Tools.MsBuild.Generation
             _taskLoggingWrapper = taskLoggingWrapper;
         }
 
-        public async Task TryTransmitProjectCompilingEvent()
+        public async Task TryTransmitProjectCompilingEventAsync()
         {
             try
             {
-                var transmissionResult = await TransmitProjectCompilingEvent();
+                var transmissionResult = await TransmitProjectCompilingEventAsync();
 
                 if (transmissionResult is IFailure failure)
                 {
@@ -46,7 +46,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
             }
         }
 
-        public async Task<IResult> TransmitProjectCompilingEvent()
+        public async Task<IResult> TransmitProjectCompilingEventAsync()
         {
             var projectCompilingEvent = _analyticsEventProvider.CreateProjectCompilingEvent(
                 _msBuildInformationProvider.GetMSBuildVersion(),
@@ -54,7 +54,7 @@ namespace SpecFlow.Tools.MsBuild.Generation
                 _specFlowProjectInfo.TargetFrameworks,
                 _specFlowProjectInfo.CurrentTargetFramework,
                 _specFlowProjectInfo.ProjectGuid);
-            return await _analyticsTransmitter.TransmitSpecFlowProjectCompilingEvent(projectCompilingEvent);
+            return await _analyticsTransmitter.TransmitSpecFlowProjectCompilingEventAsync(projectCompilingEvent);
         }
     }
 }

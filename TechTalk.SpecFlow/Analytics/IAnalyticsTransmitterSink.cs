@@ -6,6 +6,6 @@ namespace TechTalk.SpecFlow.Analytics
 {
     public interface IAnalyticsTransmitterSink
     {
-        Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent, string instrumentationKey = AppInsightsInstrumentationKey.Key);
+        Task<IResult> TransmitEventAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey = AppInsightsInstrumentationKey.Key);
     }
 }

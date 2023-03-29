@@ -8,9 +8,9 @@ namespace TechTalk.SpecFlow
     {
         public string[] Tags { get; private set; }
         public ProgrammingLanguage GenerationTargetLanguage { get; private set; }
-        
+
         public string FolderPath { get; private set; }
-        
+
         public string Title { get; private set; }
         public string Description { get; private set; }
         public CultureInfo Language { get; private set; }
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow
             Title = title;
             Description = description;
             GenerationTargetLanguage = programmingLanguage;
-            Tags = tags ?? new string[0];
+            Tags = tags ?? Array.Empty<string>();
         }
     }
 }

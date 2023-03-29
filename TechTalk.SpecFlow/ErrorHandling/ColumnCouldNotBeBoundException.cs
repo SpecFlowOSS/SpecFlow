@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
 
 // the exceptions are part of the public API, keep them in TechTalk.SpecFlow namespace
 namespace TechTalk.SpecFlow

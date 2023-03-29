@@ -1,11 +1,164 @@
+4.0
+
+Breaking Changes:
++ Removed the ability to call steps from steps via string - https://github.com/SpecFlowOSS/SpecFlow/issues/1733
++ Removed .NET Core 2.1 support (min .NET Core version: 3.1)
++ Removed .NET Framework 4.6.1 support (min .NET Framework version: 4.6.2)
++ Bindigns declared as 'async void' are not allowed. Use 'async Task' instead.
+
+Features:
++ Add an option to colorize test result output
++ Support for using Cucumber Expressions for step definitions.
++ Support Rule tags (can be used for hook filters, scoping and access through 'ScenarioInfo.CombinedTags')
++ Support for async step argument transformations. Fixes #2230
++ Support for ValueTask and ValueTask<T> binding methods (step definitions, hooks, step argument transformations)
++ Rules now support Background blocks
++ Collect binding errors (type load, binding, step definition) and report them as exception when any of the tests are executed.
+
+Changes:
++ Existing step definition expressions detected to be either regular or cucumber expression. Check https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html for potential upgrade issues.
++ Default step definition skeletons are generating cucumber expressions.
++ 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
++ The interface ISpecFlowOutputHelper has been moved to the TechTalk.SpecFlow namespace (from TechTalk.SpecFlow.Infrastructure).
++ BugFix: SF2649 - AggregateExceptions thrown by async StepDefinition methods are no longer consumed; but passed along to the test host.
+
+
+3.10
+
+Features:
++ Proper async/await implementation
+
+
+after 3.9.58
+
+Features:
++ Introduce ability to register and resolve global dependencies using Autofac
+
+Fixes:
++ Support [TableAliases] also outside `CreateInstance`&`CreateSet`. Fixes #1384
++ EnumerableValueRetriever resolves a ValueRetriever for each element in the enumeration instead of reusing the ValueRetriever of the first item in the list. Fixes #2626
+
+3.9.58
+
+Changes:
++ adjust the duration output to milliseconds if it's below 300ms threshold
++ Bug Fix: Tests with @ignore tag were still being run
+
+3.9.52
+
+Changes:
++ improve Service.GetValueRetrieverFor performance
++ Add DateTimeStyles to DateTimeValueRetriever and DateTimeOffsetValueRetriever
++ Update NUnit3TestGeneratorProvider - SetTestMethod and SetRowTest are now virtual so that it can be replaced by generator plugins
+
+3.9.40
+
+Changes:
++ Remove Cucumber- Messages
++ Made XUnit2TestGeneratorProvider.SetTestMethod virtual so that it can be replaced by generator plugins
++ .NET 6 support
+
+3.9
+
+Features:
++ Introduce NonParallelizableDecorator to opt out of feature level parallelization using tags #2409
+
+Changes:
++ Update to Gherkin 19.0.3
++ Replace Utf8Json with SpecFlow.Internal.Json
++ Remove ParallelizeDecorator introduced in #746. Fixes #2442
++ Add semantic validator for duplicate Example column header names #2471
++ Update Available-Plugins document
++ Improved code generation for feature.cs and use the new TagHelper
+
+Fixes:
++ Fix Type or namespace [TestNamespace]_XunitAssemblyFixture could not be found #1825
++ Fix Default value deserialization from specflow.json #2239 #2439
++ Should not log error if TestAssembly does not have a RuntimePlugin attribute #2432
++ Fixed context injection in static methods for Windsor plugin - Same as https://github.com/SpecFlowOSS/SpecFlow/issues/2307, but for Windsor
+
+
+3.8
+
+Features:
++ Route output API messages to tool output
++ Extend ISpecFlowOutputHelper with attachment handling
++ Add events (IExecutionEvent) to track what happens and when
+
+Fixes:
++ Change CultureInfoScope to readonly struct
++ Improve performance / Reduce allocations of RuntimePluginLocator & LocationMerger
++ Fix spelling of IRuntimePluginTestExecutionLifecycleEventEmitter.RaiseExecutionLifecycleEvent
++ Improve performance by lazy initializing certain expensive members
++ Fixed bug in StepTextAnalyzer with empty string parameters
++ Update to NUnit 3.13.1 as minimum NUnit version
++ Step argument transformations should not be executed if a previous step had an error https://github.com/SpecFlowOSS/SpecFlow/issues/2382
++ Update "dotnet new" template in sync with the Visual Studio template
++ Fix NullReferenceException during assembly loading in PluginAssemblyResolver #2344 #2403
++ Update MsTest.TestFramework to 2.1.2 as minimum MsTest version
++ Auto-update livingdoc major-minor in "dotnet new" template
+
+
+3.7
+
+Features:
++ support translations for true value
+
+Fixes:
++ Thread-safe object resolution in BoDi
++ Automatically include TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll as a deployment item for MSTest V2 https://github.com/SpecFlowOSS/SpecFlow/issues/2076
++ Before Feature hooks should not be executed when the feature is ignored https://github.com/SpecFlowOSS/SpecFlow/issues/2234
++ Cleanup scenario context even after an AfterScenario hook error
++ Load RuntimePlugins to the same AssemblyLoadContext
++ Capture hook errors and call plugin hooks after hook error
++ Fixed context injection in static methods for Autofac plugin https://github.com/SpecFlowOSS/SpecFlow/issues/2307
+
+Changes:
++ Ignore tag handling: generate test framework specific ignore attributes 
+
+3.6
+
+Features:
++ Add possibility to have a custom pending step message https://github.com/SpecFlowOSS/SpecFlow/issues/1382
++ Be able to access MSTest TestContext in BeforeTestRun/AfterTestRun hook https://github.com/SpecFlowOSS/SpecFlow/issues/1859
++ Access Feature level tags in Scenario level via ScenarioAndFeatureTags https://github.com/SpecFlowOSS/SpecFlow/issues/2024
++ Search for RuntimePlugins in the TestAssembly https://github.com/SpecFlowOSS/SpecFlow/issues/1395
+
+Fixes:
++ Copy specflow.json to the output directory
++ SpecFlow.ExternalData plugin works with SpecFlow 3.5 https://github.com/SpecFlowOSS/SpecFlow/issues/2218
++ Show Duration for failed step in Results https://github.com/SpecFlowOSS/SpecFlow/issues/2091
++ Do not show generation error in case of empty feature file https://github.com/SpecFlowOSS/SpecFlow/issues/878
++ Fix StepArgumentTrasformation with same return type but different parameters https://github.com/SpecFlowOSS/SpecFlow/issues/469
++ ScenarioExecutionStatus displays as OK if test failed in before scenario https://github.com/SpecFlowOSS/SpecFlow/issues/1646
+
+
+3.5.14
+
+Changes:
++ Windsor plugin no longer uses scoped lifestyle due to async call context issues
+
+3.5
+
+Features:
++ .NET 5 Support
+
+Fixes:
++ System.* packages are no longer referenced in .csproj files. Instead Framework Reference is used. #1962
++ Result collection has not been started issues #2008 #2159 #1956
+
+
+3.4.31
+
 Changes:
 + Unit test provider independent ISpecFlowOutputHelper implementation
 + Row extension method `GetBoolean` is now case insensitive
 + Add support for Castle Windsor dependency injection via plugin
++ Auto-register bindings in Castle Windsor plugin
 
-Fixes: 
+Fixes:
 + Support dynamic assemblies in container initialization #2110
-+ Testexplorer doesn't show all tests when using tags on examples in scenario outlines (BUG 9731)
+
 
 3.4.3
 
@@ -20,7 +173,7 @@ API changes:
 
 3.3.74
 
-Fixes: 
+Fixes:
 + Fix step definition attribute support for the Visual Studio Extension #2065
 
 Changes:
@@ -97,10 +250,10 @@ Fixes:
 Features:
 + .NET Core 3.1 Support
 
-3.1 
+3.1
 
 Features:
-+ First set of cucumber-messages are implemented 
++ First set of cucumber-messages are implemented
   - TestRunStarted
   - TestCaseStarted
   - TestCaseFinished
@@ -113,7 +266,7 @@ Features:
 + Support for Gherkin v6 "Rule" keyword
 + Support discovering step definitions from attributes that are derived from Given,When,Then or StepDefinition attributes (related to https://github.com/techtalk/SpecFlow/issues/1745)
 
-Fixes: 
+Fixes:
 + AfterTestRun hook can take longer than 100ms on .NET Core https://github.com/techtalk/SpecFlow/issues/1348
 + Adjust parameter names generation in scenario outlines https://github.com/techtalk/SpecFlow/issues/1694
 + specflow.json can be used in SpecFlow+Runner with Process test thread isolation https://github.com/techtalk/SpecFlow/issues/1761

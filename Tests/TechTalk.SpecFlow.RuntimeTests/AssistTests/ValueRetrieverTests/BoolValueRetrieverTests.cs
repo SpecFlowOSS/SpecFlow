@@ -24,6 +24,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
         [Theory]
         [InlineData("True", true)]
+        [InlineData("правда", true)]
+        [InlineData("Правда", true)]
         [InlineData("true", true)]
         [InlineData("1", true)]
         [InlineData("False", false)]
@@ -43,6 +45,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Theory]
         [InlineData("True", true)]
         [InlineData("true", true)]
+        [InlineData("правда", true)]
+        [InlineData("Правда", true)]
         [InlineData("1", true)]
         [InlineData("False", false)]
         [InlineData("false", false)]

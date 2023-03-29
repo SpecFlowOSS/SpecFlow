@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -14,22 +13,22 @@ namespace TechTalk.SpecFlow.Bindings
     {
         public static StepDefinitionType ToBindingType(this ScenarioBlock block)
         {
-            if (block != ScenarioBlock.Given && 
+            if (block != ScenarioBlock.Given &&
                 block != ScenarioBlock.When &&
                 block != ScenarioBlock.Then)
-                throw new ArgumentException("Unable to convert block to binding type", "block");
+                throw new ArgumentException("Unable to convert block to binding type", nameof(block));
 
-            return (StepDefinitionType)((int)block);
+            return (StepDefinitionType)(int)block;
         }
 
         public static ScenarioBlock ToScenarioBlock(this StepDefinitionType stepDefinitionType)
         {
-            return (ScenarioBlock)((int)stepDefinitionType);
+            return (ScenarioBlock)(int)stepDefinitionType;
         }
 
         public static StepDefinitionKeyword ToStepDefinitionKeyword(this StepDefinitionType stepDefinitionType)
         {
-            return (StepDefinitionKeyword)((int)stepDefinitionType);
+            return (StepDefinitionKeyword)(int)stepDefinitionType;
         }
 
         public static bool Equals(this ScenarioBlock block, StepDefinitionType stepDefinitionType)

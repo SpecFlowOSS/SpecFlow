@@ -25,15 +25,6 @@ namespace TechTalk.SpecFlow.Specs.Support
             _testProjectFolders = testProjectFolders;
         }
 
-        [BeforeScenario("WindowsOnly")]
-        public void SkipWindowsOnlyScenarioIfNotOnWindows()
-        {
-            if (!_runtimeInformationProvider.IsOperatingSystemWindows())
-            {
-                _unitTestRuntimeProvider.TestIgnore("Test must be run on a Windows host system.");
-            }
-        }
-
         [BeforeScenario]
         public void BeforeScenario()
         {
@@ -64,7 +55,6 @@ namespace TechTalk.SpecFlow.Specs.Support
             var appConfigDriver = new AppConfigDriver();
             var folders = new Folders(appConfigDriver);
 
-
             DeletePackageVersionFolders();
             DeleteOldTestRunData(folders);
         }
@@ -83,6 +73,7 @@ namespace TechTalk.SpecFlow.Specs.Support
 
         private static void DeletePackageVersionFolders()
         {
+            if (!HaveRightsToDeletePackages()) return;
 
             var currentVersionDriver = new CurrentVersionDriver {NuGetVersion = NuGetPackageVersion.Version };
 
@@ -93,6 +84,12 @@ namespace TechTalk.SpecFlow.Specs.Support
                 string hooksPath = Path.Combine(Environment.ExpandEnvironmentVariables("%USERPROFILE%"), ".nuget", "packages", name, currentVersionDriver.NuGetVersion);
                 FileSystemHelper.DeleteFolder(hooksPath);
             }
+        }
+
+        private static bool HaveRightsToDeletePackages()
+        {
+            var azureAgentOs = Environment.GetEnvironmentVariable("AGENT_OS");
+            return azureAgentOs != "Windows_NT";
         }
     }
 }

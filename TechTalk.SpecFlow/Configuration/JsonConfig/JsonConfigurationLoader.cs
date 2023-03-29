@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Utf8Json;
+using SpecFlow.Internal.Json;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 throw new ArgumentNullException(nameof(jsonContent));
             }
 
-            var jsonConfig = JsonSerializer.Deserialize<JsonConfig>(jsonContent);
+            var jsonConfig = jsonContent.FromJson<JsonConfig>();
 
             var containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             var generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
@@ -24,14 +24,13 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
             bool traceTimings = specFlowConfiguration.TraceTimings;
             var minTracedDuration = specFlowConfiguration.MinTracedDuration;
+            bool coloredOutput = specFlowConfiguration.ColoredOutput;
             var stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             var additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
-            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
-            var skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
+            var addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
             var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
-            var cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
 
             if (jsonConfig.Language != null)
             {
@@ -68,8 +67,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             {
                 allowDebugGeneratedFiles = jsonConfig.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = jsonConfig.Generator.AllowRowTests;
-                markFeaturesParallelizable = jsonConfig.Generator.MarkFeaturesParallelizable;
-                skipParallelizableMarkerForTags = jsonConfig.Generator.SkipParallelizableMarkerForTags?.ToArray();
+                addNonParallelizableMarkerForTags = jsonConfig.Generator.AddNonParallelizableMarkerForTags?.ToArray();
             }
 
             if (jsonConfig.Trace != null)
@@ -78,6 +76,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 traceTimings = jsonConfig.Trace.TraceTimings;
                 minTracedDuration = jsonConfig.Trace.MinTracedDuration;
                 stepDefinitionSkeletonStyle = jsonConfig.Trace.StepDefinitionSkeletonStyle;
+                coloredOutput = jsonConfig.Trace.ColoredOutput;
             }
 
             if (jsonConfig.StepAssemblies != null)
@@ -85,19 +84,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 foreach (var stepAssemblyEntry in jsonConfig.StepAssemblies)
                 {
                     additionalStepAssemblies.Add(stepAssemblyEntry.Assembly);
-                }
-            }
-
-            if (jsonConfig.CucumberMessages != null)
-            {
-                cucumberMessagesConfiguration.Enabled = jsonConfig.CucumberMessages.Enabled;
-
-                if (jsonConfig.CucumberMessages.Sinks != null)
-                {
-                    foreach (var cucumberMessageSinkElement in jsonConfig.CucumberMessages.Sinks)
-                    {
-                        cucumberMessagesConfiguration.Sinks.Add(new CucumberMessagesSink(cucumberMessageSinkElement.Type, cucumberMessageSinkElement.Path));
-                    }
                 }
             }
 
@@ -116,10 +102,9 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 additionalStepAssemblies,
                 allowDebugGeneratedFiles,
                 allowRowTests,
-                markFeaturesParallelizable,
-                skipParallelizableMarkerForTags,
+                addNonParallelizableMarkerForTags,
                 obsoleteBehavior,
-                cucumberMessagesConfiguration
+                coloredOutput
             );
         }
     }

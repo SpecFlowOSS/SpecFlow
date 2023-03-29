@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
@@ -15,41 +17,50 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class BindingInvoker : IBindingInvoker
+#pragma warning disable CS0618
+    public class BindingInvoker : IBindingInvoker, IAsyncBindingInvoker
+#pragma warning restore CS0618
     {
-        protected readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        protected readonly SpecFlowConfiguration specFlowConfiguration;
         protected readonly IErrorProvider errorProvider;
-        protected readonly ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker;
+        protected readonly IBindingDelegateInvoker bindingDelegateInvoker;
 
-        public BindingInvoker(Configuration.SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, ISynchronousBindingDelegateInvoker synchronousBindingDelegateInvoker)
+        public BindingInvoker(SpecFlowConfiguration specFlowConfiguration, IErrorProvider errorProvider, IBindingDelegateInvoker bindingDelegateInvoker)
         {
             this.specFlowConfiguration = specFlowConfiguration;
             this.errorProvider = errorProvider;
-            this.synchronousBindingDelegateInvoker = synchronousBindingDelegateInvoker;
+            this.bindingDelegateInvoker = bindingDelegateInvoker;
         }
 
+        [Obsolete("Use async version of the method instead")]
         public virtual object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
         {
-            MethodInfo methodInfo;
-            Delegate bindingAction;
-            EnsureReflectionInfo(binding, out methodInfo, out bindingAction);
+            var durationHolder = new DurationHolder();
+            var result = InvokeBindingAsync(binding, contextManager, arguments, testTracer, durationHolder).ConfigureAwait(false).GetAwaiter().GetResult();
+            duration = durationHolder.Duration;
+            return result;
+        }
 
+        public virtual async Task<object> InvokeBindingAsync(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, DurationHolder durationHolder)
+        {
+            EnsureReflectionInfo(binding, out _, out var bindingAction);
+            Stopwatch stopwatch = new Stopwatch();
             try
             {
+                stopwatch.Start();
                 object result;
-                Stopwatch stopwatch = new Stopwatch();
                 using (CreateCultureInfoScope(contextManager))
                 {
-                    stopwatch.Start();
                     object[] invokeArgs = new object[arguments == null ? 1 : arguments.Length + 1];
                     if (arguments != null)
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
 
-                    result = synchronousBindingDelegateInvoker
-                        .InvokeDelegateSynchronously(bindingAction, invokeArgs);
+                    var executionContextHolder = GetExecutionContextHolder(contextManager);
+                    result = await bindingDelegateInvoker.InvokeDelegateAsync(bindingAction, invokeArgs, executionContextHolder);
 
                     stopwatch.Stop();
+                    durationHolder.Duration = stopwatch.Elapsed;
                 }
 
                 if (specFlowConfiguration.TraceTimings && stopwatch.Elapsed >= specFlowConfiguration.MinTracedDuration)
@@ -57,55 +68,63 @@ namespace TechTalk.SpecFlow.Bindings
                     testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }
 
-                duration = stopwatch.Elapsed;
                 return result;
             }
             catch (ArgumentException ex)
             {
+                stopwatch.Stop();
+                durationHolder.Duration = stopwatch.Elapsed;
                 throw errorProvider.GetCallError(binding.Method, ex);
             }
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
+                stopwatch.Stop();
+                durationHolder.Duration = stopwatch.Elapsed;
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                //hack,hack,hack - the compiler doesn't recognize that ExceptionDispatchInfo.Throw() exits the method; the next line will never be executed
                 throw ex;
             }
-            catch (AggregateException aggregateEx)
+            catch (Exception)
             {
-                var ex = aggregateEx.InnerExceptions.First();
-                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
-                throw ex;
+                stopwatch.Stop();
+                durationHolder.Duration = stopwatch.Elapsed;
+                throw;
             }
+        }
+
+        private ExecutionContextHolder GetExecutionContextHolder(IContextManager contextManager)
+        {
+            var scenarioContext = contextManager.ScenarioContext;
+            if (scenarioContext == null)
+                return null;
+            return scenarioContext.ScenarioContainer.Resolve<ExecutionContextHolder>();
         }
 
         protected virtual CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
         {
-            var cultureInfo = CultureInfo.CurrentCulture;
-            if (contextManager.FeatureContext != null)
-            {
-                cultureInfo = contextManager.FeatureContext.BindingCulture;
-            }
-            return new CultureInfoScope(cultureInfo);
+            return new CultureInfoScope(contextManager.FeatureContext);
         }
 
         protected void EnsureReflectionInfo(IBinding binding, out MethodInfo methodInfo, out Delegate bindingAction)
         {
-            var methodBinding = binding as MethodBinding;
-            if (methodBinding == null)
-                throw new SpecFlowException("The binding method cannot be used for reflection: " + binding);
-
-            methodInfo = methodBinding.Method.AssertMethodInfo();
-
-            if (methodBinding.cachedBindingDelegate == null)
+            if (binding is MethodBinding methodBinding)
             {
-                methodBinding.cachedBindingDelegate = CreateMethodDelegate(methodInfo);
+                methodInfo = methodBinding.Method.AssertMethodInfo();
+
+                methodBinding.cachedBindingDelegate ??= CreateMethodDelegate(methodInfo);
+                bindingAction = methodBinding.cachedBindingDelegate;
+                return;
             }
 
-            bindingAction = methodBinding.cachedBindingDelegate;
+            throw new SpecFlowException("The binding method cannot be used for reflection: " + binding);
         }
 
         protected virtual Delegate CreateMethodDelegate(MethodInfo method)
         {
+            if (AsyncMethodHelper.IsAsyncVoid(method)) 
+                throw new SpecFlowException($"Invalid binding method '{method.DeclaringType!.FullName}.{method.Name}()': async void methods are not supported. Please use 'async Task'.");
+
             List<ParameterExpression> parameters = new List<ParameterExpression>();
             parameters.Add(Expression.Parameter(typeof(IContextManager), "__contextManager"));
             parameters.AddRange(method.GetParameters().Select(parameterInfo => Expression.Parameter(parameterInfo.ParameterType, parameterInfo.Name)));
@@ -140,11 +159,11 @@ namespace TechTalk.SpecFlow.Bindings
                             Expression.Call(
                                 Expression.Property(
                                     contextManagerArg,
-                                    scenarioContextProperty), 
+                                    scenarioContextProperty),
                                 getInstanceMethod,
                                 Expression.Constant(method.ReflectedType, typeof(Type))),
-                            method.ReflectedType), 
-                        method, 
+                            method.ReflectedType),
+                        method,
                         methodArguments),
                     parameters.ToArray());
             }
@@ -163,12 +182,12 @@ namespace TechTalk.SpecFlow.Bindings
 
 
         #region extended action types
-        static readonly Type[] actionTypes = new[] { typeof(Action), 
-                                                     typeof(Action<>),                          typeof(Action<,>),                          typeof(Action<,,>),                         typeof(Action<,,,>),                            typeof(ExtendedAction<,,,,>), 
-                                                     typeof(ExtendedAction<,,,,,>),             typeof(ExtendedAction<,,,,,,>),             typeof(ExtendedAction<,,,,,,,>),            typeof(ExtendedAction<,,,,,,,,>),               typeof(ExtendedAction<,,,,,,,,,>),
-                                                     typeof(ExtendedAction<,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,,>),       typeof(ExtendedAction<,,,,,,,,,,,,,>),          typeof(ExtendedAction<,,,,,,,,,,,,,,>),
-                                                     typeof(ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,,>),
-                                                   };
+        private static readonly Type[] actionTypes = { typeof(Action),
+                                                       typeof(Action<>),                          typeof(Action<,>),                          typeof(Action<,,>),                         typeof(Action<,,,>),                            typeof(ExtendedAction<,,,,>), 
+                                                       typeof(ExtendedAction<,,,,,>),             typeof(ExtendedAction<,,,,,,>),             typeof(ExtendedAction<,,,,,,,>),            typeof(ExtendedAction<,,,,,,,,>),               typeof(ExtendedAction<,,,,,,,,,>),
+                                                       typeof(ExtendedAction<,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,,>),       typeof(ExtendedAction<,,,,,,,,,,,,,>),          typeof(ExtendedAction<,,,,,,,,,,,,,,>),
+                                                       typeof(ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,,>),
+                                                     };
 
         public delegate void ExtendedAction<T1, T2, T3, T4, T5>                                                                         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
         public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6>                                                                     (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
@@ -199,15 +218,15 @@ namespace TechTalk.SpecFlow.Bindings
             }
             return actionTypes[typeArgs.Length].MakeGenericType(typeArgs);
         }
-        #endregion   
-        
+        #endregion
+
         #region extended func types
-        static readonly Type[] funcTypes = new[] { typeof(Func<>), 
-                                                   typeof(Func<,>),                         typeof(Func<,,>),                           typeof(Func<,,,>),                          typeof(Func<,,,,>),                         typeof(ExtendedFunc<,,,,,>), 
-                                                   typeof(ExtendedFunc<,,,,,,>),            typeof(ExtendedFunc<,,,,,,,>),              typeof(ExtendedFunc<,,,,,,,,>),             typeof(ExtendedFunc<,,,,,,,,,>),            typeof(ExtendedFunc<,,,,,,,,,,>),
-                                                   typeof(ExtendedFunc<,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,>),         typeof(ExtendedFunc<,,,,,,,,,,,,,>),        typeof(ExtendedFunc<,,,,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,,,,>),
-                                                   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>),
-                                                 };
+        private static readonly Type[] funcTypes = { typeof(Func<>),
+                                                     typeof(Func<,>),                         typeof(Func<,,>),                           typeof(Func<,,,>),                          typeof(Func<,,,,>),                         typeof(ExtendedFunc<,,,,,>), 
+                                                     typeof(ExtendedFunc<,,,,,,>),            typeof(ExtendedFunc<,,,,,,,>),              typeof(ExtendedFunc<,,,,,,,,>),             typeof(ExtendedFunc<,,,,,,,,,>),            typeof(ExtendedFunc<,,,,,,,,,,>),
+                                                     typeof(ExtendedFunc<,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,>),         typeof(ExtendedFunc<,,,,,,,,,,,,,>),        typeof(ExtendedFunc<,,,,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,,,,>),
+                                                     typeof(ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>),
+                                                   };
 
         public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, TResult>                                                                           (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
         public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, TResult>                                                                       (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);

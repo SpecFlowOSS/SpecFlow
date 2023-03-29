@@ -1,7 +1,6 @@
 using BoDi;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
@@ -36,10 +35,13 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             RegisterDefaults(container);
 
+            var testAssemblyProvider = container.Resolve<ITestAssemblyProvider>();
+            testAssemblyProvider.RegisterTestAssembly(testAssembly);
+
             if (configurationProvider != null)
                 container.RegisterInstanceAs(configurationProvider);
 
-            configurationProvider = configurationProvider ?? container.Resolve<IRuntimeConfigurationProvider>();
+            configurationProvider ??= container.Resolve<IRuntimeConfigurationProvider>();
 
             container.RegisterTypeAs<RuntimePluginEvents, RuntimePluginEvents>(); //NOTE: we need this unnecessary registration, due to a bug in BoDi (does not inherit non-registered objects)
             var runtimePluginEvents = container.Resolve<RuntimePluginEvents>();
@@ -95,9 +97,10 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             scenarioContainer.ObjectCreated += obj =>
             {
-                var containerDependentObject = obj as IContainerDependentObject;
-                if (containerDependentObject != null)
+                if (obj is IContainerDependentObject containerDependentObject)
+                {
                     containerDependentObject.SetObjectContainer(scenarioContainer);
+                }
             };
 
             var runtimePluginEvents = testThreadContainer.Resolve<RuntimePluginEvents>();
@@ -116,9 +119,10 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             featureContainer.ObjectCreated += obj =>
             {
-                var containerDependentObject = obj as IContainerDependentObject;
-                if (containerDependentObject != null)
+                if (obj is IContainerDependentObject containerDependentObject)
+                {
                     containerDependentObject.SetObjectContainer(featureContainer);
+                }
             };
 
             var runtimePluginEvents = testThreadContainer.Resolve<RuntimePluginEvents>();
@@ -141,19 +145,25 @@ namespace TechTalk.SpecFlow.Infrastructure
             var pluginLocator = container.Resolve<IRuntimePluginLocator>();
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
             var traceListener = container.Resolve<ITraceListener>();
-            var assemblyLocation = testAssembly != null && !testAssembly.IsDynamic ? testAssembly.Location : null;
-            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins(Path.GetDirectoryName(assemblyLocation)))
+            foreach (var pluginPath in pluginLocator.GetAllRuntimePlugins())
             {
-                LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener);
+                // Should not log error if TestAssembly does not have a RuntimePlugin attribute
+                var traceMissingPluginAttribute = !testAssembly.Location.Equals(pluginPath);
+                LoadPlugin(pluginPath, pluginLoader, runtimePluginEvents, unitTestProviderConfigration, traceListener, traceMissingPluginAttribute);
             }
         }
 
-        protected virtual void LoadPlugin(string pluginPath, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents,
-            UnitTestProviderConfiguration unitTestProviderConfigration, ITraceListener traceListener)
+        protected virtual void LoadPlugin(
+            string pluginPath,
+            IRuntimePluginLoader pluginLoader,
+            RuntimePluginEvents runtimePluginEvents,
+            UnitTestProviderConfiguration unitTestProviderConfigration,
+            ITraceListener traceListener,
+            bool traceMissingPluginAttribute)
         {
             traceListener.WriteToolOutput($"Loading plugin {pluginPath}");
 
-            var plugin = pluginLoader.LoadPlugin(pluginPath, traceListener);
+            var plugin = pluginLoader.LoadPlugin(pluginPath, traceListener, traceMissingPluginAttribute);
             var runtimePluginParameters = new RuntimePluginParameters();
 
             plugin?.Initialize(runtimePluginEvents, runtimePluginParameters, unitTestProviderConfigration);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Gherkin.Ast;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
@@ -14,7 +15,6 @@ namespace TechTalk.SpecFlow.Generator.Generation
         private readonly SpecFlowConfiguration _specFlowConfiguration;
         private readonly CodeDomHelper _codeDomHelper;
         private int _tableCounter;
-
 
         public ScenarioPartHelper(SpecFlowConfiguration specFlowConfiguration, CodeDomHelper codeDomHelper)
         {
@@ -36,7 +36,8 @@ namespace TechTalk.SpecFlow.Generator.Generation
             backgroundMethod.Attributes = MemberAttributes.Public;
             backgroundMethod.Name = GeneratorConstants.BACKGROUND_NAME;
 
-            
+            _codeDomHelper.MarkCodeMemberMethodAsAsync(backgroundMethod);
+
             var statements = new List<CodeStatement>();
             using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, background.Location))
             {
@@ -49,6 +50,37 @@ namespace TechTalk.SpecFlow.Generator.Generation
             backgroundMethod.Statements.AddRange(statements.ToArray());
             
         }
+        #region Rule Background Support
+
+        public void GenerateRuleBackgroundStepsApplicableForThisScenario(TestClassGenerationContext generationContext, ScenarioDefinitionInFeatureFile scenarioDefinition, List<CodeStatement> statementsWhenScenarioIsExecuted)
+        {
+            if (scenarioDefinition.Rule != null)
+            {
+                var rule = scenarioDefinition.Rule;
+                IEnumerable<CodeStatement> ruleBackgroundStatements = GenerateBackgroundStatementsForRule(generationContext, rule);
+                statementsWhenScenarioIsExecuted.AddRange(ruleBackgroundStatements);
+            }
+        }
+
+        private IEnumerable<CodeStatement> GenerateBackgroundStatementsForRule(TestClassGenerationContext context, Rule rule)
+        {
+            var background = rule.Children.OfType<Background>().FirstOrDefault();
+
+            if (background == null) return new List<CodeStatement>();
+
+            var statements = new List<CodeStatement>();
+            using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, context.Document.SourceFilePath, background.Location))
+            {
+                foreach (var step in background.Steps)
+                {
+                    GenerateStep(context, statements, step, null);
+                }
+            }
+
+            return statements;
+        }
+
+        #endregion
 
         public void GenerateStep(TestClassGenerationContext generationContext, List<CodeStatement> statements, Step gherkinStep, ParameterSubstitution paramToIdentifier)
         {
@@ -63,18 +95,18 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 GetTableArgExpression(scenarioStep.Argument as DataTable, statements, paramToIdentifier),
                 new CodePrimitiveExpression(scenarioStep.Keyword)
             };
-
-
+            
             using (new SourceLineScope(_specFlowConfiguration, _codeDomHelper, statements, generationContext.Document.SourceFilePath, gherkinStep.Location))
             {
-                statements.Add(new CodeExpressionStatement(
-                    new CodeMethodInvokeExpression(
-                        testRunnerField,
-                        scenarioStep.StepKeyword.ToString(),
-                        arguments.ToArray())));
+                var expression = new CodeMethodInvokeExpression(
+                    testRunnerField,
+                    scenarioStep.StepKeyword + "Async",
+                    arguments.ToArray());
+
+                _codeDomHelper.MarkCodeMethodInvokeExpressionAsAwait(expression);
+
+                statements.Add(new CodeExpressionStatement(expression));
             }
-            
-           
         }
 
         public CodeExpression GetStringArrayExpression(IEnumerable<Tag> tags)
@@ -159,7 +191,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
                 return new CodePrimitiveExpression(text);
             }
 
-            var paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
+            var paramRe = new Regex(@"\<(?<param>[^\<\>]+)\>");
             var formatText = text.Replace("{", "{{").Replace("}", "}}");
             var arguments = new List<string>();
 

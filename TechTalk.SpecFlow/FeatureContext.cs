@@ -7,7 +7,16 @@ using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow
 {
-    public class FeatureContext : SpecFlowContext
+    public interface IFeatureContext : ISpecFlowContext
+    {
+        FeatureInfo FeatureInfo { get; }
+
+        CultureInfo BindingCulture { get; }
+
+        IObjectContainer FeatureContainer { get; }
+    }
+
+    public class FeatureContext : SpecFlowContext, IFeatureContext
     {
         internal FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo, SpecFlowConfiguration specFlowConfiguration)
         {
@@ -25,7 +34,7 @@ namespace TechTalk.SpecFlow
         private static bool isCurrentDisabled = false;
         private static FeatureContext current;
 
-        [Obsolete("Please get the FeatureContext via Context Injection - https://www.specflow.org/documentation/Context-Injection/")]
+        [Obsolete("Please get the FeatureContext via Context Injection - https://go.specflow.org/Migrate-FeatureContext-Current")]
         public static FeatureContext Current
         {
             get

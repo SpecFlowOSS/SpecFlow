@@ -18,45 +18,36 @@ SpecFlow components
  * `SpecFlow+ LivingDoc Generator <https://specflow.org/blog/introducing-the-specflow-plus-livingdoc-generator/>`_ is available set of plugins and tools for SpecFlow to generate a local or self-hosted documentation out of your Gherkin feature files, which can be easily shared. No SpecFlow account needed.
  * `SpecFlow+ LivingDoc Azure DevOps <https://marketplace.visualstudio.com/items?itemName=techtalk.techtalk-specflow-plus>`_ is an extension for Azure DevOps/TFS. You can view the output directly in Azure DevOps/TFS, meaning that anyone with access to the system can easily review your specifications when needed. SpecFlow+ LivingDoc Azure DevOps is free of charge, and only requires a free `SpecFlow Account <https://specflow.org/2020/introducing-the-specflow-account/>`_.
 
-SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integration>`_ that adds a number of helpful features to Visual Studio (e.g. Intellisense, feature file templates, context menu entries). However, SpecFlow is not tied to Visual Studio; you can use SpecFlow with Mono or VSCode as well.
+SpecFlow also includes a `Visual Studio extension <Tools/Visual-Studio-Integration.html>`_ that adds a number of helpful features to Visual Studio (e.g. Intellisense, feature file templates, context menu entries). However, SpecFlow is not tied to Visual Studio; you can use SpecFlow with Mono or VSCode as well.
 
 ==================
 Let's get started
 ==================
 
-**Start with a new project**
-
-Learn the basics of SpecFlow and follow our step by step guide to setup SpecFlow and the SpecFlow+ Runner with a new project in Visual Studio. 
-
-`Getting Started with a new project <https://docs.specflow.org/projects/specflow/en/latest/Getting-Started/Getting-Started-With-A-New-Project.html>`_
-
-
-**Start with an example project**
-
-Follow our step by step guide to explore, experiment and learn the basics of SpecFlow based on a simple web application project using SpecFlow and the SpecFlow+ Runner.
-
-`Getting Started with an example project <https://docs.specflow.org/projects/specflow/en/latest/Getting-Started/Getting-Started-With-An-Example.html>`_
-
-
+You can find a number of step- by- step guides to start with SpecFlow `here <https://docs.specflow.org/projects/getting-started/en/latest/>`_. There are guides available for both complete beginners and more advanced users.
 
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started
    :hidden:
 
-
-   Getting-Started/Getting-Started-With-A-New-Project.md
-   Getting-Started/Getting-Started-With-An-Example.md
+   Getting Started Step by Step Guides <https://docs.specflow.org/projects/getting-started/en/latest/>
+   
    
 
 .. toctree::
    :maxdepth: 1
-   :caption: Guides
+   :caption: Guides & Examples
    :hidden:
 
-   Guides/UpgradeSpecFlow2To3.md
+   ui-automation/Selenium-with-Page-Object-Pattern.md
    Guides/PageObjectModel.md
    Guides/DriverPattern.md
+   Guides/multiplebrowser.md
+   Guides/externaldata.md
+   Getting-Started/Getting-Started-With-An-Example.md
+   Examples <https://docs.specflow.org/en/latest/Examples.html>
+  
 
 .. toctree::
    :maxdepth: 2
@@ -69,6 +60,8 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Installation/Configuration.md
    Installation/Project-and-Item-Templates.md
    Installation/Unit-Test-Providers.md
+   Installation/Breaking-Changes-with-SpecFlow-4.0.md
+   Guides/UpgradeSpecFlow3To4.md
    Installation/Breaking-Changes-with-SpecFlow-3.0.md
 
 .. toctree::
@@ -86,21 +79,17 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
 
    Bindings/Bindings.md
    Bindings/Step-Definitions.md
+   Bindings/Cucumber-Expressions.md
    Bindings/Hooks.md
    Bindings/Asynchronous-Bindings.md
    Bindings/Scoped-Step-Definitions.md
-
    Bindings/Sharing-Data-between-Bindings.md
    Bindings/Context-Injection.md
    Bindings/ScenarioContext.md
    Bindings/FeatureContext.md
    Bindings/Calling-Steps-from-Step-Definitions.md
-
    Bindings/Step-Argument-Conversions.md
-
-   Bindings/Use-Bindings-from-External-Assemblies.md
-
-   Bindings/Renaming-Steps.md
+   Bindings/Use-Bindings-from-External-Assemblies.md   
    Bindings/SpecFlow-Assist-Helpers.md
    Bindings/FSharp-Support.md
 
@@ -110,10 +99,14 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Execution/Executing-SpecFlow-Scenarios.md
+   Execution/Executing-Specific-Scenarios.md
+   Execution/Mark-Steps-As-Not-Implemented.md
    Execution/SkippingScenarios.md
    Execution/Test-Results.md
    Execution/Parallel-Execution.md
    Execution/Debugging.md
+   outputapi/outputapi.md
+   Execution/Color-Output.md
 
 .. toctree::
    :maxdepth: 1
@@ -124,14 +117,44 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Integrations/SpecFlow+Runner-Integration.md
    Integrations/MsTest.md
    Integrations/NUnit.md
-   Integrations/xUnit.md
-   
+   Integrations/xUnit.md   
    Integrations/Azure-DevOps.md
    Integrations/Teamcity-Integration.md
-   Integrations/Browserstack.md
-   Integrations/CodedUI.md
+   Integrations/Browserstack.md   
    Integrations/Autofac.md
    Integrations/Windsor.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: IDE-Integration: Visual Studio
+   :hidden:
+
+   visualstudio/Visual-Studio-Integration.md
+   visualstudio/visual-studio-installation.rst
+   visualstudio/settings-options.rst   
+   visualstudio/Visual-Studio-Integration-Editing-Features.rst
+   visualstudio/Visual-Studio-Integration-Navigation-Features.rst
+   visualstudio/Visual-Studio-Test-Explorer-Support.md
+   visualstudio/Generating-Skeleton-Code.rst
+
+.. toctree::
+   :maxdepth: 1
+   :caption: IDE-Integration: Rider
+   :hidden:
+
+   Rider/rider-installation.md
+   Rider/rider-features.md
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: IDE-Integration: Visual Studio Code
+   :hidden:
+
+   vscode/vscode-specflow.md
+   vscode/test-execution.md
+   vscode/vscode-debug.md
+
 
 .. toctree::
    :maxdepth: 1
@@ -139,24 +162,18 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    :hidden:
 
    Extend/Value-Retriever.md
-   Extend/Plugins.md
-   Extend/Plugins-(Legacy).md
+   Extend/Plugins.md   
    Extend/Available-Plugins.md
    Extend/Available-Containers-&-Registrations.md
+   Extend/Decorators.md
+   
 
 .. toctree::
    :maxdepth: 1
    :caption: Tools
    :hidden:
-
-   Tools/Tools.md
+   
    Tools/Generate-Tests-From-MsBuild.md
-   Tools/Visual-Studio-Integration.md
-   Tools/Visual-Studio-Integration-Editing-Features.md
-   Tools/Visual-Studio-Integration-Navigation-Features.md
-   Tools/Visual-Studio-Test-Explorer-Support.md
-   Tools/Generating-Skeleton-Code.md
-   Tools/Cucumber-Messages.md
    Tools/Reporting.md
 
 .. toctree::
@@ -171,6 +188,16 @@ Follow our step by step guide to explore, experiment and learn the basics of Spe
    Contribute/SpecialFiles.md
    Contribute/potentialProblems.md
    Contribute/Coding-Style.md
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Legacy
+   :hidden:
+
+   legacy/Plugins-(Legacy).md
+   legacy/CodedUI.md
+   Guides/UpgradeSpecFlow2To3.md
+   Tools/Tools.md
 
 .. toctree::
    :maxdepth: 1

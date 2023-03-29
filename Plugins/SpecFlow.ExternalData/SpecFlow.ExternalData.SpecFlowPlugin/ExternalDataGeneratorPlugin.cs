@@ -1,4 +1,6 @@
 ﻿using SpecFlow.ExternalData.SpecFlowPlugin;
+using SpecFlow.ExternalData.SpecFlowPlugin.DataSources;
+using SpecFlow.ExternalData.SpecFlowPlugin.Loaders;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Infrastructure;
@@ -16,8 +18,11 @@ namespace SpecFlow.ExternalData.SpecFlowPlugin
             generatorPluginEvents.RegisterDependencies += (sender, args) =>
             {
                 args.ObjectContainer.RegisterTypeAs<ExternalDataTestGenerator, ITestGenerator>();
-                args.ObjectContainer.RegisterTypeAs<ExternalDataFeaturePatcher, IExternalDataFeaturePatcher>();
-                args.ObjectContainer.RegisterTypeAs<TestDataProvider, ITestDataProvider>();
+                
+                args.ObjectContainer.RegisterTypeAs<SpecificationProvider, ISpecificationProvider>();
+                args.ObjectContainer.RegisterTypeAs<DataSourceLoaderFactory, IDataSourceLoaderFactory>();
+                args.ObjectContainer.RegisterTypeAs<CsvLoader, IDataSourceLoader>("CSV");
+                args.ObjectContainer.RegisterTypeAs<ExcelLoader, IDataSourceLoader>("Excel");
             };
         }
     }

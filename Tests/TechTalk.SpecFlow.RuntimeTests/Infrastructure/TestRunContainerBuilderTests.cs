@@ -71,6 +71,29 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             testRunnerFactory.Should().BeOfType(typeof(DummyTestRunnerFactory));
         }
 
+        [Fact]
+        public void Should_be_able_to_customize_dependencies_from_json_config()
+        {
+            var expectedInterface = typeof(ITestRunnerFactory).AssemblyQualifiedName;
+            var expectedImplementation = typeof(DummyTestRunnerFactory).AssemblyQualifiedName;
+            
+            var configurationHolder = new StringConfigProvider(
+            $@"{{
+                ""runtime"": {{ 
+                    ""dependencies"": [
+                        {{
+                            ""type"": ""{expectedImplementation}"",
+                            ""as"": ""{expectedInterface}""
+                        }}
+                    ]
+                }}
+            }}");
+
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
+            var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
+            testRunnerFactory.Should().BeOfType(typeof(DummyTestRunnerFactory));
+        }
+
         public class CustomUnitTestProvider : IUnitTestRuntimeProvider
         {
             public void TestPending(string message)

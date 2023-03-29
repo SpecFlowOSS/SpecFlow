@@ -21,17 +21,18 @@ namespace TechTalk.SpecFlow.ErrorHandling
         PendingStepException GetPendingStepDefinitionError();
         void ThrowPendingError(ScenarioExecutionStatus testStatus, string message);
         Exception GetTooManyBindingParamError(int maxParam);
-        Exception GetNonStaticEventError(IBindingMethod method);
         Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion);
+        Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding);
+        Exception GetInvalidBindingRegistryError(IEnumerable<BindingError> errors);
     }
 
     internal class ErrorProvider : IErrorProvider
     {
         private readonly IStepFormatter stepFormatter;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
-        private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        private readonly SpecFlowConfiguration specFlowConfiguration;
 
-        public ErrorProvider(IStepFormatter stepFormatter, Configuration.SpecFlowConfiguration specFlowConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
+        public ErrorProvider(IStepFormatter stepFormatter, SpecFlowConfiguration specFlowConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
         {
             this.stepFormatter = stepFormatter;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -46,25 +47,20 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public Exception GetCallError(IBindingMethod method, Exception ex)
         {
-            return new BindingException(
-                string.Format("Error calling binding method '{0}': {1}",
-                    GetMethodText(method), ex.Message));
+            return new BindingException($"Error calling binding method '{GetMethodText(method)}': {ex.Message}");
         }
 
         public Exception GetParameterCountError(BindingMatch match, int expectedParameterCount)
         {
             return new BindingException(
-                string.Format("Parameter count mismatch! The binding method '{0}' should have {1} parameters",
-                    GetMethodText(match.StepBinding.Method), expectedParameterCount));
+                $"Parameter count mismatch! The binding method '{GetMethodText(match.StepBinding.Method)}' should have {expectedParameterCount} parameters");
         }
 
         public Exception GetAmbiguousMatchError(List<BindingMatch> matches, StepInstance stepInstance)
         {
             string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(
-                string.Format("Ambiguous step definitions found for step '{0}': {1}",
-                    stepDescription,
-                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())));
+                $"Ambiguous step definitions found for step '{stepDescription}': {string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())}");
         }
 
 
@@ -72,18 +68,16 @@ namespace TechTalk.SpecFlow.ErrorHandling
         {
             string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(
-                string.Format("Multiple step definitions found, but none of them have matching parameter count and type for step '{0}': {1}",
-                    stepDescription,
-                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())));
+                "Multiple step definitions found, but none of them have matching parameter count and type for step "
+                + $"'{stepDescription}': {string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())}");
         }
 
         public Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance)
         {
             string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(
-                string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
-                    stepDescription,
-                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())));
+                "Multiple step definitions found, but none of them have matching scope for step "
+                + $"'{stepDescription}': {string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())}");
         }
 
         public MissingStepDefinitionException GetMissingStepDefinitionError()
@@ -119,20 +113,26 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public Exception GetTooManyBindingParamError(int maxParam)
         {
-            return new BindingException(
-                string.Format("Binding methods with more than {0} parameters are not supported", maxParam));
-        }
-
-        public Exception GetNonStaticEventError(IBindingMethod method)
-        {
-            throw new BindingException(
-                string.Format("The binding methods for before/after feature and before/after test run events must be static! {0}",
-                GetMethodText(method)));
+            return new BindingException($"Binding methods with more than {maxParam} parameters are not supported");
         }
 
         public Exception GetObsoleteStepError(BindingObsoletion bindingObsoletion)
         {
             throw new BindingException(bindingObsoletion.Message);
+        }
+
+        public Exception GetInvalidStepDefinitionError(IStepDefinitionBinding stepDefinitionBinding)
+        {
+            var upgradeMessage = 
+                stepDefinitionBinding.ExpressionType == StepDefinitionExpressionTypes.CucumberExpression ? 
+                $"{Environment.NewLine}If this error comes after upgrading to SpecFlow v4, check the upgrade guide: https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html" :
+                "";
+            return new BindingException($"Invalid step definition! The step definition method '{GetMethodText(stepDefinitionBinding.Method)}' is invalid: {stepDefinitionBinding.ErrorMessage}.{upgradeMessage}");
+        }
+
+        public Exception GetInvalidBindingRegistryError(IEnumerable<BindingError> errors)
+        {
+            throw new BindingException("Binding error(s) found: " + Environment.NewLine + string.Join(Environment.NewLine, errors.Select(e => e.Message)));
         }
     }
 }

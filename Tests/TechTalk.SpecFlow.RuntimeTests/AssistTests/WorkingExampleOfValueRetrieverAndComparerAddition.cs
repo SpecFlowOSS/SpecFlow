@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
-            return this.TypesForWhichIRetrieveValues().Contains(type);
+            return TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Should_be_able_to_retrieve_the_fancy_name()
         {
 
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
+            Service.Instance.ValueRetrievers.Register(new FancyNameValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -90,8 +90,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_be_able_to_compare_the_fancy_name()
         {
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
-            Service.Instance.RegisterValueComparer(new FancyNameValueComparer());
+            Service.Instance.ValueRetrievers.Register(new FancyNameValueRetriever());
+            Service.Instance.ValueComparers.Register(new FancyNameValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
-            return this.TypesForWhichIRetrieveValues().Contains(type);
+            return TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }
@@ -174,7 +174,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Should_be_able_to_retrieve_the_category()
         {
 
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+            Service.Instance.ValueRetrievers.Register(new ProductCategoryValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Apple");
@@ -189,8 +189,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Fact]
         public void Should_be_able_to_compare_the_category()
         {
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
-            Service.Instance.RegisterValueComparer(new ProductCategoryValueComparer());
+            Service.Instance.ValueRetrievers.Register(new ProductCategoryValueRetriever());
+            Service.Instance.ValueComparers.Register(new ProductCategoryValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Cucumber");

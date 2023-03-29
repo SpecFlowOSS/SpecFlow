@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using BoDi;
 using Moq;
 using TechTalk.SpecFlow.Bindings;
@@ -9,11 +10,11 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
-
+using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    public class StepExecutionTestsBase
+    public class StepExecutionTestsBase : IAsyncLifetime
     {
         protected CultureInfo FeatureLanguage;
         protected Mock<IStepArgumentTypeConverter> StepArgumentTypeConverterStub;
@@ -53,9 +54,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceBindingError: {0}", ex);
             }
 
-            public void TraceError(Exception ex)
+            public void TraceError(Exception ex, TimeSpan duration)
             {
-                Console.WriteLine("TraceError: {0}", ex);
+                Console.WriteLine("TraceError: {0}, ({1:F1}s)", ex, duration.TotalSeconds);
             }
 
             public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
@@ -83,14 +84,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected virtual CultureInfo GetBindingCulture()
         {
             return new CultureInfo("en-US", false);
-        }        
+        }
 
-        public StepExecutionTestsBase()
+        public async Task InitializeAsync()
         {
-            TestRunnerManager.Reset();
-
-            
-            
+            await TestRunnerManager.ResetAsync();
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
             FeatureLanguage = GetFeatureLanguage();
@@ -142,6 +140,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                         var builder = (RuntimeBindingRegistryBuilder)container.Resolve<IRuntimeBindingRegistryBuilder>();
                         foreach (var bindingType in bindingTypes)
                             builder.BuildBindingsFromType(bindingType);
+                        builder.BuildingCompleted();
 
                         registerMocks?.Invoke(container);
                     });
@@ -169,6 +168,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected ScenarioExecutionStatus GetLastTestStatus()
         {
             return ContextManagerStub.ScenarioContext.ScenarioExecutionStatus;
+        }
+
+        public async Task DisposeAsync()
+        {
         }
     }
 }

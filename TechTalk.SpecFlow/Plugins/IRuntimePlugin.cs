@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using TechTalk.SpecFlow.UnitTestProvider;
+﻿using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Plugins
 {

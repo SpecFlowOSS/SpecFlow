@@ -1,0 +1,14 @@
+---
+name: Implementing a Feature request
+description: Discuss how to implement a feature request
+body:
+- type: input
+  attributes:
+    label: Link to Feature Request
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Implementation Idea
+  validations:
+    required: true

@@ -14,7 +14,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
         public Configuration.SpecFlowConfiguration LoadAppConfig(Configuration.SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException(nameof(configSection));
-            
 
             ContainerRegistrationCollection runtimeContainerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
@@ -28,13 +27,11 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            bool coloredOutput = specFlowConfiguration.ColoredOutput;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
-
-            bool markFeaturesParallelizable = specFlowConfiguration.MarkFeaturesParallelizable;
-            string[] skipParallelizableMarkerForTags = specFlowConfiguration.SkipParallelizableMarkerForTags;
-            CucumberMessagesConfiguration cucumberMessagesConfiguration = specFlowConfiguration.CucumberMessagesConfiguration;
+            string[] addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
 
 
             if (IsSpecified(configSection.Language))
@@ -63,11 +60,10 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             {
                 allowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = configSection.Generator.AllowRowTests;
-                markFeaturesParallelizable = configSection.Generator.MarkFeaturesParallelizable;
 
-                if (IsSpecified(configSection.Generator.SkipParallelizableMarkerForTags))
+                if (IsSpecified(configSection.Generator.AddNonParallelizableMarkerForTags))
                 {
-                    skipParallelizableMarkerForTags = configSection.Generator.SkipParallelizableMarkerForTags.Select(i => i.Value).ToArray();
+                    addNonParallelizableMarkerForTags = configSection.Generator.AddNonParallelizableMarkerForTags.Select(i => i.Value).ToArray();
                 }
 
                 if (IsSpecified(configSection.Generator.Dependencies))
@@ -87,6 +83,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 traceTimings = configSection.Trace.TraceTimings;
                 minTracedDuration = configSection.Trace.MinTracedDuration;
                 stepDefinitionSkeletonStyle = configSection.Trace.StepDefinitionSkeletonStyle;
+                coloredOutput = configSection.Trace.ColoredOutput;
             }
 
             foreach (var element in configSection.StepAssemblies)
@@ -95,17 +92,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            if (IsSpecified(configSection.CucumberMessages))
-            {
-                cucumberMessagesConfiguration.Enabled = configSection.CucumberMessages.Enabled;
-
-                foreach (CucumberMessageSinkElement cucumberMessagesSink in configSection.CucumberMessages.Sinks)
-                {
-                    cucumberMessagesConfiguration.Sinks.Add(new CucumberMessagesSink(cucumberMessagesSink.Type, cucumberMessagesSink.Path));
-                }
-            }
-
-            return new SpecFlowConfiguration(ConfigSource.AppConfig, 
+            return new SpecFlowConfiguration(ConfigSource.AppConfig,
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
@@ -119,10 +106,9 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             additionalStepAssemblies,
                                             allowDebugGeneratedFiles,
                                             allowRowTests,
-                                            markFeaturesParallelizable,
-                                            skipParallelizableMarkerForTags,
+                                            addNonParallelizableMarkerForTags,
                                             obsoleteBehavior,
-                                            cucumberMessagesConfiguration
+                                            coloredOutput
                                             );
         }
 

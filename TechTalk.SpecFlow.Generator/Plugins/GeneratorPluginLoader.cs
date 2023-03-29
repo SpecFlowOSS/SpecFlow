@@ -15,8 +15,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             {
 
 #if NETCOREAPP
-                var absolutePath = Path.GetFullPath(pluginDescriptor.Path);
-                pluginAssembly = PluginAssemblyResolver.Load(absolutePath);
+                pluginAssembly = PluginAssemblyResolver.Load(pluginDescriptor.Path);
 #else
                 pluginAssembly = Assembly.LoadFrom(pluginDescriptor.Path);
 #endif

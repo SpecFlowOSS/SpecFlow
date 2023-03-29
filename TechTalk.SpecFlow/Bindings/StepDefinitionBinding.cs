@@ -1,29 +1,52 @@
 using System;
-using System.Reflection;
 using System.Text.RegularExpressions;
+using CucumberExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
-namespace TechTalk.SpecFlow.Bindings
+namespace TechTalk.SpecFlow.Bindings;
+
+public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
 {
-    public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
+    public StepDefinitionType StepDefinitionType { get; }
+
+    public string SourceExpression { get; }
+
+    public string ExpressionType { get; }
+
+    public bool IsValid => ErrorMessage == null;
+
+    public string ErrorMessage { get; }
+
+    public Regex Regex => Expression?.Regex;
+
+    public IExpression Expression { get; }
+
+    public BindingScope BindingScope { get; }
+    public bool IsScoped => BindingScope != null;
+
+    public StepDefinitionBinding(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionType, string sourceExpression, IExpression expression)
+        : base(bindingMethod)
     {
-        public StepDefinitionType StepDefinitionType { get; private set; }
-        public Regex Regex { get; private set; }
-
-        public BindingScope BindingScope { get; private set; }
-        public bool IsScoped { get { return BindingScope != null; } }
-
-        public StepDefinitionBinding(StepDefinitionType stepDefinitionType, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope)
-            : base(bindingMethod)
-        {
-            StepDefinitionType = stepDefinitionType;
-            Regex = regex;
-            BindingScope = bindingScope;
-        }
-
-        public StepDefinitionBinding(StepDefinitionType stepDefinitionType, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
-            : this(stepDefinitionType, RegexFactory.Create(regexString), bindingMethod, bindingScope)
-        {
-        }
+        StepDefinitionType = stepDefinitionType;
+        BindingScope = bindingScope;
+        ExpressionType = expressionType ?? throw new ArgumentNullException(nameof(expressionType));
+        SourceExpression = sourceExpression ?? throw new ArgumentNullException(nameof(sourceExpression));
+        Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+        ErrorMessage = null;
     }
+
+    private StepDefinitionBinding(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod, BindingScope bindingScope, string expressionType, string sourceExpression, string errorMessage)
+        : base(bindingMethod)
+    {
+        StepDefinitionType = stepDefinitionType;
+        Expression = null;
+        BindingScope = bindingScope;
+        SourceExpression = sourceExpression;
+        ExpressionType = expressionType;
+        ErrorMessage = errorMessage;
+    }
+
+    public static StepDefinitionBinding CreateInvalid(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod,
+        BindingScope bindingScope, string expressionType, string sourceExpression, string errorMessage)
+        => new(stepDefinitionType, bindingMethod, bindingScope, expressionType, sourceExpression, errorMessage);
 }

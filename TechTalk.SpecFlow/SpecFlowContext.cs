@@ -3,8 +3,15 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow
 {
+    public interface ISpecFlowContext
+    {
+        Exception TestError { get; }
+    }
+
     public abstract class SpecFlowContext : Dictionary<string, object>, IDisposable
     {
+        public Exception TestError { get; internal set; }
+
         protected virtual void Dispose()
         {
         }
@@ -21,14 +28,13 @@ namespace TechTalk.SpecFlow
 
         public bool TryGetValue<TValue>(string key, out TValue value)
         {
-            object result;
-            if (base.TryGetValue(key, out result))
+            if (base.TryGetValue(key, out object result))
             {
                 value = TheValueIsAFactoryMethod<TValue>(result) ? CallTheFactoryMethodToGetTheValue<TValue>(result) : (TValue)result;
                 return true;
             }
 
-            value = default(TValue);
+            value = default;
             return false;
         }
 

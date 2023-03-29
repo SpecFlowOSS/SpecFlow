@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
 
             foreach (var featureGenerator in GetFilteredFeatureGenerator(unitTestProviders, onlyFullframework, onlyDotNetCore))
             {
-                var clonedDocument = CloneDocumentAndAddTag(specFlowDocument, featureGenerator.Key.UnitTestProvider);
+                var clonedDocument = CloneDocumentAndAddTags(specFlowDocument, featureGenerator.Key);
 
 
                 var featureGeneratorResult = featureGenerator.Value.GenerateUnitTestFixture(clonedDocument, testClassName, targetNamespace);
@@ -86,18 +86,19 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
             return result;
         }
 
-        private SpecFlowDocument CloneDocumentAndAddTag(SpecFlowDocument specFlowDocument, string unitTestProvider)
+        private SpecFlowDocument CloneDocumentAndAddTags(SpecFlowDocument specFlowDocument, Combination combination)
         {
-            if (HasFeatureTag(specFlowDocument.SpecFlowFeature, unitTestProvider))
-            {
-                return specFlowDocument;
-            }
-
-
             var tags = new List<Tag>();
             var specFlowFeature = specFlowDocument.SpecFlowFeature;
             tags.AddRange(specFlowFeature.Tags);
-            tags.Add(new Tag(null, unitTestProvider));
+            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, "@" + combination.UnitTestProvider))
+                tags.Add(new Tag(null, "@" + combination.UnitTestProvider));
+            foreach (string otherUnitTestProvider in _unitTestProviderTags.Where(utp => !utp.Equals(combination.UnitTestProvider, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                tags.RemoveAll(t => ("@" + otherUnitTestProvider).Equals(t.Name, StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (!HasFeatureTag(specFlowDocument.SpecFlowFeature, "@" + combination.TargetFramework))
+                tags.Add(new Tag(null, "@" + combination.TargetFramework));
             var feature = new SpecFlowFeature(tags.ToArray(),
                                               specFlowFeature.Location,
                                               specFlowFeature.Language,
@@ -117,7 +118,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                 {
                     if (onlyFullframework)
                     {
-                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet461)
+                        if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValuenet462)
                         {
                             yield return featureGenerator;
                         }
@@ -127,7 +128,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                         if (onlyDotNetCore)
                         {
                             if (ShouldCompileForNetCore21(featureGenerator.Key)
-                                || ShouldCompileForNetCore31(featureGenerator.Key))
+                                || ShouldCompileForNetCore31(featureGenerator.Key) || ShouldCompileForNet50(featureGenerator.Key) || ShouldCompileForNet60(featureGenerator.Key))
                             {
                                 yield return featureGenerator;
                             }
@@ -148,7 +149,7 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                     {
                         if (onlyFullframework)
                         {
-                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValueNet461)
+                            if (featureGenerator.Key.TargetFramework == TestRunCombinations.TfmEnumValuenet462)
                             {
                                 yield return featureGenerator;
                             }
@@ -158,8 +159,8 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
                             if (onlyDotNetCore)
                             {
                                 if (ShouldCompileForNetCore21(featureGenerator.Key)
-                                    || ShouldCompileForNetCore31(featureGenerator.Key))
-                                {
+                                    || ShouldCompileForNetCore31(featureGenerator.Key) || ShouldCompileForNet50(featureGenerator.Key) || ShouldCompileForNet60(featureGenerator.Key))
+                                { 
                                     yield return featureGenerator;
                                 }
                             }
@@ -181,6 +182,16 @@ namespace TechTalk.SpecFlow.Specs.Generator.SpecFlowPlugin
         public bool ShouldCompileForNetCore31(Combination combination)
         {
             return combination.TargetFramework == TestRunCombinations.TfmEnumValueNetCore31;
+        }
+
+        public bool ShouldCompileForNet50(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNet50;
+        }
+
+        public bool ShouldCompileForNet60(Combination combination)
+        {
+            return combination.TargetFramework == TestRunCombinations.TfmEnumValueNet60;
         }
 
         private bool IsForUnitTestProvider(KeyValuePair<Combination, IFeatureGenerator> featureGenerator, string unitTestProvider)

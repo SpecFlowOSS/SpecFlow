@@ -7,12 +7,12 @@ Scenario: Check Scenario description is not empty
 		using TechTalk.SpecFlow;
 
 		[Binding]
-		public class DescriptionTestsBinding
+		public class DescriptionTestsBinding : Steps
 		{
 			[Then(@"Check ""(.*)"" match with scenario description in context")]
 			public void ThenCheckMatchWithScenarioDescriptionInContext(string desc)
 			{
-				var testValue = ScenarioContext.Current.ScenarioInfo.Description;
+				var testValue = ScenarioContext.ScenarioInfo.Description;
 				if (testValue != desc) throw new Exception("Scenario Description is incorrectly parsed"); 						 
 			}
 		}
@@ -39,12 +39,12 @@ Scenario: Check Scenario description is null if empty
 		using TechTalk.SpecFlow;
 
 		[Binding]
-		public class DescriptionTestsBinding
+		public class DescriptionTestsBinding : Steps
 		{	
 			[Then(@"Check that scenario description is null in context")]
 			public void ThenCheckThatScenarioDescriptionIsNullInContext()
 			{
-				var testValue = ScenarioContext.Current.ScenarioInfo.Description;
+				var testValue = ScenarioContext.ScenarioInfo.Description;
 				if (testValue != null) throw new Exception("Scenario Description is incorrectly parsed"); 						 
 			}
 		}

@@ -34,6 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var retriever = new DateTimeValueRetriever();
             var result = (DateTime)retriever.Retrieve(new KeyValuePair<string, string>(IrrelevantKey, value), IrrelevantType, typeof(DateTime));
             result.Should().Be(expectation);
+            result.Kind.Should().Be(expectation.Kind);
         }
 
         private void Retrieve_correct_nullable_value(string value, DateTime? expectation)
@@ -105,6 +106,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             Retrieve_correct_nullable_value("this is not a date", DateTime.MinValue);
             Retrieve_correct_value("Thursday", DateTime.MinValue);
             Retrieve_correct_nullable_value("Thursday", DateTime.MinValue);
+        }
+
+        [Fact]
+        public void Uses_provided_styles()
+        {
+            var oldStyle = DateTimeValueRetriever.DateTimeStyles;
+            try
+            {
+                DateTimeValueRetriever.DateTimeStyles = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
+
+                Retrieve_correct_value("1/1/2011 15:16:17", new DateTime(2011, 1, 1, 15, 16, 17, DateTimeKind.Utc));
+                Retrieve_correct_nullable_value("1/1/2011 15:16:17", new DateTime(2011, 1, 1, 15, 16, 17, DateTimeKind.Utc));
+                Retrieve_correct_value("1/1/2011 5:6:7", new DateTime(2011, 1, 1, 5, 6, 7, DateTimeKind.Utc));
+                Retrieve_correct_nullable_value("1/1/2011 5:6:7", new DateTime(2011, 1, 1, 5, 6, 7, DateTimeKind.Utc));
+            }
+            finally
+            {
+                DateTimeValueRetriever.DateTimeStyles = oldStyle;
+            }
         }
     }
 }

@@ -3,15 +3,21 @@
     <PropertyGroup>
       <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);version=$(NuGetPackageVersion)</NuspecProperties>
-      <NuspecProperties>$(NuspecProperties);SolutionDir=$(SolutionDir)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SolutionDir=$(MSBuildThisFileDirectory)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);copyright=$(SpecFlow_Copyright)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);author=$(SpecFlow_Authors)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);owner=$(SpecFlow_Owners)</NuspecProperties>
+      
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Net6_TFM=$(SpecFlow_Net6_TFM)</NuspecProperties>
+      
       <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Runtime_TFM=$(SpecFlow_FullFramework_Runtime_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Runtime_TFM=$(SpecFlow_Core_Runtime_TFM)</NuspecProperties>
+      
       <NuspecProperties>$(NuspecProperties);SpecFlow_FullFramework_Generator_TFM=$(SpecFlow_FullFramework_Generator_TFM)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Generator_TFM=$(SpecFlow_Core_Generator_TFM)</NuspecProperties>
+            
       <NuspecProperties>$(NuspecProperties);SpecFlow_Core_Tools_TFM=$(SpecFlow_Core_Tools_TFM)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);SpecFlow_Net6_Tools_TFM=$(SpecFlow_Net6_Tools_TFM)</NuspecProperties>
     </PropertyGroup>
   </Target>
 
@@ -26,6 +32,6 @@
     <ItemGroup>
       <GeneratedNupkgs Include="$(PackageOutputAbsolutePath)\*.nupkg"/>
     </ItemGroup>
-    <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(SolutionDir)GeneratedNuGetPackages\$(Configuration)" />
+    <Copy SourceFiles="@(GeneratedNupkgs)" DestinationFolder="$(MSBuildThisFileDirectory)GeneratedNuGetPackages\$(Configuration)" />
   </Target>
 </Project>

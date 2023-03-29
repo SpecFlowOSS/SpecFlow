@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Plugins
 
         public event EventHandler<RuntimePluginAfterStepEventArgs> AfterStep;
 
-        
+
         public void RaiseBeforeTestRun(IObjectContainer objectContainer)
         {
             BeforeTestRun?.Invoke(this, new RuntimePluginBeforeTestRunEventArgs(objectContainer));

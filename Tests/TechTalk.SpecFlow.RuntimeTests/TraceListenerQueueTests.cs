@@ -47,7 +47,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             void WriteTestOutputCallback(string message)
             {
-                countdown.Signal();
                 if (!semaphore.Wait(0))
                 {
                     failureOnSemaphoreEntering = true;
@@ -56,14 +55,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
                 testOutputList.Add(message);
                 semaphore.Release();
+                countdown.Signal();
             }
         }
 
         private Mock<ITestRunner> GetTestRunnerMock()
         {
             var testRunnerMock = new Mock<ITestRunner>();
-            testRunnerMock.SetupGet(r => r.ThreadId)
-                          .Returns(() => Thread.CurrentThread.ManagedThreadId);
+            testRunnerMock.SetupGet(r => r.TestWorkerId)
+                          .Returns(() => Thread.CurrentThread.ManagedThreadId.ToString());
             return testRunnerMock;
         }
 

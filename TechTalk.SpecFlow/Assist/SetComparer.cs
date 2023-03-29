@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Assist
 
             var expectedItemsNotFoundInTheData = GetExpectedItemsNotFoundInTheData(set, sequentialEquality);
 
-            AssertThatTheItemsMatchTheExpectedResults(set, expectedItemsNotFoundInTheData);
+            AssertThatTheItemsMatchTheExpectedResults(expectedItemsNotFoundInTheData);
 
             AssertThatNoExtraRowsExist(set, expectedItemsNotFoundInTheData);
         }
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Assist
             return !set.Any() && !table.Rows.Any();
         }
 
-        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
+        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<int> listOfMissingItems)
         {
             if (ExpectedItemsCouldNotBeFound(listOfMissingItems))
                 ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow.Assist
                     listOfMissingItems.Add(index + 1);
             }
 
-            extraOrNonMatchingActualItems = 
+            extraOrNonMatchingActualItems =
                 listOfMissingItems.Select(index => new TableDifferenceItem<T>(actualItems[index-1], index)).Concat(
                 actualItems.Skip(table.RowCount).Select(i => new TableDifferenceItem<T>(i)))
                 .ToList();
@@ -172,12 +172,13 @@ namespace TechTalk.SpecFlow.Assist
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
-            var normalizedPropertyNames = new HashSet<string>(from property in typeof(T).GetProperties()
-                                                              select TEHelpers.NormalizePropertyNameToMatchAgainstAColumnName(property.Name));
-            var normalizedColumnNames = new HashSet<string>(from columnHeader in table.Header
-                                                            select TEHelpers.NormalizePropertyNameToMatchAgainstAColumnName(TEHelpers.RemoveAllCharactersThatAreNotValidInAPropertyName(columnHeader)));
-
-            var propertiesThatDoNotExist = normalizedColumnNames.Except(normalizedPropertyNames, StringComparer.OrdinalIgnoreCase).ToArray();
+            var propertyInfos = typeof(T).GetProperties();
+            var propertiesThatDoNotExist
+                = table.Header
+                    .Where(
+                        columnHeader => !propertyInfos.Any(
+                                property => TEHelpers.IsMemberMatchingToColumnName(property, columnHeader)))
+                    .ToList();
 
             if (propertiesThatDoNotExist.Any())
                 throw new ComparisonException($@"The following fields do not exist:{Environment.NewLine}{string.Join(Environment.NewLine, propertiesThatDoNotExist)}");

@@ -1,11 +1,23 @@
 # Step Definitions
 
-The step definitions provide the connection between your feature files and application interfaces. For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters.  
+The step definitions provide the connection between your feature files and application interfaces. You have to add the `[Binding]` attribute to the class where your step definitions are:
+
+```csharp
+[Binding]
+public class StepDefinitions
+{
+	...
+}
+```
+
+*> **Note:** Bindings (step definitions, hooks) are global for the entire SpecFlow project.*
+
+For better reusability, the step definitions can include parameters. This means that it is not necessary to define a new step definition for each step that just differs slightly. For example, the steps `When I perform a simple search on 'Domain'` and `When I perform a simple search on 'Communication'` can be automated with a single step definition, with 'Domain' and 'Communication' as parameters.  
 
 The following example shows a simple step definition that matches to the step `When I perform a simple search on 'Domain'`:
 
 ``` csharp
-[When(@"I perform a simple search on '(.*)'")]
+[When(@"^I perform a simple search on '(.*)'$")]
 public void WhenIPerformASimpleSearchOn(string searchTerm)
 {
     var controller = new CatalogController();
@@ -15,23 +27,50 @@ public void WhenIPerformASimpleSearchOn(string searchTerm)
 
 Here the method is annotated with the `[When]` attribute, and includes the regular expression used to match the step's text. This [regular expression](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions) uses (`(.*)`) to define parameters for the method.
 
+With SpecFlow v4 you can also use [Cucumber Expressions](Cucumber-Expressions.md) to specify step definitions. The step definition above can now be written as:
+
+``` csharp
+[When("I perform a simple search on {string}")]
+public void WhenIPerformASimpleSearchOn(string searchTerm)
+{
+    var controller = new CatalogController();
+    actionResult = controller.Search(searchTerm);
+}
+```
+
 ## Supported Step Definition Attributes
 
-* `[Given(regex)]` or `[Given]` - `TechTalk.SpecFlow.GivenAttribute`
-* `[When(regex)]` or `[When]` - `TechTalk.SpecFlow.WhenAttribute`
-* `[Then(regex)]` or `[Then]` - `TechTalk.SpecFlow.ThenAttribute`
-* `[StepDefinition(regex)]` or `[StepDefinition]` - `TechTalk.SpecFlow.StepDefinitionAttribute`, matches for given, when or then attributes
+* `[Given(expression)]` or `[Given]` - `TechTalk.SpecFlow.GivenAttribute`
+* `[When(expression)]` or `[When]` - `TechTalk.SpecFlow.WhenAttribute`
+* `[Then(expression)]` or `[Then]` - `TechTalk.SpecFlow.ThenAttribute`
+* `[StepDefinition(expression)]` or `[StepDefinition]` - `TechTalk.SpecFlow.StepDefinitionAttribute`, matches for given, when or then attributes
+
+The `expression` can be either a Cucumber Expression (from SpecFlow v4) or a Regular Expression. 
 
 You can annotate a single method with multiple attributes in order to support different phrasings in the feature file for the same automation logic.
 
 ```c#
-[When(@"I perform a simple search on '(.*)'")]
-[When(@"I search for '(.*)'")]
+[When("I perform a simple search on {string}")]
+[When("I search for {string}")]
 public void WhenIPerformASimpleSearchOn(string searchTerm)
 {
   ...
 }
 ```
+
+## Other Attributes
+
+The `[Obsolete]` attribute from the system namespace is also supported, check [here](https://docs.specflow.org/projects/specflow/en/latest/Installation/Configuration.html#runtime) for more details.
+
+```c#
+[Given("Stuff is done")]
+[Obsolete]
+public void GivenStuffIsDone()
+{
+    var x = 2+3;
+}
+```
+
 
 ## Step Definition Methods Rules
 
@@ -39,11 +78,25 @@ public void WhenIPerformASimpleSearchOn(string searchTerm)
 * Must be a public method.
 * Can be either a static or an instance method. If it is an instance method, the containing class will be instantiated once for every scenario.
 * Cannot have `out` or `ref` parameters.
-* Cannot have a return type or have `Task` as return type.
+* Should return `void` or `Task`.
 
 ## Step Matching Styles & Rules
 
 The rules depend on the step definition style you use.  
+
+### Cucumber expressions in attributes
+
+This is the new default style from SpecFlow v4. The step definition method has to be annotated with one or more step definition attributes with [cucumber expressions](Cucumber-Expressions.md).
+
+```c#
+[Given("I have entered {int} into the calculator")]
+public void GivenIHaveEnteredNumberIntoTheCalculator(int number)
+{
+  ...
+}
+```
+
+For cucumber expression matching rules please check the [cucumber expressions](Cucumber-Expressions.md) page.
 
 ### Regular expressions in attributes
 
@@ -116,6 +169,9 @@ let [<Given>] ``I have entered (.*) into the calculator``(number:int) =
 
 * Step definitions can specify parameters. These will match to the parameters of the step definition method.
 * The method parameter type can be `string` or other .NET type. In the later case a [configurable conversion](Step-Argument-Conversions.md) is applied.
+* With cucumber expressions
+  * The parameter placeholders (`{parameter-type}`) define the arguments for the method based on the order (the match result of the first group becomes the first argument, etc.).
+  * For the exact parameter rules please check the [cucumber expressions](Cucumber-Expressions.md) page.
 * With regular expressions
   * The match groups (`(…)`) of the regular expression define the arguments for the method based on the order (the match result of the first group becomes the first argument, etc.).
   * You can use non-capturing groups `(?:regex)` in order to use groups without a method argument.
@@ -134,7 +190,7 @@ Given the following books
 ```
 
 ``` csharp
-[Given(@"the following books")]
+[Given("the following books")]
 public void GivenTheFollowingBooks(Table table)
 {
   ...

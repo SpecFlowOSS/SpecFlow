@@ -1,6 +1,4 @@
 ﻿@xUnit @NUnit3 @MSTest
-#parallel execution doesn't work currently with MsTest v2
-
 Feature: In-AppDomain Parallel Execution
 
 Background:
@@ -15,10 +13,12 @@ Background:
         public class TraceSteps
         {
             private readonly ITraceListener _traceListener;
+            private readonly ITestRunner _testRunner;
 
-            public TraceSteps(ITraceListener traceListener)
+            public TraceSteps(ITraceListener traceListener, ITestRunner testRunner)
             {
                 _traceListener = traceListener;
+                _testRunner = testRunner;
             }
 
             public static int startIndex = 0;
@@ -27,7 +27,7 @@ Background:
             void WhenIDoSomething()
             {
                 var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
-                _traceListener.WriteTestOutput($"Start index: {currentStartIndex}");
+                _traceListener.WriteTestOutput($"Start index: {currentStartIndex}, Worker: {_testRunner.TestWorkerId}");
                 System.Threading.Tasks.Task.Delay(500).Wait();
                 var afterStartIndex = startIndex;
                 if (afterStartIndex == currentStartIndex)

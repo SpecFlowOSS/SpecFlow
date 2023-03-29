@@ -1,10 +1,8 @@
-using System.Diagnostics;
-
 namespace TechTalk.SpecFlow.Bindings
 {
     public class BindingMatch
     {
-        static public readonly BindingMatch NonMatching = new BindingMatch(null, 0, null, null);
+        public static readonly BindingMatch NonMatching = new BindingMatch(null, 0, null, null);
 
         public IStepDefinitionBinding StepBinding { get; private set; }
         public bool Success { get { return StepBinding != null; } }

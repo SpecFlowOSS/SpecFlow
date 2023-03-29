@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 
@@ -29,12 +30,11 @@ namespace TechTalk.SpecFlow.Configuration
             List<string> additionalStepAssemblies,
             bool allowDebugGeneratedFiles,
             bool allowRowTests,
-            bool markFeaturesParallelizable,
-            string[] skipParallelizableMarkerForTags,
+            string[] addNonParallelizableMarkerForTags,
             ObsoleteBehavior obsoleteBehavior,
-            CucumberMessagesConfiguration cucumberMessagesConfiguration)
+            bool coloredOutput
+        )
         {
-            CucumberMessagesConfiguration = cucumberMessagesConfiguration;
             ConfigSource = configSource;
             CustomDependencies = customDependencies;
             GeneratorCustomDependencies = generatorCustomDependencies;
@@ -49,18 +49,15 @@ namespace TechTalk.SpecFlow.Configuration
             AdditionalStepAssemblies = additionalStepAssemblies;
             AllowDebugGeneratedFiles = allowDebugGeneratedFiles;
             AllowRowTests = allowRowTests;
-            MarkFeaturesParallelizable = markFeaturesParallelizable;
-            SkipParallelizableMarkerForTags = skipParallelizableMarkerForTags;
+            AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags;
             ObsoleteBehavior = obsoleteBehavior;
+            ColoredOutput = coloredOutput;
         }
-
-        public CucumberMessagesConfiguration CucumberMessagesConfiguration { get; }
 
         public ConfigSource ConfigSource { get; set; }
 
         public ContainerRegistrationCollection CustomDependencies { get; set; }
         public ContainerRegistrationCollection GeneratorCustomDependencies { get; set; }
-
 
         //language settings
         public CultureInfo FeatureLanguage { get; set; }
@@ -69,13 +66,15 @@ namespace TechTalk.SpecFlow.Configuration
         //runtime settings
         public bool StopAtFirstError { get; set; }
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
-
-        public bool AllowDebugGeneratedFiles { get; set; }
-        public bool AllowRowTests { get; set; }
-
         public ObsoleteBehavior ObsoleteBehavior { get; set; }
 
+        //generator settings
+        public bool AllowDebugGeneratedFiles { get; set; }
+        public bool AllowRowTests { get; set; }
+        public string[] AddNonParallelizableMarkerForTags { get; set; }
+
         //tracing settings
+        public bool ColoredOutput { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
@@ -83,19 +82,22 @@ namespace TechTalk.SpecFlow.Configuration
 
         public List<string> AdditionalStepAssemblies { get; set; }
 
-        public bool MarkFeaturesParallelizable { get; set; }
-        public string[] SkipParallelizableMarkerForTags { get; set; }
-
-        protected bool Equals(SpecFlowConfiguration other)
-        {
-            return Equals(CucumberMessagesConfiguration, other.CucumberMessagesConfiguration) && ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) &&
-                   Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies) && Equals(FeatureLanguage, other.FeatureLanguage) && Equals(BindingCulture, other.BindingCulture) &&
-                   StopAtFirstError == other.StopAtFirstError && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles &&
-                   AllowRowTests == other.AllowRowTests && ObsoleteBehavior == other.ObsoleteBehavior && TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings &&
-                   MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle &&
-                   Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && MarkFeaturesParallelizable == other.MarkFeaturesParallelizable &&
-                   Equals(SkipParallelizableMarkerForTags, other.SkipParallelizableMarkerForTags);
-        }
+        protected bool Equals(SpecFlowConfiguration other) => ConfigSource == other.ConfigSource
+                                                              && Equals(CustomDependencies, other.CustomDependencies)
+                                                              && Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies)
+                                                              && Equals(FeatureLanguage, other.FeatureLanguage)
+                                                              && Equals(BindingCulture, other.BindingCulture)
+                                                              && StopAtFirstError == other.StopAtFirstError
+                                                              && MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome
+                                                              && AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles
+                                                              && AllowRowTests == other.AllowRowTests
+                                                              && ObsoleteBehavior == other.ObsoleteBehavior
+                                                              && TraceSuccessfulSteps == other.TraceSuccessfulSteps
+                                                              && TraceTimings == other.TraceTimings
+                                                              && MinTracedDuration.Equals(other.MinTracedDuration)
+                                                              && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle
+                                                              && AdditionalStepAssemblies.SequenceEqual(other.AdditionalStepAssemblies)
+                                                              && AddNonParallelizableMarkerForTags.SequenceEqual(other.AddNonParallelizableMarkerForTags);
 
         public override bool Equals(object obj)
         {
@@ -114,31 +116,29 @@ namespace TechTalk.SpecFlow.Configuration
                 return false;
             }
 
-            return Equals((SpecFlowConfiguration) obj);
+            return Equals((SpecFlowConfiguration)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = CucumberMessagesConfiguration != null ? CucumberMessagesConfiguration.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (int) ConfigSource;
+                var hashCode = (int)ConfigSource;
                 hashCode = (hashCode * 397) ^ (CustomDependencies != null ? CustomDependencies.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (GeneratorCustomDependencies != null ? GeneratorCustomDependencies.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FeatureLanguage != null ? FeatureLanguage.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ StopAtFirstError.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int) MissingOrPendingStepsOutcome;
+                hashCode = (hashCode * 397) ^ (int)MissingOrPendingStepsOutcome;
                 hashCode = (hashCode * 397) ^ AllowDebugGeneratedFiles.GetHashCode();
                 hashCode = (hashCode * 397) ^ AllowRowTests.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int) ObsoleteBehavior;
+                hashCode = (hashCode * 397) ^ (int)ObsoleteBehavior;
                 hashCode = (hashCode * 397) ^ TraceSuccessfulSteps.GetHashCode();
                 hashCode = (hashCode * 397) ^ TraceTimings.GetHashCode();
                 hashCode = (hashCode * 397) ^ MinTracedDuration.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int) StepDefinitionSkeletonStyle;
+                hashCode = (hashCode * 397) ^ (int)StepDefinitionSkeletonStyle;
                 hashCode = (hashCode * 397) ^ (AdditionalStepAssemblies != null ? AdditionalStepAssemblies.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ MarkFeaturesParallelizable.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SkipParallelizableMarkerForTags != null ? SkipParallelizableMarkerForTags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AddNonParallelizableMarkerForTags != null ? AddNonParallelizableMarkerForTags.GetHashCode() : 0);
                 return hashCode;
             }
         }

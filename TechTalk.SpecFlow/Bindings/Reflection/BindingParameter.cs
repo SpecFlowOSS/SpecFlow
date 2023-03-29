@@ -9,16 +9,13 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public BindingParameter(IBindingType type, string parameterName)
         {
-            if (type == null) throw new ArgumentNullException("type");
-            if (parameterName == null) throw new ArgumentNullException("parameterName");
-
-            Type = type;
-            ParameterName = parameterName;
+            Type = type ?? throw new ArgumentNullException(nameof(type));
+            ParameterName = parameterName ?? throw new ArgumentNullException(nameof(parameterName));
         }
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}", ParameterName, Type);
+            return $"{ParameterName}: {Type}";
         }
 
         protected bool Equals(BindingParameter other)

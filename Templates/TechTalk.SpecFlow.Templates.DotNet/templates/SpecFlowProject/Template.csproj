@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="SpecFlow" Version="3.1.80" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.1.80" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+	<PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="$$$MajorMinorVersion$$$.*" />
     $SpecFlowNugetPackages$
     $additionalNugetPackages$
+    $fluentAssertionsNugetPackage$
   </ItemGroup>
 
 </Project>

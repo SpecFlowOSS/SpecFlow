@@ -9,20 +9,22 @@ namespace TechTalk.SpecFlow.Analytics
     public class HttpClientAnalyticsTransmitterSink : IAnalyticsTransmitterSink
     {
         private readonly IAppInsightsEventSerializer _appInsightsEventSerializer;
-        private readonly Uri _appInsightsDataCollectionEndPoint = new Uri("https://dc.services.visualstudio.com/v2/track");
-        private readonly HttpClient _httpClient;
+        private readonly HttpClientWrapper _httpClientWrapper;
+        private Uri _appInsightsDataCollectionEndPoint;
+
+        private Uri EndPoint => _appInsightsDataCollectionEndPoint ??= new Uri("https://dc.services.visualstudio.com/v2/track");
 
         public HttpClientAnalyticsTransmitterSink(IAppInsightsEventSerializer appInsightsEventSerializer, HttpClientWrapper httpClientWrapper)
         {
             _appInsightsEventSerializer = appInsightsEventSerializer;
-            _httpClient = httpClientWrapper.HttpClient;
+            _httpClientWrapper = httpClientWrapper;
         }
 
-        public async Task<IResult> TransmitEvent(IAnalyticsEvent analyticsEvent, string instrumentationKey)
+        public async Task<IResult> TransmitEventAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey)
         {
             try
             {
-                await TransmitEventAsync(analyticsEvent, instrumentationKey);
+                await TransmitEventInternalAsync(analyticsEvent, instrumentationKey);
                 return Result.Success();
             }
             catch (Exception e)
@@ -33,13 +35,13 @@ namespace TechTalk.SpecFlow.Analytics
             }
         }
 
-        public async Task TransmitEventAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey)
+        private async Task TransmitEventInternalAsync(IAnalyticsEvent analyticsEvent, string instrumentationKey)
         {
             var serializedEventTelemetry = _appInsightsEventSerializer.SerializeAnalyticsEvent(analyticsEvent, instrumentationKey);
 
             using (var httpContent = new ByteArrayContent(serializedEventTelemetry))
             {
-                await _httpClient.PostAsync(_appInsightsDataCollectionEndPoint, httpContent);
+                await _httpClientWrapper.HttpClient.PostAsync(EndPoint, httpContent);
             }
         }
     }

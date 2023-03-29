@@ -1,10 +1,12 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -18,7 +20,7 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class TestGenerator : ErrorHandlingTestGenerator, ITestGenerator
     {
-        protected readonly SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration;
+        protected readonly SpecFlowConfiguration specFlowConfiguration;
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
@@ -27,7 +29,7 @@ namespace TechTalk.SpecFlow.Generator
         private readonly IGherkinParserFactory gherkinParserFactory;
 
 
-        public TestGenerator(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration,
+        public TestGenerator(SpecFlowConfiguration specFlowConfiguration,
             ProjectSettings projectSettings,
             ITestHeaderWriter testHeaderWriter,
             ITestUpToDateChecker testUpToDateChecker,
@@ -66,6 +68,8 @@ namespace TechTalk.SpecFlow.Generator
             }
 
             string generatedTestCode = GetGeneratedTestCode(featureFileInput);
+            if(string.IsNullOrEmpty(generatedTestCode))
+                return new TestGeneratorResult(null, true);
 
             if (settings.CheckUpToDate && preliminaryUpToDateCheckResult != false)
             {
@@ -88,6 +92,9 @@ namespace TechTalk.SpecFlow.Generator
             {
                 var codeProvider = codeDomHelper.CreateCodeDomProvider();
                 var codeNamespace = GenerateTestFileCode(featureFileInput);
+
+                if (codeNamespace == null) return "";
+
                 var options = new CodeGeneratorOptions
                                   {
                                       BracingStyle = "C",
@@ -99,8 +106,13 @@ namespace TechTalk.SpecFlow.Generator
 
                 outputWriter.Flush();
                 var generatedTestCode = outputWriter.ToString();
-                return FixVBNetGlobalNamespace(generatedTestCode);
+                return FixVb(generatedTestCode);
             }
+        }
+
+        private string FixVb(string generatedTestCode)
+        {
+            return FixVBNetAsyncMethodDeclarations(FixVBNetGlobalNamespace(generatedTestCode));
         }
 
         private string FixVBNetGlobalNamespace(string generatedTestCode)
@@ -109,7 +121,21 @@ namespace TechTalk.SpecFlow.Generator
                     .Replace("Global.GlobalVBNetNamespace", "Global")
                     .Replace("GlobalVBNetNamespace", "Global");
         }
+        
+        /// <summary>
+        /// This is a workaround to allow async/await calls in VB.NET. Works in cooperation with CodeDomHelper.MarkCodeMemberMethodAsAsync() method
+        /// </summary>
+        private string FixVBNetAsyncMethodDeclarations(string generatedTestCode)
+        {
+            var functionRegex = new Regex(@"^([^\n]*)Function[ ]*([^(\n]*)(\([^\n]*\)[ ]*As) async([^\n]*)$", RegexOptions.Multiline);
+            var subRegex = new Regex(@"^([^\n]*)Sub[ ]*([^(\n]*)(\([^\n]*\)[ ]*As) async([^\n]*)$", RegexOptions.Multiline);
 
+            var result = functionRegex.Replace(generatedTestCode, "$1 Async Function $2$3$4");
+            result = subRegex.Replace(result, "$1 Async Sub $2$3$4");
+
+            return result;
+        }
+        
         private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput)
         {
             string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
@@ -120,6 +146,8 @@ namespace TechTalk.SpecFlow.Generator
             {
                 specFlowDocument = ParseContent(parser, contentReader, GetSpecFlowDocumentLocation(featureFileInput));
             }
+
+            if (specFlowDocument.SpecFlowFeature == null) return null;
 
             var featureGenerator = featureGeneratorRegistry.CreateGenerator(specFlowDocument);
 

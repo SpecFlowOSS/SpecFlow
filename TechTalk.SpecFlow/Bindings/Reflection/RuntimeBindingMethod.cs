@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,20 +9,11 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     {
         public readonly MethodInfo MethodInfo;
 
-        public IBindingType Type
-        {
-            get { return new RuntimeBindingType(MethodInfo.DeclaringType); }
-        }
+        public IBindingType Type => new RuntimeBindingType(MethodInfo.DeclaringType);
 
-        public IBindingType ReturnType
-        {
-            get { return MethodInfo.ReturnType == typeof(void) ? null : new RuntimeBindingType(MethodInfo.ReturnType); }
-        }
+        public IBindingType ReturnType => MethodInfo.ReturnType == typeof(void) ? null : new RuntimeBindingType(MethodInfo.ReturnType);
 
-        public string Name
-        {
-            get { return MethodInfo.Name; }
-        }
+        public string Name => MethodInfo.Name;
 
         public IEnumerable<IBindingParameter> Parameters
         {
@@ -30,7 +22,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public RuntimeBindingMethod(MethodInfo methodInfo)
         {
-            this.MethodInfo = methodInfo;
+            MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
         }
 
         public override string ToString()
@@ -47,7 +39,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((RuntimeBindingMethod) obj);
         }
 

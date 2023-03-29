@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.Serialization;
 
 // the exceptions are part of the public API, keep them in TechTalk.SpecFlow namespace
@@ -11,6 +10,10 @@ namespace TechTalk.SpecFlow
     {
         public PendingStepException()
             : base("One or more step definitions are not implemented yet.")
+        {
+        }
+
+        public PendingStepException(string message) : base(message)
         {
         }
 

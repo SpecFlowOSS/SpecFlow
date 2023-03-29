@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceStepSkipped();
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
-        void TraceError(Exception ex);
+        void TraceError(Exception ex, TimeSpan duration);
         void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck);
         void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
@@ -26,17 +26,23 @@ namespace TechTalk.SpecFlow.Tracing
 
     public class TestTracer : ITestTracer
     {
+        private static readonly TimeSpan MillisecondsThreshold = TimeSpan.FromMilliseconds(300);
+
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        private readonly IColorOutputTheme colorOutputTheme;
+        private readonly IColorOutputHelper colorOutputHelper;
 
-        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, Configuration.SpecFlowConfiguration specFlowConfiguration)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, Configuration.SpecFlowConfiguration specFlowConfiguration, IColorOutputTheme colorOutputTheme, IColorOutputHelper colorOutputHelper)
         {
             this.traceListener = traceListener;
             this.stepFormatter = stepFormatter;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
             this.specFlowConfiguration = specFlowConfiguration;
+            this.colorOutputTheme = colorOutputTheme;
+            this.colorOutputHelper = colorOutputHelper;
         }
 
         public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
@@ -47,13 +53,17 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceWarning(string text)
         {
-            traceListener.WriteToolOutput("warning: {0}", text);
+            traceListener.WriteToolOutput("{0}: {1}", colorOutputHelper.Colorize("warning", colorOutputTheme.Warning), text);
         }
 
         public void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration)
         {
-            traceListener.WriteToolOutput("done: {0} ({1:F1}s)",
-                stepFormatter.GetMatchText(match, arguments), duration.TotalSeconds);
+            traceListener.WriteToolOutput(
+                "{0}: {1} ({2:F1}s)",
+                colorOutputHelper.Colorize("done", colorOutputTheme.Done),
+                stepFormatter.GetMatchText(match, arguments),
+                duration.TotalSeconds
+            );
         }
 
         public void TraceStepSkipped()
@@ -63,36 +73,37 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceStepPending(BindingMatch match, object[] arguments)
         {
-            traceListener.WriteToolOutput("pending: {0}",
+            traceListener.WriteToolOutput("{0}: {1}",
+                colorOutputHelper.Colorize("pending", colorOutputTheme.Warning),
                 stepFormatter.GetMatchText(match, arguments));
         }
 
         public void TraceBindingError(BindingException ex)
         {
-            traceListener.WriteToolOutput("binding error: {0}", ex.Message);
+            traceListener.WriteToolOutput("{0}: {1}", colorOutputHelper.Colorize("binding error", colorOutputTheme.Error), ex.Message);
         }
 
-        public void TraceError(Exception ex)
+        public void TraceError(Exception ex, TimeSpan duration)
         {
-            WriteErrorMessage(ex.Message);
-            WriteLoaderExceptionsIfAny(ex);
+            WriteErrorMessage(ex.Message, duration);
+            WriteLoaderExceptionsIfAny(ex, duration);
         }
 
-        private void WriteLoaderExceptionsIfAny(Exception ex)
+        private void WriteLoaderExceptionsIfAny(Exception ex, TimeSpan duration)
         {
             switch (ex)
             {
                 case TypeInitializationException typeInitializationException:
-                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException);
+                    WriteLoaderExceptionsIfAny(typeInitializationException.InnerException, duration);
                     break;
                 case ReflectionTypeLoadException reflectionTypeLoadException:
-                    WriteErrorMessage("Type Loader exceptions:");
-                    FormatLoaderExceptions(reflectionTypeLoadException);
+                    WriteErrorMessage("Type Loader exceptions:", duration);
+                    FormatLoaderExceptions(reflectionTypeLoadException, duration);
                     break;
             }
         }
 
-        private void FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException)
+        private void FormatLoaderExceptions(ReflectionTypeLoadException reflectionTypeLoadException, TimeSpan duration)
         {
             var exceptions = reflectionTypeLoadException.LoaderExceptions
                 .Select(x => x.ToString())
@@ -100,13 +111,18 @@ namespace TechTalk.SpecFlow.Tracing
                 .Select(x => $"LoaderException: {x}");
             foreach (var ex in exceptions)
             {
-                WriteErrorMessage(ex);
+                WriteErrorMessage(ex,duration);
             }
         }
 
-        private void WriteErrorMessage(string ex)
+        private void WriteErrorMessage(string ex,TimeSpan duration)
         {
-            traceListener.WriteToolOutput("error: {0}", ex);
+            traceListener.WriteToolOutput(
+                "{0}: {1} ({2:F1}s)",
+                colorOutputHelper.Colorize("error", colorOutputTheme.Error),
+                ex,
+                duration.TotalSeconds
+            );
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
@@ -116,8 +132,8 @@ namespace TechTalk.SpecFlow.Tracing
                 message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
             else
             {
-                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.",
-                    string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray()));
+                string preMessage = "No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: "
+                                    + $"{string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray())}.";
                 traceListener.WriteToolOutput(preMessage);
                 message.AppendLine("Change the scope or use the following code to create a new step definition:");
             }
@@ -130,13 +146,27 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
         {
-            traceListener.WriteToolOutput("duration: {0}: {1:F1}s",
-                stepFormatter.GetMatchText(method, arguments), elapsed.TotalSeconds);
+            string matchText = stepFormatter.GetMatchText(method, arguments);
+            if (elapsed > MillisecondsThreshold)
+            {
+                traceListener.WriteToolOutput($"duration: {matchText}: {elapsed.TotalSeconds:F1}s");
+            }
+            else
+            {
+                traceListener.WriteToolOutput($"duration: {matchText}: {elapsed.TotalMilliseconds:F1}ms");
+            }
         }
 
         public void TraceDuration(TimeSpan elapsed, string text)
         {
-            traceListener.WriteToolOutput("duration: {0}: {1:F1}s", text, elapsed.TotalSeconds);
+            if (elapsed > MillisecondsThreshold)
+            {
+                traceListener.WriteToolOutput($"duration: {text}: {elapsed.TotalSeconds:F1}s");
+            }
+            else
+            {
+                traceListener.WriteToolOutput($"duration: {text}: {elapsed.TotalMilliseconds:F1}ms");
+            }
         }
     }
 }

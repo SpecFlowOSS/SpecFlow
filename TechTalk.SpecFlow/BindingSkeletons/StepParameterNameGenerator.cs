@@ -6,12 +6,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
     public class StepParameterNameGenerator
     {
-        
-
-
         public static  string GenerateParameterName(string value,int paramIndex, List<string> usedParameterNames)
         {
-           
             if (IsSingleWordSurroundedByAngleBrackets(value))
                 value = RemoveSurroundingAngleBrackets(value);
             if (IsSingleWordWithNoNumbers(value))

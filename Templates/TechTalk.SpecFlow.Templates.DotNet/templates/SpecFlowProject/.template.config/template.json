@@ -1,6 +1,6 @@
 {
     "$schema": "http://json.schemastore.org/template",
-    "author": "Manuel Eiwen",
+    "author": "SpecFlow Team",
     "classifications": ["SpecFlow", "Project"],
     "identity": "SpecFlowTemplates.DotNET.Project",
     "name": "SpecFlow Project Template",
@@ -20,15 +20,39 @@
             "choices": [
                 {
                     "choice": "netcoreapp3.1",
-                    "description": ".NET Core 3"
+                    "description": ".NET Core 3.1"
                 },
                 {
-                    "choice": "netcoreapp2.2",
-                    "description": ".NET Core 2.2"
+                    "choice": "net5.0",
+                    "description": ".NET 5.0"
+                },
+                {
+                    "choice": "net6.0",
+                    "description": ".NET 6.0"
+                },
+                {
+                    "choice": "net461",
+                    "description": ".NET Framework 4.6.1"
+                },
+                {
+                    "choice": "net462",
+                    "description": ".NET Framework 4.6.2"
+                },
+                {
+                    "choice": "net47",
+                    "description": ".NET Framework 4.7"
+                },
+                {
+                    "choice": "net471",
+                    "description": ".NET Framework 4.7.1"
                 },
                 {
                     "choice": "net472",
                     "description": ".NET Framework 4.7.2"
+                },
+                {
+                    "choice": "net48",
+                    "description": ".NET Framework 4.8"
                 }
             ]
         },
@@ -36,25 +60,27 @@
             "type": "parameter",
             "description": "Provider for Unit Tests",
             "datatype": "choice",
-            "defaultValue": "specflowplusrunner",
+            "defaultValue": "nunit",
             "choices": [
                 {
-                    "choice": "specflowplusrunner",
-                    "description": "SpecFlow+ Runner Test Provider"
-                },
-                {
                     "choice": "xunit",
-                    "description": "xUnit Test Provider"
+                    "description": "xUnit"
                 },
                 {
                     "choice": "nunit",
-                    "description": "NUnit Test Provider"
+                    "description": "NUnit"
                 },
                 {
                     "choice": "mstest",
-                    "description": "MSTest Test Provider"
+                    "description": "MSTest"
                 }
             ]
+        },
+        "includeFluentAssertions": {
+            "type": "parameter",
+            "datatype": "bool",
+            "description": "Add FluentAssertions library",
+            "defaultValue": "true"
         },
         "SpecFlowNugetPackages": {
             "type": "generated",
@@ -65,20 +91,16 @@
                 "datatype": "string",
                 "cases": [
                     {
-                        "condition": "(unitTestProvider == 'specflowplusrunner')",
-                        "value": "<PackageReference Include=\"SpecRun.SpecFlow.3-1-0\" Version=\"3.1.48\" />"
-                    },
-                    {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.xUnit\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
-                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.MsTest\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"SpecFlow.NUnit\" Version=\"$$$NuGetPackageVersion$$$\" />"
                     }
                 ]
             }
@@ -93,15 +115,30 @@
                 "cases": [
                     {
                         "condition": "(unitTestProvider == 'xunit')",
-                        "value": "<PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
+                        "value": "<PackageReference Include=\"xunit\" Version=\"2.4.1\" />\n    <PackageReference Include=\"xunit.runner.visualstudio\" Version=\"2.4.1\">\n    <PrivateAssets>all</PrivateAssets>\n        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>\n    </PackageReference>"
                     },
                     {
                         "condition": "(unitTestProvider == 'mstest')",
-                        "value": "<PackageReference Include=\"MSTest.TestAdapter\" Version=\"1.4.0\" />"
+                        "value": "<PackageReference Include=\"MSTest.TestAdapter\" Version=\"2.1.0\" />"
                     },
                     {
                         "condition": "(unitTestProvider == 'nunit')",
-                        "value": "<PackageReference Include=\"SpecFlow.NUnit.Runners\" Version=\"3.1.80\" />"
+                        "value": "<PackageReference Include=\"nunit\" Version=\"3.13.1\" />\n    <PackageReference Include=\"NUnit3TestAdapter\" Version=\"3.17.0\" />"
+                    }
+                ]
+            }
+        },
+        "FluentAssertionsNugetPackage": {
+            "type": "generated",
+            "generator": "switch",
+            "replaces": "$fluentAssertionsNugetPackage$",
+            "parameters": {
+                "evaluator": "C++",
+                "datatype": "string",
+                "cases": [
+                    {
+                        "condition": "(includeFluentAssertions)",
+                        "value": "<PackageReference Include=\"FluentAssertions\" Version=\"5.10.3\" />"
                     }
                 ]
             }

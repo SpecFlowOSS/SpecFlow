@@ -46,9 +46,9 @@ mytemplate
         }
 
         [Fact]
-        public void Should_parse_step_definition_regex_template()
+        public void Should_parse_step_definition_expression_template()
         {
-            var sut = new FileBasedSkeletonTemplateProviderStub(@">>>CSharp/StepDefinitionRegex
+            var sut = new FileBasedSkeletonTemplateProviderStub(@">>>CSharp/StepDefinitionExpression
 mytemplate
 >>>other");
 

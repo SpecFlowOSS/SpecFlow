@@ -5,7 +5,9 @@ namespace TechTalk.SpecFlow.Analytics
 {
     public interface IAnalyticsTransmitter
     {
-        Task<IResult> TransmitSpecFlowProjectCompilingEvent(SpecFlowProjectCompilingEvent projectCompilingEvent);
-        Task<IResult> TransmitSpecFlowProjectRunningEvent(SpecFlowProjectRunningEvent projectRunningEvent);
+        bool IsEnabled { get; }
+
+        Task<IResult> TransmitSpecFlowProjectCompilingEventAsync(SpecFlowProjectCompilingEvent projectCompilingEvent);
+        Task<IResult> TransmitSpecFlowProjectRunningEventAsync(SpecFlowProjectRunningEvent projectRunningEvent);
     }
 }

@@ -53,10 +53,15 @@ After installing the templates, you can create a new project using the following
 By default, a .NET Core project is created with SpecFlow+ Runner configured as the test runner. You can create a project for a different test runner and/or target framework using the following optional parameters:
 
 * `framework`: Determine the target framework for the project. The following options are available:
-  *  `netcoreapp3.0` (default): .NET Core 3.0
-  *  `netcoreapp3.1` (default): if .NET Core 3.1 is installed (presence of Core 3.x is mutual exklusive)
-  *  `netcoreapp2.2`: .NET Core 2.2
-  *  `net472`: .NET Framework 4.72
+  *  `netcoreapp3.1` (default): .NET Core 3.1
+  *  `net5.0`: .NET 5.0
+  *  `net461`: .NET Framework 4.6.1
+  *  `net462`: .NET Framework 4.6.2
+  *  `net47`: .NET Framework 4.7
+  *  `net471`: .NET Framework 4.7.1
+  *  `net472`: .NET Framework 4.7.2
+  *  `net48`: .NET Framework 4.8
+
 * `unittestprovider`: Determines the test runner. The following options are available:
   * `specflowplusrunner` (default): SpecFlow+ Runner
   * `xunit`: XUnit
@@ -64,9 +69,9 @@ By default, a .NET Core project is created with SpecFlow+ Runner configured as t
   * `mstest`: MSTest
 
 **Example:**
-`dotnet new specflowproject --unittestprovider xunit --framework netcoreapp2.2`
+`dotnet new specflowproject --unittestprovider xunit --framework netcoreapp3.1`
 
-This creates a new project with XUnit as the unit test provider, and targetting .NET Core 2.2. The project is created with a pre-defined structure that follows best practices. The project includes a single feature file (in the `Features` folder) and its associated steps (in the `Steps` folder).
+This creates a new project with XUnit as the unit test provider, and targetting .NET Core 3.1. The project is created with a pre-defined structure that follows best practices. The project includes a single feature file (in the `Features` folder) and its associated steps (in the `Steps` folder).
 
 ### Item Templates
 

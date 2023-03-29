@@ -1,0 +1,85 @@
+---
+name: Bug report
+description: Create a report to help us improve SpecFlow
+labels: [Bug]
+body:
+- type: input
+  attributes:
+    label: SpecFlow Version
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Which test runner are you using?
+    options: 
+      - SpecFlow+ Runner
+      - MSTest 
+      - NUnit
+      - xUnit
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Test Runner Version Number
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: .NET Implementation
+    options:
+      - .NET 6.0
+      - .NET 5.0
+      - .NET Core 3.1
+      - .NET Core 3.0
+      - .NET Core 2.2
+      - .NET Core 2.1
+      - .NET Core 2.0
+      - equal or greater .NET Framework 4.6.1
+      - before .NET Framework 4.6.1
+  validations:
+    required: true
+- type: dropdown 
+  attributes:
+    label: Project Format of the SpecFlow project
+    options:
+      - Sdk-style project format
+      - Classic project format using `packages.config`
+      - Classic project format using `<PackageReference>` tags
+  validations:
+    required: true
+- type: dropdown 
+  attributes:
+    label: .feature.cs files are generated using
+    options:
+      - SpecFlow.Tools.MsBuild.Generation NuGet package
+      - SpecFlowSingleFileGenerator custom tool
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: Test Execution Method
+    options:
+      - Visual Studio Test Explorer
+      - TFS/VSTS/Azure DevOps – Task – PLEASE SPECIFY THE NAME OF THE TASK
+      - Command line – PLEASE SPECIFY THE FULL COMMAND LINE
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: SpecFlow Section in app.config or content of specflow.json
+    placeholder: PLEASE COPY THE ENTIRE <SpecFlow> SECTION IN YOUR .config FILE or THE ENTIRE specflow.json
+- type: textarea
+  attributes:
+    label: Issue Description
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps to Reproduce
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Link to Repro Project
+  validations:
+    required: false

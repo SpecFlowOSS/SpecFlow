@@ -16,15 +16,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [DataMember(Name = "allowRowTests")]
         public bool AllowRowTests { get; set; }
 
-
-        //[JsonProperty("markFeaturesParallelizable", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
-        [DefaultValue(ConfigDefaults.MarkFeaturesParallelizable)]
-        [DataMember(Name = "markFeaturesParallelizable")]
-        public bool MarkFeaturesParallelizable { get; set; }
-
-
-        //[JsonProperty("skipParallelizableMarkerForTags", NullValueHandling = NullValueHandling.Ignore)]
-        [DataMember(Name = "skipParallelizableMarkerForTags")]
-        public List<string> SkipParallelizableMarkerForTags { get; set; }
+        //[JsonProperty("addNonParallelizableMarkerForTags", NullValueHandling = NullValueHandling.Ignore)]
+        [DataMember(Name = "addNonParallelizableMarkerForTags")]
+        public List<string> AddNonParallelizableMarkerForTags { get; set; }
     }
 }

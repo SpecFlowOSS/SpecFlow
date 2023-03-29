@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings.Discovery
 {
@@ -14,5 +12,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         bool ProcessType(BindingSourceType bindingSourceType);
         void ProcessMethod(BindingSourceMethod bindingSourceMethod);
         void ProcessTypeDone();
+
+        void BuildingCompleted();
     }
 }

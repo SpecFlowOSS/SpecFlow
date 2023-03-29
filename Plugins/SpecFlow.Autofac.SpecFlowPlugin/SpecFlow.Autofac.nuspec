@@ -16,16 +16,29 @@
     <license type="file">LICENSE.txt</license>
     <tags>specflow autofac di dependency injection</tags>
     <dependencies>
-      <dependency id="SpecFlow" version="[$version$]" />
-      <dependency id="Autofac" version="4.0.0" />
+      <group targetFramework=".NETFramework4.6.2">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Autofac" version="4.0.0" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Autofac" version="4.0.0" />
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="SpecFlow" version="[$version$]" />
+        <dependency id="Autofac" version="4.0.0" />
+      </group>
     </dependencies>
   </metadata>
 
   <files>
     <file src="build\**\*" target="build" />
-    <file src="bin\$config$\net461\SpecFlow.Autofac.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
+    <file src="bin\$config$\net462\SpecFlow.Autofac.SpecFlowPlugin.*" target="lib\$SpecFlow_FullFramework_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\SpecFlow.Autofac.SpecFlowPlugin.dll" target="lib\$SpecFlow_Core_Runtime_TFM$" />
     <file src="bin\$config$\netstandard2.0\SpecFlow.Autofac.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Core_Runtime_TFM$" />
+
+    <file src="bin\$config$\net6.0\SpecFlow.Autofac.SpecFlowPlugin.dll" target="lib\$SpecFlow_Net6_TFM$" />
+    <file src="bin\$config$\net6.0\SpecFlow.Autofac.SpecFlowPlugin.pdb" target="lib\$SpecFlow_Net6_TFM$" />
 
     <file src="$SolutionDir$LICENSE.txt" target="LICENSE.txt" />
     <file src="$SolutionDir$specflow-icon.png" target="images\" />

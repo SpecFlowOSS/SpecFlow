@@ -16,14 +16,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _compilationResultDriver = compilationResultDriver;
         }
 
-        [Given("I have (Specs.Project.[A-Z]) and (Specs.Project.[A-Z]) using the same unit test provider")]
+        [Given("^I have (Specs.Project.[A-Z]) and (Specs.Project.[A-Z]) using the same unit test provider")]
         public void GivenIHaveTwoSpecsProjectsWithTheSameUnitTestProvider(string projectName1, string projectName2)
         {
             _projectsDriver.CreateProject(projectName1, "C#");
             _projectsDriver.CreateProject(projectName2, "C#");
         }
 
-        [Given(@"(Specs.Project.[A-Z]) references (Specs.Project.[A-Z])")]
+        [Given(@"^(Specs.Project.[A-Z]) references (Specs.Project.[A-Z])")]
         public void GivenSpecsProjectOneReferencesSpecsProjectTwo(string targetProjectName, string referencedProjectName)
         {
             _projectsDriver.AddProjectReference(referencedProjectName, targetProjectName);

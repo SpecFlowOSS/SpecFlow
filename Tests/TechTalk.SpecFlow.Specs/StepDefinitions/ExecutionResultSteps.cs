@@ -73,6 +73,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             _vsTestExecutionDriver.CheckAnyOutputContainsText(text);
         }
 
+        [Then(@"the execution log should contain text")]
+        public void ThenTheExecutionLogShouldContainMultilineText(string multilineText)
+        {
+            _vsTestExecutionDriver.CheckAnyOutputContainsText(multilineText);
+        }
+
         [Then(@"the output should contain text '(.*)'")]
         public void ThenTheOutputShouldContainText(string text)
         {
@@ -104,7 +110,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             foreach (var testResult in lastTestExecutionResult.TestResults)
             {
-                var contextIdLines = testResult.StdOut.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries).Where(s => s.StartsWith("Context ID"));
+                var contextIdLines = testResult.StdOut.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries).Where(s => s.StartsWith("-> Context ID"));
 
                 var distinctContextIdLines = contextIdLines.Distinct();
 
