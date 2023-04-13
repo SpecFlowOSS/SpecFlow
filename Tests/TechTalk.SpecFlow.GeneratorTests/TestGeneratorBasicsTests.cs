@@ -253,5 +253,37 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             folderPathArgument.Should().Be("\"Folder1/Folder2\"");
         }
+
+        [Fact]
+        public void Should_have_LF_as_EOL()
+        {
+            var generationSettingsHavingLFAsEol = new GenerationSettings
+            {
+                EndOfLine = "\n"
+            };
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings,  generationSettingsHavingLFAsEol);
+
+            var lines = outputFile.Split(new []{ "\n" }, StringSplitOptions.None);
+            var firstLine = lines.First();
+            var expectedLine = "// ------------------------------------------------------------------------------";
+
+            Assert.Equal(expectedLine, firstLine);
+        }
+        
+        [Fact]
+        public void Should_have_CRLF_as_EOL()
+        {
+            var generationSettingsHavingCRLFAsEol = new GenerationSettings
+            {
+                EndOfLine = "\r\n"
+            };
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings,  generationSettingsHavingCRLFAsEol);
+
+            var lines = outputFile.Split(new []{ "\r\n" }, StringSplitOptions.None);
+            var firstLine = lines.First();
+            var expectedLine = "// ------------------------------------------------------------------------------";
+
+            Assert.Equal(expectedLine, firstLine);
+        }
     }
 }

@@ -111,6 +111,8 @@ namespace TechTalk.SpecFlow.Configuration
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            traceListener.WriteToolOutput("'{0}' used as EOL.", specFlowConfiguration.EndOfLine.Replace("\r", "\\r").Replace("\n", "\\n"));
         }
 
 
@@ -133,7 +135,7 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAddNonParallelizableMarkerForTags,
                 DefaultObsoleteBehavior,
                 DefaultColoredOutput
-                );
+            );
         }
 
 

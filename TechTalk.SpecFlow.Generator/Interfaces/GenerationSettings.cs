@@ -29,9 +29,13 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         /// disabled by default.
         /// </summary>
         public bool WriteResultToFile { get; set; }
+        
+        public string EndOfLine { get; set; }
 
         public GenerationSettings()
         {
+            // INFO [minidfx 13.04.2023 08:38]: By default, we keep the platform EOL.
+            EndOfLine = Environment.NewLine;
             CheckUpToDate = false;
             UpToDateCheckingMethod = UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion;
 

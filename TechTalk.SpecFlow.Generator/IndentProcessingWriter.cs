@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator
 {
@@ -10,8 +11,9 @@ namespace TechTalk.SpecFlow.Generator
         TextWriter innerWriter;
         private bool trimSpaces = false;
 
-        public IndentProcessingWriter(TextWriter innerWriter)
+        public IndentProcessingWriter(TextWriter innerWriter, GenerationSettings generationSettings)
         {
+            this.CoreNewLine = generationSettings.EndOfLine.ToCharArray();
             this.innerWriter = innerWriter;
         }
 
