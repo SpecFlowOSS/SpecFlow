@@ -54,6 +54,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static bool DefaultColoredOutput => ConfigDefaults.ColoredOutput;
 
+        public static string DefaultEol => Environment.NewLine;
+
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
         public bool HasJsonConfig
@@ -134,8 +136,9 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowRowTests,
                 DefaultAddNonParallelizableMarkerForTags,
                 DefaultObsoleteBehavior,
-                DefaultColoredOutput
-            );
+                DefaultColoredOutput,
+                DefaultEol
+                );
         }
 
 

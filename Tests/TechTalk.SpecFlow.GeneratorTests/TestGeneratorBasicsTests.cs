@@ -15,11 +15,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
     
     public class TestGeneratorBasicsTests : TestGeneratorTestsBase
     {
-        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings, string projectRelativeFolderPath = null)
+        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings,
+                                                     string projectRelativeFolderPath = null)
+        {
+            return this.GenerateTestFromSimpleFeature(projectSettings,
+                                                      defaultSettings,
+                                                      projectRelativeFolderPath);
+        }
+
+        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings,
+                                                     GenerationSettings generationSettings,
+                                                     string projectRelativeFolderPath = null)
         {
             var testGenerator = CreateTestGenerator(projectSettings);
 
-            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(projectRelativeFolderPath), defaultSettings);
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(projectRelativeFolderPath), generationSettings);
             result.Success.Should().Be(true);
             return result.GeneratedTestCode;
         }

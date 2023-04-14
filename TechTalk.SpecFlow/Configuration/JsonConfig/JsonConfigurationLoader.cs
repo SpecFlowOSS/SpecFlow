@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             var addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
             var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            var eol = specFlowConfiguration.EndOfLine;
 
             if (jsonConfig.Language != null)
             {
@@ -109,7 +110,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 allowRowTests,
                 addNonParallelizableMarkerForTags,
                 obsoleteBehavior,
-                coloredOutput
+                coloredOutput,
+                eol
             );
         }
 

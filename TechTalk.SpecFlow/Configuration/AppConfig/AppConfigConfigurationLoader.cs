@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             ObsoleteBehavior obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
             bool coloredOutput = specFlowConfiguration.ColoredOutput;
+            var eol = specFlowConfiguration.EndOfLine;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
@@ -108,7 +109,8 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             allowRowTests,
                                             addNonParallelizableMarkerForTags,
                                             obsoleteBehavior,
-                                            coloredOutput
+                                            coloredOutput,
+                                            eol
                                             );
         }
 
