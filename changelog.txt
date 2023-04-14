@@ -1,3 +1,8 @@
+4.1
+
+Features:
++ Give the opportunity to set the EOL of the generated files in the settings.json, helpful when you are working on the same project with different machines (Linux, Mac, Windows) avoiding to modify the generated files on each different kind of machine.
+
 4.0
 
 Breaking Changes:
