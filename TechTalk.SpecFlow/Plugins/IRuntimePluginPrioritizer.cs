@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Plugins;
 
-public interface IRuntimePluginLocationPrioritizer
+public interface IRuntimePluginPrioritizer
 {
     IReadOnlyList<string> Prioritize(IReadOnlyList<string> pluginPaths);
 }

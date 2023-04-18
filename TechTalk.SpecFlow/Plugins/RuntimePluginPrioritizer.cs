@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Plugins;
 
-public class RuntimePluginLocationPrioritizer : IRuntimePluginLocationPrioritizer
+public class RuntimePluginPrioritizer : IRuntimePluginPrioritizer
 {
     public IReadOnlyList<string> Prioritize(IReadOnlyList<string> pluginList)
     {

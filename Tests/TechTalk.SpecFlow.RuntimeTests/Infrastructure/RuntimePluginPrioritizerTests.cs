@@ -5,17 +5,17 @@ using Xunit;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
-    public class RuntimePluginLocationPrioritizerTests
+    public class RuntimePluginPrioritizerTests
     {
         [Fact]
         public void Prioritize_EmptyList_EmptyList()
         {
             //ARRANGE
-            var runtimePluginLocationPrioritizer = new RuntimePluginLocationPrioritizer();
+            var runtimePluginPrioritizer = new RuntimePluginPrioritizer();
 
 
             //ACT
-            var result = runtimePluginLocationPrioritizer.Prioritize(new string[] { });
+            var result = runtimePluginPrioritizer.Prioritize(new string[] { });
 
 
             //ASSERT
@@ -28,11 +28,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             //ARRANGE
-            var runtimePluginLocationPrioritizer = new RuntimePluginLocationPrioritizer();
+            var runtimePluginPrioritizer = new RuntimePluginPrioritizer();
 
 
             //ACT
-            var result = runtimePluginLocationPrioritizer.Prioritize(new string[]{ "C:\\temp\\Plugin.SpecFlowPlugin.dll" } );
+            var result = runtimePluginPrioritizer.Prioritize(new[]{ "C:\\temp\\Plugin.SpecFlowPlugin.dll" } );
 
 
             //ASSERT
@@ -46,11 +46,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             //ARRANGE
-            var runtimePluginLocationPrioritizer = new RuntimePluginLocationPrioritizer();
+            var runtimePluginPrioritizer = new RuntimePluginPrioritizer();
 
 
             //ACT
-            var result = runtimePluginLocationPrioritizer.Prioritize(new string[] { "/temp/Plugin.SpecFlowPlugin.dll" });
+            var result = runtimePluginPrioritizer.Prioritize(new[] { "/temp/Plugin.SpecFlowPlugin.dll" });
 
 
             //ASSERT
@@ -65,11 +65,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
             //ARRANGE
-            var runtimePluginLocationPrioritizer = new RuntimePluginLocationPrioritizer();
+            var runtimePluginPrioritizer = new RuntimePluginPrioritizer();
 
 
             //ACT
-            var result = runtimePluginLocationPrioritizer.Prioritize(new string[] { "C:\\temp\\Plugin.SpecFlowPlugin.dll", "C:\\temp\\AnotherPlugin.SpecFlowPlugin.dll" });
+            var result = runtimePluginPrioritizer.Prioritize(new[] { "C:\\temp\\Plugin.SpecFlowPlugin.dll", "C:\\temp\\AnotherPlugin.SpecFlowPlugin.dll" });
 
 
             //ASSERT
@@ -85,11 +85,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
             //ARRANGE
-            var runtimePluginLocationPrioritizer = new RuntimePluginLocationPrioritizer();
+            var runtimePluginPrioritizer = new RuntimePluginPrioritizer();
 
 
             //ACT
-            var result = runtimePluginLocationPrioritizer.Prioritize(new string[] { "/temp/Plugin.SpecFlowPlugin.dll", "/temp/AnotherPlugin.SpecFlowPlugin.dll" });
+            var result = runtimePluginPrioritizer.Prioritize(new[] { "/temp/Plugin.SpecFlowPlugin.dll", "/temp/AnotherPlugin.SpecFlowPlugin.dll" });
 
 
             //ASSERT
