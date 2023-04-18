@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Container
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
             var testAssemblyProvider = new TestAssemblyProvider();
             testAssemblyProvider.RegisterTestAssembly(Assembly.GetExecutingAssembly());
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider);
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new RuntimePluginLocationPrioritizer(), new SpecFlowPath(), testAssemblyProvider);
 
             //ACT
             runtimePluginLocator.GetAllRuntimePlugins();

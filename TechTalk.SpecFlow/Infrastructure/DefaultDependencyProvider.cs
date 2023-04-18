@@ -58,6 +58,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
             container.RegisterTypeAs<RuntimePluginLocator, IRuntimePluginLocator>();
             container.RegisterTypeAs<RuntimePluginLocationMerger, IRuntimePluginLocationMerger>();
+            container.RegisterTypeAs<RuntimePluginLocationPrioritizer, IRuntimePluginLocationPrioritizer>();
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 

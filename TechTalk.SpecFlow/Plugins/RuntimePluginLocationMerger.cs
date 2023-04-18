@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace TechTalk.SpecFlow.Plugins
 {
@@ -8,19 +7,18 @@ namespace TechTalk.SpecFlow.Plugins
     {
         public IReadOnlyList<string> Merge(IReadOnlyList<string> pluginPaths)
         {
-            var sortedPluginPaths = pluginPaths.OrderBy(Path.GetFileName).ToList();
             // Idea is to filter out the same assemblies stored on different paths. Shortcut: check if we even have duplicated assemblies
             var hashset = new HashSet<string>(
 #if NETCOREAPP2_1_OR_GREATER
                 // initialize with expected size when available
-                sortedPluginPaths.Count
+                pluginPaths.Count
 #endif
                 );
 
             List<string> modifiedList = null;
-            for (var i = 0; i < sortedPluginPaths.Count; i++)
+            for (var i = 0; i < pluginPaths.Count; i++)
             {
-                if (hashset.Add(Path.GetFileName(sortedPluginPaths[i])))
+                if (hashset.Add(Path.GetFileName(pluginPaths[i])))
                 {
                     // Assembly not duplicated
                     if (modifiedList is null)
@@ -30,16 +28,16 @@ namespace TechTalk.SpecFlow.Plugins
                     }
 
                     // We already had a duplication, fill the list with this non duplicated entry
-                    modifiedList.Add(sortedPluginPaths[i]);
+                    modifiedList.Add(pluginPaths[i]);
                 }
                 else if (modifiedList is null)
                 {
                     // First duplicated assembly, Copy all previous entry into the new list
-                    modifiedList = CopyUntilIndex(sortedPluginPaths, i);
+                    modifiedList = CopyUntilIndex(pluginPaths, i);
                 }
             }
 
-            return modifiedList ?? sortedPluginPaths;
+            return modifiedList ?? pluginPaths;
         }
 
         private static List<string> CopyUntilIndex(IReadOnlyList<string> pluginPaths, int index)

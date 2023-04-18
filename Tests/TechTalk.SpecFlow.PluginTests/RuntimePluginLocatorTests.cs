@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.PluginTests
             testAssemblyProvider.RegisterTestAssembly(testAssembly);
 
             //ARRANGE
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider);
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new RuntimePluginLocationPrioritizer(), new SpecFlowPath(), testAssemblyProvider);
 
             //ACT
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.PluginTests
             testAssemblyProvider.RegisterTestAssembly(testAssembly);
 
             //ARRANGE
-            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new SpecFlowPath(), testAssemblyProvider);
+            var runtimePluginLocator = new RuntimePluginLocator(new RuntimePluginLocationMerger(), new RuntimePluginLocationPrioritizer(), new SpecFlowPath(), testAssemblyProvider);
 
             //ACT
             var plugins = runtimePluginLocator.GetAllRuntimePlugins();

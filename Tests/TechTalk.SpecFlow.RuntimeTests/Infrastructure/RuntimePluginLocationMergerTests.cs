@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using FluentAssertions;
 using TechTalk.SpecFlow.Plugins;
 using Xunit;
@@ -95,7 +94,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         [SkippableFact]
-        public void Merge_DifferentPluginSamePath_BothAreReturnedOrdered_Windows()
+        public void Merge_DifferendPluginSamePath_BothAreReturned_Windows()
         {
             Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
 
@@ -108,14 +107,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
 
             //ASSERT
+            result.Should().Contain("C:\\temp\\Plugin.SpecFlowPlugin.dll");
+            result.Should().Contain("C:\\temp\\AnotherPlugin.SpecFlowPlugin.dll");
             result.Should().HaveCount(2);
-            result[0].Should().Be("C:\\temp\\AnotherPlugin.SpecFlowPlugin.dll");
-            result[1].Should().Be("C:\\temp\\Plugin.SpecFlowPlugin.dll");
         }
 
 
         [SkippableFact]
-        public void Merge_DifferentPluginSamePath_BothAreReturnedOrdered_Unix()
+        public void Merge_DifferendPluginSamePath_BothAreReturned_Unix()
         {
             Skip.IfNot(RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX));
 
@@ -128,9 +127,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
 
             //ASSERT
+            result.Should().Contain("/temp/Plugin.SpecFlowPlugin.dll");
+            result.Should().Contain("/temp/AnotherPlugin.SpecFlowPlugin.dll");
             result.Should().HaveCount(2);
-            result[0].Should().Be("/temp/AnotherPlugin.SpecFlowPlugin.dll");
-            result[1].Should().Be("/temp/Plugin.SpecFlowPlugin.dll");
         }
     }
 }
