@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
             }
 
             // We've done everything we need, so let the built-in types do the rest of the heavy lifting
-            return new XunitTestClassRunner(testClass, @class, testCases, _diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource, combinedFixtures).RunAsync();
+            return new ParallelTestClassRunner(testClass, @class, testCases, _diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource, combinedFixtures).RunAsync();
         }
     }
 }
