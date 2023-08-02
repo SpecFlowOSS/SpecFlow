@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
         }
 
-        private BindingSourceProcessorStub bindingSourceProcessorStub;
+        private readonly BindingSourceProcessorStub bindingSourceProcessorStub;
 
         /*        Steps that are feature scoped               */
 

@@ -8,10 +8,10 @@ namespace TechTalk.SpecFlow.GeneratorTests.MSBuildTask
     public class FileUserIdStoreTests
     {
         private const string UserId = "491ed5c0-9f25-4c27-941a-19b17cc81c87";
-        
-        Mock<IFileService> fileServiceStub;
-        Mock<IDirectoryService> directoryServiceStub;
-        FileUserIdStore sut;
+
+        readonly Mock<IFileService> fileServiceStub;
+        readonly Mock<IDirectoryService> directoryServiceStub;
+        readonly FileUserIdStore sut;
 
         public FileUserIdStoreTests()
         {

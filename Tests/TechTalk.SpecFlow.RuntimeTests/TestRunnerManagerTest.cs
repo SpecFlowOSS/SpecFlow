@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class TestRunnerManagerTest
     {
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
-        private TestRunnerManager testRunnerManager;
+        private readonly TestRunnerManager testRunnerManager;
 
         public TestRunnerManagerTest()
         {

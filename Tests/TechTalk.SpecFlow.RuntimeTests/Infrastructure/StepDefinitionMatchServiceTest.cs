@@ -14,10 +14,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     
     public class StepDefinitionMatchServiceTest
     {
-        private Mock<IBindingRegistry> bindingRegistryMock;
-        private Mock<IStepArgumentTypeConverter> stepArgumentTypeConverterMock;
+        private readonly Mock<IBindingRegistry> bindingRegistryMock;
+        private readonly Mock<IStepArgumentTypeConverter> stepArgumentTypeConverterMock;
         private readonly CultureInfo bindingCulture = new CultureInfo("en-US", false);
-        private List<IStepDefinitionBinding> whenStepDefinitions;
+        private readonly List<IStepDefinitionBinding> whenStepDefinitions;
             
         public StepDefinitionMatchServiceTest()
         {

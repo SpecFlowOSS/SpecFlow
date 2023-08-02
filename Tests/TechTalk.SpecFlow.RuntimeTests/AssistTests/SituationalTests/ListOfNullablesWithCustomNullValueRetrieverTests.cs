@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests.Enumberabl
     {
 
         private const string Val = "1, <null>";
-        private TableRow testRow = new TableRow(new Table("Value"), new string[] {"list", Val});
+        private readonly TableRow testRow = new TableRow(new Table("Value"), new string[] {"list", Val});
 
         [Fact]
         public void CanRetrieveAListThatContainsValuesThatShouldBeRetrievedByACustomValueRetriever()

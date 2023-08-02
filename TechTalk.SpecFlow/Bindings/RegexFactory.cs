@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     internal static class RegexFactory
     {
-        private static RegexOptions RegexOptions = RegexOptions.CultureInvariant;
+        private static readonly RegexOptions RegexOptions = RegexOptions.CultureInvariant;
 
         public static Regex CreateWholeTextRegexForBindings(string regexString) => CreateRegexForBindings(GetWholeTextMatchRegexSource(regexString));
 

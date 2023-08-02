@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
     
     public class StepDefinitionRegexCalculatorTests
     {
-        private SpecFlowConfiguration specFlowConfiguration;
+        private readonly SpecFlowConfiguration specFlowConfiguration;
 
         public StepDefinitionRegexCalculatorTests()
         {

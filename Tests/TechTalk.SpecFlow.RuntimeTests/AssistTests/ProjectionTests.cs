@@ -13,10 +13,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     
     public class ProjectionTests
     {
-        private SetComparisonTestObject testInstance;
-        private IEnumerable<SetComparisonTestObject> testCollection;
-        private Guid testGuid1 = Guid.NewGuid();
-        private Guid testGuid2 = Guid.NewGuid();
+        private readonly SetComparisonTestObject testInstance;
+        private readonly IEnumerable<SetComparisonTestObject> testCollection;
+        private readonly Guid testGuid1 = Guid.NewGuid();
+        private readonly Guid testGuid2 = Guid.NewGuid();
 
         public ProjectionTests()
         {

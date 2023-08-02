@@ -10,8 +10,8 @@ namespace TechTalk.SpecFlow.Utils
 {
     class ProcessHelper
     {
-        private static TimeSpan _timeout = TimeSpan.FromMinutes(10);
-        private static int _timeOutInMilliseconds = Convert.ToInt32(_timeout.TotalMilliseconds);
+        private static readonly TimeSpan _timeout = TimeSpan.FromMinutes(10);
+        private static readonly int _timeOutInMilliseconds = Convert.ToInt32(_timeout.TotalMilliseconds);
 
         public string ConsoleOutput { get; private set; }
 

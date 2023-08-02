@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     
     public class MSBuildRelativePathParserTests
     {
-        private string _directoryName;
+        private readonly string _directoryName;
 
         public MSBuildRelativePathParserTests()
         {

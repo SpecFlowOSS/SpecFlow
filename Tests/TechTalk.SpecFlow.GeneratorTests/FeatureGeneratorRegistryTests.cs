@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     
     public class FeatureGeneratorRegistryTests
     {
-        private IObjectContainer container;
+        private readonly IObjectContainer container;
         
         public FeatureGeneratorRegistryTests()
         {

@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     
     public class FindAllInSetExtensionMethodsTests
     {
-        private IList<InstanceComparisonTestObject> testSet;
+        private readonly IList<InstanceComparisonTestObject> testSet;
         public FindAllInSetExtensionMethodsTests()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);

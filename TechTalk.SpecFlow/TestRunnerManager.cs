@@ -27,8 +27,8 @@ namespace TechTalk.SpecFlow
 
         private readonly ConcurrentDictionary<string, ITestRunner> _testRunnerRegistry = new();
         public bool IsTestRunInitialized { get; private set; }
-        private int _wasDisposed = 0;
-        private int _wasSingletonInstanceDisabled = 0;
+        private readonly int _wasDisposed = 0;
+        private readonly int _wasSingletonInstanceDisabled = 0;
         private readonly object createTestRunnerLockObject = new();
 
         public Assembly TestAssembly { get; private set; }

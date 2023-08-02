@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     
     public class DecoratorRegistryTests
     {
-        private IObjectContainer container;
+        private readonly IObjectContainer container;
         
         public DecoratorRegistryTests()
         {
