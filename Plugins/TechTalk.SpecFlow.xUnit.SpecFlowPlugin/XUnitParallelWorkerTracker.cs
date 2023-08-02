@@ -9,7 +9,7 @@ public class XUnitParallelWorkerTracker
     public static readonly XUnitParallelWorkerTracker Instance = new();
 
     private readonly ConcurrentBag<string> _availableWorkers = new();
-    private readonly int _workerCount = 0;
+    private int _workerCount = 0;
 
     private XUnitParallelWorkerTracker() { }
 
