@@ -25,44 +25,44 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
     public partial class TestExecutionEngineTests
     {
-        private ScenarioContext scenarioContext;
-        private SpecFlowConfiguration specFlowConfiguration;
-        private Mock<IBindingRegistry> bindingRegistryStub;
-        private Mock<IErrorProvider> errorProviderStub;
-        private Mock<IContextManager> contextManagerStub;
-        private Mock<ITestTracer> testTracerStub;
-        private Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
-        private Mock<IAsyncBindingInvoker> methodBindingInvokerMock;
-        private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
-        private Mock<ITestObjectResolver> testObjectResolverMock;
-        private Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
-        private FeatureInfo featureInfo;
-        private ScenarioInfo scenarioInfo;
-        private ObjectContainer testThreadContainer;
-        private ObjectContainer featureContainer;
-        private ObjectContainer scenarioContainer;
-        private TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
-        private ITestPendingMessageFactory _testPendingMessageFactory;
-        private ITestUndefinedMessageFactory _testUndefinedMessageFactory;
-        private Mock<IAnalyticsEventProvider> _analyticsEventProvider;
-        private Mock<IAnalyticsTransmitter> _analyticsTransmitter;
-        private Mock<ITestRunnerManager> _testRunnerManager;
-        private Mock<IRuntimePluginTestExecutionLifecycleEventEmitter> _runtimePluginTestExecutionLifecycleEventEmitter;
-        private Mock<ITestThreadExecutionEventPublisher> _testThreadExecutionEventPublisher;
-        private Mock<IStepArgumentTypeConverter> _stepArgumentTypeConverterMock;
+        private readonly ScenarioContext scenarioContext;
+        private readonly SpecFlowConfiguration specFlowConfiguration;
+        private readonly Mock<IBindingRegistry> bindingRegistryStub;
+        private readonly Mock<IErrorProvider> errorProviderStub;
+        private readonly Mock<IContextManager> contextManagerStub;
+        private readonly Mock<ITestTracer> testTracerStub;
+        private readonly Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
+        private readonly Mock<IAsyncBindingInvoker> methodBindingInvokerMock;
+        private readonly Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
+        private readonly Mock<ITestObjectResolver> testObjectResolverMock;
+        private readonly Mock<IObsoleteStepHandler> obsoleteTestHandlerMock;
+        private readonly FeatureInfo featureInfo;
+        private readonly ScenarioInfo scenarioInfo;
+        private readonly ObjectContainer testThreadContainer;
+        private readonly ObjectContainer featureContainer;
+        private readonly ObjectContainer scenarioContainer;
+        private readonly TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
+        private readonly ITestPendingMessageFactory _testPendingMessageFactory;
+        private readonly ITestUndefinedMessageFactory _testUndefinedMessageFactory;
+        private readonly Mock<IAnalyticsEventProvider> _analyticsEventProvider;
+        private readonly Mock<IAnalyticsTransmitter> _analyticsTransmitter;
+        private readonly Mock<ITestRunnerManager> _testRunnerManager;
+        private readonly Mock<IRuntimePluginTestExecutionLifecycleEventEmitter> _runtimePluginTestExecutionLifecycleEventEmitter;
+        private readonly Mock<ITestThreadExecutionEventPublisher> _testThreadExecutionEventPublisher;
+        private readonly Mock<IStepArgumentTypeConverter> _stepArgumentTypeConverterMock;
 
-        private List<IHookBinding> beforeScenarioEvents;
-        private List<IHookBinding> afterScenarioEvents;
-        private List<IHookBinding> beforeStepEvents;
-        private List<IHookBinding> afterStepEvents;
-        private List<IHookBinding> beforeFeatureEvents;
-        private List<IHookBinding> afterFeatureEvents;
-        private List<IHookBinding> beforeTestRunEvents;
-        private List<IHookBinding> afterTestRunEvents;
-        private List<IHookBinding> beforeScenarioBlockEvents;
-        private List<IHookBinding> afterScenarioBlockEvents;
+        private readonly List<IHookBinding> beforeScenarioEvents;
+        private readonly List<IHookBinding> afterScenarioEvents;
+        private readonly List<IHookBinding> beforeStepEvents;
+        private readonly List<IHookBinding> afterStepEvents;
+        private readonly List<IHookBinding> beforeFeatureEvents;
+        private readonly List<IHookBinding> afterFeatureEvents;
+        private readonly List<IHookBinding> beforeTestRunEvents;
+        private readonly List<IHookBinding> afterTestRunEvents;
+        private readonly List<IHookBinding> beforeScenarioBlockEvents;
+        private readonly List<IHookBinding> afterScenarioBlockEvents;
 
-        private List<IStepArgumentTransformationBinding> stepTransformations;
+        private readonly List<IStepArgumentTransformationBinding> stepTransformations;
 
         class DummyClass
         {

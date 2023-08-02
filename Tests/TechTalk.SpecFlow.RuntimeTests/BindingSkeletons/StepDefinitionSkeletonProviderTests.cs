@@ -12,9 +12,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
     
     public class StepDefinitionSkeletonProviderTests
     {
-        private Mock<ISkeletonTemplateProvider> templateProviderMock;
-        private Mock<IStepTextAnalyzer> stepTextAnalyzerMock;
-        private AnalyzedStepText analizeResult;
+        private readonly Mock<ISkeletonTemplateProvider> templateProviderMock;
+        private readonly Mock<IStepTextAnalyzer> stepTextAnalyzerMock;
+        private readonly AnalyzedStepText analizeResult;
         private readonly CultureInfo bindingCulture = new CultureInfo("en-US", false);
 
         public StepDefinitionSkeletonProviderTests()
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             private int usageIndex = 0;
             private readonly string[] stepDefinitionSkeletons;
-            private Func<StepInstance, string> getSkeleton;
+            private readonly Func<StepInstance, string> getSkeleton;
 
             public StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(ISkeletonTemplateProvider templateProvider, IStepTextAnalyzer stepTextAnalyzer, params string[] stepDefinitionSkeletons) : base(templateProvider, stepTextAnalyzer)
             {

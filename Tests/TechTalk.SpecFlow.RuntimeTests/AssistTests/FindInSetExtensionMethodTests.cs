@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     
     public class FindInSetExtensionMethodsTests
     {
-        private IList<InstanceComparisonTestObject> testSet;
+        private readonly IList<InstanceComparisonTestObject> testSet;
 
         
         public FindInSetExtensionMethodsTests()

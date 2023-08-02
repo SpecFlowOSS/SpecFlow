@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     public class VirtualFileSystem : IFileSystem
     {
         private readonly List<string> existingFiles = new List<string>();
-        private bool isUnix;
+        private readonly bool isUnix;
 
         public VirtualFileSystem()
             : this(false)

@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Generator
 {
     internal class IndentProcessingWriter : TextWriter
     {
-        TextWriter innerWriter;
+        readonly TextWriter innerWriter;
         private bool trimSpaces = false;
 
         public IndentProcessingWriter(TextWriter innerWriter)

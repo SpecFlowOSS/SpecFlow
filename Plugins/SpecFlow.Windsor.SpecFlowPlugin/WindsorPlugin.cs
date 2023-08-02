@@ -13,7 +13,7 @@ namespace SpecFlow.Windsor
 {
     public class WindsorPlugin : IRuntimePlugin
     {
-        private static object _registrationLock = new object();
+        private static readonly object _registrationLock = new object();
 
         public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters, UnitTestProviderConfiguration unitTestProviderConfiguration)
         {

@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
     
     public class StepArgumentTypeConverterTests
     {
-        private IStepArgumentTypeConverter _stepArgumentTypeConverter;
+        private readonly IStepArgumentTypeConverter _stepArgumentTypeConverter;
         private readonly Mock<IAsyncBindingInvoker> methodBindingInvokerStub = new Mock<IAsyncBindingInvoker>();
-        private CultureInfo _enUSCulture;
+        private readonly CultureInfo _enUSCulture;
 
         public StepArgumentTypeConverterTests()
         {
