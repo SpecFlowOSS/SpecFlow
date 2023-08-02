@@ -21,6 +21,7 @@ Changes:
 + 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
 + The interface ISpecFlowOutputHelper has been moved to the TechTalk.SpecFlow namespace (from TechTalk.SpecFlow.Infrastructure).
 + BugFix: SF2649 - AggregateExceptions thrown by async StepDefinition methods are no longer consumed; but passed along to the test host.
++ Added readonly modifiers to private fields that are never changed. It's purely a code change and should not result in behavior changes
 
 
 3.10
