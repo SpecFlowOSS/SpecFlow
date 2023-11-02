@@ -16,6 +16,7 @@ Features:
 + Collect binding errors (type load, binding, step definition) and report them as exception when any of the tests are executed.
 
 Changes:
++ Make StopWatch publicly accessible for performance mesurement purposes. Feature request: https://support.specflow.org/hc/en-us/community/posts/11105586856732-Make-stopwatch-publicly-accessible
 + Existing step definition expressions detected to be either regular or cucumber expression. Check https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html for potential upgrade issues.
 + Default step definition skeletons are generating cucumber expressions.
 + 'ScenarioInfo.ScenarioAndFeatureTags' has been deprecated in favor of 'ScenarioInfo.CombinedTags'. Now both contain rule tags as well.
