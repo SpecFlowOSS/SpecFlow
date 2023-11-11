@@ -73,6 +73,21 @@ namespace TechTalk.SpecFlow.RuntimeTests
             {
                 //nop
             }
+
+            public void BufferingStart()
+            {
+                //nop
+            }
+
+            public void BufferingFlushAndStop()
+            {
+                //nop
+            }
+
+            public void BufferingDiscardAndStop()
+            {
+                //nop
+            }
         }
         #endregion
 

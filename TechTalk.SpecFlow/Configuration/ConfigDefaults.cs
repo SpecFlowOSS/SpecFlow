@@ -16,6 +16,7 @@ namespace TechTalk.SpecFlow.Configuration
         public const MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome = TechTalk.SpecFlow.Configuration.MissingOrPendingStepsOutcome.Pending;
 
         public const bool TraceSuccessfulSteps = true;
+        public const bool TraceSuccessfulScenarios = true;
         public const bool TraceTimings = false;
         public const string MinTracedDuration = "0:0:0.1";
         public const StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle = TechTalk.SpecFlow.BindingSkeletons.StepDefinitionSkeletonStyle.CucumberExpressionAttribute;

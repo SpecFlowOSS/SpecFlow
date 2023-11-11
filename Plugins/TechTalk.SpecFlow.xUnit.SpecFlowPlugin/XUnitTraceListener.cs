@@ -29,20 +29,34 @@ namespace TechTalk.SpecFlow.xUnit.SpecFlowPlugin
 
         public override void WriteTestOutput(string message)
         {
-            var testOutputHelper = GetTestOutputHelper();
-            if (testOutputHelper != null)
-                testOutputHelper.WriteLine(message);
-            else
+            if (IsTraceBufferingActive)
+            {
                 base.WriteTestOutput(message);
+            }
+            else
+            {
+                var testOutputHelper = GetTestOutputHelper();
+                if (testOutputHelper != null)
+                    testOutputHelper.WriteLine(message);
+                else
+                    base.WriteTestOutput(message);
+            }
         }
 
         public override void WriteToolOutput(string message)
         {
-            var testOutputHelper = GetTestOutputHelper();
-            if (testOutputHelper != null)
-                testOutputHelper.WriteLine("-> " + message);
+            if (IsTraceBufferingActive)
+            {
+                base.WriteTestOutput(message);
+            }
             else
-                base.WriteToolOutput(message);
+            {
+                var testOutputHelper = GetTestOutputHelper();
+                if (testOutputHelper != null)
+                    testOutputHelper.WriteLine("-> " + message);
+                else
+                    base.WriteToolOutput(message);
+            }
         }
     }
 }

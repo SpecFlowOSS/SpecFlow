@@ -13,6 +13,13 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             set { this["traceSuccessfulSteps"] = value; }
         }
 
+        [ConfigurationProperty("traceSuccessfulScenarios", DefaultValue = ConfigDefaults.TraceSuccessfulScenarios, IsRequired = false)]
+        public bool TraceSuccessfulScenarios
+        {
+            get { return (bool)this["traceSuccessfulScenarios"]; }
+            set { this["traceSuccessfulScenarios"] = value; }
+        }
+
         [ConfigurationProperty("traceTimings", DefaultValue = ConfigDefaults.TraceTimings, IsRequired = false)]
         public bool TraceTimings
         {

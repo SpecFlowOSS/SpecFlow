@@ -14,14 +14,28 @@ namespace TechTalk.SpecFlow.MSTest.SpecFlowPlugin
 
         public override void WriteTestOutput(string message)
         {
-            _testContextProvider.GetTestContext().WriteLine(message);
-            base.WriteTestOutput(message);
+            if (IsTraceBufferingActive)
+            {
+                base.WriteTestOutput(message);
+            }
+            else
+            {
+                _testContextProvider.GetTestContext().WriteLine(message);
+                base.WriteTestOutput(message);
+            }
         }
 
         public override void WriteToolOutput(string message)
         {
-            _testContextProvider.GetTestContext().WriteLine("-> " + message);
-            base.WriteToolOutput(message);
+            if (IsTraceBufferingActive)
+            {
+                base.WriteTestOutput(message);
+            }
+            else
+            {
+                _testContextProvider.GetTestContext().WriteLine("-> " + message);
+                base.WriteToolOutput(message);
+            }
         }
     }
 }

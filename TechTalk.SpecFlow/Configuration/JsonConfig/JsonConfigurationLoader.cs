@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             var missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
+            bool traceSuccessfulScenarios = specFlowConfiguration.TraceSuccessfulScenarios;
             bool traceTimings = specFlowConfiguration.TraceTimings;
             var minTracedDuration = specFlowConfiguration.MinTracedDuration;
             bool coloredOutput = specFlowConfiguration.ColoredOutput;
@@ -73,6 +74,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             if (jsonConfig.Trace != null)
             {
                 traceSuccessfulSteps = jsonConfig.Trace.TraceSuccessfulSteps;
+                traceSuccessfulScenarios = jsonConfig.Trace.TraceSuccessfulScenarios;
                 traceTimings = jsonConfig.Trace.TraceTimings;
                 minTracedDuration = jsonConfig.Trace.MinTracedDuration;
                 stepDefinitionSkeletonStyle = jsonConfig.Trace.StepDefinitionSkeletonStyle;
@@ -96,6 +98,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 stopAtFirstError,
                 missingOrPendingStepsOutcome,
                 traceSuccessfulSteps,
+                traceSuccessfulScenarios,
                 traceTimings,
                 minTracedDuration,
                 stepDefinitionSkeletonStyle,

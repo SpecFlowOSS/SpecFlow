@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Configuration
             bool stopAtFirstError,
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome,
             bool traceSuccessfulSteps,
+            bool traceSuccessfulScenarios,
             bool traceTimings,
             TimeSpan minTracedDuration,
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle,
@@ -43,6 +44,7 @@ namespace TechTalk.SpecFlow.Configuration
             StopAtFirstError = stopAtFirstError;
             MissingOrPendingStepsOutcome = missingOrPendingStepsOutcome;
             TraceSuccessfulSteps = traceSuccessfulSteps;
+            TraceSuccessfulScenarios = traceSuccessfulScenarios;
             TraceTimings = traceTimings;
             MinTracedDuration = minTracedDuration;
             StepDefinitionSkeletonStyle = stepDefinitionSkeletonStyle;
@@ -76,6 +78,7 @@ namespace TechTalk.SpecFlow.Configuration
         //tracing settings
         public bool ColoredOutput { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
+        public bool TraceSuccessfulScenarios { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
         public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set; }
@@ -93,6 +96,7 @@ namespace TechTalk.SpecFlow.Configuration
                                                               && AllowRowTests == other.AllowRowTests
                                                               && ObsoleteBehavior == other.ObsoleteBehavior
                                                               && TraceSuccessfulSteps == other.TraceSuccessfulSteps
+                                                              && TraceSuccessfulScenarios == other.TraceSuccessfulScenarios
                                                               && TraceTimings == other.TraceTimings
                                                               && MinTracedDuration.Equals(other.MinTracedDuration)
                                                               && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle
@@ -134,6 +138,7 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode * 397) ^ AllowRowTests.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)ObsoleteBehavior;
                 hashCode = (hashCode * 397) ^ TraceSuccessfulSteps.GetHashCode();
+                hashCode = (hashCode * 397) ^ TraceSuccessfulScenarios.GetHashCode();
                 hashCode = (hashCode * 397) ^ TraceTimings.GetHashCode();
                 hashCode = (hashCode * 397) ^ MinTracedDuration.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)StepDefinitionSkeletonStyle;

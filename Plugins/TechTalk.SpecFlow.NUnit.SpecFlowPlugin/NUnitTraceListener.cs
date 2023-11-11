@@ -18,20 +18,34 @@ namespace TechTalk.SpecFlow.NUnit.SpecFlowPlugin
 
         public override void WriteTestOutput(string message)
         {
-            TestContext.WriteLine(message);
-
-            // avoid duplicate output entries in NUnit for scenario, forward only if no scenario active 
-            if (_contextManager.Value.ScenarioContext == null)
+            if (IsTraceBufferingActive)
+            {
                 base.WriteTestOutput(message);
+            }
+            else
+            {
+                TestContext.WriteLine(message);
+
+                // avoid duplicate output entries in NUnit for scenario, forward only if no scenario active
+                if (_contextManager.Value.ScenarioContext == null)
+                    base.WriteTestOutput(message);
+            }
         }
 
         public override void WriteToolOutput(string message)
         {
-            TestContext.WriteLine("-> " + message);
+            if (IsTraceBufferingActive)
+            {
+                base.WriteTestOutput(message);
+            }
+            else
+            {
+                TestContext.WriteLine("-> " + message);
 
-            // avoid duplicate output entries in NUnit for scenario, forward only if no scenario active 
-            if (_contextManager.Value.ScenarioContext == null)
-                base.WriteToolOutput(message);
+                // avoid duplicate output entries in NUnit for scenario, forward only if no scenario active
+                if (_contextManager.Value.ScenarioContext == null)
+                    base.WriteToolOutput(message);
+            }
         }
     }
 }
