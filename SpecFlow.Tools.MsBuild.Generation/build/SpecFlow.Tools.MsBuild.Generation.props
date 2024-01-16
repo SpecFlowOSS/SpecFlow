@@ -14,6 +14,7 @@
 
 
   <PropertyGroup>
+    <SpecFlowCodeBehindOutputPath Condition="'$(SpecFlowCodeBehindOutputPath)' == ''">$(BaseIntermediateOutputPath)Features.Generated\</SpecFlowCodeBehindOutputPath>
     <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
     <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
 
@@ -28,12 +29,6 @@
     property group for feature flags
   -->
   <PropertyGroup>
-
-    <!--
-      feature flag to enable experimental support for cleaning up generated code-behind files during rebuild and clean scenarios
-    -->
-    <SpecFlow_DeleteCodeBehindFilesOnCleanRebuild Condition="'$(SpecFlow_DeleteCodeBehindFilesOnCleanRebuild)'==''">false</SpecFlow_DeleteCodeBehindFilesOnCleanRebuild>
-
     <!--
       net.sdk support: feature flag to enable experimental support for net.sdk project system
     -->
@@ -45,23 +40,15 @@
 
   <ItemGroup>
     <SpecFlowFeatureFiles Include="**\*.feature" >
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
     </SpecFlowFeatureFiles>
-
-    <!-- obsolete codebehind files, scenarios:
-         - after rename operation
-         - after deletion of a feature file
-         - after pulling latest changes from version control with above changes
-     -->
-    <SpecFlowObsoleteCodeBehindFiles Include="**\*.feature$(DefaultLanguageSourceExtension)" Exclude="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
-
+    
     <!-- Support for Visual Studio Incremental Build
         https://github.com/techtalk/SpecFlow/issues/1319
      -->
     <UpToDateCheckInput Include="@(SpecFlowFeatureFiles)" />
-    <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" Original="@(SpecFlowFeatureFiles)" />
-    <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'%(CodeBehindFile)')" />
+    <UpToDateCheckBuild Include="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)%(RelativeDir)%(Filename)%(Extension)$(DefaultLanguageSourceExtension)')" Original="@(SpecFlowFeatureFiles)" />
+    <CustomAdditionalCompileInputs Include="@(SpecFlowFeatureFiles->'$(SpecFlowCodeBehindOutputPath)%(RelativeDir)%(Filename)%(Extension)$(DefaultLanguageSourceExtension)')" />
 
   </ItemGroup>
 

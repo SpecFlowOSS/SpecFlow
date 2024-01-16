@@ -1,5 +1,4 @@
 ﻿using System.CodeDom;
-using System.IO;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.CodeDom;
 
@@ -22,7 +21,7 @@ namespace TechTalk.SpecFlow.Generator.Generation
             if (_specFlowConfiguration.AllowDebugGeneratedFiles)
                 return;
 
-            _codeDomHelper.BindTypeToSourceFile(testType, Path.GetFileName(sourceFile));
+            _codeDomHelper.BindTypeToSourceFile(testType, sourceFile);
         }
     }
 }
