@@ -1,0 +1,50 @@
+﻿{
+    "products":
+    [
+        {
+            "product": "Chocolate",
+            "color": "brown",
+            "varieties":
+            [
+                {
+                    "name": "Dark Chocolate",
+                    "price": "1.6"
+                },
+                {
+                    "name": "Milk Chocolate",
+                    "price": "1.55"
+                }
+            ]
+        },
+        {
+            "product": "Apple",
+            "color": "red",
+            "varieties":
+            [
+                {
+                    "name": "Pink Lady",
+                    "price": "1.0"
+                },
+                {
+                    "name": "Fuji",
+                    "price": "1.5"
+                }
+           ]
+        },
+        {
+            "product": "Orange",
+            "color": "orange",
+            "varieties":
+            [
+                {
+                    "name": "Seville Orange",
+                    "price": "1.3"
+                },
+                {
+                    "name": "Tangerine",
+                    "price": "1.6"
+                }
+           ]
+        }
+    ]
+}

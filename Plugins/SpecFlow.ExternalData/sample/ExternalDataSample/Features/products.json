@@ -1,0 +1,33 @@
+﻿{
+    "products":
+    [
+        {
+            "product": "Chocolate",
+            "price": "2.5",
+            "color": "brown"
+        },
+        {
+            "product": "Apple",
+            "price": "1.0",
+            "color": "red"
+        },
+        {
+            "product": "Orange",
+            "price": "1.2",
+            "color": "orange"
+        }
+    ],
+    "other products":
+    [
+        {
+            "product": "Cookie",
+            "price": "2.5",
+            "color": "brown"
+        },
+        {
+            "product": "Bananas",
+            "price": "1.0",
+            "color": "yellow"
+        }
+     ]
+}
