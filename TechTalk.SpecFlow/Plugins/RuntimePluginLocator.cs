@@ -9,12 +9,14 @@ namespace TechTalk.SpecFlow.Plugins
     internal sealed class RuntimePluginLocator : IRuntimePluginLocator
     {
         private readonly IRuntimePluginLocationMerger _runtimePluginLocationMerger;
+        private readonly IRuntimePluginPrioritizer _runtimePluginPrioritizer;
         private readonly ISpecFlowPath _specFlowPath;
         private readonly Assembly _testAssembly;
 
-        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger, ISpecFlowPath specFlowPath, ITestAssemblyProvider testAssemblyProvider)
+        public RuntimePluginLocator(IRuntimePluginLocationMerger runtimePluginLocationMerger, IRuntimePluginPrioritizer runtimePluginPrioritizer, ISpecFlowPath specFlowPath, ITestAssemblyProvider testAssemblyProvider)
         {
             _runtimePluginLocationMerger = runtimePluginLocationMerger;
+            _runtimePluginPrioritizer = runtimePluginPrioritizer;
             _specFlowPath = specFlowPath;
             _testAssembly = testAssemblyProvider.TestAssembly;
         }
@@ -46,7 +48,7 @@ namespace TechTalk.SpecFlow.Plugins
                 }
             }
 
-            return _runtimePluginLocationMerger.Merge(allRuntimePlugins);
+            return _runtimePluginPrioritizer.Prioritize(_runtimePluginLocationMerger.Merge(allRuntimePlugins));
         }
 
         private static IEnumerable<string> SearchPluginsInFolder(string folder)

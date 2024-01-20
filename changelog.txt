@@ -14,6 +14,7 @@ Features:
 + Support for ValueTask and ValueTask<T> binding methods (step definitions, hooks, step argument transformations)
 + Rules now support Background blocks
 + Collect binding errors (type load, binding, step definition) and report them as exception when any of the tests are executed.
++ Runtime Plugins are loaded in alphabetical order of their location paths, new interface IRuntimePluginPrioritizer
 
 Changes:
 + Existing step definition expressions detected to be either regular or cucumber expression. Check https://docs.specflow.org/projects/specflow/en/latest/Guides/UpgradeSpecFlow3To4.html for potential upgrade issues.
@@ -114,7 +115,7 @@ Fixes:
 + Fixed context injection in static methods for Autofac plugin https://github.com/SpecFlowOSS/SpecFlow/issues/2307
 
 Changes:
-+ Ignore tag handling: generate test framework specific ignore attributes 
++ Ignore tag handling: generate test framework specific ignore attributes
 
 3.6
 
