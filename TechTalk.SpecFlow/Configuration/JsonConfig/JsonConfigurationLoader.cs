@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
             var addNonParallelizableMarkerForTags = specFlowConfiguration.AddNonParallelizableMarkerForTags;
             var obsoleteBehavior = specFlowConfiguration.ObsoleteBehavior;
+            var eol = specFlowConfiguration.EndOfLine;
 
             if (jsonConfig.Language != null)
             {
@@ -87,6 +88,11 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 }
             }
 
+            if (TryParseEol(jsonConfig.Generator?.EndOfLine, out string endOfLine))
+            {
+                eol = endOfLine;
+            }
+
             return new SpecFlowConfiguration(
                 ConfigSource.Json,
                 containerRegistrationCollection,
@@ -104,8 +110,29 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 allowRowTests,
                 addNonParallelizableMarkerForTags,
                 obsoleteBehavior,
-                coloredOutput
+                coloredOutput,
+                eol
             );
+        }
+
+        private static bool TryParseEol(string rawEol, out string endOfLine)
+        {
+            switch (rawEol)
+            {
+                // INFO [minidfx 27.04.2023 08:20]: Windows platform 
+                case "\r\n": 
+                    endOfLine = "\r\n";
+                    return true;
+
+                // INFO [minidfx 27.04.2023 08:20]: Unix like platform
+                case "\n": 
+                    endOfLine = "\n";
+                    return true;
+            }
+
+            // INFO [minidfx 27.04.2023 08:24]: Use the current platform EOL by default
+            endOfLine = Environment.NewLine;
+            return false;
         }
     }
 }

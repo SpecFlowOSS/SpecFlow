@@ -15,11 +15,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
     
     public class TestGeneratorBasicsTests : TestGeneratorTestsBase
     {
-        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings, string projectRelativeFolderPath = null)
+        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings,
+                                                     string projectRelativeFolderPath = null)
+        {
+            return this.GenerateTestFromSimpleFeature(projectSettings,
+                                                      defaultSettings,
+                                                      projectRelativeFolderPath);
+        }
+
+        private string GenerateTestFromSimpleFeature(ProjectSettings projectSettings,
+                                                     GenerationSettings generationSettings,
+                                                     string projectRelativeFolderPath = null)
         {
             var testGenerator = CreateTestGenerator(projectSettings);
 
-            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(projectRelativeFolderPath), defaultSettings);
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(projectRelativeFolderPath), generationSettings);
             result.Success.Should().Be(true);
             return result.GeneratedTestCode;
         }
@@ -252,6 +262,38 @@ namespace TechTalk.SpecFlow.GeneratorTests
             string folderPathArgument = AssertFolderPathArgument(outputFile);
 
             folderPathArgument.Should().Be("\"Folder1/Folder2\"");
+        }
+
+        [Fact]
+        public void Should_have_LF_as_EOL()
+        {
+            var generationSettingsHavingLFAsEol = new GenerationSettings
+            {
+                EndOfLine = "\n"
+            };
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings,  generationSettingsHavingLFAsEol);
+
+            var lines = outputFile.Split(new []{ "\n" }, StringSplitOptions.None);
+            var firstLine = lines.First();
+            var expectedLine = "// ------------------------------------------------------------------------------";
+
+            Assert.Equal(expectedLine, firstLine);
+        }
+        
+        [Fact]
+        public void Should_have_CRLF_as_EOL()
+        {
+            var generationSettingsHavingCRLFAsEol = new GenerationSettings
+            {
+                EndOfLine = "\r\n"
+            };
+            string outputFile = GenerateTestFromSimpleFeature(net35CSProjectSettings,  generationSettingsHavingCRLFAsEol);
+
+            var lines = outputFile.Split(new []{ "\r\n" }, StringSplitOptions.None);
+            var firstLine = lines.First();
+            var expectedLine = "// ------------------------------------------------------------------------------";
+
+            Assert.Equal(expectedLine, firstLine);
         }
     }
 }

@@ -54,6 +54,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static bool DefaultColoredOutput => ConfigDefaults.ColoredOutput;
 
+        public static string DefaultEol => Environment.NewLine;
+
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
         public bool HasJsonConfig
@@ -111,6 +113,8 @@ namespace TechTalk.SpecFlow.Configuration
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            
+            traceListener.WriteToolOutput("'{0}' used as EOL.", specFlowConfiguration.EndOfLine.Replace("\r", "\\r").Replace("\n", "\\n"));
         }
 
 
@@ -132,7 +136,8 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAllowRowTests,
                 DefaultAddNonParallelizableMarkerForTags,
                 DefaultObsoleteBehavior,
-                DefaultColoredOutput
+                DefaultColoredOutput,
+                DefaultEol
                 );
         }
 

@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.Generator
                     return new TestGeneratorResult(null, true);
             }
 
-            string generatedTestCode = GetGeneratedTestCode(featureFileInput);
+            string generatedTestCode = GetGeneratedTestCode(featureFileInput, settings);
             if(string.IsNullOrEmpty(generatedTestCode))
                 return new TestGeneratorResult(null, true);
 
@@ -86,9 +86,9 @@ namespace TechTalk.SpecFlow.Generator
             return new TestGeneratorResult(generatedTestCode, false);
         }
 
-        protected string GetGeneratedTestCode(FeatureFileInput featureFileInput)
+        protected string GetGeneratedTestCode(FeatureFileInput featureFileInput, GenerationSettings settings)
         {
-            using (var outputWriter = new IndentProcessingWriter(new StringWriter()))
+            using (var outputWriter = new IndentProcessingWriter(new StringWriter(), settings))
             {
                 var codeProvider = codeDomHelper.CreateCodeDomProvider();
                 var codeNamespace = GenerateTestFileCode(featureFileInput);

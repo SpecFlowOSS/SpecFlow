@@ -433,6 +433,48 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
             config.AddNonParallelizableMarkerForTags.Should().BeEquivalentTo("tag1", "tag2");
         }
+        
+        [Fact]
+        public void Check_Generator_EndOfLine_bad_value()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""endOfLine"": ""a funny bad value""
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.EndOfLine.Should().Be(Environment.NewLine);
+        }
+        
+        [Fact]
+        public void Check_Generator_EndOfLine_with_Windows_EOL()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""endOfLine"": ""\r\n""
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.EndOfLine.Should().Be("\r\n");
+        }
+        
+        [Fact]
+        public void Check_Generator_EndOfLine_with_Unix_like_EOL()
+        {
+            string configAsJson = @"{
+                                        ""generator"":
+                                        {
+                                            ""endOfLine"": ""\n""
+                                        }
+                                    }";
+
+            var config = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), configAsJson);
+            config.EndOfLine.Should().Be("\n");
+        }
 
         [Fact]
         public void Check_Defaults_Empty_Configuration()
@@ -492,6 +534,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             //generator
             config.AllowDebugGeneratedFiles.Should().Be(ConfigDefaults.AllowDebugGeneratedFiles);
             config.AllowRowTests.Should().Be(ConfigDefaults.AllowRowTests);
+            config.EndOfLine.Should().Be(Environment.NewLine);
 
             //trace
             config.TraceTimings.Should().Be(ConfigDefaults.TraceTimings);

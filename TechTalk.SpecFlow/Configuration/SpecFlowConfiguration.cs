@@ -32,7 +32,8 @@ namespace TechTalk.SpecFlow.Configuration
             bool allowRowTests,
             string[] addNonParallelizableMarkerForTags,
             ObsoleteBehavior obsoleteBehavior,
-            bool coloredOutput
+            bool coloredOutput,
+            string endOfLine
         )
         {
             ConfigSource = configSource;
@@ -52,6 +53,7 @@ namespace TechTalk.SpecFlow.Configuration
             AddNonParallelizableMarkerForTags = addNonParallelizableMarkerForTags;
             ObsoleteBehavior = obsoleteBehavior;
             ColoredOutput = coloredOutput;
+            EndOfLine = endOfLine;
         }
 
         public ConfigSource ConfigSource { get; set; }
@@ -72,9 +74,11 @@ namespace TechTalk.SpecFlow.Configuration
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
         public string[] AddNonParallelizableMarkerForTags { get; set; }
+        public string EndOfLine { get; set; }
 
         //tracing settings
         public bool ColoredOutput { get; set; }
+
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
@@ -97,7 +101,8 @@ namespace TechTalk.SpecFlow.Configuration
                                                               && MinTracedDuration.Equals(other.MinTracedDuration)
                                                               && StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle
                                                               && AdditionalStepAssemblies.SequenceEqual(other.AdditionalStepAssemblies)
-                                                              && AddNonParallelizableMarkerForTags.SequenceEqual(other.AddNonParallelizableMarkerForTags);
+                                                              && AddNonParallelizableMarkerForTags.SequenceEqual(other.AddNonParallelizableMarkerForTags)
+                                                              && EndOfLine == other.EndOfLine;
 
         public override bool Equals(object obj)
         {
@@ -139,6 +144,7 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode * 397) ^ (int)StepDefinitionSkeletonStyle;
                 hashCode = (hashCode * 397) ^ (AdditionalStepAssemblies != null ? AdditionalStepAssemblies.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (AddNonParallelizableMarkerForTags != null ? AddNonParallelizableMarkerForTags.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (EndOfLine != null ? EndOfLine.GetHashCode() : 0);
                 return hashCode;
             }
         }
