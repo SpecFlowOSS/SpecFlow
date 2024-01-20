@@ -22,6 +22,10 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck);
         void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
+
+        void BufferingStart();
+        void BufferingFlushAndStop();
+        void BufferingDiscardAndStop();
     }
 
     public class TestTracer : ITestTracer
@@ -167,6 +171,21 @@ namespace TechTalk.SpecFlow.Tracing
             {
                 traceListener.WriteToolOutput($"duration: {text}: {elapsed.TotalMilliseconds:F1}ms");
             }
+        }
+
+        public void BufferingStart()
+        {
+            (traceListener as IBufferingTraceListener)?.BufferingStart();
+        }
+
+        public void BufferingFlushAndStop()
+        {
+            (traceListener as IBufferingTraceListener)?.BufferingFlushAndStop();
+        }
+
+        public void BufferingDiscardAndStop()
+        {
+            (traceListener as IBufferingTraceListener)?.BufferingDiscardAndStop();
         }
     }
 }

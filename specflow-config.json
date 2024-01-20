@@ -99,6 +99,11 @@
           "type": "boolean",
           "default": true
         },
+        "traceSuccessfulScenarios": {
+          "description": "Determines whether SpecFlow should trace anything about successful scenario executions. If false, trace logs are buffered and only really posted if any step's outcome is anything but successful.",
+          "type": "boolean",
+          "default": true
+        },
         "traceTimings": {
           "description": "Determines whether SpecFlow should trace execution time of the binding methods (only if the execution time is longer than the minTracedDuration value).",
           "type": "boolean",

@@ -184,6 +184,11 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual async Task OnScenarioStartAsync()
         {
+            if (!_specFlowConfiguration.TraceSuccessfulScenarios)
+            {
+                _testTracer.BufferingStart();
+            }
+
             _testThreadExecutionEventPublisher.PublishEvent(new ScenarioStartedEvent(FeatureContext, ScenarioContext));
 
             try
@@ -240,6 +245,10 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             try
             {
+                if (!_specFlowConfiguration.TraceSuccessfulScenarios)
+                {
+                    _testTracer.BufferingDiscardAndStop();
+                }
                 if (_contextManager.ScenarioContext.ScenarioExecutionStatus != ScenarioExecutionStatus.Skipped)
                 {
                     await FireScenarioEventsAsync(HookType.AfterScenario);
@@ -516,6 +525,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             finally
             {
+                if (!_specFlowConfiguration.TraceSuccessfulScenarios && _contextManager.StepContext.Status != ScenarioExecutionStatus.OK)
+                {
+                    _testTracer.BufferingFlushAndStop();
+                }
+
                 if (onStepStartExecuted)
                 {
                     await OnStepEndAsync();

@@ -38,6 +38,7 @@ namespace TechTalk.SpecFlow.Configuration
         private static MissingOrPendingStepsOutcome DefaultMissingOrPendingStepsOutcome => ConfigDefaults.MissingOrPendingStepsOutcome;
 
         private static bool DefaultTraceSuccessfulSteps => ConfigDefaults.TraceSuccessfulSteps;
+        private static bool DefaultTraceSuccessfulScenarios => ConfigDefaults.TraceSuccessfulScenarios;
         private static bool DefaultTraceTimings => ConfigDefaults.TraceTimings;
         private static TimeSpan DefaultMinTracedDuration => TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
 
@@ -124,6 +125,7 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultStopAtFirstError,
                 DefaultMissingOrPendingStepsOutcome,
                 DefaultTraceSuccessfulSteps,
+                DefaultTraceSuccessfulScenarios,
                 DefaultTraceTimings,
                 DefaultMinTracedDuration,
                 DefaultStepDefinitionSkeletonStyle,

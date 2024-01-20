@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
+            bool traceSuccessfulScenarios = specFlowConfiguration.TraceSuccessfulScenarios;
             bool traceTimings = specFlowConfiguration.TraceTimings;
             TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
@@ -80,6 +81,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                 }
 
                 traceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
+                traceSuccessfulScenarios = configSection.Trace.TraceSuccessfulScenarios;
                 traceTimings = configSection.Trace.TraceTimings;
                 minTracedDuration = configSection.Trace.MinTracedDuration;
                 stepDefinitionSkeletonStyle = configSection.Trace.StepDefinitionSkeletonStyle;
@@ -100,6 +102,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,
+                                            traceSuccessfulScenarios,
                                             traceTimings,
                                             minTracedDuration,
                                             stepDefinitionSkeletonStyle,

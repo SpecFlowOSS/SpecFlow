@@ -31,5 +31,10 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [DataMember(Name = "traceSuccessfulSteps")]
         [DefaultValue(ConfigDefaults.TraceSuccessfulSteps)]
         public bool TraceSuccessfulSteps { get; set; }
+
+        //[JsonProperty("traceSuccessfulScenarios", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        [DataMember(Name = "traceSuccessfulScenarios")]
+        [DefaultValue(ConfigDefaults.TraceSuccessfulScenarios)]
+        public bool TraceSuccessfulScenarios { get; set; }
     }
 }
