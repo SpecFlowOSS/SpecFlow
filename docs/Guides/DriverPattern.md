@@ -1,10 +1,8 @@
 # Driver Pattern
 
-The Driver Pattern is simply an additional layer between your step definitions and your automation code.
-
-Over the years, we noticed that a good practice to organize your bindings and automation code is to keep the code in the bindings very short (around 10 lines) and easy understandable.  
-
-This gives you following benefits:
+Over the years, we've noticed that a good practice for organizing bindings and automation code is to keep the code in bindings short (around 10 lines) and easy to understand. The Driver Pattern can be used to provide an additional layer between your step definitions and automation code. 
+ 
+Using a Driver Pattern in your test set up provides the following benefits:
 
 - easier to maintain your test automation code  
   As you split your code into multiple parts, it gets easier to maintain
