@@ -1,15 +1,23 @@
 # Driver Pattern
 
-Over the years, we've noticed that a good practice for organizing bindings and automation code is to keep the code in bindings short (around 10 lines) and easy to understand. The Driver Pattern can be used to provide an additional layer between your step definitions and automation code. 
- 
+Over the years, we've noticed that a good practice for organizing bindings and automation code is to keep the code in bindings short (around 10 lines) and easy to understand. The Driver Pattern can be used to achieve this by providing additional layers between bindings and the actual automation code. These "additional layers" provide reusable methods and scenario-specific data contexts that can be used in a variety of test scenarios.
+
 Using a Driver Pattern in your test set up provides the following benefits:
 
-- easier to maintain your test automation code  
-  As you split your code into multiple parts, it gets easier to maintain
-- easy to reuse methods in different step definitions or combine multiple steps into a single step  
-  We often see, a group of steps that are in a lot of Scenarios. As you have now the automation code in separate classes, chaining the method calls is really easy.
-- easier to read step definitions  
-  This makes it possible, that also non- technical people can understand what is happening in a step definition. This makes your life in bigger projects easier, because nobody will remember what every single step is doing.  
+**1. Prevent Duplicate Code**
+In your application there's a good chance some steps that are performed many times over. For example, if you are building a website that requires users to login, it's likely that most interactions will begin with a login and the Driver Pattern can reduce duplicate code.
+
+**2. Easier Code Maintenance**
+
+As business requirements change, the test setup should be able to quickly change with it. Continuing with the login user flow example from the previous point, if the login process changes to include multi-factor authentication, the Driver Pattern enables developers to change code in one area which may impact all tests.
+
+In the context of web development, at some point you will accidentally write code that results in one or more flaky tests. When using the Driver Pattern, fixing flaky test code in a method shared by multiple bindings may fix all your tests with a single change.
+
+**3. Easy Method Re-Use and Grouping** 
+It's quite common to see a group of steps that are frequently used together in test scenarios. The driver pattern allows users to group up method calls for easier code reusability.
+
+**4. Easier to Read Step Definitions** 
+By using points 1-3, non-technical stakeholders should also be able to understand step definitions as business logic is captured in methods with names reflecting actions a user takes in an application.
 
 The Driver pattern is heavily using [Context- Injection](../Bindings/Context-Injection.md) to connect the multiple classes together.
 
