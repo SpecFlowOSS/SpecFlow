@@ -153,7 +153,7 @@ This is a *concrete example* that *illustrates* a business rule. It consists of 
 The keyword `Scenario` is a synonym of the keyword `Example`.
 
 You can have as many steps as you like, but we recommend you keep the number at 3-5 per example. Having too many steps
-in an example, will cause it to lose it's expressive power as specification and documentation.
+in an example, will cause it to lose its expressive power as specification and documentation.
 
 In addition to being a specification and documentation, an example is also a *test*. As a whole, your examples are an
 *executable specification* of the system.
